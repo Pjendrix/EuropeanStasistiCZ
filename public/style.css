@@ -167,3 +167,8 @@ ul.plain li:last-child { border-bottom: none; }
 .loading { color: var(--muted); }
 .positions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
 .positions-grid h3 { margin-top: 0; }
+.list-card { margin-bottom: .75rem; }
+.list-card .vote-title { display: inline-block; margin: .15rem 0; }
+.list-card p { margin: .4rem 0; }
+@media (max-width: 640px) { nav { gap: .25rem .9rem; font-size: .92rem; } }
+.badge-link { text-decoration: none; }

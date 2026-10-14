@@ -12,7 +12,10 @@
   <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
   <nav>
     <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
+    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
 </div></header>
@@ -41,6 +44,9 @@
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
       <li>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká docházka může mít i důvody jako nemoc nebo rodičovství.</li>
+      <li>Oficiální výsledek bereme ze zdroje. U několika hlasování neodpovídá prosté většině (např. vyžadovala absolutní většinu
+        361 hlasů, nebo hlasování 181313 skončilo 289 : 289 a zdroj ho uvádí jako přijaté). Taková hlasování se do
+        rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.</li>
       <li>Loajalita k frakci a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
       <li>Čísla počítá deterministický skript
         <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
@@ -65,6 +71,9 @@ setNav("about");
     const names = {
       attendance: "Docházka", attendance_main: "Docházka – hlavní hlasování", group_loyalty: "Loajalita k frakci",
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
+      outcome_agreement: "Soulad s výsledkem", group_outcome_agreement: "Soulad s výsledkem – průměr frakce",
+      close_votes: "Těsná hlasování", decisive_votes: "Rozhodující hlasování", against_group: "Hlasování proti frakci",
+      cz_split: "Kde se Češi rozdělili", party_cohesion: "Jednotnost strany", topics: "Témata",
     };
     el.innerHTML = Object.entries(stats.definitions)
       .map(([k, text]) => `<li><strong>${esc(names[k] || k)}</strong>: ${esc(text)}</li>`).join("");

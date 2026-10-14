@@ -282,8 +282,10 @@ def write_months(months: dict[str, dict], out_dir: Path) -> None:
             f.write(dump(head)[:-1] + ',"votes":[\n' + ",\n".join(lines) + "\n]}\n")
 
 
-def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, release: str | None) -> None:
-    """index.json: seznam měsíců (pro web) a frakce, které se v hlasováních vyskytují."""
+def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, release: str | None,
+                oeil: pd.DataFrame | None = None) -> None:
+    """index.json: seznam měsíců (pro web), frakce, které se v hlasováních vyskytují,
+    a číselník témat OEIL (kód -> anglický název) pro souhrny podle témat."""
     used = {g for m in months.values() for v in m["votes"] for g in v["group_counts"]}
     index = {
         "source": next(iter(months.values()))["source"] if months else None,
@@ -293,6 +295,7 @@ def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, re
              "official_label": _clean(r.official_label)}
             for r in groups.sort_values("code").itertuples(index=False) if r.code in used
         ],
+        "oeil_subjects": {} if oeil is None else dict(sorted(zip(oeil["code"], oeil["label"]))),
     }
     (out_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
@@ -305,7 +308,7 @@ def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_STA
     groups = read_table(csv_dir, "groups")
     months = build_months(votes, mv, topics, release, group_counts)
     write_months(months, out_dir)
-    write_index(months, groups, out_dir, release)
+    write_index(months, groups, out_dir, release, read_table(csv_dir, "oeil_subjects"))
     print(
         f"hlasování: {len(votes)} (hlavních {int(votes['is_main'].sum())}), "
         f"CZ pozic: {len(mv)}, poslanců: {mv['member_id'].nunique()}, měsíců: {len(months)}",

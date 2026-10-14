@@ -131,6 +131,7 @@ def test_index_lists_months_and_used_groups(csv_dir, tmp_path):
     assert index["months"] == [{"month": "2024-07", "votes": 1}, {"month": "2024-09", "votes": 2}]
     assert [g["code"] for g in index["groups"]] == ["EPP", "NI", "PFE", "SD"]  # GREEN_EFA nehlasovali
     assert index["source"]["release"] == "MOCK_TAG"
+    assert index["oeil_subjects"] == {"3.70": "MOCK environment"}
 
 
 @pytest.mark.parametrize("result", ["LAPSED", "WITHDRAWN"])

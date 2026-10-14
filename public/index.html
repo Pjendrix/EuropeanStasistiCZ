@@ -13,7 +13,10 @@
   <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
   <nav>
     <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
+    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
 </div></header>
@@ -90,7 +93,7 @@ setNav("meps");
               ${active ? "" : `<div class="small muted">mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</div>`}</div>
           </div></td>
           <td>${groupBadge(null, groups, g?.code)}</td>
-          <td>${p ? partyBadge(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
+          <td>${p ? partyLink(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
           <td class="num">${pctCell(s.attendance, "hlasoval/a z hlasování v době mandátu")}</td>
           <td class="num">${pctCell(s.attendance_main, "jen hlavní hlasování")}</td>
           <td class="num">${pctCell(s.group_loyalty, "stejně jako většina frakce")}</td>

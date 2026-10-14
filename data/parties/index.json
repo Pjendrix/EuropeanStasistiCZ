@@ -1,0 +1,687 @@
+{
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "parties": [
+  {
+   "id": 6768,
+   "short_label": "ODS",
+   "name": "Občanská demokratická strana",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 3,
+   "total": {
+    "attendance": [
+     17289,
+     18462
+    ],
+    "attendance_main": [
+     1917,
+     2040
+    ],
+    "group_loyalty": [
+     14392,
+     17238
+    ],
+    "group_loyalty_main": [
+     1461,
+     1902
+    ],
+    "cz_agreement": [
+     12905,
+     16673
+    ],
+    "outcome": [
+     9012,
+     15725
+    ],
+    "outcome_main": [
+     1271,
+     1654
+    ],
+    "outcome_close": [
+     199,
+     394
+    ],
+    "group_outcome": [
+     550221,
+     1038385
+    ],
+    "group_outcome_main": [
+     85479,
+     106613
+    ],
+    "positions": {
+     "FOR": 8750,
+     "AGAINST": 6976,
+     "ABSTENTION": 1563,
+     "DID_NOT_VOTE": 1173
+    }
+   },
+   "cohesion": [
+    5334,
+    5721
+   ],
+   "cohesion_main": [
+    599,
+    633
+   ],
+   "splits_count": 199,
+   "splits_count_main": 7
+  },
+  {
+   "id": 6769,
+   "short_label": "KSČM",
+   "name": "Komunistická strana Čech a Moravy",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 1,
+   "total": {
+    "attendance": [
+     5592,
+     6154
+    ],
+    "attendance_main": [
+     609,
+     680
+    ],
+    "group_loyalty": [
+     0,
+     0
+    ],
+    "group_loyalty_main": [
+     0,
+     0
+    ],
+    "cz_agreement": [
+     2867,
+     5394
+    ],
+    "outcome": [
+     1551,
+     4984
+    ],
+    "outcome_main": [
+     231,
+     505
+    ],
+    "outcome_close": [
+     60,
+     109
+    ],
+    "group_outcome": [
+     0,
+     0
+    ],
+    "group_outcome_main": [
+     0,
+     0
+    ],
+    "positions": {
+     "FOR": 3378,
+     "AGAINST": 1606,
+     "ABSTENTION": 608,
+     "DID_NOT_VOTE": 562
+    }
+   },
+   "cohesion": [
+    0,
+    0
+   ],
+   "cohesion_main": [
+    0,
+    0
+   ],
+   "splits_count": 0,
+   "splits_count_main": 0
+  },
+  {
+   "id": 6770,
+   "short_label": "KDU-ČSL",
+   "name": "Křesťanská a demokratická unie - Československá strana lidová",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 1,
+   "total": {
+    "attendance": [
+     5566,
+     6154
+    ],
+    "attendance_main": [
+     620,
+     680
+    ],
+    "group_loyalty": [
+     5095,
+     5566
+    ],
+    "group_loyalty_main": [
+     593,
+     620
+    ],
+    "cz_agreement": [
+     2850,
+     5410
+    ],
+    "outcome": [
+     4820,
+     5450
+    ],
+    "outcome_main": [
+     555,
+     606
+    ],
+    "outcome_close": [
+     71,
+     138
+    ],
+    "group_outcome": [
+     794264,
+     871919
+    ],
+    "group_outcome_main": [
+     91901,
+     97995
+    ],
+    "positions": {
+     "FOR": 2150,
+     "AGAINST": 3301,
+     "ABSTENTION": 115,
+     "DID_NOT_VOTE": 588
+    }
+   },
+   "cohesion": [
+    0,
+    0
+   ],
+   "cohesion_main": [
+    0,
+    0
+   ],
+   "splits_count": 0,
+   "splits_count_main": 0
+  },
+  {
+   "id": 6793,
+   "short_label": "TOP09/STAN",
+   "name": "Czechia – TOP 09",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 2,
+   "total": {
+    "attendance": [
+     11802,
+     12308
+    ],
+    "attendance_main": [
+     1322,
+     1360
+    ],
+    "group_loyalty": [
+     10592,
+     11802
+    ],
+    "group_loyalty_main": [
+     1277,
+     1322
+    ],
+    "cz_agreement": [
+     5692,
+     11461
+    ],
+    "outcome": [
+     10295,
+     10975
+    ],
+    "outcome_main": [
+     1223,
+     1292
+    ],
+    "outcome_close": [
+     115,
+     215
+    ],
+    "group_outcome": [
+     1602483,
+     1743682
+    ],
+    "group_outcome_main": [
+     196099,
+     208035
+    ],
+    "positions": {
+     "FOR": 4882,
+     "AGAINST": 6095,
+     "ABSTENTION": 825,
+     "DID_NOT_VOTE": 506
+    }
+   },
+   "cohesion": [
+    4945,
+    5667
+   ],
+   "cohesion_main": [
+    610,
+    643
+   ],
+   "splits_count": 190,
+   "splits_count_main": 7
+  },
+  {
+   "id": 6794,
+   "short_label": "ANO 2011",
+   "name": "ANO 2011",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 8,
+   "total": {
+    "attendance": [
+     36901,
+     42960
+    ],
+    "attendance_main": [
+     4114,
+     4751
+    ],
+    "group_loyalty": [
+     27490,
+     36786
+    ],
+    "group_loyalty_main": [
+     2489,
+     4111
+    ],
+    "cz_agreement": [
+     30967,
+     35650
+    ],
+    "outcome": [
+     15781,
+     31213
+    ],
+    "outcome_main": [
+     2532,
+     3277
+    ],
+    "outcome_close": [
+     332,
+     708
+    ],
+    "group_outcome": [
+     903219,
+     2123233
+    ],
+    "group_outcome_main": [
+     129689,
+     214061
+    ],
+    "positions": {
+     "FOR": 18733,
+     "AGAINST": 12487,
+     "ABSTENTION": 5681,
+     "DID_NOT_VOTE": 6059
+    }
+   },
+   "cohesion": [
+    5781,
+    6149
+   ],
+   "cohesion_main": [
+    645,
+    676
+   ],
+   "splits_count": 107,
+   "splits_count_main": 4
+  },
+  {
+   "id": 6835,
+   "short_label": "STAN",
+   "name": "Starostové a nezávisli",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 2,
+   "total": {
+    "attendance": [
+     11710,
+     12308
+    ],
+    "attendance_main": [
+     1300,
+     1360
+    ],
+    "group_loyalty": [
+     10486,
+     11710
+    ],
+    "group_loyalty_main": [
+     1259,
+     1300
+    ],
+    "cz_agreement": [
+     5898,
+     11364
+    ],
+    "outcome": [
+     10251,
+     11146
+    ],
+    "outcome_main": [
+     1210,
+     1275
+    ],
+    "outcome_close": [
+     129,
+     242
+    ],
+    "group_outcome": [
+     1625801,
+     1774912
+    ],
+    "group_outcome_main": [
+     193790,
+     206051
+    ],
+    "positions": {
+     "FOR": 5227,
+     "AGAINST": 5921,
+     "ABSTENTION": 562,
+     "DID_NOT_VOTE": 598
+    }
+   },
+   "cohesion": [
+    5376,
+    5564
+   ],
+   "cohesion_main": [
+    613,
+    621
+   ],
+   "splits_count": 81,
+   "splits_count_main": 3
+  },
+  {
+   "id": 6862,
+   "short_label": "PIR",
+   "name": "PIRÁTI",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 1,
+   "total": {
+    "attendance": [
+     5604,
+     6154
+    ],
+    "attendance_main": [
+     618,
+     680
+    ],
+    "group_loyalty": [
+     5405,
+     5603
+    ],
+    "group_loyalty_main": [
+     586,
+     618
+    ],
+    "cz_agreement": [
+     1597,
+     5449
+    ],
+    "outcome": [
+     4101,
+     5337
+    ],
+    "outcome_main": [
+     511,
+     591
+    ],
+    "outcome_close": [
+     70,
+     131
+    ],
+    "group_outcome": [
+     189643,
+     249854
+    ],
+    "group_outcome_main": [
+     23102,
+     27140
+    ],
+    "positions": {
+     "FOR": 2928,
+     "AGAINST": 2410,
+     "ABSTENTION": 266,
+     "DID_NOT_VOTE": 550
+    }
+   },
+   "cohesion": [
+    0,
+    0
+   ],
+   "cohesion_main": [
+    0,
+    0
+   ],
+   "splits_count": 0,
+   "splits_count_main": 0
+  },
+  {
+   "id": 6864,
+   "short_label": "SPD",
+   "name": "Svoboda a přímá demokracie",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 1,
+   "total": {
+    "attendance": [
+     5644,
+     6154
+    ],
+    "attendance_main": [
+     639,
+     680
+    ],
+    "group_loyalty": [
+     3973,
+     5635
+    ],
+    "group_loyalty_main": [
+     511,
+     638
+    ],
+    "cz_agreement": [
+     2882,
+     5439
+    ],
+    "outcome": [
+     1207,
+     4652
+    ],
+    "outcome_main": [
+     165,
+     507
+    ],
+    "outcome_close": [
+     49,
+     103
+    ],
+    "group_outcome": [
+     30940,
+     102836
+    ],
+    "group_outcome_main": [
+     3714,
+     11045
+    ],
+    "positions": {
+     "FOR": 2722,
+     "AGAINST": 1931,
+     "ABSTENTION": 991,
+     "DID_NOT_VOTE": 510
+    }
+   },
+   "cohesion": [
+    0,
+    0
+   ],
+   "cohesion_main": [
+    0,
+    0
+   ],
+   "splits_count": 0,
+   "splits_count_main": 0
+  },
+  {
+   "id": 7033,
+   "short_label": "PSH",
+   "name": "Přísaha",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 2,
+   "total": {
+    "attendance": [
+     6393,
+     6662
+    ],
+    "attendance_main": [
+     685,
+     718
+    ],
+    "group_loyalty": [
+     4770,
+     5824
+    ],
+    "group_loyalty_main": [
+     423,
+     625
+    ],
+    "cz_agreement": [
+     4945,
+     6161
+    ],
+    "outcome": [
+     2529,
+     5553
+    ],
+    "outcome_main": [
+     373,
+     535
+    ],
+    "outcome_close": [
+     57,
+     131
+    ],
+    "group_outcome": [
+     139160,
+     350432
+    ],
+    "group_outcome_main": [
+     19343,
+     32334
+    ],
+    "positions": {
+     "FOR": 3236,
+     "AGAINST": 2318,
+     "ABSTENTION": 839,
+     "DID_NOT_VOTE": 269
+    }
+   },
+   "cohesion": [
+    1421,
+    1754
+   ],
+   "cohesion_main": [
+    140,
+    182
+   ],
+   "splits_count": 88,
+   "splits_count_main": 5
+  },
+  {
+   "id": 7034,
+   "short_label": "AUTO",
+   "name": "Motoristé sobě",
+   "independent": false,
+   "color": null,
+   "logo": null,
+   "members": 2,
+   "total": {
+    "attendance": [
+     3403,
+     3611
+    ],
+    "attendance_main": [
+     388,
+     407
+    ],
+    "group_loyalty": [
+     2672,
+     3389
+    ],
+    "group_loyalty_main": [
+     270,
+     387
+    ],
+    "cz_agreement": [
+     2334,
+     3255
+    ],
+    "outcome": [
+     1252,
+     3086
+    ],
+    "outcome_main": [
+     184,
+     331
+    ],
+    "outcome_close": [
+     43,
+     88
+    ],
+    "group_outcome": [
+     84645,
+     206855
+    ],
+    "group_outcome_main": [
+     11787,
+     21603
+    ],
+    "positions": {
+     "FOR": 1758,
+     "AGAINST": 1329,
+     "ABSTENTION": 316,
+     "DID_NOT_VOTE": 208
+    }
+   },
+   "cohesion": [
+    0,
+    0
+   ],
+   "cohesion_main": [
+    0,
+    0
+   ],
+   "splits_count": 0,
+   "splits_count_main": 0
+  }
+ ]
+}

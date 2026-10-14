@@ -1,0 +1,1469 @@
+{
+ "id": 6768,
+ "short_label": "ODS",
+ "name": "Občanská demokratická strana",
+ "independent": false,
+ "color": null,
+ "logo": null,
+ "members": 3,
+ "total": {
+  "attendance": [
+   17289,
+   18462
+  ],
+  "attendance_main": [
+   1917,
+   2040
+  ],
+  "group_loyalty": [
+   14392,
+   17238
+  ],
+  "group_loyalty_main": [
+   1461,
+   1902
+  ],
+  "cz_agreement": [
+   12905,
+   16673
+  ],
+  "outcome": [
+   9012,
+   15725
+  ],
+  "outcome_main": [
+   1271,
+   1654
+  ],
+  "outcome_close": [
+   199,
+   394
+  ],
+  "group_outcome": [
+   550221,
+   1038385
+  ],
+  "group_outcome_main": [
+   85479,
+   106613
+  ],
+  "positions": {
+   "FOR": 8750,
+   "AGAINST": 6976,
+   "ABSTENTION": 1563,
+   "DID_NOT_VOTE": 1173
+  }
+ },
+ "cohesion": [
+  5334,
+  5721
+ ],
+ "cohesion_main": [
+  599,
+  633
+ ],
+ "splits_count": 199,
+ "splits_count_main": 7,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+ },
+ "member_list": [
+  {
+   "id": 197537,
+   "name": "Alexandr VONDRA",
+   "given_name": "Alexandr",
+   "family_name": "Vondra",
+   "sort_label": "VONDRA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197537.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16879"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     5533,
+     6154
+    ],
+    "attendance_main": [
+     617,
+     680
+    ],
+    "group_loyalty": [
+     4735,
+     5516
+    ],
+    "group_loyalty_main": [
+     480,
+     612
+    ],
+    "cz_agreement": [
+     4137,
+     5333
+    ],
+    "outcome": [
+     2789,
+     5052
+    ],
+    "outcome_main": [
+     405,
+     537
+    ],
+    "outcome_close": [
+     64,
+     129
+    ],
+    "group_outcome": [
+     176357,
+     334771
+    ],
+    "group_outcome_main": [
+     27620,
+     34800
+    ],
+    "positions": {
+     "FOR": 2733,
+     "AGAINST": 2320,
+     "ABSTENTION": 480,
+     "DID_NOT_VOTE": 621
+    }
+   }
+  },
+  {
+   "id": 197552,
+   "name": "Veronika VRECIONOVÁ",
+   "given_name": "Veronika",
+   "family_name": "Vrecionová",
+   "sort_label": "VRECIONOVA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197552.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16869"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     5749,
+     6154
+    ],
+    "attendance_main": [
+     635,
+     680
+    ],
+    "group_loyalty": [
+     4711,
+     5732
+    ],
+    "group_loyalty_main": [
+     475,
+     630
+    ],
+    "cz_agreement": [
+     4294,
+     5543
+    ],
+    "outcome": [
+     3043,
+     5211
+    ],
+    "outcome_main": [
+     424,
+     544
+    ],
+    "outcome_close": [
+     64,
+     128
+    ],
+    "group_outcome": [
+     183520,
+     344288
+    ],
+    "group_outcome_main": [
+     28367,
+     35057
+    ],
+    "positions": {
+     "FOR": 2934,
+     "AGAINST": 2277,
+     "ABSTENTION": 538,
+     "DID_NOT_VOTE": 405
+    }
+   }
+  },
+  {
+   "id": 256845,
+   "name": "Ondřej KRUTÍLEK",
+   "given_name": "Ondřej",
+   "family_name": "Krutílek",
+   "sort_label": "KRUTILEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256845.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16891"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     6007,
+     6154
+    ],
+    "attendance_main": [
+     665,
+     680
+    ],
+    "group_loyalty": [
+     4946,
+     5990
+    ],
+    "group_loyalty_main": [
+     506,
+     660
+    ],
+    "cz_agreement": [
+     4474,
+     5797
+    ],
+    "outcome": [
+     3180,
+     5462
+    ],
+    "outcome_main": [
+     442,
+     573
+    ],
+    "outcome_close": [
+     71,
+     137
+    ],
+    "group_outcome": [
+     190344,
+     359326
+    ],
+    "group_outcome_main": [
+     29492,
+     36756
+    ],
+    "positions": {
+     "FOR": 3083,
+     "AGAINST": 2379,
+     "ABSTENTION": 545,
+     "DID_NOT_VOTE": 147
+    }
+   }
+  }
+ ],
+ "splits": [
+  {
+   "id": 198023,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network",
+   "reference": "B10-0424/2026",
+   "description": "Après le considérant A - Am 118",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 254,
+    "against": 302,
+    "abstention": 12,
+    "did_not_vote": 151
+   },
+   "cz": [
+    5,
+    9,
+    4,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 197943,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network",
+   "reference": "B10-0424/2026",
+   "description": "§ 1 - Am 31/3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 348,
+    "against": 169,
+    "abstention": 41,
+    "did_not_vote": 161
+   },
+   "cz": [
+    5,
+    9,
+    3,
+    4
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 197877,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The upcoming EU anti-corruption strategy",
+   "reference": "B10-0423/2026",
+   "description": "Après le § 7 - Am 10",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 163,
+    "against": 239,
+    "abstention": 185,
+    "did_not_vote": 132
+   },
+   "cz": [
+    5,
+    8,
+    5,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 197819,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Recommendation on EU-China political relations",
+   "reference": "A10-0237/2026",
+   "description": "§ 1, après le point a - Am 12",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 200,
+    "against": 420,
+    "abstention": 48,
+    "did_not_vote": 51
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196640,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Visa 9",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 353,
+    "against": 204,
+    "abstention": 79,
+    "did_not_vote": 81
+   },
+   "cz": [
+    6,
+    3,
+    6,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196639,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant AC/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 311,
+    "against": 309,
+    "abstention": 21,
+    "did_not_vote": 76
+   },
+   "cz": [
+    4,
+    5,
+    5,
+    7
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196638,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant AC/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 466,
+    "against": 128,
+    "abstention": 40,
+    "did_not_vote": 83
+   },
+   "cz": [
+    12,
+    2,
+    0,
+    7
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196635,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant AA",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 208,
+    "abstention": 79,
+    "did_not_vote": 68
+   },
+   "cz": [
+    7,
+    3,
+    5,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196634,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant Z",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 431,
+    "against": 165,
+    "abstention": 50,
+    "did_not_vote": 71
+   },
+   "cz": [
+    11,
+    2,
+    2,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196611,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 63/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 429,
+    "against": 153,
+    "abstention": 69,
+    "did_not_vote": 66
+   },
+   "cz": [
+    8,
+    3,
+    5,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196604,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 60",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 386,
+    "against": 230,
+    "abstention": 40,
+    "did_not_vote": 61
+   },
+   "cz": [
+    8,
+    4,
+    3,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196597,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 48/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 510,
+    "against": 78,
+    "abstention": 54,
+    "did_not_vote": 75
+   },
+   "cz": [
+    13,
+    1,
+    1,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "DID_NOT_VOTE",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196595,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 46/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 406,
+    "against": 214,
+    "abstention": 29,
+    "did_not_vote": 68
+   },
+   "cz": [
+    7,
+    9,
+    0,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196594,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 46/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 470,
+    "against": 117,
+    "abstention": 63,
+    "did_not_vote": 67
+   },
+   "cz": [
+    13,
+    3,
+    0,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196592,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 45/3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 334,
+    "against": 270,
+    "abstention": 34,
+    "did_not_vote": 79
+   },
+   "cz": [
+    6,
+    9,
+    1,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196591,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 45/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 327,
+    "against": 272,
+    "abstention": 42,
+    "did_not_vote": 76
+   },
+   "cz": [
+    6,
+    9,
+    1,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196588,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 44",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 349,
+    "against": 228,
+    "abstention": 79,
+    "did_not_vote": 61
+   },
+   "cz": [
+    7,
+    4,
+    5,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196586,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 43/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 358,
+    "against": 210,
+    "abstention": 81,
+    "did_not_vote": 68
+   },
+   "cz": [
+    8,
+    3,
+    5,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196581,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 41",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 214,
+    "abstention": 75,
+    "did_not_vote": 66
+   },
+   "cz": [
+    7,
+    5,
+    4,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196570,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 21/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 433,
+    "against": 135,
+    "abstention": 65,
+    "did_not_vote": 84
+   },
+   "cz": [
+    9,
+    2,
+    6,
+    4
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  }
+ ],
+ "splits_main": [
+  {
+   "id": 196482,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Acceleration of permit-granting for defence readiness projects (Omnibus V)",
+   "reference": "A10-0271/2025",
+   "description": "Proposition de rejet - Am 64",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 95,
+    "against": 546,
+    "abstention": 22,
+    "did_not_vote": 54
+   },
+   "cz": [
+    4,
+    14,
+    0,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 196438,
+   "date": "2026-09-15",
+   "month": "2026-09",
+   "title": "Market stability reserve for the EU Emissions Trading System (EU ETS): ceasing the invalidation of allowances",
+   "reference": "A10-0230/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 367,
+    "against": 240,
+    "abstention": 59,
+    "did_not_vote": 51
+   },
+   "cz": [
+    8,
+    10,
+    1,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 183160,
+   "date": "2026-01-20",
+   "month": "2026-01",
+   "title": "The 28th Regime: a new legal framework for innovative companies",
+   "reference": "A10-0269/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 492,
+    "against": 144,
+    "abstention": 28,
+    "did_not_vote": 55
+   },
+   "cz": [
+    16,
+    2,
+    2,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 180979,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Exceptional trade measures for countries and territories participating in or linked to the Stabilisation and Association Process",
+   "reference": "A10-0188/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 543,
+    "against": 72,
+    "abstention": 22,
+    "did_not_vote": 82
+   },
+   "cz": [
+    15,
+    2,
+    3,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 178399,
+   "date": "2025-09-11",
+   "month": "2025-09",
+   "title": "Stock-taking of the European elections 2024",
+   "reference": "A10-0156/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 388,
+    "against": 186,
+    "abstention": 34,
+    "did_not_vote": 111
+   },
+   "cz": [
+    7,
+    13,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 177034,
+   "date": "2025-06-17",
+   "month": "2025-06",
+   "title": "Electoral rights of mobile Union citizens in European Parliament elections",
+   "reference": "A10-0090/2025",
+   "description": "Projet du Conseil",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 587,
+    "against": 60,
+    "abstention": 21,
+    "did_not_vote": 51
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 173708,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Strengthening the security of identity cards of Union citizens and of residence documents issued to Union citizens and their family members exercising their right of free movement",
+   "reference": "A10-0041/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 377,
+    "against": 279,
+    "abstention": 16,
+    "did_not_vote": 46
+   },
+   "cz": [
+    6,
+    7,
+    8,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "ABSTENTION",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  }
+ ]
+}

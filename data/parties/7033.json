@@ -1,0 +1,1157 @@
+{
+ "id": 7033,
+ "short_label": "PSH",
+ "name": "Přísaha",
+ "independent": false,
+ "color": null,
+ "logo": null,
+ "members": 2,
+ "total": {
+  "attendance": [
+   6393,
+   6662
+  ],
+  "attendance_main": [
+   685,
+   718
+  ],
+  "group_loyalty": [
+   4770,
+   5824
+  ],
+  "group_loyalty_main": [
+   423,
+   625
+  ],
+  "cz_agreement": [
+   4945,
+   6161
+  ],
+  "outcome": [
+   2529,
+   5553
+  ],
+  "outcome_main": [
+   373,
+   535
+  ],
+  "outcome_close": [
+   57,
+   131
+  ],
+  "group_outcome": [
+   139160,
+   350432
+  ],
+  "group_outcome_main": [
+   19343,
+   32334
+  ],
+  "positions": {
+   "FOR": 3236,
+   "AGAINST": 2318,
+   "ABSTENTION": 839,
+   "DID_NOT_VOTE": 269
+  }
+ },
+ "cohesion": [
+  1421,
+  1754
+ ],
+ "cohesion_main": [
+  140,
+  182
+ ],
+ "splits_count": 88,
+ "splits_count_main": 5,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+ },
+ "member_list": [
+  {
+   "id": 256852,
+   "name": "Nikola BARTŮŠEK",
+   "given_name": "Nikola",
+   "family_name": "Bartůšek",
+   "sort_label": "BARTUSEKN",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16898"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": "2026-04-22"
+    }
+   ],
+   "total": {
+    "attendance": [
+     5600,
+     6154
+    ],
+    "attendance_main": [
+     611,
+     680
+    ],
+    "group_loyalty": [
+     3410,
+     4215
+    ],
+    "group_loyalty_main": [
+     331,
+     466
+    ],
+    "cz_agreement": [
+     4451,
+     5396
+    ],
+    "outcome": [
+     2541,
+     4970
+    ],
+    "outcome_main": [
+     390,
+     505
+    ],
+    "outcome_close": [
+     55,
+     119
+    ],
+    "group_outcome": [
+     111211,
+     259270
+    ],
+    "group_outcome_main": [
+     16476,
+     25502
+    ],
+    "positions": {
+     "FOR": 2987,
+     "AGAINST": 1984,
+     "ABSTENTION": 629,
+     "DID_NOT_VOTE": 554
+    }
+   }
+  },
+  {
+   "id": 272024,
+   "name": "Antonín STANĚK",
+   "given_name": "Antonín",
+   "family_name": "Staněk",
+   "sort_label": "STANEKA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/272024.jpg",
+   "mandates": [
+    {
+     "start": "2025-10-04",
+     "end": null,
+     "mandate_id": "17563"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "party_periods": [
+    {
+     "start": "2025-10-04",
+     "end": "2026-05-19"
+    }
+   ],
+   "total": {
+    "attendance": [
+     3705,
+     3730
+    ],
+    "attendance_main": [
+     404,
+     406
+    ],
+    "group_loyalty": [
+     3134,
+     3692
+    ],
+    "group_loyalty_main": [
+     261,
+     403
+    ],
+    "cz_agreement": [
+     2728,
+     3570
+    ],
+    "outcome": [
+     1408,
+     3202
+    ],
+    "outcome_main": [
+     206,
+     301
+    ],
+    "outcome_close": [
+     33,
+     70
+    ],
+    "group_outcome": [
+     89702,
+     216441
+    ],
+    "group_outcome_main": [
+     11792,
+     19529
+    ],
+    "positions": {
+     "FOR": 1825,
+     "AGAINST": 1377,
+     "ABSTENTION": 503,
+     "DID_NOT_VOTE": 25
+    }
+   }
+  }
+ ],
+ "splits": [
+  {
+   "id": 189634,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Simplification of the implementation of harmonised rules on artificial intelligence (Digital Omnibus on AI)",
+   "reference": "A10-0073/2026",
+   "description": "Article 1 - alinéa 1 - point 21; Règlement (UE) 2024/1689 - Article 63 - paragraphe 1 - Am 87/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 112,
+    "against": 479,
+    "abstention": 38,
+    "did_not_vote": 89
+   },
+   "cz": [
+    4,
+    8,
+    7,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189628,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Simplification of the implementation of harmonised rules on artificial intelligence (Digital Omnibus on AI)",
+   "reference": "A10-0073/2026",
+   "description": "Article 1 - alinéa 1 - point 5; Règlement (UE) 2024/1689; après l'article 4 - paragraphe 2 - Am 32",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 518,
+    "against": 97,
+    "abstention": 7,
+    "did_not_vote": 96
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189626,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Simplification of the implementation of harmonised rules on artificial intelligence (Digital Omnibus on AI)",
+   "reference": "A10-0073/2026",
+   "description": "Article 1 - alinéa 1 - point 5; Règlement (UE) 2024/1689; après l'article 4 - paragraphe 1 - Am 31",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 544,
+    "against": 75,
+    "abstention": 20,
+    "did_not_vote": 79
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189592,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Adjustment of customs duties and opening of tariff quotas for the import of certain goods originating in the United States of America",
+   "reference": "A10-0069/2026",
+   "description": "Après le considérant 4 - Am 57",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 158,
+    "against": 401,
+    "abstention": 75,
+    "did_not_vote": 84
+   },
+   "cz": [
+    4,
+    9,
+    8,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189591,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Adjustment of customs duties and opening of tariff quotas for the import of certain goods originating in the United States of America",
+   "reference": "A10-0069/2026",
+   "description": "Après le considérant 3 - Am 56",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 132,
+    "against": 434,
+    "abstention": 73,
+    "did_not_vote": 79
+   },
+   "cz": [
+    4,
+    9,
+    8,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189590,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Adjustment of customs duties and opening of tariff quotas for the import of certain goods originating in the United States of America",
+   "reference": "A10-0069/2026",
+   "description": "Après le considérant 2 - Am 55",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 142,
+    "against": 427,
+    "abstention": 55,
+    "did_not_vote": 94
+   },
+   "cz": [
+    4,
+    9,
+    8,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189578,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Article 1 - alinéa 1; Règlement (UE) 2021/1232 - Article 10 - Am 31",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 304,
+    "against": 306,
+    "abstention": 28,
+    "did_not_vote": 80
+   },
+   "cz": [
+    14,
+    5,
+    2,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189577,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Article 1 - alinéa 1; Règlement (UE) 2021/1232 - Article 10 - Am 33",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 125,
+    "against": 394,
+    "abstention": 115,
+    "did_not_vote": 84
+   },
+   "cz": [
+    13,
+    5,
+    3,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188897,
+   "date": "2026-03-12",
+   "month": "2026-03",
+   "title": "Multilateral negotiations in view of the WTO’s 14th Ministerial Conference in Yaoundé, 26 to 29 March 2026",
+   "reference": "B10-0155/2026",
+   "description": "Après le § 12 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 133,
+    "against": 385,
+    "abstention": 25,
+    "did_not_vote": 175
+   },
+   "cz": [
+    5,
+    9,
+    6,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188926,
+   "date": "2026-03-12",
+   "month": "2026-03",
+   "title": "Activities of the European Ombudsman – annual report 2024",
+   "reference": "A10-0015/2026",
+   "description": "Après le § 21 - Am 41",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 217,
+    "against": 332,
+    "abstention": 13,
+    "did_not_vote": 156
+   },
+   "cz": [
+    8,
+    12,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 189166,
+   "date": "2026-03-12",
+   "month": "2026-03",
+   "title": "Human trafficking and grave human rights violations linked to the recruitment of non-Russian nationals, in particular from Africa, for Russia’s war of aggression in Ukraine",
+   "reference": "RC-B10-0157/2026",
+   "description": "Après le § 2 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 114,
+    "against": 363,
+    "abstention": 46,
+    "did_not_vote": 195
+   },
+   "cz": [
+    6,
+    6,
+    8,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 186064,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "Recommendation on enhanced EU-Canada cooperation in the current geopolitical context, including the threats to Canada’s economic stability and sovereignty",
+   "reference": "A10-0035/2026",
+   "description": "Projet de recommandation (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 482,
+    "against": 108,
+    "abstention": 42,
+    "did_not_vote": 86
+   },
+   "cz": [
+    16,
+    3,
+    0,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188614,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "European Semester for economic policy coordination: employment and social priorities for 2026",
+   "reference": "A10-0033/2026",
+   "description": "Après le § 8 - Am 15",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 267,
+    "against": 278,
+    "abstention": 88,
+    "did_not_vote": 85
+   },
+   "cz": [
+    3,
+    9,
+    7,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188603,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "European Semester for economic policy coordination 2026",
+   "reference": "A10-0036/2026",
+   "description": "§ 28/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 593,
+    "against": 23,
+    "abstention": 19,
+    "did_not_vote": 83
+   },
+   "cz": [
+    11,
+    2,
+    6,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188581,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Avant l'article 1; Règlement (UE) 2021/1232 - Article 3 - paragraphe 1 - point b - Am 2/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 334,
+    "against": 251,
+    "abstention": 25,
+    "did_not_vote": 108
+   },
+   "cz": [
+    7,
+    11,
+    1,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 186941,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Proposition de rejet",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 172,
+    "against": 435,
+    "abstention": 14,
+    "did_not_vote": 97
+   },
+   "cz": [
+    13,
+    6,
+    0,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188573,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Fisheries management approaches for safeguarding sensitive species, tackling invasive species and benefiting local economies",
+   "reference": "A10-0018/2026",
+   "description": "§ 16 - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 247,
+    "against": 334,
+    "abstention": 28,
+    "did_not_vote": 109
+   },
+   "cz": [
+    11,
+    8,
+    1,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 188572,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Fisheries management approaches for safeguarding sensitive species, tackling invasive species and benefiting local economies",
+   "reference": "A10-0018/2026",
+   "description": "§ 8/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 455,
+    "against": 147,
+    "abstention": 12,
+    "did_not_vote": 104
+   },
+   "cz": [
+    12,
+    8,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 187387,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Housing crisis in the European Union with the aim of proposing solutions for decent, sustainable and affordable housing",
+   "reference": "A10-0025/2026",
+   "description": "Visa 47",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 356,
+    "against": 188,
+    "abstention": 57,
+    "did_not_vote": 117
+   },
+   "cz": [
+    11,
+    8,
+    1,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 187382,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Housing crisis in the European Union with the aim of proposing solutions for decent, sustainable and affordable housing",
+   "reference": "A10-0025/2026",
+   "description": "§ 57/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 524,
+    "against": 75,
+    "abstention": 13,
+    "did_not_vote": 106
+   },
+   "cz": [
+    12,
+    8,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  }
+ ],
+ "splits_main": [
+  {
+   "id": 186941,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Proposition de rejet",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 172,
+    "against": 435,
+    "abstention": 14,
+    "did_not_vote": 97
+   },
+   "cz": [
+    13,
+    6,
+    0,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 183022,
+   "date": "2026-01-20",
+   "month": "2026-01",
+   "title": "Safeguarding and promoting financial stability amid economic uncertainties",
+   "reference": "A10-0232/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 491,
+    "against": 83,
+    "abstention": 84,
+    "did_not_vote": 61
+   },
+   "cz": [
+    16,
+    2,
+    2,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 182767,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 358,
+    "against": 202,
+    "abstention": 79,
+    "did_not_vote": 80
+   },
+   "cz": [
+    6,
+    4,
+    9,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 181832,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton MON 88913",
+   "reference": "B10-0492/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 452,
+    "against": 182,
+    "abstention": 13,
+    "did_not_vote": 72
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  },
+  {
+   "id": 179788,
+   "date": "2025-10-21",
+   "month": "2025-10",
+   "title": "Re-attribution of scientific and technical tasks to the European Chemicals Agency",
+   "reference": "A10-0019/2025",
+   "description": "Accord provisoire - Am 20",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 477,
+    "against": 93,
+    "abstention": 76,
+    "did_not_vote": 73
+   },
+   "cz": [
+    15,
+    2,
+    2,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256852,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7033
+    }
+   ]
+  }
+ ]
+}

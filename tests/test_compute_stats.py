@@ -16,9 +16,11 @@ def pos(i, position, group="EPP"):
     return {"member_id": i, "position": position, "group_code": group}
 
 
-def vote(vid, date, positions, group_counts=None, is_main=False):
+def vote(vid, date, positions, group_counts=None, is_main=False, result=None, counts=(0, 0), topics=()):
     return {"id": vid, "date": date, "is_main": is_main, "group_counts": group_counts or {},
-            "cz_positions": positions}
+            "cz_positions": positions, "result": result,
+            "counts": {"for": counts[0], "against": counts[1], "abstention": 0, "did_not_vote": 0},
+            "topics": {"oeil": [{"code": t, "label": f"MOCK {t}"} for t in topics]}}
 
 
 @pytest.mark.parametrize("counts,expected", [
@@ -139,8 +141,8 @@ def test_run_writes_files(tmp_path):
     assert groups == [{"code": "EPP", "ep_code": "PPE", "short_label": "EPP", "label": "MOCK EPP",
                        "name_cs": "MOCK lidovci", "color": None, "logo": None}]
     parties = json.loads((data / "parties.json").read_text(encoding="utf-8"))
-    assert parties == [{"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "color": None,
-                        "logo": "assets/logos/cz/20.svg"}]
+    assert parties == [{"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "independent": False,
+                        "color": None, "logo": "assets/logos/cz/20.svg"}]
 
 
 def test_manual_colors_are_merged_and_never_written(tmp_path):
@@ -167,3 +169,107 @@ def test_manual_invalid_color_raises(tmp_path, color):
     path.write_text(json.dumps({"groups": {"EPP": {"color": color}}, "parties": {}}), encoding="utf-8")
     with pytest.raises(cs.FormatError, match="#RRGGBB"):
         cs.load_manual(path)
+
+
+# --- fáze C ---------------------------------------------------------------
+
+def test_outcome_agreement_counts_only_for_against_and_decided():
+    meps = [mep(1)]
+    gc = {"EPP": [100, 50, 0, 0]}
+    votes = [
+        vote(1, "2024-09-16", [pos(1, "FOR")], gc, is_main=True, result="ADOPTED", counts=(300, 200)),
+        vote(2, "2024-09-17", [pos(1, "FOR")], gc, result="REJECTED", counts=(200, 300)),
+        vote(3, "2024-09-18", [pos(1, "ABSTENTION")], gc, result="ADOPTED", counts=(300, 200)),  # zdržení ne
+        vote(4, "2024-09-19", [pos(1, "AGAINST")], gc, result="LAPSED", counts=(0, 0)),         # propadlo ne
+        vote(5, "2024-09-20", [pos(1, "AGAINST")], gc, result=None, counts=(10, 5)),            # bez výsledku ne
+        vote(6, "2024-09-21", [pos(1, "AGAINST")], gc, result="REJECTED", counts=(300, 310)),   # těsné
+    ]
+    t = cs.compute(meps, votes)["1"]["total"]
+    assert t["outcome"] == [2, 3]
+    assert t["outcome_main"] == [1, 1]
+    assert t["outcome_close"] == [1, 1]
+    # průměr frakce ve stejných hlasováních: přijato -> pro (100), zamítnuto -> proti (50), ze 150 v každém
+    assert t["group_outcome"] == [100 + 50 + 50, 450]
+
+
+def test_ni_has_no_group_outcome():
+    t = cs.compute([mep(1)], [vote(1, "2024-09-16", [pos(1, "FOR", "NI")], {"NI": [5, 0, 0, 0]},
+                                   result="ADOPTED", counts=(300, 200))])["1"]["total"]
+    assert t["outcome"] == [1, 1] and t["group_outcome"] == [0, 0]
+
+
+def test_close_and_decisive():
+    meps = [mep(i) for i in range(1, 4)]
+    cz = [pos(1, "FOR"), pos(2, "FOR"), pos(3, "AGAINST")]
+    votes = [
+        # 300:299 přijato; bez Čechů (2 pro, 1 proti) 298:298 -> zamítnuto => rozhodující
+        vote(1, "2024-09-16", cz, result="ADOPTED", counts=(300, 299)),
+        # 320:299 je těsné (rozdíl 21), bez Čechů 318:298 pořád přijato => není rozhodující
+        vote(2, "2024-09-17", cz, result="ADOPTED", counts=(320, 299)),
+        # 330:299 rozdíl 31 => není těsné
+        vote(3, "2024-09-18", cz, result="ADOPTED", counts=(330, 299)),
+        # oficiální výsledek neodpovídá prosté většině (remíza přijata) => vynecháno
+        vote(4, "2024-09-19", cz, result="ADOPTED", counts=(289, 289)),
+    ]
+    a = cs.analyze_votes(meps, votes)
+    assert a["close"]["count"] == 3 and a["close"]["ids"] == [1, 2, 4]
+    assert a["decisive"] == [{"id": 1, "alternative_result": "REJECTED"}]
+    s = cs.compute(meps, votes)
+    assert s["3"]["decisive"] == [{"id": 1, "position": "AGAINST"}]
+
+
+def test_against_group_lists_newest_first():
+    gc = {"EPP": [100, 5, 0, 0]}
+    votes = [vote(i, f"2024-09-{10 + i}", [pos(1, "AGAINST")], gc, is_main=(i == 2)) for i in range(1, 4)]
+    votes.append(vote(9, "2024-09-30", [pos(1, "FOR")], gc))  # s frakcí, nepočítá se
+    ag = cs.compute([mep(1)], votes)["1"]["against_group"]
+    assert ag["count"] == 3 and ag["count_main"] == 1
+    assert [x["id"] for x in ag["recent"]] == [3, 2, 1]
+    assert [x["id"] for x in ag["recent_main"]] == [2]
+    assert ag["recent"][0]["group_majority"] == "FOR"
+
+
+def test_cz_split_and_ranking():
+    assert cs.cz_split([pos(1, "FOR"), pos(2, "AGAINST"), pos(3, "AGAINST"), pos(4, "ABSTENTION")]) == (1 / 3, 1, 2)
+    assert cs.cz_split([pos(1, "FOR"), pos(2, "FOR")]) is None
+    meps = [mep(i) for i in range(1, 5)]
+    votes = [
+        vote(1, "2024-09-16", [pos(1, "FOR"), pos(2, "AGAINST")]),                                  # 0,5 ze 2
+        vote(2, "2024-09-17", [pos(1, "FOR"), pos(2, "FOR"), pos(3, "AGAINST"), pos(4, "AGAINST")]),  # 0,5 ze 4
+        vote(3, "2024-10-30", [pos(1, "FOR"), pos(2, "FOR"), pos(3, "AGAINST")]),                   # 1/3
+    ]
+    sp = cs.analyze_votes(meps, votes)["splits"]
+    assert [x["id"] for x in sp["all"]] == [2, 1, 3]
+    assert sp["last_session"]["from"] == "2024-10-30" and [x["id"] for x in sp["last_session"]["split"]] == [3]
+
+
+def test_last_session_dates():
+    days = ["2024-09-16", "2024-09-17", "2024-10-07", "2024-10-08", "2024-10-10"]
+    assert cs.last_session_dates(days) == ["2024-10-07", "2024-10-08", "2024-10-10"]
+    assert cs.last_session_dates([]) == []
+
+
+def test_parties_cohesion_and_splits_skip_independent():
+    party = lambda i, pid, position: {**pos(i, position), "national_party_id": pid}
+    meps = [mep(1), mep(2), mep(3, parties=[{"org_id": "99", "short_label": "Ind.", "name": "Independent",
+                                            "start": "2024-07-16", "end": None}])]
+    votes = [
+        vote(1, "2024-09-16", [party(1, 20, "FOR"), party(2, 20, "FOR"), party(3, 99, "FOR")], is_main=True),
+        vote(2, "2024-09-17", [party(1, 20, "FOR"), party(2, 20, "AGAINST")]),
+        vote(3, "2024-09-18", [party(1, 20, "FOR"), party(2, 20, "DID_NOT_VOTE")]),  # jen 1 hlasoval
+    ]
+    p = cs.compute_parties(meps, votes)
+    assert set(p) == {"20"}
+    assert p["20"]["cohesion"] == [1, 2] and p["20"]["cohesion_main"] == [1, 1]
+    assert p["20"]["splits"]["count"] == 1 and p["20"]["splits"]["recent"] == [2]
+    assert p["20"]["total"]["attendance"] == [5, 6]
+
+
+def test_topics_level2():
+    meps = [mep(1)]
+    votes = [vote(1, "2024-09-16", [pos(1, "FOR")], topics=["3.70.03", "3.70.01"]),
+             vote(2, "2024-09-17", [pos(1, "DID_NOT_VOTE")], topics=["3.70"]),
+             vote(3, "2024-09-18", [pos(1, "FOR")], topics=["6.10"])]
+    assert cs.top_topics(votes, 1) == ["3.70"]
+    t = cs.compute(meps, votes, ["3.70"])["1"]["topics"]
+    assert list(t) == ["3.70"] and t["3.70"]["attendance"] == [1, 2]

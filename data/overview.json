@@ -22,7 +22,15 @@
   "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
-  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně."
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "meps": [
   {
@@ -61,9 +69,33 @@
      0,
      0
     ],
+    "group_loyalty_main": [
+     0,
+     0
+    ],
     "cz_agreement": [
      2867,
      5394
+    ],
+    "outcome": [
+     1551,
+     4984
+    ],
+    "outcome_main": [
+     231,
+     505
+    ],
+    "outcome_close": [
+     60,
+     109
+    ],
+    "group_outcome": [
+     0,
+     0
+    ],
+    "group_outcome_main": [
+     0,
+     0
     ],
     "positions": {
      "FOR": 3378,
@@ -109,9 +141,33 @@
      859,
      1184
     ],
+    "group_loyalty_main": [
+     71,
+     122
+    ],
     "cz_agreement": [
      1013,
      1142
+    ],
+    "outcome": [
+     470,
+     1003
+    ],
+    "outcome_main": [
+     74,
+     95
+    ],
+    "outcome_close": [
+     17,
+     28
+    ],
+    "group_outcome": [
+     26204,
+     70598
+    ],
+    "group_outcome_main": [
+     3431,
+     6471
     ],
     "positions": {
      "FOR": 642,
@@ -157,9 +213,33 @@
      5326,
      5916
     ],
+    "group_loyalty_main": [
+     646,
+     669
+    ],
     "cz_agreement": [
      2757,
      5745
+    ],
+    "outcome": [
+     5223,
+     5521
+    ],
+    "outcome_main": [
+     617,
+     657
+    ],
+    "outcome_close": [
+     57,
+     105
+    ],
+    "group_outcome": [
+     804045,
+     874998
+    ],
+    "group_outcome_main": [
+     99320,
+     105837
     ],
     "positions": {
      "FOR": 2441,
@@ -205,9 +285,33 @@
      5095,
      5566
     ],
+    "group_loyalty_main": [
+     593,
+     620
+    ],
     "cz_agreement": [
      2850,
      5410
+    ],
+    "outcome": [
+     4820,
+     5450
+    ],
+    "outcome_main": [
+     555,
+     606
+    ],
+    "outcome_close": [
+     71,
+     138
+    ],
+    "group_outcome": [
+     794264,
+     871919
+    ],
+    "group_outcome_main": [
+     91901,
+     97995
     ],
     "positions": {
      "FOR": 2150,
@@ -250,7 +354,31 @@
      0,
      0
     ],
+    "group_loyalty_main": [
+     0,
+     0
+    ],
     "cz_agreement": [
+     0,
+     0
+    ],
+    "outcome": [
+     0,
+     0
+    ],
+    "outcome_main": [
+     0,
+     0
+    ],
+    "outcome_close": [
+     0,
+     0
+    ],
+    "group_outcome": [
+     0,
+     0
+    ],
+    "group_outcome_main": [
      0,
      0
     ],
@@ -298,9 +426,33 @@
      3989,
      5391
     ],
+    "group_loyalty_main": [
+     357,
+     602
+    ],
     "cz_agreement": [
      4546,
      5216
+    ],
+    "outcome": [
+     2260,
+     4572
+    ],
+    "outcome_main": [
+     367,
+     478
+    ],
+    "outcome_close": [
+     49,
+     106
+    ],
+    "group_outcome": [
+     126946,
+     310473
+    ],
+    "group_outcome_main": [
+     18436,
+     31170
     ],
     "positions": {
      "FOR": 2752,
@@ -346,9 +498,33 @@
      4735,
      5516
     ],
+    "group_loyalty_main": [
+     480,
+     612
+    ],
     "cz_agreement": [
      4137,
      5333
+    ],
+    "outcome": [
+     2789,
+     5052
+    ],
+    "outcome_main": [
+     405,
+     537
+    ],
+    "outcome_close": [
+     64,
+     129
+    ],
+    "group_outcome": [
+     176357,
+     334771
+    ],
+    "group_outcome_main": [
+     27620,
+     34800
     ],
     "positions": {
      "FOR": 2733,
@@ -394,9 +570,33 @@
      5405,
      5603
     ],
+    "group_loyalty_main": [
+     586,
+     618
+    ],
     "cz_agreement": [
      1597,
      5449
+    ],
+    "outcome": [
+     4101,
+     5337
+    ],
+    "outcome_main": [
+     511,
+     591
+    ],
+    "outcome_close": [
+     70,
+     131
+    ],
+    "group_outcome": [
+     189643,
+     249854
+    ],
+    "group_outcome_main": [
+     23102,
+     27140
     ],
     "positions": {
      "FOR": 2928,
@@ -442,9 +642,33 @@
      4711,
      5732
     ],
+    "group_loyalty_main": [
+     475,
+     630
+    ],
     "cz_agreement": [
      4294,
      5543
+    ],
+    "outcome": [
+     3043,
+     5211
+    ],
+    "outcome_main": [
+     424,
+     544
+    ],
+    "outcome_close": [
+     64,
+     128
+    ],
+    "group_outcome": [
+     183520,
+     344288
+    ],
+    "group_outcome_main": [
+     28367,
+     35057
     ],
     "positions": {
      "FOR": 2934,
@@ -490,9 +714,33 @@
      3973,
      5635
     ],
+    "group_loyalty_main": [
+     511,
+     638
+    ],
     "cz_agreement": [
      2882,
      5439
+    ],
+    "outcome": [
+     1207,
+     4652
+    ],
+    "outcome_main": [
+     165,
+     507
+    ],
+    "outcome_close": [
+     49,
+     103
+    ],
+    "group_outcome": [
+     30940,
+     102836
+    ],
+    "group_outcome_main": [
+     3714,
+     11045
     ],
     "positions": {
      "FOR": 2722,
@@ -538,9 +786,33 @@
      4243,
      5716
     ],
+    "group_loyalty_main": [
+     384,
+     637
+    ],
     "cz_agreement": [
      4807,
      5550
+    ],
+    "outcome": [
+     2482,
+     4823
+    ],
+    "outcome_main": [
+     397,
+     510
+    ],
+    "outcome_close": [
+     50,
+     106
+    ],
+    "group_outcome": [
+     141235,
+     326989
+    ],
+    "group_outcome_main": [
+     20350,
+     33176
     ],
     "positions": {
      "FOR": 2891,
@@ -586,9 +858,33 @@
      5225,
      5832
     ],
+    "group_loyalty_main": [
+     631,
+     652
+    ],
     "cz_agreement": [
      2947,
      5661
+    ],
+    "outcome": [
+     5094,
+     5549
+    ],
+    "outcome_main": [
+     605,
+     637
+    ],
+    "outcome_close": [
+     63,
+     120
+    ],
+    "group_outcome": [
+     808970,
+     882350
+    ],
+    "group_outcome_main": [
+     96951,
+     102817
     ],
     "positions": {
      "FOR": 2615,
@@ -634,9 +930,33 @@
      3992,
      5365
     ],
+    "group_loyalty_main": [
+     366,
+     601
+    ],
     "cz_agreement": [
      4505,
      5197
+    ],
+    "outcome": [
+     2347,
+     4564
+    ],
+    "outcome_main": [
+     368,
+     481
+    ],
+    "outcome_close": [
+     48,
+     107
+    ],
+    "group_outcome": [
+     134255,
+     309016
+    ],
+    "group_outcome_main": [
+     19079,
+     31285
     ],
     "positions": {
      "FOR": 2736,
@@ -682,9 +1002,33 @@
      3887,
      5214
     ],
+    "group_loyalty_main": [
+     361,
+     595
+    ],
     "cz_agreement": [
      4335,
      5052
+    ],
+    "outcome": [
+     2238,
+     4382
+    ],
+    "outcome_main": [
+     367,
+     476
+    ],
+    "outcome_close": [
+     47,
+     104
+    ],
+    "group_outcome": [
+     128271,
+     297061
+    ],
+    "group_outcome_main": [
+     19349,
+     31042
     ],
     "positions": {
      "FOR": 2621,
@@ -730,9 +1074,33 @@
      4946,
      5990
     ],
+    "group_loyalty_main": [
+     506,
+     660
+    ],
     "cz_agreement": [
      4474,
      5797
+    ],
+    "outcome": [
+     3180,
+     5462
+    ],
+    "outcome_main": [
+     442,
+     573
+    ],
+    "outcome_close": [
+     71,
+     137
+    ],
+    "group_outcome": [
+     190344,
+     359326
+    ],
+    "group_outcome_main": [
+     29492,
+     36756
     ],
     "positions": {
      "FOR": 3083,
@@ -778,9 +1146,33 @@
      5266,
      5886
     ],
+    "group_loyalty_main": [
+     631,
+     653
+    ],
     "cz_agreement": [
      2935,
      5716
+    ],
+    "outcome": [
+     5072,
+     5454
+    ],
+    "outcome_main": [
+     606,
+     635
+    ],
+    "outcome_close": [
+     58,
+     110
+    ],
+    "group_outcome": [
+     798438,
+     868684
+    ],
+    "group_outcome_main": [
+     96779,
+     102198
     ],
     "positions": {
      "FOR": 2441,
@@ -826,9 +1218,33 @@
      5261,
      5878
     ],
+    "group_loyalty_main": [
+     628,
+     648
+    ],
     "cz_agreement": [
      2951,
      5703
+    ],
+    "outcome": [
+     5157,
+     5597
+    ],
+    "outcome_main": [
+     605,
+     638
+    ],
+    "outcome_close": [
+     66,
+     122
+    ],
+    "group_outcome": [
+     816831,
+     892562
+    ],
+    "group_outcome_main": [
+     96839,
+     103234
     ],
     "positions": {
      "FOR": 2612,
@@ -874,9 +1290,33 @@
      1575,
      2092
     ],
+    "group_loyalty_main": [
+     176,
+     233
+    ],
     "cz_agreement": [
      1364,
      2010
+    ],
+    "outcome": [
+     708,
+     1961
+    ],
+    "outcome_main": [
+     99,
+     215
+    ],
+    "outcome_close": [
+     30,
+     61
+    ],
+    "group_outcome": [
+     50978,
+     132729
+    ],
+    "group_outcome_main": [
+     7267,
+     14334
     ],
     "positions": {
      "FOR": 1087,
@@ -922,9 +1362,33 @@
      0,
      0
     ],
+    "group_loyalty_main": [
+     0,
+     0
+    ],
     "cz_agreement": [
      2843,
      5428
+    ],
+    "outcome": [
+     1439,
+     4798
+    ],
+    "outcome_main": [
+     262,
+     517
+    ],
+    "outcome_close": [
+     57,
+     105
+    ],
+    "group_outcome": [
+     0,
+     0
+    ],
+    "group_outcome_main": [
+     0,
+     0
     ],
     "positions": {
      "FOR": 3271,
@@ -970,9 +1434,33 @@
      3410,
      4215
     ],
+    "group_loyalty_main": [
+     331,
+     466
+    ],
     "cz_agreement": [
      4451,
      5396
+    ],
+    "outcome": [
+     2541,
+     4970
+    ],
+    "outcome_main": [
+     390,
+     505
+    ],
+    "outcome_close": [
+     55,
+     119
+    ],
+    "group_outcome": [
+     111211,
+     259270
+    ],
+    "group_outcome_main": [
+     16476,
+     25502
     ],
     "positions": {
      "FOR": 2987,
@@ -1018,9 +1506,33 @@
      3704,
      4907
     ],
+    "group_loyalty_main": [
+     331,
+     540
+    ],
     "cz_agreement": [
      4173,
      4759
+    ],
+    "outcome": [
+     2096,
+     4213
+    ],
+    "outcome_main": [
+     330,
+     427
+    ],
+    "outcome_close": [
+     43,
+     94
+    ],
+    "group_outcome": [
+     121162,
+     288347
+    ],
+    "group_outcome_main": [
+     17120,
+     28125
     ],
     "positions": {
      "FOR": 2527,
@@ -1066,9 +1578,33 @@
      4336,
      5738
     ],
+    "group_loyalty_main": [
+     387,
+     640
+    ],
     "cz_agreement": [
      4824,
      5567
+    ],
+    "outcome": [
+     2435,
+     4870
+    ],
+    "outcome_main": [
+     393,
+     508
+    ],
+    "outcome_close": [
+     48,
+     105
+    ],
+    "group_outcome": [
+     141693,
+     331256
+    ],
+    "group_outcome_main": [
+     19981,
+     33092
     ],
     "positions": {
      "FOR": 2930,
@@ -1114,9 +1650,33 @@
      2480,
      3271
     ],
+    "group_loyalty_main": [
+     232,
+     374
+    ],
     "cz_agreement": [
      2764,
      3167
+    ],
+    "outcome": [
+     1453,
+     2786
+    ],
+    "outcome_main": [
+     236,
+     302
+    ],
+    "outcome_close": [
+     30,
+     58
+    ],
+    "group_outcome": [
+     83453,
+     189493
+    ],
+    "group_outcome_main": [
+     11943,
+     19700
     ],
     "positions": {
      "FOR": 1634,
@@ -1162,9 +1722,33 @@
      3134,
      3692
     ],
+    "group_loyalty_main": [
+     261,
+     403
+    ],
     "cz_agreement": [
      2728,
      3570
+    ],
+    "outcome": [
+     1408,
+     3202
+    ],
+    "outcome_main": [
+     206,
+     301
+    ],
+    "outcome_close": [
+     33,
+     70
+    ],
+    "group_outcome": [
+     89702,
+     216441
+    ],
+    "group_outcome_main": [
+     11792,
+     19529
     ],
     "positions": {
      "FOR": 1825,
