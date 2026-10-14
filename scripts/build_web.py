@@ -162,8 +162,27 @@ def topic_rows(topics_stats: dict, topics_meta: list[dict], topic_labels: dict |
             for t in topics_meta if t["code"] in topics_stats]
 
 
+def last_group_code(mep: dict, votes: list[dict]) -> str | None:
+    """Kód frakce (HowTheyVote) v posledním hlasování poslance."""
+    for v in reversed(votes):
+        for p in v["cz_positions"]:
+            if p["member_id"] == mep["id"]:
+                return p["group_code"]
+    return None
+
+
+def mep_benchmarks(mep: dict, votes: list[dict], bench: dict | None) -> dict | None:
+    """Mediány EP a frakce poslance (data/benchmarks.json z fetch_votes.py); bez pořadí."""
+    if not bench:
+        return None
+    code = last_group_code(mep, votes)
+    return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": bench.get("min_votes"),
+            "ep": bench["ep"], "group_code": code, "group": bench["groups"].get(code) if code else None}
+
+
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
-                  votes_by_id: dict | None = None, own: dict | None = None, topic_labels: dict | None = None) -> dict:
+                  votes_by_id: dict | None = None, own: dict | None = None, topic_labels: dict | None = None,
+                  bench: dict | None = None) -> dict:
     st = stats["meps"][str(mep["id"])]
     meps_by_id = {m["id"]: m for m in meps}
     votes_by_id = votes_by_id or {v["id"]: v for v in votes}
@@ -184,6 +203,7 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
         "monthly": st["monthly"],
         "pairwise": pairwise,
         "recent_main_votes": recent_main_votes(mep, votes),
+        "benchmarks": mep_benchmarks(mep, votes, bench),
         "against_group": {"count": ag["count"], "count_main": ag["count_main"],
                           "recent": [with_vote(x) for x in ag["recent"]],
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
@@ -308,13 +328,17 @@ def run(data_dir: Path, day: str) -> dict:
     parties = json.loads((data_dir / "parties.json").read_text(encoding="utf-8"))
     own_path = data_dir / "own_work.json"
     own = json.loads(own_path.read_text(encoding="utf-8")) if own_path.exists() else None
+    bench_path = data_dir / "benchmarks.json"
+    bench = json.loads(bench_path.read_text(encoding="utf-8")) if bench_path.exists() else None
+    if bench is not None:
+        require(bench, ["ep", "groups"], "benchmarks.json")
 
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     profiles_dir = data_dir / "meps"
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,
-                                                                      topic_labels))
+                                                                      topic_labels, bench))
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))

@@ -176,3 +176,19 @@ def test_session_and_agreement(data_dir):
     ag = json.loads((data_dir / "agreement.json").read_text(encoding="utf-8"))
     assert [m["id"] for m in ag["meps"]] == [1, 2]
     assert ag["matrix"]["1"] == {"2": [1, 1]}
+
+
+def test_profile_benchmarks(data_dir):
+    bench = {"source": {"release": "MOCK"}, "definition": "MOCK", "min_votes": 100,
+             "ep": {"meps": 700, "attendance": 0.9, "attendance_main": 0.91, "group_loyalty": 0.93},
+             "groups": {"EPP": {"meps": 180, "attendance": 0.88, "attendance_main": 0.9, "group_loyalty": 0.95}}}
+    (data_dir / "benchmarks.json").write_text(json.dumps(bench), encoding="utf-8")
+    bw.run(data_dir, "2024-11-01")
+    prof = json.loads((data_dir / "meps" / "1.json").read_text(encoding="utf-8"))
+    assert prof["benchmarks"]["ep"]["attendance"] == 0.9
+    assert prof["benchmarks"]["group_code"] == "EPP" and prof["benchmarks"]["group"]["group_loyalty"] == 0.95
+
+
+def test_profile_without_benchmarks(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    assert json.loads((data_dir / "meps" / "1.json").read_text(encoding="utf-8"))["benchmarks"] is None
