@@ -59,19 +59,16 @@ setNav("meps");
 (async () => {
   const tbody = document.querySelector("#meps tbody");
   try {
-    const [mepsDoc, stats, groups, parties] = await Promise.all([
-      getJSON("meps.json"), getJSON("stats.json"), getJSON("groups.json"), getJSON("parties.json"),
+    const [stats, groups, parties] = await Promise.all([
+      getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
     document.getElementById("source").innerHTML = sourceLine(stats);
     if (stats.period) {
       document.getElementById("period").textContent =
         `${fmtNum(stats.votes_total)} jmenovitých hlasování, ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}`;
     }
-    const rows = mepsDoc.meps.map((m) => {
-      const s = stats.meps[String(m.id)]?.total || {};
-      const g = currentOf(m.groups);
-      const p = currentOf(m.parties);
-      return { m, s, g, p, active: isActive(m) };
+    const rows = stats.meps.map((m) => {
+      return { m, s: m.total, g: m.group, p: m.party, active: isActive(m) };
     });
     const formerBox = document.getElementById("former");
     const visible = () => rows.filter((r) => formerBox.checked || r.active);
@@ -93,7 +90,7 @@ setNav("meps");
               ${active ? "" : `<div class="small muted">mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</div>`}</div>
           </div></td>
           <td>${groupBadge(null, groups, g?.code)}</td>
-          <td>${p ? partyBadge(p.org_id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
+          <td>${p ? partyBadge(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
           <td class="num">${pctCell(s.attendance, "hlasoval/a z hlasování v době mandátu")}</td>
           <td class="num">${pctCell(s.attendance_main, "jen hlavní hlasování")}</td>
           <td class="num">${pctCell(s.group_loyalty, "stejně jako většina frakce")}</td>

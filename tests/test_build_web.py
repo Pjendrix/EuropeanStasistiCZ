@@ -1,0 +1,105 @@
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+import build_web as bw  # noqa: E402
+
+
+def mep(i, end=None, group="PPE", party="20"):
+    return {
+        "id": i, "name": f"MOCK {i}", "given_name": "MOCK", "family_name": str(i), "sort_label": str(i),
+        "gender": "FEMALE", "photo_url": None, "mandates": [{"start": "2024-07-16", "end": end}],
+        "groups": [{"code": group, "short_label": group, "start": "2024-07-16", "end": None}],
+        "parties": [{"org_id": party, "short_label": "MOCK_P", "start": "2024-07-16", "end": None}],
+        "committees": [],
+    }
+
+
+def vote(vid, date, positions, is_main=True, title="MOCK vote"):
+    return {"id": vid, "date": date, "title": title, "reference": "MOCK-REF", "description": None,
+            "amendment_number": None, "result": "ADOPTED", "is_main": is_main, "procedure": {},
+            "group_counts": {}, "cz_positions": [
+                {"member_id": i, "position": p, "group_code": "EPP"} for i, p in positions]}
+
+
+def metrics():
+    return {"attendance": [1, 2], "attendance_main": [1, 1], "group_loyalty": [1, 1], "cz_agreement": [0, 1],
+            "positions": {"FOR": 1, "AGAINST": 0, "ABSTENTION": 0, "DID_NOT_VOTE": 1}}
+
+
+@pytest.fixture
+def data_dir(tmp_path):
+    d = tmp_path / "data"
+    (d / "votes").mkdir(parents=True)
+    meps = [mep(1), mep(2, end="2024-09-30")]
+    (d / "meps.json").write_text(json.dumps({"meps": meps}), encoding="utf-8")
+    stats = {"sources": {"votes": {"release": "MOCK"}}, "period": {"from": "2024-09-16", "to": "2024-10-16"},
+             "votes_total": 3, "definitions": {"attendance": "MOCK"},
+             "meps": {"1": {"total": metrics(), "monthly": {"2024-09": metrics()}, "pairwise": {"2": [1, 1]}},
+                      "2": {"total": metrics(), "monthly": {}, "pairwise": {"1": [1, 1]}}}}
+    (d / "stats.json").write_text(json.dumps(stats), encoding="utf-8")
+    votes = {
+        "2024-09": [vote(1, "2024-09-16", [(1, "FOR"), (2, "FOR")]),
+                    vote(2, "2024-09-17", [(1, "DID_NOT_VOTE"), (2, "AGAINST")], is_main=False, title=None)],
+        "2024-10": [vote(3, "2024-10-16", [(1, "AGAINST"), (2, "DID_NOT_VOTE")])],  # 2 už není v mandátu
+    }
+    index = {"source": {"release": "MOCK"}, "groups": [],
+             "months": [{"month": k, "votes": len(v)} for k, v in votes.items()]}
+    (d / "votes" / "index.json").write_text(json.dumps(index), encoding="utf-8")
+    for k, v in votes.items():
+        (d / "votes" / f"{k}.json").write_text(json.dumps({"votes": v}), encoding="utf-8")
+    return d
+
+
+def test_search_rows_and_cz_counts_only_in_mandate(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    search = json.loads((data_dir / "votes" / "search.json").read_text(encoding="utf-8"))
+    rows = [dict(zip(search["fields"], r)) for r in search["rows"]]
+    assert [r["id"] for r in rows] == [1, 2, 3]
+    assert rows[0]["cz"] == [2, 0, 0, 0]
+    assert rows[1]["title"] == "MOCK-REF"  # bez názvu -> reference
+    assert rows[2]["cz"] == [0, 1, 0, 0]   # poslanec 2 po konci mandátu se nepočítá
+    assert rows[2]["month"] == "2024-10"
+
+
+def test_profile_contains_everything_for_page(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    prof = json.loads((data_dir / "meps" / "1.json").read_text(encoding="utf-8"))
+    assert prof["mep"]["id"] == 1
+    assert prof["total"]["attendance"] == [1, 2]
+    assert list(prof["monthly"]) == ["2024-09"]
+    assert [(p["id"], p["same"], p["total"], p["name"]) for p in prof["pairwise"]] == [(2, 1, 1, "MOCK 2")]
+    # jen hlavní hlasování, nejnovější první
+    assert [(v["id"], v["position"]) for v in prof["recent_main_votes"]] == [(3, "AGAINST"), (1, "FOR")]
+    prof2 = json.loads((data_dir / "meps" / "2.json").read_text(encoding="utf-8"))
+    assert [v["id"] for v in prof2["recent_main_votes"]] == [1]  # hlasování 3 je po konci mandátu
+
+
+def test_overview(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    ov = json.loads((data_dir / "overview.json").read_text(encoding="utf-8"))
+    assert ov["votes_total"] == 3 and ov["definitions"] == {"attendance": "MOCK"}
+    first = ov["meps"][0]
+    assert first["group"] == {"code": "PPE", "short_label": "PPE"}
+    assert first["party"] == {"id": 20, "short_label": "MOCK_P"}
+    assert first["total"]["attendance"] == [1, 2]
+    assert "committees" not in first  # souhrn je odlehčený
+
+
+def test_missing_stats_raises(data_dir):
+    stats = json.loads((data_dir / "stats.json").read_text(encoding="utf-8"))
+    del stats["meps"]["2"]
+    (data_dir / "stats.json").write_text(json.dumps(stats), encoding="utf-8")
+    with pytest.raises(bw.FormatError, match="nemá poslance"):
+        bw.run(data_dir, "2024-11-01")
+
+
+def test_current_membership():
+    items = [{"start": "2024-07-16", "end": "2025-01-31"}, {"start": "2025-02-01", "end": None}]
+    assert bw.current(items, "2024-12-01") is items[0]
+    assert bw.current(items, "2025-06-01") is items[1]
+    assert bw.current([{"start": "2024-07-16", "end": "2024-07-31"}], "2025-01-01")["end"] == "2024-07-31"
+    assert bw.current([], "2025-01-01") is None

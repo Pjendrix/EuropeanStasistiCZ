@@ -35,10 +35,10 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const id = Number(param("id"));
     const month = param("m");
     const [index, mepsDoc, groups, parties] = await Promise.all([
-      getJSON("votes/index.json"), getJSON("meps.json"), getJSON("groups.json"), getJSON("parties.json"),
+      getJSON("votes/index.json"), getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
-    // Měsíc v URL zrychlí hledání; bez něj se projdou všechny měsíce.
-    const months = month ? [month] : index.months.map((m) => m.month).reverse();
+    // Bez měsíce v URL se měsíc najde v odlehčeném seznamu hlasování.
+    const months = month ? [month] : (await loadSearch()).filter((x) => x.id === id).map((x) => x.month);
     let v = null, foundMonth = null;
     for (const m of months) {
       const data = await getJSON(`votes/${m}.json`);

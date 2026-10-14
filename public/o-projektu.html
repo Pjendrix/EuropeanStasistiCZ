@@ -61,7 +61,7 @@ setNav("about");
 (async () => {
   const el = document.getElementById("definitions");
   try {
-    const stats = await getJSON("stats.json");
+    const stats = await getJSON("overview.json");
     const names = {
       attendance: "Docházka", attendance_main: "Docházka – hlavní hlasování", group_loyalty: "Loajalita k frakci",
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",

@@ -46,6 +46,9 @@ jobs:
       - name: Statistiky
         run: python scripts/compute_stats.py
 
+      - name: Soubory pro web
+        run: python scripts/build_web.py
+
       - name: Portréty
         run: python scripts/fetch_photos.py
 

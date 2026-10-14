@@ -58,6 +58,12 @@ async function getJSON(path) {
   return cache.get(path);
 }
 
+// Odlehčený seznam všech hlasování (data/votes/search.json) jako pole objektů.
+async function loadSearch() {
+  const doc = await getJSON("votes/search.json");
+  return doc.rows.map((r) => Object.fromEntries(doc.fields.map((f, i) => [f, r[i]])));
+}
+
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
