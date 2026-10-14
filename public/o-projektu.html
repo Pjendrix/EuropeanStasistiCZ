@@ -81,6 +81,10 @@
 
   <h2 id="opravy">Opravy a změny metodiky</h2>
   <div class="card"><ul class="plain">
+    <li><strong>15. 10. 2026</strong> – Jméno Klára Dostálová uvádí EP bez diakritiky („Klara DOSTALOVA“); opraveno podle registru kandidátů ČSÚ
+      pro volby do EP 2024 (<a href="https://www.volby.cz/opendata/ep2024/ep2024_opendata.htm">volby.cz, otevřená data</a>).
+      Opravy jmen jsou v <code>data/manual/overrides.json</code>, vždy se zdrojem. Poslanci, které EP vede jako „Independent“ (Ind.),
+      se ukazují jako nezávislí.</li>
     <li><strong>15. 10. 2026</strong> – U docházky a loajality přibyl medián celého EP a medián frakce (bez pořadí poslanců).
       Poslanci, strany a závěrečná hlasování mají trvalé statické stránky (adresy <code>/p/</code>, <code>/s/</code>, <code>/v/</code>),
       čísla a hlasování jdou citovat tlačítkem „Citovat“ a tabulky stáhnout jako CSV.</li>
@@ -93,9 +97,19 @@
 
   <h2 id="kontakt">Kontakt a nahlášení chyby</h2>
   <div class="card">
-    <p>Našli jste chybu v datech nebo ve výpočtu? Napište ji jako
-      <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/issues">issue na GitHubu</a> (s odkazem na stránku a hlasování).
-      Web spravuje autor repozitáře <a href="https://github.com/Pjendrix">Pjendrix</a>; celý kód i data jsou veřejné.</p>
+    <p>Našli jste chybu v datech nebo ve výpočtu, nebo máte dotaz? Napište nám. Pomůže odkaz na stránku nebo hlasování.</p>
+    <form class="contact-form" action="https://formspree.io/f/xyegyyjo" method="POST">
+      <label>Zpráva <textarea name="zprava" rows="5" required maxlength="5000"></textarea></label>
+      <label>Odkaz na stránku (nepovinné) <input type="url" name="stranka" placeholder="https://european-stasisticz.vercel.app/…"></label>
+      <label>Váš e-mail pro odpověď (nepovinné) <input type="email" name="email" autocomplete="email"></label>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true">
+      <input type="hidden" name="_subject" value="EP Watch CZ – zpráva z webu">
+      <button type="submit" class="btn btn-send">Odeslat</button>
+      <p class="small muted">Zpráva se odešle přes službu <a href="https://formspree.io">Formspree</a>, která ji doručí správci webu.
+        Uloží se jen to, co vyplníte; e-mail použijeme jen k odpovědi.</p>
+    </form>
+    <p class="small">Chyby můžete hlásit i veřejně jako
+      <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/issues">issue na GitHubu</a>. Celý kód i data jsou veřejné.</p>
   </div>
 
   <h2>Loga a barvy</h2>
@@ -105,7 +119,7 @@
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
-  <a href="o-projektu.html">O projektu</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
