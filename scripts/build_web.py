@@ -27,11 +27,15 @@ from pathlib import Path
 
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
                            require)
+from labels_cs import translate
+from vote_kinds import KIND_LABELS, classify, is_final
 
 RECENT_MAIN = 15
 LAST_SESSION_LIMIT = 50
+SHORT_MANDATE_DAYS = 60
+# Nová pole jsou na konci, aby starší web četl řádky beze změny.
 SEARCH_FIELDS = ["id", "date", "month", "title", "reference", "description", "amendment_number",
-                 "result", "is_main", "cz"]
+                 "result", "is_main", "cz", "vote_kind", "is_final", "inverted", "description_cs"]
 
 
 def current(items: list[dict], day: str) -> dict | None:
@@ -48,6 +52,13 @@ def vote_title(v: dict) -> str:
     return v.get("title") or (v.get("procedure") or {}).get("title") or v.get("reference") or f"Hlasování {v['id']}"
 
 
+def kind_fields(v: dict) -> dict:
+    """Typ hlasování a český popis; starší měsíční soubory pole nemají, dopočítají se stejnými pravidly."""
+    kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
+    desc_cs = v["description_cs"] if "description_cs" in v else translate(v.get("description"))
+    return {"vote_kind": kind, "is_final": is_final(v), "inverted": inverted, "description_cs": desc_cs}
+
+
 def cz_counts(vote: dict, meps_by_id: dict) -> list[int]:
     """Počty [pro, proti, zdržel, nehlasoval] českých poslanců v mandátu."""
     counts = [0, 0, 0, 0]
@@ -59,10 +70,24 @@ def cz_counts(vote: dict, meps_by_id: dict) -> list[int]:
 
 
 def build_search(votes: list[dict], meps_by_id: dict) -> dict:
-    rows = [[v["id"], v["date"], v["date"][:7], vote_title(v), v.get("reference"), v.get("description"),
-             v.get("amendment_number"), v.get("result"), v["is_main"], cz_counts(v, meps_by_id)]
-            for v in votes]
-    return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "rows": rows}
+    rows = []
+    for v in votes:
+        k = kind_fields(v)
+        rows.append([v["id"], v["date"], v["date"][:7], vote_title(v), v.get("reference"), v.get("description"),
+                     v.get("amendment_number"), v.get("result"), v["is_main"], cz_counts(v, meps_by_id),
+                     k["vote_kind"], k["is_final"], k["inverted"], k["description_cs"]])
+    return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "kind_labels": KIND_LABELS, "rows": rows}
+
+
+def mandate_days(mandates: list[dict], day: str) -> int:
+    """Součet dní mandátu (včetně krajních), otevřený mandát do daného dne."""
+    import datetime as dt
+    total = 0
+    for x in mandates:
+        start = dt.date.fromisoformat(x["start"])
+        end = dt.date.fromisoformat(min(x["end"] or day, day))
+        total += max((end - start).days + 1, 0)
+    return total
 
 
 def mep_summary(m: dict, day: str) -> dict:
@@ -71,6 +96,7 @@ def mep_summary(m: dict, day: str) -> dict:
         "id": m["id"], "name": m["name"], "given_name": m.get("given_name"), "family_name": m.get("family_name"),
         "sort_label": m.get("sort_label"), "gender": m.get("gender"), "photo_url": m.get("photo_url"),
         "mandates": m["mandates"],
+        "short_mandate": mandate_days(m["mandates"], day) < SHORT_MANDATE_DAYS,
         "group": {"code": g["code"], "short_label": g["short_label"]} if g else None,
         "party": {"id": int(p["org_id"]), "short_label": p["short_label"]} if p else None,
     }
@@ -79,7 +105,7 @@ def mep_summary(m: dict, day: str) -> dict:
 def build_overview(meps: list[dict], stats: dict, day: str) -> dict:
     return {
         "sources": stats["sources"], "period": stats["period"], "votes_total": stats["votes_total"],
-        "definitions": stats["definitions"],
+        "definitions": stats["definitions"], "short_mandate_days": SHORT_MANDATE_DAYS,
         "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]} for m in meps],
     }
 
@@ -87,14 +113,15 @@ def build_overview(meps: list[dict], stats: dict, day: str) -> dict:
 def recent_main_votes(mep: dict, votes: list[dict], limit: int = RECENT_MAIN) -> list[dict]:
     out = []
     for v in reversed(votes):
-        if not v["is_main"] or not in_mandate(mep["mandates"], v["date"]):
+        if not is_final(v) or not in_mandate(mep["mandates"], v["date"]):
             continue
         pos = next((p for p in v["cz_positions"] if p["member_id"] == mep["id"]), None)
         if pos is None:
             continue
         out.append({"id": v["id"], "date": v["date"], "month": v["date"][:7], "title": vote_title(v),
                     "reference": v.get("reference"), "description": v.get("description"),
-                    "result": v.get("result"), "position": pos["position"], "group_code": pos["group_code"]})
+                    "result": v.get("result"), "position": pos["position"], "group_code": pos["group_code"],
+                    **kind_fields(v)})
         if len(out) >= limit:
             break
     return out
@@ -104,7 +131,9 @@ def vote_summary(v: dict, meps_by_id: dict) -> dict:
     """Krátký popis hlasování pro seznamy na webu."""
     return {"id": v["id"], "date": v["date"], "month": v["date"][:7], "title": vote_title(v),
             "reference": v.get("reference"), "description": v.get("description"), "result": v.get("result"),
-            "is_main": v["is_main"], "counts": v["counts"], "cz": cz_counts(v, meps_by_id)}
+            "is_main": v["is_main"], "counts": v["counts"], "cz": cz_counts(v, meps_by_id),
+            "amendment_number": v.get("amendment_number"), "texts_adopted_reference": v.get("texts_adopted_reference"),
+            **kind_fields(v)}
 
 
 def cz_positions(v: dict, meps_by_id: dict) -> list[dict]:
@@ -131,6 +160,8 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
     )
     return {
         "mep": mep,
+        "short_mandate": mandate_days(mep["mandates"], day) < SHORT_MANDATE_DAYS,
+        "mandate_days": mandate_days(mep["mandates"], day),
         "sources": stats["sources"],
         "definitions": stats["definitions"],
         "total": st["total"],
@@ -155,6 +186,8 @@ def build_decisive(stats: dict, votes_by_id: dict, meps_by_id: dict) -> dict:
     return {
         "sources": stats["sources"], "close_margin": CLOSE_MARGIN,
         "close_count": va["close"]["count"], "close_count_main": va["close"]["count_main"],
+        "decisive_final": sum(is_final(votes_by_id[d["id"]]) for d in va["decisive"]),
+        "definition": stats["definitions"].get("decisive_votes"), "kind_labels": KIND_LABELS,
         "votes": [{**vote_summary(votes_by_id[d["id"]], meps_by_id), "alternative_result": d["alternative_result"],
                    "positions": cz_positions(votes_by_id[d["id"]], meps_by_id)} for d in va["decisive"]],
     }
@@ -169,6 +202,7 @@ def build_splits(stats: dict, votes_by_id: dict, meps_by_id: dict) -> dict:
     ls = sp["last_session"]
     return {
         "sources": stats["sources"], "count": sp["count"], "count_main": sp["count_main"],
+        "unity": stats["votes_analysis"].get("unity"),
         "last_session": {"from": ls["from"], "to": ls["to"], "votes": ls["votes"], "split_count": len(ls["split"]),
                          "split": [item(x) for x in ls["split"][:LAST_SESSION_LIMIT]]},
         "all": [item(x) for x in sp["all"]],
@@ -185,12 +219,15 @@ def build_session(stats: dict, votes: list[dict], votes_by_id: dict, meps_by_id:
     item = lambda vid, **kw: {**vote_summary(votes_by_id[vid], meps_by_id), **kw}
     return {
         "sources": stats["sources"], "from": ls["from"], "to": ls["to"],
-        "votes": len(in_session), "main": sum(v["is_main"] for v in in_session),
-        "adopted_main": sum(v["is_main"] and v.get("result") == "ADOPTED" for v in in_session),
+        "votes": len(in_session), "main": sum(is_final(v) for v in in_session),
+        "adopted_main": sum(is_final(v) and v.get("result") == "ADOPTED" for v in in_session),
         "split_count": len(ls["split"]),
+        "unity": (stats["votes_analysis"].get("unity") or {}).get("last_session"),
+        "unity_all": {k: v for k, v in (stats["votes_analysis"].get("unity") or {}).items() if k != "last_session"},
+        "decisive_final": sum(is_final(votes_by_id[d["id"]]) for d in decisive),
         "close_count": sum(v["id"] in close_ids for v in in_session),
         "top_splits": [item(x["id"], split=x["split"]) for x in ls["split"][:top]],
-        "top_splits_main": [item(x["id"], split=x["split"]) for x in ls["split"] if x["is_main"]][:top],
+        "top_splits_main": [item(x["id"], split=x["split"]) for x in ls["split"] if x.get("is_final", x.get("is_main"))][:top],
         "decisive": [item(d["id"], alternative_result=d["alternative_result"]) for d in decisive],
     }
 
