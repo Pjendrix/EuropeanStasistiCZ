@@ -28,6 +28,7 @@ from pathlib import Path
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
                            require, topic_codes)
 from labels_cs import translate
+from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
 RECENT_MAIN = 15
@@ -318,6 +319,7 @@ def run(data_dir: Path, day: str) -> dict:
     require(meps_doc, ["meps"], "meps.json")
     require(stats, ["meps", "sources", "period", "votes_total", "definitions"], "stats.json")
     meps = meps_doc["meps"]
+    apply_name_overrides(meps, data_dir / "manual" / "overrides.json")
     missing = [m["id"] for m in meps if str(m["id"]) not in stats["meps"]]
     if missing:
         raise FormatError(f"stats.json nemá poslance {missing}, spusť nejdřív compute_stats.py")
