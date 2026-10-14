@@ -142,12 +142,9 @@ tr.former td { opacity: .72; }
 
 .chart { display: flex; align-items: flex-end; gap: 3px; height: 140px; padding-top: .5rem; }
 .chart .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 6px; }
-.chart .col span { display: block; background: var(--accent); border-radius: 3px 3px 0 0; }
-.chart .col span.zero { height: 3px !important; background: var(--against); }
 .chart-wrap { display: flex; gap: .4rem; }
 .chart-wrap .chart { flex: 1; background: linear-gradient(to bottom, var(--border) 1px, transparent 1px) 0 .5rem / 100% calc((100% - .5rem) / 2) repeat-y; }
 .chart-y { display: flex; flex-direction: column; justify-content: space-between; font-size: .7rem; color: var(--muted); height: 140px; padding-top: .2rem; text-align: right; white-space: nowrap; }
-.chart-axis { margin-left: 2.6rem;  display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-top: .3rem; }
 
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
 ul.plain { list-style: none; padding: 0; margin: 0; }
@@ -175,3 +172,46 @@ ul.plain li:last-child { border-bottom: none; }
 .own-list { margin-top: .75rem; }
 .own-list summary { cursor: pointer; }
 .own-list ul { margin-top: .5rem; }
+
+/* --- fáze E: mobil, úvodní shrnutí ---------------------------------------- */
+.mobile-only { display: none; }
+@media (max-width: 640px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: revert; }
+  label.mobile-only { display: inline-flex; }
+}
+.mep-cards { display: none; gap: .75rem; }
+@media (max-width: 640px) { .mep-cards { display: grid; } }
+.mep-card.former { opacity: .75; }
+.mep-card-head { display: flex; align-items: center; gap: .75rem; text-decoration: none; color: var(--text); }
+.mep-card-head img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--border); flex: none; }
+.mep-card-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .75rem; font-variant-numeric: tabular-nums; }
+.session h2 { margin-top: 0; }
+.session h3 { font-size: .95rem; margin: 1rem 0 .35rem; }
+.session-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .5rem; }
+.session-facts strong { font-size: 1.3rem; }
+.session-list { margin: 0; padding-left: 1.1rem; }
+.session-list li { margin: .25rem 0; }
+.session { margin-bottom: 1.5rem; }
+
+/* graf docházky: sloupce jako tlačítka, popisky měsíců, detail pod grafem */
+.chart .col { background: none; border: 0; padding: 0; cursor: pointer; position: relative; font: inherit; color: inherit; }
+.chart .col .bar-fill { display: block; background: var(--accent); border-radius: 3px 3px 0 0; opacity: .85; }
+.chart .col.active .bar-fill, .chart .col:hover .bar-fill { opacity: 1; outline: 2px solid var(--text); outline-offset: 1px; }
+.chart .col .bar-fill.zero { height: 3px !important; background: var(--against); }
+.chart .col-label { position: absolute; top: 100%; left: 0; right: 0; text-align: center; font-size: .62rem; line-height: 1.15; color: var(--muted); padding-top: 2px; }
+.chart-wrap { margin-bottom: 1.9rem; }
+.chart-detail { margin: .25rem 0 0; min-height: 1.5em; }
+
+/* matice shody */
+table.matrix { font-size: .8rem; width: auto; }
+table.matrix th, table.matrix td { padding: .3rem .35rem; border: 1px solid var(--border); text-align: center; }
+table.matrix .mx-head { writing-mode: vertical-rl; transform: rotate(180deg); text-transform: none; letter-spacing: 0; font-size: .78rem; white-space: nowrap; padding: .5rem .2rem; }
+table.matrix .mx-head a { color: var(--text); text-decoration: none; }
+table.matrix .mx-row { text-align: left; white-space: nowrap; text-transform: none; letter-spacing: 0; font-size: .82rem; color: var(--text); }
+table.matrix .mx-row a { color: var(--text); text-decoration: none; font-weight: 600; }
+table.matrix td.mx { background: color-mix(in srgb, var(--accent) calc(var(--p) * 85%), var(--surface)); font-variant-numeric: tabular-nums; min-width: 2.4rem; }
+table.matrix td.mx small { display: block; font-size: .6rem; opacity: .75; }
+table.matrix td.mx-weak { background: var(--bg); color: var(--muted); }
+table.matrix td.mx-self, table.matrix td.mx-none { color: var(--muted); background: var(--bg); }
+table.matrix td.mx-dark { color: var(--bg); }

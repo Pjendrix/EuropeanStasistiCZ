@@ -1,0 +1,257 @@
+{
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "from": "2026-10-05",
+ "to": "2026-10-08",
+ "votes": 227,
+ "main": 26,
+ "adopted_main": 21,
+ "split_count": 219,
+ "close_count": 4,
+ "top_splits": [
+  {
+   "id": 197942,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network",
+   "reference": "B10-0424/2026",
+   "description": "§ 1 - Am 31/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 366,
+    "against": 178,
+    "abstention": 32,
+    "did_not_vote": 143
+   },
+   "cz": [
+    8,
+    8,
+    2,
+    3
+   ],
+   "split": 0.5
+  },
+  {
+   "id": 197467,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Simplification of certain requirements for spatial information infrastructure in the Union (INSPIRE) (Omnibus VIII on environmental legislation)",
+   "reference": "A10-0233/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 515,
+    "against": 108,
+    "abstention": 35,
+    "did_not_vote": 61
+   },
+   "cz": [
+    10,
+    9,
+    1,
+    1
+   ],
+   "split": 0.4737
+  },
+  {
+   "id": 198197,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Pilot project on European Schools Alliances and its contribution to citizenship education, democratic competences and European values",
+   "reference": "B10-0436/2026",
+   "description": "§ 6 - Am 6",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 112,
+    "against": 447,
+    "abstention": 30,
+    "did_not_vote": 130
+   },
+   "cz": [
+    8,
+    9,
+    1,
+    3
+   ],
+   "split": 0.4706
+  },
+  {
+   "id": 197630,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Psychosocial risks, stress and mental health at work",
+   "reference": "A10-0225/2026",
+   "description": "Annexe",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 434,
+    "against": 137,
+    "abstention": 84,
+    "did_not_vote": 64
+   },
+   "cz": [
+    7,
+    8,
+    5,
+    1
+   ],
+   "split": 0.4667
+  },
+  {
+   "id": 197878,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The upcoming EU anti-corruption strategy",
+   "reference": "B10-0423/2026",
+   "description": "Après le § 7 - Am 11",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 171,
+    "against": 278,
+    "abstention": 138,
+    "did_not_vote": 132
+   },
+   "cz": [
+    7,
+    8,
+    2,
+    4
+   ],
+   "split": 0.4667
+  }
+ ],
+ "top_splits_main": [
+  {
+   "id": 197467,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Simplification of certain requirements for spatial information infrastructure in the Union (INSPIRE) (Omnibus VIII on environmental legislation)",
+   "reference": "A10-0233/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 515,
+    "against": 108,
+    "abstention": 35,
+    "did_not_vote": 61
+   },
+   "cz": [
+    10,
+    9,
+    1,
+    1
+   ],
+   "split": 0.4737
+  },
+  {
+   "id": 197484,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Psychosocial risks, stress and mental health at work",
+   "reference": "A10-0225/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 413,
+    "against": 210,
+    "abstention": 29,
+    "did_not_vote": 67
+   },
+   "cz": [
+    8,
+    6,
+    6,
+    1
+   ],
+   "split": 0.4286
+  },
+  {
+   "id": 197472,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Funding arrangements and the use of a diversified funding strategy",
+   "reference": "A10-0206/2026",
+   "description": "Projet de règlement du Conseil",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 462,
+    "against": 121,
+    "abstention": 75,
+    "did_not_vote": 61
+   },
+   "cz": [
+    12,
+    7,
+    1,
+    1
+   ],
+   "split": 0.3684
+  },
+  {
+   "id": 198193,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2), (3) and (4)(c): Lead in gunshot",
+   "reference": "B10-0431/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 166,
+    "against": 346,
+    "abstention": 21,
+    "did_not_vote": 186
+   },
+   "cz": [
+    11,
+    5,
+    1,
+    4
+   ],
+   "split": 0.3125
+  },
+  {
+   "id": 197509,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Consular protection for unrepresented citizens of the Union in third countries",
+   "reference": "A10-0254/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 470,
+    "against": 180,
+    "abstention": 18,
+    "did_not_vote": 51
+   },
+   "cz": [
+    10,
+    4,
+    6,
+    1
+   ],
+   "split": 0.2857
+  }
+ ],
+ "decisive": []
+}

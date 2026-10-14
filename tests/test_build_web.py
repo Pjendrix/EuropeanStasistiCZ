@@ -149,3 +149,13 @@ def test_decisive_splits_and_parties_files(data_dir):
     assert page["members"] == 2 and page["cohesion"] == [1, 2]
     assert page["splits"][0]["id"] == 2 and len(page["splits"][0]["positions"]) == 2
     assert not (data_dir / "parties" / "99.json").exists()
+
+
+def test_session_and_agreement(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    ses = json.loads((data_dir / "session.json").read_text(encoding="utf-8"))
+    assert (ses["from"], ses["to"], ses["votes"], ses["main"]) == ("2024-10-16", "2024-10-16", 1, 1)
+    assert ses["close_count"] == 1 and ses["decisive"] == [] and ses["top_splits"] == []
+    ag = json.loads((data_dir / "agreement.json").read_text(encoding="utf-8"))
+    assert [m["id"] for m in ag["meps"]] == [1, 2]
+    assert ag["matrix"]["1"] == {"2": [1, 1]}
