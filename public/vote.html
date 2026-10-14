@@ -71,6 +71,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <div class="metrics">
         <div class="card metric"><div class="label">Výsledek</div>
           <div class="value result-${v.result || ""}">${RESULT_LABEL[v.result] || "neuveden"}</div>
+          ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div></div>
         <div class="card metric"><div class="label">Celý parlament</div>
           ${splitBar(total)}

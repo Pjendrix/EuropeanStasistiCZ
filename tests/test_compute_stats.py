@@ -141,3 +141,29 @@ def test_run_writes_files(tmp_path):
     parties = json.loads((data / "parties.json").read_text(encoding="utf-8"))
     assert parties == [{"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "color": None,
                         "logo": "assets/logos/cz/20.svg"}]
+
+
+def test_manual_colors_are_merged_and_never_written(tmp_path):
+    manual_path = tmp_path / "colors.json"
+    manual_path.write_text(json.dumps({"_poznamka": "MOCK", "groups": {"EPP": {"color": "#123abc", "logo": None}},
+                                       "parties": {"20": {"color": None, "logo": "assets/MOCK.svg"}}}), encoding="utf-8")
+    before = manual_path.read_text(encoding="utf-8")
+    manual = cs.load_manual(manual_path)
+    groups = cs.build_groups([{"code": "EPP", "label": "MOCK", "short_label": "EPP"}], [], [], tmp_path, manual)
+    assert groups[0]["color"] == "#123abc"
+    party = {"org_id": "20", "short_label": "MOCK_P", "name": "MOCK", "start": "2024-07-16", "end": None}
+    parties = cs.build_parties([mep(1, parties=[party])], tmp_path, manual)
+    assert parties[0]["color"] is None and parties[0]["logo"] == "assets/MOCK.svg"
+    assert manual_path.read_text(encoding="utf-8") == before
+
+
+def test_manual_missing_file_is_empty(tmp_path):
+    assert cs.load_manual(tmp_path / "nic.json") == {"groups": {}, "parties": {}}
+
+
+@pytest.mark.parametrize("color", ["red", "#12345", "#GGGGGG"])
+def test_manual_invalid_color_raises(tmp_path, color):
+    path = tmp_path / "colors.json"
+    path.write_text(json.dumps({"groups": {"EPP": {"color": color}}, "parties": {}}), encoding="utf-8")
+    with pytest.raises(cs.FormatError, match="#RRGGBB"):
+        cs.load_manual(path)

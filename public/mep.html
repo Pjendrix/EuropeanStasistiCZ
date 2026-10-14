@@ -95,8 +95,8 @@ function periodText(x) {
           <h1>${esc(name)}</h1>
           <div class="facts">
             ${groupBadge(null, groups, g?.code)}
-            ${p ? partyBadge(p.org_id, p.short_label, parties) : '<span class="badge outline">strana neuvedena</span>'}
-            ${active ? '<span class="badge outline">v mandátu</span>' : '<span class="badge outline">${byGender(mep, "bývalý poslanec", "bývalá poslankyně")}</span>'}
+            ${p ? partyBadge(p.org_id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">strana neuvedena</span>`}
+            ${active ? '<span class="badge outline">v mandátu</span>' : `<span class="badge outline">${byGender(mep, "bývalý poslanec", "bývalá poslankyně")}</span>`}
           </div>
           <p class="muted">Mandát: ${mandateText(mep)}</p>
           <p class="small">
@@ -129,7 +129,7 @@ function periodText(x) {
             ${mep.groups.map((x) => `<li>${groupBadge(null, groups, x.code)} ${esc(x.name_cs || x.name_en || "")}
               <div class="small muted">${periodText(x)}</div></li>`).join("")}
             ${mep.parties.map((x) => `<li>${partyBadge(x.org_id, x.short_label, parties)} ${esc(x.name || "")}
-              <div class="small muted">${periodText(x)}</div></li>`).join("") || '<li class="muted">Česká strana není v EP datech uvedena.</li>'}
+              <div class="small muted">${periodText(x)}</div></li>`).join("") || `<li class="muted">${esc(NO_PARTY_NOTE)}</li>`}
           </ul>
           <p class="source">Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a></p></div>
         </section>
@@ -177,7 +177,7 @@ function periodText(x) {
         <td><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
           <div class="small muted">${esc(voteSubtitle(v))}</div></td>
         <td class="pos pos-${pos.position}">${positionFor(pos.position, mep)}</td>
-        <td class="result-${v.result || ""}">${RESULT_LABEL[v.result] || "–"}</td></tr>`).join("")}</tbody>
+        <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td></tr>`).join("")}</tbody>
     </table></div>
     <p class="source">Zdroj: <a href="https://howtheyvote.eu/members/${mep.id}">HowTheyVote.eu</a>.
       Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>`

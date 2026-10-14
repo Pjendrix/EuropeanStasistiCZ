@@ -28,7 +28,8 @@ TERM_START = "2024-07-16"
 COUNTRY = "CZE"
 
 POSITIONS = {"FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"}
-RESULTS = {"ADOPTED", "REJECTED"}
+# Možné výsledky podle HowTheyVote (VoteResult): přijato, zamítnuto, propadlo, staženo.
+RESULTS = {"ADOPTED", "REJECTED", "LAPSED", "WITHDRAWN"}
 
 # Očekávané sloupce každé tabulky. Chybějící sloupec = změna formátu = chyba.
 TABLES = {

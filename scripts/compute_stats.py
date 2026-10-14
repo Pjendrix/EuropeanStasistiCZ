@@ -5,6 +5,9 @@ Výstup:
   data/groups.json   frakce (kód HowTheyVote, kód EP, názvy, barva, logo)
   data/parties.json  české strany (ID organizace v EP, zkratka, název, barva, logo)
 
+Ruční údaje (barvy, případně cesty k logům) jsou v data/manual/colors.json. Skript je
+jen načte a přimíchá, soubor nikdy nepřepisuje.
+
 Všechny metriky jsou čisté deterministické funkce bez odhadů. Definice jsou v DEFINITIONS
 a ukládají se i do stats.json, aby je web mohl zobrazit.
 
@@ -16,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -165,7 +169,32 @@ def find_logo(assets: Path, kind: str, key: str) -> str | None:
     return None
 
 
-def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], assets: Path) -> list[dict]:
+COLOR_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+
+def load_manual(path: Path) -> dict:
+    """data/manual/colors.json: {"groups": {kód: {"color", "logo"}}, "parties": {id: {...}}}.
+    Chybějící soubor = žádné ruční údaje."""
+    if not path.exists():
+        return {"groups": {}, "parties": {}}
+    manual = json.loads(path.read_text(encoding="utf-8"))
+    require(manual, ["groups", "parties"], str(path))
+    for kind in ("groups", "parties"):
+        for key, entry in manual[kind].items():
+            if not isinstance(entry, dict):
+                raise FormatError(f"{path}: {kind}.{key} musí být objekt")
+            color = entry.get("color")
+            if color is not None and not COLOR_RE.match(color):
+                raise FormatError(f"{path}: {kind}.{key}.color '{color}' není ve tvaru #RRGGBB")
+            logo = entry.get("logo")
+            if logo is not None and not isinstance(logo, str):
+                raise FormatError(f"{path}: {kind}.{key}.logo musí být text nebo null")
+    return manual
+
+
+def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], assets: Path,
+                 manual: dict | None = None) -> list[dict]:
+    manual = (manual or {}).get("groups", {})
     mapping = derive_group_codes(meps, votes)
     names_cs = {g["code"]: g["name_cs"] for m in meps for g in m["groups"]}
     out = []
@@ -177,13 +206,14 @@ def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], 
             "short_label": g["short_label"],
             "label": g["label"],
             "name_cs": names_cs.get(ep_code),
-            "color": None,
-            "logo": find_logo(assets, "ep", g["code"]),
+            "color": manual.get(g["code"], {}).get("color"),
+            "logo": manual.get(g["code"], {}).get("logo") or find_logo(assets, "ep", g["code"]),
         })
     return out
 
 
-def build_parties(meps: list[dict], assets: Path) -> list[dict]:
+def build_parties(meps: list[dict], assets: Path, manual: dict | None = None) -> list[dict]:
+    manual = (manual or {}).get("parties", {})
     parties = {}
     for m in meps:
         for p in m["parties"]:
@@ -191,8 +221,8 @@ def build_parties(meps: list[dict], assets: Path) -> list[dict]:
                 "id": int(p["org_id"]),
                 "short_label": p["short_label"],
                 "name": p["name"],
-                "color": None,
-                "logo": find_logo(assets, "cz", p["org_id"]),
+                "color": manual.get(p["org_id"], {}).get("color"),
+                "logo": manual.get(p["org_id"], {}).get("logo") or find_logo(assets, "cz", p["org_id"]),
             }
     return [parties[k] for k in sorted(parties, key=int)]
 
@@ -228,8 +258,9 @@ def run(data_dir: Path, assets: Path) -> dict:
     write = lambda name, obj: (data_dir / name).write_text(
         json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     write("stats.json", stats)
-    write("groups.json", build_groups(index["groups"], meps, votes, assets))
-    write("parties.json", build_parties(meps, assets))
+    manual = load_manual(data_dir / "manual" / "colors.json")
+    write("groups.json", build_groups(index["groups"], meps, votes, assets, manual))
+    write("parties.json", build_parties(meps, assets, manual))
     return stats
 
 
