@@ -33,9 +33,9 @@ from vote_kinds import KIND_LABELS, classify, is_final
 RECENT_MAIN = 15
 LAST_SESSION_LIMIT = 50
 SHORT_MANDATE_DAYS = 60
-# Nová pole jsou na konci, aby starší web četl řádky beze změny.
+# Nová pole jsou na konci, aby starší web četl řádky beze změny. is_final a inverted web odvodí z vote_kind.
 SEARCH_FIELDS = ["id", "date", "month", "title", "reference", "description", "amendment_number",
-                 "result", "is_main", "cz", "vote_kind", "is_final", "inverted", "description_cs", "topics"]
+                 "result", "is_main", "cz", "vote_kind", "description_cs", "topics"]
 
 
 def current(items: list[dict], day: str) -> dict | None:
@@ -86,7 +86,7 @@ def build_search(votes: list[dict], meps_by_id: dict, topic_labels: dict | None 
         k = kind_fields(v)
         rows.append([v["id"], v["date"], v["date"][:7], vote_title(v), v.get("reference"), v.get("description"),
                      v.get("amendment_number"), v.get("result"), v["is_main"], cz_counts(v, meps_by_id),
-                     k["vote_kind"], k["is_final"], k["inverted"], k["description_cs"], sorted(topic_codes(v))])
+                     k["vote_kind"], k["description_cs"], sorted(topic_codes(v))])
         used |= topic_codes(v)
     labels = {c: topic_labels.get(c) or oeil.get(c) for c in sorted(used)}
     return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "kind_labels": KIND_LABELS,

@@ -88,8 +88,7 @@ def test_search_rows_and_cz_counts_only_in_mandate(data_dir):
     assert rows[2]["cz"] == [0, 1, 0, 0]   # poslanec 2 po konci mandátu se nepočítá
     assert rows[2]["month"] == "2024-10"
     # typ hlasování se dopočítá i pro starší soubory bez pole vote_kind
-    assert [(r["vote_kind"], r["is_final"], r["inverted"]) for r in rows] == [
-        ("final", True, False), ("other", False, False), ("final", True, False), ("rejection", False, True)]
+    assert [r["vote_kind"] for r in rows] == ["final", "other", "final", "rejection"]
     assert rows[3]["description_cs"] == "Návrh na zamítnutí"
     assert search["kind_labels"]["rejection"] == "návrh na zamítnutí"
     assert rows[0]["topics"] == ["3.70"] and search["topic_labels"] == {"3.70": "MOCK životní prostředí"}
