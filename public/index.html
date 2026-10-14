@@ -23,15 +23,30 @@
 
 <main>
   <h1>Čeští europoslanci v 10. volebním období</h1>
-  <p class="lead">Jak hlasují a jak často chybí čeští poslanci Evropského parlamentu od ustavující schůze 16. 7. 2024.
-    Počítají se jmenovitá hlasování v plénu. Klikni na sloupec pro seřazení, na jméno pro profil.</p>
+  <p class="lead">Jak hlasují čeští poslanci Evropského parlamentu od ustavující schůze 16. 7. 2024.
+    Počítají se jmenovitá hlasování v plénu. Čísla jsou fakta bez hodnocení, <a href="o-projektu.html#metodika">jak počítáme</a>.</p>
 
+  <section class="card session" id="session" aria-labelledby="session-h">
+    <h2 id="session-h">Poslední zasedání</h2>
+    <p class="loading">Načítám…</p>
+  </section>
+
+  <h2>Poslanci</h2>
   <div class="controls">
     <label><input type="checkbox" id="former"> zobrazit i bývalé poslance</label>
+    <label class="mobile-only">Řadit <select id="sort-select">
+      <option value="name:1">podle jména</option>
+      <option value="attendance:-1">podle docházky</option>
+      <option value="attendance_main:-1">podle docházky – hlavní</option>
+      <option value="group_loyalty:-1">podle loajality k frakci</option>
+      <option value="cz_agreement:-1">podle shody s Čechy</option>
+      <option value="group:1">podle frakce</option>
+      <option value="party:1">podle strany</option>
+    </select></label>
     <span class="muted small" id="period"></span>
   </div>
 
-  <div class="table-wrap">
+  <div class="table-wrap desktop-only">
     <table id="meps">
       <thead><tr>
         <th data-key="name" class="sticky-col"><button>Poslanec</button></th>
@@ -45,11 +60,14 @@
       <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody>
     </table>
   </div>
+  <div id="cards" class="mep-cards mobile-only" aria-live="polite"></div>
+
   <p class="source" id="source"></p>
   <p class="small muted">Docházka = podíl hlasování, ve kterých poslanec hlasoval, jen za dobu jeho mandátu.
     Loajalita a shoda jsou jen informativní: neříkají nic o kvalitě práce.
     <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
 </main>
+
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
@@ -59,20 +77,62 @@
 <script src="app.js"></script>
 <script>
 setNav("meps");
+
+function sessionBlock(s) {
+  const voteLink = (v) => `<a href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>`;
+  const splitItem = (v) => `<li>${voteLink(v)} <span class="small muted">· ${v.is_main ? "hlavní · " : ""}Češi ${v.cz[0]} pro, ${v.cz[1]} proti</span></li>`;
+  const splits = s.top_splits_main.length ? s.top_splits_main : s.top_splits;
+  return `<h2 id="session-h">Poslední zasedání: ${fmtDate(s.from)} – ${fmtDate(s.to)}</h2>
+    <div class="session-facts">
+      <div><strong>${fmtNum(s.votes)}</strong> jmenovitých hlasování</div>
+      <div><strong>${fmtNum(s.main)}</strong> hlavních (přijato ${fmtNum(s.adopted_main)})</div>
+      <div><strong>${fmtNum(s.split_count)}</strong>× se Češi rozdělili</div>
+      <div><strong>${fmtNum(s.close_count)}</strong> těsných, <strong>${fmtNum(s.decisive.length)}</strong> rozhodujících</div>
+    </div>
+    <h3>Kde se Češi nejvíc rozdělili${s.top_splits_main.length ? " (hlavní hlasování)" : ""}</h3>
+    <ul class="session-list">${splits.map(splitItem).join("") || '<li class="muted">Češi hlasovali jednotně.</li>'}</ul>
+    <h3>Rozhodující hlasování</h3>
+    ${s.decisive.length
+      ? `<ul class="session-list">${s.decisive.map((v) => `<li>${voteLink(v)} <span class="small muted">· bez Čechů by bylo ${RESULT_LABEL[v.alternative_result]}</span></li>`).join("")}</ul>`
+      : '<p class="small muted">Na tomto zasedání žádné hlasování nerozhodly hlasy Čechů.</p>'}
+    <p class="small"><a href="rozkol.html?v=last_session">Všechna rozdělená hlasování zasedání</a> ·
+      <a href="votes.html?m=${s.to.slice(0, 7)}">Všechna hlasování</a> · <a href="rozhodujici.html">Rozhodující hlasování za celé období</a></p>
+    <p class="source">Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(s.sources.votes?.release || "")}).</p>`;
+}
+
+function mepCard({ m, s, g, p, active }, groups, parties) {
+  const metric = (label, pair) => `<div><span class="small muted">${label}</span><br>${fmtPct(pct(pair))}
+    <span class="small muted">${pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])}` : ""}</span></div>`;
+  return `<article class="card mep-card ${active ? "" : "former"}">
+    <a href="mep.html?id=${m.id}" class="mep-card-head">
+      <img src="${photoUrl(m)}" alt="" loading="lazy">
+      <span><strong>${esc(displayName(m))}</strong>
+        ${active ? "" : `<span class="small muted"><br>mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</span>`}</span>
+    </a>
+    <div class="facts">${groupBadge(null, groups, g?.code)}
+      ${p ? partyLink(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">strana neuvedena</span>`}</div>
+    <div class="mep-card-metrics">
+      ${metric("Docházka", s.attendance)}${metric("Docházka – hlavní", s.attendance_main)}
+      ${metric("Loajalita k frakci", s.group_loyalty)}${metric("Shoda s Čechy", s.cz_agreement)}
+    </div>
+  </article>`;
+}
+
 (async () => {
   const tbody = document.querySelector("#meps tbody");
+  const sessionEl = document.getElementById("session");
   try {
     const [stats, groups, parties] = await Promise.all([
       getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
+    getJSON("session.json").then((s) => { sessionEl.innerHTML = sessionBlock(s); })
+      .catch((e) => showError(sessionEl, e));
     document.getElementById("source").innerHTML = sourceLine(stats);
     if (stats.period) {
       document.getElementById("period").textContent =
         `${fmtNum(stats.votes_total)} jmenovitých hlasování, ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}`;
     }
-    const rows = stats.meps.map((m) => {
-      return { m, s: m.total, g: m.group, p: m.party, active: isActive(m) };
-    });
+    const rows = stats.meps.map((m) => ({ m, s: m.total, g: m.group, p: m.party, active: isActive(m) }));
     const formerBox = document.getElementById("former");
     const visible = () => rows.filter((r) => formerBox.checked || r.active);
     const columns = {
@@ -84,6 +144,7 @@ setNav("meps");
       group_loyalty: (r) => pct(r.s.group_loyalty),
       cz_agreement: (r) => pct(r.s.cz_agreement),
     };
+    const cards = document.getElementById("cards");
     const render = (list) => {
       tbody.innerHTML = list.map(({ m, s, g, p, active }) => `
         <tr class="${active ? "" : "former"}">
@@ -99,9 +160,16 @@ setNav("meps");
           <td class="num">${pctCell(s.group_loyalty, "stejně jako většina frakce")}</td>
           <td class="num">${pctCell(s.cz_agreement, "stejně jako většina ostatních Čechů")}</td>
         </tr>`).join("");
+      cards.innerHTML = list.map((r) => mepCard(r, groups, parties)).join("");
     };
-    const refresh = sortable(document.getElementById("meps"), columns, visible, render, { key: "attendance", dir: -1 });
-    formerBox.addEventListener("change", refresh);
+    // Výchozí řazení abecedně, aby přehled nepůsobil jako žebříček.
+    const table = sortable(document.getElementById("meps"), columns, visible, render, { key: "name", dir: 1 });
+    formerBox.addEventListener("change", () => table.refresh());
+    const sortSelect = document.getElementById("sort-select");
+    sortSelect.addEventListener("change", () => {
+      const [key, dir] = sortSelect.value.split(":");
+      table.set(key, Number(dir));
+    });
   } catch (e) {
     showError(tbody.closest(".table-wrap"), e);
   }

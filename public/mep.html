@@ -44,15 +44,34 @@ function metricCard(label, pair, detail, sourceHref) {
 function monthlyChart(monthly) {
   const months = Object.keys(monthly);
   if (!months.length) return '<p class="muted">Žádná hlasování v době mandátu.</p>';
-  const cols = months.map((k) => {
-    const v = pct(monthly[k].attendance);
+  const cols = months.map((k, i) => {
     const pair = monthly[k].attendance;
-    return `<div class="col" title="${fmtMonth(k)}: ${fmtPct(v)} (${pair[0]} z ${pair[1]})">
-      <span class="${v === 0 ? "zero" : ""}" style="height:${v ? v * 100 : 0}%"></span></div>`;
+    const v = pct(pair);
+    const [y, m] = k.split("-");
+    const showYear = i === 0 || m === "01";
+    return `<button type="button" class="col" data-month="${k}" aria-label="${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování">
+      <span class="bar-fill ${v === 0 ? "zero" : ""}" style="height:${v ? v * 100 : 0}%"></span>
+      <span class="col-label">${Number(m)}${showYear ? `<br><b>${y.slice(2)}</b>` : ""}</span></button>`;
   }).join("");
   return `<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>
-    <div class="chart" role="img" aria-label="Docházka po měsících">${cols}</div></div>
-    <div class="chart-axis"><span>${fmtMonth(months[0])}</span><span>${fmtMonth(months[months.length - 1])}</span></div>`;
+    <div class="chart" role="group" aria-label="Docházka po měsících">${cols}</div></div>
+    <p class="chart-detail" aria-live="polite"></p>`;
+}
+
+// Hodnota vybraného měsíce pod grafem; klepnutí nebo najetí na sloupec ji změní (funguje i bez myši).
+function bindChart(root, monthly, mep) {
+  const detail = root.querySelector(".chart-detail");
+  const cols = [...root.querySelectorAll(".chart .col")];
+  if (!detail || !cols.length) return;
+  const show = (btn) => {
+    cols.forEach((c) => c.classList.toggle("active", c === btn));
+    const k = btn.dataset.month;
+    const a = monthly[k].attendance;
+    detail.innerHTML = `<strong>${fmtMonth(k)}</strong>: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtNum(a[0])} z ${fmtNum(a[1])} hlasování
+      (<strong>${fmtPct(pct(a))}</strong>)`;
+  };
+  cols.forEach((c) => { c.addEventListener("click", () => show(c)); c.addEventListener("mouseenter", () => show(c)); c.addEventListener("focus", () => show(c)); });
+  show(cols[cols.length - 1]);
 }
 
 // Karta souladu s výsledkem: poslanec vedle průměru jeho frakce ve stejných hlasováních.
@@ -156,6 +175,9 @@ function periodText(x) {
     const committeeLi = (c) => `<li><strong>${esc(c.code)}</strong> – ${esc(c.name_cs || c.name_en || "")}
       <div class="small muted">${ROLE_LABEL[c.role] || esc(c.role)} · ${COMMITTEE_TYPE[c.type] || esc(c.type)} · ${periodText(c)}</div></li>`;
 
+    const pairLi = ({ m, v }) => `<li style="display:flex;justify-content:space-between;gap:1rem;align-items:center">
+        <span><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a> ${groupBadge(null, groups, m.group?.code)}</span>
+        <span class="num">${fmtPct(pct(v))} <span class="small muted">(${fmtNum(v[0])} z ${fmtNum(v[1])})</span></span></li>`;
     const pairs = profile.pairwise
       .filter((x) => x.total >= 50)
       .map((x) => ({ m: x, v: [x.same, x.total] }));
@@ -209,8 +231,8 @@ function periodText(x) {
 
       <h2>Docházka po měsících</h2>
       <div class="card">${monthlyChart(profile.monthly)}
-        <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}. Červená čárka = v měsíci ${positionFor("DID_NOT_VOTE", mep)} ani jednou.
-        Najetím myší se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
+        <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok.
+        Červená čárka = v měsíci ${positionFor("DID_NOT_VOTE", mep)} ani jednou. Klepnutím na sloupec se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
 
       <div class="grid-2">
         <section>
@@ -265,16 +287,19 @@ function periodText(x) {
 
       <h2>S kým hlasuje stejně</h2>
       <div class="card">
-        <p class="small muted">Podíl hlasování, kde oba hlasovali a hlasovali stejně (jen dvojice s aspoň 50 společnými hlasováními).</p>
-        <ul class="plain">${pairs.map(({ m, v }) => `<li style="display:flex;justify-content:space-between;gap:1rem;align-items:center">
-            <span><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a> ${groupBadge(null, groups, m.group?.code)}</span>
-            <span class="num">${fmtPct(pct(v))} <span class="small muted">(${fmtNum(v[0])} z ${fmtNum(v[1])})</span></span></li>`).join("")
-          || '<li class="muted">Nedostatek společných hlasování.</li>'}</ul>
+        <p class="small muted">Podíl hlasování, kde oba hlasovali a hlasovali stejně (jen dvojice s aspoň 50 společnými hlasováními).
+          <a href="shoda.html?id=${mep.id}">Celá tabulka shody všech českých poslanců</a>.</p>
+        ${pairs.length ? `<div class="grid-2">
+          <div><h3>Nejčastěji stejně</h3><ul class="plain">${pairs.slice(0, 5).map(pairLi).join("")}</ul></div>
+          <div><h3>Nejméně často stejně</h3><ul class="plain">${pairs.slice(-5).reverse().map(pairLi).join("")}</ul></div>
+        </div>` : '<p class="muted">Nedostatek společných hlasování.</p>'}
       </div>
 
       <h2>Poslední hlavní hlasování</h2>
       <div id="recent" class="loading">Načítám…</div>
     `;
+
+    bindChart(main, profile.monthly, mep);
 
     const renderAgainst = () => {
       const el = document.getElementById("against");

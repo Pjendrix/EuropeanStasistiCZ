@@ -8,6 +8,8 @@ Výstup:
   data/splits.json          kde se Češi rozdělili (poslední zasedání, celé období)
   data/parties/index.json   přehled stran
   data/parties/{id}.json    stránka strany
+  data/session.json         shrnutí posledního zasedání pro úvodní stránku
+  data/agreement.json       matice shody mezi českými poslanci
 
 Nic nepočítá znovu: metriky bere ze stats.json, hlasování z měsíčních souborů.
 Měsíční soubory zůstávají pro detail hlasování.
@@ -174,6 +176,34 @@ def build_splits(stats: dict, votes_by_id: dict, meps_by_id: dict) -> dict:
     }
 
 
+def build_session(stats: dict, votes: list[dict], votes_by_id: dict, meps_by_id: dict, top: int = 5) -> dict:
+    """Shrnutí posledního zasedání: počty, kde se Češi nejvíc rozdělili, rozhodující a těsná hlasování."""
+    ls = stats["votes_analysis"]["splits"]["last_session"]
+    in_session = [v for v in votes if ls["from"] and ls["from"] <= v["date"] <= ls["to"]]
+    close_ids = set(stats["votes_analysis"]["close"]["ids"])
+    decisive = [d for d in stats["votes_analysis"]["decisive"] if d["id"] in {v["id"] for v in in_session}]
+    item = lambda vid, **kw: {**vote_summary(votes_by_id[vid], meps_by_id), **kw}
+    return {
+        "sources": stats["sources"], "from": ls["from"], "to": ls["to"],
+        "votes": len(in_session), "main": sum(v["is_main"] for v in in_session),
+        "adopted_main": sum(v["is_main"] and v.get("result") == "ADOPTED" for v in in_session),
+        "split_count": len(ls["split"]),
+        "close_count": sum(v["id"] in close_ids for v in in_session),
+        "top_splits": [item(x["id"], split=x["split"]) for x in ls["split"][:top]],
+        "top_splits_main": [item(x["id"], split=x["split"]) for x in ls["split"] if x["is_main"]][:top],
+        "decisive": [item(d["id"], alternative_result=d["alternative_result"]) for d in decisive],
+    }
+
+
+def build_agreement(meps: list[dict], stats: dict, day: str) -> dict:
+    """Matice shody: pro každou dvojici [stejně, oba hlasovali]."""
+    return {
+        "sources": stats["sources"], "definition": stats["definitions"].get("pairwise"),
+        "meps": [mep_summary(m, day) for m in sorted(meps, key=lambda m: m.get("sort_label") or m["name"])],
+        "matrix": {str(m["id"]): stats["meps"][str(m["id"])]["pairwise"] for m in meps},
+    }
+
+
 def build_parties_web(stats: dict, parties: list[dict], meps: list[dict], votes_by_id: dict, day: str) -> tuple:
     meps_by_id = {m["id"]: m for m in meps}
     index, pages = [], {}
@@ -226,12 +256,14 @@ def run(data_dir: Path, day: str) -> dict:
     own = json.loads(own_path.read_text(encoding="utf-8")) if own_path.exists() else None
 
     write_json(data_dir / "overview.json", build_overview(meps, stats, day))
+    write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     profiles_dir = data_dir / "meps"
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own))
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))
+        write_json(data_dir / "session.json", build_session(stats, votes, votes_by_id, by_id))
         party_index, party_pages = build_parties_web(stats, parties, meps, votes_by_id, day)
         write_json(data_dir / "parties" / "index.json", party_index)
         for pid, page in party_pages.items():

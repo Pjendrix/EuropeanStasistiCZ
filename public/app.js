@@ -224,7 +224,7 @@ function sortable(table, columns, rows, render, initial) {
     });
   });
   apply();
-  return apply;
+  return { refresh: apply, set: (key, dir) => { state = { key, dir }; apply(); } };
 }
 
 function sourceLine(stats) {
