@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>O projektu – EP Watch CZ</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
   (function () {
@@ -18,20 +16,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
-  <nav>
+  <nav aria-label="Hlavní navigace">
     <a href="index.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
-    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
+    <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 
-<main>
+<main id="main">
   <h1>O projektu</h1>
   <p class="lead">EP Watch CZ sleduje práci českých poslanců Evropského parlamentu v 10. volebním období
     (od ustavující schůze 16. 7. 2024). Ukazuje jen fakta z oficiálních dat, bez hodnocení.</p>
@@ -51,6 +49,11 @@
     <ul class="plain" id="definitions"><li class="loading">Načítám…</li></ul>
     <p class="small">Další pravidla:</p>
     <ul class="small">
+      <li><strong>Typ hlasování</strong> určují pevná pravidla podle popisu hlasování ve zdroji
+        (<a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/vote_kinds.py">vote_kinds.py</a>). U návrhu na zamítnutí
+        znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také
+        pevnými pravidly (<a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
+        co pravidla neznají, zůstává v originále.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
@@ -62,6 +65,34 @@
       <li>Čísla počítá deterministický skript
         <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
     </ul>
+  </div>
+
+  <h2 id="licence">Licence</h2>
+  <div class="card"><ul class="plain">
+    <li><strong>Kód</strong> (skripty a web): licence MIT, viz <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/LICENSE">LICENSE</a>.</li>
+    <li><strong>Data v adresáři <code>data/</code></strong>: odvozená z HowTheyVote.eu, proto pod licencí
+      <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a> (sdílet za stejných podmínek).
+      Údaje z EP Open Data jsou pod <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+      Viz <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/DATA_LICENSE.md">DATA_LICENSE.md</a>.</li>
+    <li><strong>Portréty</strong>: © European Union – Source: EP.</li>
+    <li><strong>Písmo</strong> Plus Jakarta Sans: SIL Open Font License 1.1, hostované přímo na tomto webu (žádné Google Fonts).</li>
+    <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
+  </ul></div>
+
+  <h2 id="opravy">Opravy a změny metodiky</h2>
+  <div class="card"><ul class="plain">
+    <li><strong>14. 10. 2026</strong> – Každé hlasování má typ (závěrečné, prozatímní dohoda s Radou, návrh na zamítnutí, mandát k jednání,
+      naléhavý postup, pozměňovací návrh, dílčí hlasování). „Hlavní“ metriky (docházka, soulad s výsledkem, jednotnost strany) se nově
+      počítají jen ze závěrečných hlasování; dřív zahrnovaly i návrhy na zamítnutí, mandáty a naléhavý postup. U vlastní práce poslanců se
+      přijatý návrh na zamítnutí ukazuje jako zamítnutí textu. „Rozhodující hlasování“ přejmenována na „Těsná hlasování, kde rozhodly
+      české hlasy“ a místo počtu rozdělených hlasování ukazujeme, jak často hlasují Češi jednotně.</li>
+  </ul></div>
+
+  <h2 id="kontakt">Kontakt a nahlášení chyby</h2>
+  <div class="card">
+    <p>Našli jste chybu v datech nebo ve výpočtu? Napište ji jako
+      <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/issues">issue na GitHubu</a> (s odkazem na stránku a hlasování).
+      Web spravuje autor repozitáře <a href="https://github.com/Pjendrix">Pjendrix</a>; celý kód i data jsou veřejné.</p>
   </div>
 
   <h2>Loga a barvy</h2>
@@ -80,11 +111,11 @@ setNav("about");
   try {
     const stats = await getJSON("overview.json");
     const names = {
-      attendance: "Docházka", attendance_main: "Docházka – hlavní hlasování", group_loyalty: "Loajalita k frakci",
+      attendance: "Docházka", attendance_main: "Docházka – závěrečná hlasování", vote_kind: "Typ hlasování", group_loyalty: "Loajalita k frakci",
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
       outcome_agreement: "Soulad s výsledkem", group_outcome_agreement: "Soulad s výsledkem – průměr frakce",
-      close_votes: "Těsná hlasování", decisive_votes: "Rozhodující hlasování", against_group: "Hlasování proti frakci",
-      cz_split: "Kde se Češi rozdělili", party_cohesion: "Jednotnost strany", topics: "Témata", own_work: "Vlastní práce",
+      close_votes: "Těsná hlasování", decisive_votes: "Kde rozhodly české hlasy", against_group: "Hlasování proti frakci",
+      cz_split: "Kde se Češi rozdělili", cz_unity: "Češi jednotně", party_cohesion: "Jednotnost strany", topics: "Témata", own_work: "Vlastní práce",
     };
     el.innerHTML = Object.entries(stats.definitions)
       .map(([k, text]) => `<li><strong>${esc(names[k] || k)}</strong>: ${esc(text)}</li>`).join("");
