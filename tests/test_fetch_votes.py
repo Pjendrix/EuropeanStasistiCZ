@@ -28,7 +28,7 @@ def test_run_filters_term_and_country(csv_dir, tmp_path):
     months = fv.run(csv_dir, out, release="MOCK_TAG")
 
     assert sorted(months) == ["2024-07", "2024-09"]
-    assert sorted(p.name for p in out.iterdir()) == ["2024-07.json", "2024-09.json"]
+    assert sorted(p.name for p in out.iterdir()) == ["2024-07.json", "2024-09.json", "index.json"]
 
     july = json.loads((out / "2024-07.json").read_text(encoding="utf-8"))
     assert july["source"]["release"] == "MOCK_TAG"
@@ -115,3 +115,19 @@ def test_resolve_release_tag():
     loc = "https://github.com/HowTheyVote/data/releases/download/2026-10-10/votes.csv.gz"
     assert fv.resolve_release_tag(FakeSession(FakeResponse(302, loc))) == "2026-10-10"
     assert fv.resolve_release_tag(FakeSession(FakeResponse(200, None))) is None
+
+
+def test_group_counts_cover_all_countries(csv_dir, tmp_path):
+    months = fv.run(csv_dir, tmp_path / "out", release=None)
+    v2 = months["2024-07"]["votes"][0]
+    # [pro, proti, zdržel se, nehlasoval]; SD má jen slovenského poslance
+    assert v2["group_counts"] == {"EPP": [1, 0, 0, 0], "PFE": [0, 0, 0, 1], "SD": [0, 1, 0, 0]}
+
+
+def test_index_lists_months_and_used_groups(csv_dir, tmp_path):
+    out = tmp_path / "out"
+    fv.run(csv_dir, out, release="MOCK_TAG")
+    index = json.loads((out / "index.json").read_text(encoding="utf-8"))
+    assert index["months"] == [{"month": "2024-07", "votes": 1}, {"month": "2024-09", "votes": 2}]
+    assert [g["code"] for g in index["groups"]] == ["EPP", "NI", "PFE", "SD"]  # GREEN_EFA nehlasovali
+    assert index["source"]["release"] == "MOCK_TAG"
