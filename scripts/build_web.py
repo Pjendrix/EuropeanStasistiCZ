@@ -116,7 +116,7 @@ def topic_rows(topics_stats: dict, topics_meta: list[dict]) -> list[dict]:
 
 
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
-                  votes_by_id: dict | None = None) -> dict:
+                  votes_by_id: dict | None = None, own: dict | None = None) -> dict:
     st = stats["meps"][str(mep["id"])]
     meps_by_id = {m["id"]: m for m in meps}
     votes_by_id = votes_by_id or {v["id"]: v for v in votes}
@@ -140,6 +140,11 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
         "decisive": [with_vote(x) for x in st.get("decisive", [])],
         "topics": topic_rows(st.get("topics", {}), stats.get("topics", [])),
+        "own_work": None if own is None else {
+            "source": own["source"], "updated": own["updated"], "complete": own["complete"],
+            "type_labels": own["type_labels"],
+            **own["meps"].get(str(mep["id"]), {"summary": {}, "items": []}),
+        },
     }
 
 
@@ -217,11 +222,13 @@ def run(data_dir: Path, day: str) -> dict:
     by_id = {m["id"]: m for m in meps}
     votes_by_id = {v["id"]: v for v in votes}
     parties = json.loads((data_dir / "parties.json").read_text(encoding="utf-8"))
+    own_path = data_dir / "own_work.json"
+    own = json.loads(own_path.read_text(encoding="utf-8")) if own_path.exists() else None
 
     write_json(data_dir / "overview.json", build_overview(meps, stats, day))
     profiles_dir = data_dir / "meps"
     for m in meps:
-        write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id))
+        write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own))
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))
