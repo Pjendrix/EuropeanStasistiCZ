@@ -11,6 +11,20 @@ const POSITION_LABEL = {
   ABSTENTION: "zdržel/a se",
   DID_NOT_VOTE: "nehlasoval/a",
 };
+// Tvar podle pohlaví z EP (gender MALE / FEMALE); když chybí, obecný tvar „hlasoval/a“.
+function byGender(mep, male, female) {
+  if (mep?.gender === "FEMALE") return female;
+  if (mep?.gender === "MALE") return male;
+  return female.startsWith(male) ? `${male}/${female.slice(male.length)}` : `${male} / ${female}`;
+}
+
+// Volba konkrétního poslance v jeho rodě.
+function positionFor(position, mep) {
+  if (position === "ABSTENTION") return byGender(mep, "zdržel se", "zdržela se");
+  if (position === "DID_NOT_VOTE") return byGender(mep, "nehlasoval", "nehlasovala");
+  return POSITION_LABEL[position];
+}
+
 const RESULT_LABEL = { ADOPTED: "přijato", REJECTED: "zamítnuto" };
 const ROLE_LABEL = {
   MEMBER: "člen/ka",

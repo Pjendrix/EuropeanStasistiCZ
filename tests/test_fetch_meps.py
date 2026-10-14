@@ -26,6 +26,7 @@ def test_parse_mep_term10_only(person, get_body):
     m = fm.parse_mep(person, get_body)
     assert m["id"] == 1
     assert m["name"] == "MOCK Jana NOVÁKOVÁ"
+    assert m["gender"] == "FEMALE"
     assert m["photo_url"] == "https://www.europarl.europa.eu/mepphoto/1.jpg"
     assert m["photo_credit"] == "© European Union – Source: EP"
     # mandát z 9. období se nebere
@@ -47,6 +48,11 @@ def test_missing_photo_is_null(person, get_body):
     del person["img"]
     m = fm.parse_mep(person, get_body)
     assert m["photo_url"] is None and m["photo_credit"] is None
+
+
+def test_missing_gender_is_null(person, get_body):
+    del person["hasGender"]
+    assert fm.parse_mep(person, get_body)["gender"] is None
 
 
 def test_missing_party_stays_empty(person, get_body):
