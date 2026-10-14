@@ -1,0 +1,301 @@
+"""Stáhne jmenovitá hlasování z HowTheyVote exportu a uloží pozice českých poslanců.
+
+Zdroj: https://github.com/HowTheyVote/data (ODbL), stabilní odkazy latest/download/*.csv.gz.
+Výstup: data/votes/YYYY-MM.json, jedno hlasování = název, datum, výsledek, témata,
+is_main a pozice každého českého poslance (frakce a strana k datu hlasování).
+
+Použití:
+    python scripts/fetch_votes.py                     # stáhne nejnovější export
+    python scripts/fetch_votes.py --csv-dir cesta/    # použije už stažené CSV
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import sys
+from pathlib import Path
+
+import pandas as pd
+import requests
+
+BASE_URL = "https://github.com/HowTheyVote/data/releases/latest/download"
+HTV_VOTE_URL = "https://howtheyvote.eu/votes/{id}"
+TERM_START = "2024-07-16"
+COUNTRY = "CZE"
+
+POSITIONS = {"FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"}
+RESULTS = {"ADOPTED", "REJECTED"}
+
+# Očekávané sloupce každé tabulky. Chybějící sloupec = změna formátu = chyba.
+TABLES = {
+    "votes": [
+        "id", "timestamp", "display_title", "reference", "description",
+        "amendment_subject", "amendment_number", "is_main", "procedure_reference",
+        "procedure_title", "procedure_type", "procedure_stage", "count_for",
+        "count_against", "count_abstention", "count_did_not_vote", "result",
+        "texts_adopted_reference",
+    ],
+    "member_votes": [
+        "vote_id", "member_id", "position", "country_code", "group_code",
+        "group_short_label", "national_party_id", "national_party_short_label",
+    ],
+    "eurovoc_concepts": ["id", "label"],
+    "eurovoc_concept_votes": ["vote_id", "eurovoc_concept_id"],
+    "oeil_subjects": ["code", "label"],
+    "oeil_subject_votes": ["vote_id", "oeil_subject_code"],
+    "geo_areas": ["code", "label", "iso_alpha_2"],
+    "geo_area_votes": ["vote_id", "geo_area_code"],
+    "responsible_committee_votes": ["vote_id", "committee_code"],
+}
+
+
+class FormatError(RuntimeError):
+    """Vstupní data nemají očekávaný formát."""
+
+
+def check_columns(columns, table: str) -> None:
+    missing = [c for c in TABLES[table] if c not in set(columns)]
+    if missing:
+        raise FormatError(
+            f"{table}.csv: chybí sloupce {missing}. Formát HowTheyVote exportu se "
+            f"nejspíš změnil, zkontroluj https://github.com/HowTheyVote/data/releases"
+        )
+
+
+def resolve_release_tag(session: requests.Session) -> str | None:
+    """Zjistí tag releasu, na který ukazuje latest/download (z přesměrování)."""
+    r = session.head(f"{BASE_URL}/votes.csv.gz", allow_redirects=False, timeout=30)
+    location = r.headers.get("Location", "")
+    parts = location.split("/releases/download/")
+    if r.status_code not in (301, 302) or len(parts) != 2:
+        return None
+    return parts[1].split("/")[0]
+
+
+def download(dest: Path) -> str | None:
+    dest.mkdir(parents=True, exist_ok=True)
+    with requests.Session() as s:
+        tag = resolve_release_tag(s)
+        for table in TABLES:
+            url = f"{BASE_URL}/{table}.csv.gz"
+            print(f"stahuji {url}", file=sys.stderr)
+            with s.get(url, stream=True, timeout=120) as r:
+                r.raise_for_status()
+                with open(dest / f"{table}.csv.gz", "wb") as f:
+                    for chunk in r.iter_content(1 << 20):
+                        f.write(chunk)
+    return tag
+
+
+def read_table(csv_dir: Path, table: str, **kwargs) -> pd.DataFrame:
+    path = csv_dir / f"{table}.csv.gz"
+    if not path.exists():
+        path = csv_dir / f"{table}.csv"
+    if not path.exists():
+        raise FormatError(f"chybí soubor {table}.csv(.gz) v {csv_dir}")
+    df = pd.read_csv(path, dtype=str, keep_default_na=False, na_values=[""], **kwargs)
+    check_columns(df.columns, table)
+    return df
+
+
+def load_votes(csv_dir: Path, since: str = TERM_START) -> pd.DataFrame:
+    v = read_table(csv_dir, "votes")
+    ts = pd.to_datetime(v["timestamp"], format="ISO8601", errors="coerce")
+    if ts.isna().any():
+        bad = v.loc[ts.isna(), "timestamp"].head(3).tolist()
+        raise FormatError(f"votes.csv: neplatný timestamp, např. {bad}")
+    v = v[ts >= pd.Timestamp(since)].copy()
+    v["id"] = v["id"].astype(int)
+    if not v["id"].is_unique:
+        raise FormatError("votes.csv: duplicitní id hlasování")
+    bad_main = set(v["is_main"].dropna()) - {"True", "False"}
+    if bad_main or v["is_main"].isna().any():
+        raise FormatError(f"votes.csv: neočekávaná hodnota is_main {bad_main or 'prázdná'}")
+    v["is_main"] = v["is_main"] == "True"
+    bad_res = set(v["result"].dropna()) - RESULTS
+    if bad_res:
+        raise FormatError(f"votes.csv: neočekávaný výsledek {sorted(bad_res)}")
+    for c in ("count_for", "count_against", "count_abstention", "count_did_not_vote"):
+        v[c] = pd.to_numeric(v[c], errors="raise").astype(int)
+    return v.sort_values(["timestamp", "id"])
+
+
+def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY) -> pd.DataFrame:
+    """Načte member_votes po částech a ponechá jen daný stát a daná hlasování."""
+    path = csv_dir / "member_votes.csv.gz"
+    if not path.exists():
+        path = csv_dir / "member_votes.csv"
+    if not path.exists():
+        raise FormatError(f"chybí soubor member_votes.csv(.gz) v {csv_dir}")
+    parts = []
+    reader = pd.read_csv(path, dtype=str, keep_default_na=False, na_values=[""], chunksize=1_000_000)
+    for chunk in reader:
+        check_columns(chunk.columns, "member_votes")
+        chunk = chunk[chunk["country_code"] == country]
+        chunk = chunk[chunk["vote_id"].astype(int).isin(vote_ids)]
+        parts.append(chunk)
+    mv = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=TABLES["member_votes"])
+    bad = set(mv["position"].dropna()) - POSITIONS
+    if bad or mv["position"].isna().any():
+        raise FormatError(f"member_votes.csv: neočekávaná pozice {sorted(bad) or 'prázdná'}")
+    if mv.duplicated(["vote_id", "member_id"]).any():
+        raise FormatError("member_votes.csv: duplicitní záznam poslanec × hlasování")
+    mv["vote_id"] = mv["vote_id"].astype(int)
+    mv["member_id"] = mv["member_id"].astype(int)
+    return mv
+
+
+def load_topics(csv_dir: Path, vote_ids: set[int]) -> dict[int, dict[str, list]]:
+    """Vrátí {vote_id: {"eurovoc": [...], "oeil": [...], "geo": [...], "committees": [...]}}."""
+    topics: dict[int, dict[str, list]] = {}
+
+    def add(links: pd.DataFrame, key_col: str, kind: str, labels: dict | None) -> None:
+        links = links[links["vote_id"].astype(int).isin(vote_ids)]
+        for vid, code in zip(links["vote_id"].astype(int), links[key_col]):
+            item = code if labels is None else {"code": code, "label": labels.get(code)}
+            topics.setdefault(vid, {}).setdefault(kind, []).append(item)
+
+    ev = read_table(csv_dir, "eurovoc_concepts")
+    add(read_table(csv_dir, "eurovoc_concept_votes"), "eurovoc_concept_id", "eurovoc",
+        dict(zip(ev["id"], ev["label"])))
+    oe = read_table(csv_dir, "oeil_subjects")
+    add(read_table(csv_dir, "oeil_subject_votes"), "oeil_subject_code", "oeil",
+        dict(zip(oe["code"], oe["label"])))
+    geo = read_table(csv_dir, "geo_areas")
+    add(read_table(csv_dir, "geo_area_votes"), "geo_area_code", "geo",
+        dict(zip(geo["code"], geo["label"])))
+    add(read_table(csv_dir, "responsible_committee_votes"), "committee_code", "committees", None)
+
+    for t in topics.values():
+        for kind, items in t.items():
+            t[kind] = sorted(items, key=lambda x: x if isinstance(x, str) else x["code"])
+    return topics
+
+
+def _clean(value):
+    """NaN/prázdné hodnoty z pandas -> None (v JSONu null)."""
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        return None
+    return value
+
+
+def _int_or_none(value):
+    value = _clean(value)
+    return None if value is None else int(value)
+
+
+def build_months(votes: pd.DataFrame, mv: pd.DataFrame, topics: dict, release: str | None) -> dict[str, dict]:
+    by_vote = {vid: g.sort_values("member_id") for vid, g in mv.groupby("vote_id")}
+    months: dict[str, dict] = {}
+    for row in votes.itertuples(index=False):
+        month = row.timestamp[:7]
+        cz = by_vote.get(row.id)
+        positions = [] if cz is None else [
+            {
+                "member_id": int(p.member_id),
+                "position": p.position,
+                "group_code": _clean(p.group_code),
+                "national_party_id": _int_or_none(p.national_party_id),
+                "national_party": _clean(p.national_party_short_label),
+            }
+            for p in cz.itertuples(index=False)
+        ]
+        t = topics.get(row.id, {})
+        vote = {
+            "id": int(row.id),
+            "timestamp": row.timestamp,
+            "date": row.timestamp[:10],
+            "title": _clean(row.display_title),
+            "reference": _clean(row.reference),
+            "description": _clean(row.description),
+            "amendment_subject": _clean(row.amendment_subject),
+            "amendment_number": _clean(row.amendment_number),
+            "is_main": bool(row.is_main),
+            "procedure": {
+                "reference": _clean(row.procedure_reference),
+                "title": _clean(row.procedure_title),
+                "type": _clean(row.procedure_type),
+                "stage": _clean(row.procedure_stage),
+            },
+            "texts_adopted_reference": _clean(row.texts_adopted_reference),
+            "result": _clean(row.result),
+            "counts": {
+                "for": int(row.count_for),
+                "against": int(row.count_against),
+                "abstention": int(row.count_abstention),
+                "did_not_vote": int(row.count_did_not_vote),
+            },
+            "topics": {
+                "eurovoc": t.get("eurovoc", []),
+                "oeil": t.get("oeil", []),
+                "geo": t.get("geo", []),
+                "committees": t.get("committees", []),
+            },
+            "source_url": HTV_VOTE_URL.format(id=int(row.id)),
+            "cz_positions": positions,
+        }
+        months.setdefault(month, {
+            "month": month,
+            "source": {
+                "name": "HowTheyVote.eu",
+                "url": "https://github.com/HowTheyVote/data",
+                "license": "ODbL",
+                "release": release,
+            },
+            "votes": [],
+        })["votes"].append(vote)
+    return months
+
+
+def write_months(months: dict[str, dict], out_dir: Path) -> None:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for month, payload in sorted(months.items()):
+        path = out_dir / f"{month}.json"
+        # Jedno hlasování na řádek: malé soubory a čitelné diffy v gitu.
+        dump = lambda x: json.dumps(x, ensure_ascii=False, separators=(",", ":"))
+        head = {k: v for k, v in payload.items() if k != "votes"}
+        lines = [dump(v) for v in payload["votes"]]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(dump(head)[:-1] + ',"votes":[\n' + ",\n".join(lines) + "\n]}\n")
+
+
+def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_START) -> dict[str, dict]:
+    votes = load_votes(csv_dir, since)
+    ids = set(votes["id"])
+    mv = load_member_votes(csv_dir, ids)
+    topics = load_topics(csv_dir, ids)
+    months = build_months(votes, mv, topics, release)
+    write_months(months, out_dir)
+    print(
+        f"hlasování: {len(votes)} (hlavních {int(votes['is_main'].sum())}), "
+        f"CZ pozic: {len(mv)}, poslanců: {mv['member_id'].nunique()}, měsíců: {len(months)}",
+        file=sys.stderr,
+    )
+    return months
+
+
+def main(argv=None) -> int:
+    root = Path(__file__).resolve().parent.parent
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--csv-dir", type=Path, help="adresář s už staženými CSV (nic se nestahuje)")
+    p.add_argument("--release", help="tag releasu pro --csv-dir (jinak null)")
+    p.add_argument("--cache-dir", type=Path, default=root / ".cache" / "htv")
+    p.add_argument("--out-dir", type=Path, default=root / "data" / "votes")
+    args = p.parse_args(argv)
+
+    if args.csv_dir:
+        csv_dir, release = args.csv_dir, args.release
+    else:
+        csv_dir, release = args.cache_dir, download(args.cache_dir)
+    try:
+        run(csv_dir, args.out_dir, release)
+    except FormatError as e:
+        print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
