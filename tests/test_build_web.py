@@ -21,8 +21,9 @@ def mep(i, end=None, group="PPE", party="20"):
 def vote(vid, date, positions, is_main=True, title="MOCK vote"):
     return {"id": vid, "date": date, "title": title, "reference": "MOCK-REF", "description": None,
             "amendment_number": None, "result": "ADOPTED", "is_main": is_main, "procedure": {},
+            "counts": {"for": 300, "against": 299, "abstention": 0, "did_not_vote": 0},
             "group_counts": {}, "cz_positions": [
-                {"member_id": i, "position": p, "group_code": "EPP"} for i, p in positions]}
+                {"member_id": i, "position": p, "group_code": "EPP", "national_party_id": 20} for i, p in positions]}
 
 
 def metrics():
@@ -38,9 +39,28 @@ def data_dir(tmp_path):
     (d / "meps.json").write_text(json.dumps({"meps": meps}), encoding="utf-8")
     stats = {"sources": {"votes": {"release": "MOCK"}}, "period": {"from": "2024-09-16", "to": "2024-10-16"},
              "votes_total": 3, "definitions": {"attendance": "MOCK"},
-             "meps": {"1": {"total": metrics(), "monthly": {"2024-09": metrics()}, "pairwise": {"2": [1, 1]}},
-                      "2": {"total": metrics(), "monthly": {}, "pairwise": {"1": [1, 1]}}}}
+             "meps": {"1": {"total": metrics(), "monthly": {"2024-09": metrics()}, "pairwise": {"2": [1, 1]},
+                            "topics": {"3.70": metrics()},
+                            "against_group": {"count": 1, "count_main": 0, "recent": [
+                                {"id": 2, "is_main": False, "position": "AGAINST", "group_code": "EPP",
+                                 "group_majority": "FOR"}], "recent_main": []},
+                            "decisive": [{"id": 1, "position": "FOR"}]},
+                      "2": {"total": metrics(), "monthly": {}, "pairwise": {"1": [1, 1]}}},
+             "topics": [{"code": "3.70", "label": "MOCK environment", "votes": 1}],
+             "parties": {"20": {"total": metrics(), "cohesion": [1, 2], "cohesion_main": [1, 1],
+                                "splits": {"count": 1, "count_main": 0, "recent": [2], "recent_main": []}}},
+             "votes_analysis": {
+                 "close": {"count": 3, "count_main": 2, "ids": [1, 2, 3]},
+                 "decisive": [{"id": 1, "alternative_result": "REJECTED"}],
+                 "splits": {"count": 1, "count_main": 0,
+                            "all": [{"id": 2, "date": "2024-09-17", "is_main": False, "split": 0.5, "for": 1, "against": 1}],
+                            "main": [],
+                            "last_session": {"from": "2024-10-16", "to": "2024-10-16", "votes": 1, "split": []}}}}
     (d / "stats.json").write_text(json.dumps(stats), encoding="utf-8")
+    (d / "parties.json").write_text(json.dumps([
+        {"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "independent": False, "color": None, "logo": None},
+        {"id": 99, "short_label": "Ind.", "name": "Independent", "independent": True, "color": None, "logo": None},
+    ]), encoding="utf-8")
     votes = {
         "2024-09": [vote(1, "2024-09-16", [(1, "FOR"), (2, "FOR")]),
                     vote(2, "2024-09-17", [(1, "DID_NOT_VOTE"), (2, "AGAINST")], is_main=False, title=None)],
@@ -103,3 +123,29 @@ def test_current_membership():
     assert bw.current(items, "2025-06-01") is items[1]
     assert bw.current([{"start": "2024-07-16", "end": "2024-07-31"}], "2025-01-01")["end"] == "2024-07-31"
     assert bw.current([], "2025-01-01") is None
+
+
+def test_profile_phase_c_sections(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    prof = json.loads((data_dir / "meps" / "1.json").read_text(encoding="utf-8"))
+    assert prof["against_group"]["count"] == 1
+    assert prof["against_group"]["recent"][0]["title"] == "MOCK-REF"  # hlasování 2 nemá název
+    assert prof["against_group"]["recent"][0]["group_majority"] == "FOR"
+    assert [(d["id"], d["position"]) for d in prof["decisive"]] == [(1, "FOR")]
+    assert prof["topics"][0]["code"] == "3.70" and prof["topics"][0]["label"] == "MOCK environment"
+
+
+def test_decisive_splits_and_parties_files(data_dir):
+    bw.run(data_dir, "2024-11-01")
+    dec = json.loads((data_dir / "decisive.json").read_text(encoding="utf-8"))
+    assert dec["close_count"] == 3 and dec["votes"][0]["alternative_result"] == "REJECTED"
+    assert [p["member_id"] for p in dec["votes"][0]["positions"]] == [1, 2]
+    sp = json.loads((data_dir / "splits.json").read_text(encoding="utf-8"))
+    assert sp["all"][0]["id"] == 2 and sp["all"][0]["split"] == 0.5
+    assert sp["all"][0]["positions"] == {"1": "DID_NOT_VOTE", "2": "AGAINST"}
+    idx = json.loads((data_dir / "parties" / "index.json").read_text(encoding="utf-8"))
+    assert [p["id"] for p in idx["parties"]] == [20]  # nezávislí nejsou strana
+    page = json.loads((data_dir / "parties" / "20.json").read_text(encoding="utf-8"))
+    assert page["members"] == 2 and page["cohesion"] == [1, 2]
+    assert page["splits"][0]["id"] == 2 and len(page["splits"][0]["positions"]) == 2
+    assert not (data_dir / "parties" / "99.json").exists()

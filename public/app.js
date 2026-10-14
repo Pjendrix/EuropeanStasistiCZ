@@ -154,6 +154,13 @@ function partyBadge(id, label, parties) {
   return `<span class="badge" style="--badge-bg:${bg}; --badge-fg:#1b1f24" title="${esc(p ? p.name : text)}">${logo}${esc(text)}</span>`;
 }
 
+// Štítek strany s odkazem na stránku strany (nezávislí stránku nemají).
+function partyLink(id, label, parties) {
+  const p = parties.find((x) => String(x.id) === String(id));
+  const badge = partyBadge(id, label, parties);
+  return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
+}
+
 function photoUrl(mep) {
   return mep.photo_url ? `assets/photos/${mep.id}.jpg` : "";
 }
@@ -227,3 +234,34 @@ function sourceLine(stats) {
     <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>,
     <a href="o-projektu.html#metodika">metodika</a>.`;
 }
+
+// --- sdílené části pro seznamy hlasování -------------------------------------
+
+// Řádek tabulky hlasování: datum, název s odkazem, výsledek, rozložení Čechů. extra = další buňky.
+function voteRow(v, extra = "") {
+  return `<tr>
+    <td class="num">${fmtDate(v.date)}</td>
+    <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+      <div class="small muted">${v.is_main ? '<span class="tag">hlavní</span>' : ""}${esc(voteSubtitle(v))}</div></td>
+    ${extra}
+    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td>
+  </tr>`;
+}
+
+function czCell(cz) {
+  return `<td>${splitBar(cz)}<div class="small muted">${cz.join(" / ")}</div></td>`;
+}
+
+// Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].
+function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]) {
+  const list = Array.isArray(positions) ? positions : Object.entries(positions).map(([id, position]) => ({ member_id: Number(id), position }));
+  return keys.map((k) => {
+    const names = list.filter((p) => p.position === k)
+      .map((p) => mepsById[p.member_id])
+      .filter(Boolean)
+      .sort((a, b) => displayName(a).localeCompare(displayName(b), "cs"))
+      .map((m) => `<a href="mep.html?id=${m.id}">${esc(displayName(m))}</a>`);
+    return names.length ? `<div class="small"><span class="pos pos-${k}">${POSITION_LABEL[k]} (${names.length}):</span> ${names.join(", ")}</div>` : "";
+  }).join("");
+}
+

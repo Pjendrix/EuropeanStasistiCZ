@@ -1,0 +1,255 @@
+{
+ "id": 7034,
+ "short_label": "AUTO",
+ "name": "Motoristé sobě",
+ "independent": false,
+ "color": null,
+ "logo": null,
+ "members": 2,
+ "total": {
+  "attendance": [
+   3403,
+   3611
+  ],
+  "attendance_main": [
+   388,
+   407
+  ],
+  "group_loyalty": [
+   2672,
+   3389
+  ],
+  "group_loyalty_main": [
+   270,
+   387
+  ],
+  "cz_agreement": [
+   2334,
+   3255
+  ],
+  "outcome": [
+   1252,
+   3086
+  ],
+  "outcome_main": [
+   184,
+   331
+  ],
+  "outcome_close": [
+   43,
+   88
+  ],
+  "group_outcome": [
+   84645,
+   206855
+  ],
+  "group_outcome_main": [
+   11787,
+   21603
+  ],
+  "positions": {
+   "FOR": 1758,
+   "AGAINST": 1329,
+   "ABSTENTION": 316,
+   "DID_NOT_VOTE": 208
+  }
+ },
+ "cohesion": [
+  0,
+  0
+ ],
+ "cohesion_main": [
+  0,
+  0
+ ],
+ "splits_count": 0,
+ "splits_count_main": 0,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+ },
+ "member_list": [
+  {
+   "id": 256850,
+   "name": "Filip TUREK",
+   "given_name": "Filip",
+   "family_name": "Turek",
+   "sort_label": "TUREKF",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256850.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-10-03",
+     "mandate_id": "16895"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-10-03"
+    }
+   ],
+   "total": {
+    "attendance": [
+     2100,
+     2299
+    ],
+    "attendance_main": [
+     233,
+     250
+    ],
+    "group_loyalty": [
+     1575,
+     2092
+    ],
+    "group_loyalty_main": [
+     176,
+     233
+    ],
+    "cz_agreement": [
+     1364,
+     2010
+    ],
+    "outcome": [
+     708,
+     1961
+    ],
+    "outcome_main": [
+     99,
+     215
+    ],
+    "outcome_close": [
+     30,
+     61
+    ],
+    "group_outcome": [
+     50978,
+     132729
+    ],
+    "group_outcome_main": [
+     7267,
+     14334
+    ],
+    "positions": {
+     "FOR": 1087,
+     "AGAINST": 875,
+     "ABSTENTION": 138,
+     "DID_NOT_VOTE": 199
+    }
+   }
+  },
+  {
+   "id": 272024,
+   "name": "Antonín STANĚK",
+   "given_name": "Antonín",
+   "family_name": "Staněk",
+   "sort_label": "STANEKA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/272024.jpg",
+   "mandates": [
+    {
+     "start": "2025-10-04",
+     "end": null,
+     "mandate_id": "17563"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "party_periods": [
+    {
+     "start": "2026-05-20",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     3705,
+     3730
+    ],
+    "attendance_main": [
+     404,
+     406
+    ],
+    "group_loyalty": [
+     3134,
+     3692
+    ],
+    "group_loyalty_main": [
+     261,
+     403
+    ],
+    "cz_agreement": [
+     2728,
+     3570
+    ],
+    "outcome": [
+     1408,
+     3202
+    ],
+    "outcome_main": [
+     206,
+     301
+    ],
+    "outcome_close": [
+     33,
+     70
+    ],
+    "group_outcome": [
+     89702,
+     216441
+    ],
+    "group_outcome_main": [
+     11792,
+     19529
+    ],
+    "positions": {
+     "FOR": 1825,
+     "AGAINST": 1377,
+     "ABSTENTION": 503,
+     "DID_NOT_VOTE": 25
+    }
+   }
+  }
+ ],
+ "splits": [],
+ "splits_main": []
+}

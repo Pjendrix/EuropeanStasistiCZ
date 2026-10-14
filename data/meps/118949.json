@@ -100,7 +100,15 @@
   "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
-  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně."
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "total": {
   "attendance": [
@@ -115,9 +123,33 @@
    859,
    1184
   ],
+  "group_loyalty_main": [
+   71,
+   122
+  ],
   "cz_agreement": [
    1013,
    1142
+  ],
+  "outcome": [
+   470,
+   1003
+  ],
+  "outcome_main": [
+   74,
+   95
+  ],
+  "outcome_close": [
+   17,
+   28
+  ],
+  "group_outcome": [
+   26204,
+   70598
+  ],
+  "group_outcome_main": [
+   3431,
+   6471
   ],
   "positions": {
    "FOR": 642,
@@ -140,7 +172,31 @@
     0,
     0
    ],
+   "group_loyalty_main": [
+    0,
+    0
+   ],
    "cz_agreement": [
+    0,
+    0
+   ],
+   "outcome": [
+    0,
+    0
+   ],
+   "outcome_main": [
+    0,
+    0
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    0,
+    0
+   ],
+   "group_outcome_main": [
     0,
     0
    ],
@@ -164,7 +220,31 @@
     0,
     0
    ],
+   "group_loyalty_main": [
+    0,
+    0
+   ],
    "cz_agreement": [
+    0,
+    0
+   ],
+   "outcome": [
+    0,
+    0
+   ],
+   "outcome_main": [
+    0,
+    0
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    0,
+    0
+   ],
+   "group_outcome_main": [
     0,
     0
    ],
@@ -188,9 +268,33 @@
     17,
     35
    ],
+   "group_loyalty_main": [
+    4,
+    9
+   ],
    "cz_agreement": [
     26,
     35
+   ],
+   "outcome": [
+    16,
+    25
+   ],
+   "outcome_main": [
+    6,
+    7
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    539,
+    1426
+   ],
+   "group_outcome_main": [
+    241,
+    360
    ],
    "positions": {
     "FOR": 17,
@@ -212,9 +316,33 @@
     30,
     38
    ],
+   "group_loyalty_main": [
+    4,
+    5
+   ],
    "cz_agreement": [
     37,
     38
+   ],
+   "outcome": [
+    17,
+    32
+   ],
+   "outcome_main": [
+    4,
+    5
+   ],
+   "outcome_close": [
+    7,
+    8
+   ],
+   "group_outcome": [
+    1108,
+    2418
+   ],
+   "group_outcome_main": [
+    242,
+    391
    ],
    "positions": {
     "FOR": 24,
@@ -236,9 +364,33 @@
     37,
     46
    ],
+   "group_loyalty_main": [
+    9,
+    12
+   ],
    "cz_agreement": [
     39,
     41
+   ],
+   "outcome": [
+    22,
+    41
+   ],
+   "outcome_main": [
+    9,
+    10
+   ],
+   "outcome_close": [
+    0,
+    1
+   ],
+   "group_outcome": [
+    1573,
+    3021
+   ],
+   "group_outcome_main": [
+    569,
+    693
    ],
    "positions": {
     "FOR": 27,
@@ -260,9 +412,33 @@
     5,
     5
    ],
+   "group_loyalty_main": [
+    2,
+    2
+   ],
    "cz_agreement": [
     5,
     5
+   ],
+   "outcome": [
+    3,
+    5
+   ],
+   "outcome_main": [
+    2,
+    2
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    193,
+    295
+   ],
+   "group_outcome_main": [
+    124,
+    124
    ],
    "positions": {
     "FOR": 5,
@@ -284,7 +460,31 @@
     0,
     0
    ],
+   "group_loyalty_main": [
+    0,
+    0
+   ],
    "cz_agreement": [
+    0,
+    0
+   ],
+   "outcome": [
+    0,
+    0
+   ],
+   "outcome_main": [
+    0,
+    0
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    0,
+    0
+   ],
+   "group_outcome_main": [
     0,
     0
    ],
@@ -308,9 +508,33 @@
     128,
     206
    ],
+   "group_loyalty_main": [
+    6,
+    10
+   ],
    "cz_agreement": [
     161,
     199
+   ],
+   "outcome": [
+    107,
+    167
+   ],
+   "outcome_main": [
+    7,
+    9
+   ],
+   "outcome_close": [
+    2,
+    5
+   ],
+   "group_outcome": [
+    5899,
+    11100
+   ],
+   "group_outcome_main": [
+    288,
+    560
    ],
    "positions": {
     "FOR": 80,
@@ -332,9 +556,33 @@
     263,
     341
    ],
+   "group_loyalty_main": [
+    17,
+    21
+   ],
    "cz_agreement": [
     296,
     331
+   ],
+   "outcome": [
+    132,
+    291
+   ],
+   "outcome_main": [
+    10,
+    17
+   ],
+   "outcome_close": [
+    6,
+    10
+   ],
+   "group_outcome": [
+    8271,
+    20581
+   ],
+   "group_outcome_main": [
+    588,
+    1252
    ],
    "positions": {
     "FOR": 184,
@@ -356,9 +604,33 @@
     288,
     380
    ],
+   "group_loyalty_main": [
+    22,
+    48
+   ],
    "cz_agreement": [
     332,
     362
+   ],
+   "outcome": [
+    118,
+    326
+   ],
+   "outcome_main": [
+    25,
+    33
+   ],
+   "outcome_close": [
+    2,
+    3
+   ],
+   "group_outcome": [
+    6210,
+    23503
+   ],
+   "group_outcome_main": [
+    951,
+    2312
    ],
    "positions": {
     "FOR": 238,
@@ -380,9 +652,33 @@
     91,
     133
    ],
+   "group_loyalty_main": [
+    7,
+    15
+   ],
    "cz_agreement": [
     117,
     131
+   ],
+   "outcome": [
+    55,
+    116
+   ],
+   "outcome_main": [
+    11,
+    12
+   ],
+   "outcome_close": [
+    0,
+    1
+   ],
+   "group_outcome": [
+    2411,
+    8254
+   ],
+   "group_outcome_main": [
+    428,
+    779
    ],
    "positions": {
     "FOR": 67,
@@ -404,7 +700,31 @@
     0,
     0
    ],
+   "group_loyalty_main": [
+    0,
+    0
+   ],
    "cz_agreement": [
+    0,
+    0
+   ],
+   "outcome": [
+    0,
+    0
+   ],
+   "outcome_main": [
+    0,
+    0
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    0,
+    0
+   ],
+   "group_outcome_main": [
     0,
     0
    ],
@@ -1103,6 +1423,1409 @@
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
    "group_code": "PFE"
+  }
+ ],
+ "against_group": {
+  "count": 325,
+  "count_main": 51,
+  "recent": [
+   {
+    "id": 177169,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 456,
+     "against": 118,
+     "abstention": 51,
+     "did_not_vote": 94
+    },
+    "cz": [
+     10,
+     4,
+     5,
+     2
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177167,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "Après le § 37 - Am 11",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 114,
+     "against": 522,
+     "abstention": 14,
+     "did_not_vote": 69
+    },
+    "cz": [
+     4,
+     14,
+     1,
+     2
+    ],
+    "position": "AGAINST",
+    "group_code": "PFE",
+    "group_majority": "FOR"
+   },
+   {
+    "id": 177162,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 25/2",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 491,
+     "against": 122,
+     "abstention": 41,
+     "did_not_vote": 65
+    },
+    "cz": [
+     15,
+     4,
+     0,
+     2
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177158,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 16 - Am 10",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 124,
+     "against": 499,
+     "abstention": 25,
+     "did_not_vote": 71
+    },
+    "cz": [
+     5,
+     9,
+     5,
+     2
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "FOR"
+   },
+   {
+    "id": 177157,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 16 - Am 2",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 68,
+     "against": 506,
+     "abstention": 73,
+     "did_not_vote": 72
+    },
+    "cz": [
+     4,
+     13,
+     1,
+     3
+    ],
+    "position": "AGAINST",
+    "group_code": "PFE",
+    "group_majority": "ABSTENTION"
+   },
+   {
+    "id": 177156,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 15/2",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 469,
+     "against": 97,
+     "abstention": 83,
+     "did_not_vote": 70
+    },
+    "cz": [
+     9,
+     3,
+     6,
+     3
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177149,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "Après le § 10 - Am 9",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 105,
+     "against": 531,
+     "abstention": 17,
+     "did_not_vote": 66
+    },
+    "cz": [
+     4,
+     15,
+     0,
+     2
+    ],
+    "position": "AGAINST",
+    "group_code": "PFE",
+    "group_majority": "FOR"
+   },
+   {
+    "id": 177145,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 9 - Am 8",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 120,
+     "against": 511,
+     "abstention": 21,
+     "did_not_vote": 67
+    },
+    "cz": [
+     6,
+     13,
+     0,
+     2
+    ],
+    "position": "AGAINST",
+    "group_code": "PFE",
+    "group_majority": "FOR"
+   },
+   {
+    "id": 177144,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 8",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 493,
+     "against": 130,
+     "abstention": 27,
+     "did_not_vote": 69
+    },
+    "cz": [
+     13,
+     4,
+     0,
+     4
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177143,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "§ 7 - Am 7",
+    "result": "REJECTED",
+    "is_main": false,
+    "counts": {
+     "for": 107,
+     "against": 508,
+     "abstention": 32,
+     "did_not_vote": 72
+    },
+    "cz": [
+     3,
+     15,
+     0,
+     3
+    ],
+    "position": "AGAINST",
+    "group_code": "PFE",
+    "group_majority": "FOR"
+   }
+  ],
+  "recent_main": [
+   {
+    "id": 177169,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Moldova",
+    "reference": "A10-0096/2025",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 456,
+     "against": 118,
+     "abstention": 51,
+     "did_not_vote": 94
+    },
+    "cz": [
+     10,
+     4,
+     5,
+     2
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177135,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "2023 and 2024 reports on Montenegro",
+    "reference": "A10-0093/2025",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 470,
+     "against": 102,
+     "abstention": 77,
+     "did_not_vote": 70
+    },
+    "cz": [
+     8,
+     3,
+     7,
+     3
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177332,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "Implementation report on the Recovery and Resilience Facility",
+    "reference": "A10-0098/2025",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 421,
+     "against": 180,
+     "abstention": 55,
+     "did_not_vote": 63
+    },
+    "cz": [
+     6,
+     8,
+     5,
+     2
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177411,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "EU/Euratom Agreement on the interpretation and application of the Energy Charter Treaty: adoption by Euratom",
+    "reference": "A10-0008/2025",
+    "description": "Proposition de la Commission au Conseil",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 557,
+     "against": 47,
+     "abstention": 46,
+     "did_not_vote": 69
+    },
+    "cz": [
+     16,
+     0,
+     3,
+     2
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "ABSTENTION"
+   },
+   {
+    "id": 177061,
+    "date": "2025-06-18",
+    "month": "2025-06",
+    "title": "Adoption by the Union of the Agreement on the interpretation and application of the Energy Charter Treaty",
+    "reference": "A10-0009/2025",
+    "description": "Proposition de la Commission",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 554,
+     "against": 53,
+     "abstention": 37,
+     "did_not_vote": 75
+    },
+    "cz": [
+     15,
+     1,
+     3,
+     2
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177034,
+    "date": "2025-06-17",
+    "month": "2025-06",
+    "title": "Electoral rights of mobile Union citizens in European Parliament elections",
+    "reference": "A10-0090/2025",
+    "description": "Projet du Conseil",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 587,
+     "against": 60,
+     "abstention": 21,
+     "did_not_vote": 51
+    },
+    "cz": [
+     15,
+     5,
+     0,
+     1
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177334,
+    "date": "2025-06-17",
+    "month": "2025-06",
+    "title": "Termination of the Voluntary Partnership Agreement between the European Union and the Republic of Cameroon on forest law enforcement governance and trade in timber and derived products to the Union.",
+    "reference": "A10-0094/2025",
+    "description": "Proposition de résolution",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 557,
+     "against": 75,
+     "abstention": 37,
+     "did_not_vote": 50
+    },
+    "cz": [
+     12,
+     2,
+     6,
+     1
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 177335,
+    "date": "2025-06-17",
+    "month": "2025-06",
+    "title": "Agreement between the European Union and Ukraine amending the Agreement between the European Union and Ukraine on the carriage of freight by road of 29 June 2022",
+    "reference": "A10-0102/2025",
+    "description": "Projet de décision du Conseil",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 488,
+     "against": 137,
+     "abstention": 34,
+     "did_not_vote": 60
+    },
+    "cz": [
+     17,
+     3,
+     0,
+     1
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 176844,
+    "date": "2025-05-22",
+    "month": "2025-05",
+    "title": "Modification of customs duties applicable to imports of certain goods originating in or exported from the Russian Federation and the Republic of Belarus",
+    "reference": "A10-0087/2025",
+    "description": "Proposition de la Commission",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 411,
+     "against": 100,
+     "abstention": 78,
+     "did_not_vote": 130
+    },
+    "cz": [
+     15,
+     2,
+     1,
+     3
+    ],
+    "position": "FOR",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   },
+   {
+    "id": 176281,
+    "date": "2025-05-08",
+    "month": "2025-05",
+    "title": "Old challenges and new commercial practices in the internal market",
+    "reference": "B10-0246/2025",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 306,
+     "against": 80,
+     "abstention": 57,
+     "did_not_vote": 276
+    },
+    "cz": [
+     7,
+     2,
+     7,
+     5
+    ],
+    "position": "ABSTENTION",
+    "group_code": "PFE",
+    "group_majority": "AGAINST"
+   }
+  ]
+ },
+ "decisive": [
+  {
+   "id": 177036,
+   "date": "2025-06-17",
+   "month": "2025-06",
+   "title": "Financing for development – ahead of the Fourth International Conference on Financing for Development in Seville",
+   "reference": "A10-0101/2025",
+   "description": "§ 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 304,
+    "against": 305,
+    "abstention": 55,
+    "did_not_vote": 55
+   },
+   "cz": [
+    1,
+    12,
+    7,
+    1
+   ],
+   "position": "ABSTENTION"
+  },
+  {
+   "id": 175730,
+   "date": "2025-05-07",
+   "month": "2025-05",
+   "title": "Discharge 2023: European Public Prosecutor’s Office",
+   "reference": "A10-0051/2025",
+   "description": "Après le § 96 - Am 1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 244,
+    "against": 237,
+    "abstention": 169,
+    "did_not_vote": 69
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 175939,
+   "date": "2025-05-07",
+   "month": "2025-05",
+   "title": "Discharge 2023: EU general budget – European Council and Council",
+   "reference": "A10-0052/2025",
+   "description": "Après le § 57 - Am 8",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 316,
+    "against": 327,
+    "abstention": 17,
+    "did_not_vote": 59
+   },
+   "cz": [
+    1,
+    16,
+    2,
+    2
+   ],
+   "position": "AGAINST"
+  },
+  {
+   "id": 174976,
+   "date": "2025-04-03",
+   "month": "2025-04",
+   "title": "Execution spree in Iran and the confirmation of the death sentences of activists Behrouz Ehsani and Mehdi Hassani",
+   "reference": "RC-B10-0220/2025",
+   "description": "Après le considérant B - Am 3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 272,
+    "against": 264,
+    "abstention": 26,
+    "did_not_vote": 156
+   },
+   "cz": [
+    17,
+    0,
+    1,
+    3
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 174775,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common security and defence policy – annual report 2024",
+   "reference": "A10-0011/2025",
+   "description": "§ 125 - Am 146",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 322,
+    "against": 305,
+    "abstention": 7,
+    "did_not_vote": 84
+   },
+   "cz": [
+    20,
+    1,
+    0,
+    0
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 174621,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Guidelines for the 2026 budget – Section III",
+   "reference": "A10-0042/2025",
+   "description": "Après le § 22 - Am 65",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 326,
+    "against": 315,
+    "abstention": 15,
+    "did_not_vote": 62
+   },
+   "cz": [
+    17,
+    2,
+    2,
+    0
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 174607,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Guidelines for the 2026 budget – Section III",
+   "reference": "A10-0042/2025",
+   "description": "§ 18 - Am 79",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 308,
+    "against": 309,
+    "abstention": 55,
+    "did_not_vote": 46
+   },
+   "cz": [
+    4,
+    9,
+    8,
+    0
+   ],
+   "position": "ABSTENTION"
+  },
+  {
+   "id": 174589,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Guidelines for the 2026 budget – Section III",
+   "reference": "A10-0042/2025",
+   "description": "Après le § 11 - Am 56",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 321,
+    "against": 318,
+    "abstention": 11,
+    "did_not_vote": 68
+   },
+   "cz": [
+    17,
+    2,
+    1,
+    1
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 171315,
+   "date": "2024-12-19",
+   "month": "2024-12",
+   "title": "Recommendation to the Council on the EU priorities for the 69th session of the UN Commission on the Status of Women",
+   "reference": "A10-0030/2024",
+   "description": "§ 1, point u/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 276,
+    "against": 287,
+    "abstention": 5,
+    "did_not_vote": 151
+   },
+   "cz": [
+    2,
+    15,
+    1,
+    3
+   ],
+   "position": "DID_NOT_VOTE"
+  },
+  {
+   "id": 170736,
+   "date": "2024-11-28",
+   "month": "2024-11",
+   "title": "Recommendation on smoke- and aerosol-free environments",
+   "reference": "RC-B10-0173/2024",
+   "description": "§ 5 - Am 16/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 286,
+    "against": 280,
+    "abstention": 18,
+    "did_not_vote": 135
+   },
+   "cz": [
+    16,
+    3,
+    1,
+    1
+   ],
+   "position": "DID_NOT_VOTE"
+  },
+  {
+   "id": 170473,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 10",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 314,
+    "against": 303,
+    "abstention": 23,
+    "did_not_vote": 79
+   },
+   "cz": [
+    12,
+    1,
+    6,
+    2
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170472,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 9",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 311,
+    "against": 308,
+    "abstention": 23,
+    "did_not_vote": 77
+   },
+   "cz": [
+    12,
+    1,
+    6,
+    2
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170470,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 7",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 303,
+    "against": 292,
+    "abstention": 20,
+    "did_not_vote": 104
+   },
+   "cz": [
+    12,
+    0,
+    5,
+    4
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170469,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 6",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 308,
+    "against": 303,
+    "abstention": 19,
+    "did_not_vote": 89
+   },
+   "cz": [
+    13,
+    1,
+    4,
+    3
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170468,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 5",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 308,
+    "against": 303,
+    "abstention": 20,
+    "did_not_vote": 88
+   },
+   "cz": [
+    13,
+    1,
+    4,
+    3
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170466,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Article 1, § 1, avant le point 1 Règlement (UE) 2023/1115 - Am 3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 306,
+    "against": 303,
+    "abstention": 18,
+    "did_not_vote": 92
+   },
+   "cz": [
+    12,
+    2,
+    5,
+    2
+   ],
+   "position": "FOR"
+  },
+  {
+   "id": 170205,
+   "date": "2024-10-23",
+   "month": "2024-10",
+   "title": "General budget of the European Union for the financial year 2025 – all sections",
+   "reference": "A10-0008/2024",
+   "description": "Après le § 91 - Am 67/1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 284,
+    "against": 289,
+    "abstention": 79,
+    "did_not_vote": 67
+   },
+   "cz": [
+    3,
+    15,
+    0,
+    3
+   ],
+   "position": "DID_NOT_VOTE"
+  }
+ ],
+ "topics": [
+  {
+   "code": "6.10",
+   "label": "Common foreign and security policy (CFSP)",
+   "attendance": [
+    346,
+    666
+   ],
+   "attendance_main": [
+    11,
+    44
+   ],
+   "group_loyalty": [
+    225,
+    346
+   ],
+   "group_loyalty_main": [
+    8,
+    11
+   ],
+   "cz_agreement": [
+    276,
+    334
+   ],
+   "outcome": [
+    154,
+    280
+   ],
+   "outcome_main": [
+    8,
+    11
+   ],
+   "outcome_close": [
+    4,
+    7
+   ],
+   "group_outcome": [
+    8373,
+    18579
+   ],
+   "group_outcome_main": [
+    301,
+    568
+   ],
+   "positions": {
+    "FOR": 153,
+    "AGAINST": 128,
+    "ABSTENTION": 65,
+    "DID_NOT_VOTE": 320
+   }
+  },
+  {
+   "code": "8.70",
+   "label": "Budget of the Union",
+   "attendance": [
+    295,
+    410
+   ],
+   "attendance_main": [
+    34,
+    41
+   ],
+   "group_loyalty": [
+    228,
+    294
+   ],
+   "group_loyalty_main": [
+    14,
+    34
+   ],
+   "cz_agreement": [
+    252,
+    282
+   ],
+   "outcome": [
+    82,
+    246
+   ],
+   "outcome_main": [
+    15,
+    21
+   ],
+   "outcome_close": [
+    5,
+    8
+   ],
+   "group_outcome": [
+    4608,
+    18444
+   ],
+   "group_outcome_main": [
+    579,
+    1581
+   ],
+   "positions": {
+    "FOR": 190,
+    "AGAINST": 56,
+    "ABSTENTION": 49,
+    "DID_NOT_VOTE": 115
+   }
+  },
+  {
+   "code": "4.10",
+   "label": "Social policy, social charter and protocol",
+   "attendance": [
+    57,
+    105
+   ],
+   "attendance_main": [
+    6,
+    9
+   ],
+   "group_loyalty": [
+    37,
+    57
+   ],
+   "group_loyalty_main": [
+    5,
+    6
+   ],
+   "cz_agreement": [
+    47,
+    54
+   ],
+   "outcome": [
+    26,
+    45
+   ],
+   "outcome_main": [
+    3,
+    5
+   ],
+   "outcome_close": [
+    0,
+    2
+   ],
+   "group_outcome": [
+    1592,
+    3140
+   ],
+   "group_outcome_main": [
+    199,
+    370
+   ],
+   "positions": {
+    "FOR": 24,
+    "AGAINST": 21,
+    "ABSTENTION": 12,
+    "DID_NOT_VOTE": 48
+   }
+  },
+  {
+   "code": "3.70",
+   "label": "Environmental policy",
+   "attendance": [
+    56,
+    149
+   ],
+   "attendance_main": [
+    10,
+    17
+   ],
+   "group_loyalty": [
+    42,
+    56
+   ],
+   "group_loyalty_main": [
+    6,
+    10
+   ],
+   "cz_agreement": [
+    51,
+    56
+   ],
+   "outcome": [
+    8,
+    47
+   ],
+   "outcome_main": [
+    5,
+    6
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    813,
+    3462
+   ],
+   "group_outcome_main": [
+    328,
+    450
+   ],
+   "positions": {
+    "FOR": 41,
+    "AGAINST": 6,
+    "ABSTENTION": 9,
+    "DID_NOT_VOTE": 93
+   }
+  },
+  {
+   "code": "6.40",
+   "label": "Relations with third countries",
+   "attendance": [
+    9,
+    91
+   ],
+   "attendance_main": [
+    9,
+    12
+   ],
+   "group_loyalty": [
+    7,
+    9
+   ],
+   "group_loyalty_main": [
+    7,
+    9
+   ],
+   "cz_agreement": [
+    9,
+    9
+   ],
+   "outcome": [
+    9,
+    9
+   ],
+   "outcome_main": [
+    9,
+    9
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    489,
+    609
+   ],
+   "group_outcome_main": [
+    489,
+    609
+   ],
+   "positions": {
+    "FOR": 9,
+    "AGAINST": 0,
+    "ABSTENTION": 0,
+    "DID_NOT_VOTE": 82
+   }
+  },
+  {
+   "code": "6.20",
+   "label": "Common commercial policy in general",
+   "attendance": [
+    88,
+    106
+   ],
+   "attendance_main": [
+    15,
+    18
+   ],
+   "group_loyalty": [
+    73,
+    88
+   ],
+   "group_loyalty_main": [
+    11,
+    15
+   ],
+   "cz_agreement": [
+    85,
+    87
+   ],
+   "outcome": [
+    39,
+    81
+   ],
+   "outcome_main": [
+    12,
+    14
+   ],
+   "outcome_close": [
+    1,
+    2
+   ],
+   "group_outcome": [
+    2689,
+    5666
+   ],
+   "group_outcome_main": [
+    593,
+    900
+   ],
+   "positions": {
+    "FOR": 47,
+    "AGAINST": 34,
+    "ABSTENTION": 7,
+    "DID_NOT_VOTE": 18
+   }
+  },
+  {
+   "code": "8.20",
+   "label": "Enlargement of the Union",
+   "attendance": [
+    65,
+    134
+   ],
+   "attendance_main": [
+    6,
+    10
+   ],
+   "group_loyalty": [
+    21,
+    65
+   ],
+   "group_loyalty_main": [
+    0,
+    6
+   ],
+   "cz_agreement": [
+    54,
+    61
+   ],
+   "outcome": [
+    41,
+    52
+   ],
+   "outcome_main": [
+    4,
+    4
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    1145,
+    3615
+   ],
+   "group_outcome_main": [
+    23,
+    287
+   ],
+   "positions": {
+    "FOR": 22,
+    "AGAINST": 30,
+    "ABSTENTION": 13,
+    "DID_NOT_VOTE": 69
+   }
+  },
+  {
+   "code": "8.40",
+   "label": "Institutions of the Union",
+   "attendance": [
+    57,
+    101
+   ],
+   "attendance_main": [
+    10,
+    13
+   ],
+   "group_loyalty": [
+    43,
+    57
+   ],
+   "group_loyalty_main": [
+    5,
+    10
+   ],
+   "cz_agreement": [
+    47,
+    52
+   ],
+   "outcome": [
+    23,
+    47
+   ],
+   "outcome_main": [
+    6,
+    7
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    1468,
+    3301
+   ],
+   "group_outcome_main": [
+    310,
+    486
+   ],
+   "positions": {
+    "FOR": 30,
+    "AGAINST": 17,
+    "ABSTENTION": 10,
+    "DID_NOT_VOTE": 44
+   }
+  },
+  {
+   "code": "3.30",
+   "label": null,
+   "attendance": [
+    22,
+    41
+   ],
+   "attendance_main": [
+    2,
+    5
+   ],
+   "group_loyalty": [
+    10,
+    22
+   ],
+   "group_loyalty_main": [
+    1,
+    2
+   ],
+   "cz_agreement": [
+    19,
+    22
+   ],
+   "outcome": [
+    13,
+    17
+   ],
+   "outcome_main": [
+    2,
+    2
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    506,
+    1020
+   ],
+   "group_outcome_main": [
+    72,
+    78
+   ],
+   "positions": {
+    "FOR": 15,
+    "AGAINST": 2,
+    "ABSTENTION": 5,
+    "DID_NOT_VOTE": 19
+   }
+  },
+  {
+   "code": "3.45",
+   "label": "Enterprise policy, inter-company cooperation",
+   "attendance": [
+    0,
+    6
+   ],
+   "attendance_main": [
+    0,
+    1
+   ],
+   "group_loyalty": [
+    0,
+    0
+   ],
+   "group_loyalty_main": [
+    0,
+    0
+   ],
+   "cz_agreement": [
+    0,
+    0
+   ],
+   "outcome": [
+    0,
+    0
+   ],
+   "outcome_main": [
+    0,
+    0
+   ],
+   "outcome_close": [
+    0,
+    0
+   ],
+   "group_outcome": [
+    0,
+    0
+   ],
+   "group_outcome_main": [
+    0,
+    0
+   ],
+   "positions": {
+    "FOR": 0,
+    "AGAINST": 0,
+    "ABSTENTION": 0,
+    "DID_NOT_VOTE": 6
+   }
   }
  ]
 }

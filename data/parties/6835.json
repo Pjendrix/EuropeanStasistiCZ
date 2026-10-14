@@ -1,0 +1,1085 @@
+{
+ "id": 6835,
+ "short_label": "STAN",
+ "name": "Starostové a nezávisli",
+ "independent": false,
+ "color": null,
+ "logo": null,
+ "members": 2,
+ "total": {
+  "attendance": [
+   11710,
+   12308
+  ],
+  "attendance_main": [
+   1300,
+   1360
+  ],
+  "group_loyalty": [
+   10486,
+   11710
+  ],
+  "group_loyalty_main": [
+   1259,
+   1300
+  ],
+  "cz_agreement": [
+   5898,
+   11364
+  ],
+  "outcome": [
+   10251,
+   11146
+  ],
+  "outcome_main": [
+   1210,
+   1275
+  ],
+  "outcome_close": [
+   129,
+   242
+  ],
+  "group_outcome": [
+   1625801,
+   1774912
+  ],
+  "group_outcome_main": [
+   193790,
+   206051
+  ],
+  "positions": {
+   "FOR": 5227,
+   "AGAINST": 5921,
+   "ABSTENTION": 562,
+   "DID_NOT_VOTE": 598
+  }
+ },
+ "cohesion": [
+  5376,
+  5564
+ ],
+ "cohesion_main": [
+  613,
+  621
+ ],
+ "splits_count": 81,
+ "splits_count_main": 3,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+  "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
+  "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
+  "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
+  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+ },
+ "member_list": [
+  {
+   "id": 256840,
+   "name": "Jan FARSKÝ",
+   "given_name": "Jan",
+   "family_name": "Farský",
+   "sort_label": "FARSKYJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256840.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16886"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     5832,
+     6154
+    ],
+    "attendance_main": [
+     652,
+     680
+    ],
+    "group_loyalty": [
+     5225,
+     5832
+    ],
+    "group_loyalty_main": [
+     631,
+     652
+    ],
+    "cz_agreement": [
+     2947,
+     5661
+    ],
+    "outcome": [
+     5094,
+     5549
+    ],
+    "outcome_main": [
+     605,
+     637
+    ],
+    "outcome_close": [
+     63,
+     120
+    ],
+    "group_outcome": [
+     808970,
+     882350
+    ],
+    "group_outcome_main": [
+     96951,
+     102817
+    ],
+    "positions": {
+     "FOR": 2615,
+     "AGAINST": 2935,
+     "ABSTENTION": 282,
+     "DID_NOT_VOTE": 322
+    }
+   }
+  },
+  {
+   "id": 256847,
+   "name": "Danuše NERUDOVÁ",
+   "given_name": "Danuše",
+   "family_name": "Nerudová",
+   "sort_label": "NERUDOVAD",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256847.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16894"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "party_periods": [
+    {
+     "start": "2024-07-16",
+     "end": null
+    }
+   ],
+   "total": {
+    "attendance": [
+     5878,
+     6154
+    ],
+    "attendance_main": [
+     648,
+     680
+    ],
+    "group_loyalty": [
+     5261,
+     5878
+    ],
+    "group_loyalty_main": [
+     628,
+     648
+    ],
+    "cz_agreement": [
+     2951,
+     5703
+    ],
+    "outcome": [
+     5157,
+     5597
+    ],
+    "outcome_main": [
+     605,
+     638
+    ],
+    "outcome_close": [
+     66,
+     122
+    ],
+    "group_outcome": [
+     816831,
+     892562
+    ],
+    "group_outcome_main": [
+     96839,
+     103234
+    ],
+    "positions": {
+     "FOR": 2612,
+     "AGAINST": 2986,
+     "ABSTENTION": 280,
+     "DID_NOT_VOTE": 276
+    }
+   }
+  }
+ ],
+ "splits": [
+  {
+   "id": 197093,
+   "date": "2026-09-17",
+   "month": "2026-09",
+   "title": "The recent hybrid attacks and instrumentalisation of migrants in Ceuta and the need for a coordinated response to protect EU’s external borders",
+   "reference": "B10-0406/2026",
+   "description": "§ 4 - Am 63",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 267,
+    "against": 332,
+    "abstention": 8,
+    "did_not_vote": 110
+   },
+   "cz": [
+    4,
+    10,
+    1,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 196810,
+   "date": "2026-09-17",
+   "month": "2026-09",
+   "title": "Evaluation of the Common Fisheries Policy and follow-up",
+   "reference": "B10-0386/2026",
+   "description": "§ 1 - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 134,
+    "against": 436,
+    "abstention": 35,
+    "did_not_vote": 112
+   },
+   "cz": [
+    5,
+    10,
+    0,
+    6
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 196566,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Après le § 19 - Am 7",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 278,
+    "against": 304,
+    "abstention": 69,
+    "did_not_vote": 66
+   },
+   "cz": [
+    14,
+    3,
+    0,
+    4
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 196210,
+   "date": "2026-09-15",
+   "month": "2026-09",
+   "title": "The EU Youth Strategy 2019–2027",
+   "reference": "A10-0219/2026",
+   "description": "Après le § 36 - Am 12",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 117,
+    "against": 439,
+    "abstention": 109,
+    "did_not_vote": 52
+   },
+   "cz": [
+    2,
+    11,
+    5,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 196209,
+   "date": "2026-09-15",
+   "month": "2026-09",
+   "title": "The EU Youth Strategy 2019–2027",
+   "reference": "A10-0219/2026",
+   "description": "Après le § 36 - Am 10",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 81,
+    "against": 532,
+    "abstention": 44,
+    "did_not_vote": 60
+   },
+   "cz": [
+    3,
+    11,
+    5,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 196498,
+   "date": "2026-09-15",
+   "month": "2026-09",
+   "title": "Market stability reserve for the EU Emissions Trading System (EU ETS): ceasing the invalidation of allowances",
+   "reference": "A10-0230/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 5",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 367,
+    "against": 291,
+    "abstention": 7,
+    "did_not_vote": 52
+   },
+   "cz": [
+    5,
+    14,
+    0,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 195775,
+   "date": "2026-07-09",
+   "month": "2026-07",
+   "title": "Temporary derogation from the ePrivacy directive",
+   "reference": "C10-0178/2026",
+   "description": "Proposition de rejet - Am 1 = 2 = 7 =",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 314,
+    "against": 276,
+    "abstention": 17,
+    "did_not_vote": 112
+   },
+   "cz": [
+    12,
+    4,
+    0,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 195446,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "2025 Commission report on Ukraine",
+   "reference": "A10-0172/2026",
+   "description": "§ 21",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 462,
+    "against": 133,
+    "abstention": 56,
+    "did_not_vote": 68
+   },
+   "cz": [
+    10,
+    5,
+    2,
+    4
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 195207,
+   "date": "2026-07-07",
+   "month": "2026-07",
+   "title": "A coherent tax framework for the EU's financial sector",
+   "reference": "A10-0169/2026",
+   "description": "§ 27 - Am 3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 283,
+    "against": 341,
+    "abstention": 34,
+    "did_not_vote": 61
+   },
+   "cz": [
+    4,
+    13,
+    1,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 194547,
+   "date": "2026-06-18",
+   "month": "2026-06",
+   "title": "Political repression and humanitarian situation in Cuba",
+   "reference": "B10-0285/2026",
+   "description": "§ 1 - Am 22",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 177,
+    "against": 381,
+    "abstention": 8,
+    "did_not_vote": 153
+   },
+   "cz": [
+    11,
+    7,
+    0,
+    3
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 194047,
+   "date": "2026-06-17",
+   "month": "2026-06",
+   "title": "2025 Commission report on Türkiye",
+   "reference": "A10-0106/2026",
+   "description": "§ 6 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 236,
+    "against": 377,
+    "abstention": 42,
+    "did_not_vote": 64
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 192747,
+   "date": "2026-05-20",
+   "month": "2026-05",
+   "title": "Recommendation on the 81st session of the United Nations General Assembly",
+   "reference": "A10-0103/2026",
+   "description": "§ 1, point f - Am 10",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 299,
+    "against": 336,
+    "abstention": 9,
+    "did_not_vote": 73
+   },
+   "cz": [
+    5,
+    12,
+    4,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 191654,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Situation of fundamental rights in the European Union in 2024 and 2025",
+   "reference": "A10-0042/2026",
+   "description": "§ 70/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 336,
+    "against": 280,
+    "abstention": 17,
+    "did_not_vote": 86
+   },
+   "cz": [
+    4,
+    12,
+    4,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 191548,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Market stability reserve for the buildings, road transport and additional sector",
+   "reference": "A10-0098/2026",
+   "description": "Après le considérant 6 - Am 24",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 236,
+    "against": 392,
+    "abstention": 14,
+    "did_not_vote": 77
+   },
+   "cz": [
+    15,
+    5,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 191513,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Discharge 2024: EU general budget – Commission",
+   "reference": "A10-0085/2026",
+   "description": "§ 160, après le point vii - Am 40",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 269,
+    "abstention": 20,
+    "did_not_vote": 68
+   },
+   "cz": [
+    6,
+    12,
+    2,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 190217,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Protection of the European Union’s financial interests – combating fraud – annual report 2024",
+   "reference": "A10-0080/2026",
+   "description": "Après le § 3 - Am 54",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 388,
+    "against": 213,
+    "abstention": 44,
+    "did_not_vote": 74
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 190212,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Protection of the European Union’s financial interests – combating fraud – annual report 2024",
+   "reference": "A10-0080/2026",
+   "description": "Après le § 2 - Am 4/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 413,
+    "against": 210,
+    "abstention": 18,
+    "did_not_vote": 78
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 191185,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Guidelines for the 2027 budget - Section III",
+   "reference": "A10-0044/2026",
+   "description": "Après le § 24 - Am 13",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 142,
+    "against": 441,
+    "abstention": 65,
+    "did_not_vote": 71
+   },
+   "cz": [
+    11,
+    5,
+    3,
+    2
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 190529,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Interim report on the proposal for the multiannual financial framework for 2028-2034",
+   "reference": "A10-0105/2026",
+   "description": "§ 124",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 359,
+    "against": 256,
+    "abstention": 37,
+    "did_not_vote": 67
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 188921,
+   "date": "2026-03-12",
+   "month": "2026-03",
+   "title": "Activities of the European Ombudsman – annual report 2024",
+   "reference": "A10-0015/2026",
+   "description": "§ 17",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 290,
+    "against": 258,
+    "abstention": 15,
+    "did_not_vote": 155
+   },
+   "cz": [
+    18,
+    2,
+    0,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  }
+ ],
+ "splits_main": [
+  {
+   "id": 195775,
+   "date": "2026-07-09",
+   "month": "2026-07",
+   "title": "Temporary derogation from the ePrivacy directive",
+   "reference": "C10-0178/2026",
+   "description": "Proposition de rejet - Am 1 = 2 = 7 =",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 314,
+    "against": 276,
+    "abstention": 17,
+    "did_not_vote": 112
+   },
+   "cz": [
+    12,
+    4,
+    0,
+    5
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 182713,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0557/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 241,
+    "against": 356,
+    "abstention": 48,
+    "did_not_vote": 74
+   },
+   "cz": [
+    14,
+    3,
+    3,
+    1
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 181831,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87427",
+   "reference": "B10-0491/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 426,
+    "against": 157,
+    "abstention": 17,
+    "did_not_vote": 119
+   },
+   "cz": [
+    5,
+    7,
+    9,
+    0
+   ],
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  }
+ ]
+}

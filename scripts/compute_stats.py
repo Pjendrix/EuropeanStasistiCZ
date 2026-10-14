@@ -27,6 +27,11 @@ from pathlib import Path
 POSITIONS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]
 VOTED = {"FOR", "AGAINST", "ABSTENTION"}
 NO_GROUP = {None, "NI"}  # nezařazení nejsou frakce, loajalita se nepočítá
+RESULTS_DECIDED = {"ADOPTED", "REJECTED"}  # LAPSED, WITHDRAWN a chybějící výsledek se do souladu nepočítají
+CLOSE_MARGIN = 21  # těsné hlasování: |pro − proti| <= 21 (počet českých křesel)
+TOP_TOPICS = 10
+RECENT = 10
+INDEPENDENT = "Independent"  # EP tak označuje poslance bez strany; nejde o stranu
 
 DEFINITIONS = {
     "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). "
@@ -38,6 +43,28 @@ DEFINITIONS = {
     "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. "
                     "Bez hlasování s nerozhodnou většinou.",
     "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
+    "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval "
+                         "proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen "
+                         "hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). "
+                         "Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, "
+                         "mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je "
+                         "legitimní opoziční role, nízké číslo neznamená horší práci.",
+    "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) "
+                               "ve stejných hlasováních, ve kterých se počítá jemu.",
+    "close_votes": f"Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš {CLOSE_MARGIN} (tolik křesel má ČR).",
+    "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo "
+                      "opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální "
+                      "výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt "
+                      "spolehlivě spočítat.",
+    "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
+                     "většina jeho frakce k datu hlasování.",
+    "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
+                "součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se "
+                "nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+    "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali "
+                      "stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+    "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování "
+              "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
 }
 
 
@@ -71,12 +98,64 @@ def group_majority(group_counts: dict[str, list[int]], group: str | None) -> str
     return majority(dict(zip(POSITIONS, row)))
 
 
+def decided(vote: dict) -> bool:
+    return vote.get("result") in RESULTS_DECIDED
+
+
+def simple_result(n_for: int, n_against: int) -> str:
+    return "ADOPTED" if n_for > n_against else "REJECTED"
+
+
+def is_close(vote: dict) -> bool:
+    c = vote["counts"]
+    return decided(vote) and abs(c["for"] - c["against"]) <= CLOSE_MARGIN
+
+
+def decisive_alternative(vote: dict, active: list[dict]) -> str | None:
+    """Výsledek bez hlasů pro/proti českých poslanců, pokud by byl opačný; jinak None.
+    Jen pro těsná hlasování, jejichž oficiální výsledek odpovídá prosté většině."""
+    if not is_close(vote):
+        return None
+    c = vote["counts"]
+    if simple_result(c["for"], c["against"]) != vote["result"]:
+        return None
+    cz_for = sum(p["position"] == "FOR" for p in active)
+    cz_against = sum(p["position"] == "AGAINST" for p in active)
+    alt = simple_result(c["for"] - cz_for, c["against"] - cz_against)
+    return alt if alt != vote["result"] else None
+
+
+def cz_split(active: list[dict]) -> tuple[float, int, int] | None:
+    """(míra rozkolu, pro, proti) mezi Čechy; None, pokud nejsou na obou stranách."""
+    n_for = sum(p["position"] == "FOR" for p in active)
+    n_against = sum(p["position"] == "AGAINST" for p in active)
+    if not n_for or not n_against:
+        return None
+    return min(n_for, n_against) / (n_for + n_against), n_for, n_against
+
+
+def topic_codes(vote: dict) -> set[str]:
+    """Témata OEIL zkrácená na úroveň 2 (např. 3.70.03 -> 3.70)."""
+    return {".".join(t["code"].split(".")[:2]) for t in (vote.get("topics") or {}).get("oeil", [])}
+
+
+def top_topics(votes: list[dict], n: int = TOP_TOPICS) -> list[str]:
+    c = Counter(code for v in votes for code in topic_codes(v))
+    return [code for code, _ in sorted(c.items(), key=lambda x: (-x[1], x[0]))[:n]]
+
+
 def empty_metrics() -> dict:
     return {
         "attendance": [0, 0],
         "attendance_main": [0, 0],
         "group_loyalty": [0, 0],
+        "group_loyalty_main": [0, 0],
         "cz_agreement": [0, 0],
+        "outcome": [0, 0],
+        "outcome_main": [0, 0],
+        "outcome_close": [0, 0],
+        "group_outcome": [0, 0],
+        "group_outcome_main": [0, 0],
         "positions": {p: 0 for p in POSITIONS},
     }
 
@@ -97,34 +176,74 @@ def add_vote(metrics: dict, vote: dict, pos: dict, others: list[str]) -> None:
     if gm is not None:
         metrics["group_loyalty"][1] += 1
         metrics["group_loyalty"][0] += position == gm
+        if vote["is_main"]:
+            metrics["group_loyalty_main"][1] += 1
+            metrics["group_loyalty_main"][0] += position == gm
     cm = majority(Counter(p for p in others if p in VOTED))
     if cm is not None:
         metrics["cz_agreement"][1] += 1
         metrics["cz_agreement"][0] += position == cm
+    if position == "ABSTENTION" or not decided(vote):
+        return
+    agree = (position == "FOR") == (vote["result"] == "ADOPTED")
+    keys = ["outcome"] + (["outcome_main"] if vote["is_main"] else []) + (["outcome_close"] if is_close(vote) else [])
+    for k in keys:
+        metrics[k][1] += 1
+        metrics[k][0] += agree
+    group = pos["group_code"]
+    if group not in NO_GROUP and group in vote["group_counts"]:
+        g_for, g_against = vote["group_counts"][group][:2]
+        g_agree = g_for if vote["result"] == "ADOPTED" else g_against
+        for k in ["group_outcome"] + (["group_outcome_main"] if vote["is_main"] else []):
+            metrics[k][1] += g_for + g_against
+            metrics[k][0] += g_agree
 
 
-def compute(meps: list[dict], votes: list[dict]) -> dict:
+def active_positions(vote: dict, by_id: dict, unknown: set | None = None) -> list[dict]:
+    """Pozice Čechů, kteří byli k datu hlasování v mandátu."""
+    active = []
+    for p in vote["cz_positions"]:
+        m = by_id.get(p["member_id"])
+        if m is None:
+            if unknown is not None:
+                unknown.add(p["member_id"])
+            continue
+        if in_mandate(m["mandates"], vote["date"]):
+            active.append(p)
+    return active
+
+
+def compute(meps: list[dict], votes: list[dict], topics: list[str] | None = None) -> dict:
     by_id = {m["id"]: m for m in meps}
+    topics = top_topics(votes) if topics is None else topics
+    topic_set = set(topics)
     total = {i: empty_metrics() for i in by_id}
     monthly: dict[int, dict[str, dict]] = {i: {} for i in by_id}
+    by_topic: dict[int, dict[str, dict]] = {i: {t: empty_metrics() for t in topics} for i in by_id}
     pairwise: dict[int, dict[int, list[int]]] = {i: defaultdict(lambda: [0, 0]) for i in by_id}
+    against: dict[int, list[dict]] = {i: [] for i in by_id}
+    decisive: dict[int, list[dict]] = {i: [] for i in by_id}
     unknown = set()
 
     for vote in votes:
-        require(vote, ["id", "date", "is_main", "group_counts", "cz_positions"], f"hlasování {vote.get('id')}")
-        active = []
-        for p in vote["cz_positions"]:
-            m = by_id.get(p["member_id"])
-            if m is None:
-                unknown.add(p["member_id"])
-                continue
-            if in_mandate(m["mandates"], vote["date"]):
-                active.append(p)
+        require(vote, ["id", "date", "is_main", "group_counts", "cz_positions", "counts"], f"hlasování {vote.get('id')}")
+        active = active_positions(vote, by_id, unknown)
         month = vote["date"][:7]
+        vote_topics = [t for t in topic_codes(vote) if t in topic_set]
+        alt = decisive_alternative(vote, active)
         for p in active:
+            i = p["member_id"]
             others = [o["position"] for o in active if o is not p]
-            add_vote(total[p["member_id"]], vote, p, others)
-            add_vote(monthly[p["member_id"]].setdefault(month, empty_metrics()), vote, p, others)
+            add_vote(total[i], vote, p, others)
+            add_vote(monthly[i].setdefault(month, empty_metrics()), vote, p, others)
+            for t in vote_topics:
+                add_vote(by_topic[i][t], vote, p, others)
+            gm = group_majority(vote["group_counts"], p["group_code"])
+            if p["position"] in VOTED and gm is not None and p["position"] != gm:
+                against[i].append({"id": vote["id"], "is_main": vote["is_main"], "position": p["position"],
+                                   "group_code": p["group_code"], "group_majority": gm})
+            if alt is not None:
+                decisive[i].append({"id": vote["id"], "position": p["position"]})
         voted = [p for p in active if p["position"] in VOTED]
         for a in voted:
             for b in voted:
@@ -135,14 +254,114 @@ def compute(meps: list[dict], votes: list[dict]) -> dict:
 
     if unknown:
         raise FormatError(f"hlasování obsahují poslance, kteří nejsou v meps.json: {sorted(unknown)}")
+    newest = lambda xs: list(reversed(xs))
     return {
         str(i): {
             "total": total[i],
             "monthly": dict(sorted(monthly[i].items())),
             "pairwise": {str(k): v for k, v in sorted(pairwise[i].items())},
+            "topics": by_topic[i],
+            "against_group": {
+                "count": len(against[i]),
+                "count_main": sum(x["is_main"] for x in against[i]),
+                "recent": newest(against[i])[:RECENT],
+                "recent_main": [x for x in newest(against[i]) if x["is_main"]][:RECENT],
+            },
+            "decisive": newest(decisive[i]),
         }
         for i in sorted(by_id)
     }
+
+
+def last_session_dates(dates: list[str], max_gap_days: int = 3) -> list[str]:
+    """Dny posledního zasedání: od posledního dne zpět, dokud mezera mezi dny nepřesáhne max_gap_days."""
+    import datetime as dt
+    days = sorted(set(dates))
+    if not days:
+        return []
+    out = [days[-1]]
+    for d in reversed(days[:-1]):
+        gap = (dt.date.fromisoformat(out[-1]) - dt.date.fromisoformat(d)).days
+        if gap > max_gap_days:
+            break
+        out.append(d)
+    return sorted(out)
+
+
+def analyze_votes(meps: list[dict], votes: list[dict], n_all: int = 100, n_main: int = 50) -> dict:
+    """Těsná a rozhodující hlasování a rozkol mezi Čechy (seznamy ID hlasování)."""
+    by_id = {m["id"]: m for m in meps}
+    close, decisive, splits = [], [], []
+    for vote in votes:
+        active = active_positions(vote, by_id)
+        if is_close(vote):
+            close.append({"id": vote["id"], "is_main": vote["is_main"]})
+        alt = decisive_alternative(vote, active)
+        if alt is not None:
+            decisive.append({"id": vote["id"], "alternative_result": alt})
+        sp = cz_split(active)
+        if sp is not None:
+            splits.append({"id": vote["id"], "date": vote["date"], "is_main": vote["is_main"],
+                           "split": round(sp[0], 4), "for": sp[1], "against": sp[2]})
+    rank = lambda xs: sorted(xs, key=lambda x: (-x["split"], -(x["for"] + x["against"]), x["date"], x["id"]))
+    session = set(last_session_dates([v["date"] for v in votes]))
+    session_votes = [v for v in votes if v["date"] in session]
+    return {
+        "close": {"count": len(close), "count_main": sum(x["is_main"] for x in close), "ids": [x["id"] for x in close]},
+        "decisive": list(reversed(decisive)),
+        "splits": {
+            "count": len(splits),
+            "count_main": sum(x["is_main"] for x in splits),
+            "all": rank(splits)[:n_all],
+            "main": rank([x for x in splits if x["is_main"]])[:n_main],
+            "last_session": {
+                "from": min(session) if session else None,
+                "to": max(session) if session else None,
+                "votes": len(session_votes),
+                "split": rank([x for x in splits if x["date"] in session]),
+            },
+        },
+    }
+
+
+def independent_ids(meps: list[dict]) -> set[int]:
+    return {int(p["org_id"]) for m in meps for p in m["parties"] if p.get("name") == INDEPENDENT}
+
+
+def compute_parties(meps: list[dict], votes: list[dict]) -> dict:
+    """Metriky stran podle příslušnosti k datu hlasování (HowTheyVote), jednotnost a hlasování,
+    kde se strana rozdělila (poslanci strany hlasovali pro i proti)."""
+    by_id = {m["id"]: m for m in meps}
+    skip = independent_ids(meps)
+    out: dict[int, dict] = {}
+    for vote in votes:
+        active = active_positions(vote, by_id)
+        by_party: dict[int, list[dict]] = defaultdict(list)
+        for p in active:
+            if p.get("national_party_id") is not None and p["national_party_id"] not in skip:
+                by_party[p["national_party_id"]].append(p)
+        for party, members in by_party.items():
+            st = out.setdefault(party, {"total": empty_metrics(), "cohesion": [0, 0], "cohesion_main": [0, 0],
+                                        "splits": []})
+            for p in members:
+                add_vote(st["total"], vote, p, [o["position"] for o in active if o is not p])
+            voted = [p["position"] for p in members if p["position"] in VOTED]
+            if len(voted) >= 2:
+                same = len(set(voted)) == 1
+                for k in ["cohesion"] + (["cohesion_main"] if vote["is_main"] else []):
+                    st[k][1] += 1
+                    st[k][0] += same
+            if "FOR" in voted and "AGAINST" in voted:
+                st["splits"].append({"id": vote["id"], "is_main": vote["is_main"]})
+    result = {}
+    for party, st in sorted(out.items()):
+        splits = list(reversed(st.pop("splits")))
+        result[str(party)] = {**st, "splits": {
+            "count": len(splits), "count_main": sum(x["is_main"] for x in splits),
+            "recent": [x["id"] for x in splits[:20]],
+            "recent_main": [x["id"] for x in splits if x["is_main"]][:20],
+        }}
+    return result
 
 
 def derive_group_codes(meps: list[dict], votes: list[dict]) -> dict[str, str]:
@@ -221,6 +440,7 @@ def build_parties(meps: list[dict], assets: Path, manual: dict | None = None) ->
                 "id": int(p["org_id"]),
                 "short_label": p["short_label"],
                 "name": p["name"],
+                "independent": p["name"] == INDEPENDENT,
                 "color": manual.get(p["org_id"], {}).get("color"),
                 "logo": manual.get(p["org_id"], {}).get("logo") or find_logo(assets, "cz", p["org_id"]),
             }
@@ -248,12 +468,17 @@ def run(data_dir: Path, assets: Path) -> dict:
         require(m, ["id", "mandates", "groups", "parties"], f"meps.json poslanec {m.get('id')}")
     index, votes = load_votes(data_dir / "votes")
     meps = meps_doc["meps"]
+    topics = top_topics(votes)
     stats = {
         "sources": {"votes": index["source"], "meps": meps_doc["source"]},
         "period": {"from": min(v["date"] for v in votes), "to": max(v["date"] for v in votes)} if votes else None,
         "votes_total": len(votes),
         "definitions": DEFINITIONS,
-        "meps": compute(meps, votes),
+        "meps": compute(meps, votes, topics),
+        "parties": compute_parties(meps, votes),
+        "votes_analysis": analyze_votes(meps, votes),
+        "topics": [{"code": t, "label": index.get("oeil_subjects", {}).get(t),
+                    "votes": sum(t in topic_codes(v) for v in votes)} for t in topics],
     }
     write = lambda name, obj: (data_dir / name).write_text(
         json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

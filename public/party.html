@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strany – EP Watch CZ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
+  <nav>
+    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="party.html" data-page="parties">Strany</a>
+    <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
+    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
+    <a href="o-projektu.html" data-page="about">O projektu</a>
+  </nav>
+</div></header>
+
+<main id="main"><p class="loading">Načítám…</p></main>
+
+
+<footer class="site-footer"><div class="inner">
+  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
+  Portréty © European Union – Source: EP. <a href="o-projektu.html">O projektu</a>.
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+setNav("parties");
+const main = document.getElementById("main");
+
+function pairText(pair, unit = "hlasování") {
+  return pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])} ${unit}` : "nepočítá se";
+}
+
+async function listPage() {
+  const [idx, groups, parties] = await Promise.all([getJSON("parties/index.json"), getJSON("groups.json"), getJSON("parties.json")]);
+  main.innerHTML = `
+    <h1>České strany v Evropském parlamentu</h1>
+    <p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období. Příslušnost ke straně se bere
+      k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Docházka</th>
+        <th class="num">Jednotnost</th><th class="num">Strana se rozdělila</th></tr></thead>
+      <tbody>${idx.parties.map((p) => `<tr>
+        <td><a href="party.html?id=${p.id}" class="vote-title">${esc(p.name || p.short_label)}</a> ${partyBadge(p.id, p.short_label, parties)}</td>
+        <td class="num">${p.members}</td>
+        <td class="num">${pctCell(p.total.attendance)}</td>
+        <td class="num">${pctCell(p.cohesion, "všichni poslanci strany hlasovali stejně")}</td>
+        <td class="num">${p.cohesion[1] ? `${fmtNum(p.splits_count)}×` : '<span class="muted">jen 1 poslanec</span>'}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>
+    <p class="source">${sourceLine(idx)}</p>`;
+}
+
+async function detailPage(id) {
+  const [p, groups, parties] = await Promise.all([
+    getJSON(`parties/${id}.json`).catch(() => { throw new Error("Strana nenalezena. Vrať se na seznam stran."); }),
+    getJSON("groups.json"), getJSON("parties.json"),
+  ]);
+  document.title = `${p.name || p.short_label} – EP Watch CZ`;
+  const t = p.total;
+  const meps = Object.fromEntries(p.member_list.map((m) => [m.id, m]));
+  const single = p.cohesion[1] === 0;
+  const splitList = (list) => list.length ? `<div class="table-wrap"><table>
+      <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Poslanci strany</th><th>Výsledek</th></tr></thead>
+      <tbody>${list.map((v) => voteRow(v, `<td>${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
+    : '<p class="muted">Žádné takové hlasování.</p>';
+  main.innerHTML = `
+    <p class="small"><a href="party.html">← Všechny strany</a></p>
+    <h1>${esc(p.name || p.short_label)} ${partyBadge(p.id, p.short_label, parties)}</h1>
+
+    <h2>Poslanci</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Docházka</th><th class="num">Loajalita k frakci</th></tr></thead>
+      <tbody>${p.member_list.map((m) => `<tr>
+        <td><div class="mep-cell"><img src="${photoUrl(m)}" alt="" loading="lazy">
+          <div><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
+        <td class="small">${m.party_periods.map((x) => `${fmtDate(x.start)} – ${x.end ? fmtDate(x.end) : "dosud"}`).join("<br>")}</td>
+        <td class="num">${pctCell(m.total.attendance)}</td>
+        <td class="num">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>
+    </table></div>
+
+    <h2>Souhrn za stranu</h2>
+    <div class="metrics">
+      <div class="card metric"><div class="label">Docházka poslanců strany</div><div class="value">${fmtPct(pct(t.attendance))}</div>
+        <div class="detail">${pairText(t.attendance, "hlasů poslanců")}</div></div>
+      <div class="card metric"><div class="label">Jednotnost</div><div class="value">${single ? "–" : fmtPct(pct(p.cohesion))}</div>
+        <div class="detail">${single ? "strana měla v žádném hlasování víc než 1 hlasujícího poslance" : pairText(p.cohesion)}</div>
+        <div class="detail">hlavní hlasování: ${single ? "–" : `${fmtPct(pct(p.cohesion_main))} (${pairText(p.cohesion_main)})`}</div></div>
+      <div class="card metric"><div class="label">Soulad s výsledkem</div><div class="value">${fmtPct(pct(t.outcome))}</div>
+        <div class="detail">${pairText(t.outcome, "hlasů pro/proti")} · jen informativní</div></div>
+    </div>
+    <p class="source">${sourceLine(p)}</p>
+
+    ${single ? "" : `<h2>Kde se strana rozdělila</h2>
+      <p class="muted">Hlasování, kde poslanci strany hlasovali pro i proti. Celkem ${fmtNum(p.splits_count)}×, z toho v hlavních hlasováních ${fmtNum(p.splits_count_main)}×.</p>
+      <div class="controls"><label><input type="checkbox" id="split-main"> jen hlavní hlasování</label></div>
+      <div id="splits">${splitList(p.splits)}</div>`}`;
+  document.getElementById("split-main")?.addEventListener("change", (e) => {
+    document.getElementById("splits").innerHTML = splitList(e.target.checked ? p.splits_main : p.splits);
+  });
+}
+
+(async () => {
+  try {
+    const id = param("id");
+    if (id && !/^\d+$/.test(id)) throw new Error("Strana nenalezena.");
+    await (id ? detailPage(id) : listPage());
+  } catch (e) {
+    showError(main, e);
+  }
+})();
+</script>
+</body>
+</html>
