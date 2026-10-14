@@ -2,7 +2,9 @@
 
 Zdroj: https://github.com/HowTheyVote/data (ODbL), stabilní odkazy latest/download/*.csv.gz.
 Výstup: data/votes/YYYY-MM.json, jedno hlasování = název, datum, výsledek, témata,
-is_main a pozice každého českého poslance (frakce a strana k datu hlasování).
+is_main, pozice každého českého poslance (frakce a strana k datu hlasování)
+a počty hlasů každé frakce (group_counts, pro výpočet loajality).
+data/votes/index.json: seznam měsíců a frakcí.
 
 Použití:
     python scripts/fetch_votes.py                     # stáhne nejnovější export
@@ -48,7 +50,11 @@ TABLES = {
     "geo_areas": ["code", "label", "iso_alpha_2"],
     "geo_area_votes": ["vote_id", "geo_area_code"],
     "responsible_committee_votes": ["vote_id", "committee_code"],
+    "groups": ["code", "official_label", "label", "short_label"],
 }
+
+# Pořadí počtů v group_counts: [pro, proti, zdržel se, nehlasoval].
+COUNT_ORDER = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]
 
 
 class FormatError(RuntimeError):
@@ -122,29 +128,40 @@ def load_votes(csv_dir: Path, since: str = TERM_START) -> pd.DataFrame:
     return v.sort_values(["timestamp", "id"])
 
 
-def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY) -> pd.DataFrame:
-    """Načte member_votes po částech a ponechá jen daný stát a daná hlasování."""
+def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY):
+    """Načte member_votes po částech.
+
+    Vrací (pozice poslanců daného státu, {vote_id: {group_code: [pro, proti, zdržel, nehlasoval]}}),
+    počty frakcí jsou přes všechny poslance EP.
+    """
     path = csv_dir / "member_votes.csv.gz"
     if not path.exists():
         path = csv_dir / "member_votes.csv"
     if not path.exists():
         raise FormatError(f"chybí soubor member_votes.csv(.gz) v {csv_dir}")
-    parts = []
+    parts, counts = [], []
     reader = pd.read_csv(path, dtype=str, keep_default_na=False, na_values=[""], chunksize=1_000_000)
     for chunk in reader:
         check_columns(chunk.columns, "member_votes")
-        chunk = chunk[chunk["country_code"] == country]
         chunk = chunk[chunk["vote_id"].astype(int).isin(vote_ids)]
-        parts.append(chunk)
+        bad = set(chunk["position"].dropna()) - POSITIONS
+        if bad or chunk["position"].isna().any():
+            raise FormatError(f"member_votes.csv: neočekávaná pozice {sorted(bad) or 'prázdná'}")
+        counts.append(chunk.groupby(["vote_id", "group_code", "position"]).size())
+        parts.append(chunk[chunk["country_code"] == country])
     mv = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=TABLES["member_votes"])
-    bad = set(mv["position"].dropna()) - POSITIONS
-    if bad or mv["position"].isna().any():
-        raise FormatError(f"member_votes.csv: neočekávaná pozice {sorted(bad) or 'prázdná'}")
     if mv.duplicated(["vote_id", "member_id"]).any():
         raise FormatError("member_votes.csv: duplicitní záznam poslanec × hlasování")
     mv["vote_id"] = mv["vote_id"].astype(int)
     mv["member_id"] = mv["member_id"].astype(int)
-    return mv
+
+    group_counts: dict[int, dict[str, list[int]]] = {}
+    if counts:
+        total = pd.concat(counts).groupby(level=[0, 1, 2]).sum()
+        for (vid, group, position), n in total.items():
+            row = group_counts.setdefault(int(vid), {}).setdefault(group, [0, 0, 0, 0])
+            row[COUNT_ORDER.index(position)] += int(n)
+    return mv, group_counts
 
 
 def load_topics(csv_dir: Path, vote_ids: set[int]) -> dict[int, dict[str, list]]:
@@ -186,7 +203,9 @@ def _int_or_none(value):
     return None if value is None else int(value)
 
 
-def build_months(votes: pd.DataFrame, mv: pd.DataFrame, topics: dict, release: str | None) -> dict[str, dict]:
+def build_months(votes: pd.DataFrame, mv: pd.DataFrame, topics: dict, release: str | None,
+                 group_counts: dict | None = None) -> dict[str, dict]:
+    group_counts = group_counts or {}
     by_vote = {vid: g.sort_values("member_id") for vid, g in mv.groupby("vote_id")}
     months: dict[str, dict] = {}
     for row in votes.itertuples(index=False):
@@ -234,6 +253,7 @@ def build_months(votes: pd.DataFrame, mv: pd.DataFrame, topics: dict, release: s
                 "committees": t.get("committees", []),
             },
             "source_url": HTV_VOTE_URL.format(id=int(row.id)),
+            "group_counts": dict(sorted(group_counts.get(int(row.id), {}).items())),
             "cz_positions": positions,
         }
         months.setdefault(month, {
@@ -261,13 +281,30 @@ def write_months(months: dict[str, dict], out_dir: Path) -> None:
             f.write(dump(head)[:-1] + ',"votes":[\n' + ",\n".join(lines) + "\n]}\n")
 
 
+def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, release: str | None) -> None:
+    """index.json: seznam měsíců (pro web) a frakce, které se v hlasováních vyskytují."""
+    used = {g for m in months.values() for v in m["votes"] for g in v["group_counts"]}
+    index = {
+        "source": next(iter(months.values()))["source"] if months else None,
+        "months": [{"month": k, "votes": len(v["votes"])} for k, v in sorted(months.items())],
+        "groups": [
+            {"code": r.code, "label": _clean(r.label), "short_label": _clean(r.short_label),
+             "official_label": _clean(r.official_label)}
+            for r in groups.sort_values("code").itertuples(index=False) if r.code in used
+        ],
+    }
+    (out_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
 def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_START) -> dict[str, dict]:
     votes = load_votes(csv_dir, since)
     ids = set(votes["id"])
-    mv = load_member_votes(csv_dir, ids)
+    mv, group_counts = load_member_votes(csv_dir, ids)
     topics = load_topics(csv_dir, ids)
-    months = build_months(votes, mv, topics, release)
+    groups = read_table(csv_dir, "groups")
+    months = build_months(votes, mv, topics, release, group_counts)
     write_months(months, out_dir)
+    write_index(months, groups, out_dir, release)
     print(
         f"hlasování: {len(votes)} (hlavních {int(votes['is_main'].sum())}), "
         f"CZ pozic: {len(mv)}, poslanců: {mv['member_id'].nunique()}, měsíců: {len(months)}",
