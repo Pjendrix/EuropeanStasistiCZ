@@ -42,6 +42,10 @@ def test_og_url_only_with_known_base_url(data_dir):
     (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
     html = bp.build(data_dir)["p/1.html"]
     assert '<link rel="canonical" href="https://example.test/p/1.html">' in html
+    pages = bp.build(data_dir)
+    assert "<loc>https://example.test/v/1.html</loc>" in pages["sitemap.xml"]
+    assert "<loc>https://example.test/index.html</loc>" in pages["sitemap.xml"]
+    assert pages["robots.txt"].endswith("Sitemap: https://example.test/sitemap.xml\n")
 
 
 def test_write_removes_stale_and_keeps_unchanged(tmp_path):
