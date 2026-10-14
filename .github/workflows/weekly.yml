@@ -56,14 +56,8 @@ jobs:
         run: python scripts/check_data.py --prev "$RUNNER_TEMP/data-prev"
 
       - name: Commit nových dat
+        # Odloží stažené soubory, srovná se s aktuálním main, přepočítá odvozené a commitne.
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data public/assets/photos
-          if git diff --cached --quiet; then
-            echo "Žádná nová data."
-          else
-            git commit -m "data: týdenní aktualizace $(date -u +%Y-%m-%d)"
-            git pull --rebase origin main
-            git push
-          fi
+          day=$(date -u +%Y-%m-%d)
+          scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
+            data/meps.json data/votes public/assets/photos

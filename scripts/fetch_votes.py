@@ -16,11 +16,16 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 import pandas as pd
 import requests
+
+from labels_cs import translate
+from vote_kinds import classify
 
 BASE_URL = "https://github.com/HowTheyVote/data/releases/latest/download"
 HTV_VOTE_URL = "https://howtheyvote.eu/votes/{id}"
@@ -233,6 +238,12 @@ def build_months(votes: pd.DataFrame, mv: pd.DataFrame, topics: dict, release: s
             "amendment_subject": _clean(row.amendment_subject),
             "amendment_number": _clean(row.amendment_number),
             "is_main": bool(row.is_main),
+            # typ hlasování a český popis podle pravidel (scripts/vote_kinds.py, scripts/labels_cs.py)
+            **dict(zip(("vote_kind", "inverted"), classify({
+                "is_main": bool(row.is_main), "description": _clean(row.description),
+                "amendment_subject": _clean(row.amendment_subject), "amendment_number": _clean(row.amendment_number),
+            }))),
+            "description_cs": translate(_clean(row.description)),
             "procedure": {
                 "reference": _clean(row.procedure_reference),
                 "title": _clean(row.procedure_title),
@@ -307,6 +318,11 @@ def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_STA
     topics = load_topics(csv_dir, ids)
     groups = read_table(csv_dir, "groups")
     months = build_months(votes, mv, topics, release, group_counts)
+    others = Counter(re.sub(r"\d+", "N", v["description"] or "(bez popisu)")
+                     for m in months.values() for v in m["votes"] if v["vote_kind"] == "other")
+    if others:
+        print("typ hlasování 'other' (doplnit do vote_kinds.py?): " +
+              "; ".join(f"{k} ×{n}" for k, n in others.most_common(10)), file=sys.stderr)
     write_months(months, out_dir)
     write_index(months, groups, out_dir, release, read_table(csv_dir, "oeil_subjects"))
     print(

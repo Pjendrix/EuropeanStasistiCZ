@@ -31,6 +31,19 @@ const RESULT_NOTE = {
   WITHDRAWN: "Návrh byl stažen.",
   null: "Zdroj (HowTheyVote.eu) u tohoto hlasování výsledek neuvádí. Výsledek ověř v originálu (odkaz „Originál na HowTheyVote.eu“).",
 };
+// Typ hlasování (vote_kind) určuje build_web.py pevnými pravidly (scripts/vote_kinds.py).
+const KIND_LABEL = {
+  final: "závěrečné hlasování",
+  provisional_agreement: "prozatímní dohoda s Radou",
+  rejection: "návrh na zamítnutí",
+  mandate: "mandát k jednání s Radou",
+  urgency: "naléhavý postup",
+  amendment: "pozměňovací návrh",
+  split_part: "dílčí hlasování",
+  other: "procedurální / ostatní",
+};
+const INVERTED_NOTE = "Hlasovalo se o návrhu na zamítnutí: hlas PRO = text zamítnout, hlas PROTI = text ponechat.";
+const SHORT_MANDATE_NOTE = "Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.";
 const NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí.";
 const ROLE_LABEL = {
   MEMBER: "člen/ka",
@@ -177,8 +190,16 @@ function partyLink(id, label, parties) {
   return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
 }
 
-function photoUrl(mep) {
-  return mep.photo_url ? `assets/photos/${mep.id}.jpg` : "";
+function photoUrl(mep, thumb = false) {
+  if (!mep.photo_url) return "";
+  return thumb ? `assets/photos/thumbs/${mep.id}.webp` : `assets/photos/${mep.id}.jpg`;
+}
+
+// Portrét (náhled) nebo iniciály, když portrét chybí.
+function avatar(mep, size = 40) {
+  if (mep.photo_url) return `<img src="${photoUrl(mep, true)}" alt="" loading="lazy" width="${size}" height="${size}">`;
+  const initials = [mep.given_name, mep.family_name].filter(Boolean).map((x) => x[0]).join("") || (mep.name || "?")[0];
+  return `<span class="avatar-initials" style="width:${size}px;height:${size}px;border-radius:50%;flex:none" aria-hidden="true">${esc(initials)}</span>`;
 }
 
 function splitBar(counts) {
@@ -194,12 +215,45 @@ function voteTitle(v) {
   return t;
 }
 
+// Popis toho, o čem se hlasovalo: česky, když ho pravidla umí přeložit, jinak originál ze zdroje.
+function voteDesc(v) {
+  return v.description_cs || v.description || "";
+}
+
 function voteSubtitle(v) {
   const parts = [];
   if (v.reference) parts.push(v.reference);
-  if (v.amendment_number) parts.push(`PN ${v.amendment_number}`);
-  if (v.description) parts.push(v.description);
+  const desc = voteDesc(v);
+  if (desc) parts.push(desc);
+  else if (/^\d+$/.test(String(v.amendment_number || ""))) parts.push(`PN ${v.amendment_number}`);
   return parts.join(" · ");
+}
+
+// Štítek typu hlasování; starší data bez vote_kind ukážou jen „hlavní“.
+function kindTag(v) {
+  if (v.vote_kind) return `<span class="tag kind-${esc(v.vote_kind)}" title="${v.inverted || v.vote_kind === "rejection" ? esc(INVERTED_NOTE) : ""}">${esc(KIND_LABEL[v.vote_kind] || v.vote_kind)}</span>`;
+  return v.is_main ? '<span class="tag">hlavní</span>' : "";
+}
+
+// Výsledek slovy; u návrhu na zamítnutí i co to znamená pro text.
+function resultText(v) {
+  const base = RESULT_LABEL[v.result] || "neuveden";
+  if (!(v.inverted || v.vote_kind === "rejection")) return base;
+  if (v.result === "ADOPTED") return `${base} = text zamítnut`;
+  if (v.result === "REJECTED") return `${base} = text nezamítnut`;
+  return base;
+}
+
+// Závěrečné hlasování o textu (nebo o prozatímní dohodě); starší data jen podle is_main.
+function isFinal(v) {
+  if (v.is_final !== undefined) return v.is_final;
+  return v.vote_kind ? ["final", "provisional_agreement"].includes(v.vote_kind) : Boolean(v.is_main);
+}
+
+// Přijatý text v češtině (PDF z EP Open Data) podle texts_adopted_reference „P10_TA(2026)0230“.
+function adoptedTextUrl(ref) {
+  const m = /^P(\d+)_TA\((\d{4})\)(\d{4})$/.exec(ref || "");
+  return m ? `https://data.europarl.europa.eu/distribution/doc/TA-${m[1]}-${m[2]}-${m[3]}_cs.pdf` : null;
 }
 
 function setNav(page) {
@@ -258,9 +312,9 @@ function voteRow(v, extra = "") {
   return `<tr>
     <td class="num">${fmtDate(v.date)}</td>
     <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
-      <div class="small muted">${v.is_main ? '<span class="tag">hlavní</span>' : ""}${esc(voteSubtitle(v))}</div></td>
+      <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td>
+    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultText(v)}</td>
   </tr>`;
 }
 
@@ -281,6 +335,22 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
   }).join("");
 }
 
+
+// Dlouhé tabulky sbalit na prvních n řádků s tlačítkem „Zobrazit všech N“.
+function collapseTables(root, n = 5) {
+  root.querySelectorAll(".table-wrap table").forEach((table) => {
+    const rows = [...table.tBodies[0]?.rows || []];
+    if (rows.length <= n + 1 || table.dataset.collapsed) return;
+    table.dataset.collapsed = "1";
+    rows.slice(n).forEach((r) => { r.hidden = true; });
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "more-btn";
+    btn.textContent = `Zobrazit všech ${rows.length}`;
+    btn.addEventListener("click", () => { rows.forEach((r) => { r.hidden = false; }); btn.remove(); });
+    table.closest(".table-wrap").after(btn);
+  });
+}
 
 // --- přepínač režimu a pohyb ---------------------------------------------------
 

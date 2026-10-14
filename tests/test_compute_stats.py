@@ -213,7 +213,7 @@ def test_close_and_decisive():
     ]
     a = cs.analyze_votes(meps, votes)
     assert a["close"]["count"] == 3 and a["close"]["ids"] == [1, 2, 4]
-    assert a["decisive"] == [{"id": 1, "alternative_result": "REJECTED"}]
+    assert a["decisive"] == [{"id": 1, "alternative_result": "REJECTED", "is_final": False, "vote_kind": "other"}]
     s = cs.compute(meps, votes)
     assert s["3"]["decisive"] == [{"id": 1, "position": "AGAINST"}]
 
@@ -273,3 +273,32 @@ def test_topics_level2():
     assert cs.top_topics(votes, 1) == ["3.70"]
     t = cs.compute(meps, votes, ["3.70"])["1"]["topics"]
     assert list(t) == ["3.70"] and t["3.70"]["attendance"] == [1, 2]
+
+
+def test_cz_unity_and_strong_split():
+    meps = [mep(i) for i in range(1, 5)]
+    votes = [
+        vote(1, "2024-09-16", [pos(1, "FOR"), pos(2, "FOR"), pos(3, "ABSTENTION")], is_main=True),  # jednotně
+        vote(2, "2024-09-17", [pos(1, "FOR"), pos(2, "FOR"), pos(3, "FOR"), pos(4, "AGAINST")]),     # 1/4 < 0,3
+        vote(3, "2024-09-18", [pos(1, "FOR"), pos(2, "AGAINST")]),                                  # 0,5 výrazný
+        vote(4, "2024-09-19", [pos(1, "FOR"), pos(2, "DID_NOT_VOTE")]),                             # jen 1 -> nepočítá se
+    ]
+    u = cs.analyze_votes(meps, votes)["unity"]
+    assert (u["united"], u["considered"], u["strong_split"]) == (1, 3, 1)
+    assert (u["united_final"], u["considered_final"]) == (1, 1)
+    assert u["last_session"] == {"united": 1, "considered": 3, "strong_split": 1}
+
+
+def test_main_metrics_use_only_final_votes():
+    """Návrh na zamítnutí, mandát ani naléhavost nejsou závěrečná hlasování (review R1/R2)."""
+    gc = {"EPP": [100, 5, 0, 0]}
+    rej = vote(1, "2024-09-16", [pos(1, "FOR")], gc, is_main=True, result="REJECTED", counts=(83, 540))
+    rej["description"], rej["amendment_subject"] = "Proposition de rejet - Am 3", "Proposal for rejection"
+    mandate = vote(2, "2024-09-17", [pos(1, "DID_NOT_VOTE")], gc, is_main=True)
+    mandate["description"] = "Décision d'engager des négociations interinstitutionnelles"
+    final = vote(3, "2024-09-18", [pos(1, "FOR")], gc, is_main=True, result="ADOPTED", counts=(536, 101))
+    final["description"], final["amendment_subject"] = "Accord provisoire - Am 2", "Provisional agreement"
+    t = cs.compute([mep(1)], [rej, mandate, final])["1"]["total"]
+    assert t["attendance_main"] == [1, 1]      # jen prozatímní dohoda
+    assert t["outcome_main"] == [1, 1]
+    assert t["attendance"] == [2, 3]           # všechna hlasování dál počítají
