@@ -1,7 +1,7 @@
 """Stáhne z EP Open Data API všechny poslance zvolené za ČR v 10. volebním období.
 
 Zdroj: https://data.europarl.europa.eu/api/v2 (CC BY 4.0).
-Výstup: data/meps.json, na poslance ID, jméno, portrét, mandáty od–do, frakce,
+Výstup: data/meps.json, na poslance ID, jméno, pohlaví, portrét, mandáty od–do, frakce,
 české strany a výbory s daty od–do (historie změn), vše jen pro 10. období.
 
 Použití:
@@ -194,6 +194,8 @@ def parse_mep(person: dict, get_body) -> dict:
         "given_name": person.get("givenName"),
         "family_name": person.get("familyName"),
         "sort_label": person.get("sortLabel"),
+        # MALE / FEMALE podle EP (pro správné tvary sloves na webu), jinak null
+        "gender": _short(person.get("hasGender")),
         "photo_url": img,
         "photo_credit": PHOTO_CREDIT if img else None,
         "profile_url": PROFILE_URL.format(id=person["identifier"]),

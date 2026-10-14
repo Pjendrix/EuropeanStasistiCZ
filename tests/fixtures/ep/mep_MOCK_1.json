@@ -1,6 +1,6 @@
 {"data": [{
  "id": "person/1", "type": "Person", "identifier": "1", "label": "MOCK Jana NOVÁKOVÁ",
- "givenName": "MOCK Jana", "familyName": "Nováková", "sortLabel": "NOVAKOVA",
+ "givenName": "MOCK Jana", "familyName": "Nováková", "sortLabel": "NOVAKOVA", "hasGender": "http://publications.europa.eu/resource/authority/human-sex/FEMALE",
  "img": "https://www.europarl.europa.eu/mepphoto/1.jpg",
  "hasMembership": [
   {"organization": "org/ep-9", "role": "def/ep-roles/MEMBER_PARLIAMENT", "represents": ["http://publications.europa.eu/resource/authority/country/CZE"],
