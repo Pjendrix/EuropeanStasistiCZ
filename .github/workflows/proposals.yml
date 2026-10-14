@@ -1,0 +1,54 @@
+# Vlastní práce poslanců (zprávy, stínové zprávy, usnesení, otázky) z EP Open Data API.
+# EP API neumí filtrovat podle poslance a odpovídá pomalu, proto se stahuje po částech:
+# každý běh pracuje nejvýš ~5 hodin, uloží stav (data/proposals_state.json) a commitne;
+# další běh naváže. Po dokončení prvního stažení stahuje jen nové položky (minuty).
+name: Vlastní práce poslanců
+
+on:
+  schedule:
+    # každý den 2:17 UTC
+    - cron: "17 2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-data  # stejná skupina jako týdenní aktualizace: commity do main se nepřekrývají
+  cancel-in-progress: false
+
+jobs:
+  proposals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalace závislostí
+        run: pip install -r requirements.txt
+
+      - name: Stažení (nejvýš 300 minut, pak pokračuje příští běh)
+        run: python scripts/fetch_proposals.py --max-minutes 300
+
+      - name: Statistiky a soubory pro web
+        run: |
+          python scripts/compute_stats.py
+          python scripts/build_web.py
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "Žádná nová data."
+          else
+            git commit -m "data: vlastní práce poslanců $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
+            git push
+          fi

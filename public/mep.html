@@ -73,6 +73,62 @@ function voteTable(rows, extraHead, extraCell) {
     <tbody>${rows.map((v) => voteRow(v, extraCell(v))).join("")}</tbody></table></div>`;
 }
 
+const OWN_STATUS = {
+  ADOPTED: ["přijato", "result-ADOPTED"], REJECTED: ["zamítnuto", "result-REJECTED"],
+  LAPSED: ["propadlo", ""], WITHDRAWN: ["staženo", ""],
+  superseded: ["nahrazeno společným návrhem", "muted"], no_vote: ["bez jmenovitého hlasování v plénu", "muted"],
+  answered: ["odpověď přišla", ""], unanswered: ["zatím bez odpovědi", "muted"],
+};
+const OWN_ROLE = {
+  RAPPORTEUR: "zpravodaj/ka", RAPPORTEUR_CO: "spoluzpravodaj/ka", RAPPORTEUR_SHADOW: "stínový zpravodaj/ka",
+  RAPPORTEUR_OPINION: "zpravodaj/ka stanoviska", RAPPORTEUR_SHADOW_OPINION: "stínový zpravodaj/ka stanoviska", AUTHOR: "autor/ka",
+};
+const NO_VOTE_NOTE = "HowTheyVote eviduje jen jmenovitá hlasování. O textu se mohlo hlasovat jinak (zvednutím ruky, tajně, např. u jmenování) nebo hlasování teprve proběhne.";
+const QUESTION_KIND = { question_written: "písemná", question_priority: "přednostní písemná", question_oral: "ústní" };
+
+// Souhrn po typech: výsledek jen tam, kde je známý (hlasováno v plénu), nikdy dohromady.
+function ownSummaryLine(typ, s) {
+  if (!s || !s.count) return "";
+  let detail = "";
+  if (typ === "question") detail = `odpověď přišla na ${s.answered}`;
+  else if (s.voted !== undefined) {
+    const parts = [`hlasováno v plénu ${s.voted}, z toho přijato ${s.adopted}`];
+    if (s.superseded) parts.push(`nahrazeno společným návrhem ${s.superseded}`);
+    if (s.other) parts.push(`propadlo nebo staženo ${s.other}`);
+    if (s.no_vote) parts.push(`bez jmenovitého hlasování ${s.no_vote}`);
+    detail = parts.join(" · ");
+  } else detail = "výsledek se nesleduje";
+  return `<div class="card metric"><div class="label">${esc(typ)}</div><div class="value">${fmtNum(s.count)}</div><div class="detail">${detail}</div></div>`;
+}
+
+function ownItem(e) {
+  const [label, cls] = OWN_STATUS[e.status] || ["", ""];
+  const title = (e.title && (e.title.cs || e.title.en)) || e.label || e.id;
+  const voteLink = e.vote_id ? ` · <a href="vote.html?id=${e.vote_id}">hlasování</a>` : "";
+  const extra = e.type === "question" ? `${QUESTION_KIND[e.subtype] || ""} otázka${e.authors_total > 1 ? `, spoluautorů ${e.authors_total}` : ""}${e.answer_date ? `, odpověď ${fmtDate(e.answer_date)}` : ""}`
+    : e.signatories_total ? `podepsalo ${e.signatories_total} poslanců` : (e.committee ? `výbor ${esc(e.committee)}` : "");
+  return `<li><a href="${esc(e.url)}">${esc(title)}</a>
+    <div class="small muted">${fmtDate(e.date)} · ${esc(e.label || "")} · ${OWN_ROLE[e.role] || esc(e.role)}${extra ? ` · ${extra}` : ""}${e.report ? ` · zpráva ${esc(e.report)}` : ""}</div>
+    ${label ? `<div class="small"><span class="${cls}" title="${e.status === "no_vote" ? esc(NO_VOTE_NOTE) : ""}">${label}</span>${e.joint_result ? ` (společný návrh: ${RESULT_LABEL[e.joint_result] || e.joint_result})` : ""}${voteLink}</div>` : ""}</li>`;
+}
+
+function ownWork(ow) {
+  if (!ow) return '<p class="muted">Data o vlastní práci se připravují.</p>';
+  const types = Object.keys(ow.type_labels);
+  const cards = types.map((t) => ownSummaryLine(ow.type_labels[t], ow.summary[t])).join("");
+  const lists = types.map((t) => {
+    const items = ow.items.filter((e) => e.type === t);
+    if (!items.length) return "";
+    return `<details class="card own-list"><summary><strong>${esc(ow.type_labels[t])}</strong> (${items.length})</summary>
+      <ul class="plain">${items.map(ownItem).join("")}</ul></details>`;
+  }).join("");
+  return `${cards ? `<div class="metrics">${cards}</div>` : '<p class="muted">V datech EP není žádná zpráva, usnesení ani otázka.</p>'}
+    ${lists}
+    <p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), výsledky hlasování
+      <a href="https://howtheyvote.eu">HowTheyVote.eu</a>. Aktualizováno ${fmtDate(ow.updated)}${ow.complete ? "" : " (stahování ještě neskončilo, data nejsou úplná)"}.
+      Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: ${esc(NO_VOTE_NOTE)} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`;
+}
+
 function periodText(x) {
   return `${fmtDate(x.start)} – ${x.end ? fmtDate(x.end) : "dosud"}`;
 }
@@ -136,6 +192,11 @@ function periodText(x) {
       </div>
       <p class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
         ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×. ${sourceLine(stats)}</p>
+
+      <h2>Vlastní práce</h2>
+      <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
+        U zpráv a usnesení výsledek hlavního jmenovitého hlasování v plénu, vždy po typech zvlášť.</p>
+      ${ownWork(profile.own_work)}
 
       <h2>Soulad s výsledkem hlasování</h2>
       <p class="small muted">Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo. Číslo hlavně odráží velikost a pozici frakce;

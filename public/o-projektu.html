@@ -73,7 +73,7 @@ setNav("about");
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
       outcome_agreement: "Soulad s výsledkem", group_outcome_agreement: "Soulad s výsledkem – průměr frakce",
       close_votes: "Těsná hlasování", decisive_votes: "Rozhodující hlasování", against_group: "Hlasování proti frakci",
-      cz_split: "Kde se Češi rozdělili", party_cohesion: "Jednotnost strany", topics: "Témata",
+      cz_split: "Kde se Češi rozdělili", party_cohesion: "Jednotnost strany", topics: "Témata", own_work: "Vlastní práce",
     };
     el.innerHTML = Object.entries(stats.definitions)
       .map(([k, text]) => `<li><strong>${esc(names[k] || k)}</strong>: ${esc(text)}</li>`).join("");

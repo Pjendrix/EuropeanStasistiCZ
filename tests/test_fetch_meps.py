@@ -142,3 +142,20 @@ def test_client_retries_on_429(monkeypatch):
     monkeypatch.setattr(fm.time, "sleep", lambda s: None)
     client = fm.EPClient(session=S(), min_interval=0)
     assert client.get("meps/1") == {"data": [{"identifier": "1"}]}
+
+
+def test_client_honours_retry_after(monkeypatch):
+    class R429(FakeResponse):
+        def __init__(self):
+            super().__init__({}, 429)
+            self.headers = {"Retry-After": "7"}
+    responses = [R429(), FakeResponse({"data": []})]
+    slept = []
+
+    class S:
+        def get(self, *a, **kw):
+            return responses.pop(0)
+
+    monkeypatch.setattr(fm.time, "sleep", lambda s: slept.append(s))
+    assert fm.EPClient(session=S(), min_interval=0).get("meps") == {"data": []}
+    assert 7.0 in slept

@@ -64,5 +64,6 @@ jobs:
             echo "Žádná nová data."
           else
             git commit -m "data: týdenní aktualizace $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
             git push
           fi

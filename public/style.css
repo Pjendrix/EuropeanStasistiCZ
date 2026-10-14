@@ -172,3 +172,6 @@ ul.plain li:last-child { border-bottom: none; }
 .list-card p { margin: .4rem 0; }
 @media (max-width: 640px) { nav { gap: .25rem .9rem; font-size: .92rem; } }
 .badge-link { text-decoration: none; }
+.own-list { margin-top: .75rem; }
+.own-list summary { cursor: pointer; }
+.own-list ul { margin-top: .5rem; }

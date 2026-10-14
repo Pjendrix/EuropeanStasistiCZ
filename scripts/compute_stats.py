@@ -4,6 +4,8 @@ Výstup:
   data/stats.json    metriky na poslance, celkem i po měsících (vždy jako počty x z y)
   data/groups.json   frakce (kód HowTheyVote, kód EP, názvy, barva, logo)
   data/parties.json  české strany (ID organizace v EP, zkratka, název, barva, logo)
+  data/own_work.json vlastní práce poslanců (zprávy, stínové zprávy, usnesení, otázky) s výsledky;
+                     jen pokud existuje data/proposals.json (fetch_proposals.py)
 
 Ruční údaje (barvy, případně cesty k logům) jsou v data/manual/colors.json. Skript je
 jen načte a přimíchá, soubor nikdy nepřepisuje.
@@ -63,6 +65,13 @@ DEFINITIONS = {
                 "nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
     "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali "
                       "stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
+    "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení "
+                "(poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje "
+                "výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. "
+                "Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako "
+                "zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo "
+                "zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje "
+                "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
     "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování "
               "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
 }
@@ -461,6 +470,23 @@ def load_votes(votes_dir: Path) -> tuple[dict, list[dict]]:
     return index, votes
 
 
+def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
+    import own_work
+    proposals_path, state_path = data_dir / "proposals.json", data_dir / "proposals_state.json"
+    if not proposals_path.exists() or not state_path.exists():
+        return None
+    proposals = json.loads(proposals_path.read_text(encoding="utf-8"))
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    require(proposals, ["items", "source"], "proposals.json")
+    require(state, ["documents"], "proposals_state.json")
+    linked = own_work.link(proposals["items"], state["documents"], votes)
+    return {
+        "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
+        "type_labels": own_work.TYPE_LABELS,
+        "meps": {str(k): {"summary": own_work.summarize(v), "items": v} for k, v in sorted(linked.items())},
+    }
+
+
 def run(data_dir: Path, assets: Path) -> dict:
     meps_doc = json.loads((data_dir / "meps.json").read_text(encoding="utf-8"))
     require(meps_doc, ["meps", "source"], "meps.json")
@@ -483,6 +509,9 @@ def run(data_dir: Path, assets: Path) -> dict:
     write = lambda name, obj: (data_dir / name).write_text(
         json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     write("stats.json", stats)
+    own = build_own_work(data_dir, votes)
+    if own is not None:
+        write("own_work.json", own)
     manual = load_manual(data_dir / "manual" / "colors.json")
     write("groups.json", build_groups(index["groups"], meps, votes, assets, manual))
     write("parties.json", build_parties(meps, assets, manual))

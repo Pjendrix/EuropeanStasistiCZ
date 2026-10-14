@@ -60,6 +60,14 @@ def first_item(payload, where: str) -> dict:
     return data[0]
 
 
+def retry_after(response) -> float | None:
+    value = (getattr(response, "headers", None) or {}).get("Retry-After")
+    try:
+        return min(float(value), 300.0) if value is not None else None
+    except ValueError:
+        return None
+
+
 class EPClient:
     """Tenký klient EP API s throttlingem, opakováním a cache organizací na disku."""
 
@@ -73,13 +81,17 @@ class EPClient:
 
     def get(self, path: str, params: dict | None = None) -> dict:
         url = f"{API}/{path}"
-        for attempt in range(5):
+        for attempt in range(8):
             wait = self._last + self.min_interval - time.monotonic()
             if wait > 0:
                 time.sleep(wait)
             self._last = time.monotonic()
             r = self.session.get(url, params={**FORMAT, **(params or {})}, timeout=60)
-            if r.status_code == 429 or r.status_code >= 500:
+            if r.status_code == 429:
+                # Limit se počítá za 5 minut: čekat podle Retry-After, jinak postupně déle (celkem ~10 min).
+                time.sleep(retry_after(r) or 30 * (attempt + 1))
+                continue
+            if r.status_code >= 500:
                 time.sleep(2 ** (attempt + 1))
                 continue
             r.raise_for_status()
