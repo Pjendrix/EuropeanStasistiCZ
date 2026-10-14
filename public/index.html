@@ -6,11 +6,21 @@
 <title>EP Watch CZ – čeští europoslanci</title>
 <meta name="description" content="Docházka, hlasování a statistiky českých europoslanců v 10. volebním období.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
+  (function () {
+    var d = document.documentElement; d.classList.add("js");
+    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") d.dataset.theme = t; } catch (e) {}
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="site-header"><div class="inner">
-  <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
+  <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
   <nav>
     <a href="index.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
@@ -19,161 +29,114 @@
     <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
+  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 
+<section class="hero">
+  <div class="hero-stars parallax" aria-hidden="true"><svg viewBox="0 0 24 24" class="" style="position:absolute;left:282.0px;top:12.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:417.0px;top:48.2px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:515.8px;top:147.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:552.0px;top:282.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:515.8px;top:417.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:417.0px;top:515.8px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:282.0px;top:552.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:147.0px;top:515.8px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:48.2px;top:417.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:12.0px;top:282.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:48.2px;top:147.0px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="" style="position:absolute;left:147.0px;top:48.2px;width:56px;height:56px"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg></div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow" id="hero-eyebrow">10. volební období</p>
+      <h1>Jak hlasuje <strong>21 českých</strong> europoslanců</h1>
+      <p class="lead">Každé jmenovité hlasování v Evropském parlamentu, docházka a spolupráce napříč frakcemi.
+        Jen ověřená data z oficiálních zdrojů, srozumitelně a bez hodnocení.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.75rem">
+        <a class="btn btn-light" href="#poslanci">Najít svého poslance
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="rozkol.html?v=last_session">Poslední zasedání</a>
+      </div>
+    </div>
+    <div class="hero-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:118.0px;top:6.0px;width:24px;height:24px;animation-delay:0.0s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:174.0px;top:21.0px;width:24px;height:24px;animation-delay:0.3s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:215.0px;top:62.0px;width:24px;height:24px;animation-delay:0.6s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:230.0px;top:118.0px;width:24px;height:24px;animation-delay:0.9s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:215.0px;top:174.0px;width:24px;height:24px;animation-delay:1.2s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:174.0px;top:215.0px;width:24px;height:24px;animation-delay:1.5s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:118.0px;top:230.0px;width:24px;height:24px;animation-delay:1.8s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:62.0px;top:215.0px;width:24px;height:24px;animation-delay:2.1s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:21.0px;top:174.0px;width:24px;height:24px;animation-delay:2.4s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:6.0px;top:118.0px;width:24px;height:24px;animation-delay:2.7s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:21.0px;top:62.0px;width:24px;height:24px;animation-delay:3.0s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 24 24" class="star" style="position:absolute;left:62.0px;top:21.0px;width:24px;height:24px;animation-delay:3.3s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F59E0B"/></svg><svg viewBox="0 0 100 100" style="position:absolute;left:78px;top:78px;width:104px;height:104px;border-radius:50%;box-shadow:0 0 0 6px rgba(248,250,252,.08),0 30px 60px -20px rgba(0,0,0,.6)"><clipPath id="czh"><circle cx="50" cy="50" r="50"/></clipPath><g clip-path="url(#czh)"><rect width="100" height="50" fill="#F8FAFC"/><rect y="50" width="100" height="50" fill="#E11D48"/><path d="M0 0 L58 50 L0 100 Z" fill="#3B82F6"/></g></svg></div>
+  </div>
+  <div class="kpis">
+    <div class="kpi-grid" id="kpis" aria-live="polite">
+      <div class="kpi"><div class="k-label">Jmenovitých hlasování</div><div class="k-value">–</div></div>
+      <div class="kpi"><div class="k-label">Docházka delegace</div><div class="k-value">–</div></div>
+      <div class="kpi"><div class="k-label">Rozdělení Čechů</div><div class="k-value">–</div></div>
+      <div class="kpi"><div class="k-label">Rozhodující hlasování</div><div class="k-value">–</div></div>
+    </div>
+  </div>
+</section>
+
 <main>
-  <h1>Čeští europoslanci v 10. volebním období</h1>
-  <p class="lead">Jak hlasují čeští poslanci Evropského parlamentu od ustavující schůze 16. 7. 2024.
-    Počítají se jmenovitá hlasování v plénu. Čísla jsou fakta bez hodnocení, <a href="o-projektu.html#metodika">jak počítáme</a>.</p>
+  <div class="split-panels">
+    <section class="card reveal" aria-labelledby="del-h">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem">
+        <h2 id="del-h" style="margin:0">Česká delegace ve frakcích</h2>
+        <span class="small muted" id="del-count"></span>
+      </div>
+      <p class="small muted" style="margin:.2rem 0 0">Najeďte na frakci nebo křeslo, kliknutím otevřete profil.</p>
+      <div class="hemi" id="hemi"><p class="loading">Načítám…</p></div>
+      <div class="group-chips" id="group-chips"></div>
+      <p class="small hemi-names" id="hemi-names" aria-live="polite"></p>
+      <p class="source">Frakce podle EP Open Data k dnešku. Barvy frakcí jsou orientační.</p>
+    </section>
 
-  <section class="card session" id="session" aria-labelledby="session-h">
-    <h2 id="session-h">Poslední zasedání</h2>
-    <p class="loading">Načítám…</p>
+    <section class="card reveal" aria-labelledby="ses-h" id="session">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.4rem 1rem">
+        <h2 id="ses-h" style="margin:0">Kde se Češi rozdělili</h2>
+        <span class="small muted" id="ses-when"></span>
+      </div>
+      <p class="small muted" style="margin:.2rem 0 1rem">Hlasy českých poslanců na posledním zasedání. Najeďte na řádek pro detail.</p>
+      <div id="ses-list"><p class="loading">Načítám…</p></div>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:var(--for)"></i>pro</span><span><i style="background:var(--against)"></i>proti</span>
+        <span><i style="background:var(--abst)"></i>zdržel/a se</span><span><i style="background:var(--absent)"></i>nehlasoval/a</span>
+      </div>
+      <p class="source" id="ses-source"></p>
+    </section>
+  </div>
+
+  <section id="poslanci" aria-labelledby="mp-h">
+    <div class="section-head">
+      <div>
+        <h2 id="mp-h">Poslanci</h2>
+        <p class="small muted" id="period"></p>
+      </div>
+      <div class="controls" style="margin:0">
+        <input type="search" id="q" placeholder="Hledat jméno nebo stranu" aria-label="Hledat poslance">
+        <label>Řadit <select id="sort-select">
+          <option value="name:1">abecedně</option>
+          <option value="attendance:-1">podle docházky</option>
+          <option value="attendance_main:-1">podle docházky – hlavní</option>
+          <option value="group_loyalty:-1">podle loajality k frakci</option>
+          <option value="cz_agreement:-1">podle shody s Čechy</option>
+          <option value="group:1">podle frakce</option>
+          <option value="party:1">podle strany</option>
+        </select></label>
+        <label><input type="checkbox" id="former"> i bývalí</label>
+        <label class="desktop-only"><input type="checkbox" id="as-table"> jako tabulka</label>
+      </div>
+    </div>
+
+    <div class="mep-grid" id="cards" aria-live="polite"><p class="loading">Načítám…</p></div>
+
+    <div class="table-wrap" id="table-wrap" hidden>
+      <table id="meps">
+        <thead><tr>
+          <th data-key="name" class="sticky-col"><button>Poslanec</button></th>
+          <th data-key="group"><button>Frakce</button></th>
+          <th data-key="party"><button>Strana</button></th>
+          <th data-key="attendance" class="num"><button>Docházka</button></th>
+          <th data-key="attendance_main" class="num"><button>Docházka – hlavní</button></th>
+          <th data-key="group_loyalty" class="num"><button>Loajalita k frakci</button></th>
+          <th data-key="cz_agreement" class="num"><button>Shoda s Čechy</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="source" id="source"></p>
+    <p class="small muted">Docházka = podíl hlasování, ve kterých poslanec hlasoval, jen za dobu jeho mandátu.
+      Loajalita a shoda jsou jen informativní a neříkají nic o kvalitě práce. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
   </section>
-
-  <h2>Poslanci</h2>
-  <div class="controls">
-    <label><input type="checkbox" id="former"> zobrazit i bývalé poslance</label>
-    <label class="mobile-only">Řadit <select id="sort-select">
-      <option value="name:1">podle jména</option>
-      <option value="attendance:-1">podle docházky</option>
-      <option value="attendance_main:-1">podle docházky – hlavní</option>
-      <option value="group_loyalty:-1">podle loajality k frakci</option>
-      <option value="cz_agreement:-1">podle shody s Čechy</option>
-      <option value="group:1">podle frakce</option>
-      <option value="party:1">podle strany</option>
-    </select></label>
-    <span class="muted small" id="period"></span>
-  </div>
-
-  <div class="table-wrap desktop-only">
-    <table id="meps">
-      <thead><tr>
-        <th data-key="name" class="sticky-col"><button>Poslanec</button></th>
-        <th data-key="group"><button>Frakce</button></th>
-        <th data-key="party"><button>Strana</button></th>
-        <th data-key="attendance" class="num"><button>Docházka</button></th>
-        <th data-key="attendance_main" class="num"><button>Docházka – hlavní</button></th>
-        <th data-key="group_loyalty" class="num"><button>Loajalita k frakci</button></th>
-        <th data-key="cz_agreement" class="num"><button>Shoda s Čechy</button></th>
-      </tr></thead>
-      <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody>
-    </table>
-  </div>
-  <div id="cards" class="mep-cards mobile-only" aria-live="polite"></div>
-
-  <p class="source" id="source"></p>
-  <p class="small muted">Docházka = podíl hlasování, ve kterých poslanec hlasoval, jen za dobu jeho mandátu.
-    Loajalita a shoda jsou jen informativní: neříkají nic o kvalitě práce.
-    <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
 </main>
-
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
-  Portréty © European Union – Source: EP. <a href="o-projektu.html">O projektu</a>.
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI. <a href="o-projektu.html">O projektu</a>.
 </div></footer>
 
 <script src="app.js"></script>
-<script>
-setNav("meps");
-
-function sessionBlock(s) {
-  const voteLink = (v) => `<a href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>`;
-  const splitItem = (v) => `<li>${voteLink(v)} <span class="small muted">· ${v.is_main ? "hlavní · " : ""}Češi ${v.cz[0]} pro, ${v.cz[1]} proti</span></li>`;
-  const splits = s.top_splits_main.length ? s.top_splits_main : s.top_splits;
-  return `<h2 id="session-h">Poslední zasedání: ${fmtDate(s.from)} – ${fmtDate(s.to)}</h2>
-    <div class="session-facts">
-      <div><strong>${fmtNum(s.votes)}</strong> jmenovitých hlasování</div>
-      <div><strong>${fmtNum(s.main)}</strong> hlavních (přijato ${fmtNum(s.adopted_main)})</div>
-      <div><strong>${fmtNum(s.split_count)}</strong>× se Češi rozdělili</div>
-      <div><strong>${fmtNum(s.close_count)}</strong> těsných, <strong>${fmtNum(s.decisive.length)}</strong> rozhodujících</div>
-    </div>
-    <h3>Kde se Češi nejvíc rozdělili${s.top_splits_main.length ? " (hlavní hlasování)" : ""}</h3>
-    <ul class="session-list">${splits.map(splitItem).join("") || '<li class="muted">Češi hlasovali jednotně.</li>'}</ul>
-    <h3>Rozhodující hlasování</h3>
-    ${s.decisive.length
-      ? `<ul class="session-list">${s.decisive.map((v) => `<li>${voteLink(v)} <span class="small muted">· bez Čechů by bylo ${RESULT_LABEL[v.alternative_result]}</span></li>`).join("")}</ul>`
-      : '<p class="small muted">Na tomto zasedání žádné hlasování nerozhodly hlasy Čechů.</p>'}
-    <p class="small"><a href="rozkol.html?v=last_session">Všechna rozdělená hlasování zasedání</a> ·
-      <a href="votes.html?m=${s.to.slice(0, 7)}">Všechna hlasování</a> · <a href="rozhodujici.html">Rozhodující hlasování za celé období</a></p>
-    <p class="source">Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(s.sources.votes?.release || "")}).</p>`;
-}
-
-function mepCard({ m, s, g, p, active }, groups, parties) {
-  const metric = (label, pair) => `<div><span class="small muted">${label}</span><br>${fmtPct(pct(pair))}
-    <span class="small muted">${pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])}` : ""}</span></div>`;
-  return `<article class="card mep-card ${active ? "" : "former"}">
-    <a href="mep.html?id=${m.id}" class="mep-card-head">
-      <img src="${photoUrl(m)}" alt="" loading="lazy">
-      <span><strong>${esc(displayName(m))}</strong>
-        ${active ? "" : `<span class="small muted"><br>mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</span>`}</span>
-    </a>
-    <div class="facts">${groupBadge(null, groups, g?.code)}
-      ${p ? partyLink(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">strana neuvedena</span>`}</div>
-    <div class="mep-card-metrics">
-      ${metric("Docházka", s.attendance)}${metric("Docházka – hlavní", s.attendance_main)}
-      ${metric("Loajalita k frakci", s.group_loyalty)}${metric("Shoda s Čechy", s.cz_agreement)}
-    </div>
-  </article>`;
-}
-
-(async () => {
-  const tbody = document.querySelector("#meps tbody");
-  const sessionEl = document.getElementById("session");
-  try {
-    const [stats, groups, parties] = await Promise.all([
-      getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
-    ]);
-    getJSON("session.json").then((s) => { sessionEl.innerHTML = sessionBlock(s); })
-      .catch((e) => showError(sessionEl, e));
-    document.getElementById("source").innerHTML = sourceLine(stats);
-    if (stats.period) {
-      document.getElementById("period").textContent =
-        `${fmtNum(stats.votes_total)} jmenovitých hlasování, ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}`;
-    }
-    const rows = stats.meps.map((m) => ({ m, s: m.total, g: m.group, p: m.party, active: isActive(m) }));
-    const formerBox = document.getElementById("former");
-    const visible = () => rows.filter((r) => formerBox.checked || r.active);
-    const columns = {
-      name: (r) => r.m.sort_label || r.m.name,
-      group: (r) => r.g?.short_label || "",
-      party: (r) => r.p?.short_label || "",
-      attendance: (r) => pct(r.s.attendance),
-      attendance_main: (r) => pct(r.s.attendance_main),
-      group_loyalty: (r) => pct(r.s.group_loyalty),
-      cz_agreement: (r) => pct(r.s.cz_agreement),
-    };
-    const cards = document.getElementById("cards");
-    const render = (list) => {
-      tbody.innerHTML = list.map(({ m, s, g, p, active }) => `
-        <tr class="${active ? "" : "former"}">
-          <td class="sticky-col"><div class="mep-cell">
-            <img src="${photoUrl(m)}" alt="" loading="lazy">
-            <div><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a>
-              ${active ? "" : `<div class="small muted">mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</div>`}</div>
-          </div></td>
-          <td>${groupBadge(null, groups, g?.code)}</td>
-          <td>${p ? partyLink(p.id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
-          <td class="num">${pctCell(s.attendance, "hlasoval/a z hlasování v době mandátu")}</td>
-          <td class="num">${pctCell(s.attendance_main, "jen hlavní hlasování")}</td>
-          <td class="num">${pctCell(s.group_loyalty, "stejně jako většina frakce")}</td>
-          <td class="num">${pctCell(s.cz_agreement, "stejně jako většina ostatních Čechů")}</td>
-        </tr>`).join("");
-      cards.innerHTML = list.map((r) => mepCard(r, groups, parties)).join("");
-    };
-    // Výchozí řazení abecedně, aby přehled nepůsobil jako žebříček.
-    const table = sortable(document.getElementById("meps"), columns, visible, render, { key: "name", dir: 1 });
-    formerBox.addEventListener("change", () => table.refresh());
-    const sortSelect = document.getElementById("sort-select");
-    sortSelect.addEventListener("change", () => {
-      const [key, dir] = sortSelect.value.split(":");
-      table.set(key, Number(dir));
-    });
-  } catch (e) {
-    showError(tbody.closest(".table-wrap"), e);
-  }
-})();
-</script>
+<script src="home.js"></script>
 </body>
 </html>
