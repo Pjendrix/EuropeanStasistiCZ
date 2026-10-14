@@ -45,7 +45,18 @@ const COMMITTEE_TYPE = { STANDING: "stálý výbor", SUB: "podvýbor", TEMPORARY
 const CZ_GROUP_LABEL = { NI: "nezařazení" };
 
 // Neutrální paleta pro štítky, dokud nejsou ručně doplněné barvy v data/manual/colors.json.
-const PALETTE = ["#dbe7ff", "#ffe2cc", "#d6f5e3", "#f3dcff", "#fff1b8", "#ffd6dc", "#d4f1f7", "#e8e1d4", "#e1e4ea", "#ead7ff", "#d9f2c7"];
+const PALETTE = ["#3B82F6", "#E11D48", "#14B8A6", "#A855F7", "#F59E0B", "#6366F1", "#0EA5E9", "#EC4899", "#84CC16", "#64748B", "#F97316"];
+
+// Barvy frakcí (kód HowTheyVote). Ručně nastavená barva v data/manual/colors.json má přednost.
+const GROUP_COLORS = {
+  EPP: "#3B82F6", SD: "#E11D48", RENEW: "#F59E0B", GREEN_EFA: "#14B8A6", ECR: "#6366F1",
+  PFE: "#A855F7", ESN: "#0EA5E9", GUE_NGL: "#BE123C", NI: "#94A3B8",
+};
+function groupColor(g, fallbackKey) {
+  if (g && g.color) return g.color;
+  if (g && GROUP_COLORS[g.code]) return GROUP_COLORS[g.code];
+  return colorFor(fallbackKey || (g && g.code) || "");
+}
 
 const cache = new Map();
 async function getJSON(path) {
@@ -75,6 +86,12 @@ function param(name) {
 function pct(pair) {
   if (!pair || !pair[1]) return null;
   return pair[0] / pair[1];
+}
+
+// Velké procento s počítadlem (animuje se při vjetí do obrazu).
+function countPct(value) {
+  if (value === null || value === undefined) return "–";
+  return `<span data-count="${(value * 100).toFixed(1)}" data-decimals="1" data-suffix=" %">${fmtPct(value)}</span>`;
 }
 
 function fmtPct(value) {
@@ -140,18 +157,17 @@ function groupBadge(code, groups, epCode) {
   const g = groups.find((x) => x.code === code) || groups.find((x) => epCode && x.ep_code === epCode);
   const label = g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (code || epCode);
   const title = g ? (g.name_cs || g.label) : label;
-  const bg = g && g.color ? g.color : colorFor(g ? g.code : label);
   const logo = g && g.logo ? `<img src="${esc(g.logo)}" alt="">` : "";
-  return `<span class="badge" style="--badge-bg:${bg}; --badge-fg:#1b1f24" title="${esc(title)}">${logo}${esc(label)}</span>`;
+  return `<span class="badge" style="--badge-dot:${groupColor(g, label)}" title="${esc(title)}">${logo}${esc(label)}</span>`;
 }
 
 function partyBadge(id, label, parties) {
   if (!id) return '<span class="badge outline">bez strany</span>';
   const p = parties.find((x) => String(x.id) === String(id));
   const text = p ? p.short_label : label;
-  const bg = p && p.color ? p.color : colorFor(id);
+  const dot = p && p.color ? p.color : colorFor(id);
   const logo = p && p.logo ? `<img src="${esc(p.logo)}" alt="">` : "";
-  return `<span class="badge" style="--badge-bg:${bg}; --badge-fg:#1b1f24" title="${esc(p ? p.name : text)}">${logo}${esc(text)}</span>`;
+  return `<span class="badge" style="--badge-dot:${dot}" title="${esc(p ? p.name : text)}">${logo}${esc(text)}</span>`;
 }
 
 // Štítek strany s odkazem na stránku strany (nezávislí stránku nemají).
@@ -265,3 +281,98 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
   }).join("");
 }
 
+
+// --- přepínač režimu a pohyb ---------------------------------------------------
+
+const REDUCED_MOTION = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function setupThemeToggle() {
+  const btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+  const root = document.documentElement;
+  const isDark = () => root.dataset.theme === "dark" ||
+    (!root.dataset.theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const sync = () => btn.setAttribute("aria-pressed", String(isDark()));
+  sync();
+  btn.addEventListener("click", () => {
+    const next = isDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) { /* bez úložiště jen pro tuto stránku */ }
+    sync();
+  });
+}
+
+// Počítadlo od nuly k cíli: <span data-count="91.4" data-decimals="1" data-suffix=" %">.
+function runCounter(el) {
+  if (el.dataset.counted) return;
+  el.dataset.counted = "1";
+  const target = Number(el.dataset.count);
+  const decimals = Number(el.dataset.decimals || 0);
+  const suffix = el.dataset.suffix || "";
+  const fmt = (v) => v.toLocaleString("cs-CZ", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+  if (REDUCED_MOTION || !isFinite(target)) { el.textContent = isFinite(target) ? fmt(target) : el.textContent; return; }
+  const start = performance.now(), dur = 1300;
+  const tick = (now) => {
+    const x = Math.min(1, (now - start) / dur);
+    el.textContent = fmt(target * (1 - Math.pow(1 - x, 3)));
+    if (x < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// Kruhové grafy: <circle class="val" data-dash="194.8" data-value="0.91">.
+function runDonut(el) {
+  const len = Number(el.dataset.dash), v = Number(el.dataset.value);
+  requestAnimationFrame(() => { el.style.strokeDashoffset = String(len * (1 - v)); });
+}
+
+// Prvky .reveal, [data-count] a .donut se při vjetí do obrazu animují.
+// MutationObserver zachytí i obsah, který stránka vykreslí až po načtení dat.
+const motion = (() => {
+  const seen = new WeakSet();
+  const pending = new Set();
+  const io = "IntersectionObserver" in window && !REDUCED_MOTION ? new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) activate(e.target);
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }) : null;
+  function activate(el) {
+    if (!pending.has(el) && io) return;
+    pending.delete(el);
+    if (io) io.unobserve(el);
+    el.classList.add("in");
+    el.querySelectorAll("[data-count]").forEach(runCounter);
+    if (el.matches("[data-count]")) runCounter(el);
+    el.querySelectorAll("circle.val[data-dash]").forEach(runDonut);
+  }
+  // Pojistka pro rychlé skrolování: co už je nad spodním okrajem obrazovky, se odkryje vždy.
+  let queued = false;
+  function sweep() {
+    queued = false;
+    const limit = window.innerHeight;
+    for (const el of [...pending]) {
+      if (!el.isConnected) { pending.delete(el); continue; }
+      if (el.offsetParent !== null && el.getBoundingClientRect().top < limit) activate(el);
+    }
+  }
+  window.addEventListener("scroll", () => { if (!queued && pending.size) { queued = true; requestAnimationFrame(sweep); } }, { passive: true });
+  function scan(root) {
+    // Karty, tabulky a seznamy na všech stránkách se objevují při skrolování.
+    root.querySelectorAll("main .card, main .table-wrap, main .list-card, main .metrics, main .profile-head")
+      .forEach((el) => { if (!el.closest(".reveal") || el.classList.contains("reveal")) el.classList.add("reveal"); });
+    root.querySelectorAll(".reveal, [data-count]:not(.reveal [data-count])").forEach((el) => {
+      if (seen.has(el)) return;
+      seen.add(el);
+      pending.add(el);
+      if (io) io.observe(el); else activate(el);
+    });
+    if (io) requestAnimationFrame(sweep);
+  }
+  return { scan };
+})();
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupThemeToggle();
+  motion.scan(document);
+  new MutationObserver((muts) => {
+    for (const m of muts) m.addedNodes.forEach((n) => { if (n.nodeType === 1) motion.scan(n.parentElement || n); });
+  }).observe(document.body, { childList: true, subtree: true });
+});
