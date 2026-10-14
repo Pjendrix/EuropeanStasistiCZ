@@ -33,7 +33,8 @@
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
-  <a href="o-projektu.html">O projektu</a>.
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
+  <a href="o-projektu.html">O projektu</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -96,6 +97,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
         <a href="vote.html?id=${finalVote.id}&m=${finalVote.month}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <p class="small">
+        ${final ? `<a href="v/${v.id}.html">Trvalý odkaz</a> · ` : ""}
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
         ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
@@ -106,7 +108,8 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
           <div class="value result-${v.result || ""}">${RESULT_LABEL[v.result] || "neuveden"}</div>
           ${inverted && v.result ? `<div class="detail"><strong>${esc(resultText(kv))}</strong></div>` : ""}
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
-          <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div></div>
+          <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div>
+          ${citeButton(`Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]})` : ""}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`)}</div>
         <div class="card metric"><div class="label">Celý parlament</div>
           ${splitBar(total)}
           <div class="detail"><span class="pos pos-FOR">pro ${c.for}</span> · <span class="pos pos-AGAINST">proti ${c.against}</span> · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
@@ -128,6 +131,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
               || '<li class="muted">nikdo</li>'}</ul></div>`;
         }).join("")}
       </div>
+      <div id="cz-csv"></div>
       <p class="source">Frakce a strana jsou uvedené k datu hlasování. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
 
       <h2>Jak hlasovaly frakce</h2>
@@ -141,6 +145,10 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${topics.length ? `<h2>Témata</h2><p>${topics.map((t) => `<span class="tag">${esc(t)}</span>`).join(" ")}</p>
         <p class="source">Témata (OEIL, EuroVoc) přebíráme z HowTheyVote.eu v angličtině.</p>` : ""}
     `;
+    document.getElementById("cz-csv").appendChild(csvButton(`hlasovani-${v.id}-cesi.csv`, () => [
+      ["hlasovani_id", "datum", "poslanec_id", "poslanec", "volba", "frakce", "strana"],
+      ...cz.map((p) => [v.id, v.date, p.member_id, displayName(meps[p.member_id]), p.position, p.group_code, p.national_party || ""]),
+    ], "Stáhnout hlasy Čechů (CSV)"));
   } catch (e) {
     showError(main, e);
   }

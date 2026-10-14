@@ -64,7 +64,8 @@
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
-  <a href="o-projektu.html">O projektu</a>.
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
+  <a href="o-projektu.html">O projektu</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -101,6 +102,7 @@ setNav("votes");
 
     const kindOk = (v) => kindSel.value === "all" || (kindSel.value === "final" ? isFinal(v) : v.is_main);
     const LIMIT = 300;
+    let current = [];
     const render = () => {
       const month = monthSel.value;
       const needle = q.value.trim().toLowerCase();
@@ -113,6 +115,7 @@ setNav("votes");
         (!topic || (v.topics || []).includes(topic)) &&
         (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
+      current = matches;
       document.getElementById("count").textContent = wide
         ? `${matches.length} nalezeno v celém období${matches.length > LIMIT ? `, zobrazeno prvních ${LIMIT}` : ""}`
         : `${matches.length} z ${pool.length} hlasování${since ? ` od ${fmtDate(since)}` : ""}`;
@@ -132,6 +135,11 @@ setNav("votes");
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
     };
     monthSel.addEventListener("change", () => { since = null; render(); });
+    document.querySelector("#votes").closest(".table-wrap").before(csvButton("hlasovani.csv", () => [
+      ["id", "datum", "nazev", "reference", "popis", "typ", "vysledek", "cesi_pro", "cesi_proti", "cesi_zdrzel", "cesi_nehlasoval", "zdroj"],
+      ...current.map((v) => [v.id, v.date, voteTitle(v), v.reference, voteDesc(v), v.vote_kind ? KIND_LABEL[v.vote_kind] : (v.is_main ? "hlavní" : ""),
+        RESULT_LABEL[v.result] || "", ...v.cz, `https://howtheyvote.eu/votes/${v.id}`]),
+    ], "Stáhnout vybraná hlasování (CSV)"));
     kindSel.addEventListener("change", render);
     topicSel.addEventListener("change", render);
     q.addEventListener("input", render);

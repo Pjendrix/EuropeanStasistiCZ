@@ -185,6 +185,11 @@ function mepCard({ m, s, g, p, active }, groups, parties) {
     renderDelegation(ov, groups);
 
     document.getElementById("source").innerHTML = sourceLine(ov);
+    document.getElementById("source").before(csvButton("poslanci.csv", () => [
+      ["id", "poslanec", "frakce", "strana", "v_mandatu", "dochazka", "dochazka_hlasovani", "dochazka_zaverecna", "loajalita_frakce", "shoda_s_cechy"],
+      ...ov.meps.map((m) => [m.id, displayName(m), m.group?.short_label || "", m.party?.short_label || "", isActive(m) ? "ano" : "ne",
+        csvShare(m.total.attendance), m.total.attendance[1], csvShare(m.total.attendance_main), csvShare(m.total.group_loyalty), csvShare(m.total.cz_agreement)]),
+    ], "Stáhnout poslance (CSV)"));
     document.getElementById("period").textContent =
       `${fmtNum(ov.votes_total)} jmenovitých hlasování, ${fmtDate(ov.period.from)} – ${fmtDate(ov.period.to)}`;
 

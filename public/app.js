@@ -1,7 +1,9 @@
 // Sdílené funkce pro všechny stránky EP Watch CZ. Bez build stepu, čisté JS.
 "use strict";
 
-const DATA = "data/";
+// Statické stránky v podadresářích (p/, s/, v/) mají <html data-root="../">.
+const ROOT = document.documentElement.dataset.root || "";
+const DATA = ROOT + "data/";
 const HTV_SOURCE = "https://howtheyvote.eu";
 const EP_SOURCE = "https://data.europarl.europa.eu";
 
@@ -350,6 +352,61 @@ function collapseTables(root, n = 5) {
     btn.addEventListener("click", () => { rows.forEach((r) => { r.hidden = false; }); btn.remove(); });
     table.closest(".table-wrap").after(btn);
   });
+}
+
+// --- citace a export ---------------------------------------------------------
+
+// Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
+function citeButton(text) {
+  return `<button type="button" class="cite-btn" data-cite="${esc(text)}">Citovat</button>`;
+}
+
+async function citeText(text) {
+  let release = "";
+  try { release = (await getJSON("overview.json")).sources?.votes?.release || ""; } catch (e) { /* bez verze */ }
+  const today = fmtDate(new Date().toISOString().slice(0, 10));
+  return `${text}${release ? ` Data: export HowTheyVote ${release}.` : ""} EP Watch CZ, ${location.href} (citováno ${today}).`;
+}
+
+document.addEventListener("click", async (ev) => {
+  const btn = ev.target.closest(".cite-btn");
+  if (!btn) return;
+  const text = await citeText(btn.dataset.cite);
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = "Zkopírováno";
+  } catch (e) {
+    window.prompt("Zkopírujte citaci:", text);
+  }
+  setTimeout(() => { btn.textContent = "Citovat"; }, 2000);
+});
+
+// Tlačítko „Stáhnout CSV“; rows = pole polí (první řádek = záhlaví). Oddělovač středník kvůli českému Excelu.
+function csvButton(filename, rowsFn, label = "Stáhnout CSV") {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "csv-btn";
+  btn.textContent = label;
+  btn.addEventListener("click", () => {
+    const cell = (x) => {
+      const s = x === null || x === undefined ? "" : String(x);
+      return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const text = "\ufeff" + rowsFn().map((r) => r.map(cell).join(";")).join("\r\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  });
+  return btn;
+}
+
+// Podíl jako číslo pro CSV (0,914), bez procent kvůli dalšímu zpracování.
+function csvShare(pair) {
+  const v = pct(pair);
+  return v === null ? "" : v.toFixed(4).replace(".", ",");
 }
 
 // --- přepínač režimu a pohyb ---------------------------------------------------

@@ -148,7 +148,7 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
 @media (max-width: 640px) {
   .site-header nav { order: 3; flex-basis: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: .2rem; scrollbar-width: none; }
   .site-header nav { gap: 0; }
-  .site-header nav a { white-space: nowrap; font-size: .84rem; padding: .45rem .6rem; }
+  .site-header nav a { white-space: nowrap; font-size: .8rem; padding: .45rem .5rem; }
   .theme-toggle { margin-left: auto; }
 }
 
@@ -318,6 +318,9 @@ tr.former td { opacity: .72; }
 .chart .col .bar-fill.zero { height: 3px !important; background: var(--cz-red); }
 .chart .col-label { position: absolute; top: 100%; left: 0; right: 0; text-align: center; font-size: .75rem; line-height: 1.15; color: var(--muted); padding-top: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.cite-btn, .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--accent); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.cite-btn:hover, .csv-btn:hover { border-color: var(--gold); }
+.csv-btn { margin: 0 0 .6rem; }
 .more-btn { margin-top: .6rem; min-height: 40px; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--chip); color: var(--text); font: inherit; font-size: .9rem; cursor: pointer; }
 .more-btn:hover { border-color: var(--gold); }
 .chart-detail { margin: .25rem 0 0; min-height: 1.5em; }
@@ -456,4 +459,19 @@ table.matrix tbody tr:hover { background: none; }
   .mep-card, .hemi .seat, .donut .val { transition: none; }
   .mep-card:hover { transform: none; }
   @view-transition { navigation: none; }
+}
+
+/* --- tisk ------------------------------------------------------------------- */
+@media print {
+  :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #333; --border: #bbb; --shadow: none; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .site-header nav, .theme-toggle, .skip-link, .subnav, .controls, .more-btn, .cite-btn, .csv-btn, .hero-stars, .hero-emblem { display: none !important; }
+  .site-header, .hero { background: none !important; color: #000 !important; }
+  .site-header .brand, .hero h1, .hero p.lead, .kpi, .kpi .k-label, .kpi .k-note, .entry, .entry span { color: #000 !important; background: none !important; }
+  .card, .table-wrap, .mep-card { box-shadow: none; break-inside: avoid; backdrop-filter: none; }
+  tr[hidden] { display: table-row !important; }
+  .reveal, .grow, .chart .bar-fill { animation: none !important; transform: none !important; }
+  a { color: #000; }
+  main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .75em; color: #333; word-break: break-all; }
+  .split span, .legend i, .badge::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
