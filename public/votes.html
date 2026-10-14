@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hlasování – EP Watch CZ</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
   (function () {
@@ -18,27 +16,34 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
-  <nav>
+  <nav aria-label="Hlavní navigace">
     <a href="index.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
-    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
+    <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 
-<main>
+<main id="main">
   <h1>Jmenovitá hlasování</h1>
   <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.
-    Hlavní hlasování jsou závěrečná hlasování o celém textu, ostatní jsou pozměňovací návrhy a dílčí hlasování.</p>
+    <strong>Závěrečná</strong> jsou hlasování o celém textu nebo o prozatímní dohodě s Radou. <strong>Všechna hlavní</strong> navíc
+    zahrnují návrhy na zamítnutí, mandáty k jednání s Radou a žádosti o naléhavý postup. Ostatní jsou pozměňovací návrhy
+    a dílčí hlasování. <a href="o-projektu.html#metodika">Jak typ hlasování určujeme</a>.</p>
 
   <div class="controls">
     <label>Měsíc <select id="month"></select></label>
-    <label><input type="checkbox" id="main-only" checked> jen hlavní hlasování</label>
+    <label>Typ <select id="kind">
+      <option value="final">jen závěrečná</option>
+      <option value="main">všechna hlavní</option>
+      <option value="all">všechna hlasování</option>
+    </select></label>
+    <label>Téma <select id="topic"><option value="">všechna témata</option></select></label>
     <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
   </div>
@@ -70,46 +75,65 @@ setNav("votes");
   try {
     const [index, all] = await Promise.all([getJSON("votes/index.json"), loadSearch()]);
     all.reverse(); // nejnovější nahoře
+    const doc = await getJSON("votes/search.json");
     const monthSel = document.getElementById("month");
-    const mainOnly = document.getElementById("main-only");
+    const kindSel = document.getElementById("kind");
+    const topicSel = document.getElementById("topic");
     const q = document.getElementById("q");
     monthSel.innerHTML = index.months.slice().reverse()
       .map((m) => `<option value="${m.month}">${fmtMonth(m.month)} (${m.votes})</option>`).join("");
+    // Témata jen v novějších datech (pole topics v search.json).
+    const topicLabels = doc.topic_labels || {};
+    const topicCodes = Object.keys(topicLabels).filter((c) => c.includes("."))
+      .sort((a, b) => (topicLabels[a] || a).localeCompare(topicLabels[b] || b, "cs"));
+    topicSel.innerHTML += topicCodes.map((c) => `<option value="${esc(c)}">${esc(topicLabels[c] || c)}</option>`).join("");
+    topicSel.closest("label").hidden = !topicCodes.length;
     const params = new URLSearchParams(location.search);
     if (params.get("m")) monthSel.value = params.get("m");
-    if (params.get("all") === "1") mainOnly.checked = false;
+    // ?all=1 ze starších odkazů = všechna hlasování
+    kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
+    if (params.get("t")) topicSel.value = params.get("t");
+    let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL).
-       Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál.`;
+       Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál.
+       Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.`;
 
+    const kindOk = (v) => kindSel.value === "all" || (kindSel.value === "final" ? isFinal(v) : v.is_main);
     const LIMIT = 300;
     const render = () => {
       const month = monthSel.value;
       const needle = q.value.trim().toLowerCase();
-      // Při hledání se prochází celé období, jinak jen vybraný měsíc.
-      monthSel.disabled = Boolean(needle);
-      const pool = needle ? all : all.filter((v) => v.month === month);
-      const matches = pool.filter((v) =>
-        (!mainOnly.checked || v.is_main) &&
-        (!needle || [v.title, v.reference, v.description].join(" ").toLowerCase().includes(needle)));
+      const topic = topicSel.value;
+      // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
+      const wide = Boolean(needle || topic);
+      monthSel.disabled = wide;
+      const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
+      const matches = pool.filter((v) => kindOk(v) &&
+        (!topic || (v.topics || []).includes(topic)) &&
+        (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
-      document.getElementById("count").textContent = needle
+      document.getElementById("count").textContent = wide
         ? `${matches.length} nalezeno v celém období${matches.length > LIMIT ? `, zobrazeno prvních ${LIMIT}` : ""}`
-        : `${matches.length} z ${pool.length} hlasování`;
-      history.replaceState(null, "", `?m=${month}${mainOnly.checked ? "" : "&all=1"}`);
+        : `${matches.length} z ${pool.length} hlasování${since ? ` od ${fmtDate(since)}` : ""}`;
+      const qs = new URLSearchParams({ m: month, f: kindSel.value });
+      if (topic) qs.set("t", topic);
+      if (since && !wide) qs.set("od", since);
+      history.replaceState(null, "", `?${qs}`);
       tbody.innerHTML = list.map((v) => {
         const counts = v.cz;
         return `<tr>
           <td class="num">${fmtDate(v.date)}</td>
           <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
-            <div class="small muted">${v.is_main ? '<span class="tag">hlavní</span>' : ""}${esc(voteSubtitle(v))}</div></td>
-          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td>
+            <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
+          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultText(v)}</td>
           <td>${splitBar(counts)}<div class="small muted">${counts.join(" / ")}</div></td>
         </tr>`;
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
     };
-    monthSel.addEventListener("change", render);
-    mainOnly.addEventListener("change", render);
+    monthSel.addEventListener("change", () => { since = null; render(); });
+    kindSel.addEventListener("change", render);
+    topicSel.addEventListener("change", render);
     q.addEventListener("input", render);
     render();
   } catch (e) {

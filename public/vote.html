@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hlasování – EP Watch CZ</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
   (function () {
@@ -18,14 +16,14 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
-  <nav>
+  <nav aria-label="Hlavní navigace">
     <a href="index.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
-    <a href="rozhodujici.html" data-page="decisive">Rozhodující hlasování</a>
+    <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
@@ -60,7 +58,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       if (v) { foundMonth = m; break; }
     }
     if (!v) throw new Error("Hlasování nenalezeno.");
-    document.title = `${voteTitle(v)} – EP Watch CZ`;
+    document.title = `${voteTitle(v)} – EP Watch CZ`; // nadpis stránky se upřesní níže
     const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
     const cz = v.cz_positions.filter((p) => {
       const m = meps[p.member_id];
@@ -71,29 +69,51 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const czCounts = KEYS.map((k) => cz.filter((p) => p.position === k).length);
     const groupRows = Object.entries(v.group_counts).sort((a, b) => (b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)));
     const topics = [...v.topics.oeil.map((t) => t.label), ...v.topics.eurovoc.map((t) => t.label), ...v.topics.geo.map((t) => t.label)];
+    // Typ hlasování: z dat (nové soubory), jinak ze search.json; starší data ukážou jen hlavní / dílčí.
+    const search = await loadSearch().catch(() => []);
+    const row = search.find((x) => x.id === id) || {};
+    const kind = v.vote_kind || row.vote_kind;
+    const inverted = v.inverted ?? kind === "rejection";
+    const desc = v.description_cs || row.description_cs || v.description;
+    const kv = { ...v, vote_kind: kind, inverted, description_cs: desc };
+    const final = isFinal({ ...v, vote_kind: kind });
+    // Nadpis = o čem se hlasovalo; název zákona/zprávy jako podtitul.
+    const heading = final ? voteTitle(v) : (desc || (kind ? KIND_LABEL[kind] : "") || voteTitle(v));
+    // U dílčích hlasování odkaz na závěrečné hlasování téže reference (pokud proběhlo).
+    const finalVotes = !final && v.reference ? search.filter((x) => x.reference === v.reference && isFinal(x) && x.id !== id) : [];
+    const finalVote = finalVotes[finalVotes.length - 1];
+    const adopted = adoptedTextUrl(v.texts_adopted_reference);
 
     main.innerHTML = `
       <p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>
-      <h1>${esc(voteTitle(v))}</h1>
-      <p class="muted">${fmtDate(v.date)} · ${v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování"} ${esc(voteSubtitle(v))}</p>
+      <p class="muted" style="margin-bottom:.3rem">${fmtDate(v.date)} · ${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování")}</p>
+      <h1>${esc(heading)}</h1>
+      ${final ? (desc ? `<p class="muted">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
+        `<p class="lead" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p>${esc(v.procedure.title)}</p>` : ""}
+      ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(INVERTED_NOTE)}
+        ${v.result === "ADOPTED" ? "Návrh na zamítnutí byl přijat, Parlament tedy text zamítl." : v.result === "REJECTED" ? "Návrh na zamítnutí neprošel, text tedy zamítnut nebyl." : ""}</p>` : ""}
+      ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
+        <a href="vote.html?id=${finalVote.id}&m=${finalVote.month}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <p class="small">
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
+        ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
       </p>
 
       <div class="metrics">
         <div class="card metric"><div class="label">Výsledek</div>
           <div class="value result-${v.result || ""}">${RESULT_LABEL[v.result] || "neuveden"}</div>
+          ${inverted && v.result ? `<div class="detail"><strong>${esc(resultText(kv))}</strong></div>` : ""}
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div></div>
         <div class="card metric"><div class="label">Celý parlament</div>
           ${splitBar(total)}
-          <div class="detail">pro ${c.for} · proti ${c.against} · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
+          <div class="detail"><span class="pos pos-FOR">pro ${c.for}</span> · <span class="pos pos-AGAINST">proti ${c.against}</span> · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
           <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
         <div class="card metric"><div class="label">Čeští poslanci</div>
           ${splitBar(czCounts)}
-          <div class="detail">pro ${czCounts[0]} · proti ${czCounts[1]} · zdrželo se ${czCounts[2]} · nehlasovalo ${czCounts[3]}</div>
+          <div class="detail"><span class="pos pos-FOR">pro ${czCounts[0]}</span> · <span class="pos pos-AGAINST">proti ${czCounts[1]}</span> · zdrželo se ${czCounts[2]} · nehlasovalo ${czCounts[3]}</div>
           <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
       </div>
 
