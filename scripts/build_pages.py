@@ -1,0 +1,387 @@
+"""Statické stránky s obsahem vyrenderovaným na serveru (R7): trvalé odkazy, citace, náhledy ve sdílení.
+
+Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
+  public/p/{id}.html   poslanec (souhrn, čísla se zdrojem, poslední závěrečná hlasování)
+  public/s/{id}.html   strana
+  public/v/{id}.html   závěrečné hlasování (o celém textu nebo o prozatímní dohodě)
+
+Interaktivní stránky (mep.html, party.html, vote.html…) zůstávají pro grafy a filtry, statické
+na ně odkazují. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
+Stránky nemají datum sestavení, takže se v gitu mění, jen když se změní data.
+
+Použití:
+    python scripts/build_pages.py
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from html import escape
+from pathlib import Path
+
+from build_web import vote_title
+from compute_stats import FormatError, active_positions, load_votes, require
+from labels_cs import translate
+from layout import page
+from vote_kinds import KIND_LABELS, classify, is_final
+
+POSITION_LABEL = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel/a se", "DID_NOT_VOTE": "nehlasoval/a"}
+POSITIONS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]
+RESULT_LABEL = {"ADOPTED": "přijato", "REJECTED": "zamítnuto", "LAPSED": "propadlo", "WITHDRAWN": "staženo"}
+HTV = "https://howtheyvote.eu"
+NBSP = " "
+ROOT = "../"
+RECENT = 15
+
+
+def esc(x) -> str:
+    return escape(str(x if x is not None else ""))
+
+
+def fmt_num(n) -> str:
+    return f"{int(n):,}".replace(",", NBSP)
+
+
+def fmt_pct(pair_or_value) -> str:
+    v = pair_or_value
+    if isinstance(v, list):
+        v = v[0] / v[1] if v[1] else None
+    return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
+
+
+def fmt_date(iso: str | None) -> str:
+    if not iso:
+        return ""
+    y, m, d = iso[:10].split("-")
+    return f"{int(d)}. {int(m)}. {y}"
+
+
+def by_gender(mep: dict, male: str, female: str) -> str:
+    g = mep.get("gender")
+    if g == "FEMALE":
+        return female
+    if g == "MALE":
+        return male
+    return f"{male}/{female[len(male):]}" if female.startswith(male) else f"{male} / {female}"
+
+
+def position_for(position: str, mep: dict) -> str:
+    if position == "ABSTENTION":
+        return by_gender(mep, "zdržel se", "zdržela se")
+    if position == "DID_NOT_VOTE":
+        return by_gender(mep, "nehlasoval", "nehlasovala")
+    return POSITION_LABEL[position]
+
+
+def display_name(mep: dict) -> str:
+    if mep.get("given_name") and mep.get("family_name"):
+        return f"{mep['given_name']} {mep['family_name']}"
+    return mep["name"]
+
+
+def current(items: list[dict]) -> dict | None:
+    open_ = [x for x in items if not x.get("end")]
+    return (open_ or items or [None])[-1]
+
+
+def split_bar(counts: list[int]) -> str:
+    total = sum(counts) or 1
+    title = ", ".join(f"{POSITION_LABEL[k]}: {n}" for k, n in zip(POSITIONS, counts))
+    spans = "".join(f'<span class="s-{k}" style="width:{n / total * 100:.2f}%"></span>' for k, n in zip(POSITIONS, counts))
+    return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
+
+
+def cite_button(text: str) -> str:
+    return f'<button type="button" class="cite-btn" data-cite="{esc(text)}">Citovat</button>'
+
+
+def og_meta(title: str, description: str, path: str, base_url: str | None, image: str | None = None) -> str:
+    """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json)."""
+    lines = [f'<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
+             f'<meta property="og:description" content="{esc(description)}">', '<meta property="og:locale" content="cs_CZ">']
+    if base_url:
+        url = base_url.rstrip("/") + "/" + path
+        lines += [f'<link rel="canonical" href="{esc(url)}">', f'<meta property="og:url" content="{esc(url)}">']
+        if image:
+            lines.append(f'<meta property="og:image" content="{esc(base_url.rstrip("/") + "/" + image)}">')
+    return "\n".join(lines) + "\n"
+
+
+def group_label(code: str | None, groups: list[dict]) -> str:
+    if not code:
+        return "bez frakce"
+    g = next((x for x in groups if x["code"] == code or x.get("ep_code") == code), None)
+    if g and g["code"] == "NI":
+        return "nezařazení"
+    return g["short_label"] if g else code
+
+
+def kind_of(v: dict) -> tuple[str, bool]:
+    return (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
+
+
+# --- poslanec ------------------------------------------------------------------------
+
+def metric(label: str, pair: list[int] | None, detail: str, bench_line: str = "", cite: str = "") -> str:
+    if not (pair and pair[1]):
+        bench_line = cite = ""  # srovnání ani citace u nepočítané metriky
+    count = f"{fmt_num(pair[0])} z {fmt_num(pair[1])} hlasování" if pair and pair[1] else "nepočítá se"
+    return (f'<div class="card metric"><div class="label">{label}</div><div class="value">{fmt_pct(pair) if pair else "–"}</div>'
+            f'<div class="detail">{count}</div>{bench_line}<div class="detail">{detail}</div>{cite}</div>')
+
+
+def bench_line(b: dict | None, key: str) -> str:
+    if not b:
+        return ""
+    parts = []
+    if b["ep"].get(key) is not None:
+        parts.append(f"medián EP {fmt_pct(b['ep'][key])}")
+    if b.get("group") and b["group"].get(key) is not None:
+        parts.append(f"medián frakce {fmt_pct(b['group'][key])}")
+    return f'<div class="detail">{" · ".join(parts)}</div>' if parts else ""
+
+
+def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str | None) -> tuple[str, str]:
+    mep, t = prof["mep"], prof["total"]
+    name = display_name(mep)
+    g, p = current(mep["groups"]), current(mep["parties"])
+    active = any(not m.get("end") for m in mep["mandates"])
+    mandate = ", ".join(f"{fmt_date(m['start'])} – {fmt_date(m['end']) if m.get('end') else 'dosud'}" for m in mep["mandates"])
+    htv = f"{HTV}/members/{mep['id']}"
+    b = prof.get("benchmarks")
+    rng = f"od {fmt_date(mep['mandates'][0]['start'])}"
+    att = t["attendance"]
+    desc = f"{name}: docházka {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
+           f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
+    cite = lambda what, pair: cite_button(
+        f"{name}: {what} {fmt_pct(pair)} ({fmt_num(pair[0])} z {fmt_num(pair[1])} jmenovitých hlasování v Evropském parlamentu "
+        f"v době mandátu, {rng}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if pair and pair[1] else ""
+    photo = (f'<figure class="portrait"><img src="{ROOT}assets/photos/{mep["id"]}.jpg" alt="Portrét: {esc(name)}">'
+             f'<figcaption>{esc(mep.get("photo_credit") or "© European Union – Source: EP")}</figcaption></figure>'
+             if mep.get("photo_url") else "")
+    rows = "".join(
+        f'<tr><td class="num">{fmt_date(v["date"])}</td>'
+        f'<td><a class="vote-title" href="{ROOT}v/{v["id"]}.html">{esc(v["title"])}</a>'
+        f'<div class="small muted">{esc(v.get("reference") or "")}{" · " + esc(v.get("description_cs") or v.get("description")) if (v.get("description_cs") or v.get("description")) else ""}</div></td>'
+        f'<td class="pos pos-{v["position"]}">{esc(position_for(v["position"], mep))}</td>'
+        f'<td class="result-{v.get("result") or ""}">{RESULT_LABEL.get(v.get("result"), "neuveden")}</td></tr>'
+        for v in prof["recent_main_votes"][:RECENT])
+    own = prof.get("own_work")
+    own_html = ""
+    if own and own.get("summary"):
+        items = "".join(f'<li><strong>{esc(own["type_labels"].get(k, k))}</strong>: {fmt_num(s["count"])}</li>'
+                        for k, s in own["summary"].items() if s.get("count"))
+        if items:
+            own_html = (f'<h2 id="vlastni-prace">Vlastní práce</h2><div class="card"><ul class="plain">{items}</ul>'
+                        f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
+                        f'Podrobnosti a výsledky hlasování v <a href="{ROOT}mep.html?id={mep["id"]}#vlastni-prace">interaktivním profilu</a>.</p></div>')
+    pos = t["positions"]
+    body = f"""<p class="small"><a href="{ROOT}index.html">← Všichni poslanci</a></p>
+<div class="profile-head">
+  {photo}
+  <div>
+    <h1>{esc(name)}</h1>
+    <div class="facts"><span class="badge">{esc(group_label(g['code'] if g else None, groups))}</span>
+      {f'<a class="badge-link" href="{ROOT}s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{esc(p["short_label"]) if p else "strana neuvedena"}</span>'}
+      <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
+    <p class="muted">Mandát: {mandate}</p>
+    {f'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
+    <p class="small"><a href="{ROOT}mep.html?id={mep['id']}">Interaktivní profil s grafy</a> ·
+      <a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
+  </div>
+</div>
+
+<h2 id="dochazka">Hlasování v číslech</h2>
+<div class="metrics">
+  {metric("Docházka", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("docházka", t["attendance"]))}
+  {metric("Docházka – závěrečná hlasování", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("docházka u závěrečných hlasování", t["attendance_main"]))}
+  {metric("Loajalita k frakci", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("loajalita k frakci", t["group_loyalty"]))}
+  {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
+</div>
+<p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
+  zdržel{by_gender(mep, "", "a")} se {fmt_num(pos["ABSTENTION"])}×, nehlasoval{by_gender(mep, "", "a")} {fmt_num(pos["DID_NOT_VOTE"])}×.
+  Zdroj: <a href="{htv}">HowTheyVote.eu</a> (ODbL), <a href="{ROOT}o-projektu.html#metodika">metodika</a>{". " + esc(b["definition"]) if b else ""}</p>
+{own_html}
+<h2 id="posledni">Poslední závěrečná hlasování</h2>
+{f'<div class="table-wrap"><table><thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead><tbody>{rows}</tbody></table></div>' if rows else '<p class="muted">Žádná hlasování.</p>'}
+<p class="source">Zdroj: <a href="{htv}">HowTheyVote.eu</a>. Všechna hlasování v <a href="{ROOT}mep.html?id={mep['id']}">interaktivním profilu</a>.</p>"""
+    title = f"{name} – EP Watch CZ"
+    meta = og_meta(title, desc, f"p/{mep['id']}.html", base_url, f"assets/photos/{mep['id']}.jpg" if mep.get("photo_url") else None)
+    return f"p/{mep['id']}.html", page(title, body, root=ROOT, current="meps", description=desc, meta=meta,
+                                       scripts=f'<script src="{ROOT}app.js"></script>\n')
+
+
+# --- strana --------------------------------------------------------------------------
+
+def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
+    name = pp.get("name") or pp["short_label"]
+    coh = pp["cohesion"]
+    desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {pp['members']} poslanců v 10. období, " \
+           f"jednotnost {fmt_pct(coh)}. Data z HowTheyVote.eu a EP."
+    members = "".join(
+        f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a>'
+        f'<div class="small muted">{", ".join(fmt_date(x["start"]) + " – " + (fmt_date(x["end"]) if x.get("end") else "dosud") for x in m["party_periods"])}'
+        f' · docházka {fmt_pct(m["total"]["attendance"])}</div></li>'
+        for m in sorted(pp["member_list"], key=lambda m: m.get("sort_label") or m["name"]))
+    cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
+                       f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""
+    body = f"""<p class="small"><a href="{ROOT}party.html">← Všechny strany</a></p>
+<h1>{esc(name)}</h1>
+<p class="muted">{esc(pp['short_label'])} · {pp['members']} poslanců v 10. volebním období ·
+  <a href="{ROOT}party.html?id={pp['id']}">interaktivní stránka strany</a></p>
+<div class="metrics">
+  {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany", "", cite)}
+  {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
+  <div class="card metric"><div class="label">Rozdělená hlasování</div><div class="value">{fmt_num(pp['splits_count'])}</div>
+    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}</div></div>
+</div>
+<h2>Poslanci</h2>
+<div class="card"><ul class="plain">{members}</ul></div>
+<p class="source">Příslušnost ke straně k datu hlasování. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
+  <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="{ROOT}o-projektu.html#metodika">metodika</a>.</p>"""
+    title = f"{name} – EP Watch CZ"
+    return f"s/{pp['id']}.html", page(title, body, root=ROOT, current="parties", description=desc,
+                                      meta=og_meta(title, desc, f"s/{pp['id']}.html", base_url),
+                                      scripts=f'<script src="{ROOT}app.js"></script>\n')
+
+
+# --- hlasování -----------------------------------------------------------------------
+
+def adopted_text_url(ref: str | None) -> str | None:
+    import re
+    m = re.fullmatch(r"P(\d+)_TA\((\d{4})\)(\d{4})", ref or "")
+    return f"https://data.europarl.europa.eu/distribution/doc/TA-{m[1]}-{m[2]}-{m[3]}_cs.pdf" if m else None
+
+
+def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None) -> tuple[str, str]:
+    kind, _ = kind_of(v)
+    title_txt = vote_title(v)
+    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    c = v["counts"]
+    total = [c["for"], c["against"], c["abstention"], c["did_not_vote"]]
+    cz = active_positions(v, meps_by_id)
+    cz_counts = [sum(p["position"] == k for p in cz) for k in POSITIONS]
+    result = RESULT_LABEL.get(v.get("result"), "neuveden")
+    src = v.get("source_url") or f"{HTV}/votes/{v['id']}"
+    adopted = adopted_text_url(v.get("texts_adopted_reference"))
+    desc = f"Hlasování Evropského parlamentu {fmt_date(v['date'])}: {title_txt}. Výsledek: {result} " \
+           f"({c['for']} pro, {c['against']} proti). Čeští poslanci: {cz_counts[0]} pro, {cz_counts[1]} proti, " \
+           f"{cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo."
+    lists = []
+    for k in POSITIONS:
+        names = sorted((meps_by_id[p["member_id"]] for p in cz if p["position"] == k), key=lambda m: m.get("sort_label") or m["name"])
+        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names) or '<li class="muted">nikdo</li>'
+        lists.append(f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>')
+    group_rows = "".join(
+        f'<tr><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}<td>{split_bar(row)}</td></tr>'
+        for code, row in sorted(v["group_counts"].items(), key=lambda x: -sum(x[1])))
+    links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
+             f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
+    if adopted:
+        links.append(f'<a href="{esc(adopted)}">Přijatý text (PDF, EP)</a>')
+    proc = (v.get("procedure") or {}).get("reference")
+    if proc:
+        links.append(f'<a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference={esc(proc)}">'
+                     f'Legislativní observatoř ({esc(proc)})</a>')
+    cite = cite_button(f"Evropský parlament {fmt_date(v['date'])}, {title_txt} ({KIND_LABELS.get(kind, kind)}): {result}, "
+                       f"{c['for']} pro, {c['against']} proti, {c['abstention']} se zdrželo. Čeští poslanci v mandátu: "
+                       f"{cz_counts[0]} pro, {cz_counts[1]} proti, {cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo. "
+                       f"Zdroj: HowTheyVote.eu ({src})")
+    body = f"""<p class="small"><a href="{ROOT}votes.html?m={v['date'][:7]}">← Hlasování v měsíci</a></p>
+<p class="muted" style="margin-bottom:.3rem">{fmt_date(v['date'])} · <span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
+<h1>{esc(title_txt)}</h1>
+{f'<p class="muted">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
+<p class="small">{" · ".join(links)}</p>
+<div class="metrics">
+  <div class="card metric"><div class="label">Výsledek</div><div class="value result-{v.get('result') or ''}">{result}</div>
+    <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div>{cite}</div>
+  <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
+    <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
+  <div class="card metric"><div class="label">Čeští poslanci</div>{split_bar(cz_counts)}
+    <div class="detail"><span class="pos pos-FOR">pro {cz_counts[0]}</span> · <span class="pos pos-AGAINST">proti {cz_counts[1]}</span> · zdrželo se {cz_counts[2]} · nehlasovalo {cz_counts[3]}</div></div>
+</div>
+<h2>Jak hlasovali Češi</h2>
+<div class="positions-grid">{"".join(lists)}</div>
+<p class="source">Jen poslanci v mandátu podle EP; frakce a strana k datu hlasování. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
+<h2>Jak hlasovaly frakce</h2>
+<div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
+<tbody>{group_rows}</tbody></table></div>
+<p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a>.</p>"""
+    title = f"{title_txt} ({fmt_date(v['date'])}) – EP Watch CZ"
+    return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,
+                                     meta=og_meta(title, desc, f"v/{v['id']}.html", base_url),
+                                     scripts=f'<script src="{ROOT}app.js"></script>\n')
+
+
+# --- běh -----------------------------------------------------------------------------
+
+def read(path: Path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def build(data_dir: Path) -> dict[str, str]:
+    """Vrací {relativní cesta: HTML}."""
+    overview = read(data_dir / "overview.json")
+    require(overview, ["meps"], "overview.json")
+    groups = read(data_dir / "groups.json")
+    parties = read(data_dir / "parties.json")
+    site_path = data_dir / "manual" / "site.json"
+    base_url = read(site_path).get("base_url") if site_path.exists() else None
+    meps_doc = read(data_dir / "meps.json")
+    meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
+    out = {}
+    for m in overview["meps"]:
+        prof = read(data_dir / "meps" / f"{m['id']}.json")
+        require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
+        path, html = mep_page(prof, groups, parties, base_url)
+        out[path] = html
+    idx_path = data_dir / "parties" / "index.json"
+    if idx_path.exists():
+        for p in read(idx_path)["parties"]:
+            path, html = party_page(read(data_dir / "parties" / f"{p['id']}.json"), base_url)
+            out[path] = html
+    _, votes = load_votes(data_dir / "votes")
+    for v in votes:
+        if is_final(v):
+            path, html = vote_page(v, meps_by_id, groups, base_url)
+            out[path] = html
+    return out
+
+
+def write(pages: dict[str, str], public: Path) -> dict[str, int]:
+    """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    written = removed = 0
+    for sub in ("p", "s", "v"):
+        d = public / sub
+        d.mkdir(parents=True, exist_ok=True)
+        for f in d.glob("*.html"):
+            if f"{sub}/{f.name}" not in pages:
+                f.unlink()
+                removed += 1
+    for rel, html in pages.items():
+        f = public / rel
+        if not f.exists() or f.read_text(encoding="utf-8") != html:
+            f.write_text(html, encoding="utf-8")
+            written += 1
+    return {"pages": len(pages), "written": written, "removed": removed}
+
+
+def main(argv=None) -> int:
+    root = Path(__file__).resolve().parent.parent
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--data-dir", type=Path, default=root / "data")
+    p.add_argument("--public", type=Path, default=root / "public")
+    args = p.parse_args(argv)
+    try:
+        res = write(build(args.data_dir), args.public)
+    except FormatError as e:
+        print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
+        return 2
+    print(f"statické stránky: {res}", file=sys.stderr)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

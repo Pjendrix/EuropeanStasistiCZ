@@ -26,6 +26,8 @@ def edit(csv_dir, table, old, new):
 def test_run_filters_term_and_country(csv_dir, tmp_path):
     out = tmp_path / "out"
     months = fv.run(csv_dir, out, release="MOCK_TAG")
+    bench = json.loads((out.parent / "benchmarks.json").read_text(encoding="utf-8"))
+    assert bench["source"] == {"release": "MOCK_TAG"} and "ep" in bench and "rank" not in json.dumps(bench)
 
     assert sorted(months) == ["2024-07", "2024-09"]
     assert sorted(p.name for p in out.iterdir()) == ["2024-07.json", "2024-09.json", "index.json"]

@@ -51,7 +51,8 @@
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
-  Portréty © European Union – Source: EP. <a href="o-projektu.html">O projektu</a>.
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
+  <a href="o-projektu.html">O projektu</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -98,6 +99,14 @@ const LIMIT = 50;
     former.addEventListener("change", render);
     anchor.addEventListener("change", render);
     render();
+    el.before(csvButton("shoda-cesi.csv", () => {
+      const ms = d.meps.filter((m) => former.checked || isActive(m));
+      return [["poslanec_id", "poslanec", ...ms.map((m) => displayName(m))],
+        ...ms.map((r) => [r.id, displayName(r), ...ms.map((c) => {
+          const v = r.id === c.id ? null : cell(r, c);
+          return v && v[1] ? `${v[0]}/${v[1]}` : "";
+        })])];
+    }, "Stáhnout matici (CSV: stejně/oba hlasovali)"));
   } catch (e) {
     showError(el, e);
   }

@@ -33,7 +33,8 @@
 
 <footer class="site-footer"><div class="inner">
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
-  Portréty © European Union – Source: EP. <a href="o-projektu.html">O projektu</a>.
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
+  <a href="o-projektu.html">O projektu</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -41,12 +42,20 @@
 setNav("meps");
 const main = document.getElementById("main");
 
-function metricCard(label, pair, detail, sourceHref) {
+// bench = profile.benchmarks (mediány EP a frakce, bez pořadí), key = název metriky; cite = věta pro citaci.
+function metricCard(label, pair, detail, sourceHref, bench, key, cite) {
+  const med = [];
+  if (bench && key && pair && pair[1]) {
+    if (bench.ep?.[key] != null) med.push(`medián EP ${fmtPct(bench.ep[key])}`);
+    if (bench.group?.[key] != null) med.push(`medián frakce ${fmtPct(bench.group[key])}`);
+  }
   return `<div class="card metric">
     <div class="label">${label}</div>
     <div class="value">${countPct(pct(pair))}</div>
     <div class="detail">${pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování` : "nepočítá se"}</div>
+    ${med.length ? `<div class="detail">${med.join(" · ")} <a href="#srovnani" title="Jak počítáme medián">ⓘ</a></div>` : ""}
     <div class="detail">${detail} · <a href="${sourceHref}">zdroj a metodika</a></div>
+    ${cite && pair && pair[1] ? citeButton(cite) : ""}
   </div>`;
 }
 
@@ -192,6 +201,9 @@ function periodText(x) {
     const g = currentOf(mep.groups);
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
+    const b = profile.benchmarks;
+    const since = fmtDate(mep.mandates[0].start);
+    const cite = (what, pair) => pair && pair[1] ? `${name}: ${what} ${fmtPct(pct(pair))} (${fmtNum(pair[0])} z ${fmtNum(pair[1])} jmenovitých hlasování v Evropském parlamentu v době mandátu, od ${since}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.` : "";
 
     const committeesNow = mep.committees.filter((c) => !c.end || c.end >= new Date().toISOString().slice(0, 10));
     const committeesPast = mep.committees.filter((c) => !committeesNow.includes(c));
@@ -222,6 +234,7 @@ function periodText(x) {
           <p class="muted">Mandát: ${mandateText(mep)}</p>
           ${profile.short_mandate ? `<p class="small note">${esc(SHORT_MANDATE_NOTE)} Mandát trval ${fmtNum(profile.mandate_days)} dní.</p>` : ""}
           <p class="small">
+            <a href="p/${mep.id}.html">Trvalý odkaz</a> ·
             <a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
             <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> ·
             <a href="${esc(mep.source_url)}">Data z EP API</a>
@@ -237,13 +250,15 @@ function periodText(x) {
 
       <h2 id="dochazka">Hlasování v číslech</h2>
       <div class="metrics">
-        ${metricCard("Docházka", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika")}
-        ${metricCard("Docházka – závěrečná hlasování", t.attendance_main, "o celém textu nebo o prozatímní dohodě s Radou", "o-projektu.html#metodika")}
-        ${metricCard("Loajalita k frakci", t.group_loyalty, "jen informativní", "o-projektu.html#metodika")}
-        ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika")}
+        ${metricCard("Docházka", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika", b, "attendance", cite("docházka", t.attendance))}
+        ${metricCard("Docházka – závěrečná hlasování", t.attendance_main, "o celém textu nebo o prozatímní dohodě s Radou", "o-projektu.html#metodika", b, "attendance_main", cite("docházka u závěrečných hlasování", t.attendance_main))}
+        ${metricCard("Loajalita k frakci", t.group_loyalty, "jen informativní", "o-projektu.html#metodika", b, "group_loyalty", cite("loajalita k frakci", t.group_loyalty))}
+        ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, null, cite("shoda s ostatními českými poslanci", t.cz_agreement))}
       </div>
       <p class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
         ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×. ${sourceLine(stats)}</p>
+
+      ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}</p>` : ""}
 
       <h2 id="vlastni-prace">Vlastní práce</h2>
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.

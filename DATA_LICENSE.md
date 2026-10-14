@@ -9,6 +9,7 @@ Pro data platí licence jejich zdrojů:
 | Poslanci, mandáty, frakce, strany, výbory, vlastní práce (`data/meps.json`, `data/proposals.json`, `data/own_work.json`) | [EP Open Data](https://data.europarl.europa.eu) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) – © European Union, Source: EP |
 | Portréty (`public/assets/photos/`) | Evropský parlament | © European Union – Source: EP |
 | Písmo Plus Jakarta Sans (`public/assets/fonts/`) | [The Plus Jakarta Sans Project Authors](https://github.com/tokotype/PlusJakartaSans) | SIL Open Font License 1.1 (`public/assets/fonts/OFL.txt`) |
+| Srovnání s celým EP (`data/benchmarks.json`) | spočítáno z HowTheyVote.eu | ODbL 1.0 |
 | Ruční doplňky (`data/manual/`) | EP Watch CZ (barvy, český překlad názvů témat OEIL – neoficiální) | jako data, která doplňují (ODbL) |
 
 Každá týdenní aktualizace dat má git tag `data-RRRR-MM-DD`.

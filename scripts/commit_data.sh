@@ -3,7 +3,7 @@
 #
 # Každý workflow „vlastní“ jen soubory, které sám stahuje (zadané jako argumenty).
 # Ty se odloží, větev se srovná s aktuálním origin/main, vrátí se zpět a odvozené
-# soubory (stats.json, soubory pro web) se přepočítají aktuálním kódem z main.
+# soubory (stats.json, soubory pro web, statické stránky) se přepočítají aktuálním kódem z main.
 # Při souběžném pushi se postup zopakuje (nejvýš 3×).
 #
 # Použití: scripts/commit_data.sh "zpráva commitu" [--tag data-YYYY-MM-DD] cesta [cesta...]
@@ -31,7 +31,8 @@ for attempt in 1 2 3; do
   done
   python scripts/compute_stats.py
   python scripts/build_web.py
-  git add data public/assets/photos
+  python scripts/build_pages.py
+  git add data public/assets/photos public/p public/s public/v
   if git diff --cached --quiet; then
     echo "Žádná nová data."
     exit 0
