@@ -82,7 +82,8 @@ DEFINITIONS = {
                 "zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo "
                 "zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje "
                 "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-    "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování "
+    "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad "
+              "(data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování "
               "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
 }
 

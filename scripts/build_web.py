@@ -26,7 +26,7 @@ import sys
 from pathlib import Path
 
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
-                           require)
+                           require, topic_codes)
 from labels_cs import translate
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -35,7 +35,7 @@ LAST_SESSION_LIMIT = 50
 SHORT_MANDATE_DAYS = 60
 # Nová pole jsou na konci, aby starší web četl řádky beze změny.
 SEARCH_FIELDS = ["id", "date", "month", "title", "reference", "description", "amendment_number",
-                 "result", "is_main", "cz", "vote_kind", "is_final", "inverted", "description_cs"]
+                 "result", "is_main", "cz", "vote_kind", "is_final", "inverted", "description_cs", "topics"]
 
 
 def current(items: list[dict], day: str) -> dict | None:
@@ -69,14 +69,28 @@ def cz_counts(vote: dict, meps_by_id: dict) -> list[int]:
     return counts
 
 
-def build_search(votes: list[dict], meps_by_id: dict) -> dict:
-    rows = []
+def load_topic_labels(path: Path) -> dict:
+    """Ruční český překlad názvů témat OEIL; když soubor chybí, prázdný slovník."""
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    require(doc, ["labels"], path.name)
+    return doc["labels"]
+
+
+def build_search(votes: list[dict], meps_by_id: dict, topic_labels: dict | None = None,
+                 oeil: dict | None = None) -> dict:
+    topic_labels, oeil = topic_labels or {}, oeil or {}
+    rows, used = [], set()
     for v in votes:
         k = kind_fields(v)
         rows.append([v["id"], v["date"], v["date"][:7], vote_title(v), v.get("reference"), v.get("description"),
                      v.get("amendment_number"), v.get("result"), v["is_main"], cz_counts(v, meps_by_id),
-                     k["vote_kind"], k["is_final"], k["inverted"], k["description_cs"]])
-    return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "kind_labels": KIND_LABELS, "rows": rows}
+                     k["vote_kind"], k["is_final"], k["inverted"], k["description_cs"], sorted(topic_codes(v))])
+        used |= topic_codes(v)
+    labels = {c: topic_labels.get(c) or oeil.get(c) for c in sorted(used)}
+    return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "kind_labels": KIND_LABELS,
+            "topic_labels": labels, "rows": rows}
 
 
 def mandate_days(mandates: list[dict], day: str) -> int:
@@ -102,9 +116,10 @@ def mep_summary(m: dict, day: str) -> dict:
     }
 
 
-def build_overview(meps: list[dict], stats: dict, day: str) -> dict:
+def build_overview(meps: list[dict], stats: dict, day: str, topic_labels: dict | None = None) -> dict:
     return {
         "sources": stats["sources"], "period": stats["period"], "votes_total": stats["votes_total"],
+        "topics": [{**t, "label_cs": (topic_labels or {}).get(t["code"])} for t in stats.get("topics", [])],
         "definitions": stats["definitions"], "short_mandate_days": SHORT_MANDATE_DAYS,
         "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]} for m in meps],
     }
@@ -141,13 +156,14 @@ def cz_positions(v: dict, meps_by_id: dict) -> list[dict]:
              "national_party_id": p.get("national_party_id")} for p in active_positions(v, meps_by_id)]
 
 
-def topic_rows(topics_stats: dict, topics_meta: list[dict]) -> list[dict]:
-    return [{"code": t["code"], "label": t["label"], **topics_stats[t["code"]]}
+def topic_rows(topics_stats: dict, topics_meta: list[dict], topic_labels: dict | None = None) -> list[dict]:
+    return [{"code": t["code"], "label": t["label"], "label_cs": (topic_labels or {}).get(t["code"]),
+             **topics_stats[t["code"]]}
             for t in topics_meta if t["code"] in topics_stats]
 
 
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
-                  votes_by_id: dict | None = None, own: dict | None = None) -> dict:
+                  votes_by_id: dict | None = None, own: dict | None = None, topic_labels: dict | None = None) -> dict:
     st = stats["meps"][str(mep["id"])]
     meps_by_id = {m["id"]: m for m in meps}
     votes_by_id = votes_by_id or {v["id"]: v for v in votes}
@@ -172,7 +188,7 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
                           "recent": [with_vote(x) for x in ag["recent"]],
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
         "decisive": [with_vote(x) for x in st.get("decisive", [])],
-        "topics": topic_rows(st.get("topics", {}), stats.get("topics", [])),
+        "topics": topic_rows(st.get("topics", {}), stats.get("topics", []), topic_labels),
         "own_work": None if own is None else {
             "source": own["source"], "updated": own["updated"], "complete": own["complete"],
             "type_labels": own["type_labels"],
@@ -285,18 +301,20 @@ def run(data_dir: Path, day: str) -> dict:
     missing = [m["id"] for m in meps if str(m["id"]) not in stats["meps"]]
     if missing:
         raise FormatError(f"stats.json nemá poslance {missing}, spusť nejdřív compute_stats.py")
-    _, votes = load_votes(data_dir / "votes")
+    index, votes = load_votes(data_dir / "votes")
+    topic_labels = load_topic_labels(data_dir / "manual" / "topics_cs.json")
     by_id = {m["id"]: m for m in meps}
     votes_by_id = {v["id"]: v for v in votes}
     parties = json.loads((data_dir / "parties.json").read_text(encoding="utf-8"))
     own_path = data_dir / "own_work.json"
     own = json.loads(own_path.read_text(encoding="utf-8")) if own_path.exists() else None
 
-    write_json(data_dir / "overview.json", build_overview(meps, stats, day))
+    write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     profiles_dir = data_dir / "meps"
     for m in meps:
-        write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own))
+        write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,
+                                                                      topic_labels))
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))
@@ -306,7 +324,7 @@ def run(data_dir: Path, day: str) -> dict:
         for pid, page in party_pages.items():
             write_json(data_dir / "parties" / f"{pid}.json", page)
     # Jedno hlasování na řádek kvůli čitelným diffům.
-    search = build_search(votes, by_id)
+    search = build_search(votes, by_id, topic_labels, index.get("oeil_subjects"))
     lines = [json.dumps(r, ensure_ascii=False, separators=(",", ":")) for r in search["rows"]]
     head = json.dumps({k: v for k, v in search.items() if k != "rows"}, ensure_ascii=False, separators=(",", ":"))
     (data_dir / "votes" / "search.json").write_text(head[:-1] + ',"rows":[\n' + ",\n".join(lines) + "\n]}\n",

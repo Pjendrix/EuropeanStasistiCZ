@@ -22,7 +22,7 @@ def vote(vid, date, positions, is_main=True, title="MOCK vote", description=None
     return {"id": vid, "date": date, "title": title, "reference": "MOCK-REF", "description": description,
             "amendment_number": None, "result": "ADOPTED", "is_main": is_main, "procedure": {},
             "counts": {"for": 300, "against": 299, "abstention": 0, "did_not_vote": 0},
-            "group_counts": {}, "cz_positions": [
+            "group_counts": {}, "topics": {"oeil": [{"code": "3.70.03"}]}, "cz_positions": [
                 {"member_id": i, "position": p, "group_code": "EPP", "national_party_id": 20} for i, p in positions]}
 
 
@@ -57,6 +57,9 @@ def data_dir(tmp_path):
                             "main": [],
                             "last_session": {"from": "2024-10-16", "to": "2024-10-16", "votes": 1, "split": []}}}}
     (d / "stats.json").write_text(json.dumps(stats), encoding="utf-8")
+    (d / "manual").mkdir()
+    (d / "manual" / "topics_cs.json").write_text(json.dumps({"labels": {"3.70": "MOCK životní prostředí"}}),
+                                                 encoding="utf-8")
     (d / "parties.json").write_text(json.dumps([
         {"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "independent": False, "color": None, "logo": None},
         {"id": 99, "short_label": "Ind.", "name": "Independent", "independent": True, "color": None, "logo": None},
@@ -89,6 +92,7 @@ def test_search_rows_and_cz_counts_only_in_mandate(data_dir):
         ("final", True, False), ("other", False, False), ("final", True, False), ("rejection", False, True)]
     assert rows[3]["description_cs"] == "Návrh na zamítnutí"
     assert search["kind_labels"]["rejection"] == "návrh na zamítnutí"
+    assert rows[0]["topics"] == ["3.70"] and search["topic_labels"] == {"3.70": "MOCK životní prostředí"}
 
 
 def test_profile_contains_everything_for_page(data_dir):
@@ -146,6 +150,7 @@ def test_profile_phase_c_sections(data_dir):
     assert prof["against_group"]["recent"][0]["group_majority"] == "FOR"
     assert [(d["id"], d["position"]) for d in prof["decisive"]] == [(1, "FOR")]
     assert prof["topics"][0]["code"] == "3.70" and prof["topics"][0]["label"] == "MOCK environment"
+    assert prof["topics"][0]["label_cs"] == "MOCK životní prostředí"
 
 
 def test_decisive_splits_and_parties_files(data_dir):
