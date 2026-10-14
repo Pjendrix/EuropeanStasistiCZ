@@ -1,0 +1,1482 @@
+{
+ "mep": {
+  "id": 220840,
+  "name": "Jaroslav BŽOCH",
+  "given_name": "Jaroslav",
+  "family_name": "Bžoch",
+  "sort_label": "BZOCHJ",
+  "gender": "MALE",
+  "photo_url": "https://www.europarl.europa.eu/mepphoto/220840.jpg",
+  "photo_credit": "© European Union – Source: EP",
+  "profile_url": "https://www.europarl.europa.eu/meps/cs/220840",
+  "source_url": "https://data.europarl.europa.eu/api/v2/meps/220840",
+  "mandates": [
+   {
+    "start": "2024-07-16",
+    "end": null,
+    "mandate_id": "16884"
+   }
+  ],
+  "groups": [
+   {
+    "org_id": "7150",
+    "code": "PFE",
+    "short_label": "PfE",
+    "name_cs": "skupina Patrioti pro Evropu",
+    "name_en": "Patriots for Europe Group",
+    "role": "MEMBER",
+    "start": "2024-07-16",
+    "end": null
+   }
+  ],
+  "parties": [
+   {
+    "org_id": "6794",
+    "short_label": "ANO 2011",
+    "name": "ANO 2011",
+    "role": "MEMBER",
+    "start": "2024-07-16",
+    "end": null
+   }
+  ],
+  "committees": [
+   {
+    "org_id": "6579",
+    "code": "IMCO",
+    "type": "STANDING",
+    "name_cs": "Výbor pro vnitřní trh a ochranu spotřebitelů",
+    "name_en": "Committee on the Internal Market and Consumer Protection",
+    "role": "MEMBER_SUBSTITUTE",
+    "start": "2024-07-19",
+    "end": null
+   },
+   {
+    "org_id": "6586",
+    "code": "LIBE",
+    "type": "STANDING",
+    "name_cs": "Výbor pro občanské svobody, spravedlnost a vnitřní věci",
+    "name_en": "Committee on Civil Liberties, Justice and Home Affairs",
+    "role": "MEMBER",
+    "start": "2024-07-19",
+    "end": null
+   },
+   {
+    "org_id": "6562",
+    "code": "AFET",
+    "type": "STANDING",
+    "name_cs": "Výbor pro zahraniční věci",
+    "name_en": "Committee on Foreign Affairs",
+    "role": "MEMBER_SUBSTITUTE",
+    "start": "2025-01-22",
+    "end": "2026-04-26"
+   },
+   {
+    "org_id": "7914",
+    "code": "EUDS",
+    "type": "TEMPORARY",
+    "name_cs": "Zvláštní výbor pro Evropský štít pro demokracii",
+    "name_en": "Special Committee on the European Democracy Shield",
+    "role": "MEMBER",
+    "start": "2025-01-23",
+    "end": null
+   },
+   {
+    "org_id": "6562",
+    "code": "AFET",
+    "type": "STANDING",
+    "name_cs": "Výbor pro zahraniční věci",
+    "name_en": "Committee on Foreign Affairs",
+    "role": "MEMBER",
+    "start": "2026-04-27",
+    "end": null
+   }
+  ]
+ },
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně."
+ },
+ "total": {
+  "attendance": [
+   5736,
+   6154
+  ],
+  "attendance_main": [
+   638,
+   680
+  ],
+  "group_loyalty": [
+   4243,
+   5716
+  ],
+  "cz_agreement": [
+   4807,
+   5550
+  ],
+  "positions": {
+   "FOR": 2891,
+   "AGAINST": 1933,
+   "ABSTENTION": 912,
+   "DID_NOT_VOTE": 418
+  }
+ },
+ "monthly": {
+  "2024-07": {
+   "attendance": [
+    22,
+    24
+   ],
+   "attendance_main": [
+    1,
+    1
+   ],
+   "group_loyalty": [
+    15,
+    22
+   ],
+   "cz_agreement": [
+    9,
+    19
+   ],
+   "positions": {
+    "FOR": 6,
+    "AGAINST": 10,
+    "ABSTENTION": 6,
+    "DID_NOT_VOTE": 2
+   }
+  },
+  "2024-09": {
+   "attendance": [
+    93,
+    96
+   ],
+   "attendance_main": [
+    7,
+    8
+   ],
+   "group_loyalty": [
+    63,
+    89
+   ],
+   "cz_agreement": [
+    67,
+    87
+   ],
+   "positions": {
+    "FOR": 46,
+    "AGAINST": 29,
+    "ABSTENTION": 18,
+    "DID_NOT_VOTE": 3
+   }
+  },
+  "2024-10": {
+   "attendance": [
+    179,
+    179
+   ],
+   "attendance_main": [
+    13,
+    13
+   ],
+   "group_loyalty": [
+    113,
+    177
+   ],
+   "cz_agreement": [
+    145,
+    174
+   ],
+   "positions": {
+    "FOR": 80,
+    "AGAINST": 66,
+    "ABSTENTION": 33,
+    "DID_NOT_VOTE": 0
+   }
+  },
+  "2024-11": {
+   "attendance": [
+    115,
+    126
+   ],
+   "attendance_main": [
+    24,
+    27
+   ],
+   "group_loyalty": [
+    80,
+    115
+   ],
+   "cz_agreement": [
+    91,
+    113
+   ],
+   "positions": {
+    "FOR": 65,
+    "AGAINST": 22,
+    "ABSTENTION": 28,
+    "DID_NOT_VOTE": 11
+   }
+  },
+  "2024-12": {
+   "attendance": [
+    88,
+    91
+   ],
+   "attendance_main": [
+    17,
+    17
+   ],
+   "group_loyalty": [
+    63,
+    88
+   ],
+   "cz_agreement": [
+    74,
+    84
+   ],
+   "positions": {
+    "FOR": 45,
+    "AGAINST": 27,
+    "ABSTENTION": 16,
+    "DID_NOT_VOTE": 3
+   }
+  },
+  "2025-01": {
+   "attendance": [
+    49,
+    50
+   ],
+   "attendance_main": [
+    6,
+    6
+   ],
+   "group_loyalty": [
+    38,
+    49
+   ],
+   "cz_agreement": [
+    38,
+    47
+   ],
+   "positions": {
+    "FOR": 35,
+    "AGAINST": 11,
+    "ABSTENTION": 3,
+    "DID_NOT_VOTE": 1
+   }
+  },
+  "2025-02": {
+   "attendance": [
+    70,
+    73
+   ],
+   "attendance_main": [
+    9,
+    10
+   ],
+   "group_loyalty": [
+    49,
+    70
+   ],
+   "cz_agreement": [
+    50,
+    66
+   ],
+   "positions": {
+    "FOR": 38,
+    "AGAINST": 15,
+    "ABSTENTION": 17,
+    "DID_NOT_VOTE": 3
+   }
+  },
+  "2025-03": {
+   "attendance": [
+    263,
+    267
+   ],
+   "attendance_main": [
+    14,
+    14
+   ],
+   "group_loyalty": [
+    172,
+    263
+   ],
+   "cz_agreement": [
+    216,
+    258
+   ],
+   "positions": {
+    "FOR": 116,
+    "AGAINST": 102,
+    "ABSTENTION": 45,
+    "DID_NOT_VOTE": 4
+   }
+  },
+  "2025-04": {
+   "attendance": [
+    347,
+    348
+   ],
+   "attendance_main": [
+    21,
+    21
+   ],
+   "group_loyalty": [
+    273,
+    346
+   ],
+   "cz_agreement": [
+    304,
+    337
+   ],
+   "positions": {
+    "FOR": 182,
+    "AGAINST": 113,
+    "ABSTENTION": 52,
+    "DID_NOT_VOTE": 1
+   }
+  },
+  "2025-05": {
+   "attendance": [
+    336,
+    393
+   ],
+   "attendance_main": [
+    45,
+    51
+   ],
+   "group_loyalty": [
+    253,
+    336
+   ],
+   "cz_agreement": [
+    297,
+    322
+   ],
+   "positions": {
+    "FOR": 205,
+    "AGAINST": 80,
+    "ABSTENTION": 51,
+    "DID_NOT_VOTE": 57
+   }
+  },
+  "2025-06": {
+   "attendance": [
+    43,
+    221
+   ],
+   "attendance_main": [
+    8,
+    21
+   ],
+   "group_loyalty": [
+    29,
+    43
+   ],
+   "cz_agreement": [
+    37,
+    43
+   ],
+   "positions": {
+    "FOR": 19,
+    "AGAINST": 15,
+    "ABSTENTION": 9,
+    "DID_NOT_VOTE": 178
+   }
+  },
+  "2025-07": {
+   "attendance": [
+    226,
+    226
+   ],
+   "attendance_main": [
+    32,
+    32
+   ],
+   "group_loyalty": [
+    143,
+    225
+   ],
+   "cz_agreement": [
+    185,
+    218
+   ],
+   "positions": {
+    "FOR": 129,
+    "AGAINST": 69,
+    "ABSTENTION": 28,
+    "DID_NOT_VOTE": 0
+   }
+  },
+  "2025-09": {
+   "attendance": [
+    201,
+    205
+   ],
+   "attendance_main": [
+    28,
+    29
+   ],
+   "group_loyalty": [
+    165,
+    201
+   ],
+   "cz_agreement": [
+    170,
+    198
+   ],
+   "positions": {
+    "FOR": 87,
+    "AGAINST": 88,
+    "ABSTENTION": 26,
+    "DID_NOT_VOTE": 4
+   }
+  },
+  "2025-10": {
+   "attendance": [
+    380,
+    382
+   ],
+   "attendance_main": [
+    42,
+    43
+   ],
+   "group_loyalty": [
+    285,
+    378
+   ],
+   "cz_agreement": [
+    321,
+    372
+   ],
+   "positions": {
+    "FOR": 189,
+    "AGAINST": 124,
+    "ABSTENTION": 67,
+    "DID_NOT_VOTE": 2
+   }
+  },
+  "2025-11": {
+   "attendance": [
+    567,
+    570
+   ],
+   "attendance_main": [
+    51,
+    51
+   ],
+   "group_loyalty": [
+    442,
+    566
+   ],
+   "cz_agreement": [
+    503,
+    545
+   ],
+   "positions": {
+    "FOR": 298,
+    "AGAINST": 176,
+    "ABSTENTION": 93,
+    "DID_NOT_VOTE": 3
+   }
+  },
+  "2025-12": {
+   "attendance": [
+    154,
+    155
+   ],
+   "attendance_main": [
+    30,
+    31
+   ],
+   "group_loyalty": [
+    122,
+    153
+   ],
+   "cz_agreement": [
+    132,
+    143
+   ],
+   "positions": {
+    "FOR": 103,
+    "AGAINST": 21,
+    "ABSTENTION": 30,
+    "DID_NOT_VOTE": 1
+   }
+  },
+  "2026-01": {
+   "attendance": [
+    234,
+    237
+   ],
+   "attendance_main": [
+    21,
+    22
+   ],
+   "group_loyalty": [
+    163,
+    233
+   ],
+   "cz_agreement": [
+    191,
+    225
+   ],
+   "positions": {
+    "FOR": 92,
+    "AGAINST": 90,
+    "ABSTENTION": 52,
+    "DID_NOT_VOTE": 3
+   }
+  },
+  "2026-02": {
+   "attendance": [
+    237,
+    237
+   ],
+   "attendance_main": [
+    28,
+    28
+   ],
+   "group_loyalty": [
+    159,
+    237
+   ],
+   "cz_agreement": [
+    190,
+    227
+   ],
+   "positions": {
+    "FOR": 103,
+    "AGAINST": 91,
+    "ABSTENTION": 43,
+    "DID_NOT_VOTE": 0
+   }
+  },
+  "2026-03": {
+   "attendance": [
+    362,
+    364
+   ],
+   "attendance_main": [
+    44,
+    44
+   ],
+   "group_loyalty": [
+    285,
+    362
+   ],
+   "cz_agreement": [
+    312,
+    359
+   ],
+   "positions": {
+    "FOR": 168,
+    "AGAINST": 156,
+    "ABSTENTION": 38,
+    "DID_NOT_VOTE": 2
+   }
+  },
+  "2026-04": {
+   "attendance": [
+    584,
+    591
+   ],
+   "attendance_main": [
+    50,
+    51
+   ],
+   "group_loyalty": [
+    449,
+    582
+   ],
+   "cz_agreement": [
+    472,
+    568
+   ],
+   "positions": {
+    "FOR": 297,
+    "AGAINST": 194,
+    "ABSTENTION": 93,
+    "DID_NOT_VOTE": 7
+   }
+  },
+  "2026-05": {
+   "attendance": [
+    156,
+    201
+   ],
+   "attendance_main": [
+    23,
+    25
+   ],
+   "group_loyalty": [
+    124,
+    155
+   ],
+   "cz_agreement": [
+    132,
+    145
+   ],
+   "positions": {
+    "FOR": 83,
+    "AGAINST": 54,
+    "ABSTENTION": 19,
+    "DID_NOT_VOTE": 45
+   }
+  },
+  "2026-06": {
+   "attendance": [
+    168,
+    246
+   ],
+   "attendance_main": [
+    27,
+    35
+   ],
+   "group_loyalty": [
+    119,
+    168
+   ],
+   "cz_agreement": [
+    141,
+    161
+   ],
+   "positions": {
+    "FOR": 81,
+    "AGAINST": 67,
+    "ABSTENTION": 20,
+    "DID_NOT_VOTE": 78
+   }
+  },
+  "2026-07": {
+   "attendance": [
+    280,
+    285
+   ],
+   "attendance_main": [
+    33,
+    34
+   ],
+   "group_loyalty": [
+    174,
+    280
+   ],
+   "cz_agreement": [
+    247,
+    270
+   ],
+   "positions": {
+    "FOR": 121,
+    "AGAINST": 120,
+    "ABSTENTION": 39,
+    "DID_NOT_VOTE": 5
+   }
+  },
+  "2026-09": {
+   "attendance": [
+    356,
+    360
+   ],
+   "attendance_main": [
+    39,
+    40
+   ],
+   "group_loyalty": [
+    270,
+    353
+   ],
+   "cz_agreement": [
+    281,
+    346
+   ],
+   "positions": {
+    "FOR": 194,
+    "AGAINST": 94,
+    "ABSTENTION": 68,
+    "DID_NOT_VOTE": 4
+   }
+  },
+  "2026-10": {
+   "attendance": [
+    226,
+    227
+   ],
+   "attendance_main": [
+    25,
+    26
+   ],
+   "group_loyalty": [
+    195,
+    225
+   ],
+   "cz_agreement": [
+    202,
+    223
+   ],
+   "positions": {
+    "FOR": 109,
+    "AGAINST": 99,
+    "ABSTENTION": 18,
+    "DID_NOT_VOTE": 1
+   }
+  }
+ },
+ "pairwise": [
+  {
+   "id": 197528,
+   "name": "Ondřej KNOTEK",
+   "given_name": "Ondřej",
+   "family_name": "Knotek",
+   "sort_label": "KNOTEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197528.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16873"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 4937,
+   "total": 5010
+  },
+  {
+   "id": 256853,
+   "name": "Klara DOSTALOVA",
+   "given_name": "Klara",
+   "family_name": "Dostalova",
+   "sort_label": "DOSTALOVAK",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16899"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 4548,
+   "total": 4645
+  },
+  {
+   "id": 256843,
+   "name": "Jana NAGYOVÁ",
+   "given_name": "Jana",
+   "family_name": "Nagyová",
+   "sort_label": "NAGYOVAJ",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256843.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16889"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 4946,
+   "total": 5060
+  },
+  {
+   "id": 261038,
+   "name": "Tomáš KUBÍN",
+   "given_name": "Tomáš",
+   "family_name": "Kubín",
+   "sort_label": "KUBINT",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/261038.jpg",
+   "mandates": [
+    {
+     "start": "2024-08-01",
+     "end": null,
+     "mandate_id": "17552"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 5272,
+   "total": 5397
+  },
+  {
+   "id": 256844,
+   "name": "Jaroslava POKORNÁ JERMANOVÁ",
+   "given_name": "Jaroslava",
+   "family_name": "Pokorná Jermanová",
+   "sort_label": "POKORNAJERMANOVAJ",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256844.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16890"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 4979,
+   "total": 5108
+  },
+  {
+   "id": 270261,
+   "name": "Jaroslav KNOT",
+   "given_name": "Jaroslav",
+   "family_name": "Knot",
+   "sort_label": "KNOTJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/270261.jpg",
+   "mandates": [
+    {
+     "start": "2025-07-31",
+     "end": null,
+     "mandate_id": "17561"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 3057,
+   "total": 3139
+  },
+  {
+   "id": 118949,
+   "name": "Ondřej KOVAŘÍK",
+   "given_name": "Ondřej",
+   "family_name": "Kovařík",
+   "sort_label": "KOVARIK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/118949.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-07-30",
+     "mandate_id": "16875"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "same": 993,
+   "total": 1030
+  },
+  {
+   "id": 256852,
+   "name": "Nikola BARTŮŠEK",
+   "given_name": "Nikola",
+   "family_name": "Bartůšek",
+   "sort_label": "BARTUSEKN",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16898"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "same": 4176,
+   "total": 5201
+  },
+  {
+   "id": 272024,
+   "name": "Antonín STANĚK",
+   "given_name": "Antonín",
+   "family_name": "Staněk",
+   "sort_label": "STANEKA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/272024.jpg",
+   "mandates": [
+    {
+     "start": "2025-10-04",
+     "end": null,
+     "mandate_id": "17563"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "same": 2794,
+   "total": 3556
+  },
+  {
+   "id": 197537,
+   "name": "Alexandr VONDRA",
+   "given_name": "Alexandr",
+   "family_name": "Vondra",
+   "sort_label": "VONDRA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197537.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16879"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "same": 3596,
+   "total": 5215
+  },
+  {
+   "id": 197552,
+   "name": "Veronika VRECIONOVÁ",
+   "given_name": "Veronika",
+   "family_name": "Vrecionová",
+   "sort_label": "VRECIONOVA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197552.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16869"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "same": 3667,
+   "total": 5341
+  },
+  {
+   "id": 256845,
+   "name": "Ondřej KRUTÍLEK",
+   "given_name": "Ondřej",
+   "family_name": "Krutílek",
+   "sort_label": "KRUTILEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256845.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16891"
+    }
+   ],
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "same": 3829,
+   "total": 5592
+  },
+  {
+   "id": 256850,
+   "name": "Filip TUREK",
+   "given_name": "Filip",
+   "family_name": "Turek",
+   "sort_label": "TUREKF",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256850.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-10-03",
+     "mandate_id": "16895"
+    }
+   ],
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "same": 1246,
+   "total": 1901
+  },
+  {
+   "id": 197556,
+   "name": "Ivan DAVID",
+   "given_name": "Ivan",
+   "family_name": "David",
+   "sort_label": "DAVIDI",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197556.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16870"
+    }
+   ],
+   "group": {
+    "code": "ESN",
+    "short_label": "ESN"
+   },
+   "party": {
+    "id": 6864,
+    "short_label": "SPD"
+   },
+   "same": 2792,
+   "total": 5281
+  },
+  {
+   "id": 23699,
+   "name": "Kateřina KONEČNÁ",
+   "given_name": "Kateřina",
+   "family_name": "Konečná",
+   "sort_label": "KONECNA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/23699.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16868"
+    }
+   ],
+   "group": {
+    "code": "NI",
+    "short_label": "NI"
+   },
+   "party": {
+    "id": 6769,
+    "short_label": "KSČM"
+   },
+   "same": 2734,
+   "total": 5283
+  },
+  {
+   "id": 256851,
+   "name": "Ondřej DOSTÁL",
+   "given_name": "Ondřej",
+   "family_name": "Dostál",
+   "sort_label": "DOSTÁLO",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256851.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16897"
+    }
+   ],
+   "group": {
+    "code": "NI",
+    "short_label": "NI"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "same": 2739,
+   "total": 5359
+  },
+  {
+   "id": 124713,
+   "name": "Tomáš ZDECHOVSKÝ",
+   "given_name": "Tomáš",
+   "family_name": "Zdechovský",
+   "sort_label": "ZDECHOVSKY",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124713.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16896"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6770,
+    "short_label": "KDU-ČSL"
+   },
+   "same": 2380,
+   "total": 5206
+  },
+  {
+   "id": 256840,
+   "name": "Jan FARSKÝ",
+   "given_name": "Jan",
+   "family_name": "Farský",
+   "sort_label": "FARSKYJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256840.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16886"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "same": 2429,
+   "total": 5420
+  },
+  {
+   "id": 256847,
+   "name": "Danuše NERUDOVÁ",
+   "given_name": "Danuše",
+   "family_name": "Nerudová",
+   "sort_label": "NERUDOVAD",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256847.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16894"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "same": 2460,
+   "total": 5511
+  },
+  {
+   "id": 256846,
+   "name": "Ondřej KOLÁŘ",
+   "given_name": "Ondřej",
+   "family_name": "Kolář",
+   "sort_label": "KOLARO",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256846.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16893"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "same": 2430,
+   "total": 5474
+  },
+  {
+   "id": 124701,
+   "name": "Luděk NIEDERMAYER",
+   "given_name": "Luděk",
+   "family_name": "Niedermayer",
+   "sort_label": "NIEDERMAYER",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124701.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16877"
+    }
+   ],
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "same": 2263,
+   "total": 5501
+  },
+  {
+   "id": 197549,
+   "name": "Markéta GREGOROVÁ",
+   "given_name": "Markéta",
+   "family_name": "Gregorová",
+   "sort_label": "GREGOROVA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197549.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16866"
+    }
+   ],
+   "group": {
+    "code": "VERTS-ALE",
+    "short_label": "Verts/ALE"
+   },
+   "party": {
+    "id": 6862,
+    "short_label": "PIR"
+   },
+   "same": 1312,
+   "total": 5191
+  }
+ ],
+ "recent_main_votes": [
+  {
+   "id": 198051,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network",
+   "reference": "B10-0424/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198216,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The 2026 undemocratic elections to the Russian State Duma and its implications on civil society",
+   "reference": "RC-B10-0441/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198204,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Pilot project on European Schools Alliances and its contribution to citizenship education, democratic competences and European values",
+   "reference": "B10-0436/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "ABSTENTION",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198252,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The cases of Ali Karimli, Anar Mammadli and other political prisoners in Azerbaijan",
+   "reference": "RC-B10-0438/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198251,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Attempts by the ruling party Georgian Dream to ban opposition parties in Georgia",
+   "reference": "RC-B10-0443/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198261,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Human rights situation in Iran, notably the cases of Taraneh Rahimi and Leila Abolhasani",
+   "reference": "RC-B10-0452/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198176,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2), (3) and (4)(c): Monacolins from red yeast rice",
+   "reference": "B10-0466/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198175,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2), (3) and (4)(c): Certain botanical species containing hydroxyanthracene derivatives",
+   "reference": "B10-0465/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198194,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2), (3) and (4)(c): Lead in gunshot",
+   "reference": "B10-0432/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 198193,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2), (3) and (4)(c): Lead in gunshot",
+   "reference": "B10-0431/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 197457,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Recommendation on EU-China political relations",
+   "reference": "A10-0237/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 197497,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/001 BE/Cora – Belgium",
+   "reference": "A10-0241/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 197501,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/003 FI/Valmet Automotive – Finland",
+   "reference": "A10-0243/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 197464,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/002 ES/Galicia automotive ancillary – Spain",
+   "reference": "A10-0242/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "PFE"
+  },
+  {
+   "id": 197509,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Consular protection for unrepresented citizens of the Union in third countries",
+   "reference": "A10-0254/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "position": "ABSTENTION",
+   "group_code": "PFE"
+  }
+ ]
+}

@@ -1,0 +1,150 @@
+{
+ "mep": {
+  "id": 197526,
+  "name": "Martin HLAVÁČEK",
+  "given_name": "Martin",
+  "family_name": "Hlaváček",
+  "sort_label": "HLAVACEK",
+  "gender": "MALE",
+  "photo_url": "https://www.europarl.europa.eu/mepphoto/197526.jpg",
+  "photo_credit": "© European Union – Source: EP",
+  "profile_url": "https://www.europarl.europa.eu/meps/cs/197526",
+  "source_url": "https://data.europarl.europa.eu/api/v2/meps/197526",
+  "mandates": [
+   {
+    "start": "2024-07-16",
+    "end": "2024-07-31",
+    "mandate_id": "16871"
+   }
+  ],
+  "groups": [
+   {
+    "org_id": "7150",
+    "code": "PFE",
+    "short_label": "PfE",
+    "name_cs": "skupina Patrioti pro Evropu",
+    "name_en": "Patriots for Europe Group",
+    "role": "MEMBER",
+    "start": "2024-07-16",
+    "end": "2024-07-31"
+   }
+  ],
+  "parties": [],
+  "committees": [
+   {
+    "org_id": "6570",
+    "code": "ECON",
+    "type": "STANDING",
+    "name_cs": "Hospodářský a měnový výbor",
+    "name_en": "Committee on Economic and Monetary Affairs",
+    "role": "MEMBER_SUBSTITUTE",
+    "start": "2024-07-19",
+    "end": "2024-07-31"
+   },
+   {
+    "org_id": "6582",
+    "code": "AGRI",
+    "type": "STANDING",
+    "name_cs": "Výbor pro zemědělství a rozvoj venkova",
+    "name_en": "Committee on Agriculture and Rural Development",
+    "role": "MEMBER",
+    "start": "2024-07-19",
+    "end": "2024-07-31"
+   },
+   {
+    "org_id": "7007",
+    "code": "FISC",
+    "type": "SUB",
+    "name_cs": "Podvýbor pro daňové záležitosti",
+    "name_en": "Subcommittee on Tax Matters",
+    "role": "MEMBER",
+    "start": "2024-07-19",
+    "end": "2024-07-31"
+   }
+  ]
+ },
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "definitions": {
+  "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
+  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
+  "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
+  "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně."
+ },
+ "total": {
+  "attendance": [
+   0,
+   24
+  ],
+  "attendance_main": [
+   0,
+   1
+  ],
+  "group_loyalty": [
+   0,
+   0
+  ],
+  "cz_agreement": [
+   0,
+   0
+  ],
+  "positions": {
+   "FOR": 0,
+   "AGAINST": 0,
+   "ABSTENTION": 0,
+   "DID_NOT_VOTE": 24
+  }
+ },
+ "monthly": {
+  "2024-07": {
+   "attendance": [
+    0,
+    24
+   ],
+   "attendance_main": [
+    0,
+    1
+   ],
+   "group_loyalty": [
+    0,
+    0
+   ],
+   "cz_agreement": [
+    0,
+    0
+   ],
+   "positions": {
+    "FOR": 0,
+    "AGAINST": 0,
+    "ABSTENTION": 0,
+    "DID_NOT_VOTE": 24
+   }
+  }
+ },
+ "pairwise": [],
+ "recent_main_votes": [
+  {
+   "id": 169362,
+   "date": "2024-07-17",
+   "month": "2024-07",
+   "title": "The need for the EU's continuous support for Ukraine",
+   "reference": "B10-0007/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "DID_NOT_VOTE",
+   "group_code": "PFE"
+  }
+ ]
+}

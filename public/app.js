@@ -25,7 +25,13 @@ function positionFor(position, mep) {
   return POSITION_LABEL[position];
 }
 
-const RESULT_LABEL = { ADOPTED: "přijato", REJECTED: "zamítnuto" };
+const RESULT_LABEL = { ADOPTED: "přijato", REJECTED: "zamítnuto", LAPSED: "propadlo", WITHDRAWN: "staženo" };
+const RESULT_NOTE = {
+  LAPSED: "Návrh propadl: bylo přijato jiné znění, které ho vylučuje, takže se o něm už nehlasovalo jako o samostatném.",
+  WITHDRAWN: "Návrh byl stažen.",
+  null: "Zdroj (HowTheyVote.eu) u tohoto hlasování výsledek neuvádí. Výsledek ověř v originálu (odkaz „Originál na HowTheyVote.eu“).",
+};
+const NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí.";
 const ROLE_LABEL = {
   MEMBER: "člen/ka",
   MEMBER_SUBSTITUTE: "náhradník/ice",
@@ -38,7 +44,7 @@ const COMMITTEE_TYPE = { STANDING: "stálý výbor", SUB: "podvýbor", TEMPORARY
 // Česká zkratka tam, kde zdroj dává anglický popis místo zkratky.
 const CZ_GROUP_LABEL = { NI: "nezařazení" };
 
-// Neutrální paleta pro štítky, dokud nejsou ručně doplněné oficiální barvy (parties.json / groups.json).
+// Neutrální paleta pro štítky, dokud nejsou ručně doplněné barvy v data/manual/colors.json.
 const PALETTE = ["#dbe7ff", "#ffe2cc", "#d6f5e3", "#f3dcff", "#fff1b8", "#ffd6dc", "#d4f1f7", "#e8e1d4", "#e1e4ea", "#ead7ff", "#d9f2c7"];
 
 const cache = new Map();
@@ -50,6 +56,12 @@ async function getJSON(path) {
     }));
   }
   return cache.get(path);
+}
+
+// Odlehčený seznam všech hlasování (data/votes/search.json) jako pole objektů.
+async function loadSearch() {
+  const doc = await getJSON("votes/search.json");
+  return doc.rows.map((r) => Object.fromEntries(doc.fields.map((f, i) => [f, r[i]])));
 }
 
 function esc(value) {
@@ -112,9 +124,14 @@ function mandateText(mep) {
   return mep.mandates.map((m) => `${fmtDate(m.start)} – ${m.end ? fmtDate(m.end) : "dosud"}`).join(", ");
 }
 
-function colorFor(key, list, field = "code") {
-  const idx = list.findIndex((x) => String(x[field]) === String(key));
-  return PALETTE[(idx < 0 ? 0 : idx) % PALETTE.length];
+// Stabilní barva z kódu (FNV-1a hash): nezávisí na pořadí v seznamu ani na tom, co přibude.
+function colorFor(key) {
+  let h = 0x811c9dc5;
+  for (const ch of String(key)) {
+    h ^= ch.codePointAt(0);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return PALETTE[h % PALETTE.length];
 }
 
 // Štítek frakce. code = kód HowTheyVote (EPP, PFE…) nebo EP kód (PPE…), groups = groups.json.
@@ -123,7 +140,7 @@ function groupBadge(code, groups, epCode) {
   const g = groups.find((x) => x.code === code) || groups.find((x) => epCode && x.ep_code === epCode);
   const label = g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (code || epCode);
   const title = g ? (g.name_cs || g.label) : label;
-  const bg = g && g.color ? g.color : colorFor(g ? g.code : label, groups);
+  const bg = g && g.color ? g.color : colorFor(g ? g.code : label);
   const logo = g && g.logo ? `<img src="${esc(g.logo)}" alt="">` : "";
   return `<span class="badge" style="--badge-bg:${bg}; --badge-fg:#1b1f24" title="${esc(title)}">${logo}${esc(label)}</span>`;
 }
@@ -132,7 +149,7 @@ function partyBadge(id, label, parties) {
   if (!id) return '<span class="badge outline">bez strany</span>';
   const p = parties.find((x) => String(x.id) === String(id));
   const text = p ? p.short_label : label;
-  const bg = p && p.color ? p.color : colorFor(id, parties, "id");
+  const bg = p && p.color ? p.color : colorFor(id);
   const logo = p && p.logo ? `<img src="${esc(p.logo)}" alt="">` : "";
   return `<span class="badge" style="--badge-bg:${bg}; --badge-fg:#1b1f24" title="${esc(p ? p.name : text)}">${logo}${esc(text)}</span>`;
 }

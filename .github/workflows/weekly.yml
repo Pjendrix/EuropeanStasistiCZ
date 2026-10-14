@@ -34,6 +34,9 @@ jobs:
       - name: Testy
         run: python -m pytest -q
 
+      - name: Záloha předchozího stavu
+        run: cp -r data "$RUNNER_TEMP/data-prev"
+
       - name: Poslanci (EP Open Data API)
         run: python scripts/fetch_meps.py
 
@@ -43,8 +46,14 @@ jobs:
       - name: Statistiky
         run: python scripts/compute_stats.py
 
+      - name: Soubory pro web
+        run: python scripts/build_web.py
+
       - name: Portréty
         run: python scripts/fetch_photos.py
+
+      - name: Kontrola rozumnosti dat
+        run: python scripts/check_data.py --prev "$RUNNER_TEMP/data-prev"
 
       - name: Commit nových dat
         run: |

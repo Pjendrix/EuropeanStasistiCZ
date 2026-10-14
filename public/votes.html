@@ -25,7 +25,7 @@
   <div class="controls">
     <label>Měsíc <select id="month"></select></label>
     <label><input type="checkbox" id="main-only" checked> jen hlavní hlasování</label>
-    <input type="search" id="q" placeholder="Hledat v názvu nebo referenci…" aria-label="Hledat">
+    <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
   </div>
 
@@ -54,8 +54,8 @@ setNav("votes");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, mepsDoc] = await Promise.all([getJSON("votes/index.json"), getJSON("meps.json")]);
-    const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
+    const [index, all] = await Promise.all([getJSON("votes/index.json"), loadSearch()]);
+    all.reverse(); // nejnovější nahoře
     const monthSel = document.getElementById("month");
     const mainOnly = document.getElementById("main-only");
     const q = document.getElementById("q");
@@ -68,27 +68,28 @@ setNav("votes");
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL).
        Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál.`;
 
-    const render = async () => {
+    const LIMIT = 300;
+    const render = () => {
       const month = monthSel.value;
-      const data = await getJSON(`votes/${month}.json`);
       const needle = q.value.trim().toLowerCase();
-      const list = data.votes.slice().reverse().filter((v) =>
+      // Při hledání se prochází celé období, jinak jen vybraný měsíc.
+      monthSel.disabled = Boolean(needle);
+      const pool = needle ? all : all.filter((v) => v.month === month);
+      const matches = pool.filter((v) =>
         (!mainOnly.checked || v.is_main) &&
-        (!needle || [voteTitle(v), v.reference, v.procedure?.reference, v.description].join(" ").toLowerCase().includes(needle)));
-      document.getElementById("count").textContent = `${list.length} z ${data.votes.length} hlasování`;
+        (!needle || [v.title, v.reference, v.description].join(" ").toLowerCase().includes(needle)));
+      const list = matches.slice(0, LIMIT);
+      document.getElementById("count").textContent = needle
+        ? `${matches.length} nalezeno v celém období${matches.length > LIMIT ? `, zobrazeno prvních ${LIMIT}` : ""}`
+        : `${matches.length} z ${pool.length} hlasování`;
       history.replaceState(null, "", `?m=${month}${mainOnly.checked ? "" : "&all=1"}`);
       tbody.innerHTML = list.map((v) => {
-        const counts = [0, 0, 0, 0];
-        const keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
-        for (const p of v.cz_positions) {
-          const m = meps[p.member_id];
-          if (m && m.mandates.some((x) => x.start <= v.date && (!x.end || v.date <= x.end))) counts[keys.indexOf(p.position)]++;
-        }
+        const counts = v.cz;
         return `<tr>
           <td class="num">${fmtDate(v.date)}</td>
-          <td><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
+          <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
             <div class="small muted">${v.is_main ? '<span class="tag">hlavní</span>' : ""}${esc(voteSubtitle(v))}</div></td>
-          <td class="result-${v.result || ""}">${RESULT_LABEL[v.result] || "–"}</td>
+          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td>
           <td>${splitBar(counts)}<div class="small muted">${counts.join(" / ")}</div></td>
         </tr>`;
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
@@ -96,7 +97,7 @@ setNav("votes");
     monthSel.addEventListener("change", render);
     mainOnly.addEventListener("change", render);
     q.addEventListener("input", render);
-    await render();
+    render();
   } catch (e) {
     showError(tbody.closest(".table-wrap"), e);
   }

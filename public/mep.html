@@ -59,14 +59,14 @@ function periodText(x) {
 (async () => {
   try {
     const id = param("id");
-    const [mepsDoc, stats, groups, parties, index] = await Promise.all([
-      getJSON("meps.json"), getJSON("stats.json"), getJSON("groups.json"), getJSON("parties.json"), getJSON("votes/index.json"),
+    if (!/^\d+$/.test(id || "")) throw new Error("Poslanec nenalezen. Vrať se na přehled.");
+    const [profile, groups, parties] = await Promise.all([
+      getJSON(`meps/${id}.json`).catch(() => { throw new Error("Poslanec nenalezen. Vrať se na přehled."); }),
+      getJSON("groups.json"), getJSON("parties.json"),
     ]);
-    const mep = mepsDoc.meps.find((m) => String(m.id) === id);
-    if (!mep) throw new Error("Poslanec nenalezen. Vrať se na přehled.");
-    const byId = Object.fromEntries(mepsDoc.meps.map((m) => [String(m.id), m]));
-    const st = stats.meps[String(mep.id)];
-    const t = st.total;
+    const mep = profile.mep;
+    const stats = { sources: profile.sources };
+    const t = profile.total;
     const name = displayName(mep);
     document.title = `${name} – EP Watch CZ`;
     const active = isActive(mep);
@@ -79,10 +79,9 @@ function periodText(x) {
     const committeeLi = (c) => `<li><strong>${esc(c.code)}</strong> – ${esc(c.name_cs || c.name_en || "")}
       <div class="small muted">${ROLE_LABEL[c.role] || esc(c.role)} · ${COMMITTEE_TYPE[c.type] || esc(c.type)} · ${periodText(c)}</div></li>`;
 
-    const pairs = Object.entries(st.pairwise)
-      .map(([k, v]) => ({ m: byId[k], v }))
-      .filter((x) => x.m && x.v[1] >= 50)
-      .sort((a, b) => pct(b.v) - pct(a.v));
+    const pairs = profile.pairwise
+      .filter((x) => x.total >= 50)
+      .map((x) => ({ m: x, v: [x.same, x.total] }));
 
     main.innerHTML = `
       <p class="small"><a href="index.html">← Všichni poslanci</a></p>
@@ -95,8 +94,8 @@ function periodText(x) {
           <h1>${esc(name)}</h1>
           <div class="facts">
             ${groupBadge(null, groups, g?.code)}
-            ${p ? partyBadge(p.org_id, p.short_label, parties) : '<span class="badge outline">strana neuvedena</span>'}
-            ${active ? '<span class="badge outline">v mandátu</span>' : '<span class="badge outline">${byGender(mep, "bývalý poslanec", "bývalá poslankyně")}</span>'}
+            ${p ? partyBadge(p.org_id, p.short_label, parties) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">strana neuvedena</span>`}
+            ${active ? '<span class="badge outline">v mandátu</span>' : `<span class="badge outline">${byGender(mep, "bývalý poslanec", "bývalá poslankyně")}</span>`}
           </div>
           <p class="muted">Mandát: ${mandateText(mep)}</p>
           <p class="small">
@@ -118,7 +117,7 @@ function periodText(x) {
         ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×. ${sourceLine(stats)}</p>
 
       <h2>Docházka po měsících</h2>
-      <div class="card">${monthlyChart(st.monthly)}
+      <div class="card">${monthlyChart(profile.monthly)}
         <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}. Červená čárka = v měsíci ${positionFor("DID_NOT_VOTE", mep)} ani jednou.
         Najetím myší se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
 
@@ -129,7 +128,7 @@ function periodText(x) {
             ${mep.groups.map((x) => `<li>${groupBadge(null, groups, x.code)} ${esc(x.name_cs || x.name_en || "")}
               <div class="small muted">${periodText(x)}</div></li>`).join("")}
             ${mep.parties.map((x) => `<li>${partyBadge(x.org_id, x.short_label, parties)} ${esc(x.name || "")}
-              <div class="small muted">${periodText(x)}</div></li>`).join("") || '<li class="muted">Česká strana není v EP datech uvedena.</li>'}
+              <div class="small muted">${periodText(x)}</div></li>`).join("") || `<li class="muted">${esc(NO_PARTY_NOTE)}</li>`}
           </ul>
           <p class="source">Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a></p></div>
         </section>
@@ -147,7 +146,7 @@ function periodText(x) {
       <div class="card">
         <p class="small muted">Podíl hlasování, kde oba hlasovali a hlasovali stejně (jen dvojice s aspoň 50 společnými hlasováními).</p>
         <ul class="plain">${pairs.map(({ m, v }) => `<li style="display:flex;justify-content:space-between;gap:1rem;align-items:center">
-            <span><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a> ${groupBadge(null, groups, currentOf(m.groups)?.code)}</span>
+            <span><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a> ${groupBadge(null, groups, m.group?.code)}</span>
             <span class="num">${fmtPct(pct(v))} <span class="small muted">(${fmtNum(v[0])} z ${fmtNum(v[1])})</span></span></li>`).join("")
           || '<li class="muted">Nedostatek společných hlasování.</li>'}</ul>
       </div>
@@ -156,19 +155,8 @@ function periodText(x) {
       <div id="recent" class="loading">Načítám…</div>
     `;
 
-    // Poslední hlasování: projde měsíce od nejnovějšího, dokud nenajde hlasování v době mandátu.
     const recent = document.getElementById("recent");
-    const rows = [];
-    for (const { month } of index.months.slice().reverse()) {
-      const data = await getJSON(`votes/${month}.json`);
-      for (const v of data.votes.slice().reverse()) {
-        const pos = v.cz_positions.find((x) => x.member_id === mep.id);
-        const inMandate = mep.mandates.some((m) => m.start <= v.date && (!m.end || v.date <= m.end));
-        if (pos && inMandate && v.is_main) rows.push({ v, pos, month });
-        if (rows.length >= 15) break;
-      }
-      if (rows.length >= 15) break;
-    }
+    const rows = profile.recent_main_votes.map((v) => ({ v, pos: v, month: v.month }));
     recent.className = "";
     recent.innerHTML = rows.length ? `<div class="table-wrap"><table>
       <thead><tr><th>Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead>
@@ -177,7 +165,7 @@ function periodText(x) {
         <td><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
           <div class="small muted">${esc(voteSubtitle(v))}</div></td>
         <td class="pos pos-${pos.position}">${positionFor(pos.position, mep)}</td>
-        <td class="result-${v.result || ""}">${RESULT_LABEL[v.result] || "–"}</td></tr>`).join("")}</tbody>
+        <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${RESULT_LABEL[v.result] || "neuveden"}</td></tr>`).join("")}</tbody>
     </table></div>
     <p class="source">Zdroj: <a href="https://howtheyvote.eu/members/${mep.id}">HowTheyVote.eu</a>.
       Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>`
