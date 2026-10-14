@@ -43,3 +43,13 @@ def test_rejects_non_jpeg(tmp_path):
 def test_rejects_foreign_url(tmp_path):
     with pytest.raises(fp.FormatError, match="neočekávaná URL"):
         fp.fetch_photos([{"id": 1, "photo_url": "https://example.com/x.jpg"}], tmp_path, Session(Resp(b"")), 0)
+
+
+def test_make_thumbs(tmp_path):
+    from PIL import Image
+    Image.new("RGB", (400, 500), "navy").save(tmp_path / "1.jpg")
+    meps = [{"id": 1}, {"id": 2}]  # 2 nemá portrét
+    assert fp.make_thumbs(meps, tmp_path) == 1
+    with Image.open(tmp_path / "thumbs" / "1.webp") as im:
+        assert im.size == (160, 200) and im.format == "WEBP"
+    assert fp.make_thumbs(meps, tmp_path) == 0  # už existuje

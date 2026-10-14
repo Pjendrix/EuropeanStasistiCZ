@@ -1,4 +1,5 @@
-"""Stáhne oficiální portréty poslanců z data/meps.json do public/assets/photos/{id}.jpg.
+"""Stáhne oficiální portréty poslanců z data/meps.json do public/assets/photos/{id}.jpg
+a vytvoří náhledy public/assets/photos/thumbs/{id}.webp (šířka 160 px) pro karty a tabulky.
 
 Zdroj: URL portrétu z EP Open Data API (pole photo_url), © European Union – Source: EP.
 Portréty se ukládají do repa, web je nehotlinkuje. Soubor se přepíše, jen když se změnil.
@@ -16,9 +17,11 @@ import time
 from pathlib import Path
 
 import requests
+from PIL import Image
 
 ALLOWED_PREFIX = "https://www.europarl.europa.eu/mepphoto/"
 MIN_INTERVAL = 0.7
+THUMB_WIDTH = 160
 
 
 class FormatError(RuntimeError):
@@ -50,6 +53,23 @@ def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float =
     return result
 
 
+def make_thumbs(meps: list[dict], out_dir: Path, width: int = THUMB_WIDTH) -> int:
+    """Náhled WebP pro každý uložený portrét; přegeneruje se, jen když chybí nebo je starší než portrét."""
+    thumbs = out_dir / "thumbs"
+    thumbs.mkdir(parents=True, exist_ok=True)
+    made = 0
+    for m in meps:
+        src, dst = out_dir / f"{m['id']}.jpg", thumbs / f"{m['id']}.webp"
+        if not src.exists() or (dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime):
+            continue
+        with Image.open(src) as im:
+            im = im.convert("RGB")
+            h = round(im.height * width / im.width)
+            im.resize((width, h), Image.LANCZOS).save(dst, "WEBP", quality=80, method=6)
+        made += 1
+    return made
+
+
 def main(argv=None) -> int:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -60,6 +80,7 @@ def main(argv=None) -> int:
     try:
         with requests.Session() as s:
             res = fetch_photos(meps, args.out_dir, s)
+        res["thumbs"] = make_thumbs(meps, args.out_dir)
     except FormatError as e:
         print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
         return 2
