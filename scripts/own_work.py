@@ -3,7 +3,9 @@
 Čisté funkce bez síťových dotazů; volá je compute_stats.py.
 
 Typy (TYPE_LABELS) a stavy (STATUS):
-  ADOPTED / REJECTED / LAPSED / WITHDRAWN  výsledek posledního hlavního hlasování o textu
+  ADOPTED / REJECTED / LAPSED / WITHDRAWN  výsledek posledního závěrečného hlasování o textu (celý text nebo
+               prozatímní dohoda). Když o textu žádné takové není a Parlament přijal návrh na zamítnutí, je text
+               zamítnutý (REJECTED, note = "rejection_adopted"). Mandáty a naléhavé postupy se nepočítají.
   superseded   samostatný návrh usnesení nahradil společný návrh (o tom se hlasovalo)
   no_vote      v datech HowTheyVote k textu není hlavní jmenovité hlasování (ještě neproběhlo, nebo se
                hlasovalo jinak než jmenovitě, např. tajně u jmenování)
@@ -13,6 +15,8 @@ Výsledek se počítá jen tam, kde je známý, vždy po typech zvlášť.
 """
 
 from __future__ import annotations
+
+from vote_kinds import is_final, kind_of
 
 TYPE_LABELS = {
     "report": "Zprávy (zpravodaj/ka)",
@@ -35,9 +39,10 @@ def htv_reference(doc_id: str, label: str | None) -> str | None:
 
 
 def main_votes_by_reference(votes: list[dict]) -> dict[str, list[dict]]:
+    """Závěrečná hlasování a návrhy na zamítnutí podle reference textu, seřazená podle času."""
     out: dict[str, list[dict]] = {}
     for v in votes:
-        if v["is_main"] and v.get("reference"):
+        if v.get("reference") and (is_final(v) or kind_of(v) == "rejection"):
             out.setdefault(v["reference"], []).append(v)
     for lst in out.values():
         lst.sort(key=lambda v: (v.get("timestamp") or v["date"], v["id"]))
@@ -45,17 +50,27 @@ def main_votes_by_reference(votes: list[dict]) -> dict[str, list[dict]]:
 
 
 def vote_status(reference: str | None, by_ref: dict) -> tuple[str, int | None, str | None]:
-    """(stav, ID hlasování, datum) podle posledního hlavního hlasování o textu."""
+    """(stav, ID hlasování, datum) podle posledního závěrečného hlasování o textu; bez něj podle
+    přijatého návrhu na zamítnutí (text zamítnut)."""
     lst = by_ref.get(reference) if reference else None
     if not lst:
         return "no_vote", None, None
-    last = lst[-1]
-    return (last.get("result") or "no_vote"), last["id"], last["date"]
+    finals = [v for v in lst if is_final(v)]
+    if finals:
+        last = finals[-1]
+        return (last.get("result") or "no_vote"), last["id"], last["date"]
+    rejections = [v for v in lst if kind_of(v) == "rejection" and v.get("result") == "ADOPTED"]
+    if rejections:
+        last = rejections[-1]
+        return "REJECTED", last["id"], last["date"]
+    return "no_vote", None, None
 
 
 def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int, list[dict]]:
     """Vrací {mep_id: [položky vlastní práce s typem, rolí a stavem]}."""
     by_ref = main_votes_by_reference(votes)
+    rejection_ids = {v["id"] for lst in by_ref.values() for v in lst if kind_of(v) == "rejection"}
+    note = lambda vote_id: {"note": "rejection_adopted"} if vote_id in rejection_ids else {}
     reports_by_proc: dict[str, list[tuple[str, dict]]] = {}
     superseded_by: dict[str, str] = {}
     for doc_id, meta in documents.items():
@@ -96,7 +111,8 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                 if kind == "report":
                     report_procs.setdefault(p["mep_id"], set()).add(item.get("procedure"))
                 add(p["mep_id"], {**base, "type": kind, "role": p["role"], "status": status, "vote_id": vote_id,
-                                  "vote_date": vote_date, "signatories_total": item.get("signatories_total"), **extra})
+                                  "vote_date": vote_date, "signatories_total": item.get("signatories_total"),
+                                  **note(vote_id), **extra})
         elif kind == "procedure":
             for p in item["participants"]:
                 role = p["role"]
@@ -118,7 +134,7 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                     status, vote_id, vote_date, report_label = None, None, None, None
                 add(p["mep_id"], {**base, "date": p.get("date") or item.get("date"), "type": typ, "role": role,
                                   "group": p.get("group"), "committee": p.get("in_name_of"), "status": status,
-                                  "vote_id": vote_id, "vote_date": vote_date, "report": report_label})
+                                  "vote_id": vote_id, "vote_date": vote_date, "report": report_label, **note(vote_id)})
         elif kind.startswith("question"):
             for p in item["participants"]:
                 add(p["mep_id"], {**base, "type": "question", "subtype": kind, "role": p["role"],

@@ -5,9 +5,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import own_work as ow  # noqa: E402
 
 
-def vote(vid, ref, result, date="2025-09-09", is_main=True):
+def vote(vid, ref, result, date="2025-09-09", is_main=True, description=None, subject=None):
     return {"id": vid, "reference": ref, "result": result, "date": date, "timestamp": date + " 12:00:00",
-            "is_main": is_main}
+            "is_main": is_main, "description": description, "amendment_subject": subject}
 
 
 def part(mep, role="AUTHOR", **kw):
@@ -78,3 +78,34 @@ def test_summary_counts_only_known_results():
     entries = [{"type": "motion", "status": s} for s in ("ADOPTED", "REJECTED", "superseded", "no_vote", "LAPSED")]
     assert ow.summarize(entries)["motion"] == {"count": 5, "voted": 2, "adopted": 1, "no_vote": 1, "other": 1,
                                               "superseded": 1}
+
+
+# --- review R2: návrh na zamítnutí, mandát, naléhavost ---------------------------
+
+REPORT = [{"id": "A-10-2025-0176", "kind": "report", "label": "A10-0176/2025", "procedure": "2023-0272",
+           "participants": [part(1, "RAPPORTEUR")]}]
+
+
+def test_adopted_rejection_means_text_rejected():
+    """Podle 179804: jediné hlavní hlasování je přijatý návrh na zamítnutí (370 : 264)."""
+    votes = [vote(179804, "A10-0176/2025", "ADOPTED", description="Proposition de rejet", subject="Proposal for rejection")]
+    e = ow.link(REPORT, {}, votes)[1][0]
+    assert (e["status"], e["vote_id"], e["note"]) == ("REJECTED", 179804, "rejection_adopted")
+
+
+def test_rejected_rejection_then_final_vote_counts():
+    """Podle AGILE: návrh na zamítnutí zamítnut (197601), prozatímní dohoda přijata (197360)."""
+    votes = [vote(197601, "A10-0176/2025", "REJECTED", "2026-05-05", description="Proposition de rejet - Am 3",
+                  subject="Proposal for rejection"),
+             vote(197360, "A10-0176/2025", "ADOPTED", "2026-05-05", description="Accord provisoire - Am 2",
+                  subject="Provisional agreement")]
+    e = ow.link(REPORT, {}, votes)[1][0]
+    assert (e["status"], e["vote_id"]) == ("ADOPTED", 197360) and "note" not in e
+
+
+def test_mandate_and_urgency_are_ignored():
+    votes = [vote(1, "A10-0176/2025", "ADOPTED", "2025-01-01",
+                  description="Décision d'engager des négociations interinstitutionnelles"),
+             vote(2, "A10-0176/2025", "ADOPTED", "2025-01-02", description="Demande de décision d'urgence")]
+    e = ow.link(REPORT, {}, votes)[1][0]
+    assert e["status"] == "no_vote" and e["vote_id"] is None
