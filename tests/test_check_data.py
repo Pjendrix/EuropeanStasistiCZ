@@ -28,20 +28,20 @@ def states(tmp_path):
 def test_ok(states):
     prev, new = states
     write_state(new, [("2024-07", 10), ("2024-09", 20), ("2024-10", 5)], [mep(1), mep(2), mep(3, end="2024-12-31")])
-    assert cd.check(prev, new, "2025-01-15", seats=2) == []
+    assert cd.check(prev, new, "2025-01-15", seats=2) == ([], [])
 
 
 def test_first_run_without_prev(tmp_path):
     new = tmp_path / "new"
     write_state(new, [("2024-07", 10)], [mep(1), mep(2)])
-    assert cd.check(None, new, "2025-01-15", seats=2) == []
+    assert cd.check(None, new, "2025-01-15", seats=2) == ([], [])
 
 
 def test_detects_all_problems(states):
     prev, new = states
     write_state(new, [("2024-09", 21)], [mep(1)])  # červenec zmizel, celkem 21 < 30, chybí 2 a 3
-    problems = cd.check(prev, new, "2025-01-15", seats=2)
-    assert any("aktivních poslanců" in p and "je 1" in p for p in problems)
+    problems, warnings = cd.check(prev, new, "2025-01-15", seats=3)
+    assert any("aktivních poslanců" in p and "je 1" in p for p in problems)  # o 2 méně = chyba
     assert any("klesl z 30 na 21" in p for p in problems)
     assert any("zmizely měsíce: 2024-07" in p for p in problems)
     assert any("zmizeli poslanci" in p and "[2, 3]" in p for p in problems)
@@ -51,7 +51,16 @@ def test_active_count_respects_mandate_dates(states):
     prev, new = states
     write_state(new, [("2024-07", 10), ("2024-09", 20)], [mep(1), mep(2), mep(3, end="2024-12-31")])
     # do konce roku 2024 je mandát i u poslance 3 -> 3 aktivní místo 2
-    assert any("je 3" in p for p in cd.check(prev, new, "2024-12-31", seats=2))
+    assert any("je 3" in p for p in cd.check(prev, new, "2024-12-31", seats=2)[0])  # víc = chyba
+
+
+def test_one_vacant_seat_is_only_warning(states, capsys):
+    prev, new = states
+    write_state(new, [("2024-07", 10), ("2024-09", 20)], [mep(1), mep(2), mep(3, end="2024-12-31")])
+    problems, warnings = cd.check(prev, new, "2025-01-15", seats=3)
+    assert problems == [] and len(warnings) == 1 and "je 2" in warnings[0]
+    assert cd.main(["--prev", str(prev), "--data", str(new), "--today", "2025-01-15"]) == 1  # 21 míst, 2 aktivní
+
 
 
 def test_main_exit_code(states):

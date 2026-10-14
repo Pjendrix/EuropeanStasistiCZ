@@ -3,9 +3,11 @@
 Porovná nová data s předchozím stavem (záloha složky data/ před stažením):
   - celkový počet hlasování nesmí klesnout,
   - žádný měsíc z předchozího stavu nesmí zmizet,
-  - aktivních poslanců za ČR (mandát platný k danému dni) musí být přesně 21,
+  - aktivních poslanců za ČR (mandát platný k danému dni) musí být 21; o jednoho méně
+    je jen varování (uprázdněné místo, než nastoupí náhradník), jiný počet je chyba,
   - žádný poslanec 10. období nesmí ze seznamu zmizet.
-Při porušení vypíše všechny problémy a skončí kódem 1, workflow pak nic necommitne.
+Při chybě vypíše všechny problémy a skončí kódem 1, workflow pak nic necommitne.
+Varování se vypíší jako GitHub anotace (::warning::) a běh pokračuje.
 
 Použití:
     python scripts/check_data.py --prev /tmp/data-prev [--data data] [--today 2026-10-14]
@@ -31,17 +33,22 @@ def active_meps(meps: list[dict], day: str) -> list[dict]:
             if any(x["start"] <= day and (x["end"] is None or day <= x["end"]) for x in m["mandates"])]
 
 
-def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEATS) -> list[str]:
-    problems = []
+def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEATS) -> tuple[list[str], list[str]]:
+    """Vrací (chyby, varování)."""
+    problems, warnings = [], []
     index = _load(data_dir / "votes" / "index.json")
     meps_doc = _load(data_dir / "meps.json")
     if index is None or meps_doc is None:
-        return ["chybí data/votes/index.json nebo data/meps.json"]
+        return ["chybí data/votes/index.json nebo data/meps.json"], []
 
     active = active_meps(meps_doc["meps"], today)
     if len(active) != seats:
         names = ", ".join(sorted(m["name"] for m in active))
-        problems.append(f"aktivních poslanců za ČR k {today} je {len(active)}, očekáváno {seats} ({names})")
+        msg = f"aktivních poslanců za ČR k {today} je {len(active)}, očekáváno {seats} ({names})"
+        if len(active) == seats - 1:
+            warnings.append(msg + "; nejspíš uprázdněné místo před nástupem náhradníka")
+        else:
+            problems.append(msg)
 
     prev_index = _load(prev_dir / "votes" / "index.json") if prev_dir else None
     if prev_index:
@@ -58,7 +65,7 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         gone = {m["id"] for m in prev_meps["meps"]} - {m["id"] for m in meps_doc["meps"]}
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
-    return problems
+    return problems, warnings
 
 
 def main(argv=None) -> int:
@@ -68,7 +75,9 @@ def main(argv=None) -> int:
     p.add_argument("--data", type=Path, default=root / "data")
     p.add_argument("--today", default=dt.datetime.now(dt.timezone.utc).date().isoformat())
     args = p.parse_args(argv)
-    problems = check(args.prev, args.data, args.today)
+    problems, warnings = check(args.prev, args.data, args.today)
+    for w in warnings:
+        print(f"::warning title=Kontrola dat::{w}")
     if problems:
         print("KONTROLA DAT SELHALA, nic se necommitne:", file=sys.stderr)
         for x in problems:
