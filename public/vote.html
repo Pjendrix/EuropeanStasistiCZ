@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hlasování – EP Watch CZ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
+  <nav>
+    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="o-projektu.html" data-page="about">O projektu</a>
+  </nav>
+</div></header>
+
+<main id="main"><p class="loading">Načítám…</p></main>
+
+<footer class="site-footer"><div class="inner">
+  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
+  <a href="o-projektu.html">O projektu</a>.
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+setNav("votes");
+const main = document.getElementById("main");
+const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
+
+(async () => {
+  try {
+    const id = Number(param("id"));
+    const month = param("m");
+    const [index, mepsDoc, groups, parties] = await Promise.all([
+      getJSON("votes/index.json"), getJSON("meps.json"), getJSON("groups.json"), getJSON("parties.json"),
+    ]);
+    // Měsíc v URL zrychlí hledání; bez něj se projdou všechny měsíce.
+    const months = month ? [month] : index.months.map((m) => m.month).reverse();
+    let v = null, foundMonth = null;
+    for (const m of months) {
+      const data = await getJSON(`votes/${m}.json`);
+      v = data.votes.find((x) => x.id === id);
+      if (v) { foundMonth = m; break; }
+    }
+    if (!v) throw new Error("Hlasování nenalezeno.");
+    document.title = `${voteTitle(v)} – EP Watch CZ`;
+    const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
+    const cz = v.cz_positions.filter((p) => {
+      const m = meps[p.member_id];
+      return m && m.mandates.some((x) => x.start <= v.date && (!x.end || v.date <= x.end));
+    });
+    const c = v.counts;
+    const total = [c.for, c.against, c.abstention, c.did_not_vote];
+    const czCounts = KEYS.map((k) => cz.filter((p) => p.position === k).length);
+    const groupRows = Object.entries(v.group_counts).sort((a, b) => (b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)));
+    const topics = [...v.topics.oeil.map((t) => t.label), ...v.topics.eurovoc.map((t) => t.label), ...v.topics.geo.map((t) => t.label)];
+
+    main.innerHTML = `
+      <p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>
+      <h1>${esc(voteTitle(v))}</h1>
+      <p class="muted">${fmtDate(v.date)} · ${v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování"} ${esc(voteSubtitle(v))}</p>
+      ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p>${esc(v.procedure.title)}</p>` : ""}
+      <p class="small">
+        <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
+        ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
+      </p>
+
+      <div class="metrics">
+        <div class="card metric"><div class="label">Výsledek</div>
+          <div class="value result-${v.result || ""}">${RESULT_LABEL[v.result] || "neuveden"}</div>
+          <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div></div>
+        <div class="card metric"><div class="label">Celý parlament</div>
+          ${splitBar(total)}
+          <div class="detail">pro ${c.for} · proti ${c.against} · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
+          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
+        <div class="card metric"><div class="label">Čeští poslanci</div>
+          ${splitBar(czCounts)}
+          <div class="detail">pro ${czCounts[0]} · proti ${czCounts[1]} · zdrželo se ${czCounts[2]} · nehlasovalo ${czCounts[3]}</div>
+          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
+      </div>
+
+      <h2>Jak hlasovali Češi</h2>
+      <div class="positions-grid">
+        ${KEYS.map((k) => {
+          const list = cz.filter((p) => p.position === k)
+            .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
+          return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
+            <ul class="plain">${list.map((p) => `<li><a href="mep.html?id=${p.member_id}">${esc(displayName(meps[p.member_id]))}</a>
+              <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties) : ""}</div></li>`).join("")
+              || '<li class="muted">nikdo</li>'}</ul></div>`;
+        }).join("")}
+      </div>
+      <p class="source">Frakce a strana jsou uvedené k datu hlasování. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
+
+      <h2>Jak hlasovaly frakce</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
+        <tbody>${groupRows.map(([code, row]) => `<tr><td>${groupBadge(code, groups)}</td>
+          ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${splitBar(row)}</td></tr>`).join("")}</tbody>
+      </table></div>
+      <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
+
+      ${topics.length ? `<h2>Témata</h2><p>${topics.map((t) => `<span class="tag">${esc(t)}</span>`).join(" ")}</p>
+        <p class="source">Témata (OEIL, EuroVoc) přebíráme z HowTheyVote.eu v angličtině.</p>` : ""}
+    `;
+  } catch (e) {
+    showError(main, e);
+  }
+})();
+</script>
+</body>
+</html>

@@ -3,16 +3,109 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EP Watch CZ</title>
-<style>
-  body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 0 auto; padding: 2rem 1rem; line-height: 1.5; color: #1a1a1a; background: #fff; }
-  a { color: #0645ad; }
-</style>
+<title>EP Watch CZ – čeští europoslanci</title>
+<meta name="description" content="Docházka, hlasování a statistiky českých europoslanců v 10. volebním období.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>EP Watch CZ</h1>
-<p>Web o práci českých europoslanců v 10. volebním období se připravuje.</p>
-<p>Zdroje dat: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL),
-<a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).</p>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
+  <nav>
+    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="o-projektu.html" data-page="about">O projektu</a>
+  </nav>
+</div></header>
+
+<main>
+  <h1>Čeští europoslanci v 10. volebním období</h1>
+  <p class="lead">Jak hlasují a jak často chybí čeští poslanci Evropského parlamentu od ustavující schůze 16. 7. 2024.
+    Počítají se jmenovitá hlasování v plénu. Klikni na sloupec pro seřazení, na jméno pro profil.</p>
+
+  <div class="controls">
+    <label><input type="checkbox" id="former"> zobrazit i bývalé poslance</label>
+    <span class="muted small" id="period"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="meps">
+      <thead><tr>
+        <th data-key="name" class="sticky-col"><button>Poslanec</button></th>
+        <th data-key="group"><button>Frakce</button></th>
+        <th data-key="party"><button>Strana</button></th>
+        <th data-key="attendance" class="num"><button>Docházka</button></th>
+        <th data-key="attendance_main" class="num"><button>Docházka – hlavní</button></th>
+        <th data-key="group_loyalty" class="num"><button>Loajalita k frakci</button></th>
+        <th data-key="cz_agreement" class="num"><button>Shoda s Čechy</button></th>
+      </tr></thead>
+      <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="source" id="source"></p>
+  <p class="small muted">Docházka = podíl hlasování, ve kterých poslanec hlasoval, jen za dobu jeho mandátu.
+    Loajalita a shoda jsou jen informativní: neříkají nic o kvalitě práce.
+    <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+</main>
+
+<footer class="site-footer"><div class="inner">
+  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
+  Portréty © European Union – Source: EP. <a href="o-projektu.html">O projektu</a>.
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+setNav("meps");
+(async () => {
+  const tbody = document.querySelector("#meps tbody");
+  try {
+    const [mepsDoc, stats, groups, parties] = await Promise.all([
+      getJSON("meps.json"), getJSON("stats.json"), getJSON("groups.json"), getJSON("parties.json"),
+    ]);
+    document.getElementById("source").innerHTML = sourceLine(stats);
+    if (stats.period) {
+      document.getElementById("period").textContent =
+        `${fmtNum(stats.votes_total)} jmenovitých hlasování, ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}`;
+    }
+    const rows = mepsDoc.meps.map((m) => {
+      const s = stats.meps[String(m.id)]?.total || {};
+      const g = currentOf(m.groups);
+      const p = currentOf(m.parties);
+      return { m, s, g, p, active: isActive(m) };
+    });
+    const formerBox = document.getElementById("former");
+    const visible = () => rows.filter((r) => formerBox.checked || r.active);
+    const columns = {
+      name: (r) => r.m.sort_label || r.m.name,
+      group: (r) => r.g?.short_label || "",
+      party: (r) => r.p?.short_label || "",
+      attendance: (r) => pct(r.s.attendance),
+      attendance_main: (r) => pct(r.s.attendance_main),
+      group_loyalty: (r) => pct(r.s.group_loyalty),
+      cz_agreement: (r) => pct(r.s.cz_agreement),
+    };
+    const render = (list) => {
+      tbody.innerHTML = list.map(({ m, s, g, p, active }) => `
+        <tr class="${active ? "" : "former"}">
+          <td class="sticky-col"><div class="mep-cell">
+            <img src="${photoUrl(m)}" alt="" loading="lazy">
+            <div><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a>
+              ${active ? "" : `<div class="small muted">mandát do ${fmtDate(m.mandates[m.mandates.length - 1].end)}</div>`}</div>
+          </div></td>
+          <td>${groupBadge(null, groups, g?.code)}</td>
+          <td>${p ? partyBadge(p.org_id, p.short_label, parties) : '<span class="badge outline">neuvedeno</span>'}</td>
+          <td class="num">${pctCell(s.attendance, "hlasoval/a z hlasování v době mandátu")}</td>
+          <td class="num">${pctCell(s.attendance_main, "jen hlavní hlasování")}</td>
+          <td class="num">${pctCell(s.group_loyalty, "stejně jako většina frakce")}</td>
+          <td class="num">${pctCell(s.cz_agreement, "stejně jako většina ostatních Čechů")}</td>
+        </tr>`).join("");
+    };
+    const refresh = sortable(document.getElementById("meps"), columns, visible, render, { key: "attendance", dir: -1 });
+    formerBox.addEventListener("change", refresh);
+  } catch (e) {
+    showError(tbody.closest(".table-wrap"), e);
+  }
+})();
+</script>
 </body>
 </html>

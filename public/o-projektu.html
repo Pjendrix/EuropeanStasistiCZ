@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O projektu – EP Watch CZ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">EP Watch <span>CZ</span></a>
+  <nav>
+    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="o-projektu.html" data-page="about">O projektu</a>
+  </nav>
+</div></header>
+
+<main>
+  <h1>O projektu</h1>
+  <p class="lead">EP Watch CZ sleduje práci českých poslanců Evropského parlamentu v 10. volebním období
+    (od ustavující schůze 16. 7. 2024). Ukazuje jen fakta z oficiálních dat, bez hodnocení.</p>
+
+  <h2 id="zdroje">Zdroje dat</h2>
+  <div class="card"><ul class="plain">
+    <li><a href="https://howtheyvote.eu">HowTheyVote.eu</a> – jmenovitá hlasování v plénu, jak hlasoval každý poslanec,
+      frakce a strana k datu hlasování. Datový export z <a href="https://github.com/HowTheyVote/data">GitHubu</a>, licence ODbL.</li>
+    <li><a href="https://data.europarl.europa.eu">EP Open Data API</a> – seznam poslanců, mandáty, frakce, strany, výbory a portréty. Licence CC BY 4.0.</li>
+    <li>Portréty: © European Union – Source: EP.</li>
+  </ul>
+  <p class="source" id="release"></p></div>
+
+  <h2 id="metodika">Jak počítáme</h2>
+  <div class="card">
+    <ul class="plain" id="definitions"><li class="loading">Načítám…</li></ul>
+    <p class="small">Další pravidla:</p>
+    <ul class="small">
+      <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
+      <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
+        ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
+      <li>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká docházka může mít i důvody jako nemoc nebo rodičovství.</li>
+      <li>Loajalita k frakci a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
+      <li>Čísla počítá deterministický skript
+        <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
+    </ul>
+  </div>
+
+  <h2>Loga a barvy</h2>
+  <p>Loga stran a frakcí jsou ochranné známky jejich vlastníků a slouží jen k identifikaci. Kde logo chybí, ukazujeme textový štítek se zkratkou.</p>
+</main>
+
+<footer class="site-footer"><div class="inner">
+  Kód a data: <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">GitHub</a>.
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+setNav("about");
+(async () => {
+  const el = document.getElementById("definitions");
+  try {
+    const stats = await getJSON("stats.json");
+    const names = {
+      attendance: "Docházka", attendance_main: "Docházka – hlavní hlasování", group_loyalty: "Loajalita k frakci",
+      cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
+    };
+    el.innerHTML = Object.entries(stats.definitions)
+      .map(([k, text]) => `<li><strong>${esc(names[k] || k)}</strong>: ${esc(text)}</li>`).join("");
+    const rel = stats.sources.votes?.release;
+    document.getElementById("release").textContent =
+      `Aktuální data: export HowTheyVote ${rel || ""}, hlasování ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}.`;
+  } catch (e) {
+    showError(el, e);
+  }
+})();
+</script>
+</body>
+</html>
