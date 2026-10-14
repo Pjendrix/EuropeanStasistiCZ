@@ -4,6 +4,7 @@ Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
   public/p/{id}.html   poslanec (souhrn, čísla se zdrojem, poslední závěrečná hlasování)
   public/s/{id}.html   strana
   public/v/{id}.html   závěrečné hlasování (o celém textu nebo o prozatímní dohodě)
+  public/sitemap.xml, public/robots.txt   jen když je v data/manual/site.json adresa webu
 
 Interaktivní stránky (mep.html, party.html, vote.html…) zůstávají pro grafy a filtry, statické
 na ně odkazují. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
@@ -347,7 +348,21 @@ def build(data_dir: Path) -> dict[str, str]:
         if is_final(v):
             path, html = vote_page(v, meps_by_id, groups, base_url)
             out[path] = html
+    if base_url:
+        out.update(sitemap(base_url, sorted(out)))
     return out
+
+
+STATIC_PAGES = ["index.html", "votes.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "o-projektu.html"]
+
+
+def sitemap(base_url: str, paths: list[str]) -> dict[str, str]:
+    base = base_url.rstrip("/") + "/"
+    urls = "".join(f"  <url><loc>{esc(base + p)}</loc></url>\n" for p in STATIC_PAGES + paths)
+    return {
+        "sitemap.xml": f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
+        "robots.txt": f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n",
+    }
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:

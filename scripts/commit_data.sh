@@ -32,7 +32,7 @@ for attempt in 1 2 3; do
   python scripts/compute_stats.py
   python scripts/build_web.py
   python scripts/build_pages.py
-  git add data public/assets/photos public/p public/s public/v
+  git add data public/assets/photos public/p public/s public/v public/sitemap.xml public/robots.txt
   if git diff --cached --quiet; then
     echo "Žádná nová data."
     exit 0
