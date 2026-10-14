@@ -46,6 +46,7 @@ const KIND_LABEL = {
 };
 const INVERTED_NOTE = "Hlasovalo se o návrhu na zamítnutí: hlas PRO = text zamítnout, hlas PROTI = text ponechat.";
 const SHORT_MANDATE_NOTE = "Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.";
+const INDEPENDENT_NOTE = "EP Open Data uvádí poslance jako nezávislého (Independent, zkratka Ind.), tedy bez národní strany.";
 const NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí.";
 const ROLE_LABEL = {
   MEMBER: "člen/ka",
@@ -179,6 +180,8 @@ function groupBadge(code, groups, epCode) {
 function partyBadge(id, label, parties) {
   if (!id) return '<span class="badge outline">bez strany</span>';
   const p = parties.find((x) => String(x.id) === String(id));
+  // EP vede poslance bez strany jako „Independent“ (zkratka Ind.); nejde o stranu.
+  if (p && p.independent) return `<span class="badge outline" title="${esc(INDEPENDENT_NOTE)}">nezávislý/á</span>`;
   const text = p ? p.short_label : label;
   const dot = p && p.color ? p.color : colorFor(id);
   const logo = p && p.logo ? `<img src="${esc(p.logo)}" alt="">` : "";

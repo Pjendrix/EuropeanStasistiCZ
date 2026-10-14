@@ -26,6 +26,7 @@ from build_web import vote_title
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import page
+from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
 POSITION_LABEL = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel/a se", "DID_NOT_VOTE": "nehlasoval/a"}
@@ -185,9 +186,10 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
   <div>
     <h1>{esc(name)}</h1>
     <div class="facts"><span class="badge">{esc(group_label(g['code'] if g else None, groups))}</span>
-      {f'<a class="badge-link" href="{ROOT}s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{esc(p["short_label"]) if p else "strana neuvedena"}</span>'}
+      {f'<a class="badge-link" href="{ROOT}s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{("nezávislý/á" if p["short_label"] == "Ind." or any(str(x["id"]) == str(p["org_id"]) and x.get("independent") for x in parties) else esc(p["short_label"])) if p else "strana neuvedena"}</span>'}
       <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
     <p class="muted">Mandát: {mandate}</p>
+    {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
     {f'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
     <p class="small"><a href="{ROOT}mep.html?id={mep['id']}">Interaktivní profil s grafy</a> ·
       <a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
@@ -331,11 +333,13 @@ def build(data_dir: Path) -> dict[str, str]:
     site_path = data_dir / "manual" / "site.json"
     base_url = read(site_path).get("base_url") if site_path.exists() else None
     meps_doc = read(data_dir / "meps.json")
+    apply_name_overrides(meps_doc["meps"], data_dir / "manual" / "overrides.json")
     meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
     out = {}
     for m in overview["meps"]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
         require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
+        apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
         path, html = mep_page(prof, groups, parties, base_url)
         out[path] = html
     idx_path = data_dir / "parties" / "index.json"

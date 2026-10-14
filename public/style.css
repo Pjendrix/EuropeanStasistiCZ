@@ -300,6 +300,7 @@ tr.former td { opacity: .72; }
 .portrait { margin: 0; width: 160px; }
 .portrait img { width: 160px; height: 200px; object-fit: cover; object-position: top; border-radius: var(--radius); background: var(--track); display: block; box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--gold); }
 .portrait figcaption { font-size: .75rem; color: var(--muted); margin-top: .5rem; }
+.profile-head p { overflow-wrap: anywhere; }
 .facts { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
 @media (max-width: 560px) {
   .profile-head { grid-template-columns: 1fr; }
@@ -317,6 +318,15 @@ tr.former td { opacity: .72; }
 .chart .col.active .bar-fill, .chart .col:hover .bar-fill { opacity: 1; box-shadow: 0 0 0 2px var(--gold); }
 .chart .col .bar-fill.zero { height: 3px !important; background: var(--cz-red); }
 .chart .col-label { position: absolute; top: 100%; left: 0; right: 0; text-align: center; font-size: .75rem; line-height: 1.15; color: var(--muted); padding-top: 3px; }
+.contact-form { display: grid; gap: .8rem; max-width: 40rem; margin: 1rem 0; }
+.contact-form label { display: grid; gap: .3rem; font-weight: 600; font-size: .9rem; }
+.contact-form textarea, .contact-form input[type="url"], .contact-form input[type="email"] {
+  font: inherit; font-weight: 400; padding: .6rem .9rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); width: 100%; }
+.contact-form textarea { resize: vertical; }
+.btn-send { justify-self: start; border: 0; cursor: pointer; background: var(--navy); color: #F8FAFC; font: inherit; font-weight: 600; }
+:root[data-theme="dark"] .btn-send { background: var(--accent); color: var(--navy); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-send { background: var(--accent); color: var(--navy); } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .cite-btn, .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--accent); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
 .cite-btn:hover, .csv-btn:hover { border-color: var(--gold); }

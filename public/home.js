@@ -155,7 +155,7 @@ function mepCard({ m, s, g, p, active }, groups, parties) {
       ${avatar(m, 48)}
       <div style="min-width:0"><div class="name">${esc(displayName(m))}</div>
         <div class="sub">${gObj ? esc(CZ_GROUP_LABEL[gObj.code] || gObj.short_label) : esc(g?.short_label || "bez frakce")} ·
-          ${p ? esc(p.short_label) : "strana neuvedena"}${active ? "" : ` · do ${fmtDate(m.mandates[m.mandates.length - 1].end)}`}</div></div>
+          ${p ? (p.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : esc(p.short_label)) : "strana neuvedena"}${active ? "" : ` · do ${fmtDate(m.mandates[m.mandates.length - 1].end)}`}</div></div>
     </div>
     ${m.short_mandate ? `<p class="small note" style="margin:-.4rem 0 .8rem">${esc(SHORT_MANDATE_NOTE)}</p>` : ""}
     <div class="mep-card-body">
