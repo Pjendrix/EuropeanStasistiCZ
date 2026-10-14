@@ -39,6 +39,7 @@ jobs:
         run: |
           python scripts/compute_stats.py
           python scripts/build_web.py
+          python scripts/build_pages.py
 
       - name: Commit
         # Odloží stažené soubory, srovná se s aktuálním main, přepočítá odvozené a commitne.
