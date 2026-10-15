@@ -246,7 +246,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     path = f"p/{mep['id']}.html"
     return path, page(title, body, root="", base="../", path=path, current="meps", description=desc, meta=meta,
                       main_attrs=f'data-mep="{mep["id"]}"',
-                      scripts='<script src="app.js"></script>\n<script src="profile.js"></script>\n')
+                      scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="profile.js"></script>\n')
 
 
 # --- strana --------------------------------------------------------------------------

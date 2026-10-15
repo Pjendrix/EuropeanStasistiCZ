@@ -39,6 +39,7 @@
 </div></footer>
 
 <script src="app.js"></script>
+<script src="share.js"></script>
 <script>
 setNav("votes");
 const main = document.getElementById("main");
@@ -86,6 +87,24 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const finalVote = finalVotes[finalVotes.length - 1];
     const adopted = adoptedTextUrl(v.texts_adopted_reference);
 
+    // Kontext pro tlačítko „Sdílet“ (share.js): stejná čísla jako na stránce, nic nového.
+    const pageUrl = new URL(final ? `v/${v.id}.html` : `vote.html?id=${v.id}&m=${foundMonth}`, document.baseURI).href;
+    const czByGroup = {};
+    cz.forEach((p) => { (czByGroup[p.group_code || "–"] = czByGroup[p.group_code || "–"] || []).push(p.position); });
+    window.shareContext = () => ({
+      kind: "vote", url: pageUrl, filename: `ep-watch-hlasovani-${v.id}`,
+      text: `${voteTitle(v)} (${fmtDate(v.date)}): ${resultSentence(kind || (final ? "final" : ""), v.result)}. Češi: ${czCountsText(czCounts)}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
+      data: {
+        title: heading, subtitle: final ? "" : voteTitle(v), date: v.date, kindLabel: kind ? KIND_LABEL[kind] : "hlasování",
+        result: v.result, resultLabel: RESULT_LABEL[v.result] || "neuveden", sentence: resultSentence(kind || (final ? "final" : ""), v.result),
+        ep: [c.for, c.against, c.abstention, c.did_not_vote],
+        groups: Object.keys(czByGroup).sort((a, b) => czByGroup[b].length - czByGroup[a].length || a.localeCompare(b)).map((code) => {
+          const g = groups.find((x) => x.code === code);
+          return { label: g ? (CZ_GROUP_LABEL[code] || g.short_label) : code, positions: czByGroup[code].slice().sort((a, b) => KEYS.indexOf(a) - KEYS.indexOf(b)) };
+        }),
+        urlShort: pageUrl.replace(/^https?:\/\//, ""),
+      },
+    });
     main.innerHTML = `
       <p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>
       <p class="muted" style="margin-bottom:.3rem">${fmtDate(v.date)} · ${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování")}</p>
@@ -104,6 +123,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
       </p>
 
+      <p class="share-row">${shareButton()}</p>
       ${askAiBox({ v, kind, final, desc, adopted, c })}
 
       <div class="metrics">

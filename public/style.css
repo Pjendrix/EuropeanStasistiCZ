@@ -702,3 +702,12 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 }
 .own-row td { font-weight: 600; background: var(--accent-soft); }
 .strong-line { font-weight: 600; color: var(--text); max-width: 46rem; }
+
+/* Sdílení (share.js) */
+.share-row { margin: .6rem 0; position: relative; }
+.share-btn { display: inline-flex; align-items: center; gap: .4rem; }
+.share-menu { position: absolute; z-index: 30; margin-top: .4rem; padding: .5rem; display: grid; gap: .15rem; min-width: 17rem; max-width: calc(100vw - 2rem); }
+.share-menu button, .share-menu a { text-align: left; padding: .6rem .75rem; border: 0; border-radius: var(--radius-sm); background: none; color: var(--text); font: inherit; text-decoration: none; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.share-menu button:hover, .share-menu a:hover, .share-menu button:focus-visible, .share-menu a:focus-visible { background: var(--chip); }
+.share-menu p { margin: .3rem .75rem .4rem; }
+@media print { .share-row { display: none !important; } }

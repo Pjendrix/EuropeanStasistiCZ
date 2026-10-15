@@ -329,7 +329,8 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
     meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
     site = data_dir / "manual" / "site.json"
     base_url = read(site).get("base_url") if site.exists() else None
-    data_day = overview["period"]["to"]
+    release = (overview.get("sources") or {}).get("votes", {}).get("release") or ""
+    data_day = release if len(release) == 10 and release[4] == "-" else overview["period"]["to"]  # export HowTheyVote = „data k“
     written = removed = 0
 
     def put(rel: str, png: bytes) -> None:

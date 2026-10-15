@@ -269,6 +269,21 @@ function periodText(x) {
     const g = currentOf(mep.groups);
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
+    const pageUrl = new URL(`p/${mep.id}.html`, document.baseURI).href;
+    window.shareContext = () => {
+      const ro = profile.own_work?.roles;
+      return {
+        kind: "mep", url: pageUrl, filename: `ep-watch-${mep.id}`,
+        text: `${name}: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(pct(t.attendance))} jmenovitých hlasování (medián EP ${b?.ep?.attendance != null ? fmtPct(b.ep.attendance) : "–"}). Zdroj: HowTheyVote.eu, EP Watch CZ`,
+        data: {
+          name, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: /^\d{4}-\d{2}-\d{2}$/.test(profile.sources?.votes?.release || "") ? profile.sources.votes.release : new Date().toISOString().slice(0, 10),
+          subtitle: [g ? (CZ_GROUP_LABEL[groups.find((x) => x.ep_code === g.code)?.code] || g.short_label) : "", p ? p.short_label : "", active ? "" : "bývalý poslanec"].filter(Boolean).join(" · "),
+          attendance: t.attendance, attendanceMedian: b?.ep?.attendance ?? null, loyalty: isNI ? null : t.group_loyalty, loyaltyMedian: isNI ? null : (b?.group?.group_loyalty ?? null),
+          work: ro ? `Práce na textech: zprávy ${ro.lead_reports} · stínové ${ro.shadow_reports} · stanoviska ${ro.lead_opinions + ro.shadow_opinions}` : "",
+          urlShort: pageUrl.replace(/^https?:\/\//, ""),
+        },
+      };
+    };
     const extLinks = `<a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
       <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> · <a href="${esc(mep.source_url)}">Data z EP API</a>`;
     const b = profile.benchmarks;
@@ -316,6 +331,7 @@ function periodText(x) {
           ${mep.name_note ? `<p class="small muted">Podoba jména: ${esc(mep.name_note)}</p>` : ""}
           ${profile.short_mandate ? `<p class="small note">${esc(SHORT_MANDATE_NOTE)} Mandát trval ${fmtNum(profile.mandate_days)} dní.</p>` : ""}
           <p class="small profile-links head-only">${extLinks}</p>
+          <p class="share-row">${shareButton()}</p>
         </div>
       </div>
 
