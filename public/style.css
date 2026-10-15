@@ -711,3 +711,40 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .share-menu button:hover, .share-menu a:hover, .share-menu button:focus-visible, .share-menu a:focus-visible { background: var(--chip); }
 .share-menu p { margin: .3rem .75rem .4rem; }
 @media print { .share-row { display: none !important; } }
+
+/* Úvod jako rozcestník (scripts/hub.py, hub.js) */
+.hub-hero { padding: 2.2rem 0 1.2rem; }
+.hub-hero h1 { font-size: clamp(2rem, 6.5vw, 3rem); margin-bottom: .4rem; }
+.hub-search { position: relative; max-width: 40rem; margin: 1.1rem 0 .6rem; }
+.hub-search input { width: 100%; font: inherit; font-size: 1.05rem; padding: .85rem 1.1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); box-shadow: var(--shadow); min-height: 48px; }
+.hub-search input:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.hub-results { position: absolute; z-index: 40; left: 0; right: 0; margin: .3rem 0 0; padding: .4rem; list-style: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); max-height: 22rem; overflow: auto; }
+.hub-results a { display: grid; grid-template-columns: 6.2rem 1fr; gap: .1rem .6rem; padding: .55rem .6rem; border-radius: 8px; text-decoration: none; color: var(--text); }
+.hub-results a:hover, .hub-results a.on { background: var(--chip); }
+.hub-results .hub-kind { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); grid-row: span 2; align-self: center; }
+.hub-results .hub-label { font-weight: 600; }
+.hub-none { padding: .6rem; }
+.hub-block { margin: 2.2rem 0; }
+.hub-block h2 { margin-bottom: .6rem; }
+.hub-lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 1.25rem; align-items: start; }
+.hub-lists.three { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.hub-list h3 { margin: 0 0 .2rem; }
+.hub-vote { display: grid; gap: .35rem; margin-top: .75rem; }
+.period-switch { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin: .5rem 0 1rem; }
+.period-switch label { display: inline-flex; align-items: center; gap: .4rem; min-height: 32px; }
+.hub-strip { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
+.hub-group { display: grid; gap: .3rem; }
+.hub-avs { display: flex; flex-wrap: wrap; gap: .3rem; }
+.hub-av img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); display: block; }
+.hub-av:focus-visible img, .hub-av:hover img { box-shadow: 0 0 0 3px var(--gold); }
+.hub-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 1rem; }
+.hub-tile { text-decoration: none; color: var(--text); display: grid; gap: .3rem; align-content: start; min-height: 9rem; }
+.hub-tile:hover, .hub-tile:focus-visible { box-shadow: var(--shadow-hover); }
+.hub-tile h3 { margin: 0; font-size: 1.05rem; }
+.hub-tile p { margin: 0; }
+.hub-tile .hub-avs { gap: 0; }
+.hub-tile .hub-avs img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; margin-right: -.4rem; box-shadow: 0 0 0 2px var(--surface); background: var(--track); }
+.hub-num { font-size: 2rem; font-weight: 300; letter-spacing: -.02em; }
+.hub-logos { display: flex; flex-wrap: wrap; gap: .35rem; }
+.hub-logo { height: 24px; width: auto; max-width: 70px; background: #fff; border-radius: 4px; padding: 2px; box-sizing: content-box; object-fit: contain; }
+.hub-about li { margin: .4rem 0; }

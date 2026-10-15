@@ -210,7 +210,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
                         f'Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>')
     pos = t["positions"]
-    body = f"""<p class="small"><a href="index.html">← Všichni poslanci</a></p>
+    body = f"""<p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>
 <div class="profile-head">
   {photo}
   <div>
@@ -405,12 +405,16 @@ def build(data_dir: Path) -> dict[str, str]:
         if is_final(v):
             path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card)
             out[path] = html
+    from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
+    if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists():
+        path, html = hub_page(data_dir, base_url)
+        out[path] = html
     if base_url:
         out.update(sitemap(base_url, sorted(out)))
     return out
 
 
-STATIC_PAGES = ["index.html", "votes.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "o-projektu.html"]
+STATIC_PAGES = ["index.html", "poslanci.html", "votes.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "o-projektu.html"]
 
 
 def sitemap(base_url: str, paths: list[str]) -> dict[str, str]:

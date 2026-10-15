@@ -312,7 +312,7 @@ function periodText(x) {
       .map((x) => ({ m: x, v: [x.same, x.total] }));
 
     main.innerHTML = `
-      <p class="small"><a href="index.html">← Všichni poslanci</a></p>
+      <p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>
       <div class="profile-head">
         <figure class="portrait">
           ${mep.photo_url ? `<img src="${photoUrl(mep)}" alt="Portrét: ${esc(name)}">` : `<span class="avatar-initials" style="width:160px;height:200px;border-radius:var(--radius);font-size:3rem" aria-hidden="true">${esc([mep.given_name, mep.family_name].filter(Boolean).map((x) => x[0]).join(""))}</span>`}
