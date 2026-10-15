@@ -804,3 +804,23 @@ details.explain p { margin: .5rem 0; }
 .lead-row { display: flex; align-items: flex-start; gap: .5rem; margin: 0 0 1.5rem; }
 .lead-row .lead { margin: 0; }
 .lead-row .info-wrap { margin: -.15rem 0 0; flex: none; }
+
+/* Detail hlasování: Češi po stranách (S2) */
+.view-switch { display: inline-flex; gap: 0; margin: 0 0 .9rem; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.view-switch button { font: inherit; font-size: .875rem; padding: .4rem 1rem; min-height: 36px; border: 0; background: var(--surface); color: var(--muted); cursor: pointer; }
+.view-switch button[aria-pressed="true"] { background: var(--text); color: var(--surface); }
+@media (pointer: coarse) { .view-switch button { min-height: 44px; } }
+.js .cz-views[data-view="party"] .cz-by-vote, .js .cz-views[data-view="vote"] .cz-by-party { display: none; }
+.party-row { display: grid; grid-template-columns: 9.5rem 9rem 1fr; gap: .3rem 1rem; align-items: center; padding: .65rem 0; border-bottom: 1px solid var(--border); }
+.party-row:last-child { border-bottom: 0; }
+.pr-party { display: flex; flex-direction: column; line-height: 1.25; }
+.pr-label { display: inline-flex; align-items: center; gap: .45rem; }
+.pr-label .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
+.pr-dots { display: flex; flex-wrap: wrap; gap: 4px; }
+.pr-dots .cz-dot { width: 14px; height: 14px; }
+.pr-names { font-size: .9rem; line-height: 1.5; }
+.pr-group b { font-weight: 700; }
+@media (max-width: 640px) { .party-row { grid-template-columns: 1fr; } }
+details.explain.wide { max-width: none; margin-top: 1.5rem; }
+details.links-more { margin: .3rem 0 1rem; font-size: .875rem; }
+details.links-more summary { cursor: pointer; color: var(--muted); }

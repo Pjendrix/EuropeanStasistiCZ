@@ -159,34 +159,38 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       </div>
 
       <h2>Jak hlasovali Češi</h2>
-      ${czDots(cz, meps, groups)}
+      <div class="cz-views" data-view="party">
+        <div class="view-switch" role="group" aria-label="Způsob zobrazení"><button type="button" data-cz-view="party" aria-pressed="true">Podle stran</button><button type="button" data-cz-view="vote" aria-pressed="false">Podle hlasu</button></div>
+        <div class="cz-by-party">${czPartyRowsHtml(czPartyRows(cz, meps, parties, groups))}</div>
+        <div class="cz-by-vote">
+          ${czDots(cz, meps, groups)}
+          <div class="positions-grid">
+            ${KEYS.filter((k) => czCounts[KEYS.indexOf(k)] > 0).map((k) => {
+              const list = cz.filter((p) => p.position === k)
+                .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
+              return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
+                <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
+                  <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
+            }).join("")}
+          </div>
+          ${KEYS.some((k, i) => !czCounts[i]) ? `<p class="small muted">Nikdo z Čechů: ${KEYS.filter((k, i) => !czCounts[i]).map((k) => POSITION_LABEL[k]).join(", ")}.</p>` : ""}
+        </div>
+      </div>
       <div class="legend" aria-hidden="true">
         <span><i style="background:var(--for)"></i>pro</span><span><i style="background:var(--against)"></i>proti</span>
         <span><i style="background:var(--abst)"></i>zdržel/a se</span><span><i class="absent"></i>nehlasoval/a</span>
       </div>
-      <div class="positions-grid">
-        ${KEYS.filter((k) => czCounts[KEYS.indexOf(k)] > 0).map((k) => {
-          const list = cz.filter((p) => p.position === k)
-            .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
-          return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
-            <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
-              <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
-        }).join("")}
-      </div>
-      ${KEYS.some((k, i) => !czCounts[i]) ? `<p class="small muted">Nikdo z Čechů: ${KEYS.filter((k, i) => !czCounts[i]).map((k) => POSITION_LABEL[k]).join(", ")}.</p>` : ""}
-      <h3 style="margin-bottom:.4rem">Podle českých stran</h3>
-      <ul class="party-votes plain" aria-label="Hlasy podle českých stran">${partyVotes(cz).map((x) => `<li><strong>${esc(x.label)}</strong> ${esc(partyVotesText(x.counts))}</li>`).join("")}</ul>
       <div id="cz-csv"></div>
-      <p class="source">Frakce a strana jsou uvedené k datu hlasování. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
+      <p class="source">Strana a frakce k datu hlasování, jen poslanci v mandátu. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
 
-      <h2>Jak hlasovaly frakce</h2>
+      <details class="explain wide"><summary><strong>Jak hlasovaly frakce</strong> · ${groupRows.length} frakcí, zvýrazněné ty s Čechy</summary>
       <div class="table-wrap"><table>
         <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Většina frakce</th><th>Rozložení</th></tr></thead>
         <tbody>${groupRows.map(([code, row]) => `<tr class="${czGroups.has(code) ? "cz-row" : ""}"><td><span class="dot" style="background:${groupColor(groups.find((x) => x.code === code))}"></span> <span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupBadge(code, groups)}</span></td>
           ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${groupMajorityLabel(row) || '<span class="muted">bez jasné většiny</span>'}</td><td>${splitBar(row)}</td></tr>`).join("")}</tbody>
       </table></div>
       <p class="small muted">Zvýrazněné řádky jsou frakce, ve kterých sedí čeští poslanci. Většina frakce = jednoznačně nejvíc hlasů pro, proti nebo zdržet se.</p>
-      <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
+      <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p></details>
 
       ${topics.length ? `<h2>Témata</h2><p>${topics.map((t) => `<span class="tag">${esc(t)}</span>`).join(" ")}</p>
         <p class="source">Témata (OEIL, EuroVoc) přebíráme z HowTheyVote.eu v angličtině.</p>` : ""}

@@ -23,7 +23,7 @@ import sys
 from html import escape
 from pathlib import Path
 
-from build_cards import card_vote_ids
+from build_cards import card_vote_ids, result_sentence
 from build_web import vote_title
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
@@ -80,6 +80,57 @@ def party_votes_text(cz: list[dict]) -> list[tuple[str, str]]:
     names = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel se", "DID_NOT_VOTE": "nehlasoval"}
     order = sorted(by, key=lambda k: (-sum(by[k].values()), k))
     return [(k, ", ".join(f"{by[k][pos]} {names[pos]}" for pos in POSITIONS if by[k][pos])) for k in order]
+
+
+def position_phrase(position: str, members: list[dict]) -> str:
+    """Slovo hlasu ve správném rodě a čísle: „pro“, „zdržela se“, „zdrželi se“, „nehlasovaly“."""
+    if position == "FOR":
+        return "pro"
+    if position == "AGAINST":
+        return "proti"
+    if len(members) == 1:
+        return position_for(position, members[0])
+    fem = all(m.get("gender") == "FEMALE" for m in members)
+    if position == "ABSTENTION":
+        return "zdržely se" if fem else "zdrželi se"
+    return "nehlasovaly" if fem else "nehlasovali"
+
+
+def party_rows(cz: list[dict], meps_by_id: dict, parties: list[dict], groups: list[dict]) -> list[dict]:
+    """Čeští poslanci podle strany k datu hlasování. Strany od největší (podle počtu poslanců v hlasování), pak abecedně.
+    Skupina bez strany je „Ind.“ (štítek z parties.json). Frakce k datu hlasování; když se liší, vypíšou se všechny."""
+    by_id = {p["id"]: p for p in parties}
+    rows: dict[str, dict] = {}
+    for p in cz:
+        entry = by_id.get(p.get("national_party_id"))
+        label = (entry or {}).get("short_label") or (p.get("national_party") if p.get("national_party") not in (None, "Independent") else "Ind.")
+        row = rows.setdefault(label, {"label": label, "color": (entry or {}).get("chart_color"), "groups": [], "members": {k: [] for k in POSITIONS}})
+        g = group_label(p.get("group_code"), groups)
+        if g not in row["groups"]:
+            row["groups"].append(g)
+        row["members"][p["position"]].append(meps_by_id[p["member_id"]])
+    for row in rows.values():
+        row["groups"].sort()
+        for k in POSITIONS:
+            row["members"][k].sort(key=lambda m: m.get("sort_label") or m["name"])
+        row["total"] = sum(len(v) for v in row["members"].values())
+    return sorted(rows.values(), key=lambda r: (-r["total"], r["label"]))
+
+
+def party_rows_html(rows: list[dict], root: str) -> str:
+    out = []
+    for r in rows:
+        dots = "".join(f'<i class="cz-dot d-{k}" title="{esc(display_name(m))}: {esc(position_phrase(k, [m]))}"></i>'
+                       for k in POSITIONS for m in r["members"][k])
+        names = " · ".join(
+            f'<span class="pr-group"><b class="pos pos-{k}">{esc(position_phrase(k, r["members"][k]))}</b> '
+            + ", ".join(f'<a href="{root}p/{m["id"]}.html">{esc(display_name(m))}</a>' for m in r["members"][k]) + "</span>"
+            for k in POSITIONS if r["members"][k])
+        color = f' style="background:{esc(r["color"])}"' if r["color"] else ""
+        out.append(f'<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"{color}></span><b>{esc(r["label"])}</b></span>'
+                   f'<span class="small muted">{esc(", ".join(r["groups"]))}</span></div>'
+                   f'<div class="pr-dots" aria-hidden="true">{dots}</div><div class="pr-names">{names}</div></div>')
+    return "".join(out)
 
 
 def fmt_date(iso: str | None) -> str:
@@ -348,7 +399,7 @@ def adopted_text_url(ref: str | None) -> str | None:
 
 
 def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, has_card: bool = False,
-              roles: list[dict] | None = None) -> tuple[str, str]:
+              roles: list[dict] | None = None, parties: list[dict] | None = None) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
     desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
@@ -385,7 +436,8 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
         f'<tr{" class=cz-row" if code in cz_groups else ""}><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}'
         f'<td>{esc(group_majority_label(row) or "bez jasné většiny")}</td><td>{split_bar(row)}</td></tr>'
         for code, row in sorted(v["group_counts"].items(), key=lambda x: -sum(x[1])))
-    party_items = "".join(f'<li><strong>{esc(label)}</strong> {esc(text)}</li>' for label, text in party_votes_text(cz))
+    party_html = party_rows_html(party_rows(cz, meps_by_id, parties or [], groups), ROOT)
+    n_groups = len(v["group_counts"])
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
     if adopted:
@@ -402,9 +454,10 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="muted" style="margin-bottom:.3rem">{fmt_date(v['date'])} · <span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
-<p class="small">{" · ".join(links)}</p>
+<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>
 <div class="metrics">
-  <div class="card metric"><div class="label">Výsledek</div><div class="value result-{v.get('result') or ''}">{result}</div>
+  <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
+    <div class="detail"><span class="pill-result result-{v.get('result') or ''}">{result}</span></div>
     <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div>{cite}</div>
   <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
     <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
@@ -412,15 +465,19 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     <div class="detail"><span class="pos pos-FOR">pro {cz_counts[0]}</span> · <span class="pos pos-AGAINST">proti {cz_counts[1]}</span> · zdrželo se {cz_counts[2]} · nehlasovalo {cz_counts[3]}</div></div>
 </div>
 {trace}<h2>Jak hlasovali Češi</h2>
-<div class="positions-grid">{"".join(lists)}</div>
-<h3>Podle českých stran</h3><ul class="party-votes plain">{party_items}</ul>
-{f'<p class="small muted">Nikdo z Čechů: {", ".join(nobody)}.</p>' if nobody else ""}
-<p class="source">Jen poslanci v mandátu podle EP; frakce a strana k datu hlasování. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
-<h2>Jak hlasovaly frakce</h2>
+<div class="cz-views" data-view="party">
+  <div class="view-switch" role="group" aria-label="Způsob zobrazení"><button type="button" data-cz-view="party" aria-pressed="true">Podle stran</button><button type="button" data-cz-view="vote" aria-pressed="false">Podle hlasu</button></div>
+  <div class="cz-by-party">{party_html}</div>
+  <div class="cz-by-vote"><div class="positions-grid">{"".join(lists)}</div>
+  {f'<p class="small muted">Nikdo z Čechů: {", ".join(nobody)}.</p>' if nobody else ""}</div>
+</div>
+<div class="legend" aria-hidden="true"><span><i style="background:var(--for)"></i>pro</span><span><i style="background:var(--against)"></i>proti</span><span><i style="background:var(--abst)"></i>zdržel/a se</span><span><i class="absent"></i>nehlasoval/a</span></div>
+<p class="source">Strana a frakce k datu hlasování, jen poslanci v mandátu. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
+<details class="explain wide"><summary><strong>Jak hlasovaly frakce</strong> · {n_groups} frakcí, zvýrazněné ty s Čechy</summary>
 <div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Většina frakce</th><th>Rozložení</th></tr></thead>
 <tbody>{group_rows}</tbody></table></div>
 <p class="small muted">Zvýrazněné řádky jsou frakce, ve kterých sedí čeští poslanci. Většina frakce = jednoznačně nejvíc hlasů pro, proti nebo zdržet se.</p>
-<p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a>.</p>"""
+<p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a>.</p></details>"""
     title = f"{title_txt} ({fmt_date(v['date'])}) – EP Watch CZ"
     return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,
                                      meta=og_meta(title, desc, f"v/{v['id']}.html", base_url,
@@ -463,7 +520,7 @@ def build(data_dir: Path) -> dict[str, str]:
     with_card = card_vote_ids(votes)  # závěrečná hlasování za 12 měsíců mají kartu (build_cards.py), starší obecný obrázek
     for v in votes:
         if is_final(v):
-            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])))
+            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties)
             out[path] = html
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
     if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists():
