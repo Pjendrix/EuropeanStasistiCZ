@@ -49,7 +49,7 @@
   </div>
 
   <div class="table-wrap">
-    <table id="votes">
+    <table id="votes" class="stack">
       <thead><tr>
         <th class="num">Datum</th>
         <th>Hlasování</th>
@@ -127,11 +127,11 @@ setNav("votes");
       tbody.innerHTML = list.map((v) => {
         const counts = v.cz;
         return `<tr>
-          <td class="num">${fmtDate(v.date)}</td>
-          <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+          <td class="num date">${fmtDate(v.date)}</td>
+          <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
             <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
-          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
-          <td>${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>
+          <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+          <td class="extra cz">${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>
         </tr>`;
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
     };

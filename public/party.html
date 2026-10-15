@@ -81,9 +81,9 @@ async function detailPage(id) {
   const t = p.total;
   const meps = Object.fromEntries(p.member_list.map((m) => [m.id, m]));
   const single = p.cohesion[1] === 0;
-  const splitList = (list) => list.length ? `<div class="table-wrap"><table>
+  const splitList = (list) => list.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Poslanci strany</th><th>Výsledek</th></tr></thead>
-      <tbody>${list.map((v) => voteRow(v, `<td>${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
+      <tbody>${list.map((v) => voteRow(v, `<td class="extra">${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
     : '<p class="muted">Žádné takové hlasování.</p>';
   main.innerHTML = `
     <p class="small"><a href="party.html">← Všechny strany</a></p>

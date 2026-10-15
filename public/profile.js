@@ -109,7 +109,7 @@ function outcomeCard(label, own, group, detail, mep) {
 
 function voteTable(rows, extraHead, extraCell) {
   if (!rows.length) return '<p class="muted">Žádné takové hlasování.</p>';
-  return `<div class="table-wrap"><table>
+  return `<div class="table-wrap"><table class="stack">
     <thead><tr><th class="num">Datum</th><th>Hlasování</th>${extraHead}<th>Výsledek</th></tr></thead>
     <tbody>${rows.map((v) => voteRow(v, extraCell(v))).join("")}</tbody></table></div>`;
 }
@@ -399,20 +399,20 @@ function periodText(x) {
         <p class="small muted">Těsná hlasování, která by bez hlasů českých poslanců dopadla opačně; většinou pozměňovací návrhy a dílčí hlasování
           (<a href="rozhodujici.html">všechna taková hlasování</a>).
           Ukazuje se, jak ${byGender(mep, "hlasoval", "hlasovala")} v těch, která proběhla v době ${byGender(mep, "jeho", "jejího")} mandátu.</p>
-        ${voteTable(profile.decisive, "<th>Volba</th>", (v) => `<td class="pos pos-${v.position}">${positionFor(v.position, mep)}</td>`)}
+        ${voteTable(profile.decisive, "<th>Volba</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>`)}
       </div>
 
       <h2 id="temata">Podle témat</h2>
       <div class="card">
         <p class="small muted">Deset témat s nejvíce hlasováními podle Legislativní observatoře EP. Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).</p>
-        <div class="table-wrap"><table>
+        <div class="table-wrap"><table class="stack topics">
           <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Účast na hlasování</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Hlasuje s frakcí</th></tr></thead>
           <tbody>${profile.topics.map((x) => `<tr>
-            <td><a href="votes.html?t=${esc(x.code)}&f=final">${esc(x.label_cs || x.label || `téma ${x.code} (zdroj neuvádí název)`)}</a> <span class="small muted">${esc(x.code)}</span></td>
-            <td class="num">${fmtNum(x.attendance[1])}</td>
-            <td class="num">${pctCell(x.attendance)}</td>
-            <td class="num">${fmtNum(x.positions.FOR)} / ${fmtNum(x.positions.AGAINST)} / ${fmtNum(x.positions.ABSTENTION)}</td>
-            <td class="num">${pctCell(x.group_loyalty)}</td></tr>`).join("")}</tbody>
+            <td class="title"><a href="votes.html?t=${esc(x.code)}&f=final">${esc(x.label_cs || x.label || `téma ${x.code} (zdroj neuvádí název)`)}</a> <span class="small muted">${esc(x.code)}</span></td>
+            <td class="num" data-label="Hlasování">${fmtNum(x.attendance[1])}</td>
+            <td class="num" data-label="Účast">${pctCell(x.attendance)}</td>
+            <td class="num extra">${splitBar([x.positions.FOR, x.positions.AGAINST, x.positions.ABSTENTION, x.positions.DID_NOT_VOTE])}<div class="small">${fmtNum(x.positions.FOR)} pro · ${fmtNum(x.positions.AGAINST)} proti · ${fmtNum(x.positions.ABSTENTION)} zdržel${byGender(mep, "", "a")} se</div></td>
+            <td class="num" data-label="S frakcí">${pctCell(x.group_loyalty)}</td></tr>`).join("")}</tbody>
         </table></div>
       </div>
 
@@ -439,7 +439,7 @@ function periodText(x) {
       const onlyMain = document.getElementById("against-main").checked;
       el.innerHTML = voteTable(onlyMain ? profile.against_group.recent_main : profile.against_group.recent,
         "<th>Volba / frakce</th>",
-        (v) => `<td><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
+        (v) => `<td class="extra"><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
           <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>`) +
         `<p class="small muted">Posledních ${fmtNum((onlyMain ? profile.against_group.recent_main : profile.against_group.recent).length)} z ${fmtNum(onlyMain ? profile.against_group.count_main : profile.against_group.count)}.</p>`;
       collapseTables(el);
@@ -450,14 +450,14 @@ function periodText(x) {
     const recent = document.getElementById("recent");
     const rows = profile.recent_main_votes.map((v) => ({ v, pos: v, month: v.month }));
     recent.className = "";
-    recent.innerHTML = rows.length ? `<div class="table-wrap"><table>
+    recent.innerHTML = rows.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th>Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead>
       <tbody>${rows.map(({ v, pos, month }) => `<tr>
-        <td class="num">${fmtDate(v.date)}</td>
-        <td><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
+        <td class="num date">${fmtDate(v.date)}</td>
+        <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
           <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
-        <td class="pos pos-${pos.position}">${positionFor(pos.position, mep)}</td>
-        <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td></tr>`).join("")}</tbody>
+        <td class="extra pos pos-${pos.position}">${positionFor(pos.position, mep)}</td>
+        <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td></tr>`).join("")}</tbody>
     </table></div>
     <p class="source">Zdroj: <a href="https://howtheyvote.eu/members/${mep.id}">HowTheyVote.eu</a>.
       Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>`

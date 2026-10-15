@@ -391,16 +391,16 @@ function sourceLine(stats) {
 // Řádek tabulky hlasování: datum, název s odkazem, výsledek, rozložení Čechů. extra = další buňky.
 function voteRow(v, extra = "") {
   return `<tr>
-    <td class="num">${fmtDate(v.date)}</td>
-    <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+    <td class="num date">${fmtDate(v.date)}</td>
+    <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
   </tr>`;
 }
 
 function czCell(cz) {
-  return `<td>${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
+  return `<td class="extra cz">${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
 }
 
 // Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].

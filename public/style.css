@@ -675,3 +675,28 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 @keyframes sk { to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .loading::before { animation: none; } }
 .error .more-btn { margin-left: .5rem; }
+
+/* Mobil: tabulky jako karty (X1). Pod 640 px je každý řádek karta, aby výsledek a hlasy Čechů nebyly za vodorovným posunem. */
+@media (max-width: 640px) {
+  table.stack thead, table.work-cards thead { display: none; }
+  table.stack, table.stack tbody, table.work-cards, table.work-cards tbody { display: block; }
+  table.stack tr, table.work-cards tr { display: grid; grid-template-columns: 1fr auto; gap: .3rem .75rem; padding: .9rem 1rem; border-bottom: 1px solid var(--border); }
+  table.stack tr[hidden] { display: none; }
+  table.stack td, table.work-cards td { display: block; padding: 0; border: 0; text-align: left; white-space: normal; }
+  table.stack td.date { grid-column: 1; grid-row: 1; font-size: .8rem; color: var(--muted); }
+  table.stack td.result { grid-column: 2; grid-row: 1; justify-self: end; text-align: right; }
+  table.stack td.title { grid-column: 1 / -1; }
+  table.stack td.extra { grid-column: 1 / -1; }
+  /* tabulka témat: název přes celý řádek, tři čísla vedle sebe s popiskem, rozložení hlasů pod nimi */
+  table.topics tr { grid-template-columns: repeat(3, 1fr); }
+  table.topics td.title, table.topics td.extra { grid-column: 1 / -1; }
+  table.topics td.extra { order: 9; }
+  table.topics td[data-label]::before, table.work-cards td[data-label]::before { content: attr(data-label); display: block; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  table.topics td.num, table.work-cards td.num { text-align: left; }
+  /* Práce na textech: jméno přes celý řádek, čtyři kategorie 2 × 2, pak účast a návrhy usnesení */
+  table.work-cards tr { grid-template-columns: 1fr 1fr; }
+  table.work-cards td:first-child { grid-column: 1 / -1; }
+  table.work-cards .mep-party-logo { display: none; }
+  table.work-cards .mep-cell { min-width: 0; }
+  table.work-cards td[data-label] { padding-top: .35rem; }
+}
