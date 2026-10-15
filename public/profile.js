@@ -228,6 +228,16 @@ function activityBlock(a, mep) {
     <p class="source">Počty v době mandátu. Zdroj: ${src} (CC BY 4.0), stav k ${fmtDate(a.updated)}. Projevy ani prohlášení nevypovídají o kvalitě ani vlivu a nejsou součástí třetin.</p>`;
 }
 
+// Prezence na zasedání podle prezenční listiny EP (D1): jiná metrika než účast na hlasování, bez mediánu a bez pořadí.
+function presenceCard(pr, mep) {
+  if (!pr || !pr.days) return "";
+  const src = pr.source?.url ? `<a href="${esc(pr.source.url)}">EP Open Data (meetings)</a>` : "EP Open Data";
+  return `<div class="card metric"><div class="label">Prezence na zasedání (podle EP)</div>
+    <div class="value">${countPct(pr.present / pr.days)}</div>
+    <div class="detail">${fmtNum(pr.present)} z ${fmtNum(pr.days)} dnů jednání v době mandátu${pr.excused ? ` · ${fmtNum(pr.excused)} omluven${byGender(mep, "", "a")}` : ""}</div>
+    <div class="detail">podle prezenční listiny EP, jen dny, ke kterým listina existuje · ${src}, stav k ${fmtDate(pr.updated)}</div></div>`;
+}
+
 function ownWork(ow, mep) {
   if (!ow) return '<p class="muted">Data o vlastní práci se připravují.</p>';
   const types = Object.keys(ow.type_labels);
@@ -367,6 +377,7 @@ function periodText(x) {
         ${metricCard("Účast na hlasování – závěrečná", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
           b?.ep?.attendance_main, "medián EP", cite("účast na hlasování u závěrečných hlasování", t.attendance_main),
           { extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
+        ${presenceCard(profile.presence, mep)}
         ${metricCard("Hlasuje s frakcí", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
           isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("hlasuje s frakcí", t.group_loyalty),
           { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}

@@ -93,7 +93,7 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
     p2, w2 = check_delegations(data_dir)
-    p3 = check_speeches(prev_dir, data_dir)
+    p3 = check_speeches(prev_dir, data_dir) + check_attendance(prev_dir, data_dir)
     return problems + p2 + p3, warnings + w2
 
 
@@ -110,6 +110,18 @@ def check_speeches(prev_dir: Path | None, data_dir: Path) -> list[str]:
     for mep_id, rows in old["meps"].items():
         if rows and not new["meps"].get(mep_id):
             problems.append(f"poslanec {mep_id} měl {len(rows)} záznamů o projevech a teď žádný")
+    return problems
+
+
+def check_attendance(prev_dir: Path | None, data_dir: Path) -> list[str]:
+    """data/attendance.json (prezenční listiny plenárních dnů z EP Open Data): počet dnů nesmí klesnout a každý den má
+    listinu (attendees > 0); den s listinou se zpětně nemaže."""
+    new, old = _load(data_dir / "attendance.json"), _load(prev_dir / "attendance.json") if prev_dir else None
+    if new is None:
+        return []
+    problems = [f"prezenční listina {d['date']} je prázdná" for d in new["days"] if not d.get("attendees")]
+    if old and len(new["days"]) < len(old["days"]):
+        problems.append(f"počet plenárních dnů s prezenční listinou klesl z {len(old['days'])} na {len(new['days'])}")
     return problems
 
 

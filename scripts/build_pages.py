@@ -181,6 +181,16 @@ def metric(label: str, pair: list[int] | None, detail: str, bench_line: str = ""
             f'<div class="detail">{count}</div>{bench_line}<div class="detail">{detail}</div>{cite}</div>')
 
 
+def presence_card(pr: dict | None) -> str:
+    """Prezence na zasedání podle prezenční listiny EP (bez mediánu a pořadí)."""
+    if not pr or not pr["days"]:
+        return ""
+    excused = f' · {fmt_num(pr["excused"])} omluven/a' if pr.get("excused") else ""
+    return (f'<div class="card metric"><div class="label">Prezence na zasedání (podle EP)</div><div class="value">{fmt_pct([pr["present"], pr["days"]])}</div>'
+            f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání v době mandátu{excused}</div>'
+            f'<div class="detail">podle prezenční listiny EP · EP Open Data</div></div>')
+
+
 def bench_line(b: dict | None, key: str) -> str:
     if not b:
         return ""
@@ -260,6 +270,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 <div class="metrics">
   {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("účast na hlasování", t["attendance"]))}
   {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]))}
+  {presence_card(prof.get("presence"))}
   {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("hlasuje s frakcí", t["group_loyalty"]))}
   {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
 </div>
@@ -483,7 +494,7 @@ DEFINITION_NAMES = {
     "close_votes": "Těsná hlasování", "decisive_votes": "Kde rozhodly české hlasy",
     "against_group": "Kde hlasoval jinak než frakce", "cz_split": "Kde se Češi rozdělili", "cz_unity": "Češi jednotně",
     "party_cohesion": "Jednotnost strany", "topics": "Témata", "own_work": "Práce na textech",
-    "work_profile": "Práce na textech – třetiny v delegaci", "delegations": "Srovnání s delegacemi podobné velikosti", "speeches": "Projevy v plénu",
+    "work_profile": "Práce na textech – třetiny v delegaci", "delegations": "Srovnání s delegacemi podobné velikosti", "speeches": "Projevy v plénu", "presence": "Prezence na zasedání (podle EP)",
 }
 
 

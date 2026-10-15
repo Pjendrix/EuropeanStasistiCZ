@@ -109,3 +109,15 @@ def test_speeches_checked(tmp_path):
     (new / "speeches.json").write_text(json.dumps({"meps": {"1": [], "2": []}}))
     problems = cd.check_speeches(prev, new)
     assert any("klesl" in p for p in problems) and any("poslanec 1" in p for p in problems)
+
+
+def test_attendance_checked(tmp_path):
+    prev, new = tmp_path / "prev", tmp_path / "new"
+    prev.mkdir(); new.mkdir()
+    assert cd.check_attendance(prev, new) == []
+    (prev / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}, {"date": "2025-01-02", "attendees": 5}]}))
+    (new / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}, {"date": "2025-01-02", "attendees": 0}]}))
+    problems = cd.check_attendance(prev, new)
+    assert any("prázdná" in p for p in problems) and not any("klesl" in p for p in problems)
+    (new / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}]}))
+    assert any("klesl" in p for p in cd.check_attendance(prev, new))
