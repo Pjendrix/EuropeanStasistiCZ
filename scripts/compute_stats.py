@@ -96,7 +96,9 @@ DEFINITIONS = {
                     "desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá "
                     "hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP "
                     "jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, "
-                    "takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává.",
+                    "takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává. Kdo byl v mandátu méně než "
+                    "75 % období (od začátku období do posledního hlasování v datech), třetinu nedostane: srovnání počtů s kolegy, kteří mají "
+                    "za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají.",
     "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad "
               "(data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování "
               "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
@@ -606,7 +608,7 @@ def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
         members = {str(m["id"]): min(x["start"] for x in m["mandates"]) for m in meps
                    if any(x["start"] <= ref and (x["end"] is None or ref <= x["end"]) for x in m["mandates"])}
     roles = {str(k): own_work.roles(v) for k, v in linked.items()}
-    profile = own_work.delegation_profile(roles, members)
+    profile = own_work.delegation_profile(roles, members, until=ref)
     return {
         "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
         "type_labels": own_work.TYPE_LABELS,

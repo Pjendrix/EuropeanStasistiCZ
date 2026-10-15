@@ -172,7 +172,7 @@ function ownPassed(ow, mep) {
   const p = ow.passed, r = ow.roles;
   if (!p || !r) return "";
   const d = r.delegation;
-  const tierLine = (k) => (!d ? "" : r[k] ? `<strong>${TIER_TEXT[d.tiers[k]]}</strong>` : "");
+  const tierLine = (k) => (!d || !r[k] ? "" : d.tiers_skipped ? "kratší mandát, nesrovnává se" : d.tiers[k] ? `<strong>${TIER_TEXT[d.tiers[k]]}</strong>` : "");
   const leg = (n) => (n ? `z toho legislativních <strong>${fmtNum(n)}</strong>` : "");
   const status = (adopted, pending) => [adopted ? `prošlo <strong>${fmtNum(adopted)}</strong>` : "",
     pending ? `${fmtNum(pending)} zatím bez jmenovitého hlasování` : ""].filter(Boolean).join(" · ");
@@ -192,7 +192,7 @@ function ownPassed(ow, mep) {
         "nesrovnává se: návrh podepisují desítky poslanců za frakci"]),
   ].join("");
   const note = d ? `Třetina = kde poslanec stojí mezi ${fmtNum(d.of)} současnými poslanci delegace v dané kategorii;
-      celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}
+      celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}${d.tiers_skipped ? " Mandát pokrývá méně než 75 % období, proto se třetina neurčuje a počty se s kolegy nesrovnávají." : ""}
       <a href="prace.html">Srovnání celé delegace</a>.`
     : `${byGender(mep, "Bývalý poslanec", "Bývalá poslankyně")} se se současnou delegací nesrovnává (jiné období).`;
   const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>

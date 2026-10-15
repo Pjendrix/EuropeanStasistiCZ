@@ -159,6 +159,25 @@ def test_profile_only_current_delegation():
     assert prof["c"]["mandate_from"] == "2025-10-04" and prof["a"]["mandate_from"] is None
 
 
+def test_short_mandate_gets_no_tier():
+    r = lambda n: {"lead_reports": n, "lead_opinions": 0, "shadow_reports": 0, "shadow_opinions": 0, "motions_signed": 0}
+    roles = {"a": r(1), "b": r(5), "c": r(0), "late": r(9)}
+    members = {"a": "2024-07-16", "b": "2024-07-16", "c": "2024-08-01", "late": "2025-07-31"}
+    prof = ow.delegation_profile(roles, members, until="2026-10-08")
+    # „late“ měl 434 z 814 dní (53 %): má nejvíc, ale třetinu nedostane; čísla se neupravují
+    assert prof["late"]["tiers_skipped"] and set(prof["late"]["tiers"].values()) == {None}
+    # „c“ byl v mandátu 99 % období: třetina se určuje (0 = bez třetiny je pravidlo kategorie, ne krátkého mandátu)
+    assert not prof["c"]["tiers_skipped"] and not prof["a"]["tiers_skipped"]
+    assert prof["b"]["tiers"]["lead_reports"] == "mid" and prof["a"]["tiers"]["lead_reports"] == "low"
+
+
+def test_coverage():
+    assert ow.coverage("2024-07-16", "2024-07-16", "2026-10-08") == 1.0
+    assert round(ow.coverage("2025-07-31", "2024-07-16", "2026-10-08"), 2) == 0.53
+    assert ow.coverage(None, "2024-07-16", "2026-10-08") is None
+    assert ow.coverage("2024-07-16", "2024-07-16", "2024-07-16") is None
+
+
 def test_report_counted_once_regardless_of_order():
     # procedura přijde v datech dřív než dokument zprávy (stává se) → zpráva se nesmí započítat dvakrát
     docs = {"A-10-2025-0001": {"kind": "report", "label": "A10-0001/2025", "procedure": "2025-0001", "date": "2025-06-01"}}

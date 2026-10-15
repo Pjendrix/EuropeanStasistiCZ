@@ -58,7 +58,7 @@
       <span class="tier tier-top">▲</span> horní třetina
       <span class="tier tier-mid">●</span> střední
       <span class="tier tier-low">▼</span> dolní
-      <span class="tier tier-none">–</span> žádný text</p>
+      <span class="tier tier-none">–</span> žádný text nebo kratší mandát (méně než 75 % období), nesrovnává se</p>
   </div>
   <div class="table-wrap">
     <table id="work" class="compact">
@@ -116,7 +116,9 @@ setNav("work");
     const adopted = { lead_reports: "lead_adopted", shadow_reports: "shadow_adopted" };
     const tierCell = (r, k) => {
       const t = r.d.tiers[k];
-      const chip = t ? `<span class="tier tier-${t}" title="${TIER[t][1]}"><span aria-hidden="true">${TIER[t][0]}</span><span class="sr-only">${TIER[t][1]}</span></span>`
+      const skipped = r.d.tiers_skipped;
+      const chip = skipped ? '<span class="tier tier-none" title="kratší mandát, nesrovnává se">–<span class="sr-only"> kratší mandát, nesrovnává se</span></span>'
+        : t ? `<span class="tier tier-${t}" title="${TIER[t][1]}"><span aria-hidden="true">${TIER[t][0]}</span><span class="sr-only">${TIER[t][1]}</span></span>`
         : '<span class="tier tier-none" aria-hidden="true">–</span>';
       const passed = adopted[k] && r.m[k] ? `<div class="small muted">prošlo ${fmtNum(r.m[adopted[k]])}</div>` : "";
       return `<td class="num"><span class="count">${fmtNum(r.m[k])}</span>${chip}${passed}</td>`;
