@@ -584,11 +584,19 @@ def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
     require(state, ["documents"], "proposals_state.json")
     linked = own_work.link(proposals["items"], state["documents"], votes)
     passed = {str(k): own_work.passed(v) for k, v in linked.items()}
-    ranks = own_work.rank_delegation(passed)
+    # Pořadí jen v současné delegaci: poslanci v mandátu k datu posledního hlasování v datech (reprodukovatelné).
+    ref = max((v["date"] for v in votes), default=None)
+    meps_path = data_dir / "meps.json"
+    members = None
+    if ref and meps_path.exists():
+        meps = json.loads(meps_path.read_text(encoding="utf-8"))["meps"]
+        members = {str(m["id"]): min(x["start"] for x in m["mandates"]) for m in meps
+                   if any(x["start"] <= ref and (x["end"] is None or ref <= x["end"]) for x in m["mandates"])}
+    ranks = own_work.rank_delegation(passed, members)
     return {
         "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
         "type_labels": own_work.TYPE_LABELS,
-        "meps": {str(k): {"summary": own_work.summarize(v), "passed": {**passed[str(k)], "delegation": ranks[str(k)]},
+        "meps": {str(k): {"summary": own_work.summarize(v), "passed": {**passed[str(k)], "delegation": ranks.get(str(k))},
                           "items": v} for k, v in sorted(linked.items())},
     }
 

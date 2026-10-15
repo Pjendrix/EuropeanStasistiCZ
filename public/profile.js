@@ -161,7 +161,7 @@ function ownItem(e) {
 
 // „Co prošlo“: přijaté texty podle role, nahoře nad podrobnými počty. Jen počty z own_work.json, žádné body ani váhy.
 function passedCard(label, value, details, suffix = "") {
-  return `<div class="card metric"><div class="label">${label}</div><div class="value">${fmtNum(value)}${suffix}</div>
+  return `<div class="card metric"><div class="label">${label}</div><div class="value">${value === null ? "–" : `${fmtNum(value)}${suffix}`}</div>
     ${details.filter(Boolean).map((d) => `<div class="detail">${d}</div>`).join("")}</div>`;
 }
 
@@ -181,15 +181,18 @@ function ownPassed(ow, mep) {
       ["vlastní a společné návrhy usnesení, pod kterými je podepsán" + byGender(mep, "", "a")]),
     d ? passedCard("Pořadí v české delegaci", d.rank, [
       `podle přijatých zpráv (zpravodaj + stínový): <strong>${fmtNum(d.texts_adopted)}</strong>`,
-      `z ${fmtNum(d.of)} poslanců · medián ${fmtNum(d.median)} · nejvíc ${fmtNum(d.max)}`,
-      "shodný počet = shodné místo"], ".") : "",
+      `mezi ${fmtNum(d.of)} současnými poslanci · medián ${fmtNum(d.median)} · nejvíc ${fmtNum(d.max)}`,
+      d.mandate_from ? `pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024` : "",
+      "shodný počet = shodné místo"], ".")
+      : passedCard("Pořadí v české delegaci", null, ["počítá se jen mezi současnými poslanci; " +
+          byGender(mep, "bývalý poslanec", "bývalá poslankyně") + " se neřadí"]),
   ].join("");
   const list = adopted.length ? `<details class="card own-list" open><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adopted.length})</summary>
       <ul class="plain">${adopted.map(ownItem).join("")}</ul></details>` : "";
   return `<h3 class="own-sub">Co prošlo</h3><div class="metrics">${cards}</div>${list}
     <p class="small muted">Zpravodaj/ka připravuje text za celý Parlament, stínový/á zpravodaj/ka ho vyjednává za svou frakci.
       Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). „Bez jmenovitého hlasování“
-      zahrnuje texty, které se ještě projednávají. Pořadí jen srovnává počty, neříká nic o významu jednotlivých textů.</p>
+      zahrnuje texty, které se ještě projednávají. Pořadí jen srovnává počty mezi současnými poslanci (v mandátu k poslednímu hlasování v datech), neříká nic o významu jednotlivých textů.</p>
     <h3 class="own-sub">Všechna práce podle typu</h3>`;
 }
 
