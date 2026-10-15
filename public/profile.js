@@ -183,7 +183,7 @@ function ownPassed(ow, mep) {
       `podle přijatých zpráv (zpravodaj + stínový): <strong>${fmtNum(d.texts_adopted)}</strong>`,
       `mezi ${fmtNum(d.of)} současnými poslanci · medián ${fmtNum(d.median)} · nejvíc ${fmtNum(d.max)}`,
       d.mandate_from ? `pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024` : "",
-      "shodný počet = shodné místo"], ".")
+      'shodný počet = shodné místo · <a href="prace.html">celý žebříček</a>'], ".")
       : passedCard("Pořadí v české delegaci", null, ["počítá se jen mezi současnými poslanci; " +
           byGender(mep, "bývalý poslanec", "bývalá poslankyně") + " se neřadí"]),
   ].join("");
