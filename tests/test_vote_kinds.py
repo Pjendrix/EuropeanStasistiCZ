@@ -7,9 +7,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from vote_kinds import classify, is_final, kind_of  # noqa: E402
 
 
-def v(description, is_main=False, subject=None, amendment_number=None):
+def v(description, is_main=False, subject=None, amendment_number=None, title=None):
     return {"description": description, "is_main": is_main, "amendment_subject": subject,
-            "amendment_number": amendment_number}
+            "amendment_number": amendment_number, "title": title}
 
 
 # Vzory z aktuálních dat HowTheyVote (description, is_main, amendment_subject) -> (typ, inverted).
@@ -48,7 +48,15 @@ CASES = [
     (v("Annexe, partie introductive/2"), ("split_part", False)),
     (v(None, False, None, "12"), ("amendment", False)),
     (v(None), ("other", False)),
-    (v("Demande d'ajournement du vote"), ("other", False)),
+    (v("Demande d'ajournement du vote"), ("procedural", False)),
+    (v("Demande de renvoi en commission"), ("procedural", False)),
+    # námitky proti aktům Komise (169418, 181956): hlavní hlasování = objection, PN k nim zůstávají PN
+    (v("Proposition de résolution", True, title="Objection pursuant to Rule 115(2) and (3), and Rule 115(4)(c): MOCK"),
+     ("objection", False)),
+    (v("Proposition de résolution (ensemble du texte)", True, title="Objection pursuant to Rule 114(3): MOCK"),
+     ("objection", False)),
+    (v("Après le § 2 - Am 2", False, "After § 2", title="Objection pursuant to Rule 115(2) and (3): MOCK"),
+     ("amendment", False)),
     (v("Proposition de décision du Conseil"), ("other", False)),
 ]
 
@@ -63,3 +71,4 @@ def test_kind_of_prefers_stored_value_and_is_final():
     assert is_final(v("Accord provisoire - Am 2", True))
     assert not is_final(v("Proposition de rejet", True))
     assert not is_final(v("Demande de décision d'urgence", True))
+    assert is_final(v("Proposition de résolution", True, title="Objection pursuant to Rule 115(2): MOCK"))

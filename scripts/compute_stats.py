@@ -41,11 +41,13 @@ INDEPENDENT = "Independent"  # EP tak označuje poslance bez strany; nejde o str
 DEFINITIONS = {
     "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). "
                   "Počítají se jen hlasování v době jeho mandátu podle EP.",
-    "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. "
+    "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce "
+                       "proti aktu Komise. "
                        "Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
     "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): "
-                 "závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát "
-                 "k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
+                 "závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), "
+                 "návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, "
+                 "dílčí hlasování o části textu, procedurální hlasování, ostatní.",
     "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). "
                      "Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). "
                      "Nezařazení (NI) se nepočítají.",
