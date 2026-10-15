@@ -111,7 +111,7 @@ def test_mandate_and_urgency_are_ignored():
     assert e["status"] == "no_vote" and e["vote_id"] is None
 
 
-def test_passed_and_delegation_rank():
+def test_passed_counts_adopted():
     entries = [
         {"type": "report", "status": "ADOPTED", "legislative": True},
         {"type": "report", "status": "no_vote", "legislative": None},
@@ -123,29 +123,62 @@ def test_passed_and_delegation_rank():
     p = ow.passed(entries)
     assert p == {"lead_adopted": 1, "lead_adopted_legislative": 1, "lead_pending": 1, "shadow_adopted": 1,
                  "shadow_adopted_legislative": 0, "shadow_pending": 0, "resolutions_adopted": 1}
-    ranks = ow.rank_delegation({"a": p, "b": {**p, "lead_adopted": 3}, "c": p})
-    assert ranks["b"]["rank"] == 1 and ranks["a"]["rank"] == 2 and ranks["c"]["rank"] == 2
-    assert ranks["a"]["of"] == 3 and ranks["a"]["median"] == 2 and ranks["a"]["max"] == 4
 
 
-def test_rank_only_current_delegation():
-    p = {"lead_adopted": 1, "shadow_adopted": 1}
-    passed = {"a": p, "b": {**p, "lead_adopted": 5}, "old": {**p, "shadow_adopted": 9}}
-    # současná delegace a, b, c (c bez jediné zprávy = 0); „old“ už není v mandátu
-    ranks = ow.rank_delegation(passed, {"a": "2024-07-16", "b": "2024-07-16", "c": "2025-10-04"})
-    assert ranks["old"] is None
-    assert (ranks["b"]["rank"], ranks["a"]["rank"], ranks["c"]["rank"]) == (1, 2, 3)
-    assert ranks["a"]["of"] == 3 and ranks["c"]["texts_adopted"] == 0 and ranks["b"]["max"] == 6
-    assert ranks["c"]["mandate_from"] == "2025-10-04" and ranks["a"]["mandate_from"] is None
-
-
-def test_process_type_from_procedure():
-    proposals = [
-        {"id": "proc-MOCK", "kind": "procedure", "procedure": "2024-0001", "process_type": "COD", "label": "2024/0001(COD)",
-         "participants": [{"mep_id": 1, "role": "RAPPORTEUR_SHADOW"}]},
-        {"id": "A-10-2024-0001", "kind": "report", "label": "A10-0001/2024", "procedure": "2024-0001",
-         "participants": [{"mep_id": 2, "role": "RAPPORTEUR"}]},
+def test_roles_count_assignments_regardless_of_result():
+    entries = [
+        {"type": "report", "status": "ADOPTED"}, {"type": "report", "status": "REJECTED"},
+        {"type": "report", "status": "no_vote"}, {"type": "opinion", "status": None},
+        {"type": "shadow_report", "status": "ADOPTED"}, {"type": "shadow_opinion", "status": None},
+        {"type": "shadow_opinion", "status": None}, {"type": "joint_motion", "status": "ADOPTED"},
+        {"type": "motion", "status": "superseded"}, {"type": "question", "status": "answered"},
     ]
-    out = ow.link(proposals, {}, [])
-    assert out[1][0]["process_type"] == "COD" and out[1][0]["legislative"] is True
-    assert out[2][0]["process_type"] == "COD" and out[2][0]["legislative"] is True
+    assert ow.roles(entries) == {"lead_reports": 3, "lead_opinions": 1, "shadow_reports": 1,
+                                 "shadow_opinions": 2, "motions_signed": 2}
+
+
+def test_tier_thirds():
+    values = [0, 0, 1, 1, 2, 3, 5, 8, 9]
+    assert ow.tier(0, values) is None            # nula nemá třetinu
+    assert ow.tier(1, values) == "low"           # menších 2/9
+    assert ow.tier(2, values) == "mid"           # menších 4/9
+    assert ow.tier(8, values) == "top"           # menších 7/9
+    assert ow.tier(3, values) == "mid" and ow.tier(5, values) == "top"  # 5/9 a 6/9 (hranice 2/3 patří nahoru)
+
+
+def test_profile_only_current_delegation():
+    r = lambda n: {"lead_reports": n, "lead_opinions": 0, "shadow_reports": 0, "shadow_opinions": 0, "motions_signed": 50}
+    roles = {"a": r(1), "b": r(5), "old": r(9)}
+    # současná delegace a, b, c (c bez dat = 0); „old“ už není v mandátu
+    prof = ow.delegation_profile(roles, {"a": "2024-07-16", "b": "2024-07-16", "c": "2025-10-04"})
+    assert prof["old"] is None
+    assert prof["b"]["tiers"]["lead_reports"] == "top" and prof["a"]["tiers"]["lead_reports"] == "mid"
+    assert prof["c"]["tiers"]["lead_reports"] is None and prof["a"]["tiers"]["lead_opinions"] is None
+    assert "motions_signed" not in prof["a"]["tiers"]  # usnesení do třetin nevstupují
+    assert prof["a"]["of"] == 3
+    assert prof["c"]["mandate_from"] == "2025-10-04" and prof["a"]["mandate_from"] is None
+
+
+def test_report_counted_once_regardless_of_order():
+    # procedura přijde v datech dřív než dokument zprávy (stává se) → zpráva se nesmí započítat dvakrát
+    docs = {"A-10-2025-0001": {"kind": "report", "label": "A10-0001/2025", "procedure": "2025-0001", "date": "2025-06-01"}}
+    votes = [vote(5, "A10-0001/2025", "ADOPTED")]
+    items = [
+        {"id": "proc-2025-0001", "kind": "procedure", "label": "2025/0001(COD)", "procedure": "2025-0001",
+         "participants": [part(1, "RAPPORTEUR", date="2025-01-01")]},
+        {"id": "A-10-2025-0001", "kind": "report", "label": "A10-0001/2025", "procedure": "2025-0001",
+         "participants": [part(1, "RAPPORTEUR")]},
+    ]
+    out = ow.link(items, docs, votes)
+    assert [e["type"] for e in out[1]] == ["report"]
+    assert ow.passed(out[1])["lead_adopted"] == 1 and ow.roles(out[1])["lead_reports"] == 1
+
+
+def test_repeated_role_in_procedure_counted_once():
+    items = [{"id": "proc-2025-0555", "kind": "procedure", "label": "2025/0555(COD)", "procedure": "2025-0555",
+              "participants": [part(1, "RAPPORTEUR_SHADOW_OPINION", date="2025-12-10"),
+                               part(1, "RAPPORTEUR_SHADOW_OPINION", date="2026-01-23"),
+                               part(1, "RAPPORTEUR_SHADOW", date="2026-02-01")]}]
+    out = ow.link(items, {}, [])
+    assert ow.roles(out[1]) == {"lead_reports": 0, "lead_opinions": 0, "shadow_reports": 1,
+                                "shadow_opinions": 1, "motions_signed": 0}

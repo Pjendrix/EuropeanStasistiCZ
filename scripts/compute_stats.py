@@ -83,7 +83,18 @@ DEFINITIONS = {
                 "Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako "
                 "zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo "
                 "zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje "
-                "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
+                "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se "
+                "počítá jednou.",
+    "work_profile": "Profil vlastní práce (stránka Vlastní práce) počítá přidělené role bez ohledu na výsledek "
+                    "hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které "
+                    "vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými "
+                    "poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí "
+                    "ani body záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádná váha by nebyla "
+                    "podložená. Podepsané návrhy usnesení se ukazují zvlášť a do třetin nevstupují: podepisují je "
+                    "desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá "
+                    "hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP "
+                    "jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, "
+                    "takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává.",
     "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad "
               "(data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování "
               "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
@@ -592,11 +603,13 @@ def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
         meps = json.loads(meps_path.read_text(encoding="utf-8"))["meps"]
         members = {str(m["id"]): min(x["start"] for x in m["mandates"]) for m in meps
                    if any(x["start"] <= ref and (x["end"] is None or ref <= x["end"]) for x in m["mandates"])}
-    ranks = own_work.rank_delegation(passed, members)
+    roles = {str(k): own_work.roles(v) for k, v in linked.items()}
+    profile = own_work.delegation_profile(roles, members)
     return {
         "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
         "type_labels": own_work.TYPE_LABELS,
-        "meps": {str(k): {"summary": own_work.summarize(v), "passed": {**passed[str(k)], "delegation": ranks.get(str(k))},
+        "meps": {str(k): {"summary": own_work.summarize(v), "passed": passed[str(k)],
+                          "roles": {**roles[str(k)], "delegation": profile.get(str(k))},
                           "items": v} for k, v in sorted(linked.items())},
     }
 
