@@ -84,3 +84,16 @@ def test_logo_warnings(tmp_path):
     w = " | ".join(cd.check_logos(data, public))
     assert "A" not in [x.split()[1] for x in cd.check_logos(data, public)]
     assert "SVG assets/bad.svg" in w and "70 kB" in w and "C (assets/big.png) nemá" in w
+
+
+def test_delegations_checked(tmp_path):
+    d = tmp_path / "data"
+    d.mkdir()
+    assert cd.check_delegations(d) == ([], [])  # chybí soubor: starší data, nic se nehlásí
+    (d / "delegations.json").write_text(json.dumps({"own": "CZE", "peers": [], "countries": {}}))
+    assert cd.check_delegations(d)[0] == ["delegations.json: chybí česká delegace"]
+    own = {"seats": 21, "unity": [5, 10]}
+    (d / "delegations.json").write_text(json.dumps({"own": "CZE", "peers": ["AAA"], "countries": {"CZE": own}}))
+    (d / "stats.json").write_text(json.dumps({"votes_analysis": {"unity": {"united": 4, "considered": 10}}}))
+    problems, warnings = cd.check_delegations(d)
+    assert not problems and len(warnings) == 1 and "liší" in warnings[0]

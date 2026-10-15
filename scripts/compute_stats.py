@@ -69,6 +69,12 @@ DEFINITIONS = {
                       "opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální "
                       "výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt "
                       "spolehlivě spočítat.",
+    "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, "
+                   "která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 "
+                   "poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by "
+                   "hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší "
+                   "celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni "
+                   "poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
     "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
                      "většina jeho frakce k datu hlasování.",
     "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "

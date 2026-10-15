@@ -107,6 +107,13 @@ function outcomeCard(label, own, group, detail, mep) {
   </div>`;
 }
 
+// Hlasoval(a) tak, jak hlasování dopadlo? Jen u hlasů pro a proti a jen při výsledku přijato / zamítnuto (jinak „–“).
+function sideCell(v) {
+  const won = (v.position === "FOR" && v.result === "ADOPTED") || (v.position === "AGAINST" && v.result === "REJECTED");
+  const lost = (v.position === "FOR" && v.result === "REJECTED") || (v.position === "AGAINST" && v.result === "ADOPTED");
+  return `<td class="extra small muted">${won ? "ano, výsledek odpovídá hlasu" : lost ? "ne, hlasování dopadlo opačně" : "–"}</td>`;
+}
+
 function voteTable(rows, extraHead, extraCell) {
   if (!rows.length) return '<p class="muted">Žádné takové hlasování.</p>';
   return `<div class="table-wrap"><table class="stack">
@@ -399,7 +406,7 @@ function periodText(x) {
         <p class="small muted">Těsná hlasování, která by bez hlasů českých poslanců dopadla opačně; většinou pozměňovací návrhy a dílčí hlasování
           (<a href="rozhodujici.html">všechna taková hlasování</a>).
           Ukazuje se, jak ${byGender(mep, "hlasoval", "hlasovala")} v těch, která proběhla v době ${byGender(mep, "jeho", "jejího")} mandátu.</p>
-        ${voteTable(profile.decisive, "<th>Volba</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>`)}
+        ${voteTable(profile.decisive, "<th>Volba</th><th>Na straně výsledku</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>${sideCell(v)}`)}
       </div>
 
       <h2 id="temata">Podle témat</h2>

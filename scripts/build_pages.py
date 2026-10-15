@@ -417,7 +417,7 @@ DEFINITION_NAMES = {
     "close_votes": "Těsná hlasování", "decisive_votes": "Kde rozhodly české hlasy",
     "against_group": "Kde hlasoval jinak než frakce", "cz_split": "Kde se Češi rozdělili", "cz_unity": "Češi jednotně",
     "party_cohesion": "Jednotnost strany", "topics": "Témata", "own_work": "Práce na textech",
-    "work_profile": "Práce na textech – třetiny v delegaci",
+    "work_profile": "Práce na textech – třetiny v delegaci", "delegations": "Srovnání s delegacemi podobné velikosti",
 }
 
 

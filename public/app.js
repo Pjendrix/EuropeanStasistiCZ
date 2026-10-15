@@ -705,3 +705,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Stav načítání čtečky oznámí jednou a sám zmizí, až se obsah nahradí.
 document.querySelectorAll(".loading").forEach((el) => el.setAttribute("role", "status"));
+
+// --- srovnání s delegacemi podobné velikosti (data/delegations.json, scripts/delegations.py) -------
+
+const COUNTRY_CS = {
+  AUT: "Rakousko", BEL: "Belgie", BGR: "Bulharsko", HRV: "Chorvatsko", CYP: "Kypr", CZE: "Česko", DNK: "Dánsko", EST: "Estonsko",
+  FIN: "Finsko", FRA: "Francie", GRC: "Řecko", HUN: "Maďarsko", IRL: "Irsko", ITA: "Itálie", LVA: "Lotyšsko", LTU: "Litva",
+  LUX: "Lucembursko", MLT: "Malta", NLD: "Nizozemsko", POL: "Polsko", PRT: "Portugalsko", ROU: "Rumunsko", SVK: "Slovensko",
+  SVN: "Slovinsko", ESP: "Španělsko", SWE: "Švédsko", DEU: "Německo",
+};
+
+function spanText(range, fmt) {
+  return range && range.min != null ? (range.min === range.max ? fmt(range.min) : `${fmt(range.min)}–${fmt(range.max)}`) : "–";
+}
+
+// Tabulka delegací pro srovnání; rows = [{ label, get: (country) => text }].
+function delegationTable(dl, columns) {
+  const order = [dl.own, ...dl.peers];
+  return `<div class="table-wrap"><table class="compact"><thead><tr><th>Delegace</th><th class="num">Poslanců</th>${columns.map((c) => `<th class="num">${esc(c.label)}</th>`).join("")}</tr></thead>
+    <tbody>${order.map((code) => `<tr${code === dl.own ? ' class="own-row"' : ""}><td>${esc(COUNTRY_CS[code] || code)}</td><td class="num">${fmtNum(dl.countries[code].seats)}</td>
+      ${columns.map((c) => `<td class="num">${c.get(dl.countries[code])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}

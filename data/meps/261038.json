@@ -148,6 +148,7 @@
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
   "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
   "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.",
@@ -2185,7 +2186,7 @@
   "source": {
    "release": "2026-10-10"
   },
-  "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (docházka, docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců záměrně neuvádíme.",
+  "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců v celém EP záměrně neuvádíme.",
   "min_votes": 100,
   "ep": {
    "meps": 742,

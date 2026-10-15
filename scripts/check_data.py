@@ -92,6 +92,27 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         gone = {m["id"] for m in prev_meps["meps"]} - {m["id"] for m in meps_doc["meps"]}
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
+    p2, w2 = check_delegations(data_dir)
+    return problems + p2, warnings + w2
+
+
+def check_delegations(data_dir: Path) -> tuple[list[str], list[str]]:
+    """data/delegations.json (srovnání s delegacemi podobné velikosti): musí mít českou delegaci a aspoň jednu srovnávací;
+    jednotnost české delegace tu musí vyjít stejně jako ve statistikách (stejné pravidlo, jiný zdroj výpočtu)."""
+    d = _load(data_dir / "delegations.json")
+    if d is None:  # starší data bez srovnání; fetch_votes.py ho při dalším běhu vytvoří
+        return [], []
+    problems, warnings = [], []
+    own = d.get("countries", {}).get(d.get("own"))
+    if not own:
+        return ["delegations.json: chybí česká delegace"], []
+    if not d.get("peers"):
+        warnings.append("delegations.json: žádná srovnávací delegace s 20–22 poslanci")
+    stats = _load(data_dir / "stats.json")
+    unity = ((stats or {}).get("votes_analysis") or {}).get("unity")
+    if unity and own["unity"] != [unity["united"], unity["considered"]]:
+        warnings.append(f"delegations.json: jednotnost ČR {own['unity']} se liší od stats.json "
+                        f"{[unity['united'], unity['considered']]} (poslanci mimo mandát?)")
     return problems, warnings
 
 
