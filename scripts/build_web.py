@@ -10,6 +10,7 @@ Výstup:
   data/parties/{id}.json    stránka strany
   data/session.json         shrnutí posledního zasedání pro úvodní stránku
   data/agreement.json       matice shody mezi českými poslanci
+  data/work.json            vlastní práce: co prošlo, po poslancích (žebříček v české delegaci)
 
 Nic nepočítá znovu: metriky bere ze stats.json, hlasování z měsíčních souborů.
 Měsíční soubory zůstávají pro detail hlasování.
@@ -271,6 +272,23 @@ def build_session(stats: dict, votes: list[dict], votes_by_id: dict, meps_by_id:
     }
 
 
+PASSED_KEYS = ["lead_adopted", "lead_adopted_legislative", "lead_pending", "shadow_adopted",
+               "shadow_adopted_legislative", "shadow_pending", "resolutions_adopted"]
+
+
+def build_work(meps: list[dict], own: dict | None, day: str) -> dict | None:
+    """Žebříček vlastní práce: počty z own_work.json (spočítal own_work.passed / rank_delegation), nic nového."""
+    if own is None:
+        return None
+    rows = []
+    for m in meps:
+        entry = own["meps"].get(str(m["id"])) or {}
+        passed = entry.get("passed") or {}
+        rows.append({**mep_summary(m, day), **{k: passed.get(k, 0) for k in PASSED_KEYS},
+                     "delegation": passed.get("delegation")})
+    return {"source": own["source"], "updated": own["updated"], "complete": own["complete"], "meps": rows}
+
+
 def build_agreement(meps: list[dict], stats: dict, day: str) -> dict:
     """Matice shody: pro každou dvojici [stejně, oba hlasovali]."""
     return {
@@ -339,6 +357,9 @@ def run(data_dir: Path, day: str) -> dict:
 
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
+    work = build_work(meps, own, day)
+    if work is not None:
+        write_json(data_dir / "work.json", work)
     profiles_dir = data_dir / "meps"
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,

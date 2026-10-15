@@ -5,25 +5,15 @@ a používají se jen k identifikaci. Když logo chybí, web ukáže tečku v ba
 
 ## Stav k 15. 10. 2026
 
-Nahráno z oficiálních webů (bez úprav kresby, rastry jen převedené do bezeztrátového WebP 128 px; zdroj u každého v `data/manual/logos.json`):
-ODS, Piráti, STAN, KSČM, SPD, Motoristé sobě, ECR (česká verze EKR), PfE, Renew Europe, S&D.
+Na webu jsou loga všech českých stran a všech frakcí (bez úprav kresby; rastry jen oříznuté o prázdný okraj
+a převedené do bezeztrátového WebP s výškou nejvýš 128 px; zdroj u každého v `data/manual/logos.json`):
+ODS, Piráti, STAN, KSČM, SPD, Motoristé sobě, ANO 2011, Přísaha, KDU-ČSL, TOP 09 (kandidátka TOP09/STAN);
+ECR (česká verze EKR), PfE, Renew Europe, S&D, The Left, Zelení/ESA, ESN, EPP.
 
-Chybí (web ukazuje tečku a zkratku). Prostředí Claude Code soubory z webů stran stáhnout nemůže (síť je omezená),
-proto je potřeba je stáhnout ručně. Přímé odkazy dohledané 15. 10. 2026 na oficiálních webech:
+ANO, Přísaha, KDU-ČSL, The Left, Zelení/ESA, ESN a EPP uložil ručně autor webu (15. 10. 2026); u nich je ve `source`
+oficiální web, přesnou stránku se souborem je dobré doplnit. TOP 09 je bajt po bajtu shodné s https://www.top09.cz/styles/assets/svg/logo.svg.
 
-| Kdo | Uložit jako | Odkud stáhnout | Pozn. |
-|---|---|---|---|
-| TOP 09 (kandidátka TOP09/STAN, ID 6793) | `cz/6793.svg` | https://www.top09.cz/styles/assets/svg/logo.svg (stránka https://www.top09.cz/o-nas/logo-a-graficky-manual/) | Kolář i Niedermayer jsou členové TOP 09 (potvrzeno autorem webu) → logo TOP 09 |
-| ANO 2011 (6794) | `cz/6794.svg` | https://www.anobudoucnosti.cz (web blokuje automatické čtení, stáhnout v prohlížeči z hlavičky nebo sekce pro média) | |
-| The Left (GUE_NGL) | `ep/GUE_NGL.webp` | https://left.eu/app/uploads/2024/05/cropped-The-Left_Logo_A_Color-1.png | PNG → bezeztrátové WebP, výška 128 px |
-| Greens/EFA (GREEN_EFA) | `ep/GREEN_EFA.webp` nebo `.svg` | ZIP s českou verzí: https://extranet.greens-efa.eu/public/media/file/1/6869 (stránka https://www.greens-efa.eu/en/newsroom/visual-identity) | v ZIPu PNG/EPS/AI; PNG → WebP, z EPS lze SVG konverzí |
-| ESN | `ep/ESN.webp` | https://cdn.dorik.com/66f2616720bf9b0012e67e2a/images/logofJAaB-5suZj.png (logo z hlavičky https://esn-group.eu/) | ověřit, že je barevné na světlém pozadí |
-| EPP | `ep/EPP.svg` | https://eppgroup.eu/who-we-are/logo-graphic-charter | **jen s výslovným souhlasem** (napsat press@eppgroup.eu) |
-| KDU-ČSL (6770), Přísaha (7033) | – | https://www.kdu.cz/o-nas/grafika · https://www.hnutiprisaha.cz | strany už nemají poslance v mandátu, nízká priorita |
-
-Po nahrání souboru doplnit do `data/manual/logos.json` `file`, `source` (URL, odkud je staženo), `retrieved`.
-Velikost na webu se vyrovná sama: `compute_stats.py` zapíše poměr stran (`logo_aspect`) a web široká slovní
-loga zmenší tak, aby měla zhruba stejnou plochu jako čtvercová (kresba se nemění, jen měřítko).
+**EPP**: web EPP uvádí, že logo nelze použít bez souhlasu. Autor webu ho používá v rámci informačního užití (jen k identifikaci frakce, bez úprav); na žádost vlastníka bude odstraněno.
 
 ## Formát a umístění
 

@@ -193,3 +193,15 @@ def test_profile_benchmarks(data_dir):
 def test_profile_without_benchmarks(data_dir):
     bw.run(data_dir, "2024-11-01")
     assert json.loads((data_dir / "meps" / "1.json").read_text(encoding="utf-8"))["benchmarks"] is None
+
+
+def test_work_ranking_file(data_dir):
+    own = {"source": "MOCK", "updated": "2026-10-15", "complete": True, "type_labels": {},
+           "meps": {"1": {"summary": {}, "items": [], "passed": {"lead_adopted": 2, "shadow_adopted": 1,
+                    "delegation": {"texts_adopted": 3, "rank": 1, "of": 1, "median": 3, "max": 3, "mandate_from": None}}}}}
+    (data_dir / "own_work.json").write_text(json.dumps(own), encoding="utf-8")
+    bw.run(data_dir, "2024-11-01")
+    work = json.loads((data_dir / "work.json").read_text(encoding="utf-8"))
+    rows = {r["id"]: r for r in work["meps"]}
+    assert rows[1]["lead_adopted"] == 2 and rows[1]["delegation"]["rank"] == 1
+    assert rows[2]["lead_adopted"] == 0 and rows[2]["delegation"] is None  # bez dat nic nevymýšlíme

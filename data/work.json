@@ -1,0 +1,947 @@
+{
+ "source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2",
+  "license": "CC BY 4.0"
+ },
+ "updated": "2026-10-15",
+ "complete": true,
+ "meps": [
+  {
+   "id": 23699,
+   "name": "Kateřina KONEČNÁ",
+   "given_name": "Kateřina",
+   "family_name": "Konečná",
+   "sort_label": "KONECNA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/23699.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16868"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "NI",
+    "short_label": "NI"
+   },
+   "party": {
+    "id": 6769,
+    "short_label": "KSČM"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 0,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 0,
+    "rank": 18,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 118949,
+   "name": "Ondřej KOVAŘÍK",
+   "given_name": "Ondřej",
+   "family_name": "Kovařík",
+   "sort_label": "KOVARIK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/118949.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-07-30",
+     "mandate_id": "16875"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 2,
+   "resolutions_adopted": 0,
+   "delegation": null
+  },
+  {
+   "id": 124701,
+   "name": "Luděk NIEDERMAYER",
+   "given_name": "Luděk",
+   "family_name": "Niedermayer",
+   "sort_label": "NIEDERMAYER",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124701.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16877"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 2,
+   "shadow_adopted": 1,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 4,
+   "resolutions_adopted": 33,
+   "delegation": {
+    "texts_adopted": 1,
+    "rank": 16,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 124713,
+   "name": "Tomáš ZDECHOVSKÝ",
+   "given_name": "Tomáš",
+   "family_name": "Zdechovský",
+   "sort_label": "ZDECHOVSKY",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124713.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16896"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6770,
+    "short_label": "KDU-ČSL"
+   },
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 8,
+   "shadow_adopted": 2,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 6,
+   "resolutions_adopted": 46,
+   "delegation": {
+    "texts_adopted": 4,
+    "rank": 11,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 197526,
+   "name": "Martin HLAVÁČEK",
+   "given_name": "Martin",
+   "family_name": "Hlaváček",
+   "sort_label": "HLAVACEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197526.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2024-07-31",
+     "mandate_id": "16871"
+    }
+   ],
+   "short_mandate": true,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": null,
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 0,
+   "resolutions_adopted": 0,
+   "delegation": null
+  },
+  {
+   "id": 197528,
+   "name": "Ondřej KNOTEK",
+   "given_name": "Ondřej",
+   "family_name": "Knotek",
+   "sort_label": "KNOTEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197528.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16873"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 4,
+   "lead_adopted_legislative": 2,
+   "lead_pending": 5,
+   "shadow_adopted": 14,
+   "shadow_adopted_legislative": 4,
+   "shadow_pending": 9,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 18,
+    "rank": 1,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 197537,
+   "name": "Alexandr VONDRA",
+   "given_name": "Alexandr",
+   "family_name": "Vondra",
+   "sort_label": "VONDRA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197537.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16879"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 5,
+   "shadow_adopted_legislative": 5,
+   "shadow_pending": 4,
+   "resolutions_adopted": 64,
+   "delegation": {
+    "texts_adopted": 5,
+    "rank": 7,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 197549,
+   "name": "Markéta GREGOROVÁ",
+   "given_name": "Markéta",
+   "family_name": "Gregorová",
+   "sort_label": "GREGOROVA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197549.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16866"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "VERTS-ALE",
+    "short_label": "Verts/ALE"
+   },
+   "party": {
+    "id": 6862,
+    "short_label": "PIR"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 2,
+   "shadow_adopted": 11,
+   "shadow_adopted_legislative": 8,
+   "shadow_pending": 6,
+   "resolutions_adopted": 17,
+   "delegation": {
+    "texts_adopted": 11,
+    "rank": 3,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 197552,
+   "name": "Veronika VRECIONOVÁ",
+   "given_name": "Veronika",
+   "family_name": "Vrecionová",
+   "sort_label": "VRECIONOVA",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197552.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16869"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "lead_adopted": 8,
+   "lead_adopted_legislative": 8,
+   "lead_pending": 7,
+   "shadow_adopted": 1,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 2,
+   "resolutions_adopted": 55,
+   "delegation": {
+    "texts_adopted": 9,
+    "rank": 4,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 197556,
+   "name": "Ivan DAVID",
+   "given_name": "Ivan",
+   "family_name": "David",
+   "sort_label": "DAVIDI",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197556.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16870"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ESN",
+    "short_label": "ESN"
+   },
+   "party": {
+    "id": 6864,
+    "short_label": "SPD"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 1,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 4,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 1,
+    "rank": 16,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 220840,
+   "name": "Jaroslav BŽOCH",
+   "given_name": "Jaroslav",
+   "family_name": "Bžoch",
+   "sort_label": "BZOCHJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/220840.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16884"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 12,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 1,
+   "shadow_adopted": 4,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 5,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 16,
+    "rank": 2,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256840,
+   "name": "Jan FARSKÝ",
+   "given_name": "Jan",
+   "family_name": "Farský",
+   "sort_label": "FARSKYJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256840.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16886"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 2,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 0,
+   "resolutions_adopted": 45,
+   "delegation": {
+    "texts_adopted": 2,
+    "rank": 14,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256843,
+   "name": "Jana NAGYOVÁ",
+   "given_name": "Jana",
+   "family_name": "Nagyová",
+   "sort_label": "NAGYOVAJ",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256843.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16889"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 1,
+   "shadow_adopted": 2,
+   "shadow_adopted_legislative": 2,
+   "shadow_pending": 9,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 2,
+    "rank": 14,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256844,
+   "name": "Jaroslava POKORNÁ JERMANOVÁ",
+   "given_name": "Jaroslava",
+   "family_name": "Pokorná Jermanová",
+   "sort_label": "POKORNAJERMANOVAJ",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256844.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16890"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 5,
+   "shadow_adopted_legislative": 2,
+   "shadow_pending": 6,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 5,
+    "rank": 7,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256845,
+   "name": "Ondřej KRUTÍLEK",
+   "given_name": "Ondřej",
+   "family_name": "Krutílek",
+   "sort_label": "KRUTILEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256845.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16891"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 1,
+   "shadow_adopted": 5,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 7,
+   "resolutions_adopted": 55,
+   "delegation": {
+    "texts_adopted": 5,
+    "rank": 7,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256846,
+   "name": "Ondřej KOLÁŘ",
+   "given_name": "Ondřej",
+   "family_name": "Kolář",
+   "sort_label": "KOLARO",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256846.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16893"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "lead_adopted": 4,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 1,
+   "resolutions_adopted": 24,
+   "delegation": {
+    "texts_adopted": 4,
+    "rank": 11,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256847,
+   "name": "Danuše NERUDOVÁ",
+   "given_name": "Danuše",
+   "family_name": "Nerudová",
+   "sort_label": "NERUDOVAD",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256847.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16894"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 2,
+   "lead_pending": 1,
+   "shadow_adopted": 1,
+   "shadow_adopted_legislative": 1,
+   "shadow_pending": 0,
+   "resolutions_adopted": 52,
+   "delegation": {
+    "texts_adopted": 3,
+    "rank": 13,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256850,
+   "name": "Filip TUREK",
+   "given_name": "Filip",
+   "family_name": "Turek",
+   "sort_label": "TUREKF",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256850.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-10-03",
+     "mandate_id": "16895"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 1,
+   "shadow_adopted": 4,
+   "shadow_adopted_legislative": 3,
+   "shadow_pending": 1,
+   "resolutions_adopted": 0,
+   "delegation": null
+  },
+  {
+   "id": 256851,
+   "name": "Ondřej DOSTÁL",
+   "given_name": "Ondřej",
+   "family_name": "Dostál",
+   "sort_label": "DOSTÁLO",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256851.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16897"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "NI",
+    "short_label": "NI"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 0,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 0,
+    "rank": 18,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256852,
+   "name": "Nikola BARTŮŠEK",
+   "given_name": "Nikola",
+   "family_name": "Bartůšek",
+   "sort_label": "BARTUSEKN",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16898"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 7,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 0,
+   "resolutions_adopted": 7,
+   "delegation": {
+    "texts_adopted": 9,
+    "rank": 4,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 256853,
+   "name": "Klára DOSTÁLOVÁ",
+   "given_name": "Klára",
+   "family_name": "Dostálová",
+   "sort_label": "DOSTALOVAK",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16899"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 8,
+   "shadow_adopted_legislative": 4,
+   "shadow_pending": 4,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 8,
+    "rank": 6,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": null
+   }
+  },
+  {
+   "id": 261038,
+   "name": "Tomáš KUBÍN",
+   "given_name": "Tomáš",
+   "family_name": "Kubín",
+   "sort_label": "KUBINT",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/261038.jpg",
+   "mandates": [
+    {
+     "start": "2024-08-01",
+     "end": null,
+     "mandate_id": "17552"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 2,
+   "lead_pending": 0,
+   "shadow_adopted": 3,
+   "shadow_adopted_legislative": 2,
+   "shadow_pending": 7,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 5,
+    "rank": 7,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": "2024-08-01"
+   }
+  },
+  {
+   "id": 270261,
+   "name": "Jaroslav KNOT",
+   "given_name": "Jaroslav",
+   "family_name": "Knot",
+   "sort_label": "KNOTJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/270261.jpg",
+   "mandates": [
+    {
+     "start": "2025-07-31",
+     "end": null,
+     "mandate_id": "17561"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 3,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 0,
+    "rank": 18,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": "2025-07-31"
+   }
+  },
+  {
+   "id": 272024,
+   "name": "Antonín STANĚK",
+   "given_name": "Antonín",
+   "family_name": "Staněk",
+   "sort_label": "STANEKA",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/272024.jpg",
+   "mandates": [
+    {
+     "start": "2025-10-04",
+     "end": null,
+     "mandate_id": "17563"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 0,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 2,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 0,
+    "rank": 18,
+    "of": 21,
+    "median": 4.0,
+    "max": 18,
+    "mandate_from": "2025-10-04"
+   }
+  }
+ ]
+}
