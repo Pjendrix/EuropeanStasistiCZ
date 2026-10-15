@@ -181,6 +181,11 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     if own and own.get("summary"):
         items = "".join(f'<li><strong>{esc(own["type_labels"].get(k, k))}</strong>: {fmt_num(s["count"])}</li>'
                         for k, s in own["summary"].items() if s.get("count"))
+        pa = own.get("passed")
+        if pa:
+            items = (f'<li><strong>Přijaté zprávy (zpravodaj/ka)</strong>: {fmt_num(pa["lead_adopted"])}</li>'
+                     f'<li><strong>Přijaté zprávy (stínový/á zpravodaj/ka)</strong>: {fmt_num(pa["shadow_adopted"])}</li>'
+                     f'<li><strong>Přijatá usnesení</strong>: {fmt_num(pa["resolutions_adopted"])}</li>') + items
         if items:
             own_html = (f'<h2 id="vlastni-prace">Vlastní práce</h2><div class="card"><ul class="plain">{items}</ul>'
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '

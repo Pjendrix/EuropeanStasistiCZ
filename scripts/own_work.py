@@ -28,6 +28,9 @@ TYPE_LABELS = {
     "question": "Otázky Komisi a Radě",
 }
 VOTED = {"ADOPTED", "REJECTED"}
+# Typ procedury z Legislativní observatoře (OEIL). Legislativní = Parlament spolurozhoduje o právním předpisu.
+LEGISLATIVE = {"COD", "CNS", "APP"}
+LEAD_ROLES = {"RAPPORTEUR", "RAPPORTEUR_CO"}
 
 
 def htv_reference(doc_id: str, label: str | None) -> str | None:
@@ -89,6 +92,13 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                 best = (*st, meta.get("label"))
         return best
 
+    process_types = {i["procedure"]: i.get("process_type") for i in proposals
+                     if i["kind"] == "procedure" and i.get("procedure")}
+
+    def ptype(procedure: str | None) -> dict:
+        t = process_types.get(procedure) if procedure else None
+        return {"process_type": t, "legislative": (t in LEGISLATIVE) if t else None}
+
     out: dict[int, list[dict]] = {}
 
     def add(mep_id, entry):
@@ -112,6 +122,7 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                     report_procs.setdefault(p["mep_id"], set()).add(item.get("procedure"))
                 add(p["mep_id"], {**base, "type": kind, "role": p["role"], "status": status, "vote_id": vote_id,
                                   "vote_date": vote_date, "signatories_total": item.get("signatories_total"),
+                                  **(ptype(item.get("procedure")) if kind == "report" else {}),
                                   **note(vote_id), **extra})
         elif kind == "procedure":
             for p in item["participants"]:
@@ -134,7 +145,8 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                     status, vote_id, vote_date, report_label = None, None, None, None
                 add(p["mep_id"], {**base, "date": p.get("date") or item.get("date"), "type": typ, "role": role,
                                   "group": p.get("group"), "committee": p.get("in_name_of"), "status": status,
-                                  "vote_id": vote_id, "vote_date": vote_date, "report": report_label, **note(vote_id)})
+                                  "vote_id": vote_id, "vote_date": vote_date, "report": report_label,
+                                  **ptype(item.get("procedure")), **note(vote_id)})
         elif kind.startswith("question"):
             for p in item["participants"]:
                 add(p["mep_id"], {**base, "type": "question", "subtype": kind, "role": p["role"],
@@ -162,3 +174,33 @@ def summarize(entries: list[dict]) -> dict[str, dict]:
                 s["superseded"] = sum(e["status"] == "superseded" for e in lst)
         out[typ] = s
     return out
+
+
+def passed(entries: list[dict]) -> dict:
+    """Co z práce poslance prošlo: přijaté zprávy, kde byl zpravodaj (vedl text), a kde byl stínový zpravodaj
+    (vyjednával za svou frakci), zvlášť legislativní; přijatá usnesení, která podepsal; zprávy zatím bez
+    jmenovitého hlasování. Jen počty z dat, žádné váhy ani body."""
+    def count(pred):
+        return sum(1 for e in entries if pred(e))
+    lead = lambda e: e["type"] == "report"
+    shadow = lambda e: e["type"] == "shadow_report"
+    adopted = lambda e: e.get("status") == "ADOPTED"
+    return {
+        "lead_adopted": count(lambda e: lead(e) and adopted(e)),
+        "lead_adopted_legislative": count(lambda e: lead(e) and adopted(e) and e.get("legislative")),
+        "lead_pending": count(lambda e: lead(e) and e.get("status") == "no_vote"),
+        "shadow_adopted": count(lambda e: shadow(e) and adopted(e)),
+        "shadow_adopted_legislative": count(lambda e: shadow(e) and adopted(e) and e.get("legislative")),
+        "shadow_pending": count(lambda e: shadow(e) and e.get("status") == "no_vote"),
+        "resolutions_adopted": count(lambda e: e["type"] in ("motion", "joint_motion") and adopted(e)),
+    }
+
+
+def rank_delegation(passed_by_mep: dict[str, dict], key: str = "texts_adopted") -> dict[str, dict]:
+    """Pořadí v české delegaci podle počtu přijatých zpráv (zpravodaj + stínový). Shodný počet = shodné místo."""
+    values = {k: v["lead_adopted"] + v["shadow_adopted"] for k, v in passed_by_mep.items()}
+    ordered = sorted(values.values(), reverse=True)
+    n = len(ordered)
+    median = (ordered[(n - 1) // 2] + ordered[n // 2]) / 2 if n else None
+    return {k: {key: val, "rank": ordered.index(val) + 1, "of": n, "median": median, "max": ordered[0] if n else None}
+            for k, val in values.items()}

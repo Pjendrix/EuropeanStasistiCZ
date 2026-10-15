@@ -583,10 +583,13 @@ def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
     require(proposals, ["items", "source"], "proposals.json")
     require(state, ["documents"], "proposals_state.json")
     linked = own_work.link(proposals["items"], state["documents"], votes)
+    passed = {str(k): own_work.passed(v) for k, v in linked.items()}
+    ranks = own_work.rank_delegation(passed)
     return {
         "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
         "type_labels": own_work.TYPE_LABELS,
-        "meps": {str(k): {"summary": own_work.summarize(v), "items": v} for k, v in sorted(linked.items())},
+        "meps": {str(k): {"summary": own_work.summarize(v), "passed": {**passed[str(k)], "delegation": ranks[str(k)]},
+                          "items": v} for k, v in sorted(linked.items())},
     }
 
 

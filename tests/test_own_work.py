@@ -109,3 +109,32 @@ def test_mandate_and_urgency_are_ignored():
              vote(2, "A10-0176/2025", "ADOPTED", "2025-01-02", description="Demande de décision d'urgence")]
     e = ow.link(REPORT, {}, votes)[1][0]
     assert e["status"] == "no_vote" and e["vote_id"] is None
+
+
+def test_passed_and_delegation_rank():
+    entries = [
+        {"type": "report", "status": "ADOPTED", "legislative": True},
+        {"type": "report", "status": "no_vote", "legislative": None},
+        {"type": "shadow_report", "status": "ADOPTED", "legislative": False},
+        {"type": "shadow_report", "status": "REJECTED", "legislative": True},
+        {"type": "joint_motion", "status": "ADOPTED"},
+        {"type": "motion", "status": "superseded"},
+    ]
+    p = ow.passed(entries)
+    assert p == {"lead_adopted": 1, "lead_adopted_legislative": 1, "lead_pending": 1, "shadow_adopted": 1,
+                 "shadow_adopted_legislative": 0, "shadow_pending": 0, "resolutions_adopted": 1}
+    ranks = ow.rank_delegation({"a": p, "b": {**p, "lead_adopted": 3}, "c": p})
+    assert ranks["b"]["rank"] == 1 and ranks["a"]["rank"] == 2 and ranks["c"]["rank"] == 2
+    assert ranks["a"]["of"] == 3 and ranks["a"]["median"] == 2 and ranks["a"]["max"] == 4
+
+
+def test_process_type_from_procedure():
+    proposals = [
+        {"id": "proc-MOCK", "kind": "procedure", "procedure": "2024-0001", "process_type": "COD", "label": "2024/0001(COD)",
+         "participants": [{"mep_id": 1, "role": "RAPPORTEUR_SHADOW"}]},
+        {"id": "A-10-2024-0001", "kind": "report", "label": "A10-0001/2024", "procedure": "2024-0001",
+         "participants": [{"mep_id": 2, "role": "RAPPORTEUR"}]},
+    ]
+    out = ow.link(proposals, {}, [])
+    assert out[1][0]["process_type"] == "COD" and out[1][0]["legislative"] is True
+    assert out[2][0]["process_type"] == "COD" and out[2][0]["legislative"] is True

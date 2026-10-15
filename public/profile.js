@@ -125,6 +125,11 @@ const OWN_ROLE = {
   RAPPORTEUR_OPINION: "zpravodaj/ka stanoviska", RAPPORTEUR_SHADOW_OPINION: "stínový zpravodaj/ka stanoviska", AUTHOR: "autor/ka",
 };
 const NO_VOTE_NOTE = "HowTheyVote eviduje jen jmenovitá hlasování. O textu se mohlo hlasovat jinak (zvednutím ruky, tajně, např. u jmenování) nebo hlasování teprve proběhne.";
+const PROCESS_TYPE = {
+  COD: "legislativní – řádný postup", CNS: "legislativní – konzultace", APP: "legislativní – souhlas",
+  INI: "z vlastního podnětu", NLE: "nelegislativní akt", DEC: "absolutorium", BUD: "rozpočet", BUI: "rozpočet",
+  DEA: "akt v přenesené pravomoci", RSP: "usnesení k tématu",
+};
 const QUESTION_KIND = { question_written: "písemná", question_priority: "přednostní písemná", question_oral: "ústní" };
 
 // Souhrn po typech: výsledek jen tam, kde je známý (hlasováno v plénu), nikdy dohromady.
@@ -148,12 +153,47 @@ function ownItem(e) {
   const voteLink = e.vote_id ? ` · <a href="vote.html?id=${e.vote_id}">hlasování</a>` : "";
   const extra = e.type === "question" ? `${QUESTION_KIND[e.subtype] || ""} otázka${e.authors_total > 1 ? `, spoluautorů ${e.authors_total}` : ""}${e.answer_date ? `, odpověď ${fmtDate(e.answer_date)}` : ""}`
     : e.signatories_total ? `podepsalo ${e.signatories_total} poslanců` : (e.committee ? `výbor ${esc(e.committee)}` : "");
-  return `<li><a href="${esc(e.url)}">${esc(title)}</a>
+  const ptag = e.process_type ? ` <span class="badge outline${e.legislative ? " leg" : ""}" title="typ procedury ${esc(e.process_type)}">${esc(PROCESS_TYPE[e.process_type] || e.process_type)}</span>` : "";
+  return `<li><a href="${esc(e.url)}">${esc(title)}</a>${ptag}
     <div class="small muted">${fmtDate(e.date)} · ${esc(e.label || "")} · ${OWN_ROLE[e.role] || esc(e.role)}${extra ? ` · ${extra}` : ""}${e.report ? ` · zpráva ${esc(e.report)}` : ""}</div>
     ${label ? `<div class="small"><span class="${cls}" title="${e.status === "no_vote" ? esc(NO_VOTE_NOTE) : ""}">${label}</span>${e.note === "rejection_adopted" ? " (Parlament přijal návrh na zamítnutí)" : ""}${e.joint_result ? ` (společný návrh: ${RESULT_LABEL[e.joint_result] || e.joint_result})` : ""}${voteLink}</div>` : ""}</li>`;
 }
 
-function ownWork(ow) {
+// „Co prošlo“: přijaté texty podle role, nahoře nad podrobnými počty. Jen počty z own_work.json, žádné body ani váhy.
+function passedCard(label, value, details, suffix = "") {
+  return `<div class="card metric"><div class="label">${label}</div><div class="value">${fmtNum(value)}${suffix}</div>
+    ${details.filter(Boolean).map((d) => `<div class="detail">${d}</div>`).join("")}</div>`;
+}
+
+function ownPassed(ow, mep) {
+  const p = ow.passed;
+  if (!p) return "";
+  const d = p.delegation;
+  const leg = (n) => (n ? `z toho legislativních <strong>${fmtNum(n)}</strong>` : "");
+  const pending = (n) => (n ? `dalších ${fmtNum(n)} zatím bez jmenovitého hlasování` : "");
+  const adopted = ow.items.filter((e) => (e.type === "report" || e.type === "shadow_report") && e.status === "ADOPTED");
+  const cards = [
+    passedCard(`Přijaté zprávy – ${byGender(mep, "zpravodaj", "zpravodajka")}`, p.lead_adopted,
+      ["text vedl" + byGender(mep, "", "a") + " za celý Parlament", leg(p.lead_adopted_legislative), pending(p.lead_pending)]),
+    passedCard(`Přijaté zprávy – ${byGender(mep, "stínový zpravodaj", "stínová zpravodajka")}`, p.shadow_adopted,
+      ["vyjednával" + byGender(mep, "", "a") + " text za svou frakci", leg(p.shadow_adopted_legislative), pending(p.shadow_pending)]),
+    passedCard("Přijatá usnesení", p.resolutions_adopted,
+      ["vlastní a společné návrhy usnesení, pod kterými je podepsán" + byGender(mep, "", "a")]),
+    d ? passedCard("Pořadí v české delegaci", d.rank, [
+      `podle přijatých zpráv (zpravodaj + stínový): <strong>${fmtNum(d.texts_adopted)}</strong>`,
+      `z ${fmtNum(d.of)} poslanců · medián ${fmtNum(d.median)} · nejvíc ${fmtNum(d.max)}`,
+      "shodný počet = shodné místo"], ".") : "",
+  ].join("");
+  const list = adopted.length ? `<details class="card own-list" open><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adopted.length})</summary>
+      <ul class="plain">${adopted.map(ownItem).join("")}</ul></details>` : "";
+  return `<h3 class="own-sub">Co prošlo</h3><div class="metrics">${cards}</div>${list}
+    <p class="small muted">Zpravodaj/ka připravuje text za celý Parlament, stínový/á zpravodaj/ka ho vyjednává za svou frakci.
+      Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). „Bez jmenovitého hlasování“
+      zahrnuje texty, které se ještě projednávají. Pořadí jen srovnává počty, neříká nic o významu jednotlivých textů.</p>
+    <h3 class="own-sub">Všechna práce podle typu</h3>`;
+}
+
+function ownWork(ow, mep) {
   if (!ow) return '<p class="muted">Data o vlastní práci se připravují.</p>';
   const types = Object.keys(ow.type_labels);
   const cards = types.map((t) => ownSummaryLine(ow.type_labels[t], ow.summary[t])).join("");
@@ -163,7 +203,7 @@ function ownWork(ow) {
     return `<details class="card own-list"><summary><strong>${esc(ow.type_labels[t])}</strong> (${items.length})</summary>
       <ul class="plain">${items.map(ownItem).join("")}</ul></details>`;
   }).join("");
-  return `${cards ? `<div class="metrics">${cards}</div>` : '<p class="muted">V datech EP není žádná zpráva, usnesení ani otázka.</p>'}
+  return `${mep ? ownPassed(ow, mep) : ""}${cards ? `<div class="metrics">${cards}</div>` : '<p class="muted">V datech EP není žádná zpráva, usnesení ani otázka.</p>'}
     ${lists}
     <p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), výsledky hlasování
       <a href="https://howtheyvote.eu">HowTheyVote.eu</a>. Aktualizováno ${fmtDate(ow.updated)}${ow.complete ? "" : " (stahování ještě neskončilo, data nejsou úplná)"}.
@@ -180,6 +220,9 @@ function summarySentence(mep, t, profile) {
   const ow = profile.own_work;
   const reports = ow?.summary?.report?.count;
   if (reports) parts.push(`${byGender(mep, "byl zpravodajem nebo spoluzpravodajem", "byla zpravodajkou nebo spoluzpravodajkou")} ${fmtNum(reports)} ${reports === 1 ? "zprávy" : "zpráv"}`);
+  const pa = ow?.passed;
+  const adoptedTexts = pa ? pa.lead_adopted + pa.shadow_adopted : 0;
+  if (adoptedTexts) parts.push(`Parlament ${byGender(mep, "mu", "jí")} jako ${byGender(mep, "zpravodaji nebo stínovému zpravodaji", "zpravodajce nebo stínové zpravodajce")} přijal ${fmtNum(adoptedTexts)} ${adoptedTexts === 1 ? "zprávu" : adoptedTexts < 5 ? "zprávy" : "zpráv"}`);
   return parts.length ? esc(parts.join(", ") + ".") : "";
 }
 
@@ -284,7 +327,7 @@ function periodText(x) {
       ${hasOwn ? `<h2 id="vlastni-prace">Vlastní práce</h2>
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
         U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
-      ${ownWork(ow)}` : ""}
+      ${ownWork(ow, mep)}` : ""}
 
       <h2 id="soulad">Soulad s výsledkem hlasování</h2>
       <p class="small muted">Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo. Číslo hlavně odráží velikost a pozici frakce;
