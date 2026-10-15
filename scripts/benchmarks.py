@@ -1,4 +1,4 @@
-"""Srovnání s celým EP: mediány docházky a loajality k frakci přes všechny poslance (R8).
+"""Srovnání s celým EP: mediány účasti na hlasování a hlasování s frakcí přes všechny poslance (R8).
 
 Bez pořadí a žebříčků, jen mediány celého EP a každé frakce. Počítá se ze stejného exportu
 HowTheyVote jako české metriky a stejnými pravidly (compute_stats.group_majority, závěrečná hlasování
@@ -22,8 +22,8 @@ METRICS = ["attendance", "attendance_main", "group_loyalty"]
 
 DEFINITION = (
     "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají "
-    f"v datech HowTheyVote aspoň {MIN_VOTES} hlasování. Počítá se stejně jako u českých poslanců (docházka, "
-    "docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou "
+    f"v datech HowTheyVote aspoň {MIN_VOTES} hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, "
+    "účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou "
     "všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců v celém EP záměrně neuvádíme."
 )
 

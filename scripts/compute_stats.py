@@ -33,24 +33,26 @@ VOTED = {"FOR", "AGAINST", "ABSTENTION"}
 NO_GROUP = {None, "NI"}  # nezařazení nejsou frakce, loajalita se nepočítá
 RESULTS_DECIDED = {"ADOPTED", "REJECTED"}  # LAPSED, WITHDRAWN a chybějící výsledek se do souladu nepočítají
 CLOSE_MARGIN = 21  # těsné hlasování: |pro − proti| <= 21 (počet českých křesel)
-STRONG_SPLIT = 0.3  # výrazný rozkol mezi Čechy: menšina tvoří aspoň 30 % hlasů pro a proti
+STRONG_SPLIT = 0.3  # výrazné rozdělení mezi Čechy: menšina tvoří aspoň 30 % hlasů pro a proti
 TOP_TOPICS = 10
 RECENT = 10
 INDEPENDENT = "Independent"  # EP tak označuje poslance bez strany; nejde o stranu
 
 DEFINITIONS = {
-    "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). "
-                  "Počítají se jen hlasování v době jeho mandátu podle EP.",
-    "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce "
+    "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo "
+                  "se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, "
+                  "které data neuvádějí (nemoc, rodičovská, služební cesta).",
+    "attendance_main": "Účast na hlasování jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce "
                        "proti aktu Komise. "
                        "Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
     "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): "
                  "závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), "
                  "návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, "
                  "dílčí hlasování o části textu, procedurální hlasování, ostatní.",
-    "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). "
-                     "Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). "
-                     "Nezařazení (NI) se nepočítají.",
+    "group_loyalty": "Hlasuje s frakcí: v kolika procentech hlasování hlasoval stejně jako většina jeho frakce (k datu "
+                     "hlasování). Vysoké ani nízké číslo samo o sobě není dobré ani špatné. Odchylky často vycházejí z "
+                     "postoje domácí strany nebo z národních zájmů. Počítá se jen tam, kde hlasoval a frakce měla "
+                     "jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
     "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. "
                     "Bez hlasování s nerozhodnou většinou.",
     "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
@@ -69,15 +71,15 @@ DEFINITIONS = {
                       "spolehlivě spočítat.",
     "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
                      "většina jeho frakce k datu hlasování.",
-    "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
+    "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
                 "součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se "
                 "nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
     "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, "
                 "byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). "
-                f"Výrazný rozkol: menšina tvoří aspoň {int(STRONG_SPLIT * 100)} % hlasů pro a proti.",
+                f"Výrazné rozdělení: menšina tvoří aspoň {int(STRONG_SPLIT * 100)} % hlasů pro a proti.",
     "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali "
                       "stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
-    "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení "
+    "own_work": "Práce na textech: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení "
                 "(poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje "
                 "výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. "
                 "Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako "
@@ -85,7 +87,7 @@ DEFINITIONS = {
                 "zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje "
                 "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se "
                 "počítá jednou.",
-    "work_profile": "Profil vlastní práce (stránka Vlastní práce) počítá přidělené role bez ohledu na výsledek "
+    "work_profile": "Profil práce na textech (stránka Práce na textech) počítá přidělené role bez ohledu na výsledek "
                     "hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které "
                     "vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými "
                     "poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí "
@@ -94,7 +96,9 @@ DEFINITIONS = {
                     "desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá "
                     "hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP "
                     "jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, "
-                    "takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává.",
+                    "takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává. Kdo byl v mandátu méně než "
+                    "75 % období (od začátku období do posledního hlasování v datech), třetinu nedostane: srovnání počtů s kolegy, kteří mají "
+                    "za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají.",
     "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad "
               "(data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování "
               "může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.",
@@ -159,7 +163,7 @@ def decisive_alternative(vote: dict, active: list[dict]) -> str | None:
 
 
 def cz_split(active: list[dict]) -> tuple[float, int, int] | None:
-    """(míra rozkolu, pro, proti) mezi Čechy; None, pokud nejsou na obou stranách."""
+    """(míra rozdělení, pro, proti) mezi Čechy; None, pokud nejsou na obou stranách."""
     n_for = sum(p["position"] == "FOR" for p in active)
     n_against = sum(p["position"] == "AGAINST" for p in active)
     if not n_for or not n_against:
@@ -604,7 +608,7 @@ def build_own_work(data_dir: Path, votes: list[dict]) -> dict | None:
         members = {str(m["id"]): min(x["start"] for x in m["mandates"]) for m in meps
                    if any(x["start"] <= ref and (x["end"] is None or ref <= x["end"]) for x in m["mandates"])}
     roles = {str(k): own_work.roles(v) for k, v in linked.items()}
-    profile = own_work.delegation_profile(roles, members)
+    profile = own_work.delegation_profile(roles, members, until=ref)
     return {
         "source": proposals["source"], "updated": state.get("updated"), "complete": state.get("complete", False),
         "type_labels": own_work.TYPE_LABELS,

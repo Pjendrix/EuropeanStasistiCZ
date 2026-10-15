@@ -235,12 +235,28 @@ def tier(value: int, values: list[int]) -> str | None:
     return "top" if below >= 2 / 3 else "mid" if below >= 1 / 3 else "low"
 
 
-def delegation_profile(roles_by_mep: dict[str, dict], members: dict[str, str] | None = None) -> dict[str, dict | None]:
+MIN_COVERAGE = 0.75  # pod tímto podílem období se třetina neurčuje (kratší mandát se nesrovnává)
+
+
+def coverage(start: str | None, first_start: str | None, until: str | None) -> float | None:
+    """Jaký podíl období (od nejdřívějšího začátku mandátu v delegaci do `until`) poslanec v mandátu byl."""
+    if not (start and first_start and until):
+        return None
+    from datetime import date
+    d = lambda s: date.fromisoformat(s)
+    total = (d(until) - d(first_start)).days
+    return min(1.0, (d(until) - d(max(start, first_start))).days / total) if total > 0 else None
+
+
+def delegation_profile(roles_by_mep: dict[str, dict], members: dict[str, str] | None = None,
+                       until: str | None = None) -> dict[str, dict | None]:
     """Profil v české delegaci: u každé kategorie z TIER_KEYS třetina mezi současnými poslanci. Žádné celkové pořadí.
 
     members = {ID: začátek mandátu} poslanců v mandátu (současná delegace); jen mezi nimi se srovnává.
     Poslanec delegace bez dat má všude 0. Bývalí poslanci profil nedostanou (None), protože srovnávat počty
-    za různě dlouhá období nedává smysl. Bez members se srovnává mezi všemi v roles_by_mep."""
+    za různě dlouhá období nedává smysl. Bez members se srovnává mezi všemi v roles_by_mep.
+    Kdo byl v mandátu méně než MIN_COVERAGE období (do dne `until`), třetinu nedostane (tiers_skipped): srovnání
+    absolutních počtů s kolegy, kteří mají za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají."""
     if members is None:
         members = {k: None for k in roles_by_mep}
     value = lambda k, key: (roles_by_mep.get(k) or {}).get(key, 0)
@@ -248,6 +264,9 @@ def delegation_profile(roles_by_mep: dict[str, dict], members: dict[str, str] | 
     first_start = min((v for v in members.values() if v), default=None)
     out: dict[str, dict | None] = {k: None for k in roles_by_mep}
     for k, start in members.items():
-        out[k] = {"tiers": {key: tier(value(k, key), columns[key]) for key in TIER_KEYS}, "of": len(members),
+        cov = coverage(start, first_start, until)
+        skipped = cov is not None and cov < MIN_COVERAGE
+        out[k] = {"tiers": {key: None if skipped else tier(value(k, key), columns[key]) for key in TIER_KEYS},
+                  "of": len(members), "tiers_skipped": skipped,
                   "mandate_from": start if start and first_start and start > first_start else None}
     return out

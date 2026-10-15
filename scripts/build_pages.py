@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from html import escape
 from pathlib import Path
@@ -51,6 +52,14 @@ def fmt_pct(pair_or_value) -> str:
     if isinstance(v, list):
         v = v[0] / v[1] if v[1] else None
     return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
+
+
+WORK_INTRO = "Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je."
+
+
+def meps_count(n: int) -> str:
+    """„1 poslanec“, „3 poslanci“, „5 poslanců“."""
+    return f"{n} " + ("poslanec" if n == 1 else "poslanci" if 2 <= n <= 4 else "poslanců")
 
 
 def fmt_date(iso: str | None) -> str:
@@ -161,7 +170,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     b = prof.get("benchmarks")
     rng = f"od {fmt_date(mep['mandates'][0]['start'])}"
     att = t["attendance"]
-    desc = f"{name}: docházka {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
+    desc = f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
            f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
     cite = lambda what, pair: cite_button(
         f"{name}: {what} {fmt_pct(pair)} ({fmt_num(pair[0])} z {fmt_num(pair[1])} jmenovitých hlasování v Evropském parlamentu "
@@ -189,7 +198,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
                      f'<li><strong>Stanoviska jako stínový/á zpravodaj/ka</strong>: {fmt_num(ro["shadow_opinions"])}</li>'
                      f'<li><strong>Podepsané návrhy usnesení</strong>: {fmt_num(ro["motions_signed"])} (přijato {fmt_num(pa["resolutions_adopted"])})</li>') + items
         if items:
-            own_html = (f'<h2 id="vlastni-prace">Vlastní práce</h2><div class="card"><ul class="plain">{items}</ul>'
+            own_html = (f'<h2 id="vlastni-prace">Práce na textech</h2><p class="small muted">{WORK_INTRO}</p><div class="card"><ul class="plain">{items}</ul>'
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
                         f'Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>')
     pos = t["positions"]
@@ -210,9 +219,9 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 
 <h2 id="dochazka">Hlasování v číslech</h2>
 <div class="metrics">
-  {metric("Docházka", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("docházka", t["attendance"]))}
-  {metric("Docházka – závěrečná hlasování", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("docházka u závěrečných hlasování", t["attendance_main"]))}
-  {metric("Loajalita k frakci", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("loajalita k frakci", t["group_loyalty"]))}
+  {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("účast na hlasování", t["attendance"]))}
+  {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]))}
+  {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("hlasuje s frakcí", t["group_loyalty"]))}
   {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
 </div>
 <p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
@@ -237,12 +246,12 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     name = pp.get("name") or pp["short_label"]
     coh = pp["cohesion"]
-    desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {pp['members']} poslanců v 10. období, " \
+    desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {meps_count(pp['members'])} v 10. období, " \
            f"jednotnost {fmt_pct(coh)}. Data z HowTheyVote.eu a EP."
     members = "".join(
         f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a>'
         f'<div class="small muted">{", ".join(fmt_date(x["start"]) + " – " + (fmt_date(x["end"]) if x.get("end") else "dosud") for x in m["party_periods"])}'
-        f' · docházka {fmt_pct(m["total"]["attendance"])}</div></li>'
+        f' · účast na hlasování {fmt_pct(m["total"]["attendance"])}</div></li>'
         for m in sorted(pp["member_list"], key=lambda m: m.get("sort_label") or m["name"]))
     cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
                        f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""
@@ -253,19 +262,23 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         w = f' width="{round(h * pp["logo_aspect"])}"' if pp.get("logo_aspect") else ""
         heading = (f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{ROOT}{esc(pp["logo"])}" '
                    f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>')
+    splits_value = (f"{fmt_num(pp['splits_count'])} z {fmt_num(coh[1])} ({fmt_pct(pp['splits_count'] / coh[1])})"
+                    if coh[1] else "jen 1 poslanec")
     body = f"""<p class="small"><a href="{ROOT}party.html">← Všechny strany</a></p>
 {heading}
-<p class="muted">{esc(pp['short_label'])} · {pp['members']} poslanců v 10. volebním období ·
+<p class="muted">{esc(pp['short_label'])} · {meps_count(pp['members'])} v 10. volebním období ·
   <a href="{ROOT}party.html?id={pp['id']}">interaktivní stránka strany</a></p>
 <div class="metrics">
   {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany", "", cite)}
   {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
-  <div class="card metric"><div class="label">Rozdělená hlasování</div><div class="value">{fmt_num(pp['splits_count'])}</div>
-    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}</div></div>
+  <div class="card metric"><div class="label">Hlasování, kde se strana rozdělila</div><div class="value">{splits_value}</div>
+    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}{
+      f" z {fmt_num(pp['cohesion_main'][1])}" if pp['cohesion_main'][1] else ""}</div></div>
 </div>
 <h2>Poslanci</h2>
 <div class="card"><ul class="plain">{members}</ul></div>
-<p class="source">Příslušnost ke straně k datu hlasování. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
+<p class="source">Příslušnost ke straně k datu hlasování. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností
+  se rozejít. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
   <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="{ROOT}o-projektu.html#metodika">metodika</a>.</p>"""
     title = f"{name} – EP Watch CZ"
     return f"s/{pp['id']}.html", page(title, body, root=ROOT, current="parties", description=desc,
@@ -295,10 +308,13 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     desc = f"Hlasování Evropského parlamentu {fmt_date(v['date'])}: {title_txt}. Výsledek: {result} " \
            f"({c['for']} pro, {c['against']} proti). Čeští poslanci: {cz_counts[0]} pro, {cz_counts[1]} proti, " \
            f"{cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo."
-    lists = []
+    lists, nobody = [], []
     for k in POSITIONS:
         names = sorted((meps_by_id[p["member_id"]] for p in cz if p["position"] == k), key=lambda m: m.get("sort_label") or m["name"])
-        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names) or '<li class="muted">nikdo</li>'
+        if not names:  # prázdné skupiny se sbalí do jedné věty pod seznamy (jako na interaktivní stránce)
+            nobody.append(POSITION_LABEL[k])
+            continue
+        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names)
         lists.append(f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>')
     group_rows = "".join(
         f'<tr><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}<td>{split_bar(row)}</td></tr>'
@@ -330,6 +346,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 </div>
 <h2>Jak hlasovali Češi</h2>
 <div class="positions-grid">{"".join(lists)}</div>
+{f'<p class="small muted">Nikdo z Čechů: {", ".join(nobody)}.</p>' if nobody else ""}
 <p class="source">Jen poslanci v mandátu podle EP; frakce a strana k datu hlasování. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
 <h2>Jak hlasovaly frakce</h2>
 <div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
@@ -392,6 +409,47 @@ def sitemap(base_url: str, paths: list[str]) -> dict[str, str]:
     }
 
 
+# Názvy definic metrik na stránce O projektu (klíč → název). Klíč bez názvu je chyba, ne holý klíč na webu.
+DEFINITION_NAMES = {
+    "attendance": "Účast na hlasování", "attendance_main": "Účast na hlasování – závěrečná", "vote_kind": "Typ hlasování",
+    "group_loyalty": "Hlasuje s frakcí", "cz_agreement": "Shoda s ostatními Čechy", "pairwise": "S kým hlasuje stejně",
+    "outcome_agreement": "Soulad s výsledkem", "group_outcome_agreement": "Soulad s výsledkem – průměr frakce",
+    "close_votes": "Těsná hlasování", "decisive_votes": "Kde rozhodly české hlasy",
+    "against_group": "Kde hlasoval jinak než frakce", "cz_split": "Kde se Češi rozdělili", "cz_unity": "Češi jednotně",
+    "party_cohesion": "Jednotnost strany", "topics": "Témata", "own_work": "Práce na textech",
+    "work_profile": "Práce na textech – třetiny v delegaci",
+}
+
+
+def definitions_html(definitions: dict[str, str]) -> str:
+    """Seznam definic metrik jako statické HTML (pro „Jak počítáme“; funguje i bez JavaScriptu a pro vyhledávače)."""
+    missing = [k for k in definitions if k not in DEFINITION_NAMES]
+    if missing:
+        raise FormatError(f"definice bez názvu v DEFINITION_NAMES: {', '.join(missing)}")
+    return "".join(f"<li><strong>{esc(DEFINITION_NAMES[k])}</strong>: {esc(text)}</li>\n" for k, text in definitions.items())
+
+
+_DEFS_RE = re.compile(r'(<ul class="plain" id="definitions">).*?(</ul>)', re.S)
+
+
+def sync_definitions(public: Path, data_dir: Path) -> bool:
+    """Přepíše seznam definic v public/o-projektu.html podle data/overview.json. Vrací True, když se soubor změnil."""
+    page = public / "o-projektu.html"
+    overview = data_dir / "overview.json"
+    if not page.exists() or not overview.exists():
+        return False
+    defs = json.loads(overview.read_text(encoding="utf-8")).get("definitions")
+    if not defs:
+        raise FormatError("overview.json nemá definitions")
+    old = page.read_text(encoding="utf-8")
+    if len(_DEFS_RE.findall(old)) != 1:
+        raise FormatError("o-projektu.html nemá právě jeden seznam <ul id=\"definitions\">")
+    new = _DEFS_RE.sub(lambda m: f"{m[1]}\n{definitions_html(defs)}{m[2]}", old)
+    if new != old:
+        page.write_text(new, encoding="utf-8")
+    return new != old
+
+
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
     """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
@@ -418,6 +476,7 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
     try:
         res = write(build(args.data_dir), args.public)
+        res["definitions_changed"] = int(sync_definitions(args.public, args.data_dir))
     except FormatError as e:
         print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
         return 2

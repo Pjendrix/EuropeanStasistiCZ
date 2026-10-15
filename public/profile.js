@@ -1,5 +1,5 @@
 // Profil poslance (p/{id}.html, dříve mep.html?id=). Statická stránka má obsah v HTML (build_pages.py),
-// tento skript ho nahradí plnou interaktivní verzí (graf docházky, přepínače, seznamy).
+// tento skript ho nahradí plnou interaktivní verzí (graf účasti na hlasování, přepínače, seznamy).
 "use strict";
 
 setNav("meps");
@@ -76,7 +76,7 @@ function monthlyChart(monthly) {
       <span class="sr-only">${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování</span></button>`;
   }).join("");
   return `<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>
-    <div class="chart" role="group" aria-label="Docházka po měsících">${cols}</div></div>
+    <div class="chart" role="group" aria-label="Účast na hlasování po měsících">${cols}</div></div>
     <p class="chart-detail" aria-live="polite"></p>`;
 }
 
@@ -159,7 +159,7 @@ function ownItem(e) {
     ${label ? `<div class="small"><span class="${cls}" title="${e.status === "no_vote" ? esc(NO_VOTE_NOTE) : ""}">${label}</span>${e.note === "rejection_adopted" ? " (Parlament přijal návrh na zamítnutí)" : ""}${e.joint_result ? ` (společný návrh: ${RESULT_LABEL[e.joint_result] || e.joint_result})` : ""}${voteLink}</div>` : ""}</li>`;
 }
 
-// „Vlastní práce“: přidělené role (zpravodaj/stínový u zpráv a stanovisek) s třetinou v delegaci, bez celkového pořadí.
+// „Práce na textech“: přidělené role (zpravodaj/stínový u zpráv a stanovisek) s třetinou v delegaci, bez celkového pořadí.
 // Jen počty z own_work.json, žádné body ani váhy.
 function passedCard(label, value, details, suffix = "") {
   return `<div class="card metric"><div class="label">${label}</div><div class="value">${value === null ? "–" : `${fmtNum(value)}${suffix}`}</div>
@@ -172,7 +172,7 @@ function ownPassed(ow, mep) {
   const p = ow.passed, r = ow.roles;
   if (!p || !r) return "";
   const d = r.delegation;
-  const tierLine = (k) => (!d ? "" : r[k] ? `<strong>${TIER_TEXT[d.tiers[k]]}</strong>` : "");
+  const tierLine = (k) => (!d || !r[k] ? "" : d.tiers_skipped ? "kratší mandát, nesrovnává se" : d.tiers[k] ? `<strong>${TIER_TEXT[d.tiers[k]]}</strong>` : "");
   const leg = (n) => (n ? `z toho legislativních <strong>${fmtNum(n)}</strong>` : "");
   const status = (adopted, pending) => [adopted ? `prošlo <strong>${fmtNum(adopted)}</strong>` : "",
     pending ? `${fmtNum(pending)} zatím bez jmenovitého hlasování` : ""].filter(Boolean).join(" · ");
@@ -192,12 +192,12 @@ function ownPassed(ow, mep) {
         "nesrovnává se: návrh podepisují desítky poslanců za frakci"]),
   ].join("");
   const note = d ? `Třetina = kde poslanec stojí mezi ${fmtNum(d.of)} současnými poslanci delegace v dané kategorii;
-      celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}
+      celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}${d.tiers_skipped ? " Mandát pokrývá méně než 75 % období, proto se třetina neurčuje a počty se s kolegy nesrovnávají." : ""}
       <a href="prace.html">Srovnání celé delegace</a>.`
     : `${byGender(mep, "Bývalý poslanec", "Bývalá poslankyně")} se se současnou delegací nesrovnává (jiné období).`;
   const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>
       <ul class="plain">${adoptedList.map(ownItem).join("")}</ul></details>` : "";
-  return `<h3 class="own-sub">Vlastní práce v delegaci</h3><div class="metrics">${cards}</div>${list}
+  return `<h3 class="own-sub">Práce na textech v delegaci</h3><div class="metrics">${cards}</div>${list}
     <p class="small muted">Zpravodaj/ka píše text za výbor (zprávu výboru, který věc vede, nebo stanovisko dalšího výboru),
       stínový/á zpravodaj/ka ho vyjednává za svou frakci. Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.
       Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). ${note}</p>
@@ -223,18 +223,22 @@ function ownWork(ow, mep) {
 
 // Souhrn ve větě ze šablony; všechna čísla jsou ze stats.json (spočítal skript).
 function summarySentence(mep, t, profile) {
-  const parts = [];
   const att = pct(t.attendance);
-  if (att !== null) parts.push(`${byGender(mep, "Hlasoval", "Hlasovala")} v ${fmtPct(att)} jmenovitých hlasování ze svého mandátu (${fmtNum(t.attendance[0])} z ${fmtNum(t.attendance[1])})`);
   const loy = pct(t.group_loyalty);
-  if (loy !== null) parts.push(`s většinou své frakce ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(loy)} případů`);
-  const ow = profile.own_work;
-  const reports = ow?.summary?.report?.count;
-  if (reports) parts.push(`${byGender(mep, "byl zpravodajem nebo spoluzpravodajem", "byla zpravodajkou nebo spoluzpravodajkou")} ${fmtNum(reports)} ${reports === 1 ? "zprávy" : "zpráv"}`);
-  const pa = ow?.passed;
-  const adoptedTexts = pa ? pa.lead_adopted + pa.shadow_adopted : 0;
-  if (adoptedTexts) parts.push(`Parlament ${byGender(mep, "mu", "jí")} jako ${byGender(mep, "zpravodaji nebo stínovému zpravodaji", "zpravodajce nebo stínové zpravodajce")} přijal ${fmtNum(adoptedTexts)} ${adoptedTexts === 1 ? "zprávu" : adoptedTexts < 5 ? "zprávy" : "zpráv"}`);
-  return parts.length ? esc(parts.join(", ") + ".") : "";
+  const ro = profile.own_work?.roles;
+  const pa = profile.own_work?.passed;
+  const plural = (n) => `${fmtNum(n)} ${n === 1 ? "zprávu" : n < 5 ? "zprávy" : "zpráv"}`;
+  const adoptedOf = (n, adopted) => (n && adopted ? `, z toho ${fmtNum(adopted)} Parlament přijal` : "");
+  const sentences = [];
+  if (att !== null || loy !== null) {
+    const first = att !== null ? `${byGender(mep, "Hlasoval", "Hlasovala")} v ${fmtPct(att)} jmenovitých hlasování ze svého mandátu (${fmtNum(t.attendance[0])} z ${fmtNum(t.attendance[1])})` : "";
+    const second = loy !== null ? `v ${fmtPct(loy)} ${byGender(mep, "hlasoval", "hlasovala")} stejně jako většina ${byGender(mep, "jeho", "její")} frakce` : "";
+    sentences.push(esc(first && second ? `${first} a ${second}` : first || `${byGender(mep, "Hlasoval", "Hlasovala")} ${second}`));
+  }
+  // Zpravodaj text píše za výbor, stínový zpravodaj ho jen vyjednává za frakci: každá role má vlastní větu.
+  if (ro?.lead_reports) sentences.push(esc(`${byGender(mep, "Vedl", "Vedla")} ${plural(ro.lead_reports)} výboru${adoptedOf(ro.lead_reports, pa?.lead_adopted)}`));
+  if (ro?.shadow_reports) sentences.push(esc(`Jako ${byGender(mep, "stínový zpravodaj", "stínová zpravodajka")} ${byGender(mep, "vyjednával", "vyjednávala")} za frakci ${plural(ro.shadow_reports)}${adoptedOf(ro.shadow_reports, pa?.shadow_adopted)}`));
+  return sentences.map((s) => s + ".").join(" ");
 }
 
 function periodText(x) {
@@ -258,6 +262,8 @@ function periodText(x) {
     const g = currentOf(mep.groups);
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
+    const extLinks = `<a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
+      <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> · <a href="${esc(mep.source_url)}">Data z EP API</a>`;
     const b = profile.benchmarks;
     const isNI = (groups.find((x) => x.ep_code === g?.code)?.code || g?.code) === "NI";
     // Dřívější frakce do hlavičky: „do 3. 2. 2026 PfE“.
@@ -302,31 +308,27 @@ function periodText(x) {
           <p class="muted">Mandát: ${mandateText(mep)}</p>
           ${mep.name_note ? `<p class="small muted">Podoba jména: ${esc(mep.name_note)}</p>` : ""}
           ${profile.short_mandate ? `<p class="small note">${esc(SHORT_MANDATE_NOTE)} Mandát trval ${fmtNum(profile.mandate_days)} dní.</p>` : ""}
-          <p class="small">
-            <a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
-            <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> ·
-            <a href="${esc(mep.source_url)}">Data z EP API</a>
-          </p>
+          <p class="small profile-links head-only">${extLinks}</p>
         </div>
       </div>
 
       <p class="lead" style="margin-top:1.5rem">${summarySentence(mep, t, profile)}</p>
       <nav class="subnav profile-nav" aria-label="Části profilu">
-        <a href="${here}#dochazka">Docházka</a>${hasOwn ? `<a href="${here}#vlastni-prace">Vlastní práce</a>` : ""}
+        <a href="${here}#dochazka">Účast na hlasování</a>${hasOwn ? `<a href="${here}#vlastni-prace">Práce na textech</a>` : ""}
         <a href="${here}#frakce">Frakce a strana</a><a href="${here}#temata">Témata</a>
         <a href="${here}#s-kym">S kým hlasuje</a><a href="${here}#posledni">Poslední hlasování</a>
       </nav>
 
       <h2 id="dochazka">Hlasování v číslech</h2>
       <div class="metrics">
-        ${metricCard("Docházka", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika",
-          b?.ep?.attendance, "medián EP", cite("docházka", t.attendance),
+        ${metricCard("Účast na hlasování", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika",
+          b?.ep?.attendance, "medián EP", cite("účast na hlasování", t.attendance),
           { extra: b?.group?.attendance != null ? `medián frakce ${fmtPct(b.group.attendance)}` : "" })}
-        ${metricCard("Docházka – závěrečná hlasování", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
-          b?.ep?.attendance_main, "medián EP", cite("docházka u závěrečných hlasování", t.attendance_main),
+        ${metricCard("Účast na hlasování – závěrečná", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
+          b?.ep?.attendance_main, "medián EP", cite("účast na hlasování u závěrečných hlasování", t.attendance_main),
           { extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
-        ${metricCard("Loajalita k frakci", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
-          isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("loajalita k frakci", t.group_loyalty),
+        ${metricCard("Hlasuje s frakcí", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
+          isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("hlasuje s frakcí", t.group_loyalty),
           { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
         ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, "", cite("shoda s ostatními českými poslanci", t.cz_agreement))}
       </div>
@@ -335,7 +337,8 @@ function periodText(x) {
 
       ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}</p>` : ""}
 
-      ${hasOwn ? `<h2 id="vlastni-prace">Vlastní práce</h2>
+      ${hasOwn ? `<h2 id="vlastni-prace">Práce na textech</h2>
+      <p class="small muted">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
         U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
       ${ownWork(ow, mep)}` : ""}
@@ -353,7 +356,7 @@ function periodText(x) {
       <div class="card">${timeline(mep, groups, parties)}
         <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a>.</p></div>
 
-      <h2 id="mesice">Docházka po měsících</h2>
+      <h2 id="mesice">Účast na hlasování po měsících</h2>
       <div class="card">${monthlyChart(profile.monthly)}
         <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok.
         Nízká čárka = v měsíci ${byGender(mep, "nehlasoval", "nehlasovala")} ani jednou. Klepnutím na sloupec se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
@@ -382,7 +385,7 @@ function periodText(x) {
         </section>
       </div>
 
-      <h2 id="proti-frakci">Hlasování proti většině frakce</h2>
+      <h2 id="proti-frakci">Kde hlasoval${byGender(mep, "", "a")} jinak než frakce</h2>
       <div class="card">
         <p>${byGender(mep, "Hlasoval", "Hlasovala")} jinak než většina své frakce ${fmtNum(profile.against_group.count)}× ze
           ${fmtNum(t.group_loyalty[1])} hlasování, ve kterých se to počítá (z toho v závěrečných hlasováních ${fmtNum(profile.against_group.count_main)}×).
@@ -403,7 +406,7 @@ function periodText(x) {
       <div class="card">
         <p class="small muted">Deset témat s nejvíce hlasováními podle Legislativní observatoře EP. Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).</p>
         <div class="table-wrap"><table>
-          <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Docházka</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Loajalita k frakci</th></tr></thead>
+          <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Účast na hlasování</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Hlasuje s frakcí</th></tr></thead>
           <tbody>${profile.topics.map((x) => `<tr>
             <td><a href="votes.html?t=${esc(x.code)}&f=final">${esc(x.label_cs || x.label || `téma ${x.code} (zdroj neuvádí název)`)}</a> <span class="small muted">${esc(x.code)}</span></td>
             <td class="num">${fmtNum(x.attendance[1])}</td>
@@ -425,6 +428,7 @@ function periodText(x) {
 
       <h2 id="posledni">Poslední závěrečná hlasování</h2>
       <div id="recent" class="loading">Načítám…</div>
+      <p class="small profile-links foot-only">${extLinks}</p>
     `;
 
     bindChart(main, profile.monthly, mep);
@@ -437,7 +441,7 @@ function periodText(x) {
         "<th>Volba / frakce</th>",
         (v) => `<td><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
           <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>`) +
-        '<p class="small muted">Posledních 10 hlasování.</p>';
+        `<p class="small muted">Posledních ${fmtNum((onlyMain ? profile.against_group.recent_main : profile.against_group.recent).length)} z ${fmtNum(onlyMain ? profile.against_group.count_main : profile.against_group.count)}.</p>`;
       collapseTables(el);
     };
     document.getElementById("against-main")?.addEventListener("change", renderAgainst);
