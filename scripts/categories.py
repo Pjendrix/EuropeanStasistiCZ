@@ -69,3 +69,8 @@ def categories_for(vote: dict) -> list[str]:
 def icon_svg(key: str) -> str:
     return (f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" '
             f'stroke-linejoin="round" aria-hidden="true">{ICON[key]}</svg>')
+
+
+def icon_inner(key: str) -> str:
+    """Tvary SVG bez obalu (pro JS: web si obalí vlastním <svg>)."""
+    return ICON[key]

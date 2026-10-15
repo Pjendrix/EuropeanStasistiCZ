@@ -253,6 +253,20 @@ function splitBar(counts) {
     .map((k, i) => `<span class="s-${k}" style="width:${(counts[i] / total) * 100}%"></span>`).join("")}</div>`;
 }
 
+// Kategorie hlasování (data/categories.json, tabulka v scripts/categories.py). Hlavní kategorie + „+n“; bez kategorie nic.
+let CATEGORY_META = {};
+async function loadCategories() {
+  try { CATEGORY_META = await getJSON("categories.json"); } catch { CATEGORY_META = {}; }
+}
+function catChip(v) {
+  const cats = v.cats || [];
+  const c = CATEGORY_META[cats[0]];
+  if (!c) return "";
+  const more = cats.length > 1
+    ? `<span class="cat-more" title="${esc(cats.slice(1).map((k) => CATEGORY_META[k]?.label).filter(Boolean).join(", "))}">+${cats.length - 1}</span>` : "";
+  return `<div class="cat-inline"><span class="cat-ico sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c.icon}</svg></span>${esc(c.label)}${more}</div>`;
+}
+
 function voteTitle(v) {
   let t = v.title || v.procedure?.title || v.reference || `Hlasování ${v.id}`;
   return t;

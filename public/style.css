@@ -862,3 +862,9 @@ details.links-more summary { cursor: pointer; color: var(--muted); }
 .hub-vote .ep-line .split { height: 8px; flex: 1; }
 .hub-vote .ep-line b.pro { color: var(--for-text); }
 .hub-vote .ep-line b.con { color: var(--against-text); }
+
+.cat-inline { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; font-weight: 600; color: var(--data); margin-bottom: .2rem; }
+.cat-inline + .vote-title, .cat-inline + a { display: block; }
+.vrow-title .cat-inline { display: flex; }
+.cat-ico.sm { width: 22px; height: 22px; border-radius: 7px; }
+.cat-ico.sm svg { width: 14px; height: 14px; }

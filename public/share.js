@@ -50,6 +50,15 @@ const T = (x, y, s, size, weight, fill, anchor = "left") => ({ k: "text", x, y, 
 const RECT = (x, y, w, h, r, fill, stroke, sw) => ({ k: "rect", x, y, w, h, r, fill, stroke, sw });
 const CIRC = (x, y, r, fill, stroke, sw) => ({ k: "circ", x, y, r, fill, stroke, sw });
 const LINE = (x1, y1, x2, y2, stroke, sw) => ({ k: "line", x1, y1, x2, y2, stroke, sw });
+// Tečka hlasu se symbolem uvnitř (✓ pro, ✕ proti, – zdržel se, kroužek nehlasoval): barva + tvar, aby karta fungovala i při poruše barvocitu.
+function POSDOT(cx, cy, r, pos) {
+  if (pos === "DID_NOT_VOTE") return [CIRC(cx, cy, r - 2, null, SC.absent, 3)];
+  const g = SC.navy2, sw = Math.max(2, r * 0.24), k = r;
+  const sym = pos === "FOR" ? [LINE(cx - 0.42 * k, cy + 0.04 * k, cx - 0.12 * k, cy + 0.34 * k, g, sw), LINE(cx - 0.12 * k, cy + 0.34 * k, cx + 0.44 * k, cy - 0.32 * k, g, sw)]
+    : pos === "AGAINST" ? [LINE(cx - 0.34 * k, cy - 0.34 * k, cx + 0.34 * k, cy + 0.34 * k, g, sw), LINE(cx + 0.34 * k, cy - 0.34 * k, cx - 0.34 * k, cy + 0.34 * k, g, sw)]
+    : [LINE(cx - 0.4 * k, cy, cx + 0.4 * k, cy, g, sw)];
+  return [CIRC(cx, cy, r, SC_POS[pos]), ...sym];
+}
 const shift = (ops, dy) => ops.map((o) => ({ ...o, ...("y" in o ? { y: o.y + dy } : {}), ...("y1" in o ? { y1: o.y1 + dy, y2: o.y2 + dy } : {}) }));
 
 let _symbolImg = null; // symbol loga (assets/brand/symbol-white.svg), načte se před kreslením
@@ -138,7 +147,7 @@ function voteCardOps(d, f) {
     if (!n) return;
     const txt = `${n} ${SHARE_SHORT[k]}`, w = measureText(txt, 30, 700);
     ops.push(T(lx, y + 32, txt, 30, 700, k === "DID_NOT_VOTE" ? SC.soft : SC_POS[k], "right"));
-    ops.push(k === "DID_NOT_VOTE" ? CIRC(lx - w - 20, y + 22, 8, null, SC.absent, 3) : CIRC(lx - w - 20, y + 22, 9, SC_POS[k]));
+    ops.push(...POSDOT(lx - w - 22, y + 22, 13, k));
     lx -= w + 56;
   });
   if (!d.parties.length) ops.push(T(1008, y + 32, "žádný poslanec v mandátu", 28, 600, SC.white, "right"));
@@ -157,7 +166,7 @@ function voteCardOps(d, f) {
     const maxDots = Math.max(Math.floor((colW - rw - 20) / (2 * r + 6)), 1);
     g.positions.slice(0, maxDots).forEach((p, j) => {
       const cx = x0 + r + j * (2 * r + 6), cy = ry + 64;
-      ops.push(p === "DID_NOT_VOTE" ? CIRC(cx, cy, r - 2, null, SC.absent, 3) : CIRC(cx, cy, r, SC_POS[p]));
+      ops.push(...POSDOT(cx, cy, r, p));
     });
     ops.push(T(x0 + colW, ry + 72, right, 24, 500, SC.soft, "right"), LINE(x0, ry + rowH - 8, x0 + colW, ry + rowH - 8, "#1E293B", 2));
   });
@@ -255,8 +264,8 @@ function mepVotingOps(d, f) {
     const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržel se", DID_NOT_VOTE: "nehlasoval" };
     SHARE_KEYS.forEach((k) => {
       const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
-      ops.push(k === "DID_NOT_VOTE" ? CIRC(lx + 9, y + 104, 8, null, SC.absent, 3) : CIRC(lx + 9, y + 104, 9, SC_POS[k]), T(lx + 28, y + 114, t, 30, 600, SC.white));
-      lx += measureText(t, 30, 600) + 58;
+      ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 30, 600, SC.white));
+      lx += measureText(t, 30, 600) + 64;
     });
     y += 200;
   }
@@ -380,6 +389,7 @@ async function renderCardPng(ctx, formatKey) {
       c.beginPath();
       c.moveTo(o.x1, o.y1);
       c.lineTo(o.x2, o.y2);
+      c.lineCap = "round";
       c.strokeStyle = o.stroke;
       c.lineWidth = o.sw;
       c.stroke();

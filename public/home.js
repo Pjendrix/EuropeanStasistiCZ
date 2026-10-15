@@ -143,7 +143,7 @@ function renderSession(session) {
   const total = (cz) => cz.reduce((a, b) => a + b, 0) || 1;
   document.getElementById("ses-list").innerHTML = list.length ? list.map((v) => `
     <a class="vrow" href="vote.html?id=${v.id}&m=${v.month}">
-      <div class="vrow-head"><span class="vrow-title">${onlyFinal ? "" : kindTag(v)}${esc(voteTitle(v))}</span>
+      <div class="vrow-head"><span class="vrow-title">${catChip(v)}${onlyFinal ? "" : kindTag(v)}${esc(voteTitle(v))}</span>
         <span class="pill-result ${v.result || ""}">${resultHtml(v)}</span></div>
       <div class="split grow" role="img" aria-label="${v.cz[0]} pro, ${v.cz[1]} proti, ${v.cz[2]} se zdrželo, ${v.cz[3]} nehlasovalo">
         ${keys.map((k, i) => `<span class="s-${k}" style="width:${(v.cz[i] / total(v.cz)) * 100}%"></span>`).join("")}</div>
@@ -202,7 +202,7 @@ function groupedCards(list, groups, parties, bench) {
     const bench = await getJSON("benchmarks.json").catch(() => null);
     if (!bench) document.getElementById("bench-key").hidden = true;
     renderKpis(ov, bench);
-    getJSON("session.json").then((session) => {
+    Promise.all([getJSON("session.json"), loadCategories()]).then(([session]) => {
       renderEntries(ov);
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));

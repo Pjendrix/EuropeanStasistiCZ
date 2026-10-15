@@ -31,6 +31,7 @@ from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_position
                            require, topic_codes)
 from activity import count_activity
 from attendance import count_presence
+from categories import CATEGORIES, categories_for, icon_inner
 from key_votes import build_key_votes
 from work_hub import build_work_hub
 from labels_cs import translate
@@ -42,7 +43,7 @@ LAST_SESSION_LIMIT = 50
 SHORT_MANDATE_DAYS = 60
 # Nová pole jsou na konci, aby starší web četl řádky beze změny. is_final a inverted web odvodí z vote_kind.
 SEARCH_FIELDS = ["id", "date", "month", "title", "reference", "description", "amendment_number",
-                 "result", "is_main", "cz", "vote_kind", "description_cs", "topics"]
+                 "result", "is_main", "cz", "vote_kind", "description_cs", "topics", "cats"]
 
 
 def current(items: list[dict], day: str) -> dict | None:
@@ -93,7 +94,7 @@ def build_search(votes: list[dict], meps_by_id: dict, topic_labels: dict | None 
         k = kind_fields(v)
         rows.append([v["id"], v["date"], v["date"][:7], vote_title(v), v.get("reference"), v.get("description"),
                      v.get("amendment_number"), v.get("result"), v["is_main"], cz_counts(v, meps_by_id),
-                     k["vote_kind"], k["description_cs"], sorted(topic_codes(v))])
+                     k["vote_kind"], k["description_cs"], sorted(topic_codes(v)), categories_for(v)])
         used |= topic_codes(v)
     labels = {c: topic_labels.get(c) or oeil.get(c) for c in sorted(used)}
     return {"fields": SEARCH_FIELDS, "positions_order": POSITIONS, "kind_labels": KIND_LABELS,
@@ -157,7 +158,7 @@ def vote_summary(v: dict, meps_by_id: dict) -> dict:
             "reference": v.get("reference"), "description": v.get("description"), "result": v.get("result"),
             "is_main": v["is_main"], "counts": v["counts"], "cz": cz_counts(v, meps_by_id),
             "amendment_number": v.get("amendment_number"), "texts_adopted_reference": v.get("texts_adopted_reference"),
-            **kind_fields(v)}
+            "cats": categories_for(v), **kind_fields(v)}
 
 
 def cz_positions(v: dict, meps_by_id: dict) -> list[dict]:
@@ -496,6 +497,7 @@ def run(data_dir: Path, day: str) -> dict:
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))
+        write_json(data_dir / "categories.json", {k: {"label": n, "icon": icon_inner(k)} for k, n, _ in CATEGORIES})
         write_json(data_dir / "session.json", build_session(stats, votes, votes_by_id, by_id))
         party_index, party_pages = build_parties_web(stats, parties, meps, votes_by_id, day)
         write_json(data_dir / "parties" / "index.json", party_index)

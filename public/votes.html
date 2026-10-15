@@ -82,6 +82,7 @@ setNav("votes");
   try {
     const [index, all, overview] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json")]);
     all.reverse(); // nejnovější nahoře
+    await loadCategories();
     const doc = await getJSON("votes/search.json");
     const monthSel = document.getElementById("month");
     const kindSel = document.getElementById("kind");
@@ -151,7 +152,7 @@ setNav("votes");
         const counts = v.cz;
         return `<tr>
           <td class="num date">${fmtDate(v.date)}</td>
-          <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+          <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
             <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
           <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
           ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)]; const mp = overview.meps.find((m) => String(m.id) === mepSel.value);
