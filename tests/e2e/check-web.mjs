@@ -1,0 +1,74 @@
+// Kontrola webu v prohlížeči (U12): žádná chyba v konzoli, nic nepřetéká do šířky (1366 / 390 / 320 px), axe-core
+// (WCAG 2 A/AA, 2.1 AA) bez porušení ve světlém i tmavém režimu. Spouští se v CI (.github/workflows/web-check.yml) a lokálně:
+//   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
+// Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
+import { createRequire } from "node:module";
+import { cpSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
+import { createServer } from "node:http";
+import { tmpdir } from "node:os";
+import { join, extname, normalize } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const require = createRequire(import.meta.url);
+const { chromium } = require("playwright");
+const root = join(fileURLToPath(import.meta.url), "..", "..", "..");
+const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
+
+const site = mkdtempSync(join(tmpdir(), "epwatch-"));
+cpSync(join(root, "public"), site, { recursive: true });
+cpSync(join(root, "data"), join(site, "data"), { recursive: true });
+const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml",
+  ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".ico": "image/x-icon", ".webmanifest": "application/manifest+json" };
+const server = createServer((req, res) => {
+  const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^(\.\.[/\\])+/, "");
+  let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
+  if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
+  res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream" });
+  res.end(readFileSync(file));
+});
+await new Promise((r) => server.listen(0, r));
+const base = `http://localhost:${server.address().port}/`;
+
+const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
+const kv = read("data/key_votes.json");
+const voteId = kv.lists.all.laws.items[0].id;
+const month = kv.votes[String(voteId)].month;
+const mepId = read("data/overview.json").meps[0].id;
+const partyId = read("data/parties/index.json").parties[0].id;
+const pages = ["index.html", "poslanci.html", "party.html", "votes.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
+  "prace.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
+
+const problems = [];
+const browser = await chromium.launch();
+for (const scheme of ["light", "dark"]) {
+  for (const width of [1366, 390, 320]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: scheme, reducedMotion: "reduce" });
+    for (const url of pages) {
+      const page = await ctx.newPage();
+      const errors = [];
+      page.on("pageerror", (e) => errors.push(e.message));
+      page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+      await page.goto(base + url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(400);
+      const where = `${url} [${scheme}, ${width}px]`;
+      errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
+      const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+      if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      if (width === 1366) {
+        await page.addScriptTag({ content: axeSource });
+        const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+          .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
+        v.forEach((x) => problems.push(`${where}: axe ${x}`));
+      }
+      await page.close();
+    }
+    await ctx.close();
+  }
+}
+await browser.close();
+server.close();
+if (problems.length) {
+  console.error(`Kontrola webu selhala (${problems.length}):\n - ${problems.join("\n - ")}`);
+  process.exit(1);
+}
+console.log(`Kontrola webu v pořádku: ${pages.length} stránek × 2 režimy × 3 šířky.`);
