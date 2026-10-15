@@ -112,78 +112,20 @@
     <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
   </ul></div>
 
-  <h2 id="opravy">Opravy a změny metodiky</h2>
+    <h2 id="opravy">Opravy a změny metodiky</h2>
   <div class="card"><ul class="plain">
+    <li><strong>15. 10. 2026</strong> – Nová stránka <strong>Strany → Evropské frakce</strong>: souhrn hlasování celých politických skupin EP (všichni členové, ne jen čeští).
+      <em>Účast skupiny</em> = podíl hlasů pro, proti nebo zdržel se ze všech hlasů členů, <em>soudržnost</em> = podíl hlasů pro a proti odpovídajících většině skupiny
+      (v hlasováních, kde hlasovalo pro nebo proti aspoň 10 členů), <em>výrazně rozdělené hlasování</em> = menšina mezi hlasy pro a proti aspoň 30 % (stejný práh jako u české delegace).
+      Nezařazení nejsou skupina, proto tu nejsou. Weby skupin jsou z Wikidat, popisy skupin záměrně neuvádíme.</li>
+    <li><strong>15. 10. 2026</strong> – Nová stránka <strong>Hlasování podle témat</strong>: 12 témat jako pevná pravidla nad tématy Legislativní observatoře EP (žádná AI).
+      Jedno hlasování se počítá do všech svých témat, hlasování bez tématu je v řádku „Bez tématu“. U každého tématu je počet hlasování, závěrečných, „Češi jednotně“,
+      rozložení hlasů Čechů v závěrečných hlasováních a účast Čechů.</li>
     <li><strong>15. 10. 2026</strong> – Práce poslanců má vlastní položku v menu a přehledovou stránku: souhrn (zprávy, které čeští poslanci vedou a vyjednávají,
       projevy, otázky, prezence), kdy se pracovalo, rozpad zpráv podle typu procedury, naposledy přijaté zprávy s českou stopou a rozpad podle frakcí.
       Každý text se v součtech počítá jednou, i když na něm pracovali dva Češi. Frakce jsou řazené podle počtu poslanců, ne podle výkonu, a u každé je i průměr
       na poslance, protože zprávy se mezi frakce dělí podle jejich velikosti. Tabulka po poslancích s třetinami je na samostatné záložce.</li>
-    <li><strong>15. 10. 2026</strong> – Nová metrika <strong>Prezence na zasedání (podle EP)</strong>: v kolika dnech jednání v plénu v době mandátu byl poslanec
-      v oficiální prezenční listině EP (EP Open Data). Je to jiné číslo než „Účast na hlasování“, které počítá hlasy z HowTheyVote; obě metriky jsou vedle sebe
-      a každá má vlastní definici. Počítají se jen dny, ke kterým listina existuje, omluvení se ukazují zvlášť, bez mediánu EP a bez pořadí.</li>
-    <li><strong>15. 10. 2026</strong> – Detail závěrečného hlasování o zprávě ukazuje „českou stopu“: kdo z českých poslanců byl zpravodajem
-      a kdo stínovým zpravodajem (vazba zprávy na hlasování z EP Open Data, stejná jako na stránce Práce na textech).</li>
-    <li><strong>15. 10. 2026</strong> – Nově jsou na stránce Práce na textech a na profilu <strong>projevy v plénu</strong> (EP Open Data, endpoint speeches):
-      počet ústních projevů v rozpravách v době mandátu a jejich celková délka z časových značek zdroje. Písemná prohlášení se počítají zvlášť
-      a do projevů se nesčítají. Projevy jsou jen počet a čas, bez třetin, bez pořadí a bez mediánu EP. <strong>Pozměňovací návrhy ve výborech</strong>
-      zatím nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026, takže by pokrývala jen část období.</li>
-    <li><strong>15. 10. 2026</strong> – Úvodní stránka ukazuje „klíčová hlasování“ ve čtyřech seznamech, každý s jedním pravidlem a celý z dat
-      hlasování: zákony, o kterých se rozhodlo (COD, CNS, APP), kde se Češi nejvíc rozdělili, nejtěsnější výsledky a kde většina českých
-      hlasů šla proti výsledku. Nic se nevybírá ručně, nepoužívají se média ani tiskové zprávy a u každé položky je věta, proč v seznamu je.</li>
-    <li><strong>15. 10. 2026</strong> – U měsíce v grafu „Účast na hlasování po měsících“, ve kterém poslanec nehlasoval ani jednou, graf uvádí, že důvod EP v datech
-      neuvádí. Detail hlasování ukazuje hlasy Čechů po českých stranách, u frakcí jejich většinu a zvýrazňuje frakce, ve kterých sedí čeští poslanci.</li>
-    <li><strong>15. 10. 2026</strong> – „Kde hlasoval jinak než frakce“ nově ukazuje, jak hlasovala většina české strany poslance (ostatní poslanci
-      strany, kteří k datu hlasování měli mandát a hlasovali): „Z 745 hlasování, kde měla strana jasnou většinu, hlasoval 678× stejně jako
-      poslanci jeho strany.“ Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není a nepočítá se.</li>
-    <li><strong>15. 10. 2026</strong> – Mediány EP a frakce se u poslanců s kratším mandátem počítají jen z hlasování v době jejich mandátu
-      (dřív se srovnávali s mediánem za celé období, i když účast se v čase mění: začátek období, volby, prázdniny). U poslanců s plným
-      mandátem se nic nezměnilo. Medián frakce u bývalých poslanců se bere podle frakce v jejich posledním hlasování. Ve vlastním okně se
-      do mediánu berou poslanci s aspoň 100 hlasováními, u velmi krátkých mandátů s aspoň polovinou hlasování okna.</li>
-    <li><strong>15. 10. 2026</strong> – Srovnání s delegacemi podobné velikosti: u „Češi jednotně“ a „Těsná hlasování, kde rozhodly české
-      hlasy“ jsou nově vedle českého čísla rozmezí delegací s 20–22 poslanci (stejný výpočet, data z HowTheyVote). Kontrafakt
-      „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, takže nic neříká o větším vlivu českých
-      poslanců. Nadpis stránky uvádí, že u závěrečných hlasování české hlasy nerozhodly. U poslance přibyl sloupec „na straně výsledku“.</li>
-    <li><strong>15. 10. 2026</strong> – Změna názvů v textech: „rozkol“ je nově „rozdělení“ (míra rozdělení, výrazné rozdělení), protože
-      slovo zní dramaticky. „Vlastní práce“ je nově „Práce na textech“, aby název nenaznačoval, že hlasování není práce poslance.
-      Čísla se nezměnila.</li>
-    <li><strong>15. 10. 2026</strong> – Strany: místo počtu „rozdělila se 199×“ ukazujeme podíl („199 z 5 721, 3,5 %“), protože absolutní
-      počet závisí na délce mandátu a počtu poslanců. U účasti na hlasování je medián EP, strany jsou řazené podle počtu poslanců a doplnili
-      jsme větu, že u stran s více poslanci je jednotnost přirozeně nižší.</li>
-    <li><strong>15. 10. 2026</strong> – Vlastní práce: kdo byl v mandátu méně než 75 % období (od začátku období do posledního
-      hlasování v datech), třetinu v delegaci nedostane a u jeho čísel je šedé „–“ s vysvětlením. Srovnání absolutních počtů s kolegy,
-      kteří mají za sebou celé období, vyznívalo jako verdikt. Čísla se nezměnila. Úvodní věta profilu už stínovému zpravodaji nepřipisuje
-      zprávy, které psal někdo jiný: uvádí zvlášť, co vedl a co za frakci vyjednával. U „Češi jednotně“ je hlavním číslem podíl u závěrečných
-      hlasování, hodnota za všechna hlasování je pod ním.</li>
-    <li><strong>15. 10. 2026</strong> – Přejmenování metrik, aby název neslibovaly víc, než data měří. „Docházka“ je nově
-      <strong>Účast na hlasování</strong>: počítá jmenovitá hlasování, ve kterých poslanec hlasoval, ne prezenci na jednání (tu vede EP
-      zvlášť). „Loajalita k frakci“ je nově <strong>Hlasuje s frakcí</strong>, protože „loajalita“ je hodnotící slovo a odchylky často
-      vycházejí z postoje domácí strany. Čísla se nezměnila, změnily se jen názvy, definice a hlavičky CSV
-      (<code>ucast_na_hlasovani</code>, <code>ucast_zaverecna</code>, <code>hlasuje_s_frakci</code>).</li>
-    <li><strong>15. 10. 2026</strong> – Stránka „Co prošlo“ je nově „Vlastní práce“: místo pořadí podle přijatých zpráv ukazuje
-      profil přidělených rolí (zpravodaj/ka a stínový/á zpravodaj/ka u zpráv i stanovisek výborů) s třetinou v delegaci
-      u každé kategorie. Celkové pořadí jsme zrušili, protože žádné vážení různých druhů práce by nebylo podložené.
-      Stanoviska výborů se dřív do srovnání nepočítala vůbec. Podepsané návrhy usnesení jsou zvlášť a do srovnání nevstupují.
-      Nově je tam i docházka na hlasování (s mediánem EP) a funkce podle EP (předsednictví výboru, vedení frakce) jako kontext.
-      <strong>Oprava:</strong> zpráva, kterou EP uvádí jako dokument i jako roli v proceduře, se u části poslanců počítala
-      dvakrát; počty zpráv jako zpravodaj/ka byly proto u některých poslanců až dvojnásobné. Totéž u role uvedené v jedné
-      proceduře vícekrát.</li>
-    <li><strong>15. 10. 2026</strong> – Nový typ hlasování „námitka proti aktu Komise“ (usnesení podle čl. 114/115 jednacího řádu,
-      hlas PRO = vznést námitku); dál se počítá mezi závěrečná hlasování, jen má vlastní štítek a vysvětlení. Žádosti o odložení
-      hlasování a o vrácení do výboru jsou „procedurální hlasování“. Karty poslanců ukazují docházku a loajalitu vedle mediánu
-      celého EP a frakce. Barvy v grafech jsou barvy webu kvůli rozlišitelnosti; oficiální barva strany jen se zdrojem (zatím ODS).</li>
-    <li><strong>15. 10. 2026</strong> – Jméno Klára Dostálová uvádí EP bez diakritiky („Klara DOSTALOVA“); opraveno podle registru kandidátů ČSÚ
-      pro volby do EP 2024 (<a href="https://www.volby.cz/opendata/ep2024/ep2024_opendata.htm">volby.cz, otevřená data</a>).
-      Opravy jmen jsou v <code>data/manual/overrides.json</code>, vždy se zdrojem. Poslanci, které EP vede jako „Independent“ (Ind.),
-      se ukazují jako nezávislí.</li>
-    <li><strong>15. 10. 2026</strong> – U docházky a loajality přibyl medián celého EP a medián frakce (bez pořadí poslanců).
-      Poslanci, strany a závěrečná hlasování mají trvalé statické stránky (adresy <code>/p/</code>, <code>/s/</code>, <code>/v/</code>),
-      čísla a hlasování jdou citovat tlačítkem „Citovat“ a tabulky stáhnout jako CSV.</li>
-    <li><strong>14. 10. 2026</strong> – Každé hlasování má typ (závěrečné, prozatímní dohoda s Radou, návrh na zamítnutí, mandát k jednání,
-      naléhavý postup, pozměňovací návrh, dílčí hlasování). „Hlavní“ metriky (docházka, soulad s výsledkem, jednotnost strany) se nově
-      počítají jen ze závěrečných hlasování; dřív zahrnovaly i návrhy na zamítnutí, mandáty a naléhavý postup. U vlastní práce poslanců se
-      přijatý návrh na zamítnutí ukazuje jako zamítnutí textu. „Rozhodující hlasování“ přejmenována na „Těsná hlasování, kde rozhodly
-      české hlasy“ a místo počtu rozdělených hlasování ukazujeme, jak často hlasují Češi jednotně.</li>
-  </ul></div>
+</ul></div>
 
   <h2 id="kontakt">Kontakt a nahlášení chyby</h2>
   <div class="card">
