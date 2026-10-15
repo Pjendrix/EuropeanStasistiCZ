@@ -91,6 +91,14 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const finalVotes = !final && v.reference ? search.filter((x) => x.reference === v.reference && isFinal(x) && x.id !== id) : [];
     const finalVote = finalVotes[finalVotes.length - 1];
     const adopted = adoptedTextUrl(v.texts_adopted_reference);
+    // Česká stopa: kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy (data/vote_roles.json z own_work.json).
+    const roles = ((await getJSON("vote_roles.json").catch(() => null))?.votes || {})[String(v.id)] || [];
+    const roleLinks = (kinds) => roles.filter((r) => kinds.includes(r.role)).map((r) => meps[r.mep_id])
+      .filter(Boolean).map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ");
+    const trace = roles.length ? `<p class="small" id="ceska-stopa"><strong>Česká stopa:</strong>
+      ${roleLinks(["rapporteur", "co"]) ? `zpravodaj/ka ${roleLinks(["rapporteur", "co"])}` : ""}${roleLinks(["rapporteur", "co"]) && roleLinks(["shadow"]) ? " · " : ""}
+      ${roleLinks(["shadow"]) ? `stínoví zpravodajové z ČR: ${roleLinks(["shadow"])}` : ""}
+      <span class="muted">(zpráva ${esc([...new Set(roles.map((r) => r.report).filter(Boolean))].join(", "))}; zdroj EP Open Data)</span></p>` : "";
 
     // Kontext pro tlačítko „Sdílet“ (share.js): stejná čísla jako na stránce, nic nového.
     const pageUrl = new URL(final ? `v/${v.id}.html` : `vote.html?id=${v.id}&m=${foundMonth}`, document.baseURI).href;
@@ -129,6 +137,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       </p>
 
       <p class="share-row">${shareButton()}</p>
+      ${trace}
       ${askAiBox({ v, kind, final, desc, adopted, c })}
 
       <div class="metrics">

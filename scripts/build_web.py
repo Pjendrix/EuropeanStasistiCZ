@@ -342,6 +342,22 @@ def build_work(meps: list[dict], own: dict | None, day: str, stats: dict | None 
     return {"source": own["source"], "updated": own["updated"], "complete": own["complete"], "meps": rows}
 
 
+def build_vote_roles(own: dict | None) -> dict[str, list[dict]]:
+    """Česká stopa u hlasování (F3): kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy, o které se
+    hlasovalo (z own_work.json, který vazbu zprávy na závěrečné hlasování určil). {id hlasování: [{mep_id, role}]}."""
+    out: dict[str, list[dict]] = {}
+    for mep_id, entry in (own or {}).get("meps", {}).items():
+        for it in entry.get("items", []):
+            if it["type"] in ("report", "shadow_report") and it.get("vote_id"):
+                role = "shadow" if it["type"] == "shadow_report" else ("co" if it.get("role") == "RAPPORTEUR_CO" else "rapporteur")
+                row = {"mep_id": int(mep_id), "role": role, "report": it.get("report"), "procedure": it.get("label")}
+                if row not in out.setdefault(str(it["vote_id"]), []):
+                    out[str(it["vote_id"])].append(row)
+    for rows in out.values():
+        rows.sort(key=lambda r: (r["role"] == "shadow", r["mep_id"]))
+    return dict(sorted(out.items(), key=lambda kv: int(kv[0])))
+
+
 def build_agreement(meps: list[dict], stats: dict, day: str) -> dict:
     """Matice shody: pro každou dvojici [stejně, oba hlasovali]."""
     return {
@@ -437,6 +453,9 @@ def run(data_dir: Path, day: str) -> dict:
     write_json(data_dir / "key_votes.json", key)
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels, bench))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
+    if own is not None:
+        write_json(data_dir / "vote_roles.json", {"source": own["source"], "updated": own["updated"],
+                                                  "votes": build_vote_roles(own)}, compact=True)
     work = build_work(meps, own, day, stats, activity)
     if work is not None and activity_info:
         work["activity_source"] = activity_info

@@ -229,3 +229,16 @@ def test_mep_votes_only_in_mandate():
         {"id": 13, "date": "2024-09-12", "cz_positions": [{"member_id": 2, "position": "FOR"}]},       # poslanec nehlasuje v datech
     ]
     assert bw.mep_votes(mep, votes) == {"ids": [10, 11], "positions": "FN"}
+
+
+def test_vote_roles_from_own_work():
+    own = {"meps": {"1": {"items": [
+        {"type": "report", "role": "RAPPORTEUR", "vote_id": 10, "report": "A10-0001/2025", "label": "2025/0001(COD)"},
+        {"type": "motion", "role": "AUTHOR", "vote_id": 10},                                        # usnesení se nepočítá
+        {"type": "report", "role": "RAPPORTEUR", "vote_id": None}]},                                 # bez hlasování
+        "2": {"items": [{"type": "shadow_report", "role": "RAPPORTEUR_SHADOW", "vote_id": 10, "report": "A10-0001/2025", "label": "2025/0001(COD)"}]},
+        "3": {"items": [{"type": "report", "role": "RAPPORTEUR_CO", "vote_id": 9, "report": "A10-0002/2025", "label": "x"}]}}}
+    r = bw.build_vote_roles(own)
+    assert list(r) == ["9", "10"]
+    assert [(x["mep_id"], x["role"]) for x in r["10"]] == [(1, "rapporteur"), (2, "shadow")]  # zpravodaj před stínovým
+    assert r["9"][0]["role"] == "co" and bw.build_vote_roles(None) == {}
