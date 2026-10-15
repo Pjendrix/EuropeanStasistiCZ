@@ -343,7 +343,8 @@ function setNav(page) {
 }
 
 function showError(el, err) {
-  el.innerHTML = `<p class="error">${esc(err.message || err)}</p>`;
+  el.innerHTML = `<p class="error" role="alert">${esc(err.message || err)}
+    <button type="button" class="more-btn" onclick="location.reload()">Zkusit znovu</button></p>`;
   console.error(err);
 }
 
@@ -701,3 +702,6 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const m of muts) m.addedNodes.forEach((n) => { if (n.nodeType === 1) motion.scan(n.parentElement || n); });
   }).observe(document.body, { childList: true, subtree: true });
 });
+
+// Stav načítání čtečky oznámí jednou a sám zmizí, až se obsah nahradí.
+document.querySelectorAll(".loading").forEach((el) => el.setAttribute("role", "status"));

@@ -61,3 +61,28 @@ def test_write_removes_stale_and_keeps_unchanged(tmp_path):
 def test_formatting():
     assert bp.fmt_pct([1, 3]) == "33,3 %" and bp.fmt_pct([0, 0]) == "–"
     assert bp.fmt_num(6154) == "6 154" and bp.fmt_date("2024-07-16") == "16. 7. 2024"
+
+
+def test_definitions_static_and_every_key_has_a_name(tmp_path):
+    defs = {"attendance": "Text <b>", "work_profile": "Další"}
+    html = bp.definitions_html(defs)
+    assert "<strong>Účast na hlasování</strong>: Text &lt;b&gt;" in html and "work_profile" not in html
+    try:
+        bp.definitions_html({"neznamy_klic": "x"})
+        assert False, "měla být chyba"
+    except bp.FormatError as e:
+        assert "neznamy_klic" in str(e)
+    pub, data = tmp_path / "public", tmp_path / "data"
+    pub.mkdir(); data.mkdir()
+    (pub / "o-projektu.html").write_text('<ul class="plain" id="definitions"><li class="loading">Načítám…</li></ul>', encoding="utf-8")
+    (data / "overview.json").write_text(json.dumps({"definitions": defs}), encoding="utf-8")
+    assert bp.sync_definitions(pub, data) is True
+    assert "Načítám" not in (pub / "o-projektu.html").read_text(encoding="utf-8")
+    assert bp.sync_definitions(pub, data) is False  # podruhé beze změny
+
+
+def test_repo_definitions_in_sync_with_overview(tmp_path):
+    """Seznam „Jak počítáme“ v public/o-projektu.html odpovídá data/overview.json (jinak spusť scripts/build_pages.py)."""
+    root = Path(__file__).resolve().parent.parent
+    (tmp_path / "o-projektu.html").write_text((root / "public" / "o-projektu.html").read_text(encoding="utf-8"), encoding="utf-8")
+    assert bp.sync_definitions(tmp_path, root / "data") is False

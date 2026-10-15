@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from html import escape
 from pathlib import Path
@@ -408,6 +409,47 @@ def sitemap(base_url: str, paths: list[str]) -> dict[str, str]:
     }
 
 
+# Názvy definic metrik na stránce O projektu (klíč → název). Klíč bez názvu je chyba, ne holý klíč na webu.
+DEFINITION_NAMES = {
+    "attendance": "Účast na hlasování", "attendance_main": "Účast na hlasování – závěrečná", "vote_kind": "Typ hlasování",
+    "group_loyalty": "Hlasuje s frakcí", "cz_agreement": "Shoda s ostatními Čechy", "pairwise": "S kým hlasuje stejně",
+    "outcome_agreement": "Soulad s výsledkem", "group_outcome_agreement": "Soulad s výsledkem – průměr frakce",
+    "close_votes": "Těsná hlasování", "decisive_votes": "Kde rozhodly české hlasy",
+    "against_group": "Kde hlasoval jinak než frakce", "cz_split": "Kde se Češi rozdělili", "cz_unity": "Češi jednotně",
+    "party_cohesion": "Jednotnost strany", "topics": "Témata", "own_work": "Práce na textech",
+    "work_profile": "Práce na textech – třetiny v delegaci",
+}
+
+
+def definitions_html(definitions: dict[str, str]) -> str:
+    """Seznam definic metrik jako statické HTML (pro „Jak počítáme“; funguje i bez JavaScriptu a pro vyhledávače)."""
+    missing = [k for k in definitions if k not in DEFINITION_NAMES]
+    if missing:
+        raise FormatError(f"definice bez názvu v DEFINITION_NAMES: {', '.join(missing)}")
+    return "".join(f"<li><strong>{esc(DEFINITION_NAMES[k])}</strong>: {esc(text)}</li>\n" for k, text in definitions.items())
+
+
+_DEFS_RE = re.compile(r'(<ul class="plain" id="definitions">).*?(</ul>)', re.S)
+
+
+def sync_definitions(public: Path, data_dir: Path) -> bool:
+    """Přepíše seznam definic v public/o-projektu.html podle data/overview.json. Vrací True, když se soubor změnil."""
+    page = public / "o-projektu.html"
+    overview = data_dir / "overview.json"
+    if not page.exists() or not overview.exists():
+        return False
+    defs = json.loads(overview.read_text(encoding="utf-8")).get("definitions")
+    if not defs:
+        raise FormatError("overview.json nemá definitions")
+    old = page.read_text(encoding="utf-8")
+    if len(_DEFS_RE.findall(old)) != 1:
+        raise FormatError("o-projektu.html nemá právě jeden seznam <ul id=\"definitions\">")
+    new = _DEFS_RE.sub(lambda m: f"{m[1]}\n{definitions_html(defs)}{m[2]}", old)
+    if new != old:
+        page.write_text(new, encoding="utf-8")
+    return new != old
+
+
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
     """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
@@ -434,6 +476,7 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
     try:
         res = write(build(args.data_dir), args.public)
+        res["definitions_changed"] = int(sync_definitions(args.public, args.data_dir))
     except FormatError as e:
         print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
         return 2

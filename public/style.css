@@ -502,7 +502,6 @@ table.matrix tbody tr:hover { background: none; }
 .site-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
 .site-footer .inner { max-width: 1280px; margin: 0 auto; padding: 1.5rem 20px 2rem; }
 .error { background: #FEE2E2; color: #7F1D1D; padding: 1rem; border-radius: var(--radius-sm); }
-.loading { color: var(--muted); }
 .mobile-only { display: none; }
 @media (max-width: 640px) {
   .desktop-only, .controls label.desktop-only { display: none; }
@@ -667,3 +666,12 @@ main h2[id] { scroll-margin-top: 4rem; }
 }
 .controls { min-width: 0; max-width: 100%; }
 .grid-2 > * { min-width: 0; }
+
+/* Stavy načítání (X8): kostra místo holého textu. Text „Načítám…“ zůstává pro čtečky (font-size 0). */
+.loading { font-size: 0; line-height: 0; color: transparent; }
+.loading::before { content: ""; display: block; height: 6rem; border-radius: 8px;
+  background: linear-gradient(90deg, var(--track) 25%, var(--surface) 50%, var(--track) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; }
+td.loading::before, li.loading::before { height: 2.5rem; }
+@keyframes sk { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .loading::before { animation: none; } }
+.error .more-btn { margin-left: .5rem; }
