@@ -3,6 +3,18 @@
 Loga jsou ochranné známky. Stahují se ručně z oficiálních webů, ukládají se **bez úprav**
 a používají se jen k identifikaci. Když logo chybí, web ukáže tečku v barvě a zkratku.
 
+## Stav k 15. 10. 2026
+
+Nahráno z oficiálních webů (bez úprav kresby, rastry jen převedené do bezeztrátového WebP 128 px; zdroj u každého v `data/manual/logos.json`):
+ODS, Piráti, STAN, KSČM, SPD, Motoristé sobě, ECR (česká verze EKR), PfE, Renew Europe, S&D.
+
+Chybí (web ukazuje tečku a zkratku):
+- **ANO 2011, Přísaha**: weby z prostředí Claude Code neodpovídaly – stáhnout ručně.
+- **KDU-ČSL, ESN**: na webu nalezena jen bílá verze pro tmavé pozadí – najít barevnou.
+- **TOP09/STAN** (Niedermayer, Kolář): EP vede společnou kandidátku; logo konkrétní strany až po ověření členství.
+- **EPP**: logo jen s výslovným souhlasem – napsat tiskovému oddělení.
+- **Greens/EFA**: stránka s logy nenalezena. **The Left**: web vrací 403.
+
 ## Formát a umístění
 
 - **SVG** (preferované): ostré v každé velikosti, obvykle 2–20 kB.
