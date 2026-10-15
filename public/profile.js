@@ -354,10 +354,13 @@ function periodText(x) {
         <section>
           <h2>Členství podrobně</h2>
           <div class="card"><ul class="plain">
-            ${mep.groups.map((x) => `<li>${groupBadge(null, groups, x.code)} ${esc(x.name_cs || x.name_en || "")}
-              <div class="small muted">${periodText(x)}</div></li>`).join("")}
-            ${mep.parties.map((x) => `<li>${partyBadge(x.org_id, x.short_label, parties, mep)} ${esc(x.name || "")}
-              <div class="small muted">${periodText(x)}</div></li>`).join("") || `<li class="muted">${esc(NO_PARTY_NOTE)}</li>`}
+            ${mep.groups.map((x) => { const go = groups.find((y) => y.ep_code === x.code || y.code === x.code);
+              return `<li>${entityCell(go || { code: x.code }, { name: x.name_cs || x.name_en || x.short_label, size: 24, slot: "sm",
+                sub: `${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : x.short_label)} · ${periodText(x)}` })}</li>`; }).join("")}
+            ${mep.parties.map((x) => { const po = parties.find((y) => String(y.id) === String(x.org_id));
+              if (po?.independent) return `<li>${partyBadge(x.org_id, x.short_label, parties, mep)}<div class="small muted">${periodText(x)}</div></li>`;
+              return `<li>${entityCell(po || {}, { name: x.name || x.short_label, href: po ? `party.html?id=${po.id}` : "", size: 24, slot: "sm",
+                sub: `${esc(x.short_label)} · ${periodText(x)}` })}</li>`; }).join("") || `<li class="muted">${esc(NO_PARTY_NOTE)}</li>`}
           </ul>
           <p class="source">Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a></p></div>
         </section>

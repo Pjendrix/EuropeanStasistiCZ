@@ -97,8 +97,10 @@ setNav("work");
       lead: (r) => r.m.lead_adopted, shadow: (r) => r.m.shadow_adopted, legislative: (r) => r.legislative,
       resolutions: (r) => r.m.resolutions_adopted, pending: (r) => r.pending,
     };
-    const cell = (r) => `<td><div class="mep-cell">${avatar(r.m, 40)}<div><a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a>
-        <div class="small muted">${esc((() => { const g = groups.find((x) => x.ep_code === r.m.group?.code); return g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (r.m.group?.short_label || ""); })())}${r.m.party ? ` · ${esc(r.m.party.short_label === "Ind." ? byGender(r.m, "nezávislý", "nezávislá") : r.m.party.short_label)}` : ""}${r.d?.mandate_from ? ` · mandát od ${fmtDate(r.d.mandate_from)}` : ""}</div></div></div></td>`;
+    const partyLogo = (r) => { const p = parties.find((x) => x.id === r.m.party?.id); const t = p && !p.independent ? logoTile(p, 22) : "";
+      return t ? `<span class="logo-slot sm mep-party-logo">${t}</span>` : ""; };
+    const cell = (r) => `<td><div class="mep-cell wide">${avatar(r.m, 40)}<div><a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a>
+        <div class="small muted">${esc((() => { const g = groups.find((x) => x.ep_code === r.m.group?.code); return g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (r.m.group?.short_label || ""); })())}${r.m.party ? ` · ${esc(r.m.party.short_label === "Ind." ? byGender(r.m, "nezávislý", "nezávislá") : r.m.party.short_label)}` : ""}${r.d?.mandate_from ? ` · mandát od ${fmtDate(r.d.mandate_from)}` : ""}</div></div>${partyLogo(r)}</div></td>`;
     const render = (list) => {
       tbody.innerHTML = list.map((r) => `<tr>
         <td class="num"><strong>${fmtNum(r.d.rank)}.</strong></td>${cell(r)}

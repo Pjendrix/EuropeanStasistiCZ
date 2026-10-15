@@ -261,7 +261,9 @@ tr.former td { opacity: .72; }
 .sticky-col { position: sticky; left: 0; background: var(--surface); z-index: 1; }
 
 .mep-cell { display: flex; align-items: center; gap: .65rem; min-width: 12rem; }
-.mep-cell img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); flex: none; }
+.mep-cell > img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); flex: none; }
+.mep-cell.wide { min-width: 17rem; }
+.mep-cell .mep-party-logo { margin-left: auto; }
 .mep-cell a { font-weight: 600; text-decoration: none; color: var(--text); }
 .mep-cell a:hover { text-decoration: underline; text-decoration-color: var(--gold); }
 
@@ -276,6 +278,12 @@ tr.former td { opacity: .72; }
 .logo-tile { display: inline-flex; align-items: center; flex: none; padding: 4px; border-radius: 6px; background: #FFFFFF; box-shadow: 0 0 0 1px var(--border); box-sizing: content-box; }
 .logo-tile img { height: 100%; width: auto; max-width: 220px; display: block; object-fit: contain; border-radius: 0; box-shadow: none; background: none; }
 .group-chip .logo-tile { padding: 2px; }
+/* Buňka logo + název (entityCell): logo v pevném slotu, názvy pod sebou lícují. */
+.entity-cell { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+.entity-text { min-width: 0; }
+.entity-cell .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.logo-slot.sm { width: 64px; }
+.logo-slot.sm .logo-tile img { max-width: 56px; }
 /* Pevná šířka pro logo v tabulkách, aby štítky frakcí lícovaly i u řádků bez loga. */
 .logo-slot { display: inline-flex; justify-content: center; width: 96px; flex: none; }
 @media (max-width: 640px) { .logo-slot { width: 64px; } .logo-slot .logo-tile img { max-width: 56px; } }

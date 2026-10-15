@@ -254,8 +254,12 @@ function groupedCards(list, groups, parties, bench) {
         return `<tr class="${active ? "" : "former"}">
           <td class="sticky-col"><div class="mep-cell">${avatar(m, 40)}
             <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></div></td>
-          <td>${groupBadge(null, groups, g?.code)}</td>
-          <td>${p ? partyLink(p.id, p.short_label, parties, m) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`}</td>
+          <td>${(() => { const go = groups.find((x) => x.ep_code === g?.code);
+            return entityCell(go || { code: g?.code }, { name: go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : (g?.short_label || "bez frakce"), size: 22, slot: "sm" }); })()}</td>
+          <td>${(() => { const po = p ? parties.find((x) => String(x.id) === String(p.id)) : null;
+            if (!p) return `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`;
+            if (po?.independent) return `<div class="entity-cell"><span class="logo-slot sm"></span>${partyBadge(p.id, p.short_label, parties, m)}</div>`;
+            return entityCell(po || {}, { name: p.short_label, href: po ? `party.html?id=${po.id}` : "", size: 22, slot: "sm" }); })()}</td>
           <td>${benchRow("Docházka", s.attendance, bench?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
           <td class="num">${pctCell(s.attendance_main)}</td>
           <td>${benchRow("Loajalita", s.group_loyalty, isNI ? null : (groupBench(bench, groups, g?.code)?.group_loyalty ?? null), "medián frakce",
