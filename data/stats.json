@@ -29,7 +29,7 @@
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
   "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
-  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.",
   "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
   "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
@@ -1864,6 +1864,10 @@
    "against_group": {
     "count": 0,
     "count_main": 0,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [],
     "recent_main": []
    },
@@ -3192,76 +3196,90 @@
    "against_group": {
     "count": 325,
     "count_main": 51,
+    "party_known": 324,
+    "with_party": 307,
+    "party_known_main": 51,
+    "with_party_main": 50,
     "recent": [
      {
       "id": 177169,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177167,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 177162,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 177158,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177157,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 177156,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177149,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 177145,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 177144,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 177143,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ],
     "recent_main": [
@@ -3270,70 +3288,80 @@
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177135,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177332,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177411,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 177061,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 177034,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 177334,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 177335,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 176844,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 176281,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ]
    },
@@ -5234,76 +5262,90 @@
    "against_group": {
     "count": 590,
     "count_main": 21,
+    "party_known": 557,
+    "with_party": 170,
+    "party_known_main": 20,
+    "with_party_main": 4,
     "recent": [
      {
       "id": 198045,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 198023,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197993,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197980,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197969,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197961,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197949,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197906,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197887,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -5312,70 +5354,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 198175,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197199,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 196156,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 195769,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 194927,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 194461,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 193822,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 192536,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 190668,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      }
     ]
    },
@@ -7336,76 +7388,90 @@
    "against_group": {
     "count": 471,
     "count_main": 27,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [
      {
       "id": 198044,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197990,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197946,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197943,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197942,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197891,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198189,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198181,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198203,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -7414,70 +7480,80 @@
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197460,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 196438,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 190658,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 190917,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 190979,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 189914,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 186089,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 186909,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 186515,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ]
    },
@@ -8197,6 +8273,10 @@
    "against_group": {
     "count": 0,
     "count_main": 0,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [],
     "recent_main": []
    },
@@ -10028,76 +10108,90 @@
    "against_group": {
     "count": 1402,
     "count_main": 234,
+    "party_known": 1388,
+    "with_party": 1356,
+    "party_known_main": 233,
+    "with_party_main": 230,
     "recent": [
      {
       "id": 195890,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196210,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196209,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196206,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196204,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196202,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196196,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196181,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196178,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 196414,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -10106,70 +10200,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 195870,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 195891,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 195833,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196227,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196071,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 195769,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 195341,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 195340,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 195543,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -12130,76 +12234,90 @@
    "against_group": {
     "count": 781,
     "count_main": 127,
+    "party_known": 745,
+    "with_party": 678,
+    "party_known_main": 123,
+    "with_party_main": 117,
     "recent": [
      {
       "id": 198022,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197979,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197942,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197941,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197876,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198198,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 197847,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197838,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197824,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -12208,70 +12326,80 @@
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197501,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197464,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196493,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196162,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196138,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      }
     ]
    },
@@ -14232,76 +14360,90 @@
    "against_group": {
     "count": 198,
     "count_main": 29,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [
      {
       "id": 198011,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198010,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197970,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "GREEN_EFA",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197891,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "GREEN_EFA",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198188,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197858,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 197857,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197849,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197844,
       "is_final": false,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -14310,70 +14452,80 @@
       "is_final": true,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 196147,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197242,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196438,
       "is_final": true,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 194877,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 194993,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 194562,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 193515,
       "is_final": true,
       "position": "FOR",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 190095,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 189313,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "GREEN_EFA",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ]
    },
@@ -16334,76 +16486,90 @@
    "against_group": {
     "count": 1021,
     "count_main": 148,
+    "party_known": 773,
+    "with_party": 698,
+    "party_known_main": 128,
+    "with_party_main": 120,
     "recent": [
      {
       "id": 198023,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198022,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197979,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197943,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197942,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197941,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197876,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198202,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198198,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 198196,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -16412,70 +16578,80 @@
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197501,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197464,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197460,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 196774,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196147,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -18436,76 +18612,90 @@
    "against_group": {
     "count": 1662,
     "count_main": 126,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [
      {
       "id": 198051,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198049,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198032,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198028,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198024,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198023,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198022,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198019,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198011,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198010,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -18514,70 +18704,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198261,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198175,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ESN",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 197460,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196774,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197216,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 195830,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 195855,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 195891,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ESN",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ]
    },
@@ -20538,76 +20738,90 @@
    "against_group": {
     "count": 1473,
     "count_main": 242,
+    "party_known": 1464,
+    "with_party": 1406,
+    "party_known_main": 241,
+    "with_party_main": 237,
     "recent": [
      {
       "id": 198016,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198014,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198182,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198215,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 198204,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -20616,70 +20830,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198251,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196838,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197236,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -22640,76 +22864,90 @@
    "against_group": {
     "count": 607,
     "count_main": 20,
+    "party_known": 579,
+    "with_party": 467,
+    "party_known_main": 20,
+    "with_party_main": 13,
     "recent": [
      {
       "id": 197866,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197827,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197826,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197823,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197817,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197815,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197674,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197643,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197642,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197638,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -22718,70 +22956,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 193557,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 193822,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 190668,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 189270,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 186972,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 184187,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 182713,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 181951,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 181831,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -24742,76 +24990,90 @@
    "against_group": {
     "count": 1373,
     "count_main": 224,
+    "party_known": 1358,
+    "with_party": 1318,
+    "party_known_main": 223,
+    "with_party_main": 221,
     "recent": [
      {
       "id": 198016,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198014,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197951,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198182,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198215,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      }
     ],
     "recent_main": [
@@ -24820,70 +25082,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196838,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197236,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -26844,76 +27116,90 @@
    "against_group": {
     "count": 1327,
     "count_main": 223,
+    "party_known": 1322,
+    "with_party": 1272,
+    "party_known_main": 223,
+    "with_party_main": 220,
     "recent": [
      {
       "id": 197860,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197857,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197856,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197842,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 197824,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197815,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197643,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      }
     ],
     "recent_main": [
@@ -26922,70 +27208,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196838,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196493,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -28946,76 +29242,90 @@
    "against_group": {
     "count": 1044,
     "count_main": 149,
+    "party_known": 730,
+    "with_party": 709,
+    "party_known_main": 125,
+    "with_party_main": 122,
     "recent": [
      {
       "id": 198023,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198022,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197979,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197943,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197942,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197941,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197876,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198202,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198198,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 198196,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -29024,70 +29334,80 @@
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197501,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197464,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197460,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196493,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 196162,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ]
    },
@@ -31048,76 +31368,90 @@
    "against_group": {
     "count": 620,
     "count_main": 21,
+    "party_known": 601,
+    "with_party": 170,
+    "party_known_main": 21,
+    "with_party_main": 4,
     "recent": [
      {
       "id": 198046,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198034,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198031,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198028,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 198017,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198016,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197994,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197993,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197977,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197975,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      }
     ],
     "recent_main": [
@@ -31126,70 +31460,80 @@
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 193557,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 184692,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 184691,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 184690,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 182713,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 181951,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 179048,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 178500,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 178067,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ]
    },
@@ -33150,76 +33494,90 @@
    "against_group": {
     "count": 617,
     "count_main": 18,
+    "party_known": 567,
+    "with_party": 467,
+    "party_known_main": 15,
+    "with_party_main": 13,
     "recent": [
      {
       "id": 198046,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198034,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198027,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198026,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198023,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198017,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198012,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198008,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197961,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197949,
       "is_final": false,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -33228,70 +33586,80 @@
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 198175,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 196156,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 193822,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 190668,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 189270,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 186972,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 184187,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "EPP",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 181951,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 181339,
       "is_final": true,
       "position": "FOR",
       "group_code": "EPP",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ]
    },
@@ -34672,76 +35040,90 @@
    "against_group": {
     "count": 517,
     "count_main": 57,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [
      {
       "id": 178871,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 178870,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 179047,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 179037,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 178291,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 178976,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 178985,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 178982,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 178788,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 178785,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -34750,70 +35132,80 @@
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 178788,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 178767,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 178334,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 177697,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 178219,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 178062,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 177814,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 177735,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 178067,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ]
    },
@@ -36714,6 +37106,10 @@
    "against_group": {
     "count": 0,
     "count_main": 0,
+    "party_known": 0,
+    "with_party": 0,
+    "party_known_main": 0,
+    "with_party_main": 0,
     "recent": [],
     "recent_main": []
    },
@@ -38674,76 +39070,90 @@
    "against_group": {
     "count": 805,
     "count_main": 132,
+    "party_known": 293,
+    "with_party": 107,
+    "party_known_main": 49,
+    "with_party_main": 26,
     "recent": [
      {
       "id": 198023,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198022,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 198019,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198018,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197979,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197947,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197943,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197942,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197941,
       "is_final": false,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      }
     ],
     "recent_main": [
@@ -38752,70 +39162,80 @@
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197460,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 196774,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196147,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 196493,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "ECR",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 196156,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 196138,
       "is_final": true,
       "position": "FOR",
       "group_code": "ECR",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -40776,76 +41196,90 @@
    "against_group": {
     "count": 1203,
     "count_main": 198,
+    "party_known": 1193,
+    "with_party": 1163,
+    "party_known_main": 197,
+    "with_party_main": 193,
     "recent": [
      {
       "id": 198016,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198014,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198182,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198215,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 198204,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -40854,70 +41288,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198251,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 195769,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 195341,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -42830,76 +43274,90 @@
    "against_group": {
     "count": 1402,
     "count_main": 243,
+    "party_known": 1395,
+    "with_party": 1347,
+    "party_known_main": 243,
+    "with_party_main": 238,
     "recent": [
      {
       "id": 198016,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198014,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197963,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197951,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198182,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      }
     ],
     "recent_main": [
@@ -42908,70 +43366,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198193,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "FOR"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 196838,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197236,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      }
     ]
    },
@@ -44352,76 +44820,90 @@
    "against_group": {
     "count": 791,
     "count_main": 134,
+    "party_known": 786,
+    "with_party": 748,
+    "party_known_main": 134,
+    "with_party_main": 131,
     "recent": [
      {
       "id": 198016,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198014,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197956,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197951,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197899,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 197893,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197877,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "AGAINST"
      },
      {
       "id": 198187,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198182,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 198215,
       "is_final": false,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      }
     ],
     "recent_main": [
@@ -44430,70 +44912,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197484,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "ABSTENTION"
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": "FOR"
      },
      {
       "id": 195769,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": "FOR"
      },
      {
       "id": 195340,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      },
      {
       "id": 195543,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": "AGAINST"
      }
     ]
    },
@@ -45754,76 +46246,90 @@
    "against_group": {
     "count": 558,
     "count_main": 133,
+    "party_known": 257,
+    "with_party": 122,
+    "party_known_main": 56,
+    "with_party_main": 32,
     "recent": [
      {
       "id": 198215,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 198204,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 198260,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 197860,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 197856,
       "is_final": false,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 197855,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197843,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 197835,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197821,
       "is_final": false,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      }
     ],
     "recent_main": [
@@ -45832,70 +46338,80 @@
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197509,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197486,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197472,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197352,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197356,
       "is_final": true,
       "position": "ABSTENTION",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 196838,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "AGAINST"
+      "group_majority": "AGAINST",
+      "party_majority": null
      },
      {
       "id": 197236,
       "is_final": true,
       "position": "FOR",
       "group_code": "PFE",
-      "group_majority": "ABSTENTION"
+      "group_majority": "ABSTENTION",
+      "party_majority": null
      },
      {
       "id": 196483,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      },
      {
       "id": 196510,
       "is_final": true,
       "position": "AGAINST",
       "group_code": "PFE",
-      "group_majority": "FOR"
+      "group_majority": "FOR",
+      "party_majority": null
      }
     ]
    },

@@ -110,7 +110,7 @@
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
   "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
-  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.",
   "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
   "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
@@ -2215,6 +2215,10 @@
  "against_group": {
   "count": 1203,
   "count_main": 198,
+  "party_known": 1193,
+  "with_party": 1163,
+  "party_known_main": 197,
+  "with_party_main": 193,
   "recent": [
    {
     "id": 198016,
@@ -2245,7 +2249,8 @@
     "description_cs": "Za odst. 24 - PN 7",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "FOR"
+    "group_majority": "FOR",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 198014,
@@ -2276,7 +2281,8 @@
     "description_cs": "Za odst. 22 - PN 6",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "FOR"
+    "group_majority": "FOR",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197956,
@@ -2307,7 +2313,8 @@
     "description_cs": "Za odst. 3 - PN 33",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "FOR"
+    "group_majority": "FOR",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197899,
@@ -2338,7 +2345,8 @@
     "description_cs": "Za odst. 34 - PN 14",
     "position": "AGAINST",
     "group_code": "PFE",
-    "group_majority": "ABSTENTION"
+    "group_majority": "ABSTENTION",
+    "party_majority": "AGAINST"
    },
    {
     "id": 197893,
@@ -2369,7 +2377,8 @@
     "description_cs": "Odst. 24",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197877,
@@ -2400,7 +2409,8 @@
     "description_cs": "Za odst. 7 - PN 10",
     "position": "AGAINST",
     "group_code": "PFE",
-    "group_majority": "ABSTENTION"
+    "group_majority": "ABSTENTION",
+    "party_majority": "AGAINST"
    },
    {
     "id": 198187,
@@ -2431,7 +2441,8 @@
     "description_cs": "Odst. 30, 2. část",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 198182,
@@ -2462,7 +2473,8 @@
     "description_cs": "Za odst. 15 - PN 10",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 198215,
@@ -2493,7 +2505,8 @@
     "description_cs": "Odst. 19, 2. část",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "ABSTENTION"
+    "group_majority": "ABSTENTION",
+    "party_majority": "FOR"
    },
    {
     "id": 198204,
@@ -2524,7 +2537,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    }
   ],
   "recent_main": [
@@ -2557,7 +2571,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 198251,
@@ -2588,7 +2603,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "ABSTENTION"
+    "group_majority": "ABSTENTION",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197509,
@@ -2619,7 +2635,8 @@
     "description_cs": "Návrh Komise",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197486,
@@ -2650,7 +2667,8 @@
     "description_cs": "Prozatímní dohoda - PN 18",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "FOR"
    },
    {
     "id": 197484,
@@ -2681,7 +2699,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "ABSTENTION",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "ABSTENTION"
    },
    {
     "id": 197472,
@@ -2712,7 +2731,8 @@
     "description_cs": "Návrh nařízení Rady",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "FOR"
    },
    {
     "id": 197352,
@@ -2743,7 +2763,8 @@
     "description_cs": "Prozatímní dohoda - PN 2",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "FOR"
    },
    {
     "id": 197356,
@@ -2774,7 +2795,8 @@
     "description_cs": "Prozatímní dohoda - PN 2",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "AGAINST"
+    "group_majority": "AGAINST",
+    "party_majority": "FOR"
    },
    {
     "id": 195769,
@@ -2805,7 +2827,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "FOR",
     "group_code": "PFE",
-    "group_majority": "ABSTENTION"
+    "group_majority": "ABSTENTION",
+    "party_majority": "FOR"
    },
    {
     "id": 195341,
@@ -2836,7 +2859,8 @@
     "description_cs": "Návrh usnesení (celý text)",
     "position": "AGAINST",
     "group_code": "PFE",
-    "group_majority": "FOR"
+    "group_majority": "FOR",
+    "party_majority": "AGAINST"
    }
   ]
  },

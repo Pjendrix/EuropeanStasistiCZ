@@ -336,3 +336,33 @@ def test_main_metrics_use_only_final_votes():
     assert t["attendance_main"] == [1, 1]      # jen prozatímní dohoda
     assert t["outcome_main"] == [1, 1]
     assert t["attendance"] == [2, 3]           # všechna hlasování dál počítají
+
+
+def test_against_group_with_czech_party_majority():
+    """D3: u odchylky od frakce se zjišťuje, jak hlasovala většina české strany poslance (bez něj samotného)."""
+    def p(i, position, party="MOCK_A", pid=1, group="EPP"):
+        return {**pos(i, position, group), "national_party_id": pid, "national_party": party}
+    gc = {"EPP": [10, 0, 0, 0]}  # většina frakce vždy PRO
+    meps = [mep(1), mep(2), mep(3), mep(4)]
+    votes = [
+        # 1 hlasuje PROTI frakci; spolustraníci 2 a 3 také PROTI -> stejně jako strana
+        vote(1, "2025-01-10", [p(1, "AGAINST"), p(2, "AGAINST"), p(3, "AGAINST"), p(4, "FOR", "MOCK_B", 2)], gc),
+        # strana 1 se rozdělila 1 : 1 u ostatních -> bez většiny (None)
+        vote(2, "2025-01-11", [p(1, "AGAINST"), p(2, "AGAINST"), p(3, "FOR"), p(4, "FOR", "MOCK_B", 2)], gc),
+        # 4 je v jednočlenné straně: strana bez jiného hlasujícího -> None
+        vote(3, "2025-01-12", [p(1, "FOR"), p(4, "AGAINST", "MOCK_B", 2)], gc),
+        # spolustraník 2 nehlasoval, 3 hlasoval PRO: většina strany PRO, 1 hlasuje PROTI frakci i straně
+        vote(4, "2025-01-13", [p(1, "AGAINST"), p(2, "DID_NOT_VOTE"), p(3, "FOR")], gc),
+    ]
+    ag = cs.compute(meps, votes, topics=[])["1"]["against_group"]
+    assert ag["count"] == 3 and ag["party_known"] == 2 and ag["with_party"] == 1
+    by_id = {x["id"]: x["party_majority"] for x in ag["recent"]}
+    assert by_id == {1: "AGAINST", 2: None, 4: "FOR"}
+    ag4 = cs.compute(meps, votes, topics=[])["4"]["against_group"]
+    assert ag4["count"] == 1 and ag4["party_known"] == 0 and ag4["with_party"] == 0
+
+
+def test_independent_has_no_party_majority():
+    a = {**pos(1, "AGAINST"), "national_party_id": 9, "national_party": cs.INDEPENDENT}
+    b = {**pos(2, "AGAINST"), "national_party_id": 9, "national_party": cs.INDEPENDENT}
+    assert cs.party_majority(a, [a, b]) is None

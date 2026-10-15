@@ -222,6 +222,7 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
         "recent_main_votes": recent_main_votes(mep, votes),
         "benchmarks": mep_benchmarks(mep, votes, bench),
         "against_group": {"count": ag["count"], "count_main": ag["count_main"],
+                          **{k: ag.get(k) for k in ("party_known", "with_party", "party_known_main", "with_party_main")},
                           "recent": [with_vote(x) for x in ag["recent"]],
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
         "decisive": [with_vote(x) for x in st.get("decisive", [])],

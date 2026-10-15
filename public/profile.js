@@ -396,6 +396,8 @@ function periodText(x) {
       <div class="card">
         <p>${byGender(mep, "Hlasoval", "Hlasovala")} jinak než většina své frakce ${fmtNum(profile.against_group.count)}× ze
           ${fmtNum(t.group_loyalty[1])} hlasování, ve kterých se to počítá (z toho v závěrečných hlasováních ${fmtNum(profile.against_group.count_main)}×).
+          ${profile.against_group.party_known ? `Z těchto ${fmtNum(profile.against_group.party_known)} hlasování, kde měla česká strana jasnou většinu,
+            ${byGender(mep, "hlasoval", "hlasovala")} ${fmtNum(profile.against_group.with_party)}× stejně jako ostatní poslanci ${byGender(mep, "jeho", "její")} strany.` : ""}
           ${t.group_loyalty[1] ? "" : "U nezařazených poslanců se nepočítá."}</p>
         ${profile.against_group.count ? `<div class="controls"><label><input type="checkbox" id="against-main"> jen závěrečná hlasování</label></div>
           <div id="against"></div>` : ""}
@@ -445,9 +447,10 @@ function periodText(x) {
       if (!el) return;
       const onlyMain = document.getElementById("against-main").checked;
       el.innerHTML = voteTable(onlyMain ? profile.against_group.recent_main : profile.against_group.recent,
-        "<th>Volba / frakce</th>",
+        "<th>Volba / frakce</th><th>Strana</th>",
         (v) => `<td class="extra"><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
-          <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>`) +
+          <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>
+          <td class="extra small muted">${v.party_majority ? `většina strany: ${POSITION_LABEL[v.party_majority]}${v.party_majority === v.position ? " (stejně)" : ""}` : "strana: bez většiny"}</td>`) +
         `<p class="small muted">Posledních ${fmtNum((onlyMain ? profile.against_group.recent_main : profile.against_group.recent).length)} z ${fmtNum(onlyMain ? profile.against_group.count_main : profile.against_group.count)}.</p>`;
       collapseTables(el);
     };
