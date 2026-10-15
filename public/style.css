@@ -347,8 +347,14 @@ tr.former td { opacity: .72; }
 :root[data-theme="dark"] .btn-send { background: var(--accent); color: var(--navy); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-send { background: var(--accent); color: var(--navy); } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.cite-btn, .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--link); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
-.cite-btn:hover, .csv-btn:hover { border-color: var(--gold); }
+.card { position: relative; }
+.cite-btn { position: absolute; top: .6rem; right: .6rem; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid transparent; background: transparent; color: var(--muted); cursor: pointer; padding: 0; }
+.cite-btn:hover, .cite-btn:focus-visible { color: var(--text); border-color: var(--gold); }
+.cite-btn.done { color: var(--text); background: var(--chip); }
+.cite-btn.done::after { content: "Zkopírováno"; position: absolute; right: 110%; white-space: nowrap; font-size: .75rem; background: var(--navy); color: #F8FAFC; padding: .15rem .5rem; border-radius: 6px; }
+.csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--link); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.csv-btn:hover { border-color: var(--gold); }
 .csv-btn { margin: 0 0 .6rem; }
 .more-btn { margin-top: .6rem; min-height: 40px; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--chip); color: var(--text); font: inherit; font-size: .9rem; cursor: pointer; }
 .more-btn:hover { border-color: var(--gold); }
@@ -506,8 +512,9 @@ table.matrix tbody tr:hover { background: none; }
 
 /* Dotykové cíle aspoň 44 px (U10). */
 @media (pointer: coarse) {
-  .group-chip, .cite-btn, .csv-btn, .more-btn, .subnav a, .theme-toggle { min-height: 44px; }
-  .cite-btn, .csv-btn { padding: 0 1rem; }
+  .group-chip, .csv-btn, .more-btn, .subnav a, .theme-toggle { min-height: 44px; }
+  .cite-btn { width: 44px; height: 44px; top: .3rem; right: .3rem; }
+  .csv-btn { padding: 0 1rem; }
 }
 
 /* --- srovnání s mediánem (benchRow) ------------------------------------------ */
@@ -551,3 +558,17 @@ table.matrix tbody tr:hover { background: none; }
   .mep-card .bench { margin-top: .25rem; }
   .mep-card .bench-top b { font-size: 1rem; }
 }
+
+/* --- profil (U5) --------------------------------------------------------------- */
+.profile-nav { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: .5rem 0; margin: 0 0 1rem; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.profile-nav a { white-space: nowrap; }
+main h2[id] { scroll-margin-top: 4rem; }
+.timeline { width: 100%; height: auto; display: block; }
+.timeline .tl-row { font-size: 13px; fill: var(--muted); }
+.timeline .tl-seg { font-size: 13px; font-weight: 600; }
+.timeline .tl-year { font-size: 12px; fill: var(--muted); }
+.timeline .tl-tick { stroke: var(--border); }
+.metric .bench { margin-top: 0; }
+.metric .bench-label { font-weight: 600; color: var(--muted); font-size: .9rem; }
+.metric .bench-top b { font-size: 2rem; font-weight: 300; letter-spacing: -.02em; }
+.metric .bench-top { flex-direction: column; align-items: flex-start; gap: .1rem; padding-right: 2rem; }

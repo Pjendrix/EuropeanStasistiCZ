@@ -65,11 +65,11 @@ def head_assets(root: str = "") -> str:
     ])
 
 
-def header(root: str = "", current: str | None = None) -> str:
+def header(root: str = "", current: str | None = None, skip_href: str = "#main") -> str:
     links = "\n".join(
         f'    <a href="{root}{href}" data-page="{page}"{" aria-current=\"page\"" if page == current else ""}>{label}</a>'
         for href, page, label in NAV)
-    return (f'<a class="skip-link" href="#main">Přejít na obsah</a>\n'
+    return (f'<a class="skip-link" href="{skip_href}">Přejít na obsah</a>\n'
             f'<header class="site-header"><div class="inner">\n'
             f'  <a class="brand" href="{root}index.html">{BRAND_MARK}EP Watch <span>CZ</span></a>\n'
             f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
@@ -88,14 +88,19 @@ def footer(root: str = "") -> str:
 
 
 def page(title: str, body: str, *, root: str = "", current: str | None = None, description: str | None = None,
-         meta: str = "", scripts: str = "") -> str:
-    """Celá stránka (pro statické stránky z build_pages.py)."""
+         meta: str = "", scripts: str = "", base: str | None = None, path: str | None = None, main_attrs: str = "") -> str:
+    """Celá stránka (pro statické stránky z build_pages.py). base = <base href> (odkazy od kořene webu),
+    path = cesta stránky kvůli kotvám (s <base> by „#x“ vedlo na úvodní stránku)."""
     desc = f'<meta name="description" content="{escape(description)}">\n' if description else ""
     root_attr = f' data-root="{root}"' if root else ""
+    base_tag = f'<base href="{base}">\n' if base else ""
+    skip = f"{path}#main" if base and path else "#main"
+    attrs = f" {main_attrs}" if main_attrs else ""
     return (f'<!doctype html>\n<html lang="cs"{root_attr}>\n<head>\n<meta charset="utf-8">\n'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            f'<title>{escape(title)}</title>\n{desc}{meta}{head_assets(root)}\n</head>\n<body>\n'
-            f'{header(root, current)}\n\n<main id="main">\n{body}\n</main>\n\n{footer(root)}\n{scripts}</body>\n</html>\n')
+            f'{base_tag}<title>{escape(title)}</title>\n{desc}{meta}{head_assets(root)}\n</head>\n<body>\n'
+            f'{header(root, current, skip)}\n\n<main id="main"{attrs}>\n{body}\n</main>\n\n'
+            f'{footer(root)}\n{scripts}</body>\n</html>\n')
 
 
 # --- srovnání ručních stránek -----------------------------------------------------

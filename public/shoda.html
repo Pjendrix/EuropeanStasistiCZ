@@ -92,8 +92,8 @@ const LIMIT = 50;
       };
       el.className = "table-wrap";
       el.innerHTML = `<table class="matrix"><thead><tr><th class="sticky-col">Poslanec</th>${list.map((c) =>
-        `<th class="mx-head"><a href="mep.html?id=${c.id}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
-        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="mep.html?id=${r.id}">${esc(displayName(r))}</a>
+        `<th class="mx-head"><a href="${mepUrl(c.id)}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
+        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="${mepUrl(r.id)}">${esc(displayName(r))}</a>
           <div>${groupBadge(null, groups, r.group?.code)}</div></th>${list.map((c) => td(r, c)).join("")}</tr>`).join("")}</tbody></table>`;
     };
     former.addEventListener("change", render);

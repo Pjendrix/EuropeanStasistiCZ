@@ -126,7 +126,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
           const list = cz.filter((p) => p.position === k)
             .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
           return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
-            <ul class="plain">${list.map((p) => `<li><a href="mep.html?id=${p.member_id}">${esc(displayName(meps[p.member_id]))}</a>
+            <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
               <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties) : ""}</div></li>`).join("")
               || '<li class="muted">nikdo</li>'}</ul></div>`;
         }).join("")}

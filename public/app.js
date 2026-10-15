@@ -355,14 +355,14 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
       .map((p) => mepsById[p.member_id])
       .filter(Boolean)
       .sort((a, b) => displayName(a).localeCompare(displayName(b), "cs"))
-      .map((m) => `<a href="mep.html?id=${m.id}">${esc(displayName(m))}</a>`);
+      .map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`);
     return names.length ? `<div class="small"><span class="pos pos-${k}">${POSITION_LABEL[k]} (${names.length}):</span> ${names.join(", ")}</div>` : "";
   }).join("");
 }
 
 
 // Dlouhé tabulky sbalit na prvních n řádků s tlačítkem „Zobrazit všech N“.
-function collapseTables(root, n = 5) {
+function collapseTables(root, n = window.matchMedia("(max-width: 640px)").matches ? 3 : 5) {
   root.querySelectorAll(".table-wrap table").forEach((table) => {
     const rows = [...table.tBodies[0]?.rows || []];
     if (rows.length <= n + 1 || table.dataset.collapsed) return;
@@ -405,7 +405,7 @@ function benchRow(label, pair, median, refLabel, opts = {}) {
     <div class="bench-top"><span class="bench-label">${label}</span><b>${fmtPct(v)}</b></div>
     <div class="bench-strip" aria-hidden="true"><i class="bench-track"></i><i class="bench-dot" style="left:${pos(v)}"></i>
       ${hasMed ? `<i class="bench-med" style="left:${pos(median)}"></i>` : ""}</div>
-    ${compact ? "" : `<p class="bench-note">${esc(note + below) || `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování`}</p>`}</div>`;
+    ${compact || !(note + below) ? "" : `<p class="bench-note">${esc(note + below)}</p>`}</div>`;
 }
 
 // Medián frakce poslance z benchmarks.json (klíče jsou kódy HowTheyVote, poslanec má kód EP).
@@ -419,8 +419,9 @@ function groupBench(bench, groups, epCode) {
 
 // Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
 function citeButton(text) {
-  return `<button type="button" class="cite-btn" data-cite="${esc(text)}">Citovat</button>`;
+  return `<button type="button" class="cite-btn" data-cite="${esc(text)}" aria-label="Citovat" title="Citovat (zkopíruje větu se zdrojem)">${CITE_ICON}</button>`;
 }
+const CITE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg>';
 
 async function citeText(text) {
   let release = "";
@@ -435,11 +436,12 @@ document.addEventListener("click", async (ev) => {
   const text = await citeText(btn.dataset.cite);
   try {
     await navigator.clipboard.writeText(text);
-    btn.textContent = "Zkopírováno";
+    btn.classList.add("done");
+    btn.setAttribute("aria-label", "Citace zkopírována");
   } catch (e) {
     window.prompt("Zkopírujte citaci:", text);
   }
-  setTimeout(() => { btn.textContent = "Citovat"; }, 2000);
+  setTimeout(() => { btn.classList.remove("done"); btn.setAttribute("aria-label", "Citovat"); }, 2000);
 });
 
 // Tlačítko „Stáhnout CSV“; rows = pole polí (první řádek = záhlaví). Oddělovač středník kvůli českému Excelu.
@@ -556,6 +558,18 @@ const motion = (() => {
   }
   return { scan };
 })();
+
+// Stránky s <base href="../"> (p/{id}.html): odkaz „#kotva“ by vedl na úvodní stránku, proto se kotvy řeší tady.
+document.addEventListener("click", (ev) => {
+  const a = ev.target.closest('a[href^="#"]');
+  if (!a || !document.querySelector("base")) return;
+  const target = document.getElementById(a.getAttribute("href").slice(1));
+  if (!target) return;
+  ev.preventDefault();
+  history.replaceState(null, "", location.pathname + location.search + a.getAttribute("href"));
+  target.scrollIntoView({ behavior: REDUCED_MOTION ? "auto" : "smooth" });
+  if (a.classList.contains("skip-link")) { target.setAttribute("tabindex", "-1"); target.focus(); }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   setupThemeToggle();

@@ -6,8 +6,8 @@ Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
   public/v/{id}.html   závěrečné hlasování (o celém textu nebo o prozatímní dohodě)
   public/sitemap.xml, public/robots.txt   jen když je v data/manual/site.json adresa webu
 
-Interaktivní stránky (mep.html, party.html, vote.html…) zůstávají pro grafy a filtry, statické
-na ně odkazují. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
+Profil poslance má jen tuto adresu (mep.html přesměrovává): statický obsah + profile.js s interakcemi.
+Strany a hlasování mají i interaktivní stránky (party.html, vote.html), statické na ně odkazují. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
 Stránky nemají datum sestavení, takže se v gitu mění, jen když se změní data.
 
 Použití:
@@ -95,8 +95,14 @@ def split_bar(counts: list[int]) -> str:
     return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
 
 
+CITE_ICON = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 '
+             '9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 '
+             '2.6-4.2L17 6z"/></svg>')
+
+
 def cite_button(text: str) -> str:
-    return f'<button type="button" class="cite-btn" data-cite="{esc(text)}">Citovat</button>'
+    return (f'<button type="button" class="cite-btn" data-cite="{esc(text)}" aria-label="Citovat" '
+            f'title="Citovat (zkopíruje větu se zdrojem)">{CITE_ICON}</button>')
 
 
 def og_meta(title: str, description: str, path: str, base_url: str | None, image: str | None = None) -> str:
@@ -160,12 +166,12 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     cite = lambda what, pair: cite_button(
         f"{name}: {what} {fmt_pct(pair)} ({fmt_num(pair[0])} z {fmt_num(pair[1])} jmenovitých hlasování v Evropském parlamentu "
         f"v době mandátu, {rng}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if pair and pair[1] else ""
-    photo = (f'<figure class="portrait"><img src="{ROOT}assets/photos/{mep["id"]}.jpg" alt="Portrét: {esc(name)}">'
+    photo = (f'<figure class="portrait"><img src="assets/photos/{mep["id"]}.jpg" alt="Portrét: {esc(name)}">'
              f'<figcaption>{esc(mep.get("photo_credit") or "© European Union – Source: EP")}</figcaption></figure>'
              if mep.get("photo_url") else "")
     rows = "".join(
         f'<tr><td class="num">{fmt_date(v["date"])}</td>'
-        f'<td><a class="vote-title" href="{ROOT}v/{v["id"]}.html">{esc(v["title"])}</a>'
+        f'<td><a class="vote-title" href="v/{v["id"]}.html">{esc(v["title"])}</a>'
         f'<div class="small muted">{esc(v.get("reference") or "")}{" · " + esc(v.get("description_cs") or v.get("description")) if (v.get("description_cs") or v.get("description")) else ""}</div></td>'
         f'<td class="pos pos-{v["position"]}">{esc(position_for(v["position"], mep))}</td>'
         f'<td class="result-{v.get("result") or ""}">{RESULT_LABEL.get(v.get("result"), "neuveden")}</td></tr>'
@@ -178,21 +184,20 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
         if items:
             own_html = (f'<h2 id="vlastni-prace">Vlastní práce</h2><div class="card"><ul class="plain">{items}</ul>'
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
-                        f'Podrobnosti a výsledky hlasování v <a href="{ROOT}mep.html?id={mep["id"]}#vlastni-prace">interaktivním profilu</a>.</p></div>')
+                        f'Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>')
     pos = t["positions"]
-    body = f"""<p class="small"><a href="{ROOT}index.html">← Všichni poslanci</a></p>
+    body = f"""<p class="small"><a href="index.html">← Všichni poslanci</a></p>
 <div class="profile-head">
   {photo}
   <div>
     <h1>{esc(name)}</h1>
     <div class="facts"><span class="badge">{esc(group_label(g['code'] if g else None, groups))}</span>
-      {f'<a class="badge-link" href="{ROOT}s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{("nezávislý/á" if p["short_label"] == "Ind." or any(str(x["id"]) == str(p["org_id"]) and x.get("independent") for x in parties) else esc(p["short_label"])) if p else "strana neuvedena"}</span>'}
+      {f'<a class="badge-link" href="s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{("nezávislý/á" if p["short_label"] == "Ind." or any(str(x["id"]) == str(p["org_id"]) and x.get("independent") for x in parties) else esc(p["short_label"])) if p else "strana neuvedena"}</span>'}
       <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
     <p class="muted">Mandát: {mandate}</p>
     {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
     {f'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
-    <p class="small"><a href="{ROOT}mep.html?id={mep['id']}">Interaktivní profil s grafy</a> ·
-      <a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
+    <p class="small"><a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
   </div>
 </div>
 
@@ -205,15 +210,19 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 </div>
 <p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
   zdržel{by_gender(mep, "", "a")} se {fmt_num(pos["ABSTENTION"])}×, nehlasoval{by_gender(mep, "", "a")} {fmt_num(pos["DID_NOT_VOTE"])}×.
-  Zdroj: <a href="{htv}">HowTheyVote.eu</a> (ODbL), <a href="{ROOT}o-projektu.html#metodika">metodika</a>{". " + esc(b["definition"]) if b else ""}</p>
+  Zdroj: <a href="{htv}">HowTheyVote.eu</a> (ODbL), <a href="o-projektu.html#metodika">metodika</a>{". " + esc(b["definition"]) if b else ""}</p>
 {own_html}
 <h2 id="posledni">Poslední závěrečná hlasování</h2>
 {f'<div class="table-wrap"><table><thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead><tbody>{rows}</tbody></table></div>' if rows else '<p class="muted">Žádná hlasování.</p>'}
-<p class="source">Zdroj: <a href="{htv}">HowTheyVote.eu</a>. Všechna hlasování v <a href="{ROOT}mep.html?id={mep['id']}">interaktivním profilu</a>.</p>"""
+<p class="source">Zdroj: <a href="{htv}">HowTheyVote.eu</a>. Všechna hlasování v <a href="votes.html">seznamu hlasování</a>.</p>"""
     title = f"{name} – EP Watch CZ"
     meta = og_meta(title, desc, f"p/{mep['id']}.html", base_url, f"assets/photos/{mep['id']}.jpg" if mep.get("photo_url") else None)
-    return f"p/{mep['id']}.html", page(title, body, root=ROOT, current="meps", description=desc, meta=meta,
-                                       scripts=f'<script src="{ROOT}app.js"></script>\n')
+    # Jedna adresa profilu (U5): <base href="../">, takže odkazy i data se berou od kořene webu;
+    # profile.js obsah nahradí plnou interaktivní verzí, statický obsah zůstává pro vyhledávače a bez JS.
+    path = f"p/{mep['id']}.html"
+    return path, page(title, body, root="", base="../", path=path, current="meps", description=desc, meta=meta,
+                      main_attrs=f'data-mep="{mep["id"]}"',
+                      scripts='<script src="app.js"></script>\n<script src="profile.js"></script>\n')
 
 
 # --- strana --------------------------------------------------------------------------
