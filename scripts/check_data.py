@@ -93,7 +93,24 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
     p2, w2 = check_delegations(data_dir)
-    return problems + p2, warnings + w2
+    p3 = check_speeches(prev_dir, data_dir)
+    return problems + p2 + p3, warnings + w2
+
+
+def check_speeches(prev_dir: Path | None, data_dir: Path) -> list[str]:
+    """data/speeches.json (projevy v plénu z EP Open Data): počet záznamů nesmí klesnout a poslanec, který projevy měl,
+    o ně nesmí přijít (projevy se zpětně nemažou, pokles znamená změnu formátu nebo výpadek API)."""
+    new, old = _load(data_dir / "speeches.json"), _load(prev_dir / "speeches.json") if prev_dir else None
+    if new is None or old is None:
+        return []
+    problems = []
+    n_new, n_old = sum(len(v) for v in new["meps"].values()), sum(len(v) for v in old["meps"].values())
+    if n_new < n_old:
+        problems.append(f"počet záznamů o projevech klesl z {n_old} na {n_new}")
+    for mep_id, rows in old["meps"].items():
+        if rows and not new["meps"].get(mep_id):
+            problems.append(f"poslanec {mep_id} měl {len(rows)} záznamů o projevech a teď žádný")
+    return problems
 
 
 def check_delegations(data_dir: Path) -> tuple[list[str], list[str]]:

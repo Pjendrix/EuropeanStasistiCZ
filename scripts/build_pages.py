@@ -233,6 +233,13 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
             own_html = (f'<h2 id="vlastni-prace">Práce na textech</h2><p class="small muted">{WORK_INTRO}</p><div class="card"><ul class="plain">{items}</ul>'
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
                         f'Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>')
+    act = prof.get("activity")
+    if act:
+        own_html += (f'<h3>Projevy v plénu</h3><div class="card"><ul class="plain">'
+                     f'<li><strong>Ústní projevy v rozpravách</strong>: {fmt_num(act["speeches"])} (celkem {fmt_num(round(act["speeches_minutes"]))} min)</li>'
+                     f'<li><strong>Písemná prohlášení</strong>: {fmt_num(act["written_statements"])} (počítají se zvlášť)</li></ul>'
+                     f'<p class="source">Počty v době mandátu. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
+                     f'Projevy nevypovídají o kvalitě ani vlivu.</p></div>')
     pos = t["positions"]
     body = f"""<p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>
 <div class="profile-head">
@@ -463,7 +470,7 @@ DEFINITION_NAMES = {
     "close_votes": "Těsná hlasování", "decisive_votes": "Kde rozhodly české hlasy",
     "against_group": "Kde hlasoval jinak než frakce", "cz_split": "Kde se Češi rozdělili", "cz_unity": "Češi jednotně",
     "party_cohesion": "Jednotnost strany", "topics": "Témata", "own_work": "Práce na textech",
-    "work_profile": "Práce na textech – třetiny v delegaci", "delegations": "Srovnání s delegacemi podobné velikosti",
+    "work_profile": "Práce na textech – třetiny v delegaci", "delegations": "Srovnání s delegacemi podobné velikosti", "speeches": "Projevy v plénu",
 }
 
 

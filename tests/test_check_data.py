@@ -97,3 +97,15 @@ def test_delegations_checked(tmp_path):
     (d / "stats.json").write_text(json.dumps({"votes_analysis": {"unity": {"united": 4, "considered": 10}}}))
     problems, warnings = cd.check_delegations(d)
     assert not problems and len(warnings) == 1 and "liší" in warnings[0]
+
+
+def test_speeches_checked(tmp_path):
+    prev, new = tmp_path / "prev", tmp_path / "new"
+    prev.mkdir(); new.mkdir()
+    assert cd.check_speeches(prev, new) == []  # soubory chybí
+    (prev / "speeches.json").write_text(json.dumps({"meps": {"1": [{"id": "a"}, {"id": "b"}], "2": []}}))
+    (new / "speeches.json").write_text(json.dumps({"meps": {"1": [{"id": "a"}, {"id": "b"}, {"id": "c"}], "2": []}}))
+    assert cd.check_speeches(prev, new) == []
+    (new / "speeches.json").write_text(json.dumps({"meps": {"1": [], "2": []}}))
+    problems = cd.check_speeches(prev, new)
+    assert any("klesl" in p for p in problems) and any("poslanec 1" in p for p in problems)

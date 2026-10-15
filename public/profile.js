@@ -214,6 +214,20 @@ function ownPassed(ow, mep) {
     <h3 class="own-sub">Všechna práce podle typu</h3>`;
 }
 
+// Projevy v plénu (EP Open Data, speeches): jen počty a čas, bez třetin a bez pořadí; písemná prohlášení zvlášť.
+function activityBlock(a, mep) {
+  if (!a) return "";
+  const src = a.source?.url ? `<a href="${esc(a.source.url)}">EP Open Data (speeches)</a>` : "EP Open Data";
+  return `<h3 class="own-sub">Projevy v plénu</h3>
+    <div class="metrics">
+      ${passedCard("Ústní projevy v rozpravách", a.speeches, [
+        a.speeches ? `celkem ${fmtNum(Math.round(a.speeches_minutes))} min${a.speeches_timed < a.speeches ? ` (délka známa u ${fmtNum(a.speeches_timed)} z ${fmtNum(a.speeches)})` : ""}` : "",
+        a.speech_items ? `v ${fmtNum(a.speech_items)} bodech jednání` : "", "jen počet, bez srovnání s kolegy"])}
+      ${passedCard("Písemná prohlášení", a.written_statements, ["počítáme zvlášť: dají se psát hromadně"])}
+    </div>
+    <p class="source">Počty v době mandátu. Zdroj: ${src} (CC BY 4.0), stav k ${fmtDate(a.updated)}. Projevy ani prohlášení nevypovídají o kvalitě ani vlivu a nejsou součástí třetin.</p>`;
+}
+
 function ownWork(ow, mep) {
   if (!ow) return '<p class="muted">Data o vlastní práci se připravují.</p>';
   const types = Object.keys(ow.type_labels);
@@ -368,6 +382,7 @@ function periodText(x) {
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
         U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
       ${ownWork(ow, mep)}` : ""}
+      ${activityBlock(profile.activity, mep)}
 
       <h2 id="soulad">Soulad s výsledkem hlasování</h2>
       <p class="small muted">Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo. Číslo hlavně odráží velikost a pozici frakce;
