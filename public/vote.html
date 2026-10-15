@@ -27,7 +27,7 @@
     <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="prace.html" data-page="work">Práce</a>
+    <a href="prace.html" data-page="work">Práce poslanců</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
@@ -140,7 +140,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <div class="metrics">
         <div class="card metric"><div class="label">Výsledek</div>
           <div class="value-sentence">${esc(resultSentence(kind || (final ? "final" : ""), v.result))}</div>
-          <div class="detail"><span class="pill-result">${resultHtml(kv)}</span></div>
+          <div class="detail">${resultHtml(kv)}</div>
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div>
           ${citeButton(`Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]})` : ""}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`)}</div>

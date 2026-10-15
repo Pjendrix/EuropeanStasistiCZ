@@ -414,7 +414,7 @@ document.addEventListener("click", (ev) => {
 // Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
 function resultHtml(v) {
   const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
-  return `<span class="res-icon" aria-hidden="true">${icon}</span>${esc(resultText(v))}`;
+  return `<span class="res-badge res-${v.result || "NONE"}"><i class="res-ic" aria-hidden="true">${icon}</i><span class="res-txt">${esc(resultText(v))}</span></span>`;
 }
 
 // Závěrečné hlasování o textu (nebo o prozatímní dohodě); starší data jen podle is_main.

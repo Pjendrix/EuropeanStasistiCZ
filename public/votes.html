@@ -27,7 +27,7 @@
     <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="prace.html" data-page="work">Práce</a>
+    <a href="prace.html" data-page="work">Práce poslanců</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
@@ -35,6 +35,10 @@
 </div></header>
 
 <main id="main">
+  <nav class="subnav" aria-label="Hlasování">
+    <a href="votes.html" data-page="votes-list">Všechna hlasování</a>
+    <a href="temata.html" data-page="votes-topics">Podle témat</a>
+  </nav>
   <h1>Jmenovitá hlasování</h1>
   <div class="lead-row"><p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-votes" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-votes" class="info-pop" role="note">
     <p>Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci. <strong>Závěrečná</strong> jsou hlasování o celém textu nebo o prozatímní dohodě s Radou. <strong>Všechna hlavní</strong> navíc zahrnují návrhy na zamítnutí, mandáty k jednání s Radou a žádosti o naléhavý postup. Ostatní jsou pozměňovací návrhy a dílčí hlasování. <a href="o-projektu.html#metodika">Jak typ hlasování určujeme</a>.</p>
@@ -47,7 +51,8 @@
       <option value="main">všechna hlavní</option>
       <option value="all">všechna hlasování</option>
     </select></label>
-    <label>Téma <select id="topic"><option value="">všechna témata</option></select></label>
+    <label>Téma <select id="cat"><option value="">všechna témata</option></select></label>
+    <label>Podtéma <select id="topic"><option value="">všechna podtémata</option></select></label>
     <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
     <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
@@ -77,6 +82,7 @@
 <script src="app.js"></script>
 <script>
 setNav("votes");
+setNav("votes-list");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
@@ -87,6 +93,9 @@ setNav("votes");
     const monthSel = document.getElementById("month");
     const kindSel = document.getElementById("kind");
     const topicSel = document.getElementById("topic");
+    const catSel = document.getElementById("cat");
+    catSel.innerHTML += Object.entries(CATEGORY_META).map(([k, c]) => `<option value="${esc(k)}">${esc(c.label)}</option>`).join("");
+    catSel.closest("label").hidden = !Object.keys(CATEGORY_META).length;
     const q = document.getElementById("q");
     const mepSel = document.getElementById("mep");
     const sortedMeps = [...overview.meps].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs"));
@@ -117,6 +126,7 @@ setNav("votes");
     // ?all=1 ze starších odkazů = všechna hlasování
     kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
     if (params.get("t")) topicSel.value = params.get("t");
+    if (params.get("c")) catSel.value = params.get("c");
     let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
@@ -128,13 +138,13 @@ setNav("votes");
     const render = () => {
       const month = monthSel.value;
       const needle = q.value.trim().toLowerCase();
-      const topic = topicSel.value;
+      const topic = topicSel.value, cat = catSel.value;
       // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
-      const wide = Boolean(needle || topic || mepVotes);
+      const wide = Boolean(needle || topic || cat || mepVotes);
       monthSel.disabled = wide;
       const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
       const matches = pool.filter((v) => kindOk(v) &&
-        (!topic || (v.topics || []).includes(topic)) && (!mepVotes || mepVotes.has(v.id)) &&
+        (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) &&
         (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
       current = matches;
@@ -143,6 +153,7 @@ setNav("votes");
         : `${matches.length} z ${pool.length} hlasování${since ? ` od ${fmtDate(since)}` : ""}`;
       const qs = new URLSearchParams({ m: month, f: kindSel.value });
       if (topic) qs.set("t", topic);
+      if (cat) qs.set("c", cat);
       if (needle) qs.set("q", q.value.trim());
       if (mepVotes) qs.set("mep", mepSel.value);
       document.getElementById("cz-head").textContent = mepVotes ? displayName(overview.meps.find((m) => String(m.id) === mepSel.value)) : "Češi";
@@ -169,6 +180,7 @@ setNav("votes");
     ], "Stáhnout vybraná hlasování (CSV)"));
     kindSel.addEventListener("change", render);
     topicSel.addEventListener("change", render);
+    catSel.addEventListener("change", render);
     mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
     q.addEventListener("input", render);
     render();
