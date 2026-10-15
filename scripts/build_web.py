@@ -3,6 +3,7 @@
 Výstup:
   data/overview.json        souhrn pro úvodní tabulku (poslanci + hlavní metriky)
   data/meps/{id}.json       vše pro profil poslance
+  data/meps/{id}_votes.json hlasy poslance u všech hlasování v mandátu (filtr „Poslanec“ v seznamu hlasování)
   data/votes/search.json    odlehčený seznam všech hlasování pro seznam a vyhledávání
   data/decisive.json        těsná a rozhodující hlasování
   data/splits.json          kde se Češi rozdělili (poslední zasedání, celé období)
@@ -28,6 +29,7 @@ from pathlib import Path
 
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
                            require, topic_codes)
+from key_votes import build_key_votes
 from labels_cs import translate
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -118,12 +120,14 @@ def mep_summary(m: dict, day: str) -> dict:
     }
 
 
-def build_overview(meps: list[dict], stats: dict, day: str, topic_labels: dict | None = None) -> dict:
+def build_overview(meps: list[dict], stats: dict, day: str, topic_labels: dict | None = None,
+                   bench: dict | None = None) -> dict:
     return {
         "sources": stats["sources"], "period": stats["period"], "votes_total": stats["votes_total"],
         "topics": [{**t, "label_cs": (topic_labels or {}).get(t["code"])} for t in stats.get("topics", [])],
         "definitions": stats["definitions"], "short_mandate_days": SHORT_MANDATE_DAYS,
-        "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]} for m in meps],
+        "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"],
+                  "bench_key": bench_key(m) if bench_window(m, bench) else None} for m in meps],
     }
 
 
@@ -178,8 +182,23 @@ def mep_benchmarks(mep: dict, votes: list[dict], bench: dict | None) -> dict | N
     if not bench:
         return None
     code = last_group_code(mep, votes)
-    return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": bench.get("min_votes"),
-            "ep": bench["ep"], "group_code": code, "group": bench["groups"].get(code) if code else None}
+    w = bench_window(mep, bench)
+    src = w or bench  # poslanec s kratším mandátem: mediány jen z hlasování v době jeho mandátu (D7)
+    return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": src.get("min_votes"),
+            "ep": src["ep"], "group_code": code, "group": src["groups"].get(code) if code else None,
+            "window": {"from": w["from"], "to": w["to"], "votes": w["votes"]} if w else None,
+            # medián účasti EP po měsících (D10), pro čáru v grafu účasti
+            "monthly_ep": {k: x["attendance"] for k, x in (bench.get("monthly") or {}).items()}}
+
+
+def bench_key(mep: dict) -> str:
+    """Klíč okna mandátu poslance v benchmarks.json (od prvního začátku do posledního konce mandátu)."""
+    ends = [x["end"] for x in mep["mandates"]]
+    return f"{min(x['start'] for x in mep['mandates'])}_{'' if None in ends else max(ends)}"
+
+
+def bench_window(mep: dict, bench: dict | None) -> dict | None:
+    return ((bench or {}).get("windows") or {}).get(bench_key(mep))
 
 
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
@@ -207,6 +226,7 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
         "recent_main_votes": recent_main_votes(mep, votes),
         "benchmarks": mep_benchmarks(mep, votes, bench),
         "against_group": {"count": ag["count"], "count_main": ag["count_main"],
+                          **{k: ag.get(k) for k in ("party_known", "with_party", "party_known_main", "with_party_main")},
                           "recent": [with_vote(x) for x in ag["recent"]],
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
         "decisive": [with_vote(x) for x in st.get("decisive", [])],
@@ -348,6 +368,24 @@ def build_parties_web(stats: dict, parties: list[dict], meps: list[dict], votes_
     return {"sources": stats["sources"], "parties": index}, pages
 
 
+POSITION_LETTER = {"FOR": "F", "AGAINST": "A", "ABSTENTION": "B", "DID_NOT_VOTE": "N"}
+
+
+def mep_votes(mep: dict, votes: list[dict]) -> dict:
+    """Hlas poslance u všech hlasování v době jeho mandátu (data/meps/{id}_votes.json): ids a řetězec písmen F/A/B/N
+    (pro, proti, zdržel se, nehlasoval) ve stejném pořadí. Slouží filtru „Poslanec“ v seznamu hlasování."""
+    ids, letters = [], []
+    for v in votes:
+        if not in_mandate(mep["mandates"], v["date"]):
+            continue
+        for p in v["cz_positions"]:
+            if p["member_id"] == mep["id"]:
+                ids.append(v["id"])
+                letters.append(POSITION_LETTER[p["position"]])
+                break
+    return {"ids": ids, "positions": "".join(letters)}
+
+
 def write_json(path: Path, obj, compact: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(obj, ensure_ascii=False, separators=(",", ":")) if compact else \
@@ -377,7 +415,12 @@ def run(data_dir: Path, day: str) -> dict:
     if bench is not None:
         require(bench, ["ep", "groups"], "benchmarks.json")
 
-    write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
+    kv_path = data_dir / "manual" / "key_votes.json"
+    kv_doc = json.loads(kv_path.read_text(encoding="utf-8")) if kv_path.exists() else None
+    key = build_key_votes(votes, kv_doc, by_id)
+    key["sources"] = stats["sources"]
+    write_json(data_dir / "key_votes.json", key)
+    write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels, bench))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     work = build_work(meps, own, day, stats)
     if work is not None and bench is not None:
@@ -388,6 +431,8 @@ def run(data_dir: Path, day: str) -> dict:
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,
                                                                       topic_labels, bench))
+    for m in meps:
+        write_json(profiles_dir / f"{m['id']}_votes.json", mep_votes(m, votes), compact=True)
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))

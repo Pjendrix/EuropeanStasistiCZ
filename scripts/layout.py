@@ -45,7 +45,7 @@ BRAND_MARK = (
     '<path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>'
 )
 
-NAV = [("index.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("votes.html", "votes", "Hlasování"),
+NAV = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("votes.html", "votes", "Hlasování"),
        ("rozkol.html", "analyses", "Analýzy"), ("o-projektu.html", "about", "O projektu")]
 
 THEME_BUTTON = (

@@ -1,0 +1,172 @@
+{
+ "own": "CZE",
+ "peers": [
+  "AUT",
+  "BEL",
+  "GRC",
+  "HUN",
+  "PRT",
+  "SWE"
+ ],
+ "seats_range": [
+  20,
+  22
+ ],
+ "countries": {
+  "CZE": {
+   "seats": 21,
+   "unity": [
+    472,
+    6154
+   ],
+   "unity_final": [
+    141,
+    640
+   ],
+   "decisive": {
+    "all": 32,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "AUT": {
+   "seats": 20,
+   "unity": [
+    1067,
+    6154
+   ],
+   "unity_final": [
+    192,
+    640
+   ],
+   "decisive": {
+    "all": 12,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "BEL": {
+   "seats": 22,
+   "unity": [
+    601,
+    6154
+   ],
+   "unity_final": [
+    188,
+    640
+   ],
+   "decisive": {
+    "all": 27,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "GRC": {
+   "seats": 21,
+   "unity": [
+    413,
+    6154
+   ],
+   "unity_final": [
+    115,
+    640
+   ],
+   "decisive": {
+    "all": 7,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "HUN": {
+   "seats": 21,
+   "unity": [
+    1813,
+    5984
+   ],
+   "unity_final": [
+    257,
+    621
+   ],
+   "decisive": {
+    "all": 24,
+    "final": 1
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "PRT": {
+   "seats": 21,
+   "unity": [
+    734,
+    6154
+   ],
+   "unity_final": [
+    187,
+    640
+   ],
+   "decisive": {
+    "all": 16,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  },
+  "SWE": {
+   "seats": 21,
+   "unity": [
+    1379,
+    6154
+   ],
+   "unity_final": [
+    231,
+    640
+   ],
+   "decisive": {
+    "all": 17,
+    "final": 0
+   },
+   "close": {
+    "all": 153,
+    "final": 4
+   }
+  }
+ },
+ "peer_range": {
+  "unity": {
+   "min": 0.0671,
+   "max": 0.303
+  },
+  "unity_final": {
+   "min": 0.1797,
+   "max": 0.4138
+  },
+  "decisive": {
+   "min": 7,
+   "max": 27
+  },
+  "decisive_final": {
+   "min": 0,
+   "max": 1
+  }
+ },
+ "definition": "Delegace s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Jednotnost: podíl hlasování, ve kterých všichni poslanci státu, kteří hlasovali pro nebo proti, byli na jedné straně (aspoň dva hlasující). Rozhodující: těsné hlasování (rozdíl pro/proti nejvýš 21), které by bez hlasů pro a proti poslanců státu dopadlo opačně; jen hlasování, jejichž oficiální výsledek odpovídá prosté většině. U všech států se berou poslanci, které HowTheyVote u hlasování vede.",
+ "source": {
+  "release": "2026-10-10"
+ }
+}

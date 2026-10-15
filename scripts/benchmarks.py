@@ -12,7 +12,7 @@ ID závěrečných hlasování. Výstup: malý slovník pro data/benchmarks.json
 
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 from statistics import median
 
 from compute_stats import VOTED, group_majority
@@ -24,7 +24,8 @@ DEFINITION = (
     "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají "
     f"v datech HowTheyVote aspoň {MIN_VOTES} hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, "
     "účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou "
-    "všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců v celém EP záměrně neuvádíme."
+    "všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování "
+    "v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme."
 )
 
 
@@ -32,42 +33,87 @@ def _empty() -> dict[str, list[int]]:
     return {m: [0, 0] for m in METRICS}
 
 
+def window_key(start: str, end: str | None) -> str:
+    """Klíč okna mandátu v benchmarks.json: „od_do“ (prázdné do = dosud)."""
+    return f"{start}_{end or ''}"
+
+
+def window_threshold(n_votes: int, min_votes: int = MIN_VOTES) -> int:
+    """Kolik hlasování musí poslanec v okně mít, aby šel do mediánu: nejvýš MIN_VOTES, v krátkém okně polovina hlasování okna."""
+    return max(1, min(min_votes, -(-n_votes // 2)))
+
+
 def compute_benchmarks(rows, group_counts: dict[int, dict[str, list[int]]], final_ids: set[int],
-                       min_votes: int = MIN_VOTES) -> dict:
-    """rows: iterovatelné (vote_id, member_id, position, group_code)."""
-    by_member: dict[int, dict] = defaultdict(_empty)
-    by_member_group: dict[tuple[int, str], dict] = defaultdict(_empty)
+                       min_votes: int = MIN_VOTES, windows: dict[str, tuple[str, str | None]] | None = None,
+                       vote_dates: dict[int, str] | None = None) -> dict:
+    """rows: iterovatelné (vote_id, member_id, position, group_code).
+
+    windows = {klíč: (od, do)} okna mandátu českých poslanců (D7); pro každé se medián EP a frakcí spočítá jen z hlasování
+    s datem v okně (vote_dates = {vote_id: datum}), aby poslanec s kratším mandátem nebyl srovnáván s mediánem za celé
+    období. Okno se stejným rozsahem jako celé období se nepočítá znovu, použije se hlavní medián.
+    """
+    windows = windows or {}
+    keys = ["", *windows]
+    in_window: dict[int, list[str]] = {}
+    n_votes = {k: 0 for k in keys}
+    if windows:
+        for vote_id, date in (vote_dates or {}).items():
+            ks = [k for k, (start, end) in windows.items() if start <= date and (end is None or date <= end)]
+            in_window[vote_id] = ks
+            for k in ks:
+                n_votes[k] += 1
+    month_of = {vid: d[:7] for vid, d in (vote_dates or {}).items()}  # D10: medián EP po měsících
+    month_votes: Counter = Counter(month_of.values())
+    by_month: dict[tuple[str, int], list[int]] = defaultdict(lambda: [0, 0])
+    by_member: dict[tuple[str, int], dict] = defaultdict(_empty)
+    by_member_group: dict[tuple[str, int, str], dict] = defaultdict(_empty)
     for vote_id, member_id, position, group in rows:
         voted = position in VOTED
         final = vote_id in final_ids
-        targets = [by_member[member_id]]
-        if group:
-            targets.append(by_member_group[(member_id, group)])
         gm = group_majority(group_counts.get(vote_id, {}), group)
-        for t in targets:
-            t["attendance"][0] += voted
-            t["attendance"][1] += 1
-            if final:
-                t["attendance_main"][0] += voted
-                t["attendance_main"][1] += 1
-            if voted and gm is not None:
-                t["group_loyalty"][0] += position == gm
-                t["group_loyalty"][1] += 1
+        if vote_id in month_of:
+            cell = by_month[(month_of[vote_id], member_id)]
+            cell[0] += voted
+            cell[1] += 1
+        for k in ("", *in_window.get(vote_id, ())):
+            targets = [by_member[(k, member_id)]]
+            if group:
+                targets.append(by_member_group[(k, member_id, group)])
+            for t in targets:
+                t["attendance"][0] += voted
+                t["attendance"][1] += 1
+                if final:
+                    t["attendance_main"][0] += voted
+                    t["attendance_main"][1] += 1
+                if voted and gm is not None:
+                    t["group_loyalty"][0] += position == gm
+                    t["group_loyalty"][1] += 1
 
-    def medians(items: list[dict]) -> dict:
-        items = [x for x in items if x["attendance"][1] >= min_votes]
+    def medians(items: list[dict], threshold: int) -> dict:
+        items = [x for x in items if x["attendance"][1] >= threshold]
         out = {"meps": len(items)}
         for m in METRICS:
             vals = [x[m][0] / x[m][1] for x in items if x[m][1]]
             out[m] = round(median(vals), 4) if vals else None
         return out
 
-    groups: dict[str, list[dict]] = defaultdict(list)
-    for (_, group), st in by_member_group.items():
-        groups[group].append(st)
-    return {
-        "min_votes": min_votes,
-        "definition": DEFINITION,
-        "ep": medians(list(by_member.values())),
-        "groups": {g: medians(items) for g, items in sorted(groups.items())},
-    }
+    def block(k: str, threshold: int) -> dict:
+        groups: dict[str, list[dict]] = defaultdict(list)
+        for (kk, _, group), st in by_member_group.items():
+            if kk == k:
+                groups[group].append(st)
+        return {"ep": medians([st for (kk, _), st in by_member.items() if kk == k], threshold),
+                "groups": {g: medians(items, threshold) for g, items in sorted(groups.items())}}
+
+    out = {"min_votes": min_votes, "definition": DEFINITION, **block("", min_votes)}
+    if month_votes:
+        # Medián účasti všech poslanců EP v měsíci; do mediánu poslanci, kteří mají aspoň polovinu hlasování měsíce.
+        out["monthly"] = {}
+        for month, n in sorted(month_votes.items()):
+            vals = [c[0] / c[1] for (mo, _), c in by_month.items() if mo == month and c[1] >= window_threshold(n, min_votes)]
+            out["monthly"][month] = {"votes": n, "meps": len(vals), "attendance": round(median(vals), 4) if vals else None}
+    if windows:
+        out["windows"] = {k: {"from": windows[k][0], "to": windows[k][1], "votes": n_votes[k],
+                              "min_votes": window_threshold(n_votes[k], min_votes), **block(k, window_threshold(n_votes[k], min_votes))}
+                          for k in windows}
+    return out

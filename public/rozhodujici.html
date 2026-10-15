@@ -20,7 +20,7 @@
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
   <nav aria-label="Hlavní navigace">
-    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
@@ -40,7 +40,9 @@
   <p class="lead">Těsná hlasování (rozdíl mezi pro a proti nejvýš 21 hlasů), která by po odečtení českých hlasů pro a proti
     dopadla opačně. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon: u každého je uvedeno, o co se hlasovalo.
     <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+  <p class="lead strong-line" id="headline"></p>
   <p class="muted" id="summary"></p>
+  <div id="peers"></div>
   <div id="list" class="loading">Načítám…</div>
   <p class="source" id="source"></p>
 </main>
@@ -59,11 +61,25 @@ setNav("decisive");
 (async () => {
   const el = document.getElementById("list");
   try {
-    const [d, overview] = await Promise.all([getJSON("decisive.json"), getJSON("overview.json")]);
+    const [d, overview, dl] = await Promise.all([getJSON("decisive.json"), getJSON("overview.json"), getJSON("delegations.json").catch(() => null)]);
     const meps = Object.fromEntries(overview.meps.map((m) => [m.id, m]));
     document.getElementById("summary").textContent =
       `Těsných hlasování: ${fmtNum(d.close_count)} (z toho závěrečných ${fmtNum(d.close_count_main)}). ` +
       `Rozhodly české hlasy: ${fmtNum(d.votes.length)}, z toho závěrečných ${fmtNum(d.decisive_final ?? d.votes.filter(isFinal).length)}.`;
+    const finals = d.decisive_final ?? d.votes.filter(isFinal).length;
+    document.getElementById("headline").textContent = finals
+      ? `České hlasy rozhodly ${fmtNum(finals)} ${finals === 1 ? "závěrečné hlasování" : finals < 5 ? "závěrečná hlasování" : "závěrečných hlasování"} o celém textu nebo prozatímní dohodě.`
+      : "Žádné závěrečné hlasování o celém textu české hlasy nerozhodly.";
+    if (dl && dl.peers.length) {
+      const r = dl.peer_range, names = dl.peers.map((c) => COUNTRY_CS[c] || c).join(", ");
+      document.getElementById("peers").innerHTML = `<div class="card note"><p><strong>Pro srovnání:</strong> u delegací s ${dl.seats_range[0]}–${dl.seats_range[1]} poslanci
+        (${esc(names)}) vychází takových hlasování ${spanText(r.decisive, fmtNum)}, z toho závěrečných ${spanText(r.decisive_final, fmtNum)}. U české delegace ${fmtNum(d.votes.length)}, z toho ${fmtNum(finals)}.
+        Stejně by se dalo spočítat pro kteroukoli skupinu 21 poslanců. Neznamená to, že čeští poslanci měli větší vliv než jiné delegace.</p>
+        <details><summary>Čísla jednotlivých delegací</summary>${delegationTable(dl, [
+          { label: "Rozhodující hlasování", get: (m) => fmtNum(m.decisive.all) },
+          { label: "z toho závěrečných", get: (m) => fmtNum(m.decisive.final) },
+        ])}<p class="small muted">${esc(dl.definition)}</p></details></div>`;
+    }
     document.getElementById("source").innerHTML = sourceLine(d);
     el.className = "";
     el.innerHTML = d.votes.length ? d.votes.map((v) => {

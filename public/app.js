@@ -211,10 +211,15 @@ function partyBadge(id, label, parties, mep) {
 function partyLink(id, label, parties, mep) {
   const p = parties.find((x) => String(x.id) === String(id));
   const badge = partyBadge(id, label, parties, mep);
-  return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
+  return p && !p.independent ? `<a href="${partyUrl(p.id)}" class="badge-link">${badge}</a>` : badge;
 }
 
 // Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
+// Jedna adresa strany (s/{id}.html; party.html?id= se přesměrovává).
+function partyUrl(id) {
+  return `s/${id}.html`;
+}
+
 function mepUrl(id) {
   return `p/${id}.html`;
 }
@@ -293,7 +298,7 @@ function resultSentence(kind, result) {
   if (!ok && !no) return RESULT_LABEL[result] ? RESULT_LABEL[result][0].toUpperCase() + RESULT_LABEL[result].slice(1) : "Výsledek neuveden";
   const S = {
     rejection: ["Návrh na zamítnutí prošel – text je zamítnut", "Návrh na zamítnutí neprošel – text zůstává"],
-    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla"],
+    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla – akt Komise platí"],
     amendment: ["Pozměňovací návrh byl přijat", "Pozměňovací návrh byl zamítnut"],
     split_part: ["Tato část textu byla přijata", "Tato část textu byla zamítnuta"],
     final: ["Parlament text přijal", "Parlament text zamítl"],
@@ -302,6 +307,29 @@ function resultSentence(kind, result) {
     urgency: ["Naléhavý postup schválen", "Naléhavý postup zamítnut"],
   }[kind];
   return S ? S[ok ? 0 : 1] : (ok ? "Přijato" : "Zamítnuto");
+}
+
+// Většina frakce z počtů [pro, proti, zdržel se, nehlasoval]: jednoznačně nejvíc hlasů, jinak null (stejné pravidlo jako compute_stats.majority).
+function groupMajorityLabel(row) {
+  const v = row.slice(0, 3);
+  const max = Math.max(...v);
+  const winners = v.map((n, i) => (n === max ? i : -1)).filter((i) => i >= 0);
+  return max > 0 && winners.length === 1 ? ["pro", "proti", "zdržet se"][winners[0]] : null;
+}
+
+// Hlasy Čechů po českých stranách: [{ label, counts: {FOR: n, …} }], strany seřazené podle počtu poslanců.
+function partyVotes(cz) {
+  const by = {};
+  cz.forEach((p) => {
+    const label = p.national_party && p.national_party !== "Independent" ? p.national_party : "bez strany";
+    (by[label] = by[label] || { FOR: 0, AGAINST: 0, ABSTENTION: 0, DID_NOT_VOTE: 0 })[p.position] += 1;
+  });
+  return Object.entries(by).map(([label, counts]) => ({ label, counts, n: Object.values(counts).reduce((a, b) => a + b, 0) }))
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, "cs"));
+}
+
+function partyVotesText(counts) {
+  return [["FOR", "pro"], ["AGAINST", "proti"], ["ABSTENTION", "zdržel se"], ["DID_NOT_VOTE", "nehlasoval"]].filter(([k]) => counts[k]).map(([k, l]) => `${counts[k]} ${l}`).join(", ");
 }
 
 // Tečky českých poslanců seskupené podle frakcí, obarvené podle hlasu (pro/proti/zdržel se/nehlasoval).
@@ -391,16 +419,16 @@ function sourceLine(stats) {
 // Řádek tabulky hlasování: datum, název s odkazem, výsledek, rozložení Čechů. extra = další buňky.
 function voteRow(v, extra = "") {
   return `<tr>
-    <td class="num">${fmtDate(v.date)}</td>
-    <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+    <td class="num date">${fmtDate(v.date)}</td>
+    <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
   </tr>`;
 }
 
 function czCell(cz) {
-  return `<td>${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
+  return `<td class="extra cz">${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
 }
 
 // Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].
@@ -462,6 +490,12 @@ function benchRow(label, pair, median, refLabel, opts = {}) {
     <div class="bench-strip" aria-hidden="true"><i class="bench-track"></i><i class="bench-dot" style="left:${pos(v)}"></i>
       ${hasMed ? `<i class="bench-med" style="left:${pos(median)}"></i>` : ""}</div>
     ${compact || !(note + below) ? "" : `<p class="bench-note">${esc(note + below)}</p>`}</div>`;
+}
+
+// Mediány platné pro poslance: kdo má kratší mandát, porovnává se s mediánem jen z hlasování v době svého mandátu (D7).
+function benchFor(bench, mep) {
+  const w = bench && mep?.bench_key ? bench.windows?.[mep.bench_key] : null;
+  return w ? { ...bench, ep: w.ep, groups: w.groups } : bench;
 }
 
 // Medián frakce poslance z benchmarks.json (klíče jsou kódy HowTheyVote, poslanec má kód EP).
@@ -705,3 +739,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Stav načítání čtečky oznámí jednou a sám zmizí, až se obsah nahradí.
 document.querySelectorAll(".loading").forEach((el) => el.setAttribute("role", "status"));
+
+// --- srovnání s delegacemi podobné velikosti (data/delegations.json, scripts/delegations.py) -------
+
+const COUNTRY_CS = {
+  AUT: "Rakousko", BEL: "Belgie", BGR: "Bulharsko", HRV: "Chorvatsko", CYP: "Kypr", CZE: "Česko", DNK: "Dánsko", EST: "Estonsko",
+  FIN: "Finsko", FRA: "Francie", GRC: "Řecko", HUN: "Maďarsko", IRL: "Irsko", ITA: "Itálie", LVA: "Lotyšsko", LTU: "Litva",
+  LUX: "Lucembursko", MLT: "Malta", NLD: "Nizozemsko", POL: "Polsko", PRT: "Portugalsko", ROU: "Rumunsko", SVK: "Slovensko",
+  SVN: "Slovinsko", ESP: "Španělsko", SWE: "Švédsko", DEU: "Německo",
+};
+
+function spanText(range, fmt) {
+  return range && range.min != null ? (range.min === range.max ? fmt(range.min) : `${fmt(range.min)}–${fmt(range.max)}`) : "–";
+}
+
+// Tabulka delegací pro srovnání; rows = [{ label, get: (country) => text }].
+function delegationTable(dl, columns) {
+  const order = [dl.own, ...dl.peers];
+  return `<div class="table-wrap"><table class="compact"><thead><tr><th>Delegace</th><th class="num">Poslanců</th>${columns.map((c) => `<th class="num">${esc(c.label)}</th>`).join("")}</tr></thead>
+    <tbody>${order.map((code) => `<tr${code === dl.own ? ' class="own-row"' : ""}><td>${esc(COUNTRY_CS[code] || code)}</td><td class="num">${fmtNum(dl.countries[code].seats)}</td>
+      ${columns.map((c) => `<td class="num">${c.get(dl.countries[code])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}

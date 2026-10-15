@@ -1,6 +1,6 @@
 {
  "min_votes": 100,
- "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (docházka, docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců záměrně neuvádíme.",
+ "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
  "ep": {
   "meps": 742,
   "attendance": 0.899,
@@ -61,6 +61,543 @@
    "attendance": 0.8906,
    "attendance_main": 0.8922,
    "group_loyalty": 0.9627
+  }
+ },
+ "monthly": {
+  "2024-07": {
+   "votes": 24,
+   "meps": 719,
+   "attendance": 0.9583
+  },
+  "2024-09": {
+   "votes": 96,
+   "meps": 717,
+   "attendance": 0.9792
+  },
+  "2024-10": {
+   "votes": 179,
+   "meps": 719,
+   "attendance": 0.9721
+  },
+  "2024-11": {
+   "votes": 126,
+   "meps": 719,
+   "attendance": 0.9683
+  },
+  "2024-12": {
+   "votes": 91,
+   "meps": 719,
+   "attendance": 0.989
+  },
+  "2025-01": {
+   "votes": 50,
+   "meps": 719,
+   "attendance": 0.94
+  },
+  "2025-02": {
+   "votes": 73,
+   "meps": 719,
+   "attendance": 0.9726
+  },
+  "2025-03": {
+   "votes": 267,
+   "meps": 719,
+   "attendance": 0.9738
+  },
+  "2025-04": {
+   "votes": 348,
+   "meps": 718,
+   "attendance": 0.9828
+  },
+  "2025-05": {
+   "votes": 393,
+   "meps": 719,
+   "attendance": 0.9618
+  },
+  "2025-06": {
+   "votes": 221,
+   "meps": 719,
+   "attendance": 0.9819
+  },
+  "2025-07": {
+   "votes": 226,
+   "meps": 719,
+   "attendance": 0.9867
+  },
+  "2025-09": {
+   "votes": 205,
+   "meps": 719,
+   "attendance": 0.9805
+  },
+  "2025-10": {
+   "votes": 382,
+   "meps": 721,
+   "attendance": 0.9764
+  },
+  "2025-11": {
+   "votes": 570,
+   "meps": 720,
+   "attendance": 0.9825
+  },
+  "2025-12": {
+   "votes": 155,
+   "meps": 719,
+   "attendance": 0.9742
+  },
+  "2026-01": {
+   "votes": 237,
+   "meps": 719,
+   "attendance": 0.9873
+  },
+  "2026-02": {
+   "votes": 237,
+   "meps": 719,
+   "attendance": 0.9789
+  },
+  "2026-03": {
+   "votes": 364,
+   "meps": 718,
+   "attendance": 0.978
+  },
+  "2026-04": {
+   "votes": 591,
+   "meps": 719,
+   "attendance": 0.9831
+  },
+  "2026-05": {
+   "votes": 201,
+   "meps": 717,
+   "attendance": 0.9701
+  },
+  "2026-06": {
+   "votes": 246,
+   "meps": 719,
+   "attendance": 0.9797
+  },
+  "2026-07": {
+   "votes": 285,
+   "meps": 719,
+   "attendance": 0.9825
+  },
+  "2026-09": {
+   "votes": 360,
+   "meps": 717,
+   "attendance": 0.9833
+  },
+  "2026-10": {
+   "votes": 227,
+   "meps": 719,
+   "attendance": 0.9868
+  }
+ },
+ "windows": {
+  "2024-07-16_2025-07-30": {
+   "from": "2024-07-16",
+   "to": "2025-07-30",
+   "votes": 2094,
+   "min_votes": 100,
+   "ep": {
+    "meps": 727,
+    "attendance": 0.9164,
+    "attendance_main": 0.9209,
+    "group_loyalty": 0.9366
+   },
+   "groups": {
+    "ECR": {
+     "meps": 80,
+     "attendance": 0.926,
+     "attendance_main": 0.9326,
+     "group_loyalty": 0.9107
+    },
+    "EPP": {
+     "meps": 192,
+     "attendance": 0.9038,
+     "attendance_main": 0.9093,
+     "group_loyalty": 0.939
+    },
+    "ESN": {
+     "meps": 27,
+     "attendance": 0.9059,
+     "attendance_main": 0.9116,
+     "group_loyalty": 0.9615
+    },
+    "GREEN_EFA": {
+     "meps": 53,
+     "attendance": 0.9599,
+     "attendance_main": 0.9581,
+     "group_loyalty": 0.9632
+    },
+    "GUE_NGL": {
+     "meps": 46,
+     "attendance": 0.9069,
+     "attendance_main": 0.907,
+     "group_loyalty": 0.9199
+    },
+    "NI": {
+     "meps": 37,
+     "attendance": 0.8902,
+     "attendance_main": 0.9116,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 88,
+     "attendance": 0.9255,
+     "attendance_main": 0.9209,
+     "group_loyalty": 0.8001
+    },
+    "RENEW": {
+     "meps": 77,
+     "attendance": 0.947,
+     "attendance_main": 0.9302,
+     "group_loyalty": 0.9649
+    },
+    "SD": {
+     "meps": 137,
+     "attendance": 0.9131,
+     "attendance_main": 0.9209,
+     "group_loyalty": 0.9628
+    }
+   }
+  },
+  "2024-07-16_2024-07-31": {
+   "from": "2024-07-16",
+   "to": "2024-07-31",
+   "votes": 24,
+   "min_votes": 12,
+   "ep": {
+    "meps": 719,
+    "attendance": 0.9583,
+    "attendance_main": 1.0,
+    "group_loyalty": 0.9545
+   },
+   "groups": {
+    "ECR": {
+     "meps": 78,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": 0.875
+    },
+    "EPP": {
+     "meps": 188,
+     "attendance": 0.9583,
+     "attendance_main": 1.0,
+     "group_loyalty": 1.0
+    },
+    "ESN": {
+     "meps": 25,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": 0.9167
+    },
+    "GREEN_EFA": {
+     "meps": 53,
+     "attendance": 1.0,
+     "attendance_main": 1.0,
+     "group_loyalty": 1.0
+    },
+    "GUE_NGL": {
+     "meps": 46,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": 0.8397
+    },
+    "NI": {
+     "meps": 32,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 84,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": 0.7727
+    },
+    "RENEW": {
+     "meps": 77,
+     "attendance": 0.9583,
+     "attendance_main": 1.0,
+     "group_loyalty": 1.0
+    },
+    "SD": {
+     "meps": 136,
+     "attendance": 0.9167,
+     "attendance_main": 1.0,
+     "group_loyalty": 0.9583
+    }
+   }
+  },
+  "2024-07-16_2025-10-03": {
+   "from": "2024-07-16",
+   "to": "2025-10-03",
+   "votes": 2299,
+   "min_votes": 100,
+   "ep": {
+    "meps": 728,
+    "attendance": 0.9139,
+    "attendance_main": 0.918,
+    "group_loyalty": 0.9366
+   },
+   "groups": {
+    "ECR": {
+     "meps": 80,
+     "attendance": 0.9215,
+     "attendance_main": 0.9385,
+     "group_loyalty": 0.9136
+    },
+    "EPP": {
+     "meps": 192,
+     "attendance": 0.8917,
+     "attendance_main": 0.9098,
+     "group_loyalty": 0.941
+    },
+    "ESN": {
+     "meps": 27,
+     "attendance": 0.9104,
+     "attendance_main": 0.9221,
+     "group_loyalty": 0.9563
+    },
+    "GREEN_EFA": {
+     "meps": 53,
+     "attendance": 0.96,
+     "attendance_main": 0.959,
+     "group_loyalty": 0.9637
+    },
+    "GUE_NGL": {
+     "meps": 46,
+     "attendance": 0.8987,
+     "attendance_main": 0.8914,
+     "group_loyalty": 0.9199
+    },
+    "NI": {
+     "meps": 37,
+     "attendance": 0.8908,
+     "attendance_main": 0.918,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 89,
+     "attendance": 0.9282,
+     "attendance_main": 0.9221,
+     "group_loyalty": 0.8053
+    },
+    "RENEW": {
+     "meps": 77,
+     "attendance": 0.9308,
+     "attendance_main": 0.9303,
+     "group_loyalty": 0.9606
+    },
+    "SD": {
+     "meps": 137,
+     "attendance": 0.9113,
+     "attendance_main": 0.9221,
+     "group_loyalty": 0.9637
+    }
+   }
+  },
+  "2024-08-01_": {
+   "from": "2024-08-01",
+   "to": null,
+   "votes": 6130,
+   "min_votes": 100,
+   "ep": {
+    "meps": 739,
+    "attendance": 0.8987,
+    "attendance_main": 0.9061,
+    "group_loyalty": 0.9319
+   },
+   "groups": {
+    "ECR": {
+     "meps": 85,
+     "attendance": 0.9163,
+     "attendance_main": 0.9171,
+     "group_loyalty": 0.9113
+    },
+    "EPP": {
+     "meps": 196,
+     "attendance": 0.8975,
+     "attendance_main": 0.9069,
+     "group_loyalty": 0.9363
+    },
+    "ESN": {
+     "meps": 28,
+     "attendance": 0.9144,
+     "attendance_main": 0.9147,
+     "group_loyalty": 0.939
+    },
+    "GREEN_EFA": {
+     "meps": 54,
+     "attendance": 0.919,
+     "attendance_main": 0.921,
+     "group_loyalty": 0.9715
+    },
+    "GUE_NGL": {
+     "meps": 48,
+     "attendance": 0.8825,
+     "attendance_main": 0.874,
+     "group_loyalty": 0.9276
+    },
+    "NI": {
+     "meps": 38,
+     "attendance": 0.8954,
+     "attendance_main": 0.9083,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 93,
+     "attendance": 0.8925,
+     "attendance_main": 0.8983,
+     "group_loyalty": 0.8315
+    },
+    "RENEW": {
+     "meps": 81,
+     "attendance": 0.8987,
+     "attendance_main": 0.9108,
+     "group_loyalty": 0.9545
+    },
+    "SD": {
+     "meps": 139,
+     "attendance": 0.8904,
+     "attendance_main": 0.892,
+     "group_loyalty": 0.9632
+    }
+   }
+  },
+  "2025-07-31_": {
+   "from": "2025-07-31",
+   "to": null,
+   "votes": 4060,
+   "min_votes": 100,
+   "ep": {
+    "meps": 733,
+    "attendance": 0.9017,
+    "attendance_main": 0.9082,
+    "group_loyalty": 0.9328
+   },
+   "groups": {
+    "ECR": {
+     "meps": 84,
+     "attendance": 0.917,
+     "attendance_main": 0.9188,
+     "group_loyalty": 0.9088
+    },
+    "EPP": {
+     "meps": 193,
+     "attendance": 0.9108,
+     "attendance_main": 0.9129,
+     "group_loyalty": 0.9341
+    },
+    "ESN": {
+     "meps": 28,
+     "attendance": 0.9271,
+     "attendance_main": 0.9188,
+     "group_loyalty": 0.938
+    },
+    "GREEN_EFA": {
+     "meps": 54,
+     "attendance": 0.9197,
+     "attendance_main": 0.9106,
+     "group_loyalty": 0.975
+    },
+    "GUE_NGL": {
+     "meps": 48,
+     "attendance": 0.8691,
+     "attendance_main": 0.8635,
+     "group_loyalty": 0.9371
+    },
+    "NI": {
+     "meps": 33,
+     "attendance": 0.885,
+     "attendance_main": 0.9241,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 91,
+     "attendance": 0.8988,
+     "attendance_main": 0.9035,
+     "group_loyalty": 0.8477
+    },
+    "RENEW": {
+     "meps": 79,
+     "attendance": 0.8943,
+     "attendance_main": 0.9059,
+     "group_loyalty": 0.9523
+    },
+    "SD": {
+     "meps": 138,
+     "attendance": 0.8954,
+     "attendance_main": 0.8918,
+     "group_loyalty": 0.9643
+    }
+   }
+  },
+  "2025-10-04_": {
+   "from": "2025-10-04",
+   "to": null,
+   "votes": 3855,
+   "min_votes": 100,
+   "ep": {
+    "meps": 732,
+    "attendance": 0.9003,
+    "attendance_main": 0.9066,
+    "group_loyalty": 0.933
+   },
+   "groups": {
+    "ECR": {
+     "meps": 84,
+     "attendance": 0.9208,
+     "attendance_main": 0.9255,
+     "group_loyalty": 0.9067
+    },
+    "EPP": {
+     "meps": 193,
+     "attendance": 0.9139,
+     "attendance_main": 0.9192,
+     "group_loyalty": 0.9333
+    },
+    "ESN": {
+     "meps": 28,
+     "attendance": 0.9244,
+     "attendance_main": 0.9141,
+     "group_loyalty": 0.9384
+    },
+    "GREEN_EFA": {
+     "meps": 54,
+     "attendance": 0.9337,
+     "attendance_main": 0.9192,
+     "group_loyalty": 0.9765
+    },
+    "GUE_NGL": {
+     "meps": 47,
+     "attendance": 0.8742,
+     "attendance_main": 0.8788,
+     "group_loyalty": 0.9348
+    },
+    "NI": {
+     "meps": 33,
+     "attendance": 0.8767,
+     "attendance_main": 0.9167,
+     "group_loyalty": null
+    },
+    "PFE": {
+     "meps": 90,
+     "attendance": 0.8938,
+     "attendance_main": 0.8958,
+     "group_loyalty": 0.8471
+    },
+    "RENEW": {
+     "meps": 79,
+     "attendance": 0.8892,
+     "attendance_main": 0.9015,
+     "group_loyalty": 0.9529
+    },
+    "SD": {
+     "meps": 138,
+     "attendance": 0.8918,
+     "attendance_main": 0.8902,
+     "group_loyalty": 0.9633
+    }
+   }
   }
  },
  "source": {

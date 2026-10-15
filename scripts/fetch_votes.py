@@ -25,7 +25,8 @@ import pandas as pd
 import requests
 
 from labels_cs import translate
-from benchmarks import compute_benchmarks
+from benchmarks import compute_benchmarks, window_key
+from delegations import compute_delegations
 from vote_kinds import FINAL_KINDS, classify
 
 BASE_URL = "https://github.com/HowTheyVote/data/releases/latest/download"
@@ -135,12 +136,14 @@ def load_votes(csv_dir: Path, since: str = TERM_START) -> pd.DataFrame:
     return v.sort_values(["timestamp", "id"])
 
 
-def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY, all_rows: list | None = None):
+def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY, all_rows: list | None = None,
+                      country_counts: dict | None = None):
     """Načte member_votes po částech.
 
     Vrací (pozice poslanců daného státu, {vote_id: {group_code: [pro, proti, zdržel, nehlasoval]}}),
     počty frakcí jsou přes všechny poslance EP. Když je all_rows seznam, přidá do něj kompaktní
-    řádky všech poslanců (pro srovnání s celým EP, scripts/benchmarks.py).
+    řádky všech poslanců (pro srovnání s celým EP, scripts/benchmarks.py). Když je country_counts slovník,
+    naplní ho počty hlasů po státech {vote_id: {stát: [pro, proti, zdržel, nehlasoval]}} (scripts/delegations.py).
     """
     path = csv_dir / "member_votes.csv.gz"
     if not path.exists():
@@ -156,6 +159,10 @@ def load_member_votes(csv_dir: Path, vote_ids: set[int], country: str = COUNTRY,
         if bad or chunk["position"].isna().any():
             raise FormatError(f"member_votes.csv: neočekávaná pozice {sorted(bad) or 'prázdná'}")
         counts.append(chunk.groupby(["vote_id", "group_code", "position"]).size())
+        if country_counts is not None:
+            for (vid, cc, position), n in chunk.groupby(["vote_id", "country_code", "position"]).size().items():
+                row = country_counts.setdefault(int(vid), {}).setdefault(cc, [0, 0, 0, 0])
+                row[COUNT_ORDER.index(position)] += int(n)
         if all_rows is not None:
             all_rows.append(chunk[["vote_id", "member_id", "position", "group_code"]].copy())
         parts.append(chunk[chunk["country_code"] == country])
@@ -315,12 +322,30 @@ def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, re
     (out_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def mandate_windows(meps_path: Path, since: str = TERM_START) -> dict[str, tuple[str, str | None]]:
+    """Okna mandátu českých poslanců (od prvního začátku do posledního konce) kromě plného období, pro srovnání
+    s mediánem EP za stejné období (benchmarks.py). Bez data/meps.json se mediány počítají jen za celé období."""
+    if not meps_path.exists():
+        return {}
+    meps = json.loads(meps_path.read_text(encoding="utf-8"))["meps"]
+    windows = {}
+    for m in meps:
+        start = min(x["start"] for x in m["mandates"])
+        ends = [x["end"] for x in m["mandates"]]
+        end = None if None in ends else max(ends)
+        if start <= since and end is None:
+            continue
+        windows[window_key(start, end)] = (start, end)
+    return windows
+
+
 def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_START,
-        benchmarks_path: Path | None = None) -> dict[str, dict]:
+        benchmarks_path: Path | None = None, delegations_path: Path | None = None) -> dict[str, dict]:
     votes = load_votes(csv_dir, since)
     ids = set(votes["id"])
     all_rows: list = []
-    mv, group_counts = load_member_votes(csv_dir, ids, all_rows=all_rows)
+    country_counts: dict = {}
+    mv, group_counts = load_member_votes(csv_dir, ids, all_rows=all_rows, country_counts=country_counts)
     topics = load_topics(csv_dir, ids)
     groups = read_table(csv_dir, "groups")
     months = build_months(votes, mv, topics, release, group_counts)
@@ -334,11 +359,18 @@ def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_STA
     rows = pd.concat(all_rows, ignore_index=True) if all_rows else pd.DataFrame(columns=["vote_id", "member_id", "position", "group_code"])
     bench = compute_benchmarks(zip(rows["vote_id"].astype(int), rows["member_id"].astype(int), rows["position"],
                                    [g if isinstance(g, str) and g else None for g in rows["group_code"]]),
-                               group_counts, final_ids)
+                               group_counts, final_ids, windows=mandate_windows(out_dir.parent / "meps.json", since),
+                               vote_dates={int(i): d[:10] for i, d in zip(votes["id"], votes["timestamp"])})
     bench["source"] = {"release": release}
     (benchmarks_path or out_dir.parent / "benchmarks.json").write_text(
         json.dumps(bench, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"srovnání s EP: medián docházky {bench['ep']['attendance']} ({bench['ep']['meps']} poslanců)", file=sys.stderr)
+    vote_meta = [{"id": int(r.id), "date": r.timestamp[:10], "result": r.result, "is_final": int(r.id) in final_ids,
+                  "counts": {"for": int(r.count_for), "against": int(r.count_against)}} for r in votes.itertuples()]
+    deleg = compute_delegations(country_counts, vote_meta, own=COUNTRY)
+    deleg["source"] = {"release": release}
+    (delegations_path or out_dir.parent / "delegations.json").write_text(
+        json.dumps(deleg, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     write_index(months, groups, out_dir, release, read_table(csv_dir, "oeil_subjects"))
     print(
         f"hlasování: {len(votes)} (hlavních {int(votes['is_main'].sum())}), "

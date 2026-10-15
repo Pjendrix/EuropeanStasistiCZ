@@ -90,7 +90,8 @@
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
   "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
-  "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
+  "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
+  "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.",
   "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
   "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
@@ -171,7 +172,8 @@
      "ABSTENTION": 608,
      "DID_NOT_VOTE": 562
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 118949,
@@ -244,7 +246,8 @@
      "ABSTENTION": 181,
      "DID_NOT_VOTE": 909
     }
-   }
+   },
+   "bench_key": "2024-07-16_2025-07-30"
   },
   {
    "id": 124701,
@@ -317,7 +320,8 @@
      "ABSTENTION": 394,
      "DID_NOT_VOTE": 238
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 124713,
@@ -390,7 +394,8 @@
      "ABSTENTION": 115,
      "DID_NOT_VOTE": 588
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 197526,
@@ -460,7 +465,8 @@
      "ABSTENTION": 0,
      "DID_NOT_VOTE": 24
     }
-   }
+   },
+   "bench_key": "2024-07-16_2024-07-31"
   },
   {
    "id": 197528,
@@ -533,7 +539,8 @@
      "ABSTENTION": 833,
      "DID_NOT_VOTE": 748
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 197537,
@@ -606,7 +613,8 @@
      "ABSTENTION": 480,
      "DID_NOT_VOTE": 621
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 197549,
@@ -679,7 +687,8 @@
      "ABSTENTION": 266,
      "DID_NOT_VOTE": 550
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 197552,
@@ -752,7 +761,8 @@
      "ABSTENTION": 538,
      "DID_NOT_VOTE": 405
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 197556,
@@ -825,7 +835,8 @@
      "ABSTENTION": 991,
      "DID_NOT_VOTE": 510
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 220840,
@@ -898,7 +909,8 @@
      "ABSTENTION": 912,
      "DID_NOT_VOTE": 418
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256840,
@@ -971,7 +983,8 @@
      "ABSTENTION": 282,
      "DID_NOT_VOTE": 322
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256843,
@@ -1044,7 +1057,8 @@
      "ABSTENTION": 818,
      "DID_NOT_VOTE": 771
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256844,
@@ -1117,7 +1131,8 @@
      "ABSTENTION": 849,
      "DID_NOT_VOTE": 922
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256845,
@@ -1190,7 +1205,8 @@
      "ABSTENTION": 545,
      "DID_NOT_VOTE": 147
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256846,
@@ -1263,7 +1279,8 @@
      "ABSTENTION": 431,
      "DID_NOT_VOTE": 268
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256847,
@@ -1336,7 +1353,8 @@
      "ABSTENTION": 280,
      "DID_NOT_VOTE": 276
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256850,
@@ -1409,7 +1427,8 @@
      "ABSTENTION": 138,
      "DID_NOT_VOTE": 199
     }
-   }
+   },
+   "bench_key": "2024-07-16_2025-10-03"
   },
   {
    "id": 256851,
@@ -1482,7 +1501,8 @@
      "ABSTENTION": 836,
      "DID_NOT_VOTE": 520
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256852,
@@ -1555,7 +1575,8 @@
      "ABSTENTION": 629,
      "DID_NOT_VOTE": 554
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 256853,
@@ -1628,7 +1649,8 @@
      "ABSTENTION": 709,
      "DID_NOT_VOTE": 1231
     }
-   }
+   },
+   "bench_key": null
   },
   {
    "id": 261038,
@@ -1701,7 +1723,8 @@
      "ABSTENTION": 884,
      "DID_NOT_VOTE": 281
     }
-   }
+   },
+   "bench_key": "2024-08-01_"
   },
   {
    "id": 270261,
@@ -1774,7 +1797,8 @@
      "ABSTENTION": 495,
      "DID_NOT_VOTE": 779
     }
-   }
+   },
+   "bench_key": "2025-07-31_"
   },
   {
    "id": 272024,
@@ -1847,7 +1871,8 @@
      "ABSTENTION": 503,
      "DID_NOT_VOTE": 25
     }
-   }
+   },
+   "bench_key": "2025-10-04_"
   }
  ]
 }

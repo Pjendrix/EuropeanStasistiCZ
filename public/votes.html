@@ -20,7 +20,7 @@
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
   <nav aria-label="Hlavní navigace">
-    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
@@ -44,17 +44,18 @@
       <option value="all">všechna hlasování</option>
     </select></label>
     <label>Téma <select id="topic"><option value="">všechna témata</option></select></label>
+    <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
     <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
   </div>
 
   <div class="table-wrap">
-    <table id="votes">
+    <table id="votes" class="stack">
       <thead><tr>
         <th class="num">Datum</th>
         <th>Hlasování</th>
         <th>Výsledek</th>
-        <th>Češi</th>
+        <th id="cz-head">Češi</th>
       </tr></thead>
       <tbody><tr><td colspan="4" class="loading">Načítám…</td></tr></tbody>
     </table>
@@ -75,13 +76,27 @@ setNav("votes");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, all] = await Promise.all([getJSON("votes/index.json"), loadSearch()]);
+    const [index, all, overview] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json")]);
     all.reverse(); // nejnovější nahoře
     const doc = await getJSON("votes/search.json");
     const monthSel = document.getElementById("month");
     const kindSel = document.getElementById("kind");
     const topicSel = document.getElementById("topic");
     const q = document.getElementById("q");
+    const mepSel = document.getElementById("mep");
+    const sortedMeps = [...overview.meps].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs"));
+    const opt = (m) => `<option value="${m.id}">${esc(displayName(m))}</option>`;
+    mepSel.innerHTML += sortedMeps.filter(isActive).map(opt).join("") +
+      `<optgroup label="Bývalí poslanci">${sortedMeps.filter((m) => !isActive(m)).map(opt).join("")}</optgroup>`;
+    // Filtr „Poslanec“: hlasy vybraného poslance (data/meps/{id}_votes.json); sloupec Češi se změní na jeho hlas.
+    let mepVotes = null; // Map hlasování → písmeno F/A/B/N
+    const LETTER = { F: "FOR", A: "AGAINST", B: "ABSTENTION", N: "DID_NOT_VOTE" };
+    const loadMepVotes = async () => {
+      mepVotes = null;
+      if (!mepSel.value) return;
+      const d = await getJSON(`meps/${mepSel.value}_votes.json`);
+      mepVotes = new Map(d.ids.map((id, i) => [id, d.positions[i]]));
+    };
     monthSel.innerHTML = index.months.slice().reverse()
       .map((m) => `<option value="${m.month}">${fmtMonth(m.month)} (${m.votes})</option>`).join("");
     // Témata jen v novějších datech (pole topics v search.json).
@@ -92,6 +107,8 @@ setNav("votes");
     topicSel.closest("label").hidden = !topicCodes.length;
     const params = new URLSearchParams(location.search);
     if (params.get("m")) monthSel.value = params.get("m");
+    if (params.get("q")) q.value = params.get("q");
+    if (params.get("mep") && /^\d+$/.test(params.get("mep"))) { mepSel.value = params.get("mep"); await loadMepVotes(); }
     // ?all=1 ze starších odkazů = všechna hlasování
     kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
     if (params.get("t")) topicSel.value = params.get("t");
@@ -109,11 +126,11 @@ setNav("votes");
       const needle = q.value.trim().toLowerCase();
       const topic = topicSel.value;
       // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
-      const wide = Boolean(needle || topic);
+      const wide = Boolean(needle || topic || mepVotes);
       monthSel.disabled = wide;
       const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
       const matches = pool.filter((v) => kindOk(v) &&
-        (!topic || (v.topics || []).includes(topic)) &&
+        (!topic || (v.topics || []).includes(topic)) && (!mepVotes || mepVotes.has(v.id)) &&
         (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
       current = matches;
@@ -122,27 +139,33 @@ setNav("votes");
         : `${matches.length} z ${pool.length} hlasování${since ? ` od ${fmtDate(since)}` : ""}`;
       const qs = new URLSearchParams({ m: month, f: kindSel.value });
       if (topic) qs.set("t", topic);
+      if (needle) qs.set("q", q.value.trim());
+      if (mepVotes) qs.set("mep", mepSel.value);
+      document.getElementById("cz-head").textContent = mepVotes ? displayName(overview.meps.find((m) => String(m.id) === mepSel.value)) : "Češi";
       if (since && !wide) qs.set("od", since);
       history.replaceState(null, "", `?${qs}`);
       tbody.innerHTML = list.map((v) => {
         const counts = v.cz;
         return `<tr>
-          <td class="num">${fmtDate(v.date)}</td>
-          <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+          <td class="num date">${fmtDate(v.date)}</td>
+          <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
             <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
-          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
-          <td>${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>
+          <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+          ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)]; const mp = overview.meps.find((m) => String(m.id) === mepSel.value);
+            return `<td class="extra pos pos-${pos}">${positionFor(pos, mp)}</td>`; })()
+            : `<td class="extra cz">${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>`}
         </tr>`;
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
     };
     monthSel.addEventListener("change", () => { since = null; render(); });
     document.querySelector("#votes").closest(".table-wrap").before(csvButton("hlasovani.csv", () => [
-      ["id", "datum", "nazev", "reference", "popis", "typ", "vysledek", "cesi_pro", "cesi_proti", "cesi_zdrzel", "cesi_nehlasoval", "zdroj"],
+      ["id", "datum", "nazev", "reference", "popis", "typ", "vysledek", "cesi_pro", "cesi_proti", "cesi_zdrzel", "cesi_nehlasoval", "hlas_poslance", "zdroj"],
       ...current.map((v) => [v.id, v.date, voteTitle(v), v.reference, voteDesc(v), v.vote_kind ? KIND_LABEL[v.vote_kind] : (v.is_main ? "hlavní" : ""),
-        RESULT_LABEL[v.result] || "", ...v.cz, `https://howtheyvote.eu/votes/${v.id}`]),
+        RESULT_LABEL[v.result] || "", ...v.cz, mepVotes ? (POSITION_LABEL[LETTER[mepVotes.get(v.id)]] || "") : "", `https://howtheyvote.eu/votes/${v.id}`]),
     ], "Stáhnout vybraná hlasování (CSV)"));
     kindSel.addEventListener("change", render);
     topicSel.addEventListener("change", render);
+    mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
     q.addEventListener("input", render);
     render();
   } catch (e) {

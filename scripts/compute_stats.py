@@ -69,8 +69,17 @@ DEFINITIONS = {
                       "opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální "
                       "výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt "
                       "spolehlivě spočítat.",
-    "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
-                     "většina jeho frakce k datu hlasování.",
+    "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, "
+                   "která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 "
+                   "poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by "
+                   "hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší "
+                   "celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni "
+                   "poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
+    "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
+                     "většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina "
+                     "jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana "
+                     "nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda "
+                     "se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.",
     "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
                 "součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se "
                 "nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
@@ -250,6 +259,17 @@ def active_positions(vote: dict, by_id: dict, unknown: set | None = None) -> lis
     return active
 
 
+def party_majority(pos: dict, active: list[dict]) -> str | None:
+    """Jak hlasovala většina české strany poslance (bez něj samotného), k datu hlasování. None: strana nemá jiného hlasujícího
+    poslance (jednočlenná strana, ostatní nehlasovali), většina je nerozhodná, nebo poslanec není členem strany (Independent)."""
+    party = pos.get("national_party_id")
+    if party is None or pos.get("national_party") == INDEPENDENT:
+        return None
+    mates = [o["position"] for o in active
+             if o is not pos and o.get("national_party_id") == party and o["position"] in VOTED]
+    return majority(Counter(mates)) if mates else None
+
+
 def compute(meps: list[dict], votes: list[dict], topics: list[str] | None = None) -> dict:
     by_id = {m["id"]: m for m in meps}
     topics = top_topics(votes) if topics is None else topics
@@ -277,8 +297,9 @@ def compute(meps: list[dict], votes: list[dict], topics: list[str] | None = None
                 add_vote(by_topic[i][t], vote, p, others)
             gm = group_majority(vote["group_counts"], p["group_code"])
             if p["position"] in VOTED and gm is not None and p["position"] != gm:
+                pm = party_majority(p, active)
                 against[i].append({"id": vote["id"], "is_final": is_final(vote), "position": p["position"],
-                                   "group_code": p["group_code"], "group_majority": gm})
+                                   "group_code": p["group_code"], "group_majority": gm, "party_majority": pm})
             if alt is not None:
                 decisive[i].append({"id": vote["id"], "position": p["position"]})
         voted = [p for p in active if p["position"] in VOTED]
@@ -301,6 +322,11 @@ def compute(meps: list[dict], votes: list[dict], topics: list[str] | None = None
             "against_group": {
                 "count": len(against[i]),
                 "count_main": sum(x["is_final"] for x in against[i]),
+                # D3: kolikrát z toho hlasoval stejně jako většina jeho české strany (u kolika měla strana jasnou většinu)
+                "party_known": sum(x["party_majority"] is not None for x in against[i]),
+                "with_party": sum(x["party_majority"] == x["position"] for x in against[i]),
+                "party_known_main": sum(x["is_final"] and x["party_majority"] is not None for x in against[i]),
+                "with_party_main": sum(x["is_final"] and x["party_majority"] == x["position"] for x in against[i]),
                 "recent": newest(against[i])[:RECENT],
                 "recent_main": [x for x in newest(against[i]) if x["is_final"]][:RECENT],
             },

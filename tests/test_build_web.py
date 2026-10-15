@@ -218,3 +218,14 @@ def test_functions_only_current_chairs_and_bureau():
                     {"role": "MEMBER", "code": "ECR", "name_cs": "ECR", "start": "2024-07-16", "end": None}]}
     f = bw.functions(m, "2026-01-01")
     assert [(x["kind"], x["role"], x["code"]) for x in f] == [("committee", "CHAIR", "AGRI"), ("group", "MEMBER_BUREAU", "ECR")]
+
+
+def test_mep_votes_only_in_mandate():
+    mep = {"id": 1, "mandates": [{"start": "2024-07-16", "end": "2024-09-30"}]}
+    votes = [
+        {"id": 10, "date": "2024-09-10", "cz_positions": [{"member_id": 1, "position": "FOR"}, {"member_id": 2, "position": "AGAINST"}]},
+        {"id": 11, "date": "2024-09-11", "cz_positions": [{"member_id": 1, "position": "DID_NOT_VOTE"}]},
+        {"id": 12, "date": "2024-10-02", "cz_positions": [{"member_id": 1, "position": "AGAINST"}]},  # po mandátu
+        {"id": 13, "date": "2024-09-12", "cz_positions": [{"member_id": 2, "position": "FOR"}]},       # poslanec nehlasuje v datech
+    ]
+    assert bw.mep_votes(mep, votes) == {"ids": [10, 11], "positions": "FN"}

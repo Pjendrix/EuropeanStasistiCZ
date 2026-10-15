@@ -20,7 +20,7 @@
 <header class="site-header"><div class="inner">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/><circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/><clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)"><rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/><path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>EP Watch <span>CZ</span></a>
   <nav aria-label="Hlavní navigace">
-    <a href="index.html" data-page="meps">Poslanci</a>
+    <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
@@ -43,6 +43,7 @@
     <div class="card metric" id="unity"><div class="label">Češi jednotně – závěrečná hlasování</div><div class="value">–</div></div>
     <div class="card metric" id="decisive"><div class="label">Rozhodly české hlasy</div><div class="value">–</div></div>
   </div>
+  <div id="peers" style="margin-bottom:1.5rem"></div>
   <fieldset class="controls fieldset">
     <legend class="small muted">Zobrazit</legend>
     <label><input type="radio" name="view" value="last_session" checked> poslední zasedání</label>
@@ -68,11 +69,18 @@ setNav("splits");
 (async () => {
   const el = document.getElementById("list");
   try {
-    const [d, overview, groups] = await Promise.all([getJSON("splits.json"), getJSON("overview.json"), getJSON("groups.json")]);
+    const [d, overview, groups, dl] = await Promise.all([getJSON("splits.json"), getJSON("overview.json"), getJSON("groups.json"), getJSON("delegations.json").catch(() => null)]);
     const meps = Object.fromEntries(overview.meps.map((m) => [m.id, m]));
     document.getElementById("source").innerHTML = sourceLine(d);
     const u = d.unity;
     if (u && u.considered) {
+      const peerLine = dl && dl.peers.length ? `<div class="detail">Pro srovnání: u delegací s ${dl.seats_range[0]}–${dl.seats_range[1]} poslanci vychází
+          jednotnost ${spanText(dl.peer_range.unity, (x) => fmtPct(x))} ve všech hlasováních a ${spanText(dl.peer_range.unity_final, (x) => fmtPct(x))} u závěrečných.
+          <a href="#delegace">Čísla jednotlivých delegací</a></div>` : "";
+      if (dl && dl.peers.length) document.getElementById("peers").innerHTML = `<details class="card" id="delegace"><summary><strong>Jednotnost delegací podobné velikosti</strong></summary>${delegationTable(dl, [
+        { label: "Jednotně – všechna hlasování", get: (m) => `${fmtPct(m.unity[0] / m.unity[1])}<div class="small muted">${fmtNum(m.unity[0])} z ${fmtNum(m.unity[1])}</div>` },
+        { label: "Jednotně – závěrečná", get: (m) => `${fmtPct(m.unity_final[0] / m.unity_final[1])}<div class="small muted">${fmtNum(m.unity_final[0])} z ${fmtNum(m.unity_final[1])}</div>` },
+      ])}<p class="small muted">${esc(dl.definition)}</p></details>`;
       const cur = overview.meps.filter(isActive);
       const nGroups = new Set(cur.map((m) => m.group?.code).filter((c) => c && c !== "NI")).size;
       const hasNI = cur.some((m) => !m.group?.code || m.group.code === "NI");
@@ -83,6 +91,7 @@ setNav("splits");
       document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}
         <div class="detail">Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}.
           Výrazné rozdělení (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
+        ${peerLine}
         <div class="detail">Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“.
           <a href="o-projektu.html#metodika">Jak počítáme</a></div>`;
     }
