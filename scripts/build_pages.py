@@ -23,6 +23,7 @@ import sys
 from html import escape
 from pathlib import Path
 
+from build_cards import card_vote_ids
 from build_web import vote_title
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
@@ -114,15 +115,22 @@ def cite_button(text: str) -> str:
             f'title="Citovat (zkopíruje větu se zdrojem)">{CITE_ICON}</button>')
 
 
-def og_meta(title: str, description: str, path: str, base_url: str | None, image: str | None = None) -> str:
-    """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json)."""
+def og_meta(title: str, description: str, path: str, base_url: str | None, image: str | None = None,
+            image_alt: str | None = None, card: bool = False) -> str:
+    """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json).
+    card = image je karta ke sdílení 1200 × 630 (scripts/build_cards.py): přidá rozměry, alt a velký náhled pro X."""
     lines = [f'<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
              f'<meta property="og:description" content="{esc(description)}">', '<meta property="og:locale" content="cs_CZ">']
     if base_url:
         url = base_url.rstrip("/") + "/" + path
         lines += [f'<link rel="canonical" href="{esc(url)}">', f'<meta property="og:url" content="{esc(url)}">']
         if image:
-            lines.append(f'<meta property="og:image" content="{esc(base_url.rstrip("/") + "/" + image)}">')
+            img = base_url.rstrip("/") + "/" + image
+            lines.append(f'<meta property="og:image" content="{esc(img)}">')
+            if card:
+                lines += ['<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">',
+                          f'<meta property="og:image:alt" content="{esc(image_alt or title)}">',
+                          '<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:image" content="{esc(img)}">']
     return "\n".join(lines) + "\n"
 
 
@@ -232,7 +240,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 {f'<div class="table-wrap"><table><thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead><tbody>{rows}</tbody></table></div>' if rows else '<p class="muted">Žádná hlasování.</p>'}
 <p class="source">Zdroj: <a href="{htv}">HowTheyVote.eu</a>. Všechna hlasování v <a href="votes.html">seznamu hlasování</a>.</p>"""
     title = f"{name} – EP Watch CZ"
-    meta = og_meta(title, desc, f"p/{mep['id']}.html", base_url, f"assets/photos/{mep['id']}.jpg" if mep.get("photo_url") else None)
+    meta = og_meta(title, desc, f"p/{mep['id']}.html", base_url, f"og/p/{mep['id']}.png", desc, card=True)
     # Jedna adresa profilu (U5): <base href="../">, takže odkazy i data se berou od kořene webu;
     # profile.js obsah nahradí plnou interaktivní verzí, statický obsah zůstává pro vyhledávače a bez JS.
     path = f"p/{mep['id']}.html"
@@ -284,7 +292,8 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     # Jedna adresa strany: <base href="../">, party.js obsah nahradí interaktivní verzí (jako u profilu poslance).
     path = f"s/{pp['id']}.html"
     return path, page(title, body, root="", base="../", path=path, current="parties", description=desc,
-                      meta=og_meta(title, desc, path, base_url), main_attrs=f'data-party="{pp["id"]}"',
+                      meta=og_meta(title, desc, path, base_url, "og/default.png", "EP Watch CZ: jak hlasují čeští europoslanci", card=True),
+                      main_attrs=f'data-party="{pp["id"]}"',
                       scripts='<script src="app.js"></script>\n<script src="party.js"></script>\n')
 
 
@@ -296,7 +305,7 @@ def adopted_text_url(ref: str | None) -> str | None:
     return f"https://data.europarl.europa.eu/distribution/doc/TA-{m[1]}-{m[2]}-{m[3]}_cs.pdf" if m else None
 
 
-def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None) -> tuple[str, str]:
+def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, has_card: bool = False) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
     desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
@@ -356,7 +365,8 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a>.</p>"""
     title = f"{title_txt} ({fmt_date(v['date'])}) – EP Watch CZ"
     return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,
-                                     meta=og_meta(title, desc, f"v/{v['id']}.html", base_url),
+                                     meta=og_meta(title, desc, f"v/{v['id']}.html", base_url,
+                                                  f"og/v/{v['id']}.png" if has_card else "og/default.png", desc, card=True),
                                      scripts=f'<script src="{ROOT}app.js"></script>\n')
 
 
@@ -390,9 +400,10 @@ def build(data_dir: Path) -> dict[str, str]:
             path, html = party_page(read(data_dir / "parties" / f"{p['id']}.json"), base_url)
             out[path] = html
     _, votes = load_votes(data_dir / "votes")
+    with_card = card_vote_ids(votes)  # závěrečná hlasování za 12 měsíců mají kartu (build_cards.py), starší obecný obrázek
     for v in votes:
         if is_final(v):
-            path, html = vote_page(v, meps_by_id, groups, base_url)
+            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card)
             out[path] = html
     if base_url:
         out.update(sitemap(base_url, sorted(out)))
