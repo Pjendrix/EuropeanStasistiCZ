@@ -40,7 +40,7 @@
   <p class="lead">Hlasování, ve kterých čeští poslanci hlasovali nejvíc rozdílně. Míra rozkolu = menšina mezi hlasy pro a proti
     děleno jejich součtem (0,5 = půl na půl); u každého hlasování ukazujeme poměr pro : proti. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
   <div class="metrics" style="margin-bottom:1.5rem">
-    <div class="card metric" id="unity"><div class="label">Češi jednotně</div><div class="value">–</div></div>
+    <div class="card metric" id="unity"><div class="label">Češi jednotně – závěrečná hlasování</div><div class="value">–</div></div>
     <div class="card metric" id="decisive"><div class="label">Rozhodly české hlasy</div><div class="value">–</div></div>
   </div>
   <fieldset class="controls fieldset">
@@ -73,11 +73,18 @@ setNav("splits");
     document.getElementById("source").innerHTML = sourceLine(d);
     const u = d.unity;
     if (u && u.considered) {
-      document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně</div>
-        <div class="value">${countPct(u.united / u.considered)}</div>
-        <div class="detail">${fmtNum(u.united)} z ${fmtNum(u.considered)} hlasování: všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně.
-          U závěrečných ${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)}. Výrazný rozkol (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
-        <div class="detail"><a href="o-projektu.html#metodika">jak počítáme</a></div>`;
+      const cur = overview.meps.filter(isActive);
+      const nGroups = new Set(cur.map((m) => m.group?.code).filter((c) => c && c !== "NI")).size;
+      const hasNI = cur.some((m) => !m.group?.code || m.group.code === "NI");
+      const fin = u.considered_final
+        ? `<div class="value">${countPct(u.united_final / u.considered_final)}</div>
+        <div class="detail">${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)} závěrečných hlasování (o celém textu, prozatímní dohodě s Radou nebo námitce): všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně.</div>`
+        : "";
+      document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}
+        <div class="detail">Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}.
+          Výrazný rozkol (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
+        <div class="detail">Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“.
+          <a href="o-projektu.html#metodika">Jak počítáme</a></div>`;
     }
     getJSON("decisive.json").then((dec) => {
       const fin = dec.decisive_final ?? dec.votes.filter(isFinal).length;
