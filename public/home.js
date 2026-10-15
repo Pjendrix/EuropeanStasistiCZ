@@ -68,7 +68,16 @@ function partyLines(members, parties) {
   }).join("")}</ul>`;
 }
 
-function renderDelegation(ov, groups, parties) {
+// Hlavička vybrané frakce: stejný věcný řádek u všech (zkratka, celý název, počet Čechů, oficiální web), bez popisů a hodnocení.
+function groupHead(code, count, groups, groupWeb) {
+  const g = groups.find((x) => x.code === code);
+  const web = groupWeb?.groups?.[code]?.web;
+  const full = code === "NI" ? "poslanci, kteří nepatří do žádné politické skupiny" : (g?.name_cs || "");
+  return `<div class="group-head-line"><strong>${esc(groupName(code, groups))}</strong>${full ? ` <span class="muted">${esc(full)}</span>` : ""}
+    · ${count} ${count === 1 ? "český poslanec" : count < 5 ? "čeští poslanci" : "českých poslanců"}${web ? ` · <a class="ext" href="${esc(web)}" rel="noopener">oficiální web</a>` : ""}</div>`;
+}
+
+function renderDelegation(ov, groups, parties, groupWeb) {
   const active = ov.meps.filter(isActive);
   const people = active
     .map((m) => ({ m, code: htvCode(m, groups) }))
@@ -133,7 +142,7 @@ function renderDelegation(ov, groups, parties) {
     document.getElementById("hemi-n").textContent = code ? byCode[code].length : n;
     document.getElementById("hemi-label").textContent = code ? groupName(code, groups) : "křesel";
     document.getElementById("hemi-names").innerHTML = code
-      ? `<strong>${esc(groupName(code, groups))}</strong>${partyLines(byCode[code], parties)}`
+      ? groupHead(code, byCode[code].length, groups, groupWeb) + partyLines(byCode[code], parties)
       : `Česká delegace má ${n} poslanců v ${codes.length} frakcích Evropského parlamentu. Vyberte frakci pro jména.`;
   };
   // Výběr frakce kliknutím (funguje dotykem i klávesnicí); najetí myší je jen bonus.
@@ -228,10 +237,10 @@ function groupedCards(list, groups, parties, bench) {
       renderEntries();
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));
-    renderDelegation(ov, groups, parties);
+    renderDelegation(ov, groups, parties, await getJSON("group_web.json").catch(() => null));
 
     document.getElementById("source").innerHTML = sourceLine(ov) +
-      (bench ? infoButton(`<p>Mediány: ${esc(bench.definition || "")}</p>`, "Definice mediánů") : "");
+      (bench ? infoButton(`<p>Mediány: ${esc(bench.definition || "")}</p><p>Weby frakcí: Wikidata (CC0), vlastnost „oficiální web“. Weby stran: adresa, ze které pochází jejich logo.</p>`, "Definice mediánů a zdroje webů") : "");
     document.getElementById("source").before(csvButton("poslanci.csv", () => [
       ["id", "poslanec", "frakce", "strana", "v_mandatu", "ucast_na_hlasovani", "hlasovani_v_dobe_mandatu", "ucast_zaverecna", "hlasuje_s_frakci", "shoda_s_cechy"],
       ...ov.meps.map((m) => [m.id, displayName(m), m.group?.short_label || "", m.party?.short_label || "", isActive(m) ? "ano" : "ne",
