@@ -23,7 +23,7 @@ import urllib.request
 from pathlib import Path
 
 API = "https://www.wikidata.org/w/api.php"
-UA = "EPWatchCZ/1.0 (https://github.com/Pjendrix/EuropeanStasistiCZ; independent project, weekly fetch of EP group websites)"
+UA = "EPWatchCZ/1.0 (https://github.com/Pjendrix/ep-watch-cz-open; independent project, weekly fetch of EP group websites)"
 
 
 class FormatError(Exception):

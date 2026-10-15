@@ -43,7 +43,7 @@
     <p style="margin:0"><strong>Nezávislý analytický projekt.</strong> EP Watch CZ není oficiálně spojen s žádnou politickou stranou
       ani hnutím, s žádnou frakcí Evropského parlamentu, s Evropským parlamentem ani s jinou institucí. Názvy a loga stran a frakcí
       slouží jen k jejich identifikaci a neznamenají podporu, spolupráci ani souhlas jejich vlastníků s obsahem webu.
-      Všechna čísla počítá veřejný kód z veřejných dat, takže si je může kdokoli ověřit.</p>
+      Všechna čísla počítají veřejné skripty z veřejných dat, takže si je může kdokoli ověřit.</p>
   </div>
 
   <h2 id="zdroje">Zdroje dat</h2>
@@ -83,9 +83,9 @@
     <p class="small">Další pravidla:</p>
     <ul class="small">
       <li><strong>Typ hlasování</strong> určují pevná pravidla podle popisu hlasování ve zdroji
-        (<a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/vote_kinds.py">vote_kinds.py</a>). U návrhu na zamítnutí
+        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_kinds.py">vote_kinds.py</a>). U návrhu na zamítnutí
         znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také
-        pevnými pravidly (<a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
+        pevnými pravidly (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
         co pravidla neznají, zůstává v originále.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
@@ -96,17 +96,17 @@
         rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.</li>
       <li>Hlasování s frakcí a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
       <li>Čísla počítá deterministický skript
-        <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
+        <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
     </ul>
   </div>
 
   <h2 id="licence">Licence</h2>
   <div class="card"><ul class="plain">
-    <li><strong>Kód</strong> (skripty a web): licence MIT, viz <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/LICENSE">LICENSE</a>.</li>
+    <li><strong>Výpočty</strong> (skripty a testy ve veřejném repozitáři): licence GNU AGPL-3.0, viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/LICENSE">LICENSE</a>. Zdrojový kód webu samotného (vzhled a stránky) je soukromý.</li>
     <li><strong>Data v adresáři <code>data/</code></strong>: odvozená z HowTheyVote.eu, proto pod licencí
       <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a> (sdílet za stejných podmínek).
       Údaje z EP Open Data jsou pod <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
-      Viz <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/DATA_LICENSE.md">DATA_LICENSE.md</a>.</li>
+      Viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/DATA_LICENSE.md">DATA_LICENSE.md</a>.</li>
     <li><strong>Portréty</strong>: © European Union – Source: EP.</li>
     <li><strong>Písmo</strong> Plus Jakarta Sans: SIL Open Font License 1.1, hostované přímo na tomto webu (žádné Google Fonts).</li>
     <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
@@ -199,7 +199,7 @@
         Uloží se jen to, co vyplníte; e-mail použijeme jen k odpovědi.</p>
     </form>
     <p class="small">Chyby můžete hlásit i veřejně jako
-      <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/issues">issue na GitHubu</a>. Celý kód i data jsou veřejné.</p>
+      <a href="https://github.com/Pjendrix/ep-watch-cz-open/issues">issue na GitHubu</a>. Skripty, které počítají čísla, i data jsou veřejné.</p>
   </div>
 
   <h2>Loga a barvy</h2>
@@ -213,7 +213,7 @@
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
-  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>

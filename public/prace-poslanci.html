@@ -96,7 +96,7 @@
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
-  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -167,7 +167,7 @@ setNav("work-table");
         podepsané návrhy usnesení ${fmtNum(r.m.motions_signed)}</span></li>`).join("")}</ul></details>` : "";
     document.getElementById("source").innerHTML = `Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), výsledky hlasování
       <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL). Aktualizováno ${fmtDate(w.updated)}${w.complete ? "" : " (stahování ještě neskončilo, data nejsou úplná)"}.
-      Počty spočítal skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/own_work.py">own_work.py</a>. Podrobnosti u každého poslance na jeho profilu.`;
+      Počty spočítal skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/own_work.py">own_work.py</a>. Podrobnosti u každého poslance na jeho profilu.`;
     const tierLabel = (t) => ({ top: "horni", mid: "stredni", low: "dolni" })[t] || "";
     document.getElementById("source").before(csvButton("vlastni-prace.csv", () => [
       ["poslanec_id", "poslanec", "frakce", "strana", "zpravy_zpravodaj", "zpravy_zpravodaj_prijate", "zpravy_zpravodaj_tretina",
