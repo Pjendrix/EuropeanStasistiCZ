@@ -18,6 +18,7 @@ from __future__ import annotations
 import datetime as dt
 
 from compute_stats import active_positions, cz_split, last_session_dates
+from categories import categories_for
 from vote_kinds import classify, is_final
 
 LIMIT = 5
@@ -48,7 +49,8 @@ def _compact(v: dict, meps_by_id: dict) -> dict:
             "title": v.get("title") or (v.get("procedure") or {}).get("title") or v.get("reference"),
             "vote_kind": kind, "result": v.get("result"),
             "counts": {"for": c["for"], "against": c["against"], "abstention": c["abstention"]},
-            "cz": [sum(p["position"] == k for p in cz) for k in ("FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE")]}
+            "cz": [sum(p["position"] == k for p in cz) for k in ("FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE")],
+            "cats": categories_for(v)}
 
 
 def _gap_text(gap: int) -> str:

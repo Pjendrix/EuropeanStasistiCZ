@@ -41,13 +41,15 @@
   --bench: #B45309;
   --link: #1E3A8A;
   --mx-max: 60%;
-  /* pro / proti: modrá / oranžová (rozlišitelné i při poruchách barvocitu) */
-  --for: #2563EB;
-  --against: #EA580C;
+  /* pro / proti: zelená / červená. Zelená a červená znamenají jen hlas, nikdy výsledek ani kvalitu.
+     Při poruše barvocitu se odliší světlostí a hlavně symbolem (✓ ✕ – ○, třída .vd) a čísly u proužku. */
+  --for: #2BA862;
+  --against: #9F1D2B;
   --abst: #64748B;
   --absent: #94A3B8;
-  --for-text: #1D4ED8;
-  --against-text: #C2410C;
+  --for-text: #15803D;
+  --against-text: #9F1D2B;
+  --glyph: #FFFFFF;
 
   --radius: 18px;
   --radius-sm: 12px;
@@ -68,15 +70,16 @@
     --accent-soft: rgba(59, 130, 246, .14);
     --shadow: none;
     --abst: #94A3B8;
+    --glyph: #0B1220;
     --absent: #64748B;
     --data: #CBD5E1;
     --bench: #F59E0B;
     --link: #BFDBFE;
     --mx-max: 42%;
-    --for: #3B82F6;
-    --against: #F97316;
-    --for-text: #93C5FD;
-    --against-text: #FDBA74;
+    --for: #5BE49B;
+    --against: #E5484D;
+    --for-text: #86EFAC;
+    --against-text: #FCA5A5;
     color-scheme: dark;
   }
 }
@@ -98,10 +101,11 @@
   --bench: #F59E0B;
   --link: #BFDBFE;
   --mx-max: 42%;
-  --for: #3B82F6;
-  --against: #F97316;
-  --for-text: #93C5FD;
-  --against-text: #FDBA74;
+  --glyph: #0B1220;
+  --for: #5BE49B;
+  --against: #E5484D;
+  --for-text: #86EFAC;
+  --against-text: #FCA5A5;
   color-scheme: dark;
 }
 
@@ -825,3 +829,36 @@ details.explain.wide { max-width: none; margin-top: 1.5rem; }
 details.links-more { margin: .3rem 0 1rem; font-size: .875rem; }
 details.links-more summary { cursor: pointer; color: var(--muted); }
 .share-sep { border: 0; border-top: 1px solid var(--border); margin: .25rem .5rem; }
+
+
+/* Hlasy: tečka se symbolem (barva + tvar, aby to fungovalo i při poruše barvocitu), legenda, kategorie, neutrální výsledek */
+.vd { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box; flex: none; }
+.vd.sm { width: 16px; height: 16px; }
+.vd.f { background: var(--for); }
+.vd.a { background: var(--against); }
+.vd.s { background: var(--abst); }
+.vd.n { background: transparent; border: 2px solid var(--absent); }
+.vd.f::after { content: ""; width: 28%; height: 52%; border: solid var(--glyph); border-width: 0 2px 2px 0; transform: translateY(-8%) rotate(45deg); box-sizing: border-box; }
+.vd.a::before, .vd.a::after { content: ""; position: absolute; width: 52%; height: 2px; background: var(--glyph); border-radius: 2px; }
+.vd.a::before { transform: rotate(45deg); }
+.vd.a::after { transform: rotate(-45deg); }
+.vd.s::after { content: ""; width: 50%; height: 2px; background: var(--glyph); border-radius: 2px; }
+.vd-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.vd-legend { display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .85rem; color: var(--muted); }
+.vd-legend span { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.vd-legend b { color: var(--text); font-weight: 700; }
+.vd-legend b.pro { color: var(--for-text); }
+.vd-legend b.con { color: var(--against-text); }
+.hub-vote-head { display: flex; align-items: center; gap: .6rem; }
+.cat-ico { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-soft); color: var(--data); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.cat-ico svg { width: 19px; height: 19px; }
+.cat-name { font-size: .85rem; font-weight: 600; color: var(--data); }
+.cat-more { font-size: .75rem; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0 .5rem; }
+.hub-vote-head .when { margin-left: auto; font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.res-pill { display: inline-flex; font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; border-radius: 999px; padding: .1rem .65rem; background: var(--text); color: var(--bg); }
+.res-pill.no { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--text); }
+.hub-vote .meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .8rem; color: var(--muted); }
+.hub-vote .ep-line { display: flex; align-items: center; gap: .6rem; font-size: .8rem; color: var(--muted); padding-top: .55rem; border-top: 1px solid var(--border); }
+.hub-vote .ep-line .split { height: 8px; flex: 1; }
+.hub-vote .ep-line b.pro { color: var(--for-text); }
+.hub-vote .ep-line b.con { color: var(--against-text); }

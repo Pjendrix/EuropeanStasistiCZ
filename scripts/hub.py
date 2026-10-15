@@ -14,6 +14,7 @@ from pathlib import Path
 
 from build_pages import (POSITIONS, RESULT_LABEL, esc, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
                          og_meta, split_bar)
+from categories import ICON, LABEL, icon_svg
 from vote_kinds import KIND_LABELS
 
 LIST_TITLES = {
@@ -37,13 +38,37 @@ def vote_link(v: dict) -> str:
     return f"v/{v['id']}.html" if final else f"vote.html?id={v['id']}&m={v['month']}"
 
 
+def _dots(cz: list[int]) -> str:
+    cls = ("f", "a", "s", "n")
+    return "".join(f'<i class="vd {c}"></i>' for c, n in zip(cls, cz) for _ in range(n))
+
+
+def _legend(cz: list[int]) -> str:
+    return (f'<div class="vd-legend"><span><i class="vd sm f"></i><b class="pro">{cz[0]}</b> pro</span>'
+            f'<span><i class="vd sm a"></i><b class="con">{cz[1]}</b> proti</span>'
+            f'<span><i class="vd sm s"></i><b>{cz[2]}</b> zdrž.</span>'
+            f'<span><i class="vd sm n"></i><b>{cz[3]}</b> nehl.</span></div>')
+
+
 def vote_card(v: dict, reason: str) -> str:
-    cz = v["cz"]
-    return (f'<div class="card hub-vote"><div class="small muted">{fmt_date(v["date"])} · {esc(KIND_LABELS.get(v["vote_kind"], ""))}'
-            f' · <span class="result-{v["result"] or ""}">{esc(RESULT_LABEL.get(v["result"], "výsledek neuveden"))}</span></div>'
-            f'<a class="vote-title" href="{vote_link(v)}">{esc(v["title"])}</a>{split_bar(cz)}'
-            f'<div class="small"><b>Češi: {cz[0]} pro · {cz[1]} proti</b> <span class="muted">· {cz[2]} zdrž. · {cz[3]} nehl.</span></div>'
-            f'<div class="small muted">{esc(reason)}</div></div>')
+    """Karta hlasování: kategorie, název, výsledek (neutrální štítek), 21 teček se symboly, legenda, celý EP. Zelená a červená jen u hlasů."""
+    cz, c = v["cz"], v["counts"]
+    cats = v.get("cats") or []
+    head = ""
+    if cats:
+        more = f'<span class="cat-more" title="{esc(", ".join(LABEL[k] for k in cats[1:]))}">+{len(cats) - 1}</span>' if len(cats) > 1 else ""
+        head = f'<span class="cat-ico">{icon_svg(cats[0])}</span><span class="cat-name">{esc(LABEL[cats[0]])}</span>{more}'
+    ok = v["result"] == "ADOPTED"
+    res = (f'<span class="res-pill{"" if ok else " no"}">{esc(RESULT_LABEL.get(v["result"], "výsledek neuveden"))}</span>'
+           if v["result"] else "")
+    ep_bar = split_bar([c["for"], c["against"], c["abstention"], 0])
+    return (f'<div class="card hub-vote"><div class="hub-vote-head">{head}<span class="when">{fmt_date(v["date"])}</span></div>'
+            f'<a class="vote-title" href="{vote_link(v)}">{esc(v["title"])}</a>'
+            f'<div class="meta">{res}<span>{esc(KIND_LABELS.get(v["vote_kind"], ""))}</span></div>'
+            f'<div class="vd-row" role="img" aria-label="Češi: {cz[0]} pro, {cz[1]} proti, {cz[2]} zdržel se, {cz[3]} nehlasoval">{_dots(cz)}</div>'
+            f'{_legend(cz)}'
+            f'<div class="small muted">{esc(reason)}</div>'
+            f'<div class="ep-line"><span>Celý EP</span>{ep_bar}<span><b class="pro">{c["for"]}</b> : <b class="con">{c["against"]}</b></span></div></div>')
 
 
 def key_votes_html(kv: dict) -> str:

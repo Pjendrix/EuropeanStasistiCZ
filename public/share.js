@@ -12,7 +12,7 @@ const SHARE_ROOT = document.currentScript ? new URL(".", document.currentScript.
 const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
   slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
 const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B",
-  for: "#60A5FA", against: "#FB923C", abst: "#94A3B8", absent: "#475569", track: "#334155" };
+  for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155" };
 const SC_POS = { FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent };
 const SC_FONT = '"Plus Jakarta Sans", system-ui, sans-serif';
 
