@@ -152,8 +152,13 @@ def votes_hero_html(data_dir: Path) -> str:
     session = _read(data_dir / "session.json")
     stats = _read(data_dir / "category_stats.json")
     cats = [c for c in stats["categories"] if c["key"] != "none" and c["key"] in LABEL]
-    cats = sorted(cats, key=lambda c: (-c["final"], LABEL[c["key"]]))[:8]
-    topics = "".join(f'<a href="votes.html?c={esc(c["key"])}&amp;f=final">{icon_svg(c["key"])}{esc(LABEL[c["key"]])}</a>' for c in cats)
+    cats = sorted(cats, key=lambda c: (-c["final"], LABEL[c["key"]]))
+    tiles = "".join(
+        f'<a class="tp-tile" href="votes.html?c={esc(c["key"])}&amp;f=final"><span class="tp-ico">{icon_svg(c["key"])}</span>'
+        f'<span class="tp-text"><span class="tp-name">{esc(LABEL[c["key"]])}</span><span class="tp-n">{fmt_num(c["final"])}<span class="tp-unit"> závěrečných</span></span></span></a>'
+        for c in cats)
+    picker = (f'<nav class="topic-picker" aria-labelledby="tp-h"><div class="tp-head"><h2 id="tp-h">Vyber téma</h2>'
+              f'<a class="tp-all" href="temata.html">tabulka témat →</a></div><div class="tp-grid">{tiles}</div></nav>')
     return f"""<section class="hero">
   {STARS}
   <div class="hero-inner hero-compact">
@@ -163,7 +168,7 @@ def votes_hero_html(data_dir: Path) -> str:
       <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
       <form class="vo-search" action="votes.html" method="get" role="search">
         <label for="vo-q" class="sr-only">Hledat hlasování</label>
-        <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování podle názvu nebo čísla…" autocomplete="off">
+        <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování…" aria-label="Hledat hlasování podle názvu nebo čísla" autocomplete="off">
         <button type="submit">Hledat</button>
       </form>
       <div class="kpis">
@@ -173,10 +178,9 @@ def votes_hero_html(data_dir: Path) -> str:
           <div class="kpi"><div class="k-label">Na posledním zasedání</div><div class="k-value">{fmt_num(session["votes"])}</div>
             <div class="k-note">{fmt_num(session["main"])} závěrečných, {fmt_num(session["adopted_main"])} přijato · <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">celé zasedání</a></div></div>
         </div>
-        <div class="entries"><span class="entry-label">Témata</span><span class="entry-topics">{topics}<a class="entry-all" href="temata.html">všechna témata a čísla →</a></span></div>
       </div>
     </div>
-    {EMBLEM}
+    {picker}
   </div>
 </section>"""
 

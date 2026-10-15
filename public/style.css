@@ -1003,3 +1003,22 @@ main.home-page { max-width: none; padding: 0; }
 .av-title { font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; }
 .av-sub { color: var(--muted); font-size: .95rem; }
 .all-votes > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+
+/* Hero Hlasování: volba tématu místo vlajky (ikony kategorií, klikací dlaždice) */
+.topic-picker { flex: 0 1 470px; min-width: 0; padding: 1rem 1.1rem 1.1rem; border-radius: 22px; background: rgba(248, 250, 252, .06); border: 1px solid rgba(248, 250, 252, .16); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .6); backdrop-filter: blur(6px); }
+.tp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 .7rem; }
+.tp-head h2 { margin: 0; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #94A3B8; }
+.tp-all { color: #CBD5E1; font-size: .8rem; text-decoration: none; border-bottom: 1px dashed rgba(203, 213, 225, .5); }
+.tp-all:hover, .tp-all:focus-visible { color: #F8FAFC; border-color: var(--gold); }
+.tp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.tp-tile { display: flex; align-items: center; gap: .65rem; padding: .6rem .7rem; min-height: 56px; border-radius: 14px; border: 1px solid rgba(248, 250, 252, .12); background: rgba(15, 23, 42, .45); color: #F8FAFC; text-decoration: none; transition: border-color .15s ease, transform .15s ease, background .15s ease; }
+.tp-tile:hover, .tp-tile:focus-visible { border-color: var(--gold); background: rgba(245, 158, 11, .1); transform: translateY(-2px); }
+.tp-ico { flex: none; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(245, 158, 11, .16); color: #FBBF24; }
+.tp-ico svg { width: 20px; height: 20px; }
+.tp-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.tp-name { font-size: .88rem; font-weight: 600; }
+.tp-n { font-size: .75rem; color: #94A3B8; }
+@media (prefers-reduced-motion: reduce) { .tp-tile { transition: none; } .tp-tile:hover, .tp-tile:focus-visible { transform: none; } }
+@media (max-width: 760px) { .topic-picker { flex-basis: 100%; } .tp-name { font-size: .84rem; } }
+@media (max-width: 380px) { .tp-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .tp-unit { display: none; } .tp-tile { min-height: 52px; padding: .5rem .6rem; gap: .5rem; } .tp-ico { width: 32px; height: 32px; } .tp-n { font-weight: 600; color: #CBD5E1; } }
