@@ -3672,8 +3672,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -3720,8 +3720,8 @@
     "other": 0
    },
    "question": {
-    "count": 5,
-    "answered": 5
+    "count": 17,
+    "answered": 14
    }
   },
   "passed": {
@@ -3756,6 +3756,182 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 16
+   },
+   {
+    "id": "E-10-2026-002108",
+    "label": "E-002108/2026",
+    "date": "2026-05-21",
+    "title": {
+     "cs": "Závazky každého zúčastněného členského státu v souvislosti s úvěrovým balíčkem EU pro Ukrajinu ve výši 90 miliard eur",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002108_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 13
+   },
+   {
+    "id": "E-10-2026-001995",
+    "label": "E-001995/2026",
+    "date": "2026-05-13",
+    "title": {
+     "cs": "Pozastavení schůzek společné pracovní skupiny EU-Indie pro farmaceutické výrobky, biotechnologii a zdravotnické prostředky",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001995_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-13",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001771",
+    "label": "E-001771/2026",
+    "date": "2026-04-30",
+    "title": {
+     "cs": "Obavy týkající se nové aplikace EU pro ověřování věku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001771_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-06",
+    "authors_total": 11
+   },
+   {
+    "id": "O-10-2026-000022",
+    "label": "O-000022/2026",
+    "date": "2026-04-28",
+    "title": {
+     "cs": "Válka v Hormuzském průlivu: jaká opatření budou přijata na ochranu evropského zemědělství v souvislosti s rostoucími cenami hnojiv?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000022_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
+   },
+   {
+    "id": "E-10-2026-001633",
+    "label": "E-001633/2026",
+    "date": "2026-04-21",
+    "title": {
+     "cs": "Celní postupy v případě produktů dovážených z nelegálních izraelských osad na okupovaných palestinských územích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001633_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 72
+   },
+   {
+    "id": "P-10-2026-001504",
+    "label": "P-001504/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Žádost o objasnění právního základu, proporcionality a iniciativy členského státu v souvislosti se zařazením Jacquese Bauda na seznam osob, skupin či subjektů, na které se vztahují omezující opatření",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-001504_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001294",
+    "label": "E-001294/2026",
+    "date": "2026-03-27",
+    "title": {
+     "cs": "Dvacátý balíček sankcí ohrožuje evropskou zemědělskou produkci a potravinovou bezpečnost",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001294_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-22",
+    "authors_total": 1
+   },
+   {
+    "id": "O-10-2026-000010",
+    "label": "O-000010/2026",
+    "date": "2026-03-03",
+    "title": {
+     "cs": "Tři roky od železniční nehody v řeckém Tempi",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000010_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 36
+   },
+   {
+    "id": "E-10-2026-000428",
+    "label": "E-000428/2026",
+    "date": "2026-02-03",
+    "title": {
+     "cs": "Zajištění bezpečnosti pro všechny evropské pacienty: potřeba zavést systém umožňující odhalit zdravotníky nezpůsobilé k výkonu zdravotnické praxe",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000428_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-27",
+    "authors_total": 25
+   },
+   {
+    "id": "E-10-2026-000146",
+    "label": "E-000146/2026",
+    "date": "2026-01-14",
+    "title": {
+     "cs": "Reakce EU na nedávná prohlášení Spojených států amerických ohledně Kolumbie, Mexika, Kuby a Grónska a dodržování mezinárodního práva a mezinárodních smluv",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000146_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-16",
+    "authors_total": 24
+   },
+   {
+    "id": "E-10-2025-004646",
+    "label": "E-004646/2025",
+    "date": "2025-11-20",
+    "title": {
+     "cs": "Propuštění italského novináře Gabriela Nunziatiho a dvojí standardy EU v oblasti svobody tisku a svobody projevu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004646_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-07",
+    "authors_total": 27
    },
    {
     "id": "E-10-2025-004172",
@@ -3852,6 +4028,22 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 26
+   },
+   {
+    "id": "P-10-2025-000495",
+    "label": "P-000495/2025",
+    "date": "2025-02-04",
+    "title": {
+     "cs": "Omezení vývozu čipů určených pro odvětví umělé inteligence do členských států EU vydané Spojenými státy",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000495_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-25",
+    "authors_total": 9
    },
    {
     "id": "B-10-2024-0144",

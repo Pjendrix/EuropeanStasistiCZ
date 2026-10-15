@@ -4276,8 +4276,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4324,8 +4324,8 @@
     "other": 0
    },
    "question": {
-    "count": 30,
-    "answered": 29
+    "count": 50,
+    "answered": 49
    }
   },
   "passed": {
@@ -4366,6 +4366,22 @@
     "legislative": false
    },
    {
+    "id": "P-10-2026-002375",
+    "label": "P-002375/2026",
+    "date": "2026-06-09",
+    "title": {
+     "cs": "Dovoz čínského rajčatového koncentrátu: ochrana producentů v EU a potravinové zabezpečení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-002375_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-13",
+    "authors_total": 24
+   },
+   {
     "id": "A-10-2026-0161",
     "label": "A10-0161/2026",
     "date": "2026-06-08",
@@ -4402,6 +4418,134 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-002243",
+    "label": "E-002243/2026",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Podvody v oblasti streamování",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002243_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-31",
+    "authors_total": 10
+   },
+   {
+    "id": "E-10-2026-002235",
+    "label": "E-002235/2026",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Zprávy o dalším fungování systému Palestinské správy „Odměna za zabíjení“",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002235_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-03",
+    "authors_total": 9
+   },
+   {
+    "id": "E-10-2026-001896",
+    "label": "E-001896/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Výklad přílohy V (řádek 1) nařízení o obalech a obalových odpadech týkající se skupinových obalů a dopadu na dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001896_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 18
+   },
+   {
+    "id": "E-10-2026-001890",
+    "label": "E-001890/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Dohoda mezi EU a Mercosurem: expozice evropského trhu skupině JBS a rizika geoekonomické závislosti v zemědělských dodavatelských řetězcích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001890_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-30",
+    "authors_total": 22
+   },
+   {
+    "id": "E-10-2026-001710",
+    "label": "E-001710/2026",
+    "date": "2026-04-27",
+    "title": {
+     "cs": "Reklama na digitální hazardní hry",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001710_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-03",
+    "authors_total": 17
+   },
+   {
+    "id": "E-10-2026-001609",
+    "label": "E-001609/2026",
+    "date": "2026-04-20",
+    "title": {
+     "cs": "Rostoucí ceny hnojiv: jaká rizika to přináší pro naše evropské zemědělce?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001609_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-19",
+    "authors_total": 12
+   },
+   {
+    "id": "E-10-2026-001579",
+    "label": "E-001579/2026",
+    "date": "2026-04-16",
+    "title": {
+     "cs": "Opatření EU k zavedení nouzového plánu pro případ uvíznutí velryb na mělčině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001579_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-07",
+    "authors_total": 8
+   },
+   {
+    "id": "E-10-2026-001502",
+    "label": "E-001502/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Přezkum financování humanitární pomoci EU pro Západní břeh Jordánu, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001502_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-23",
+    "authors_total": 21
+   },
+   {
     "id": "proc-2024-2117",
     "label": "2024/2117(INI)",
     "date": "2026-04-10",
@@ -4420,6 +4564,22 @@
     "report": "A10-0169/2026",
     "process_type": "INI",
     "legislative": false
+   },
+   {
+    "id": "E-10-2026-001435",
+    "label": "E-001435/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Transparentnost financování humanitární pomoci EU pro Západní břeh, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001435_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-05",
+    "authors_total": 22
    },
    {
     "id": "B-10-2026-0178",
@@ -4498,6 +4658,22 @@
     "legislative": false
    },
    {
+    "id": "E-10-2026-000396",
+    "label": "E-000396/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Znepokojivá zpráva organizace UNESCO o antisemitismu ve školách v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000396_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-13",
+    "authors_total": 18
+   },
+   {
     "id": "proc-2025-0545",
     "label": "2025/0545(COD)",
     "date": "2026-01-29",
@@ -4538,6 +4714,22 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-000187",
+    "label": "E-000187/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": "Poskytování evropských prostředků univerzitám, které ukončují spolupráci s izraelskými protějšky",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000187_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-27",
+    "authors_total": 19
+   },
+   {
     "id": "B-10-2026-0061",
     "label": "B10-0061/2026",
     "date": "2026-01-14",
@@ -4552,6 +4744,70 @@
     "vote_id": 183885,
     "vote_date": "2026-01-21",
     "signatories_total": 102
+   },
+   {
+    "id": "P-10-2025-004984",
+    "label": "P-004984/2025",
+    "date": "2025-12-17",
+    "title": {
+     "cs": "Pořadatelé hudebních a kulturních festivalů a směrnice o souborných cestovních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-004984_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-04",
+    "authors_total": 12
+   },
+   {
+    "id": "E-10-2025-004796",
+    "label": "E-004796/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Zařazení Muslimského bratrstva na unijní seznam osob, skupin a subjektů zapojených do teroristických činů (rozhodnutí Rady 2001/931/SZBP)",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004796_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-12",
+    "authors_total": 29
+   },
+   {
+    "id": "E-10-2025-004762",
+    "label": "E-004762/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Šetření týkající se politiků v univerzitních radách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004762_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2025-004673",
+    "label": "E-004673/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": "Falešní žadatelé o azyl: EU je rukojmím právního výkladu, který otevírá brány nelegálnímu přistěhovalectví a zhroucení hranic",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004673_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-06",
+    "authors_total": 32
    },
    {
     "id": "E-10-2025-004655",
@@ -4754,6 +5010,22 @@
     "legislative": false
    },
    {
+    "id": "P-10-2025-003737",
+    "label": "P-003737/2025",
+    "date": "2025-09-25",
+    "title": {
+     "cs": "Nařízení proti odlesňování – námitka proti prováděcímu nařízení Komise (EU) 2025/1093",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003737_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-23",
+    "authors_total": 26
+   },
+   {
     "id": "E-10-2025-003616",
     "label": "E-003616/2025",
     "date": "2025-09-18",
@@ -4824,6 +5096,22 @@
     "report": "A10-0161/2026",
     "process_type": "CNS",
     "legislative": true
+   },
+   {
+    "id": "P-10-2025-002901",
+    "label": "P-002901/2025",
+    "date": "2025-07-15",
+    "title": {
+     "cs": "Zrušení papírových příbalových informací u léčivých přípravků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002901_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-09-05",
+    "authors_total": 11
    },
    {
     "id": "E-10-2025-002679",
@@ -4946,6 +5234,22 @@
     "authors_total": 6
    },
    {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
+   },
+   {
     "id": "E-10-2025-001739",
     "label": "E-001739/2025",
     "date": "2025-04-30",
@@ -5040,6 +5344,22 @@
     "status": "answered",
     "answer_date": "2025-06-20",
     "authors_total": 40
+   },
+   {
+    "id": "P-10-2025-001219",
+    "label": "P-001219/2025",
+    "date": "2025-03-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, kterým se stanoví výkonnostní normy pro emise CO<sub>2</sub> pro nové osobní automobily a nová lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001219_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 16
    },
    {
     "id": "E-10-2025-001101",

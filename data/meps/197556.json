@@ -4304,8 +4304,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4352,8 +4352,8 @@
     "other": 0
    },
    "question": {
-    "count": 4,
-    "answered": 2
+    "count": 13,
+    "answered": 8
    }
   },
   "passed": {
@@ -4406,6 +4406,22 @@
     "signatories_total": 16
    },
    {
+    "id": "E-10-2026-002238",
+    "label": "E-002238/2026",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Rizika související s mechanismem správy celních kvót v dohodě mezi EU a Mercosurem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002238_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-27",
+    "authors_total": 23
+   },
+   {
     "id": "proc-2025-0410",
     "label": "2025/0410(COD)",
     "date": "2026-05-26",
@@ -4446,6 +4462,54 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-001609",
+    "label": "E-001609/2026",
+    "date": "2026-04-20",
+    "title": {
+     "cs": "Rostoucí ceny hnojiv: jaká rizika to přináší pro naše evropské zemědělce?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001609_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-19",
+    "authors_total": 12
+   },
+   {
+    "id": "E-10-2026-001469",
+    "label": "E-001469/2026",
+    "date": "2026-04-10",
+    "title": {
+     "cs": "Rozpočet EU a politika rovnosti žen a mužů – Podpora projektů LGBTQ ve srovnání s rodinnou politikou",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001469_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-30",
+    "authors_total": 23
+   },
+   {
+    "id": "E-10-2026-001410",
+    "label": "E-001410/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Nařízení o rámci Unie pro přesídlování a humanitární přijímání",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001410_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-18",
+    "authors_total": 26
+   },
+   {
     "id": "proc-2025-0241",
     "label": "2025/0241(COD)",
     "date": "2026-01-14",
@@ -4466,6 +4530,70 @@
     "legislative": true
    },
    {
+    "id": "O-10-2025-000047",
+    "label": "O-000047/2025",
+    "date": "2025-12-19",
+    "title": {
+     "cs": "Mnohamilionová pokuta uložená společnosti X s cílem prosadit unijní cenzuru pod záminkou porušování povinností týkajících se transparentnosti podle DSA",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000047_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 36
+   },
+   {
+    "id": "E-10-2025-004851",
+    "label": "E-004851/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Souhrnný balíček pro automobilový průmysl",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004851_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-18",
+    "authors_total": 20
+   },
+   {
+    "id": "E-10-2025-004762",
+    "label": "E-004762/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Šetření týkající se politiků v univerzitních radách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004762_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2025-004707",
+    "label": "E-004707/2025",
+    "date": "2025-11-26",
+    "title": {
+     "cs": "Vyhodnocení organizace Antifa Ost („Hammerbande“) jako teroristické organizace s vlastní strukturou",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004707_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 21
+   },
+   {
     "id": "proc-2023-0228",
     "label": "2023/0228(COD)",
     "date": "2025-11-25",
@@ -4484,6 +4612,22 @@
     "report": "A10-0136/2026",
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "E-10-2025-004681",
+    "label": "E-004681/2025",
+    "date": "2025-11-25",
+    "title": {
+     "cs": "Plán na zřízení evropské zpravodajské služby podřízené předsedkyni Komise",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004681_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 50
    },
    {
     "id": "B-10-2025-0319",

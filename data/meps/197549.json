@@ -4294,8 +4294,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4342,8 +4342,8 @@
     "other": 0
    },
    "question": {
-    "count": 23,
-    "answered": 22
+    "count": 44,
+    "answered": 39
    }
   },
   "passed": {
@@ -4404,6 +4404,38 @@
     "legislative": false
    },
    {
+    "id": "E-10-2026-003570",
+    "label": "E-003570/2026",
+    "date": "2026-09-09",
+    "title": {
+     "cs": "Cenzorské zásahy společnosti Meta vůči stanici Euronews a účtům aktivistů a politických aktérů v souvislosti s tzv. „Plaměňákovou revolucí“ v Albánii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003570_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 31
+   },
+   {
+    "id": "E-10-2026-003539",
+    "label": "E-003539/2026",
+    "date": "2026-09-08",
+    "title": {
+     "cs": "Chatboti odkazují ženy s neplánovaným těhotenstvím na webové stránky zaměřené proti potratům",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003539_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 68
+   },
+   {
     "id": "proc-2026-0189",
     "label": "2026/0189(COD)",
     "date": "2026-08-09",
@@ -4460,6 +4492,102 @@
     "signatories_total": 247
    },
    {
+    "id": "E-10-2026-002610",
+    "label": "E-002610/2026",
+    "date": "2026-06-24",
+    "title": {
+     "cs": "Povinnost uvádět adresy cloudových řídicích serverů pro připojené výrobky na jednotném trhu a zajištění jejich přenositelnosti",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002610_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-17",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-002410",
+    "label": "E-002410/2026",
+    "date": "2026-06-11",
+    "title": {
+     "cs": "Jmenování Jima Hagemanna Snabeho zvláštním vyslancem pro průmyslovou umělou inteligenci",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002410_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-18",
+    "authors_total": 11
+   },
+   {
+    "id": "E-10-2026-002332",
+    "label": "E-002332/2026",
+    "date": "2026-06-08",
+    "title": {
+     "cs": "Temné vzorce používané bankomaty společnosti Euronet",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002332_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-18",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-002240",
+    "label": "E-002240/2026",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Účast zástupců EU na bezpečnostním veletrhu ISS World Europe",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002240_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-21",
+    "authors_total": 30
+   },
+   {
+    "id": "E-10-2026-002239",
+    "label": "E-002239/2026",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Uplatňování systému včasného odhalování rizik a vylučování hospodářských subjektů na společnosti působící v odvětví kybernetického dohledu, včetně společností zabývajících se špionážním softwarem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002239_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-05",
+    "authors_total": 31
+   },
+   {
+    "id": "E-10-2026-002061",
+    "label": "E-002061/2026",
+    "date": "2026-05-19",
+    "title": {
+     "cs": "Funkce rozpoznávání obličeje na telefonech francouzských policistů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002061_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-03",
+    "authors_total": 3
+   },
+   {
     "id": "B-10-2026-0245",
     "label": null,
     "date": "2026-05-13",
@@ -4509,6 +4637,38 @@
     "joint_motion": "RC-10-2026-0195",
     "joint_result": "ADOPTED",
     "joint_vote_id": 192321
+   },
+   {
+    "id": "E-10-2026-001285",
+    "label": "E-001285/2026",
+    "date": "2026-03-26",
+    "title": {
+     "cs": "Hodnocení nařízení o zboží dvojího užití a reforma rámce výročních zpráv o transparentnosti",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001285_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-13",
+    "authors_total": 8
+   },
+   {
+    "id": "O-10-2026-000015",
+    "label": "O-000015/2026",
+    "date": "2026-03-20",
+    "title": {
+     "cs": "Předávání biometrických údajů evropských občanů Trumpově vládě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000015_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 49
    },
    {
     "id": "RC-10-2026-0158",
@@ -4586,6 +4746,22 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-000748",
+    "label": "E-000748/2026",
+    "date": "2026-02-23",
+    "title": {
+     "cs": "Ověřování identity vývojářů v systému Android a uplatňování nařízení o digitálních trzích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000748_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-08",
+    "authors_total": 1
+   },
+   {
     "id": "proc-2025-0360",
     "label": "2025/0360(COD)",
     "date": "2026-02-09",
@@ -4624,6 +4800,22 @@
     "report": "A10-0073/2026",
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "E-10-2026-000267",
+    "label": "E-000267/2026",
+    "date": "2026-01-23",
+    "title": {
+     "cs": "Údajné použití bojové chemické látky proti demonstrantům v Gruzii v roce 2024",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000267_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-01",
+    "authors_total": 20
    },
    {
     "id": "RC-10-2026-0068",
@@ -4681,6 +4873,22 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-000158",
+    "label": "E-000158/2026",
+    "date": "2026-01-14",
+    "title": {
+     "cs": "Lobbistický útok velkých technologických společností na pravidla EU v oblasti transparentnosti a cílení politické reklamy",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000158_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-27",
+    "authors_total": 25
+   },
+   {
     "id": "B-10-2026-0060",
     "label": "B10-0060/2026",
     "date": "2026-01-14",
@@ -4695,6 +4903,22 @@
     "vote_id": 183884,
     "vote_date": "2026-01-21",
     "signatories_total": 144
+   },
+   {
+    "id": "P-10-2026-000087",
+    "label": "P-000087/2026",
+    "date": "2026-01-13",
+    "title": {
+     "cs": "Slučitelnost navrhovaného zrušení českého zákona o státní službě s právem EU a jeho dopad na finanční prostředky EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-000087_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-10",
+    "authors_total": 1
    },
    {
     "id": "RC-10-2025-0567",
@@ -4732,6 +4956,86 @@
     "joint_vote_id": 182962
    },
    {
+    "id": "E-10-2025-004888",
+    "label": "E-004888/2025",
+    "date": "2025-12-10",
+    "title": {
+     "cs": "EU prosazuje vyloučení společnosti Rosatom z mezinárodních rámců pro správu v oblasti jaderné energie",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004888_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-13",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2025-004887",
+    "label": "E-004887/2025",
+    "date": "2025-12-10",
+    "title": {
+     "cs": "Vyloučení společností přidružených k Rosatomu z poskytování unijní státní pomoci a ze zadávání veřejných zakázek",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004887_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-27",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2025-004886",
+    "label": "E-004886/2025",
+    "date": "2025-12-10",
+    "title": {
+     "cs": "Zařazení společnosti Rosatom na&nbsp;seznam v&nbsp;rámci restriktivních opatření za&nbsp;činnost narušující územní celistvost Ukrajiny",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004886_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-19",
+    "authors_total": 1
+   },
+   {
+    "id": "P-10-2025-004849",
+    "label": "P-004849/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Střet zájmů Andreje Babiše",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-004849_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-22",
+    "authors_total": 1
+   },
+   {
+    "id": "O-10-2025-000044",
+    "label": "O-000044/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Evropský štít pro demokracii – algoritmy velmi velkých online platforem, zahraniční vměšování a šíření dezinformací",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000044_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 47
+   },
+   {
     "id": "B-10-2025-0545",
     "label": "B10-0545/2025",
     "date": "2025-11-25",
@@ -4749,6 +5053,22 @@
     "joint_motion": "RC-10-2025-0545",
     "joint_result": "ADOPTED",
     "joint_vote_id": 182353
+   },
+   {
+    "id": "E-10-2025-004636",
+    "label": "E-004636/2025",
+    "date": "2025-11-20",
+    "title": {
+     "cs": "Financování EU, co se týče společností spojených se špionážním softwarem a nezákonným sledováním",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004636_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-20",
+    "authors_total": 55
    },
    {
     "id": "B-10-2025-0479",
@@ -4857,6 +5177,22 @@
     "joint_motion": "RC-10-2025-0412",
     "joint_result": "ADOPTED",
     "joint_vote_id": 179776
+   },
+   {
+    "id": "P-10-2025-003855",
+    "label": "P-003855/2025",
+    "date": "2025-10-02",
+    "title": {
+     "cs": "Narušení estonského vzdušného prostoru ruskými stíhacími letouny",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003855_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-12-04",
+    "authors_total": 18
    },
    {
     "id": "E-10-2025-003714",

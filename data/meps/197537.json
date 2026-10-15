@@ -4284,8 +4284,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4304,10 +4304,10 @@
     "other": 0
    },
    "shadow_report": {
-    "count": 8,
+    "count": 9,
     "voted": 5,
     "adopted": 5,
-    "no_vote": 3,
+    "no_vote": 4,
     "other": 0
    },
    "opinion": {
@@ -4332,8 +4332,8 @@
     "other": 0
    },
    "question": {
-    "count": 14,
-    "answered": 14
+    "count": 26,
+    "answered": 24
    }
   },
   "passed": {
@@ -4342,7 +4342,7 @@
    "lead_pending": 0,
    "shadow_adopted": 5,
    "shadow_adopted_legislative": 5,
-   "shadow_pending": 3,
+   "shadow_pending": 4,
    "resolutions_adopted": 64,
    "delegation": {
     "texts_adopted": 5,
@@ -4494,6 +4494,38 @@
     "joint_vote_id": 198216
    },
    {
+    "id": "P-10-2026-003779",
+    "label": "P-003779/2026",
+    "date": "2026-09-21",
+    "title": {
+     "cs": "Trest smrti pro Leilu Abolhasaniovou a Taraneh Rahimiovou v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-003779_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 29
+   },
+   {
+    "id": "E-10-2026-003734",
+    "label": "E-003734/2026",
+    "date": "2026-09-17",
+    "title": {
+     "cs": "Zohlednění malých a středních podniků při hodnocení rámce pro kontrolu tabáku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003734_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
     "id": "RC-10-2026-0404",
     "label": null,
     "date": "2026-09-16",
@@ -4597,6 +4629,26 @@
     "joint_motion": "RC-10-2026-0398",
     "joint_result": "ADOPTED",
     "joint_vote_id": 197236
+   },
+   {
+    "id": "proc-2026-0212",
+    "label": "2026/0212(COD)",
+    "date": "2026-09-08",
+    "title": {
+     "cs": "Systém EU pro obchodování s emisemi a rezerva tržní stability: konkurenceschopnost a nákladově efektivní dekarbonizace",
+     "en": "EU Emissions Trading System and market stability reserve: competitiveness and cost-effective decarbonisation"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0212(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "B-10-2026-0373",
@@ -4995,6 +5047,22 @@
     "signatories_total": 50
    },
    {
+    "id": "E-10-2026-002098",
+    "label": "E-002098/2026",
+    "date": "2026-05-20",
+    "title": {
+     "cs": "Rozprava Rady o cílené revizi pravidel EU pro ochranu druhů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002098_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 6
+   },
+   {
     "id": "B-10-2026-0266",
     "label": "B10-0266/2026",
     "date": "2026-05-18",
@@ -5050,6 +5118,22 @@
     "joint_motion": "RC-10-2026-0247",
     "joint_result": "ADOPTED",
     "joint_vote_id": 193420
+   },
+   {
+    "id": "E-10-2026-001896",
+    "label": "E-001896/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Výklad přílohy V (řádek 1) nařízení o obalech a obalových odpadech týkající se skupinových obalů a dopadu na dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001896_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 18
    },
    {
     "id": "RC-10-2026-0217",
@@ -5193,6 +5277,38 @@
     "joint_motion": "RC-10-2026-0195",
     "joint_result": "ADOPTED",
     "joint_vote_id": 192321
+   },
+   {
+    "id": "E-10-2026-001502",
+    "label": "E-001502/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Přezkum financování humanitární pomoci EU pro Západní břeh Jordánu, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001502_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2026-001435",
+    "label": "E-001435/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Transparentnost financování humanitární pomoci EU pro Západní břeh, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001435_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-05",
+    "authors_total": 22
    },
    {
     "id": "proc-2025-0176",
@@ -5639,6 +5755,22 @@
     "signatories_total": 49
    },
    {
+    "id": "E-10-2026-000187",
+    "label": "E-000187/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": "Poskytování evropských prostředků univerzitám, které ukončují spolupráci s izraelskými protějšky",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000187_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-27",
+    "authors_total": 19
+   },
+   {
     "id": "B-10-2026-0096",
     "label": "B10-0096/2026",
     "date": "2026-01-19",
@@ -5780,6 +5912,22 @@
     "signatories_total": 51
    },
    {
+    "id": "E-10-2025-004943",
+    "label": "E-004943/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": "Procesní nedostatky návrhu na omezení kyanamidu vápenatého na základě nařízení REACH a jeho dopad na zemědělskou produkci a dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004943_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-11",
+    "authors_total": 8
+   },
+   {
     "id": "B-10-2025-0590",
     "label": "B10-0590/2025",
     "date": "2025-12-15",
@@ -5854,6 +6002,38 @@
     "joint_motion": "RC-10-2025-0568",
     "joint_result": "ADOPTED",
     "joint_vote_id": 182963
+   },
+   {
+    "id": "E-10-2025-004851",
+    "label": "E-004851/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Souhrnný balíček pro automobilový průmysl",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004851_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-18",
+    "authors_total": 20
+   },
+   {
+    "id": "E-10-2025-004846",
+    "label": "E-004846/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Plán německé vlády na snížení nákladů na energii a dopad na spravedlivou hospodářskou soutěž na vnitřním trhu EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004846_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-09",
+    "authors_total": 4
    },
    {
     "id": "RC-10-2025-0533",
@@ -6320,6 +6500,22 @@
     "joint_motion": "RC-10-2025-0419",
     "joint_result": "ADOPTED",
     "joint_vote_id": 179770
+   },
+   {
+    "id": "P-10-2025-003737",
+    "label": "P-003737/2025",
+    "date": "2025-09-25",
+    "title": {
+     "cs": "Nařízení proti odlesňování – námitka proti prováděcímu nařízení Komise (EU) 2025/1093",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003737_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-23",
+    "authors_total": 26
    },
    {
     "id": "RC-10-2025-0392",
@@ -6977,6 +7173,22 @@
     "joint_motion": "RC-10-2025-0219",
     "joint_result": "ADOPTED",
     "joint_vote_id": 174988
+   },
+   {
+    "id": "P-10-2025-001149",
+    "label": "P-001149/2025",
+    "date": "2025-03-18",
+    "title": {
+     "cs": "Eskalace násilí vůči křesťanským menšinám v Sýrii a nutnost intervence EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001149_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 19
    },
    {
     "id": "proc-2024-2051",

@@ -3692,8 +3692,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -3719,7 +3719,7 @@
     "other": 0
    },
    "opinion": {
-    "count": 3
+    "count": 4
    },
    "shadow_opinion": {
     "count": 0
@@ -3740,8 +3740,8 @@
     "other": 0
    },
    "question": {
-    "count": 16,
-    "answered": 15
+    "count": 44,
+    "answered": 35
    }
   },
   "passed": {
@@ -3782,6 +3782,346 @@
     "legislative": false
    },
    {
+    "id": "proc-2026-2090",
+    "label": "2026/2090(DEC)",
+    "date": "2026-10-12",
+    "title": {
+     "cs": "Udělení absolutoria za rozpočtový rok 2025: souhrnný rozpočet EU – agentury",
+     "en": "Discharge 2025: General budget of the EU - Agencies"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2090(DEC)",
+    "type": "opinion",
+    "role": "RAPPORTEUR_OPINION",
+    "group": "NI",
+    "committee": "SANT",
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
+   },
+   {
+    "id": "E-10-2026-003725",
+    "label": "E-003725/2026",
+    "date": "2026-09-16",
+    "title": {
+     "cs": "Standardizace rozhraní akumulátorů pro ruční nářadí a zahradní techniku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003725_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-003029",
+    "label": "E-003029/2026",
+    "date": "2026-07-16",
+    "title": {
+     "cs": "Naléhavá výzva k propuštění dr. Husáma Abú Safíji",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003029_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-02",
+    "authors_total": 18
+   },
+   {
+    "id": "O-10-2026-000028",
+    "label": "O-000028/2026",
+    "date": "2026-06-24",
+    "title": {
+     "cs": "Rozhodnutí ECB zvýšit úrokové sazby a dopad tohoto rozhodnutí na zvýšení životních nákladů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000028_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 40
+   },
+   {
+    "id": "E-10-2026-002521",
+    "label": "E-002521/2026",
+    "date": "2026-06-17",
+    "title": {
+     "cs": "Obcházení dohody o přidružení mezi EU a Izraelem a nezákonný dovoz z osad na okupovaných územích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002521_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-18",
+    "authors_total": 14
+   },
+   {
+    "id": "E-10-2026-002448",
+    "label": "E-002448/2026",
+    "date": "2026-06-15",
+    "title": {
+     "cs": "Jaderná energie a datová centra",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002448_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-04",
+    "authors_total": 14
+   },
+   {
+    "id": "E-10-2026-001896",
+    "label": "E-001896/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Výklad přílohy V (řádek 1) nařízení o obalech a obalových odpadech týkající se skupinových obalů a dopadu na dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001896_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 18
+   },
+   {
+    "id": "E-10-2026-001771",
+    "label": "E-001771/2026",
+    "date": "2026-04-30",
+    "title": {
+     "cs": "Obavy týkající se nové aplikace EU pro ověřování věku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001771_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-06",
+    "authors_total": 11
+   },
+   {
+    "id": "O-10-2026-000022",
+    "label": "O-000022/2026",
+    "date": "2026-04-28",
+    "title": {
+     "cs": "Válka v Hormuzském průlivu: jaká opatření budou přijata na ochranu evropského zemědělství v souvislosti s rostoucími cenami hnojiv?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000022_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
+   },
+   {
+    "id": "E-10-2026-001633",
+    "label": "E-001633/2026",
+    "date": "2026-04-21",
+    "title": {
+     "cs": "Celní postupy v případě produktů dovážených z nelegálních izraelských osad na okupovaných palestinských územích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001633_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 72
+   },
+   {
+    "id": "P-10-2026-000903",
+    "label": "P-000903/2026",
+    "date": "2026-03-04",
+    "title": {
+     "cs": "Rizika pro soukromí a problémy s dodržováním GDPR v souvislosti s chytrými brýlemi Meta a postupy trénování AI",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-000903_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-01",
+    "authors_total": 35
+   },
+   {
+    "id": "O-10-2026-000010",
+    "label": "O-000010/2026",
+    "date": "2026-03-03",
+    "title": {
+     "cs": "Tři roky od železniční nehody v řeckém Tempi",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000010_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 36
+   },
+   {
+    "id": "E-10-2026-000848",
+    "label": "E-000848/2026",
+    "date": "2026-03-02",
+    "title": {
+     "cs": "Porušení dohody o přidružení mezi EU a Izraelem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000848_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-01",
+    "authors_total": 8
+   },
+   {
+    "id": "E-10-2026-000847",
+    "label": "E-000847/2026",
+    "date": "2026-03-02",
+    "title": {
+     "cs": "Jaderné technologie a program Horizont Evropa",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000847_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-28",
+    "authors_total": 9
+   },
+   {
+    "id": "E-10-2026-000824",
+    "label": "E-000824/2026",
+    "date": "2026-02-27",
+    "title": {
+     "cs": "Souhrnný balíček a dohoda o přidružení mezi EU a Izraelem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000824_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-01",
+    "authors_total": 9
+   },
+   {
+    "id": "E-10-2026-000802",
+    "label": "E-000802/2026",
+    "date": "2026-02-25",
+    "title": {
+     "cs": "Závažný nepoměr v přidělování prostředků z rezervy nástroje NDICI v souvislosti s humanitární katastrofou v Gaze",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000802_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-20",
+    "authors_total": 13
+   },
+   {
+    "id": "E-10-2026-000350",
+    "label": "E-000350/2026",
+    "date": "2026-01-28",
+    "title": {
+     "cs": "Budova agentury EMA v Londýně",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000350_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-09",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2025-004916",
+    "label": "E-004916/2025",
+    "date": "2025-12-11",
+    "title": {
+     "cs": "Vojenský schengenský prostor: riziko narušení svrchovanosti, oslabení hranic a posunu EU ke skrytému federalismu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004916_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-03",
+    "authors_total": 9
+   },
+   {
+    "id": "E-10-2025-004851",
+    "label": "E-004851/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Souhrnný balíček pro automobilový průmysl",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004851_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-18",
+    "authors_total": 20
+   },
+   {
+    "id": "E-10-2025-004646",
+    "label": "E-004646/2025",
+    "date": "2025-11-20",
+    "title": {
+     "cs": "Propuštění italského novináře Gabriela Nunziatiho a dvojí standardy EU v oblasti svobody tisku a svobody projevu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004646_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-07",
+    "authors_total": 27
+   },
+   {
+    "id": "O-10-2025-000042",
+    "label": "O-000042/2025",
+    "date": "2025-11-19",
+    "title": {
+     "cs": "Ochrana práva občanů na provádění plateb v hotovosti a zajištění finančního začlenění",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000042_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 41
+   },
+   {
     "id": "E-10-2025-003692",
     "label": "E-003692/2025",
     "date": "2025-09-23",
@@ -3812,6 +4152,38 @@
     "status": "answered",
     "answer_date": "2025-11-18",
     "authors_total": 40
+   },
+   {
+    "id": "P-10-2025-003571",
+    "label": "P-003571/2025",
+    "date": "2025-09-17",
+    "title": {
+     "cs": "Finanční diskriminace osob přeživších rakovinu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003571_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-10-28",
+    "authors_total": 1
+   },
+   {
+    "id": "O-10-2025-000030",
+    "label": "O-000030/2025",
+    "date": "2025-09-17",
+    "title": {
+     "cs": "Rušení signálu GPS během letu předsedkyně Evropské komise Ursuly von der Leyenové – dezinformace ve sdělovacích prostředcích a zkreslená fakta",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000030_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
    },
    {
     "id": "B-10-2025-0402",
@@ -3886,6 +4258,22 @@
     "legislative": false
    },
    {
+    "id": "P-10-2025-002901",
+    "label": "P-002901/2025",
+    "date": "2025-07-15",
+    "title": {
+     "cs": "Zrušení papírových příbalových informací u léčivých přípravků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002901_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-09-05",
+    "authors_total": 11
+   },
+   {
     "id": "B-10-2025-0319",
     "label": "B10-0319/2025",
     "date": "2025-07-02",
@@ -3934,6 +4322,22 @@
     "authors_total": 25
    },
    {
+    "id": "P-10-2025-002033",
+    "label": "P-002033/2025",
+    "date": "2025-05-21",
+    "title": {
+     "cs": "Rovný přístup evropských výrobců zdravotnických prostředků na evropský trh",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002033_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-18",
+    "authors_total": 9
+   },
+   {
     "id": "B-10-2025-0240",
     "label": "B10-0240/2025",
     "date": "2025-04-02",
@@ -3948,6 +4352,54 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 16
+   },
+   {
+    "id": "P-10-2025-001219",
+    "label": "P-001219/2025",
+    "date": "2025-03-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, kterým se stanoví výkonnostní normy pro emise CO<sub>2</sub> pro nové osobní automobily a nová lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001219_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 16
+   },
+   {
+    "id": "O-10-2025-000007",
+    "label": "O-000007/2025",
+    "date": "2025-02-18",
+    "title": {
+     "cs": "Kuba na tzv. seznamu států podporujících terorismus",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000007_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
+   },
+   {
+    "id": "O-10-2025-000006",
+    "label": "O-000006/2025",
+    "date": "2025-02-18",
+    "title": {
+     "cs": "Kuba na tzv. seznamu států podporujících terorismus",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000006_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 36
    },
    {
     "id": "E-10-2025-000724",
@@ -3980,6 +4432,22 @@
     "status": "answered",
     "answer_date": "2025-05-13",
     "authors_total": 21
+   },
+   {
+    "id": "P-10-2025-000495",
+    "label": "P-000495/2025",
+    "date": "2025-02-04",
+    "title": {
+     "cs": "Omezení vývozu čipů určených pro odvětví umělé inteligence do členských států EU vydané Spojenými státy",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000495_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-25",
+    "authors_total": 9
    },
    {
     "id": "E-10-2025-000403",

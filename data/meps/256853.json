@@ -4285,8 +4285,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4333,8 +4333,8 @@
     "other": 0
    },
    "question": {
-    "count": 16,
-    "answered": 15
+    "count": 27,
+    "answered": 25
    }
   },
   "passed": {
@@ -4354,6 +4354,22 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-003766",
+    "label": "E-003766/2026",
+    "date": "2026-09-19",
+    "title": {
+     "cs": "ETS2 – riziko čistých převodů zdrojů do hlavních průmyslových center EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003766_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 6
+   },
    {
     "id": "proc-2026-2027",
     "label": "2026/2027(INI)",
@@ -4511,6 +4527,70 @@
     "legislative": true
    },
    {
+    "id": "P-10-2025-004984",
+    "label": "P-004984/2025",
+    "date": "2025-12-17",
+    "title": {
+     "cs": "Pořadatelé hudebních a kulturních festivalů a směrnice o souborných cestovních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-004984_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-04",
+    "authors_total": 12
+   },
+   {
+    "id": "E-10-2025-004957",
+    "label": "E-004957/2025",
+    "date": "2025-12-16",
+    "title": {
+     "cs": "Rozšíření programu Erasmus a právní stát",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004957_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-26",
+    "authors_total": 23
+   },
+   {
+    "id": "E-10-2025-004762",
+    "label": "E-004762/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Šetření týkající se politiků v univerzitních radách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004762_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2025-004738",
+    "label": "E-004738/2025",
+    "date": "2025-12-01",
+    "title": {
+     "cs": "Regulační překážky pro těžbu kritických surovin v Evropské unii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004738_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-28",
+    "authors_total": 16
+   },
+   {
     "id": "B-10-2025-0504",
     "label": "B10-0504/2025",
     "date": "2025-11-20",
@@ -4639,6 +4719,22 @@
     "authors_total": 4
    },
    {
+    "id": "P-10-2025-003737",
+    "label": "P-003737/2025",
+    "date": "2025-09-25",
+    "title": {
+     "cs": "Nařízení proti odlesňování – námitka proti prováděcímu nařízení Komise (EU) 2025/1093",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003737_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-23",
+    "authors_total": 26
+   },
+   {
     "id": "E-10-2025-003616",
     "label": "E-003616/2025",
     "date": "2025-09-18",
@@ -4671,6 +4767,38 @@
     "signatories_total": 85
    },
    {
+    "id": "P-10-2025-002901",
+    "label": "P-002901/2025",
+    "date": "2025-07-15",
+    "title": {
+     "cs": "Zrušení papírových příbalových informací u léčivých přípravků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002901_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-09-05",
+    "authors_total": 11
+   },
+   {
+    "id": "P-10-2025-002033",
+    "label": "P-002033/2025",
+    "date": "2025-05-21",
+    "title": {
+     "cs": "Rovný přístup evropských výrobců zdravotnických prostředků na evropský trh",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002033_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-18",
+    "authors_total": 9
+   },
+   {
     "id": "proc-2025-0084",
     "label": "2025/0084(COD)",
     "date": "2025-05-19",
@@ -4689,6 +4817,22 @@
     "report": "A10-0129/2025",
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
    },
    {
     "id": "proc-2025-2070",
@@ -4741,6 +4885,22 @@
     "status": "answered",
     "answer_date": "2025-05-13",
     "authors_total": 20
+   },
+   {
+    "id": "P-10-2025-001219",
+    "label": "P-001219/2025",
+    "date": "2025-03-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, kterým se stanoví výkonnostní normy pro emise CO<sub>2</sub> pro nové osobní automobily a nová lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001219_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 16
    },
    {
     "id": "E-10-2025-001085",
@@ -4809,6 +4969,22 @@
     "status": "answered",
     "answer_date": "2025-05-12",
     "authors_total": 7
+   },
+   {
+    "id": "P-10-2025-000725",
+    "label": "P-000725/2025",
+    "date": "2025-02-18",
+    "title": {
+     "cs": "Zadávání veřejných zakázek a mezinárodní dohody EU po rozhodnutí Soudního dvora Evropské unie ve věci C-652/22",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000725_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-16",
+    "authors_total": 5
    },
    {
     "id": "E-10-2025-000653",

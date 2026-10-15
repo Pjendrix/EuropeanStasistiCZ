@@ -3241,8 +3241,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -3289,8 +3289,8 @@
     "other": 0
    },
    "question": {
-    "count": 36,
-    "answered": 36
+    "count": 40,
+    "answered": 39
    }
   },
   "passed": {
@@ -3555,6 +3555,22 @@
     "signatories_total": 12
    },
    {
+    "id": "P-10-2025-002033",
+    "label": "P-002033/2025",
+    "date": "2025-05-21",
+    "title": {
+     "cs": "Rovný přístup evropských výrobců zdravotnických prostředků na evropský trh",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002033_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-18",
+    "authors_total": 9
+   },
+   {
     "id": "E-10-2025-001972",
     "label": "E-001972/2025",
     "date": "2025-05-16",
@@ -3604,6 +3620,22 @@
     "role": "AUTHOR",
     "status": "answered",
     "answer_date": "2025-06-30",
+    "authors_total": 13
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
     "authors_total": 13
    },
    {
@@ -3693,6 +3725,22 @@
     "report": null,
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "P-10-2025-001219",
+    "label": "P-001219/2025",
+    "date": "2025-03-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, kterým se stanoví výkonnostní normy pro emise CO<sub>2</sub> pro nové osobní automobily a nová lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001219_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 16
    },
    {
     "id": "E-10-2025-001101",
@@ -3909,6 +3957,22 @@
     "status": "answered",
     "answer_date": "2025-05-05",
     "authors_total": 31
+   },
+   {
+    "id": "O-10-2025-000002",
+    "label": "O-000002/2025",
+    "date": "2025-02-03",
+    "title": {
+     "cs": "Nedostatečná transparentnost legislativního procesu EU a zneužívání finančních prostředků EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000002_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 16
    },
    {
     "id": "E-10-2025-000472",

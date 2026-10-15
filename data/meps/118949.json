@@ -3171,8 +3171,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -3219,8 +3219,8 @@
     "other": 0
    },
    "question": {
-    "count": 8,
-    "answered": 7
+    "count": 10,
+    "answered": 9
    }
   },
   "passed": {
@@ -3255,6 +3255,22 @@
     "status": "answered",
     "answer_date": "2025-05-15",
     "authors_total": 48
+   },
+   {
+    "id": "P-10-2025-001219",
+    "label": "P-001219/2025",
+    "date": "2025-03-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, kterým se stanoví výkonnostní normy pro emise CO<sub>2</sub> pro nové osobní automobily a nová lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001219_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 16
    },
    {
     "id": "proc-2024-2051",
@@ -3307,6 +3323,22 @@
     "status": "answered",
     "answer_date": "2025-05-12",
     "authors_total": 7
+   },
+   {
+    "id": "P-10-2025-000725",
+    "label": "P-000725/2025",
+    "date": "2025-02-18",
+    "title": {
+     "cs": "Zadávání veřejných zakázek a mezinárodní dohody EU po rozhodnutí Soudního dvora Evropské unie ve věci C-652/22",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000725_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-16",
+    "authors_total": 5
    },
    {
     "id": "E-10-2025-000403",

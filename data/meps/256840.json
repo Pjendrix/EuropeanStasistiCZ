@@ -4274,8 +4274,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4322,8 +4322,8 @@
     "other": 0
    },
    "question": {
-    "count": 4,
-    "answered": 4
+    "count": 29,
+    "answered": 26
    }
   },
   "passed": {
@@ -4447,6 +4447,54 @@
     "joint_motion": "RC-10-2026-0443",
     "joint_result": "ADOPTED",
     "joint_vote_id": 198251
+   },
+   {
+    "id": "E-10-2026-003947",
+    "label": "E-003947/2026",
+    "date": "2026-09-30",
+    "title": {
+     "cs": "Odstranění priorit v oblasti společenské odolnosti, občanské společnosti a boje proti dezinformacím z českého plánu národního a regionálního partnerství na období 2028–2034",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003947_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-003946",
+    "label": "E-003946/2026",
+    "date": "2026-09-30",
+    "title": {
+     "cs": "Záruky nezávislosti státní správy a MFF",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003946_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-003785",
+    "label": "E-003785/2026",
+    "date": "2026-09-22",
+    "title": {
+     "cs": "Provádění článku 32 nařízení (EU) 2025/40 o obalech a obalových odpadech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003785_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 8
    },
    {
     "id": "RC-10-2026-0404",
@@ -4650,6 +4698,22 @@
     "signatories_total": 28
    },
    {
+    "id": "P-10-2026-002653",
+    "label": "P-002653/2026",
+    "date": "2026-06-26",
+    "title": {
+     "cs": "Setkání Komise se zástupci Tálibánu a zpráva o jednání o konzulárních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-002653_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-26",
+    "authors_total": 22
+   },
+   {
     "id": "RC-10-2026-0304",
     "label": null,
     "date": "2026-06-16",
@@ -4785,6 +4849,22 @@
     "joint_motion": "RC-10-2026-0247",
     "joint_result": "ADOPTED",
     "joint_vote_id": 193420
+   },
+   {
+    "id": "E-10-2026-001896",
+    "label": "E-001896/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Výklad přílohy V (řádek 1) nařízení o obalech a obalových odpadech týkající se skupinových obalů a dopadu na dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001896_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 18
    },
    {
     "id": "proc-2026-0078",
@@ -4947,6 +5027,102 @@
     "joint_vote_id": 192341
    },
    {
+    "id": "E-10-2026-001133",
+    "label": "E-001133/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Evropské technologie v ruských zbraních navzdory sankcím",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001133_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-15",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001132",
+    "label": "E-001132/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Freedom.gov",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001132_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-22",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001131",
+    "label": "E-001131/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Ruské dezinformace",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001131_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-22",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001130",
+    "label": "E-001130/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Nařízení o digitálních službách a prodej rizikových produktů na online platformách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001130_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-26",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001129",
+    "label": "E-001129/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Integrace migrantů na trhu práce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001129_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-11",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001128",
+    "label": "E-001128/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Financování politických stran",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001128_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-01",
+    "authors_total": 1
+   },
+   {
     "id": "RC-10-2026-0159",
     "label": null,
     "date": "2026-03-11",
@@ -5052,6 +5228,22 @@
     "joint_vote_id": 189151
    },
    {
+    "id": "E-10-2026-000878",
+    "label": "E-000878/2026",
+    "date": "2026-03-03",
+    "title": {
+     "cs": "Obcházení cel u dovozu automobilů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000878_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-13",
+    "authors_total": 1
+   },
+   {
     "id": "RC-10-2026-0143",
     "label": null,
     "date": "2026-02-12",
@@ -5085,6 +5277,118 @@
     "joint_motion": "RC-10-2026-0143",
     "joint_result": "ADOPTED",
     "joint_vote_id": 185885
+   },
+   {
+    "id": "E-10-2026-000394",
+    "label": "E-000394/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Uznávání studijních výsledků dosažených v rámci programu Erasmus+",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000394_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-01",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000393",
+    "label": "E-000393/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Roztříštěnost evropského obranného výzkumu a vývoje a koordinační kapacita EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000393_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-23",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000392",
+    "label": "E-000392/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Sítě falešných účtů a demokratická odolnost v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000392_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-26",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000391",
+    "label": "E-000391/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Nedostatek lékařů v EU a uznávání lékařských kvalifikací",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000391_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000390",
+    "label": "E-000390/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Překážky bránící spotřebitelům v EU v nákupech on-line vyplývající ze zahraničních identifikátorů zákazníka",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000390_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-07",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000389",
+    "label": "E-000389/2026",
+    "date": "2026-01-30",
+    "title": {
+     "cs": "Přeshraniční neodkladná zdravotní péče a záchranná služba v příhraničních regionech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000389_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-08",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-000267",
+    "label": "E-000267/2026",
+    "date": "2026-01-23",
+    "title": {
+     "cs": "Údajné použití bojové chemické látky proti demonstrantům v Gruzii v roce 2024",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000267_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-01",
+    "authors_total": 20
    },
    {
     "id": "RC-10-2026-0068",
@@ -5237,6 +5541,22 @@
     "signatories_total": 51
    },
    {
+    "id": "E-10-2025-004943",
+    "label": "E-004943/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": "Procesní nedostatky návrhu na omezení kyanamidu vápenatého na základě nařízení REACH a jeho dopad na zemědělskou produkci a dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004943_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-11",
+    "authors_total": 8
+   },
+   {
     "id": "B-10-2025-0593",
     "label": "B10-0593/2025",
     "date": "2025-12-15",
@@ -5294,6 +5614,54 @@
     "joint_vote_id": 182962
    },
    {
+    "id": "E-10-2025-004854",
+    "label": "E-004854/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Banky se sídlem v EU, např. Raiffeisen a UniCredit, stále působí v Rusku, což vyvolává obavy ohledně obcházení sankcí a podkopává důvěryhodnost EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004854_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-16",
+    "authors_total": 38
+   },
+   {
+    "id": "E-10-2025-004789",
+    "label": "E-004789/2025",
+    "date": "2025-12-03",
+    "title": {
+     "cs": "Posouzení německých dotací na ceny elektřiny ze strany Komise",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004789_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-16",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2025-004787",
+    "label": "E-004787/2025",
+    "date": "2025-12-03",
+    "title": {
+     "cs": "Reakce Komise na nedávná čínská omezení vývozu kritických surovin",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004787_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-10",
+    "authors_total": 1
+   },
+   {
     "id": "RC-10-2025-0545",
     "label": null,
     "date": "2025-11-25",
@@ -5327,6 +5695,22 @@
     "joint_motion": "RC-10-2025-0545",
     "joint_result": "ADOPTED",
     "joint_vote_id": 182353
+   },
+   {
+    "id": "E-10-2025-004675",
+    "label": "E-004675/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": "Využívání gruzínských rafinérií k obcházení sankcí EU na vývoz ruské ropy",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004675_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-02",
+    "authors_total": 25
    },
    {
     "id": "proc-2025-2073",
@@ -5790,6 +6174,22 @@
     "joint_motion": "RC-10-2025-0249",
     "joint_result": "ADOPTED",
     "joint_vote_id": 176309
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
    },
    {
     "id": "E-10-2025-001357",

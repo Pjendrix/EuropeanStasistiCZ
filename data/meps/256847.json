@@ -4304,8 +4304,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4352,8 +4352,8 @@
     "other": 0
    },
    "question": {
-    "count": 14,
-    "answered": 13
+    "count": 29,
+    "answered": 26
    }
   },
   "passed": {
@@ -4479,6 +4479,38 @@
     "joint_vote_id": 198251
    },
    {
+    "id": "E-10-2026-003785",
+    "label": "E-003785/2026",
+    "date": "2026-09-22",
+    "title": {
+     "cs": "Provádění článku 32 nařízení (EU) 2025/40 o obalech a obalových odpadech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003785_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 8
+   },
+   {
+    "id": "P-10-2026-003779",
+    "label": "P-003779/2026",
+    "date": "2026-09-21",
+    "title": {
+     "cs": "Trest smrti pro Leilu Abolhasaniovou a Taraneh Rahimiovou v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-003779_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 29
+   },
+   {
     "id": "RC-10-2026-0404",
     "label": null,
     "date": "2026-09-16",
@@ -4584,6 +4616,54 @@
     "joint_vote_id": 197242
    },
    {
+    "id": "P-10-2026-003299",
+    "label": "P-003299/2026",
+    "date": "2026-08-19",
+    "title": {
+     "cs": "Povinné registrace výrobků v rámci PPWR",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-003299_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-10-13",
+    "authors_total": 1
+   },
+   {
+    "id": "P-10-2026-002904",
+    "label": "P-002904/2026",
+    "date": "2026-07-14",
+    "title": {
+     "cs": "Úhrada plateb v rámci SZP společnostem patřícím do skupiny Agrofert",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-002904_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-11",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-002872",
+    "label": "E-002872/2026",
+    "date": "2026-07-13",
+    "title": {
+     "cs": "Podpora vzniku a rozvoje středisek pro oběti sexuálních útoků v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002872_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-10-13",
+    "authors_total": 21
+   },
+   {
     "id": "RC-10-2026-0357",
     "label": null,
     "date": "2026-07-08",
@@ -4680,6 +4760,22 @@
     "signatories_total": 28
    },
    {
+    "id": "P-10-2026-002653",
+    "label": "P-002653/2026",
+    "date": "2026-06-26",
+    "title": {
+     "cs": "Setkání Komise se zástupci Tálibánu a zpráva o jednání o konzulárních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-002653_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-26",
+    "authors_total": 22
+   },
+   {
     "id": "RC-10-2026-0322",
     "label": null,
     "date": "2026-06-17",
@@ -4742,6 +4838,22 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 60
+   },
+   {
+    "id": "E-10-2026-002478",
+    "label": "E-002478/2026",
+    "date": "2026-06-16",
+    "title": {
+     "cs": "Uplatňování nařízení o nucené práci a rizika související s výrobky spojenými s KLDR",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002478_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-19",
+    "authors_total": 5
    },
    {
     "id": "B-10-2026-0328",
@@ -5088,6 +5200,70 @@
     "signatories_total": null,
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "P-10-2026-001516",
+    "label": "P-001516/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Financování českých veřejnoprávních médií a dodržování evropského aktu o svobodě médií",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-001516_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-29",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001515",
+    "label": "E-001515/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Dopad cen ropy, dodavatelských tras a rafinérských marží na ceny pohonných hmot v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001515_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-12",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-001402",
+    "label": "E-001402/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Použití paintballových značkovacích zbraní proti demonstrantům v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001402_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-10",
+    "authors_total": 2
+   },
+   {
+    "id": "E-10-2026-001236",
+    "label": "E-001236/2026",
+    "date": "2026-03-25",
+    "title": {
+     "cs": "„Evropa bez kožešin“",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001236_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-26",
+    "authors_total": 1
    },
    {
     "id": "RC-10-2026-0159",
@@ -5846,6 +6022,22 @@
     "joint_vote_id": 179775
    },
    {
+    "id": "P-10-2025-003780",
+    "label": "P-003780/2025",
+    "date": "2025-09-29",
+    "title": {
+     "cs": "Narušení polského vzdušného prostoru ruskými drony",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003780_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-11-04",
+    "authors_total": 31
+   },
+   {
     "id": "E-10-2025-003739",
     "label": "E-003739/2025",
     "date": "2025-09-26",
@@ -5962,6 +6154,22 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 22
+   },
+   {
+    "id": "P-10-2025-003150",
+    "label": "P-003150/2025",
+    "date": "2025-07-30",
+    "title": {
+     "cs": "Transparentnost ve věci státní podpory poskytnuté velkým českým zemědělským společnostem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003150_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-28",
+    "authors_total": 1
    },
    {
     "id": "E-10-2025-002988",
@@ -6168,6 +6376,22 @@
     "authors_total": 31
    },
    {
+    "id": "P-10-2025-002225",
+    "label": "P-002225/2025",
+    "date": "2025-06-03",
+    "title": {
+     "cs": "Rostoucí problémy malých lékáren v Česku s přístupem k určitým lékům na předpis",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002225_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-07-22",
+    "authors_total": 1
+   },
+   {
     "id": "proc-2025-0084",
     "label": "2025/0084(COD)",
     "date": "2025-05-12",
@@ -6288,6 +6512,22 @@
     "joint_motion": "RC-10-2025-0249",
     "joint_result": "ADOPTED",
     "joint_vote_id": 176309
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
    },
    {
     "id": "E-10-2025-001738",

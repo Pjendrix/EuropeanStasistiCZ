@@ -3188,8 +3188,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -3236,8 +3236,8 @@
     "other": 0
    },
    "question": {
-    "count": 1,
-    "answered": 1
+    "count": 3,
+    "answered": 3
    }
   },
   "passed": {
@@ -3320,6 +3320,38 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 17
+   },
+   {
+    "id": "E-10-2026-001627",
+    "label": "E-001627/2026",
+    "date": "2026-04-21",
+    "title": {
+     "cs": "Selektivní sankcionování náboženských projevů v evropském fotbale a soulad se základními právy EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001627_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-01",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2026-001562",
+    "label": "E-001562/2026",
+    "date": "2026-04-16",
+    "title": {
+     "cs": "Dodržování základních práv v Alžírsku a uplatňování článku 2 dohody o přidružení mezi EU a Alžírskem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001562_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-05",
+    "authors_total": 7
    },
    {
     "id": "proc-2025-0382",

@@ -4304,8 +4304,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4352,8 +4352,8 @@
     "other": 0
    },
    "question": {
-    "count": 36,
-    "answered": 35
+    "count": 73,
+    "answered": 63
    }
   },
   "passed": {
@@ -4450,6 +4450,22 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-003350",
+    "label": "E-003350/2026",
+    "date": "2026-08-27",
+    "title": {
+     "cs": "Smrtící protirasistická ideologie EU: smrt Henryho Nowaka",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003350_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 23
+   },
+   {
     "id": "B-10-2026-0373",
     "label": null,
     "date": "2026-07-31",
@@ -4482,6 +4498,22 @@
     "signatories_total": null,
     "process_type": "INI",
     "legislative": false
+   },
+   {
+    "id": "E-10-2026-003035",
+    "label": "E-003035/2026",
+    "date": "2026-07-16",
+    "title": {
+     "cs": "Ústavní převrat vlády Pétera Magyara",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003035_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-09-11",
+    "authors_total": 43
    },
    {
     "id": "proc-2026-0085",
@@ -4556,6 +4588,70 @@
     "signatories_total": 6
    },
    {
+    "id": "E-10-2026-002346",
+    "label": "E-002346/2026",
+    "date": "2026-06-08",
+    "title": {
+     "cs": "Akce Jean Monnet financování univerzit z evropských zdrojů a podpora federalistického projektu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002346_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-24",
+    "authors_total": 9
+   },
+   {
+    "id": "E-10-2026-001896",
+    "label": "E-001896/2026",
+    "date": "2026-05-07",
+    "title": {
+     "cs": "Výklad přílohy V (řádek 1) nařízení o obalech a obalových odpadech týkající se skupinových obalů a dopadu na dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001896_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-16",
+    "authors_total": 18
+   },
+   {
+    "id": "E-10-2026-001736",
+    "label": "E-001736/2026",
+    "date": "2026-04-28",
+    "title": {
+     "cs": "Dopady zrušení kvót na cukr na odvětví cukrové třtiny, cukru a rumu v nejvzdálenějších regionech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001736_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-18",
+    "authors_total": 8
+   },
+   {
+    "id": "E-10-2026-001627",
+    "label": "E-001627/2026",
+    "date": "2026-04-21",
+    "title": {
+     "cs": "Selektivní sankcionování náboženských projevů v evropském fotbale a soulad se základními právy EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001627_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-01",
+    "authors_total": 21
+   },
+   {
     "id": "B-10-2026-0184",
     "label": "B10-0184/2026",
     "date": "2026-04-15",
@@ -4612,6 +4708,54 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-001469",
+    "label": "E-001469/2026",
+    "date": "2026-04-10",
+    "title": {
+     "cs": "Rozpočet EU a politika rovnosti žen a mužů – Podpora projektů LGBTQ ve srovnání s rodinnou politikou",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001469_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-30",
+    "authors_total": 23
+   },
+   {
+    "id": "E-10-2026-001410",
+    "label": "E-001410/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Nařízení o rámci Unie pro přesídlování a humanitární přijímání",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001410_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-18",
+    "authors_total": 26
+   },
+   {
+    "id": "E-10-2026-001208",
+    "label": "E-001208/2026",
+    "date": "2026-03-23",
+    "title": {
+     "cs": "Strategie ProtectEU: větší bezpečnost pro Evropany, nebo kontrola myšlení a demokratických projevů nesouhlasu?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001208_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-19",
+    "authors_total": 12
+   },
+   {
     "id": "proc-2025-0348",
     "label": "2025/0348(CNS)",
     "date": "2026-03-20",
@@ -4652,6 +4796,22 @@
     "legislative": true
    },
    {
+    "id": "E-10-2026-001160",
+    "label": "E-001160/2026",
+    "date": "2026-03-19",
+    "title": {
+     "cs": "Používání příručky o „hraničním obsahu“ propagované na internetovém fóru EU pro moderování legálního politického projevu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001160_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-19",
+    "authors_total": 32
+   },
+   {
     "id": "B-10-2026-0178",
     "label": "B10-0178/2026",
     "date": "2026-03-18",
@@ -4686,6 +4846,22 @@
     "report": "A10-0094/2026",
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "O-10-2026-000009",
+    "label": "O-000009/2026",
+    "date": "2026-02-26",
+    "title": {
+     "cs": "Zařazení Muslimského bratrstva na evropský seznam teroristických organizací",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000009_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
    },
    {
     "id": "proc-2025-0405",
@@ -4726,6 +4902,54 @@
     "report": null,
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "E-10-2026-000421",
+    "label": "E-000421/2026",
+    "date": "2026-02-03",
+    "title": {
+     "cs": "Usnesení Národního shromáždění o zařazení Muslimského bratrstva na unijní seznam teroristických organizací",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000421_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-05-21",
+    "authors_total": 19
+   },
+   {
+    "id": "O-10-2026-000003",
+    "label": "O-000003/2026",
+    "date": "2026-01-26",
+    "title": {
+     "cs": "Reportéři bez hranic, neobjektivní nevládní organizace, kterou do velké míry dotuje Brusel",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000003_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 42
+   },
+   {
+    "id": "E-10-2026-000268",
+    "label": "E-000268/2026",
+    "date": "2026-01-23",
+    "title": {
+     "cs": "Univerzity ve Spojeném království: jak upozorňují Emiráty, podporuje Erasmus+ islamismus?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-000268_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-20",
+    "authors_total": 22
    },
    {
     "id": "B-10-2026-0061",
@@ -4784,6 +5008,70 @@
     "legislative": false
    },
    {
+    "id": "P-10-2025-004984",
+    "label": "P-004984/2025",
+    "date": "2025-12-17",
+    "title": {
+     "cs": "Pořadatelé hudebních a kulturních festivalů a směrnice o souborných cestovních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-004984_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-04",
+    "authors_total": 12
+   },
+   {
+    "id": "E-10-2025-004957",
+    "label": "E-004957/2025",
+    "date": "2025-12-16",
+    "title": {
+     "cs": "Rozšíření programu Erasmus a právní stát",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004957_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-26",
+    "authors_total": 23
+   },
+   {
+    "id": "E-10-2025-004943",
+    "label": "E-004943/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": "Procesní nedostatky návrhu na omezení kyanamidu vápenatého na základě nařízení REACH a jeho dopad na zemědělskou produkci a dodavatelské řetězce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004943_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-11",
+    "authors_total": 8
+   },
+   {
+    "id": "E-10-2025-004933",
+    "label": "E-004933/2025",
+    "date": "2025-12-12",
+    "title": {
+     "cs": "skandál na Islámské vědecko-technické univerzitě v Gaziantepu: smí program Erasmus+ financovat radikalizaci?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004933_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-11",
+    "authors_total": 13
+   },
+   {
     "id": "B-10-2025-0561",
     "label": "B10-0561/2025",
     "date": "2025-12-09",
@@ -4798,6 +5086,38 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 32
+   },
+   {
+    "id": "E-10-2025-004851",
+    "label": "E-004851/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Souhrnný balíček pro automobilový průmysl",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004851_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-18",
+    "authors_total": 20
+   },
+   {
+    "id": "E-10-2025-004821",
+    "label": "E-004821/2025",
+    "date": "2025-12-04",
+    "title": {
+     "cs": "Strategie pro rovnost LGBTIQ+ osob na období 2026–2030",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004821_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-18",
+    "authors_total": 27
    },
    {
     "id": "proc-2025-0329",
@@ -4820,6 +5140,54 @@
     "legislative": true
    },
    {
+    "id": "E-10-2025-004796",
+    "label": "E-004796/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Zařazení Muslimského bratrstva na unijní seznam osob, skupin a subjektů zapojených do teroristických činů (rozhodnutí Rady 2001/931/SZBP)",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004796_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-12",
+    "authors_total": 29
+   },
+   {
+    "id": "E-10-2025-004762",
+    "label": "E-004762/2025",
+    "date": "2025-12-02",
+    "title": {
+     "cs": "Šetření týkající se politiků v univerzitních radách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004762_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2025-004738",
+    "label": "E-004738/2025",
+    "date": "2025-12-01",
+    "title": {
+     "cs": "Regulační překážky pro těžbu kritických surovin v Evropské unii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004738_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-28",
+    "authors_total": 16
+   },
+   {
     "id": "B-10-2025-0553",
     "label": "B10-0553/2025",
     "date": "2025-11-27",
@@ -4836,6 +5204,54 @@
     "signatories_total": 54
    },
    {
+    "id": "E-10-2025-004703",
+    "label": "E-004703/2025",
+    "date": "2025-11-26",
+    "title": {
+     "cs": "Náklady související s obnovením obsahu, který digitální platformy omylem odstranily podle nařízení o digitálních službách, a úloha důvěryhodných oznamovatelů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004703_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-26",
+    "authors_total": 3
+   },
+   {
+    "id": "E-10-2025-004681",
+    "label": "E-004681/2025",
+    "date": "2025-11-25",
+    "title": {
+     "cs": "Plán na zřízení evropské zpravodajské služby podřízené předsedkyni Komise",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004681_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 50
+   },
+   {
+    "id": "E-10-2025-004673",
+    "label": "E-004673/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": "Falešní žadatelé o azyl: EU je rukojmím právního výkladu, který otevírá brány nelegálnímu přistěhovalectví a zhroucení hranic",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004673_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-06",
+    "authors_total": 32
+   },
+   {
     "id": "E-10-2025-004655",
     "label": "E-004655/2025",
     "date": "2025-11-21",
@@ -4850,6 +5266,38 @@
     "status": "answered",
     "answer_date": "2026-01-28",
     "authors_total": 8
+   },
+   {
+    "id": "O-10-2025-000043",
+    "label": "O-000043/2025",
+    "date": "2025-11-20",
+    "title": {
+     "cs": "Zneužívání programu Erasmus+ jako nového nástroje pro imigraci a vyloučení maďarských univerzit z programu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000043_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 60
+   },
+   {
+    "id": "O-10-2025-000041",
+    "label": "O-000041/2025",
+    "date": "2025-11-19",
+    "title": {
+     "cs": "Plán EU na podporu genderové sebeidentifikace bez věkových omezení v rámci strategie pro rovnost LGBTIQ+ osob na období 2026–2030",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000041_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 44
    },
    {
     "id": "E-10-2025-004561",
@@ -4978,6 +5426,22 @@
     "legislative": true
    },
    {
+    "id": "O-10-2025-000039",
+    "label": "O-000039/2025",
+    "date": "2025-10-31",
+    "title": {
+     "cs": "Navracení do Afghánistánu: reakce na výzvu členských států k účinné migrační politice",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000039_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 45
+   },
+   {
     "id": "B-10-2025-0464",
     "label": "B10-0464/2025",
     "date": "2025-10-17",
@@ -5024,6 +5488,22 @@
     "status": "answered",
     "answer_date": "2025-12-08",
     "authors_total": 7
+   },
+   {
+    "id": "P-10-2025-003737",
+    "label": "P-003737/2025",
+    "date": "2025-09-25",
+    "title": {
+     "cs": "Nařízení proti odlesňování – námitka proti prováděcímu nařízení Komise (EU) 2025/1093",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003737_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-23",
+    "authors_total": 26
    },
    {
     "id": "proc-2025-2809",
@@ -5314,6 +5794,22 @@
     "legislative": true
    },
    {
+    "id": "P-10-2025-002901",
+    "label": "P-002901/2025",
+    "date": "2025-07-15",
+    "title": {
+     "cs": "Zrušení papírových příbalových informací u léčivých přípravků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002901_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-09-05",
+    "authors_total": 11
+   },
+   {
     "id": "proc-2025-2071",
     "label": "2025/2071(INI)",
     "date": "2025-07-11",
@@ -5418,6 +5914,38 @@
     "signatories_total": 12
    },
    {
+    "id": "O-10-2025-000021",
+    "label": "O-000021/2025",
+    "date": "2025-06-10",
+    "title": {
+     "cs": "Plán „Zvolte si Evropu pro vědu“ („Choose Europe for Science“) a pronikání wokismu na univerzity",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000021_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 37
+   },
+   {
+    "id": "P-10-2025-002033",
+    "label": "P-002033/2025",
+    "date": "2025-05-21",
+    "title": {
+     "cs": "Rovný přístup evropských výrobců zdravotnických prostředků na evropský trh",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-002033_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-18",
+    "authors_total": 9
+   },
+   {
     "id": "E-10-2025-001972",
     "label": "E-001972/2025",
     "date": "2025-05-16",
@@ -5450,6 +5978,22 @@
     "signatories_total": null,
     "process_type": "NLE",
     "legislative": false
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
    },
    {
     "id": "A-10-2025-0068",
@@ -5610,6 +6154,22 @@
     "authors_total": 7
    },
    {
+    "id": "P-10-2025-000725",
+    "label": "P-000725/2025",
+    "date": "2025-02-18",
+    "title": {
+     "cs": "Zadávání veřejných zakázek a mezinárodní dohody EU po rozhodnutí Soudního dvora Evropské unie ve věci C-652/22",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000725_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-16",
+    "authors_total": 5
+   },
+   {
     "id": "E-10-2025-000704",
     "label": "E-000704/2025",
     "date": "2025-02-17",
@@ -5706,6 +6266,22 @@
     "signatories_total": 4
    },
    {
+    "id": "O-10-2025-000002",
+    "label": "O-000002/2025",
+    "date": "2025-02-03",
+    "title": {
+     "cs": "Nedostatečná transparentnost legislativního procesu EU a zneužívání finančních prostředků EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2025-000002_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 16
+   },
+   {
     "id": "E-10-2025-000447",
     "label": "E-000447/2025",
     "date": "2025-01-30",
@@ -5768,6 +6344,22 @@
     "status": "answered",
     "answer_date": "2025-03-24",
     "authors_total": 37
+   },
+   {
+    "id": "P-10-2025-000353",
+    "label": "P-000353/2025",
+    "date": "2025-01-27",
+    "title": {
+     "cs": "Uznává Komise svrchované právo členských států pořádat volby?",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-000353_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-06",
+    "authors_total": 1
    },
    {
     "id": "E-10-2025-000358",

@@ -4284,8 +4284,8 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-14",
-  "complete": false,
+  "updated": "2026-10-15",
+  "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
    "shadow_report": "Stínové zprávy",
@@ -4332,8 +4332,8 @@
     "other": 0
    },
    "question": {
-    "count": 8,
-    "answered": 8
+    "count": 20,
+    "answered": 19
    }
   },
   "passed": {
@@ -4526,6 +4526,22 @@
     "signatories_total": 69
    },
    {
+    "id": "E-10-2026-003657",
+    "label": "E-003657/2026",
+    "date": "2026-09-15",
+    "title": {
+     "cs": "Navazující otázka k E-002824/2026 – příležitostná porážka na malých farmách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003657_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
     "id": "B-10-2026-0420",
     "label": "B10-0420/2026",
     "date": "2026-09-14",
@@ -4601,6 +4617,38 @@
     "report": null,
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "E-10-2026-002825",
+    "label": "E-002825/2026",
+    "date": "2026-07-08",
+    "title": {
+     "cs": "Požadavek na balistický znalecký posudek při porážce hospodářských zvířat v hospodářství původu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002825_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-24",
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-002824",
+    "label": "E-002824/2026",
+    "date": "2026-07-08",
+    "title": {
+     "cs": "Uplatňování pravidel pro nakládání s krví při porážce hospodářských zvířat v hospodářství původu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002824_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-08-21",
+    "authors_total": 1
    },
    {
     "id": "RC-10-2026-0322",
@@ -4988,6 +5036,22 @@
     "signatories_total": 73
    },
    {
+    "id": "E-10-2026-001727",
+    "label": "E-001727/2026",
+    "date": "2026-04-28",
+    "title": {
+     "cs": "Provádění článku 25 nařízení (EU) 2016/429 o veterinárních kontrolách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001727_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-07-03",
+    "authors_total": 1
+   },
+   {
     "id": "B-10-2026-0234",
     "label": "B10-0234/2026",
     "date": "2026-04-27",
@@ -5083,6 +5147,38 @@
     "joint_vote_id": 192321
    },
    {
+    "id": "E-10-2026-001502",
+    "label": "E-001502/2026",
+    "date": "2026-04-14",
+    "title": {
+     "cs": "Přezkum financování humanitární pomoci EU pro Západní břeh Jordánu, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001502_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-23",
+    "authors_total": 21
+   },
+   {
+    "id": "E-10-2026-001435",
+    "label": "E-001435/2026",
+    "date": "2026-04-08",
+    "title": {
+     "cs": "Transparentnost financování humanitární pomoci EU pro Západní břeh, Gazu a Libanon",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001435_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-05",
+    "authors_total": 22
+   },
+   {
     "id": "proc-2025-0162",
     "label": "2025/0162(NLE)",
     "date": "2026-03-18",
@@ -5101,6 +5197,38 @@
     "report": null,
     "process_type": "NLE",
     "legislative": false
+   },
+   {
+    "id": "E-10-2026-001148",
+    "label": "E-001148/2026",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Dostupnost veterinární péče pro hospodářská zvířata v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-001148_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-06-29",
+    "authors_total": 1
+   },
+   {
+    "id": "P-10-2026-001086",
+    "label": "P-001086/2026",
+    "date": "2026-03-17",
+    "title": {
+     "cs": "Dostupnost veterinární péče pro hospodářská zvířata v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-001086_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-04-15",
+    "authors_total": 1
    },
    {
     "id": "RC-10-2026-0159",
@@ -5741,6 +5869,22 @@
     "joint_vote_id": 182963
    },
    {
+    "id": "E-10-2025-004846",
+    "label": "E-004846/2025",
+    "date": "2025-12-08",
+    "title": {
+     "cs": "Plán německé vlády na snížení nákladů na energii a dopad na spravedlivou hospodářskou soutěž na vnitřním trhu EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004846_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-02-09",
+    "authors_total": 4
+   },
+   {
     "id": "RC-10-2025-0545",
     "label": null,
     "date": "2025-11-25",
@@ -6109,6 +6253,22 @@
     "joint_vote_id": 179770
    },
    {
+    "id": "P-10-2025-003737",
+    "label": "P-003737/2025",
+    "date": "2025-09-25",
+    "title": {
+     "cs": "Nařízení proti odlesňování – námitka proti prováděcímu nařízení Komise (EU) 2025/1093",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003737_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-01-23",
+    "authors_total": 26
+   },
+   {
     "id": "proc-2025-2145",
     "label": "2025/2145(DEC)",
     "date": "2025-09-24",
@@ -6233,6 +6393,22 @@
     "report": null,
     "process_type": "COD",
     "legislative": true
+   },
+   {
+    "id": "P-10-2025-003269",
+    "label": "P-003269/2025",
+    "date": "2025-08-21",
+    "title": {
+     "cs": "Dopad zákazu neonikotinoidů, hodnocení alternativ a dlouhodobý trend ztrát zemědělských plodin v EU v důsledku škodlivých organismů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-003269_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-10-16",
+    "authors_total": 1
    },
    {
     "id": "proc-2025-0531",
@@ -6646,6 +6822,22 @@
     "joint_motion": "RC-10-2025-0249",
     "joint_result": "ADOPTED",
     "joint_vote_id": 176309
+   },
+   {
+    "id": "P-10-2025-001769",
+    "label": "P-001769/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Navrhovaný zákaz olova ve střelivu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2025-001769_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-13",
+    "authors_total": 13
    },
    {
     "id": "RC-10-2025-0230",
