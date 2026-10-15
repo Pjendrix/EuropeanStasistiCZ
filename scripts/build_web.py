@@ -32,6 +32,7 @@ from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_position
 from activity import count_activity
 from attendance import count_presence
 from category_stats import category_stats
+from group_stats import build_group_stats
 from categories import CATEGORIES, categories_for, icon_inner
 from key_votes import build_key_votes
 from work_hub import build_work_hub
@@ -406,6 +407,37 @@ def build_parties_web(stats: dict, parties: list[dict], meps: list[dict], votes_
     return {"sources": stats["sources"], "parties": index}, pages
 
 
+def build_eu_groups(votes: list[dict], votes_by_id: dict, meps: list[dict], stats: dict, groups: list[dict],
+                    group_web: dict | None, day: str) -> tuple[dict, dict]:
+    """Politické skupiny EP (index + stránky): souhrn celé skupiny z group_counts a čeští členové (data/eugroups/)."""
+    gs = build_group_stats(votes)
+    by_ep = {g.get("ep_code"): g["code"] for g in groups}
+    meps_by_id = {m["id"]: m for m in meps}
+    index, pages = [], {}
+    for g in groups:
+        code = g["code"]
+        if code not in gs:
+            continue
+        members = []
+        for m in meps:
+            cur = current(m["groups"], day)
+            if any(x["end"] is None for x in m["mandates"]) and cur and by_ep.get(cur["code"], cur["code"]) == code:
+                members.append({**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]})
+        st = gs[code]
+        row = lambda vid: {**vote_summary(votes_by_id[vid], meps_by_id), "gc": votes_by_id[vid]["group_counts"][code]}
+        summary = {**{k: g.get(k) for k in ("code", "short_label", "name_cs", "label", "color", "chart_color", "logo", "logo_aspect")},
+                   "web": ((group_web or {}).get("groups") or {}).get(code, {}).get("web"), "cz_members": len(members),
+                   "attendance": st["attendance"], "attendance_main": st["attendance_main"], "majority": st["majority"],
+                   "majority_main": st["majority_main"], "splits": st["splits"], "considered": st["considered"],
+                   "splits_main": st["splits_main"], "considered_main": st["considered_main"]}
+        index.append(summary)
+        pages[code] = {**summary, "sources": stats["sources"], "member_list": members,
+                       "splits_list": [row(v) for v in st["split_ids"]], "splits_list_main": [row(v) for v in st["split_ids_main"]]}
+    index.sort(key=lambda r: (-r["cz_members"], r["short_label"]))
+    web_src = (group_web or {}).get("source")
+    return {"sources": {**stats["sources"], **({"group_web": web_src} if web_src else {})}, "groups": index}, pages
+
+
 POSITION_LETTER = {"FOR": "F", "AGAINST": "A", "ABSTENTION": "B", "DID_NOT_VOTE": "N"}
 
 
@@ -501,6 +533,13 @@ def run(data_dir: Path, day: str) -> dict:
         write_json(data_dir / "category_stats.json", {**category_stats(votes, by_id), "sources": stats["sources"]})
         write_json(data_dir / "categories.json", {k: {"label": n, "icon": icon_inner(k)} for k, n, _ in CATEGORIES})
         write_json(data_dir / "session.json", build_session(stats, votes, votes_by_id, by_id))
+        gw_path, groups_path = data_dir / "group_web.json", data_dir / "groups.json"
+        if groups_path.exists():
+            eu_index, eu_pages = build_eu_groups(votes, votes_by_id, meps, stats, json.loads(groups_path.read_text(encoding="utf-8")),
+                                                 json.loads(gw_path.read_text(encoding="utf-8")) if gw_path.exists() else None, day)
+            write_json(data_dir / "eugroups" / "index.json", eu_index)
+            for code, page in eu_pages.items():
+                write_json(data_dir / "eugroups" / f"{code}.json", page)
         party_index, party_pages = build_parties_web(stats, parties, meps, votes_by_id, day)
         write_json(data_dir / "parties" / "index.json", party_index)
         for pid, page in party_pages.items():
