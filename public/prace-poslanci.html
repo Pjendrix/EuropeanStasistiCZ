@@ -41,13 +41,17 @@
     <a href="prace-poslanci.html" data-page="work-table">Tabulka po poslancích</a>
   </nav>
   <h1>Práce na textech po poslancích</h1>
-  <p class="lead">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
-  <p class="lead">Kolik textů čeští poslanci dostali na starost, bez ohledu na to, jak hlasování dopadlo.
-    <strong>Zpravodaj/ka</strong> píše text za výbor: <em>zprávu</em> výboru, který věc vede, nebo <em>stanovisko</em>
-    dalšího výboru. <strong>Stínový/á zpravodaj/ka</strong> ten text vyjednává za svou frakci.
-    U každé kategorie je vidět, ve které třetině delegace poslanec je. Celkové pořadí záměrně nepočítáme:
-    zpráva a stanovisko nejsou stejná práce a žádné body by nebyly podložené.
-    <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+  <p class="lead">Kolik zpráv a stanovisek čeští poslanci vedou nebo vyjednávají za frakci.</p>
+  <details class="explain">
+    <summary>ⓘ Jak to číst</summary>
+    <p>Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
+    <p><strong>Zpravodaj/ka</strong> píše text za výbor: <em>zprávu</em> výboru, který věc vede, nebo <em>stanovisko</em>
+      dalšího výboru. <strong>Stínový/á zpravodaj/ka</strong> ten text vyjednává za svou frakci.
+      U každé kategorie je vidět, ve které třetině delegace poslanec je (▲ horní, ● střední, ▼ dolní, – žádný text nebo kratší mandát, méně než 75 % období, nesrovnává se).
+      Celkové pořadí záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádné body by nebyly podložené.
+      <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+    <p class="small" id="notes"></p>
+  </details>
   <div class="controls">
     <label>Řadit <select id="sort">
       <option value="name:1">abecedně</option>
@@ -61,35 +65,31 @@
       <option value="presence:-1">podle prezence na zasedání</option>
     </select></label>
     <p class="tier-legend small muted" aria-hidden="true">
-      <span class="tier tier-top">▲</span> horní třetina
-      <span class="tier tier-mid">●</span> střední
-      <span class="tier tier-low">▼</span> dolní
-      <span class="tier tier-none">–</span> žádný text nebo kratší mandát (méně než 75 % období), nesrovnává se</p>
+      <span class="tier tier-top">▲</span> horní <span class="tier tier-mid">●</span> střední <span class="tier tier-low">▼</span> dolní třetina delegace</p>
   </div>
   <div class="table-wrap">
     <table id="work" class="compact work-cards">
       <thead>
         <tr class="group-row">
           <th rowspan="2" data-key="name"><button>Poslanec</button></th>
-          <th colspan="2" class="group">Vede text <span class="muted">(zpravodaj/&#8288;ka)</span></th>
-          <th colspan="2" class="group">Vyjednává za frakci <span class="muted">(stínový/&#8288;á)</span></th>
-          <th colspan="4" class="group secondary-group" title="Jen počty bez třetin: snadno se nafouknou a vypovídají hlavně o stylu práce a velikosti frakce">Další aktivita <span class="muted">(jen počty, bez třetin)</span></th>
+          <th colspan="2" class="group grp-start" title="Zpravodaj/ka: píše zprávu nebo stanovisko za výbor">Vede text</th>
+          <th colspan="2" class="group grp-start" title="Stínový/á zpravodaj/ka: vyjednává text za svou frakci">Za frakci</th>
+          <th colspan="4" class="group grp-start secondary-group" title="Jen počty bez třetin: snadno se nafouknou a vypovídají hlavně o stylu práce a velikosti frakce">Další aktivita</th>
         </tr>
         <tr>
-          <th data-key="lead_reports" class="num"><button>Zprávy</button></th>
-          <th data-key="lead_opinions" class="num"><button>Stanoviska</button></th>
-          <th data-key="shadow_reports" class="num"><button>Zprávy</button></th>
-          <th data-key="shadow_opinions" class="num"><button>Stanoviska</button></th>
-          <th data-key="attendance" class="num secondary"><button title="Podíl jmenovitých hlasování v plénu, kterých se zúčastnil(a), z hlasování v době mandátu">Účast na hlasování</button><div class="th-sub" id="att-median"></div></th>
-          <th data-key="presence" class="num secondary"><button title="Dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP. Jiná metrika než účast na hlasování.">Prezence na zasedání</button></th>
-          <th data-key="motions_signed" class="num secondary"><button title="Vlastní i společné návrhy usnesení, které poslanec podepsal. Nevstupují do srovnání.">Podepsané návrhy</button></th>
-          <th data-key="speeches" class="num secondary"><button title="Ústní projevy v rozpravách v plénu v době mandátu podle EP. Písemná prohlášení se nesčítají. Počet projevů nevypovídá o kvalitě ani vlivu.">Projevy v plénu</button></th>
+          <th data-key="lead_reports" class="num tiercol grp-start"><button>Zprávy</button></th>
+          <th data-key="lead_opinions" class="num tiercol"><button>Stanoviska</button></th>
+          <th data-key="shadow_reports" class="num tiercol grp-start"><button>Zprávy</button></th>
+          <th data-key="shadow_opinions" class="num tiercol"><button>Stanoviska</button></th>
+          <th data-key="attendance" class="num secondary grp-start"><button title="Podíl jmenovitých hlasování v plénu, kterých se zúčastnil(a), z hlasování v době mandátu. Medián EP je u každého řádku pod hodnotou.">Účast</button></th>
+          <th data-key="presence" class="num secondary"><button title="Dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP. Jiná metrika než účast na hlasování.">Prezence</button></th>
+          <th data-key="motions_signed" class="num secondary"><button title="Vlastní i společné návrhy usnesení, které poslanec podepsal. Nevstupují do srovnání.">Návrhy</button></th>
+          <th data-key="speeches" class="num secondary"><button title="Ústní projevy v rozpravách v plénu v době mandátu podle EP. Písemná prohlášení se nesčítají. Počet projevů nevypovídá o kvalitě ani vlivu.">Projevy</button></th>
         </tr>
       </thead>
       <tbody><tr><td colspan="9" class="loading">Načítám…</td></tr></tbody>
     </table>
   </div>
-  <p class="small muted" id="notes"></p>
   <div id="former"></div>
   <p class="source" id="source"></p>
 </main>
@@ -120,10 +120,10 @@ setNav("work-table");
     const fnLabel = (m, f) => `${byGender(m, ...FN[f.kind][f.role])} ${f.kind === "committee" ? `výboru <abbr title="${esc(f.name_cs || "")}">${esc(f.code)}</abbr>` : "frakce"}`;
     const fnLine = (m) => (m.functions || []).length ? `<div class="small fn-line">${m.functions.map((f) => fnLabel(m, f)).join(" · ")}</div>` : "";
     const epMedian = w.attendance_ep_median;
-    document.getElementById("att-median").textContent = epMedian ? `medián EP ${fmtPct(epMedian)}` : "";
     KEYS.forEach((k) => { columns[k] = (r) => r.m[k]; });
     const adopted = { lead_reports: "lead_adopted", shadow_reports: "shadow_adopted" };
     const TIER_LABEL = { lead_reports: "Zprávy – vede", lead_opinions: "Stanoviska – vede", shadow_reports: "Zprávy – za frakci", shadow_opinions: "Stanoviska – za frakci" };
+    const GRP = new Set(["lead_reports", "shadow_reports"]);
     const tierCell = (r, k) => {
       const t = r.d.tiers[k];
       const skipped = r.d.tiers_skipped;
@@ -131,7 +131,7 @@ setNav("work-table");
         : t ? `<span class="tier tier-${t}" title="${TIER[t][1]}"><span aria-hidden="true">${TIER[t][0]}</span><span class="sr-only">${TIER[t][1]}</span></span>`
         : '<span class="tier tier-none" aria-hidden="true">–</span>';
       const passed = adopted[k] && r.m[k] ? `<div class="small muted">prošlo ${fmtNum(r.m[adopted[k]])}</div>` : "";
-      return `<td class="num" data-label="${TIER_LABEL[k]}"><span class="count">${fmtNum(r.m[k])}</span>${chip}${passed}</td>`;
+      return `<td class="num${GRP.has(k) ? " grp-start" : ""}" data-label="${TIER_LABEL[k]}"><span class="count">${fmtNum(r.m[k])}</span>${chip}${passed}</td>`;
     };
     const partyLogo = (r) => { const p = parties.find((x) => x.id === r.m.party?.id); const t = p && !p.independent ? logoTile(p, 22) : "";
       return t ? `<span class="logo-slot sm mep-party-logo">${t}</span>` : ""; };
@@ -139,7 +139,7 @@ setNav("work-table");
         <div class="small muted">${esc((() => { const g = groups.find((x) => x.ep_code === r.m.group?.code); return g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (r.m.group?.short_label || ""); })())}${r.m.party ? ` · ${esc(r.m.party.short_label === "Ind." ? byGender(r.m, "nezávislý", "nezávislá") : r.m.party.short_label)}` : ""}${r.d?.mandate_from ? ` · mandát od ${fmtDate(r.d.mandate_from)}` : ""}</div>${fnLine(r.m)}</div>${partyLogo(r)}</div></td>`;
     const render = (list) => {
       tbody.innerHTML = list.map((r) => `<tr>${cell(r)}${KEYS.map((k) => tierCell(r, k)).join("")}
-        <td class="num secondary" data-label="Účast na hlasování">${fmtPct(pct(r.m.attendance))}</td>
+        <td class="num secondary grp-start" data-label="Účast na hlasování">${fmtPct(pct(r.m.attendance))}${epMedian ? `<div class="small muted">medián EP ${fmtPct(epMedian)}</div>` : ""}</td>
         <td class="num secondary" data-label="Prezence na zasedání">${r.m.presence && r.m.presence.days ? `${fmtPct(r.m.presence.present / r.m.presence.days)}<div class="small muted">${fmtNum(r.m.presence.present)} z ${fmtNum(r.m.presence.days)} dnů</div>` : "–"}</td>
         <td class="num secondary" data-label="Podepsané návrhy">${fmtNum(r.m.motions_signed)}</td>
         <td class="num secondary" data-label="Projevy v plénu">${r.m.speeches == null ? "–" : `${fmtNum(r.m.speeches)}<div class="small muted">${fmtNum(Math.round(r.m.speeches_minutes))} min</div>`}</td></tr>`).join("");

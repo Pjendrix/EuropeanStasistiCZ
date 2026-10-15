@@ -521,7 +521,8 @@ table.matrix tbody tr:hover { background: none; }
 @keyframes drift { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(140px) rotate(12deg); } }
 
 /* Obsah je vždy viditelný (i bez JS a při tisku); animuje se jen posun a růst při vjetí do obrazu. */
-.js .reveal.in { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+/* backwards (ne both): po doběhnutí nezůstane transform, který by z bloku udělal stacking context a schoval vyskakovací prvky pod sticky lištu. */
+.js .reveal.in { animation: rise .7s cubic-bezier(.2, .7, .2, 1) backwards; }
 .grow { transform-origin: left center; }
 .js .in .grow, .js .grow.in { animation: grow-x 1.1s cubic-bezier(.2, .7, .2, 1) both; }
 .js .in .chart .bar-fill { animation: grow-y .9s cubic-bezier(.2, .7, .2, 1) both; }
@@ -708,10 +709,11 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 /* Sdílení (share.js) */
 .share-row { margin: .6rem 0; position: relative; }
 .share-btn { display: inline-flex; align-items: center; gap: .4rem; }
-.share-menu { position: absolute; z-index: 30; margin-top: .4rem; padding: .5rem; display: grid; gap: .15rem; min-width: 17rem; max-width: calc(100vw - 2rem); }
+.share-menu { position: fixed; z-index: 1000; inset: auto; margin: 0; padding: .5rem; color: var(--text); display: grid; gap: .15rem; min-width: 17rem; max-width: calc(100vw - 2rem); }
 .share-menu button, .share-menu a { text-align: left; padding: .6rem .75rem; border: 0; border-radius: var(--radius-sm); background: none; color: var(--text); font: inherit; text-decoration: none; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
 .share-menu button:hover, .share-menu a:hover, .share-menu button:focus-visible, .share-menu a:focus-visible { background: var(--chip); }
 .share-menu p { margin: .3rem .75rem .4rem; }
+.share-menu.sheet { left: 0; right: 0; bottom: 0; top: auto; width: 100%; max-width: none; border-radius: var(--radius) var(--radius) 0 0; padding-bottom: calc(.5rem + env(safe-area-inset-bottom)); }
 @media print { .share-row { display: none !important; } }
 
 /* Úvod jako rozcestník (scripts/hub.py, hub.js) */
@@ -768,3 +770,22 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 
 table.compact th.secondary-group { color: var(--muted); }
 table.compact th.secondary-group .muted { text-transform: none; letter-spacing: 0; font-weight: 500; }
+
+/* Tabulka práce: záhlaví bez zalamování, jednotné zarovnání, skupiny oddělené svislou linkou (S1). */
+#work thead th { white-space: nowrap; vertical-align: bottom; }
+#work thead th.num { min-width: 0; width: 6rem; text-align: right; }
+#work thead th.num button::after { content: ""; }
+#work thead th[aria-sort="ascending"] button::after { content: " ↑"; opacity: 1; }
+#work thead th[aria-sort="descending"] button::after { content: " ↓"; }
+#work thead th.group { text-align: center; }
+#work .grp-start { border-left: 1px solid var(--border); }
+#work td.num { padding-right: 1.1rem; }
+#work thead th.num { padding-right: 1.1rem; }
+/* Rozbalovací vysvětlení místo odstavců nad daty (S1). */
+details.explain { margin: 0 0 1rem; max-width: 72ch; font-size: .875rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .55rem .9rem; }
+details.explain summary { cursor: pointer; font-weight: 600; color: var(--muted); min-height: 24px; }
+details.explain[open] summary { margin-bottom: .5rem; }
+details.explain p { margin: .5rem 0; }
+@media (max-width: 640px) { #work .grp-start { border-left: 0; } #work td.num { padding-right: 0; } }
+#work thead th.tiercol { padding-right: calc(1.1rem + 1.75rem); }
+@media (max-width: 640px) { #work thead th.tiercol { padding-right: 0; } }

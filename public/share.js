@@ -252,8 +252,33 @@ function shareButton() {
   return `<button type="button" class="more-btn share-btn" data-share aria-haspopup="menu" aria-expanded="false">${SHARE_ICON} Sdílet</button>`;
 }
 
-function closeShareMenu() {
-  document.querySelectorAll(".share-menu").forEach((m) => { m.previousElementSibling?.setAttribute?.("aria-expanded", "false"); m.remove(); });
+let shareTrigger = null;
+let shareClosedAt = 0;
+
+function closeShareMenu(restoreFocus = false) {
+  document.querySelectorAll(".share-menu").forEach((m) => m.remove());
+  if (shareTrigger) {
+    shareTrigger.setAttribute("aria-expanded", "false");
+    if (restoreFocus) shareTrigger.focus();
+  }
+  shareClosedAt = Date.now();
+}
+
+// Nabídka žije v top layer (Popover API), případně jako position: fixed přímo v <body>:
+// nikdy ji tak nezakryje sticky lišta ani jiný stacking context (S3).
+function placeShareMenu(menu, trigger) {
+  const r = trigger.getBoundingClientRect();
+  const w = Math.min(menu.offsetWidth || 272, window.innerWidth - 16);
+  menu.style.top = menu.style.left = menu.style.right = menu.style.bottom = "";
+  if (window.innerWidth < 640) {
+    menu.classList.add("sheet");
+    return;
+  }
+  menu.classList.remove("sheet");
+  const below = r.bottom + 6;
+  const fitsBelow = below + menu.offsetHeight <= window.innerHeight - 8;
+  menu.style.top = `${Math.max(8, fitsBelow ? below : r.top - 6 - menu.offsetHeight)}px`;
+  menu.style.left = `${Math.min(Math.max(8, r.right - w), window.innerWidth - w - 8)}px`;
 }
 
 async function shareAction(kind, ctx, formatKey, btn) {
@@ -284,6 +309,7 @@ function openShareMenu(trigger) {
   const ctx = window.shareContext?.();
   if (!ctx) return;
   closeShareMenu();
+  shareTrigger = trigger;
   const enc = encodeURIComponent;
   const canNative = Boolean(navigator.canShare && navigator.canShare({ files: [new File([new Blob()], "x.png", { type: "image/png" })] }));
   const menu = document.createElement("div");
@@ -298,8 +324,14 @@ function openShareMenu(trigger) {
     <a role="menuitem" href="https://www.facebook.com/sharer/sharer.php?u=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer">Sdílet na Facebooku</a>
     <a role="menuitem" href="https://wa.me/?text=${enc(`${ctx.text} ${ctx.url}`)}" target="_blank" rel="noopener noreferrer">Sdílet na WhatsAppu</a>
     <p class="small muted">Obrázek má datum, zdroj a adresu stránky. Žádná loga stran, žádné pořadí.</p>`;
-  trigger.after(menu);
+  document.body.append(menu);
+  if (typeof menu.showPopover === "function") {
+    menu.setAttribute("popover", "auto");
+    menu.showPopover();
+    menu.addEventListener("toggle", (ev) => { if (ev.newState === "closed" && menu.isConnected) closeShareMenu(true); });
+  }
   trigger.setAttribute("aria-expanded", "true");
+  placeShareMenu(menu, trigger);
   menu.querySelector("button, a")?.focus();
   menu.addEventListener("click", async (ev) => {
     const el = ev.target.closest("[data-act]");
@@ -317,10 +349,12 @@ document.addEventListener("click", (ev) => {
   const btn = ev.target.closest("[data-share]");
   if (btn) {
     ev.preventDefault();
-    if (btn.getAttribute("aria-expanded") === "true") closeShareMenu();
-    else openShareMenu(btn);
+    // Popover se při kliknutí mimo zavře sám; klik na tlačítko hned po tom nesmí nabídku znovu otevřít.
+    if (btn.getAttribute("aria-expanded") === "true") closeShareMenu(true);
+    else if (Date.now() - shareClosedAt > 250 || btn !== shareTrigger) openShareMenu(btn);
   } else if (!ev.target.closest(".share-menu")) {
     closeShareMenu();
   }
 });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeShareMenu(); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && document.querySelector(".share-menu")) closeShareMenu(true); });
+window.addEventListener("resize", () => { const m = document.querySelector(".share-menu"); if (m && shareTrigger) placeShareMenu(m, shareTrigger); });
