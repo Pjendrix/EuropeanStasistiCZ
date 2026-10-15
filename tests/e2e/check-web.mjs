@@ -85,7 +85,7 @@ for (const scheme of ["light", "dark"]) {
 // S1: ⓘ se otevře klikem i klávesou a zavře Esc.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
-  for (const url of ["prace-poslanci.html", "shoda.html", "votes.html"]) {
+  for (const url of ["prace-poslanci.html", "shoda.html", "temata.html"]) {
     const page = await ctx.newPage();
     await page.goto(base + url, { waitUntil: "networkidle" });
     const btn = page.locator(".info-btn").first();
