@@ -34,6 +34,8 @@
   </nav>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
+<nav class="tabbar" aria-label="Hlavní navigace (mobil)"><a href="poslanci.html" data-page="meps"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/></svg><span>Poslanci</span></a><a href="party.html" data-page="parties"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/></svg><span>Strany</span></a><a href="hlasovani.html" data-page="votes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span>Hlasování</span></a><a href="prace.html" data-page="work"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/></svg><span>Práce</span></a><button type="button" class="tab-more" popovertarget="more-sheet" data-pages="analyses about"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Více</span></button></nav>
+<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
 
 <main id="main">
   <nav class="subnav" aria-label="Práce poslanců">
@@ -59,7 +61,7 @@
   <section class="hub-block" aria-labelledby="h-proc">
     <h2 id="h-proc">Na jakých textech</h2>
     <div class="small muted">Zprávy podle typu procedury; „Přijato“ = Parlament zprávu přijal.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-proc" aria-label="Definice a metodika" aria-expanded="false">ⓘ</button><div popover id="i-proc" class="info-pop" role="note"><p>Zprávy, které čeští poslanci vedou jako zpravodajové nebo vyjednávají jako stínoví zpravodajové, podle typu procedury. „Přijato“ = Parlament zprávu přijal ve jmenovitém hlasování. Text, na kterém pracovali dva Češi, se počítá jednou.</p></div></span></div>
-    <div class="card"><div class="table-wrap"><table class="compact stack-simple" id="proc"><thead><tr><th>Typ procedury</th><th class="num">Vedou</th><th class="num">Stínoví</th><th class="num">Přijato</th></tr></thead>
+    <div class="card"><div class="table-wrap"><table class="compact cards" id="proc"><thead><tr><th>Typ procedury</th><th class="num">Vedou</th><th class="num">Stínoví</th><th class="num">Přijato</th></tr></thead>
       <tbody><tr><td colspan="4" class="loading">Načítám…</td></tr></tbody></table></div></div>
   </section>
 
@@ -72,7 +74,7 @@
   <section class="hub-block" aria-labelledby="h-group">
     <h2 id="h-group">Podle frakcí</h2>
     <div class="small muted">Řazeno podle počtu českých poslanců ve frakci, ne podle výkonu.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-group" aria-label="Definice a metodika" aria-expanded="false">ⓘ</button><div popover id="i-group" class="info-pop" role="note"><p>Řazeno podle počtu českých poslanců ve frakci, ne podle výkonu. Zprávy a stanoviska si frakce rozdělují podle bodů úměrných své velikosti, malé frakce a nezařazení jich dostávají méně bez ohledu na snahu, proto je vedle součtů průměr na poslance.</p></div></span></div>
-    <div class="card"><div class="table-wrap"><table class="compact stack-simple" id="groups"><thead><tr><th>Frakce</th><th class="num">Poslanců</th><th class="num">Zprávy – vedou</th><th class="num">Zprávy – stínové</th><th class="num">Stanoviska</th><th class="num">Projevy</th><th class="num">Otázky</th></tr></thead>
+    <div class="card"><div class="table-wrap"><table class="compact cards" id="groups"><thead><tr><th>Frakce</th><th class="num">Poslanců</th><th class="num">Zprávy – vedou</th><th class="num">Zprávy – stínové</th><th class="num">Stanoviska</th><th class="num">Projevy</th><th class="num">Otázky</th></tr></thead>
       <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody></table></div></div>
   </section>
 
@@ -123,7 +125,7 @@ setNav("work-overview");
     document.getElementById("timeline").innerHTML = series("speeches", "Ústní projevy") + series("questions", "Otázky Komisi a Radě");
 
     document.querySelector("#proc tbody").innerHTML = h.by_process.map((r) => `<tr><td>${esc(r.label)} <span class="small muted">${esc(r.process_type)}</span></td>
-      <td class="num">${fmtNum(r.reports_lead)}</td><td class="num">${fmtNum(r.reports_shadow)}</td><td class="num">${fmtNum(r.adopted)}</td></tr>`).join("");
+      <td class="num" data-label="Vedou">${fmtNum(r.reports_lead)}</td><td class="num" data-label="Stínoví">${fmtNum(r.reports_shadow)}</td><td class="num" data-label="Přijato">${fmtNum(r.adopted)}</td></tr>`).join("");
 
     const who = (ids) => ids.map((id) => meps[id] ? `<a href="${mepUrl(id)}">${esc(displayName(meps[id]))}</a>` : "").filter(Boolean).join(", ");
     const recent = document.getElementById("recent");
@@ -135,9 +137,9 @@ setNav("work-overview");
     document.querySelector("#groups tbody").innerHTML = h.by_group.map((g) => {
       const go = groups.find((x) => x.ep_code === g.code);
       const avg = (n) => `<div class="small muted">Ø ${(n / g.meps).toLocaleString("cs-CZ", { maximumFractionDigits: 1 })} na poslance</div>`;
-      return `<tr><td><strong>${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : g.short_label)}</strong></td><td class="num">${fmtNum(g.meps)}</td>
-        <td class="num">${fmtNum(g.reports_lead)}${avg(g.reports_lead)}</td><td class="num">${fmtNum(g.reports_shadow)}${avg(g.reports_shadow)}</td>
-        <td class="num">${fmtNum(g.opinions)}${avg(g.opinions)}</td><td class="num">${fmtNum(g.speeches)}${avg(g.speeches)}</td><td class="num">${fmtNum(g.questions)}${avg(g.questions)}</td></tr>`;
+      return `<tr><td><strong>${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : g.short_label)}</strong></td><td class="num" data-label="Poslanců">${fmtNum(g.meps)}</td>
+        <td class="num" data-label="Zprávy – vedou">${fmtNum(g.reports_lead)}${avg(g.reports_lead)}</td><td class="num" data-label="Zprávy – stínové">${fmtNum(g.reports_shadow)}${avg(g.reports_shadow)}</td>
+        <td class="num" data-label="Stanoviska">${fmtNum(g.opinions)}${avg(g.opinions)}</td><td class="num" data-label="Projevy">${fmtNum(g.speeches)}${avg(g.speeches)}</td><td class="num" data-label="Otázky">${fmtNum(g.questions)}${avg(g.questions)}</td></tr>`;
     }).join("");
     document.getElementById("source").innerHTML = `Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> · <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · aktualizováno ${fmtDate(h.updated)}${h.complete ? "" : " (data nejsou úplná)"}` + infoButton(
       `<p>EP Open Data (CC BY 4.0), výsledky hlasování HowTheyVote.eu (ODbL). Počty spočítal skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/work_hub.py">work_hub.py</a>. Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data jsou naposledy z února 2026.</p>`, "Zdroj a metodika");

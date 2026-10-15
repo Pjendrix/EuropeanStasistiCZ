@@ -433,7 +433,26 @@ function setNav(page) {
   document.querySelectorAll("nav a").forEach((a) => {
     if (a.dataset.page === page) a.setAttribute("aria-current", "page");
   });
+  // Mobilní lišta: stránky bez vlastní záložky (analýzy, o projektu) zvýrazní „Více“.
+  document.querySelectorAll(".tab-more[data-pages]").forEach((b) => {
+    if (b.dataset.pages.split(" ").includes(page)) b.setAttribute("aria-current", "page");
+  });
 }
+
+// V panelu „Více“ zvýraznit aktuální stránku.
+document.querySelectorAll("#more-sheet a").forEach((a) => {
+  const u = new URL(a.href, location.href);
+  if (u.pathname === location.pathname && (!u.search || u.search === location.search) && !u.hash) a.setAttribute("aria-current", "page");
+});
+
+// Panel „Více“ bez Popover API: přepínání třídou, zavření klikem mimo nebo Esc.
+document.addEventListener("click", (ev) => {
+  if (typeof HAS_POPOVER !== "undefined" && HAS_POPOVER) return;
+  const sheet = document.getElementById("more-sheet");
+  if (!sheet) return;
+  if (ev.target.closest(".tab-more")) { sheet.classList.toggle("open"); return; }
+  if (!ev.target.closest("#more-sheet")) sheet.classList.remove("open");
+});
 
 function showError(el, err) {
   el.innerHTML = `<p class="error" role="alert">${esc(err.message || err)}
@@ -870,7 +889,7 @@ function spanText(range, fmt) {
 // Tabulka delegací pro srovnání; rows = [{ label, get: (country) => text }].
 function delegationTable(dl, columns) {
   const order = [dl.own, ...dl.peers];
-  return `<div class="table-wrap"><table class="compact"><thead><tr><th>Delegace</th><th class="num">Poslanců</th>${columns.map((c) => `<th class="num">${esc(c.label)}</th>`).join("")}</tr></thead>
-    <tbody>${order.map((code) => `<tr${code === dl.own ? ' class="own-row"' : ""}><td>${esc(COUNTRY_CS[code] || code)}</td><td class="num">${fmtNum(dl.countries[code].seats)}</td>
-      ${columns.map((c) => `<td class="num">${c.get(dl.countries[code])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<div class="table-wrap"><table class="compact cards"><thead><tr><th>Delegace</th><th class="num">Poslanců</th>${columns.map((c) => `<th class="num">${esc(c.label)}</th>`).join("")}</tr></thead>
+    <tbody>${order.map((code) => `<tr${code === dl.own ? ' class="own-row"' : ""}><td>${esc(COUNTRY_CS[code] || code)}</td><td class="num" data-label="Poslanců">${fmtNum(dl.countries[code].seats)}</td>
+      ${columns.map((c) => `<td class="num" data-label="${esc(c.label)}">${c.get(dl.countries[code])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
