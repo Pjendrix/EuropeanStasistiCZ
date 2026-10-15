@@ -39,18 +39,20 @@ RECENT = 10
 INDEPENDENT = "Independent"  # EP tak označuje poslance bez strany; nejde o stranu
 
 DEFINITIONS = {
-    "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). "
-                  "Počítají se jen hlasování v době jeho mandátu podle EP.",
-    "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce "
+    "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo "
+                  "se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, "
+                  "které data neuvádějí (nemoc, rodičovská, služební cesta).",
+    "attendance_main": "Účast na hlasování jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce "
                        "proti aktu Komise. "
                        "Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
     "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): "
                  "závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), "
                  "návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, "
                  "dílčí hlasování o části textu, procedurální hlasování, ostatní.",
-    "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). "
-                     "Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). "
-                     "Nezařazení (NI) se nepočítají.",
+    "group_loyalty": "Hlasuje s frakcí: v kolika procentech hlasování hlasoval stejně jako většina jeho frakce (k datu "
+                     "hlasování). Vysoké ani nízké číslo samo o sobě není dobré ani špatné. Odchylky často vycházejí z "
+                     "postoje domácí strany nebo z národních zájmů. Počítá se jen tam, kde hlasoval a frakce měla "
+                     "jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
     "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. "
                     "Bez hlasování s nerozhodnou většinou.",
     "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",

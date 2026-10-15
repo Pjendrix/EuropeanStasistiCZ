@@ -55,7 +55,7 @@ async function listPage() {
     <p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období. Příslušnost ke straně se bere
       k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
     <div class="table-wrap"><table>
-      <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Docházka</th>
+      <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Účast na hlasování</th>
         <th class="num">Jednotnost</th><th class="num">Strana se rozdělila</th></tr></thead>
       <tbody>${idx.parties.map((p) => `<tr>
         <td>${entityCell(p, { name: p.name || p.short_label, href: `party.html?id=${p.id}`, sub: esc(p.short_label) })}</td>
@@ -89,7 +89,7 @@ async function detailPage(id) {
 
     <h2>Poslanci</h2>
     <div class="table-wrap"><table>
-      <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Docházka</th><th class="num">Loajalita k frakci</th></tr></thead>
+      <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
       <tbody>${p.member_list.map((m) => `<tr>
         <td><div class="mep-cell"><img src="${photoUrl(m)}" alt="" loading="lazy">
           <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
@@ -100,7 +100,7 @@ async function detailPage(id) {
 
     <h2>Souhrn za stranu</h2>
     <div class="metrics">
-      <div class="card metric"><div class="label">Docházka poslanců strany</div><div class="value">${countPct(pct(t.attendance))}</div>
+      <div class="card metric"><div class="label">Účast poslanců strany na hlasování</div><div class="value">${countPct(pct(t.attendance))}</div>
         <div class="detail">${pairText(t.attendance, "hlasů poslanců")}</div></div>
       <div class="card metric"><div class="label">Jednotnost</div><div class="value">${single ? "–" : fmtPct(pct(p.cohesion))}</div>
         <div class="detail">${single ? "strana měla v žádném hlasování víc než 1 hlasujícího poslance" : pairText(p.cohesion)}</div>

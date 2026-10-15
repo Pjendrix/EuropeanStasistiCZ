@@ -161,7 +161,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     b = prof.get("benchmarks")
     rng = f"od {fmt_date(mep['mandates'][0]['start'])}"
     att = t["attendance"]
-    desc = f"{name}: docházka {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
+    desc = f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
            f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
     cite = lambda what, pair: cite_button(
         f"{name}: {what} {fmt_pct(pair)} ({fmt_num(pair[0])} z {fmt_num(pair[1])} jmenovitých hlasování v Evropském parlamentu "
@@ -210,9 +210,9 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 
 <h2 id="dochazka">Hlasování v číslech</h2>
 <div class="metrics">
-  {metric("Docházka", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("docházka", t["attendance"]))}
-  {metric("Docházka – závěrečná hlasování", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("docházka u závěrečných hlasování", t["attendance_main"]))}
-  {metric("Loajalita k frakci", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("loajalita k frakci", t["group_loyalty"]))}
+  {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("účast na hlasování", t["attendance"]))}
+  {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]))}
+  {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("hlasuje s frakcí", t["group_loyalty"]))}
   {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
 </div>
 <p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
@@ -242,7 +242,7 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     members = "".join(
         f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a>'
         f'<div class="small muted">{", ".join(fmt_date(x["start"]) + " – " + (fmt_date(x["end"]) if x.get("end") else "dosud") for x in m["party_periods"])}'
-        f' · docházka {fmt_pct(m["total"]["attendance"])}</div></li>'
+        f' · účast na hlasování {fmt_pct(m["total"]["attendance"])}</div></li>'
         for m in sorted(pp["member_list"], key=lambda m: m.get("sort_label") or m["name"]))
     cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
                        f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""

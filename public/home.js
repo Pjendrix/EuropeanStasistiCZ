@@ -21,7 +21,7 @@ function renderKpis(ov, bench) {
   const med = bench?.ep?.attendance;
   document.getElementById("kpis").innerHTML = [
     kpiBlock("Jmenovitých hlasování", ov.votes_total, {}, `od ${fmtDate(ov.period.from)} · <a href="votes.html">seznam hlasování</a>`),
-    kpiBlock("Docházka delegace", Math.round((att[0] / att[1]) * 1000) / 10, { decimals: 1, suffix: " %" },
+    kpiBlock("Účast delegace na hlasování", Math.round((att[0] / att[1]) * 1000) / 10, { decimals: 1, suffix: " %" },
       `${fmtNum(att[0])} z ${fmtNum(att[1])} hlasů současných poslanců` +
       (med != null ? ` · medián celého EP ${fmtPct(med)}` : "")),
   ].join("");
@@ -34,7 +34,7 @@ function renderEntries(ov, session) {
   if (!el) return;
   const topics = (ov.topics || []).slice(0, 6);
   el.innerHTML = `
-    <a class="entry" href="#poslanci"><strong>Najít poslance</strong><span>${fmtNum(ov.meps.filter(isActive).length)} poslanců v mandátu, docházka a hlasování</span></a>
+    <a class="entry" href="#poslanci"><strong>Najít poslance</strong><span>${fmtNum(ov.meps.filter(isActive).length)} poslanců v mandátu, jejich hlasování a účast</span></a>
     <a class="entry" href="votes.html?m=${esc((session.to || "").slice(0, 7))}&f=final&od=${esc(session.from || "")}"><strong>Co se naposledy odhlasovalo</strong>
       <span>závěrečná hlasování ze zasedání ${fmtDate(session.from)} – ${fmtDate(session.to)}</span></a>
     <div class="entry"><strong>Témata</strong>
@@ -159,7 +159,7 @@ function renderSession(session) {
      <a href="rozkol.html?v=last_session">všechna rozdělená hlasování zasedání (${fmtNum(session.split_count)})</a>`;
 }
 
-// Karta poslance: docházka vůči mediánu EP, loajalita vůči mediánu vlastní frakce (U2).
+// Karta poslance: účast na hlasování vůči mediánu EP, hlasování s frakcí vůči mediánu vlastní frakce (U2).
 function mepCard({ m, s, g, p, active }, groups, parties, bench) {
   const gObj = groups.find((x) => x.ep_code === g?.code);
   const pObj = parties.find((x) => String(x.id) === String(p?.id));
@@ -175,13 +175,13 @@ function mepCard({ m, s, g, p, active }, groups, parties, bench) {
       ${logoTile(pObj, 28)}
     </div>
     ${m.short_mandate ? `<p class="small note" style="margin:0 0 .4rem">${esc(SHORT_MANDATE_NOTE)}</p>` : ""}
-    ${benchRow("Docházka", s.attendance, bench?.ep?.attendance ?? null, "medián EP")}
-    ${benchRow("Loajalita k frakci", s.group_loyalty, isNI ? null : (gb?.group_loyalty ?? null), "medián frakce",
+    ${benchRow("Účast na hlasování", s.attendance, bench?.ep?.attendance ?? null, "medián EP")}
+    ${benchRow("Hlasuje s frakcí", s.group_loyalty, isNI ? null : (gb?.group_loyalty ?? null), "medián frakce",
       { naText: isNI ? NI_NOTE : "nepočítá se" })}
   </a>`;
 }
 
-// Výchozí zobrazení po frakcích (pořadí jako v půlkruhu); nadpis = logo, název, počet, medián loajality frakce.
+// Výchozí zobrazení po frakcích (pořadí jako v půlkruhu); nadpis = logo, název, počet, medián frakce v hlasování s frakcí.
 function groupedCards(list, groups, parties, bench) {
   const by = {};
   list.forEach((r) => { (by[htvCode(r.m, groups)] = by[htvCode(r.m, groups)] || []).push(r); });
@@ -193,7 +193,7 @@ function groupedCards(list, groups, parties, bench) {
     return `<section class="group-block" aria-label="${esc(g?.name_cs || groupName(c, groups))}">
       <h3 class="group-head">${logoTile(g, 24) || `<span class="dot" style="background:${groupColor(g)}"></span>`}
         <span>${esc(g?.name_cs || groupName(c, groups))}</span>
-        <span class="small muted">${rows.length} ${rows.length === 1 ? "poslanec" : rows.length < 5 ? "poslanci" : "poslanců"}${med != null ? ` · medián loajality frakce v celém EP ${fmtPct(med)}` : ""}</span></h3>
+        <span class="small muted">${rows.length} ${rows.length === 1 ? "poslanec" : rows.length < 5 ? "poslanci" : "poslanců"}${med != null ? ` · medián frakce v hlasování s frakcí v celém EP ${fmtPct(med)}` : ""}</span></h3>
       <div class="mep-grid">${rows.map((r) => mepCard(r, groups, parties, bench)).join("")}</div></section>`;
   }).join("");
 }
@@ -215,7 +215,7 @@ function groupedCards(list, groups, parties, bench) {
     document.getElementById("source").innerHTML = sourceLine(ov) +
       (bench ? ` Mediány: ${esc(bench.definition || "")}` : "");
     document.getElementById("source").before(csvButton("poslanci.csv", () => [
-      ["id", "poslanec", "frakce", "strana", "v_mandatu", "dochazka", "dochazka_hlasovani", "dochazka_zaverecna", "loajalita_frakce", "shoda_s_cechy"],
+      ["id", "poslanec", "frakce", "strana", "v_mandatu", "ucast_na_hlasovani", "hlasovani_v_dobe_mandatu", "ucast_zaverecna", "hlasuje_s_frakci", "shoda_s_cechy"],
       ...ov.meps.map((m) => [m.id, displayName(m), m.group?.short_label || "", m.party?.short_label || "", isActive(m) ? "ano" : "ne",
         csvShare(m.total.attendance), m.total.attendance[1], csvShare(m.total.attendance_main), csvShare(m.total.group_loyalty), csvShare(m.total.cz_agreement)]),
     ], "Stáhnout poslance (CSV)"));
@@ -260,9 +260,9 @@ function groupedCards(list, groups, parties, bench) {
             if (!p) return `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`;
             if (po?.independent) return `<div class="entity-cell"><span class="logo-slot sm"></span>${partyBadge(p.id, p.short_label, parties, m)}</div>`;
             return entityCell(po || {}, { name: p.short_label, href: po ? `party.html?id=${po.id}` : "", size: 22, slot: "sm" }); })()}</td>
-          <td>${benchRow("Docházka", s.attendance, bench?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
+          <td>${benchRow("Účast na hlasování", s.attendance, bench?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
           <td class="num">${pctCell(s.attendance_main)}</td>
-          <td>${benchRow("Loajalita", s.group_loyalty, isNI ? null : (groupBench(bench, groups, g?.code)?.group_loyalty ?? null), "medián frakce",
+          <td>${benchRow("Hlasuje s frakcí", s.group_loyalty, isNI ? null : (groupBench(bench, groups, g?.code)?.group_loyalty ?? null), "medián frakce",
             { compact: true, naText: isNI ? NI_NOTE : "nepočítá se" })}</td>
           <td class="num">${pctCell(s.cz_agreement)}</td>
         </tr>`;

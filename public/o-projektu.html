@@ -64,11 +64,11 @@
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
-      <li>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká docházka může mít i důvody jako nemoc nebo rodičovství.</li>
+      <li>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká účast na hlasování může mít i důvody jako nemoc nebo rodičovství.</li>
       <li>Oficiální výsledek bereme ze zdroje. U několika hlasování neodpovídá prosté většině (např. vyžadovala absolutní většinu
         361 hlasů, nebo hlasování 181313 skončilo 289 : 289 a zdroj ho uvádí jako přijaté). Taková hlasování se do
         rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.</li>
-      <li>Loajalita k frakci a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
+      <li>Hlasování s frakcí a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
       <li>Čísla počítá deterministický skript
         <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
     </ul>
@@ -88,6 +88,11 @@
 
   <h2 id="opravy">Opravy a změny metodiky</h2>
   <div class="card"><ul class="plain">
+    <li><strong>15. 10. 2026</strong> – Přejmenování metrik, aby název neslibovaly víc, než data měří. „Docházka“ je nově
+      <strong>Účast na hlasování</strong>: počítá jmenovitá hlasování, ve kterých poslanec hlasoval, ne prezenci na jednání (tu vede EP
+      zvlášť). „Loajalita k frakci“ je nově <strong>Hlasuje s frakcí</strong>, protože „loajalita“ je hodnotící slovo a odchylky často
+      vycházejí z postoje domácí strany. Čísla se nezměnila, změnily se jen názvy, definice a hlavičky CSV
+      (<code>ucast_na_hlasovani</code>, <code>ucast_zaverecna</code>, <code>hlasuje_s_frakci</code>).</li>
     <li><strong>15. 10. 2026</strong> – Stránka „Co prošlo“ je nově „Vlastní práce“: místo pořadí podle přijatých zpráv ukazuje
       profil přidělených rolí (zpravodaj/ka a stínový/á zpravodaj/ka u zpráv i stanovisek výborů) s třetinou v delegaci
       u každé kategorie. Celkové pořadí jsme zrušili, protože žádné vážení různých druhů práce by nebylo podložené.
@@ -153,7 +158,7 @@ setNav("about");
   try {
     const stats = await getJSON("overview.json");
     const names = {
-      attendance: "Docházka", attendance_main: "Docházka – závěrečná hlasování", vote_kind: "Typ hlasování", group_loyalty: "Loajalita k frakci",
+      attendance: "Účast na hlasování", attendance_main: "Účast na hlasování – závěrečná", vote_kind: "Typ hlasování", group_loyalty: "Hlasuje s frakcí",
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
       outcome_agreement: "Soulad s výsledkem", group_outcome_agreement: "Soulad s výsledkem – průměr frakce",
       close_votes: "Těsná hlasování", decisive_votes: "Kde rozhodly české hlasy", against_group: "Hlasování proti frakci",

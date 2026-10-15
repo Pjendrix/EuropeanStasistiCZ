@@ -1,5 +1,5 @@
 // Profil poslance (p/{id}.html, dříve mep.html?id=). Statická stránka má obsah v HTML (build_pages.py),
-// tento skript ho nahradí plnou interaktivní verzí (graf docházky, přepínače, seznamy).
+// tento skript ho nahradí plnou interaktivní verzí (graf účasti na hlasování, přepínače, seznamy).
 "use strict";
 
 setNav("meps");
@@ -76,7 +76,7 @@ function monthlyChart(monthly) {
       <span class="sr-only">${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování</span></button>`;
   }).join("");
   return `<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>
-    <div class="chart" role="group" aria-label="Docházka po měsících">${cols}</div></div>
+    <div class="chart" role="group" aria-label="Účast na hlasování po měsících">${cols}</div></div>
     <p class="chart-detail" aria-live="polite"></p>`;
 }
 
@@ -312,21 +312,21 @@ function periodText(x) {
 
       <p class="lead" style="margin-top:1.5rem">${summarySentence(mep, t, profile)}</p>
       <nav class="subnav profile-nav" aria-label="Části profilu">
-        <a href="${here}#dochazka">Docházka</a>${hasOwn ? `<a href="${here}#vlastni-prace">Vlastní práce</a>` : ""}
+        <a href="${here}#dochazka">Účast na hlasování</a>${hasOwn ? `<a href="${here}#vlastni-prace">Vlastní práce</a>` : ""}
         <a href="${here}#frakce">Frakce a strana</a><a href="${here}#temata">Témata</a>
         <a href="${here}#s-kym">S kým hlasuje</a><a href="${here}#posledni">Poslední hlasování</a>
       </nav>
 
       <h2 id="dochazka">Hlasování v číslech</h2>
       <div class="metrics">
-        ${metricCard("Docházka", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika",
-          b?.ep?.attendance, "medián EP", cite("docházka", t.attendance),
+        ${metricCard("Účast na hlasování", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika",
+          b?.ep?.attendance, "medián EP", cite("účast na hlasování", t.attendance),
           { extra: b?.group?.attendance != null ? `medián frakce ${fmtPct(b.group.attendance)}` : "" })}
-        ${metricCard("Docházka – závěrečná hlasování", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
-          b?.ep?.attendance_main, "medián EP", cite("docházka u závěrečných hlasování", t.attendance_main),
+        ${metricCard("Účast na hlasování – závěrečná", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
+          b?.ep?.attendance_main, "medián EP", cite("účast na hlasování u závěrečných hlasování", t.attendance_main),
           { extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
-        ${metricCard("Loajalita k frakci", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
-          isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("loajalita k frakci", t.group_loyalty),
+        ${metricCard("Hlasuje s frakcí", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
+          isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("hlasuje s frakcí", t.group_loyalty),
           { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
         ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, "", cite("shoda s ostatními českými poslanci", t.cz_agreement))}
       </div>
@@ -353,7 +353,7 @@ function periodText(x) {
       <div class="card">${timeline(mep, groups, parties)}
         <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a>.</p></div>
 
-      <h2 id="mesice">Docházka po měsících</h2>
+      <h2 id="mesice">Účast na hlasování po měsících</h2>
       <div class="card">${monthlyChart(profile.monthly)}
         <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok.
         Nízká čárka = v měsíci ${byGender(mep, "nehlasoval", "nehlasovala")} ani jednou. Klepnutím na sloupec se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
@@ -403,7 +403,7 @@ function periodText(x) {
       <div class="card">
         <p class="small muted">Deset témat s nejvíce hlasováními podle Legislativní observatoře EP. Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).</p>
         <div class="table-wrap"><table>
-          <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Docházka</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Loajalita k frakci</th></tr></thead>
+          <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Účast na hlasování</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Hlasuje s frakcí</th></tr></thead>
           <tbody>${profile.topics.map((x) => `<tr>
             <td><a href="votes.html?t=${esc(x.code)}&f=final">${esc(x.label_cs || x.label || `téma ${x.code} (zdroj neuvádí název)`)}</a> <span class="small muted">${esc(x.code)}</span></td>
             <td class="num">${fmtNum(x.attendance[1])}</td>

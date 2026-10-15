@@ -51,7 +51,7 @@
       <option value="lead_opinions:-1">podle stanovisek (zpravodaj/ka)</option>
       <option value="shadow_reports:-1">podle zpráv (stínový/á)</option>
       <option value="shadow_opinions:-1">podle stanovisek (stínový/á)</option>
-      <option value="attendance:-1">podle docházky na hlasování</option>
+      <option value="attendance:-1">podle účasti na hlasování</option>
       <option value="motions_signed:-1">podle podepsaných návrhů usnesení</option>
     </select></label>
     <p class="tier-legend small muted" aria-hidden="true">
@@ -67,7 +67,7 @@
           <th rowspan="2" data-key="name"><button>Poslanec</button></th>
           <th colspan="2" class="group">Vede text <span class="muted">(zpravodaj/&#8288;ka)</span></th>
           <th colspan="2" class="group">Vyjednává za frakci <span class="muted">(stínový/&#8288;á)</span></th>
-          <th rowspan="2" data-key="attendance" class="num"><button title="Podíl jmenovitých hlasování v plénu, kterých se zúčastnil(a), z hlasování v době mandátu">Docházka na hlasování</button><div class="th-sub" id="att-median"></div></th>
+          <th rowspan="2" data-key="attendance" class="num"><button title="Podíl jmenovitých hlasování v plénu, kterých se zúčastnil(a), z hlasování v době mandátu">Účast na hlasování</button><div class="th-sub" id="att-median"></div></th>
           <th rowspan="2" data-key="motions_signed" class="num secondary"><button title="Vlastní i společné návrhy usnesení, které poslanec podepsal. Nevstupují do srovnání.">Podepsané návrhy usnesení</button></th>
         </tr>
         <tr>
@@ -140,7 +140,7 @@ setNav("work");
       „prošlo“ = Parlament text přijal ve jmenovitém hlasování. Náhradníci, kteří nastoupili později, mají kratší dobu
       a u jména je uvedeno, odkdy mandát mají. <strong>Podepsané návrhy usnesení</strong> do srovnání nevstupují: návrh obvykle
       podepisují desítky poslanců za celou frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá hlavně o frakci.
-      <strong>Docházka</strong> = podíl jmenovitých hlasování v plénu v době mandátu; medián EP je prostřední hodnota všech poslanců EP.
+      <strong>Účast na hlasování</strong> = podíl jmenovitých hlasování v plénu v době mandátu; medián EP je prostřední hodnota všech poslanců EP.
       <strong>Funkce</strong> (předsednictví výboru, vedení frakce) uvádíme podle EP jako kontext: zabírají čas, který pak chybí na vlastní texty.
       <strong>Velikost frakce</strong>: zprávy a stanoviska si frakce rozdělují podle bodů úměrných své velikosti, takže poslanci malých frakcí
       a nezařazení jich dostávají méně bez ohledu na vlastní snahu; čísla proto neupravujeme, ale srovnávejte s tím na paměti.
@@ -157,7 +157,7 @@ setNav("work");
     document.getElementById("source").before(csvButton("vlastni-prace.csv", () => [
       ["poslanec_id", "poslanec", "frakce", "strana", "zpravy_zpravodaj", "zpravy_zpravodaj_prijate", "zpravy_zpravodaj_tretina",
         "stanoviska_zpravodaj", "stanoviska_zpravodaj_tretina", "zpravy_stinovy", "zpravy_stinovy_prijate", "zpravy_stinovy_tretina",
-        "stanoviska_stinovy", "stanoviska_stinovy_tretina", "dochazka", "podepsane_navrhy_usneseni", "funkce", "mandat_od"],
+        "stanoviska_stinovy", "stanoviska_stinovy_tretina", "ucast_na_hlasovani", "podepsane_navrhy_usneseni", "funkce", "mandat_od"],
       ...current.map((r) => [r.m.id, displayName(r.m), r.m.group?.short_label || "", r.m.party?.short_label || "",
         r.m.lead_reports, r.m.lead_adopted, tierLabel(r.d.tiers.lead_reports), r.m.lead_opinions, tierLabel(r.d.tiers.lead_opinions),
         r.m.shadow_reports, r.m.shadow_adopted, tierLabel(r.d.tiers.shadow_reports), r.m.shadow_opinions, tierLabel(r.d.tiers.shadow_opinions),
