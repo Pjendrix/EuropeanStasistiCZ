@@ -139,10 +139,12 @@ def test_run_writes_files(tmp_path):
     assert stats["period"] == {"from": "2024-09-16", "to": "2024-09-16"}
     groups = json.loads((data / "groups.json").read_text(encoding="utf-8"))
     assert groups == [{"code": "EPP", "ep_code": "PPE", "short_label": "EPP", "label": "MOCK EPP",
-                       "name_cs": "MOCK lidovci", "color": None, "logo": None, "brand_color": None, "chart_color": None, "logo_source": None}]
+                       "name_cs": "MOCK lidovci", "color": None, "logo": None, "brand_color": None, "chart_color": None, "logo_source": None,
+                       "logo_aspect": None}]
     parties = json.loads((data / "parties.json").read_text(encoding="utf-8"))
     assert parties == [{"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "independent": False,
-                        "color": None, "logo": "assets/logos/cz/20.svg", "brand_color": None, "chart_color": None, "logo_source": None}]
+                        "color": None, "logo": "assets/logos/cz/20.svg", "brand_color": None, "chart_color": None, "logo_source": None,
+                        "logo_aspect": None}]
 
 
 def test_manual_colors_are_merged_and_never_written(tmp_path):

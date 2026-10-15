@@ -274,8 +274,11 @@ tr.former td { opacity: .72; }
 .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--badge-dot, var(--muted)); flex: none; }
 .badge img { height: 1.1em; width: auto; }
 .logo-tile { display: inline-flex; align-items: center; flex: none; padding: 4px; border-radius: 6px; background: #FFFFFF; box-shadow: 0 0 0 1px var(--border); box-sizing: content-box; }
-.logo-tile img { height: 100%; width: auto; max-width: 160px; display: block; object-fit: contain; border-radius: 0; box-shadow: none; background: none; }
+.logo-tile img { height: 100%; width: auto; max-width: 220px; display: block; object-fit: contain; border-radius: 0; box-shadow: none; background: none; }
 .group-chip .logo-tile { padding: 2px; }
+/* Pevná šířka pro logo v tabulkách, aby štítky frakcí lícovaly i u řádků bez loga. */
+.logo-slot { display: inline-flex; justify-content: center; width: 96px; flex: none; }
+@media (max-width: 640px) { .logo-slot { width: 64px; } .logo-slot .logo-tile img { max-width: 56px; } }
 .logo-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .5rem 0; }
 .badge.outline { background: transparent; color: var(--muted); }
 .badge.outline::before { display: none; }
@@ -541,7 +544,7 @@ table.matrix tbody tr:hover { background: none; }
 .mep-card-head { align-items: flex-start; }
 .mep-card-head > img, .mep-card-head .avatar-initials { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--g, var(--muted)); }
 .mep-card-head .logo-tile { margin-left: auto; }
-.mep-card-head .logo-tile img { max-width: 64px; }
+.mep-card-head .logo-tile img { max-width: 72px; }
 .mep-card-head > div { flex: 1; }
 .mep-card .sub .dot, .group-head .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--g, var(--muted)); margin-right: .35rem; vertical-align: middle; }
 .group-head .dot { width: 10px; height: 10px; margin: 0; }
@@ -594,3 +597,15 @@ main h2[id] { scroll-margin-top: 4rem; }
 .names summary { cursor: pointer; color: var(--link); }
 .names a, .hemi-names a, .positions-grid a { text-decoration: none; }
 .names a:hover, .names a:focus-visible, .hemi-names a:hover, .positions-grid a:hover { text-decoration: underline; text-decoration-color: var(--gold); }
+
+/* Vlastní práce: podnadpisy a štítek typu procedury (legislativní zvýrazněné). */
+.own-sub { font-size: 1.05rem; margin: 1.4rem 0 .6rem; }
+.own-list .badge { font-size: .7rem; padding: .05rem .45rem; margin-left: .35rem; vertical-align: middle; }
+.own-list .badge.leg { color: var(--text); border-color: var(--gold); }
+
+/* Vysvětlit s AI (odkazy ven s připraveným dotazem). */
+.ask-ai { margin: 1rem 0; }
+.ask-ai summary { cursor: pointer; }
+.ask-ai-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+.ask-ai-prompt { white-space: pre-wrap; background: var(--bg, transparent); border: 1px solid var(--border); border-radius: 8px; padding: .6rem .8rem; margin: 0; max-height: 12rem; overflow: auto; font-family: inherit; }
+.ask-ai-row .more-btn { margin-top: 0; display: inline-flex; align-items: center; text-decoration: none; }

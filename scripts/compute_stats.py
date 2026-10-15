@@ -431,6 +431,42 @@ def find_logo(assets: Path, kind: str, key: str) -> str | None:
     return None
 
 
+SVG_TAG_RE = re.compile(r"<svg\b[^>]*>", re.S)
+SVG_ATTR_RE = r'\b{}\s*=\s*["\']([^"\']+)["\']'
+NUM_RE = re.compile(r"^\s*([0-9]*\.?[0-9]+)\s*(px)?\s*$")
+
+
+def logo_aspect(path: Path) -> float | None:
+    """Poměr šířka/výška loga (SVG z viewBox, jinak width/height; rastr přes Pillow). Web podle něj
+    vyrovná velikost log na stejnou plochu, aby široká slovní loga nepřebíjela čtvercová. Neznámý = None."""
+    if not path.exists():
+        return None
+    try:
+        if path.suffix.lower() == ".svg":
+            tag = SVG_TAG_RE.search(path.read_text(encoding="utf-8", errors="replace"))
+            if not tag:
+                return None
+            vb = re.search(SVG_ATTR_RE.format("viewBox"), tag.group(0))
+            if vb:
+                parts = [float(x) for x in re.split(r"[\s,]+", vb.group(1).strip())]
+                if len(parts) == 4 and parts[2] > 0 and parts[3] > 0:
+                    return round(parts[2] / parts[3], 3)
+            dims = []
+            for attr in ("width", "height"):
+                m = re.search(SVG_ATTR_RE.format(attr), tag.group(0))
+                n = NUM_RE.match(m.group(1)) if m else None
+                dims.append(float(n.group(1)) if n else None)
+            if dims[0] and dims[1]:
+                return round(dims[0] / dims[1], 3)
+            return None
+        from PIL import Image
+        with Image.open(path) as im:
+            w, h = im.size
+        return round(w / h, 3) if w and h else None
+    except (OSError, ValueError):
+        return None
+
+
 COLOR_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
@@ -483,7 +519,8 @@ def identity(manual: dict, logos: dict, key: str, assets: Path, kind_dir: str) -
     lg = logos.get(key) or {}
     logo = lg.get("logo") or m.get("logo") or find_logo(assets, kind_dir, key)
     return {"color": brand or chart, "brand_color": brand, "chart_color": chart or brand,
-            "logo": logo, "logo_source": lg.get("logo_source")}
+            "logo": logo, "logo_source": lg.get("logo_source"),
+            "logo_aspect": logo_aspect(assets.parent / logo) if logo else None}
 
 
 def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], assets: Path,

@@ -75,10 +75,20 @@ function groupColor(g) {
 }
 
 // Logo na bílé dlaždici (funguje i v tmavém režimu bez úpravy loga); jen na místech s dost místa, ne v drobných štítcích.
-function logoTile(entity, height = 28) {
+// Dlaždice má pevnou výšku `size`; samotné logo se zmenší podle poměru stran (logo_aspect z compute_stats.py),
+// aby široká slovní loga (PATRIOTS.EU, renew europe) měla zhruba stejnou plochu jako čtvercová (ECR, S&D).
+// Logo se jen zmenšuje, kresba se nemění.
+function logoHeight(aspect, size) {
+  if (!aspect || aspect <= 1) return size;
+  return Math.round(size * Math.max(0.42, Math.pow(aspect, -0.4)) * 10) / 10;
+}
+
+function logoTile(entity, size = 28) {
   if (!entity || !entity.logo) return "";
   const name = entity.name_cs || entity.name || entity.label || entity.short_label || "";
-  return `<span class="logo-tile" style="height:${height}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" loading="lazy"></span>`;
+  const h = logoHeight(entity.logo_aspect, size);
+  const w = entity.logo_aspect ? ` width="${Math.round(h * entity.logo_aspect)}"` : "";
+  return `<span class="logo-tile" style="height:${size}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" style="height:${h}px"${w} height="${Math.round(h)}" loading="lazy"></span>`;
 }
 
 const cache = new Map();

@@ -142,7 +142,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <h2>Jak hlasovaly frakce</h2>
       <div class="table-wrap"><table>
         <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
-        <tbody>${groupRows.map(([code, row]) => `<tr><td><span class="logo-row" style="margin:0">${logoTile(groups.find((x) => x.code === code), 20)}${groupBadge(code, groups)}</span></td>
+        <tbody>${groupRows.map(([code, row]) => `<tr><td><span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupBadge(code, groups)}</span></td>
           ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${splitBar(row)}</td></tr>`).join("")}</tbody>
       </table></div>
       <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
