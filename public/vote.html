@@ -123,9 +123,9 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>
       <p class="muted" style="margin-bottom:.3rem">${fmtDate(v.date)} · ${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování")}</p>
       <h1>${esc(heading)}</h1>
-      ${final ? (desc ? `<p class="muted">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
-        `<p class="lead" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
-      ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p>${esc(v.procedure.title)}</p>` : ""}
+      ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
+        `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
+      ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:

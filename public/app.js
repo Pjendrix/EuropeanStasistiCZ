@@ -408,10 +408,11 @@ function sortable(table, columns, rows, render, initial) {
 
 function sourceLine(stats) {
   const rel = stats?.sources?.votes?.release;
-  return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a
-    <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0). Čísla počítá skript
-    <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>,
-    <a href="o-projektu.html#metodika">metodika</a>.`;
+  const date = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? ` · data k ${fmtDate(rel.slice(0, 10))}` : "";
+  return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
+    + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
+      Čísla počítá skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
+      <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Zdroj a metodika");
 }
 
 // --- sdílené části pro seznamy hlasování -------------------------------------
@@ -727,6 +728,54 @@ document.addEventListener("click", (ev) => {
   history.replaceState(null, "", location.pathname + location.search + a.getAttribute("href"));
   target.scrollIntoView({ behavior: REDUCED_MOTION ? "auto" : "smooth" });
   if (a.classList.contains("skip-link")) { target.setAttribute("tabindex", "-1"); target.focus(); }
+});
+
+// --- tlačítko ⓘ s vysvětlením (S1) --------------------------------------------------------------
+// Vysvětlivky, definice a metodika jsou o jedno kliknutí dál: nativní popover (top layer), jinak fallback.
+let infoSeq = 0;
+function infoButton(html, label = "Jak to číst, definice a zdroj") {
+  const id = `info-${++infoSeq}-${Math.random().toString(36).slice(2, 6)}`;
+  return `<span class="info-wrap"><button type="button" class="info-btn" popovertarget="${id}" aria-label="${esc(label)}" aria-expanded="false">ⓘ</button>`
+    + `<div popover id="${id}" class="info-pop" role="note">${html}</div></span>`;
+}
+// Jednořádková poznámka s ⓘ: krátký text vidět, zbytek (definice, metodika, zdroje) po kliknutí.
+function noteLine(short, long, cls = "small muted") {
+  return `<div class="${cls}">${short}${long ? infoButton(`<p>${long}</p>`) : ""}</div>`;
+}
+const HAS_POPOVER = typeof HTMLElement !== "undefined" && "popover" in HTMLElement.prototype;
+if (!HAS_POPOVER) document.documentElement.classList.add("no-popover");
+
+function placeInfo(pop, btn) {
+  const r = btn.getBoundingClientRect();
+  const w = Math.min(pop.offsetWidth || 420, window.innerWidth - 16);
+  pop.style.inset = "auto";
+  pop.style.margin = "0";
+  pop.style.left = `${Math.min(Math.max(8, r.left), window.innerWidth - w - 8)}px`;
+  const below = r.bottom + 6;
+  pop.style.top = `${below + pop.offsetHeight > window.innerHeight - 8 ? Math.max(8, r.top - 6 - pop.offsetHeight) : below}px`;
+}
+function infoPopFor(btn) { return document.getElementById(btn.getAttribute("popovertarget")); }
+document.addEventListener("beforetoggle", (ev) => {
+  if (!ev.target.classList?.contains("info-pop")) return;
+  const btn = document.querySelector(`[popovertarget="${ev.target.id}"]`);
+  if (ev.newState === "open" && btn) { btn.setAttribute("aria-expanded", "true"); requestAnimationFrame(() => placeInfo(ev.target, btn)); }
+  else btn?.setAttribute("aria-expanded", "false");
+}, true);
+document.addEventListener("click", (ev) => {
+  if (HAS_POPOVER) return;
+  const btn = ev.target.closest(".info-btn");
+  document.querySelectorAll(".info-pop.open").forEach((p) => { if (!btn || p !== infoPopFor(btn)) { p.classList.remove("open"); document.querySelector(`[popovertarget="${p.id}"]`)?.setAttribute("aria-expanded", "false"); } });
+  if (btn) {
+    const p = infoPopFor(btn);
+    const open = p.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+    if (open) placeInfo(p, btn);
+  }
+});
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Escape" || HAS_POPOVER) return;
+  const p = document.querySelector(".info-pop.open");
+  if (p) { p.classList.remove("open"); const b = document.querySelector(`[popovertarget="${p.id}"]`); b?.setAttribute("aria-expanded", "false"); b?.focus(); }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

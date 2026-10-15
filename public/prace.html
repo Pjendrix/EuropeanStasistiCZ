@@ -41,8 +41,9 @@
     <a href="prace-poslanci.html" data-page="work-table">Tabulka po poslancích</a>
   </nav>
   <h1>Práce českých europoslanců</h1>
-  <p class="lead">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách.
-    Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je. Za celé 10. období, všichni čeští poslanci včetně bývalých.</p>
+  <div class="lead-row"><p class="lead">Zprávy, stanoviska, projevy a otázky českých poslanců za celé 10. období.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-prace" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-prace" class="info-pop" role="note">
+    <p>Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je. Za celé 10. období, všichni čeští poslanci včetně bývalých.</p>
+  </div></span></div>
 
   <section aria-labelledby="h-kpi">
     <h2 id="h-kpi" class="sr-only">Souhrn</h2>
@@ -51,13 +52,13 @@
 
   <section class="hub-block" aria-labelledby="h-time">
     <h2 id="h-time">Kdy se pracovalo</h2>
-    <p class="small muted">Ústní projevy v plénu a otázky Komisi a Radě po měsících (součet za celou delegaci). V srpnu se nezasedá, proto projevy chybí; otázky mohou přicházet i mimo zasedání.</p>
+    <div class="small muted">Ústní projevy a otázky po měsících, součet za celou delegaci.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-time" aria-label="Poznámka" aria-expanded="false">ⓘ</button><div popover id="i-time" class="info-pop" role="note"><p>Ústní projevy v plénu a otázky Komisi a Radě po měsících (součet za celou delegaci). V srpnu se nezasedá, proto projevy chybí; otázky mohou přicházet i mimo zasedání.</p></div></span></div>
     <div class="card"><div id="timeline" class="loading">Načítám…</div></div>
   </section>
 
   <section class="hub-block" aria-labelledby="h-proc">
     <h2 id="h-proc">Na jakých textech</h2>
-    <p class="small muted">Zprávy, které čeští poslanci vedou jako zpravodajové nebo vyjednávají jako stínoví zpravodajové, podle typu procedury. „Přijato“ = Parlament zprávu přijal ve jmenovitém hlasování. Text, na kterém pracovali dva Češi, se počítá jednou.</p>
+    <div class="small muted">Zprávy podle typu procedury; „Přijato“ = Parlament zprávu přijal.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-proc" aria-label="Definice a metodika" aria-expanded="false">ⓘ</button><div popover id="i-proc" class="info-pop" role="note"><p>Zprávy, které čeští poslanci vedou jako zpravodajové nebo vyjednávají jako stínoví zpravodajové, podle typu procedury. „Přijato“ = Parlament zprávu přijal ve jmenovitém hlasování. Text, na kterém pracovali dva Češi, se počítá jednou.</p></div></span></div>
     <div class="card"><div class="table-wrap"><table class="compact stack-simple" id="proc"><thead><tr><th>Typ procedury</th><th class="num">Vedou</th><th class="num">Stínoví</th><th class="num">Přijato</th></tr></thead>
       <tbody><tr><td colspan="4" class="loading">Načítám…</td></tr></tbody></table></div></div>
   </section>
@@ -70,7 +71,7 @@
 
   <section class="hub-block" aria-labelledby="h-group">
     <h2 id="h-group">Podle frakcí</h2>
-    <p class="small muted">Řazeno podle počtu českých poslanců ve frakci, ne podle výkonu. Zprávy a stanoviska si frakce rozdělují podle bodů úměrných své velikosti, malé frakce a nezařazení jich dostávají méně bez ohledu na snahu, proto je vedle součtů průměr na poslance.</p>
+    <div class="small muted">Řazeno podle počtu českých poslanců ve frakci, ne podle výkonu.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-group" aria-label="Definice a metodika" aria-expanded="false">ⓘ</button><div popover id="i-group" class="info-pop" role="note"><p>Řazeno podle počtu českých poslanců ve frakci, ne podle výkonu. Zprávy a stanoviska si frakce rozdělují podle bodů úměrných své velikosti, malé frakce a nezařazení jich dostávají méně bez ohledu na snahu, proto je vedle součtů průměr na poslance.</p></div></span></div>
     <div class="card"><div class="table-wrap"><table class="compact stack-simple" id="groups"><thead><tr><th>Frakce</th><th class="num">Poslanců</th><th class="num">Zprávy – vedou</th><th class="num">Zprávy – stínové</th><th class="num">Stanoviska</th><th class="num">Projevy</th><th class="num">Otázky</th></tr></thead>
       <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody></table></div></div>
   </section>
@@ -138,9 +139,8 @@ setNav("work-overview");
         <td class="num">${fmtNum(g.reports_lead)}${avg(g.reports_lead)}</td><td class="num">${fmtNum(g.reports_shadow)}${avg(g.reports_shadow)}</td>
         <td class="num">${fmtNum(g.opinions)}${avg(g.opinions)}</td><td class="num">${fmtNum(g.speeches)}${avg(g.speeches)}</td><td class="num">${fmtNum(g.questions)}${avg(g.questions)}</td></tr>`;
     }).join("");
-    document.getElementById("source").innerHTML = `Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), výsledky hlasování <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).
-      Aktualizováno ${fmtDate(h.updated)}${h.complete ? "" : " (stahování ještě neskončilo, data nejsou úplná)"}. Počty spočítal skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/work_hub.py">work_hub.py</a>.
-      Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data jsou naposledy z února 2026.`;
+    document.getElementById("source").innerHTML = `Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> · <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · aktualizováno ${fmtDate(h.updated)}${h.complete ? "" : " (data nejsou úplná)"}` + infoButton(
+      `<p>EP Open Data (CC BY 4.0), výsledky hlasování HowTheyVote.eu (ODbL). Počty spočítal skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/work_hub.py">work_hub.py</a>. Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data jsou naposledy z února 2026.</p>`, "Zdroj a metodika");
   } catch (e) {
     showError(kpis, e);
   }

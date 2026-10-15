@@ -36,10 +36,9 @@
 
 <main id="main">
   <h1>Jmenovitá hlasování</h1>
-  <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.
-    <strong>Závěrečná</strong> jsou hlasování o celém textu nebo o prozatímní dohodě s Radou. <strong>Všechna hlavní</strong> navíc
-    zahrnují návrhy na zamítnutí, mandáty k jednání s Radou a žádosti o naléhavý postup. Ostatní jsou pozměňovací návrhy
-    a dílčí hlasování. <a href="o-projektu.html#metodika">Jak typ hlasování určujeme</a>.</p>
+  <div class="lead-row"><p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-votes" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-votes" class="info-pop" role="note">
+    <p>Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci. <strong>Závěrečná</strong> jsou hlasování o celém textu nebo o prozatímní dohodě s Radou. <strong>Všechna hlavní</strong> navíc zahrnují návrhy na zamítnutí, mandáty k jednání s Radou a žádosti o naléhavý postup. Ostatní jsou pozměňovací návrhy a dílčí hlasování. <a href="o-projektu.html#metodika">Jak typ hlasování určujeme</a>.</p>
+  </div></span></div>
 
   <div class="controls">
     <label>Měsíc <select id="month"></select></label>
@@ -119,9 +118,8 @@ setNav("votes");
     if (params.get("t")) topicSel.value = params.get("t");
     let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
-      `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL).
-       Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál.
-       Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.`;
+      `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
+        `<p>Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál. Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.</p>`, "Zdroj a metodika");
 
     const kindOk = (v) => kindSel.value === "all" || (kindSel.value === "final" ? isFinal(v) : v.is_main);
     const LIMIT = 300;

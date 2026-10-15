@@ -401,7 +401,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     body = f"""<p class="small"><a href="{ROOT}votes.html?m={v['date'][:7]}">← Hlasování v měsíci</a></p>
 <p class="muted" style="margin-bottom:.3rem">{fmt_date(v['date'])} · <span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
-{f'<p class="muted">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
+{f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <p class="small">{" · ".join(links)}</p>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value result-{v.get('result') or ''}">{result}</div>

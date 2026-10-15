@@ -54,6 +54,23 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      if (!url.startsWith("o-projektu")) {
+        // S1: textový rozpočet. Úvodní věta ≤ 160 znaků, žádný viditelný odstavec > 220 znaků mimo details a popover.
+        const text = await page.evaluate(() => {
+          const out = { lead: [], long: [] };
+          document.querySelectorAll("p.lead").forEach((p) => { if (p.id !== "headline" && p.textContent.trim().length > 160 && !p.closest("[popover]") && !p.classList.contains("vote-desc")) out.lead.push(p.textContent.trim().length); });
+          document.querySelectorAll("main p, main .source").forEach((p) => {
+            if (p.closest("details, [popover], .table-wrap") || p.classList.contains("vote-desc") || !p.offsetParent) return;
+            const c = p.cloneNode(true);
+            c.querySelectorAll("[popover]").forEach((x) => x.remove());
+            const t = c.textContent.trim();
+            if (t.length > 220) out.long.push(`${t.length} znaků: ${t.slice(0, 60)}…`);
+          });
+          return out;
+        });
+        text.lead.forEach((n) => problems.push(`${where}: .lead má ${n} znaků (max 160)`));
+        text.long.forEach((t) => problems.push(`${where}: dlouhý viditelný odstavec ${t}`));
+      }
       if (width === 1366) {
         await page.addScriptTag({ content: axeSource });
         const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
@@ -64,6 +81,26 @@ for (const scheme of ["light", "dark"]) {
     }
     await ctx.close();
   }
+}
+// S1: ⓘ se otevře klikem i klávesou a zavře Esc.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
+  for (const url of ["prace-poslanci.html", "shoda.html", "votes.html"]) {
+    const page = await ctx.newPage();
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const btn = page.locator(".info-btn").first();
+    if (!(await btn.count())) { problems.push(`${url}: chybí tlačítko ⓘ`); await page.close(); continue; }
+    const visible = () => page.evaluate(() => Boolean(document.querySelector(".info-pop:popover-open, .info-pop.open")));
+    await btn.click();
+    if (!(await visible())) problems.push(`${url}: ⓘ se neotevřelo klikem`);
+    await page.keyboard.press("Escape");
+    if (await visible()) problems.push(`${url}: Esc nezavřel ⓘ`);
+    await btn.focus(); await page.keyboard.press("Enter");
+    if (!(await visible())) problems.push(`${url}: ⓘ se neotevřelo klávesou`);
+    await page.keyboard.press("Escape");
+    await page.close();
+  }
+  await ctx.close();
 }
 // S3: nabídka Sdílet není nikdy překrytá (sticky lišta, stacking context) a Esc ji zavře i s návratem fokusu.
 // Bez reducedMotion, aby běžela animace .reveal, která chybu původně způsobovala.
