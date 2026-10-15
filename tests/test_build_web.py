@@ -160,6 +160,7 @@ def test_decisive_splits_and_parties_files(data_dir):
     sp = json.loads((data_dir / "splits.json").read_text(encoding="utf-8"))
     assert sp["all"][0]["id"] == 2 and sp["all"][0]["split"] == 0.5
     assert sp["all"][0]["positions"] == {"1": "DID_NOT_VOTE", "2": "AGAINST"}
+    assert sp["all"][0]["groups"] == {"1": "EPP", "2": "EPP"}  # frakce k datu hlasování
     idx = json.loads((data_dir / "parties" / "index.json").read_text(encoding="utf-8"))
     assert [p["id"] for p in idx["parties"]] == [20]  # nezávislí nejsou strana
     page = json.loads((data_dir / "parties" / "20.json").read_text(encoding="utf-8"))

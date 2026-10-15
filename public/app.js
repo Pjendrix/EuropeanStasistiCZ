@@ -263,6 +263,37 @@ function resultText(v) {
   return base;
 }
 
+// Výsledek jako věta podle typu hlasování (nadpis výsledkové karty na detailu).
+function resultSentence(kind, result) {
+  const ok = result === "ADOPTED", no = result === "REJECTED";
+  if (!ok && !no) return RESULT_LABEL[result] ? RESULT_LABEL[result][0].toUpperCase() + RESULT_LABEL[result].slice(1) : "Výsledek neuveden";
+  const S = {
+    rejection: ["Návrh na zamítnutí prošel – text je zamítnut", "Návrh na zamítnutí neprošel – text zůstává"],
+    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla"],
+    amendment: ["Pozměňovací návrh byl přijat", "Pozměňovací návrh byl zamítnut"],
+    split_part: ["Tato část textu byla přijata", "Tato část textu byla zamítnuta"],
+    final: ["Parlament text přijal", "Parlament text zamítl"],
+    provisional_agreement: ["Parlament dohodu s Radou schválil", "Parlament dohodu s Radou zamítl"],
+    mandate: ["Mandát k jednání s Radou schválen", "Mandát k jednání s Radou neschválen"],
+    urgency: ["Naléhavý postup schválen", "Naléhavý postup zamítnut"],
+  }[kind];
+  return S ? S[ok ? 0 : 1] : (ok ? "Přijato" : "Zamítnuto");
+}
+
+// Tečky českých poslanců seskupené podle frakcí, obarvené podle hlasu (pro/proti/zdržel se/nehlasoval).
+function czDots(positions, mepsById, groups) {
+  const by = {};
+  positions.forEach((p) => { (by[p.group_code || "–"] = by[p.group_code || "–"] || []).push(p); });
+  const order = Object.keys(by).sort((a, b) => by[b].length - by[a].length || a.localeCompare(b));
+  const counts = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].map((k) => positions.filter((p) => p.position === k).length);
+  return `<div class="cz-dots" role="img" aria-label="${esc(`Čeští poslanci: ${czCountsText(counts)}`)}">${order.map((code) => {
+    const g = groups.find((x) => x.code === code);
+    const label = g ? (CZ_GROUP_LABEL[code] || g.short_label) : code;
+    return `<span class="cz-dot-group"><span class="cz-dot-label">${esc(label)}</span>${by[code]
+      .map((p) => `<i class="cz-dot d-${p.position}" title="${esc(`${displayName(mepsById[p.member_id] || { name: "?" })}: ${POSITION_LABEL[p.position]}`)}"></i>`).join("")}</span>`;
+  }).join("")}</div>`;
+}
+
 // Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
 function resultHtml(v) {
   const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
@@ -344,7 +375,7 @@ function voteRow(v, extra = "") {
 }
 
 function czCell(cz) {
-  return `<td>${splitBar(cz)}<div class="small muted">${cz.join(" / ")}</div></td>`;
+  return `<td>${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
 }
 
 // Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].
