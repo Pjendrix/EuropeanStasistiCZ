@@ -29,6 +29,8 @@ from pathlib import Path
 
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
                            require, topic_codes)
+from activity import count_activity
+from attendance import count_presence
 from key_votes import build_key_votes
 from labels_cs import translate
 from overrides import apply_name_overrides
@@ -203,7 +205,7 @@ def bench_window(mep: dict, bench: dict | None) -> dict | None:
 
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
                   votes_by_id: dict | None = None, own: dict | None = None, topic_labels: dict | None = None,
-                  bench: dict | None = None) -> dict:
+                  bench: dict | None = None, activity: dict | None = None, presence: dict | None = None) -> dict:
     st = stats["meps"][str(mep["id"])]
     meps_by_id = {m["id"]: m for m in meps}
     votes_by_id = votes_by_id or {v["id"]: v for v in votes}
@@ -231,6 +233,8 @@ def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], d
                           "recent_main": [with_vote(x) for x in ag["recent_main"]]},
         "decisive": [with_vote(x) for x in st.get("decisive", [])],
         "topics": topic_rows(st.get("topics", {}), stats.get("topics", []), topic_labels),
+        "activity": activity,
+        "presence": presence,
         "own_work": None if own is None else {
             "source": own["source"], "updated": own["updated"], "complete": own["complete"],
             "type_labels": own["type_labels"],
@@ -314,7 +318,22 @@ def functions(m: dict, day: str) -> list[dict]:
     return sorted(out, key=lambda f: (f["kind"] != "committee", order[f["role"]], f["code"] or ""))
 
 
-def build_work(meps: list[dict], own: dict | None, day: str, stats: dict | None = None) -> dict | None:
+def activity_by_mep(meps: list[dict], speeches: dict | None) -> dict[int, dict]:
+    """Projevy v plénu po poslancích v době mandátu (activity.count_activity z data/speeches.json); {} bez souboru."""
+    if not speeches:
+        return {}
+    return {m["id"]: count_activity(speeches["meps"].get(str(m["id"]), []), m["mandates"]) for m in meps}
+
+
+def presence_by_mep(meps: list[dict], attendance: dict | None) -> dict[int, dict]:
+    """Prezence na zasedání podle prezenční listiny EP po poslancích v době mandátu (attendance.count_presence); {} bez souboru."""
+    if not attendance:
+        return {}
+    return {m["id"]: count_presence(attendance["days"], m["id"], m["mandates"]) for m in meps}
+
+
+def build_work(meps: list[dict], own: dict | None, day: str, stats: dict | None = None,
+               activity: dict[int, dict] | None = None, presence: dict[int, dict] | None = None) -> dict | None:
     """Profil vlastní práce: počty z own_work.json (spočítal own_work.passed / roles / delegation_profile),
     docházka ze stats.json a funkce z meps.json, nic nového."""
     if own is None:
@@ -327,8 +346,26 @@ def build_work(meps: list[dict], own: dict | None, day: str, stats: dict | None 
         total = ((stats or {}).get("meps", {}).get(str(m["id"])) or {}).get("total") or {}
         rows.append({**mep_summary(m, day), **{k: passed.get(k, 0) for k in PASSED_KEYS},
                      **{k: roles.get(k, 0) for k in ROLE_KEYS}, "delegation": roles.get("delegation"),
-                     "attendance": total.get("attendance"), "functions": functions(m, day)})
+                     "attendance": total.get("attendance"), "functions": functions(m, day),
+                     **{k: (activity or {}).get(m["id"], {}).get(k) for k in ("speeches", "speeches_minutes", "written_statements")},
+                     "presence": (presence or {}).get(m["id"])})
     return {"source": own["source"], "updated": own["updated"], "complete": own["complete"], "meps": rows}
+
+
+def build_vote_roles(own: dict | None) -> dict[str, list[dict]]:
+    """Česká stopa u hlasování (F3): kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy, o které se
+    hlasovalo (z own_work.json, který vazbu zprávy na závěrečné hlasování určil). {id hlasování: [{mep_id, role}]}."""
+    out: dict[str, list[dict]] = {}
+    for mep_id, entry in (own or {}).get("meps", {}).items():
+        for it in entry.get("items", []):
+            if it["type"] in ("report", "shadow_report") and it.get("vote_id"):
+                role = "shadow" if it["type"] == "shadow_report" else ("co" if it.get("role") == "RAPPORTEUR_CO" else "rapporteur")
+                row = {"mep_id": int(mep_id), "role": role, "report": it.get("report"), "procedure": it.get("label")}
+                if row not in out.setdefault(str(it["vote_id"]), []):
+                    out[str(it["vote_id"])].append(row)
+    for rows in out.values():
+        rows.sort(key=lambda r: (r["role"] == "shadow", r["mep_id"]))
+    return dict(sorted(out.items(), key=lambda kv: int(kv[0])))
 
 
 def build_agreement(meps: list[dict], stats: dict, day: str) -> dict:
@@ -410,19 +447,36 @@ def run(data_dir: Path, day: str) -> dict:
     parties = json.loads((data_dir / "parties.json").read_text(encoding="utf-8"))
     own_path = data_dir / "own_work.json"
     own = json.loads(own_path.read_text(encoding="utf-8")) if own_path.exists() else None
+    speeches_path = data_dir / "speeches.json"
+    speeches = json.loads(speeches_path.read_text(encoding="utf-8")) if speeches_path.exists() else None
+    if speeches is not None:
+        require(speeches, ["meps", "source"], "speeches.json")
+    attendance_path = data_dir / "attendance.json"
+    attendance = json.loads(attendance_path.read_text(encoding="utf-8")) if attendance_path.exists() else None
+    if attendance is not None:
+        require(attendance, ["days", "source"], "attendance.json")
+    presence = presence_by_mep(meps, attendance)
+    presence_info = {"source": attendance["source"], "updated": attendance.get("updated")} if attendance else None
+    activity = activity_by_mep(meps, speeches)
+    activity_info = {"source": speeches["source"], "updated": speeches.get("updated")} if speeches else None
     bench_path = data_dir / "benchmarks.json"
     bench = json.loads(bench_path.read_text(encoding="utf-8")) if bench_path.exists() else None
     if bench is not None:
         require(bench, ["ep", "groups"], "benchmarks.json")
 
-    kv_path = data_dir / "manual" / "key_votes.json"
-    kv_doc = json.loads(kv_path.read_text(encoding="utf-8")) if kv_path.exists() else None
-    key = build_key_votes(votes, kv_doc, by_id)
+    key = build_key_votes(votes, by_id)
     key["sources"] = stats["sources"]
     write_json(data_dir / "key_votes.json", key)
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels, bench))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
-    work = build_work(meps, own, day, stats)
+    if own is not None:
+        write_json(data_dir / "vote_roles.json", {"source": own["source"], "updated": own["updated"],
+                                                  "votes": build_vote_roles(own)}, compact=True)
+    work = build_work(meps, own, day, stats, activity, presence)
+    if work is not None and activity_info:
+        work["activity_source"] = activity_info
+    if work is not None and presence_info:
+        work["presence_source"] = presence_info
     if work is not None and bench is not None:
         work["attendance_ep_median"] = bench["ep"].get("attendance")
     if work is not None:
@@ -430,7 +484,9 @@ def run(data_dir: Path, day: str) -> dict:
     profiles_dir = data_dir / "meps"
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,
-                                                                      topic_labels, bench))
+                                                                      topic_labels, bench,
+                                                                      {**activity[m["id"]], **activity_info} if activity_info else None,
+                                                                      {**presence[m["id"]], **presence_info} if presence_info else None))
     for m in meps:
         write_json(profiles_dir / f"{m['id']}_votes.json", mep_votes(m, votes), compact=True)
     if "votes_analysis" in stats:

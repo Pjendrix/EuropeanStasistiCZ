@@ -214,6 +214,30 @@ function ownPassed(ow, mep) {
     <h3 class="own-sub">Všechna práce podle typu</h3>`;
 }
 
+// Projevy v plénu (EP Open Data, speeches): jen počty a čas, bez třetin a bez pořadí; písemná prohlášení zvlášť.
+function activityBlock(a, mep) {
+  if (!a) return "";
+  const src = a.source?.url ? `<a href="${esc(a.source.url)}">EP Open Data (speeches)</a>` : "EP Open Data";
+  return `<h3 class="own-sub">Projevy v plénu</h3>
+    <div class="metrics">
+      ${passedCard("Ústní projevy v rozpravách", a.speeches, [
+        a.speeches ? `celkem ${fmtNum(Math.round(a.speeches_minutes))} min${a.speeches_timed < a.speeches ? ` (délka známa u ${fmtNum(a.speeches_timed)} z ${fmtNum(a.speeches)})` : ""}` : "",
+        a.speech_items ? `v ${fmtNum(a.speech_items)} bodech jednání` : "", "jen počet, bez srovnání s kolegy"])}
+      ${passedCard("Písemná prohlášení", a.written_statements, ["počítáme zvlášť: dají se psát hromadně"])}
+    </div>
+    <p class="source">Počty v době mandátu. Zdroj: ${src} (CC BY 4.0), stav k ${fmtDate(a.updated)}. Projevy ani prohlášení nevypovídají o kvalitě ani vlivu a nejsou součástí třetin.</p>`;
+}
+
+// Prezence na zasedání podle prezenční listiny EP (D1): jiná metrika než účast na hlasování, bez mediánu a bez pořadí.
+function presenceCard(pr, mep) {
+  if (!pr || !pr.days) return "";
+  const src = pr.source?.url ? `<a href="${esc(pr.source.url)}">EP Open Data (meetings)</a>` : "EP Open Data";
+  return `<div class="card metric"><div class="label">Prezence na zasedání (podle EP)</div>
+    <div class="value">${countPct(pr.present / pr.days)}</div>
+    <div class="detail">${fmtNum(pr.present)} z ${fmtNum(pr.days)} dnů jednání v době mandátu${pr.excused ? ` · ${fmtNum(pr.excused)} omluven${byGender(mep, "", "a")}` : ""}</div>
+    <div class="detail">podle prezenční listiny EP, jen dny, ke kterým listina existuje · ${src}, stav k ${fmtDate(pr.updated)}</div></div>`;
+}
+
 function ownWork(ow, mep) {
   if (!ow) return '<p class="muted">Data o vlastní práci se připravují.</p>';
   const types = Object.keys(ow.type_labels);
@@ -353,6 +377,7 @@ function periodText(x) {
         ${metricCard("Účast na hlasování – závěrečná", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
           b?.ep?.attendance_main, "medián EP", cite("účast na hlasování u závěrečných hlasování", t.attendance_main),
           { extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
+        ${presenceCard(profile.presence, mep)}
         ${metricCard("Hlasuje s frakcí", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
           isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("hlasuje s frakcí", t.group_loyalty),
           { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
@@ -368,6 +393,7 @@ function periodText(x) {
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
         U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
       ${ownWork(ow, mep)}` : ""}
+      ${activityBlock(profile.activity, mep)}
 
       <h2 id="soulad">Soulad s výsledkem hlasování</h2>
       <p class="small muted">Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo. Číslo hlavně odráží velikost a pozici frakce;

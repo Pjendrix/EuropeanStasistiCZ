@@ -75,6 +75,16 @@ DEFINITIONS = {
                    "hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší "
                    "celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni "
                    "poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
+    "presence": "Prezence na zasedání (podle EP): v kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP "
+                "(EP Open Data, meetings). Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). "
+                "Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, "
+                "která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. "
+                "Bez mediánu EP a bez pořadí.",
+    "speeches": "Projevy v plénu: počet ústních projevů v rozpravách v době mandátu podle EP Open Data (endpoint speeches) a jejich "
+                "celková délka z časových značek zdroje (jen u projevů, kde jsou obě značky). Písemná prohlášení se počítají zvlášť a "
+                "do projevů se nesčítají, protože se dají psát hromadně. Jde o počet a čas, ne o kvalitu ani vliv; do třetin v "
+                "delegaci nevstupuje a medián EP se neuvádí (projevy všech poslanců EP by znamenaly tisíce dotazů týdně). "
+                "Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026.",
     "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
                      "většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina "
                      "jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana "

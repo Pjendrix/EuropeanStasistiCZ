@@ -1,0 +1,45 @@
+# Kontrola webu v prohlížeči: žádná chyba v konzoli, nic nepřetéká při 320–1366 px, axe-core bez porušení (WCAG 2 A/AA).
+# Běží u pull requestů a po každé změně v main; týdenní data a testy mají vlastní workflow.
+name: Kontrola webu
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths: ["public/**", "scripts/layout.py", "scripts/hub.py", "tests/e2e/**", ".github/workflows/web-check.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Testy a hlavička/patička
+        run: |
+          pip install -r requirements.txt
+          python -m pytest -q
+          python scripts/layout.py --check
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Playwright a axe-core (jen pro tuto kontrolu, nic se nepřidává do repa)
+        run: |
+          mkdir "$RUNNER_TEMP/e2e" && cd "$RUNNER_TEMP/e2e"
+          npm init -y >/dev/null
+          npm install playwright@1.49.1 axe-core@4.10.2
+          npx playwright install --with-deps chromium
+
+      - name: Kontrola webu
+        run: NODE_PATH="$RUNNER_TEMP/e2e/node_modules" node tests/e2e/check-web.mjs

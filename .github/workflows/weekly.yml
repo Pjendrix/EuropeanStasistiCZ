@@ -43,6 +43,11 @@ jobs:
       - name: Hlasování (HowTheyVote export)
         run: python scripts/fetch_votes.py
 
+      - name: Projevy v plénu a prezenční listiny (EP Open Data API)
+        run: |
+          python scripts/fetch_speeches.py
+          python scripts/fetch_attendance.py
+
       - name: Statistiky
         run: python scripts/compute_stats.py
 
@@ -62,4 +67,4 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/speeches.json data/attendance.json public/assets/photos

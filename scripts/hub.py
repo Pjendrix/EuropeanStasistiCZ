@@ -19,10 +19,10 @@ from vote_kinds import KIND_LABELS
 
 DEFAULT_PERIOD = "m3"
 LIST_TITLES = {
-    "ep_highlights": ("Hlavní body zasedání podle EP", "Hlasování, která EP sám uvedl mezi hlavními body zasedání."),
     "laws": ("Zákony, o kterých se rozhodlo", "Závěrečné hlasování nebo prozatímní dohoda v legislativním postupu."),
     "splits": ("Kde se Češi nejvíc rozdělili", "Závěrečná hlasování s největším rozdělením českých poslanců."),
     "close": ("Nejtěsnější výsledky", "Závěrečná hlasování s nejmenším rozdílem hlasů pro a proti."),
+    "against_result": ("Češi proti výsledku", "Závěrečná hlasování, ve kterých většina českých hlasů šla proti výsledku."),
 }
 
 
@@ -41,17 +41,11 @@ def vote_link(v: dict) -> str:
 
 def vote_card(v: dict, reason: str) -> str:
     cz = v["cz"]
-    press = v.get("press")
-    media = ""
-    if press and press.get("media"):
-        media = '<div class="small muted">Psala o tom média: ' + ", ".join(
-            f'<a href="{esc(m["url"])}">{esc(m["outlet"])}</a>' for m in press["media"]) + ".</div>"
-    src = f' · <a href="{esc(press["source_url"])}">tisková zpráva EP</a>' if press else ""
     return (f'<div class="card hub-vote"><div class="small muted">{fmt_date(v["date"])} · {esc(KIND_LABELS.get(v["vote_kind"], ""))}'
             f' · <span class="result-{v["result"] or ""}">{esc(RESULT_LABEL.get(v["result"], "výsledek neuveden"))}</span></div>'
             f'<a class="vote-title" href="{vote_link(v)}">{esc(v["title"])}</a>{split_bar(cz)}'
             f'<div class="small"><b>Češi: {cz[0]} pro · {cz[1]} proti</b> <span class="muted">· {cz[2]} zdrž. · {cz[3]} nehl.</span></div>'
-            f'<div class="small muted">{esc(reason)}{src}</div>{media}</div>')
+            f'<div class="small muted">{esc(reason)}</div></div>')
 
 
 def key_votes_html(kv: dict) -> str:
@@ -66,8 +60,7 @@ def key_votes_html(kv: dict) -> str:
             lst = kv["lists"][p][name]
             items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"])
             if not items:
-                items = ('<p class="muted small">Zatím nic. Seznam doplňuje autor podle tiskových zpráv EP.</p>' if name == "ep_highlights"
-                         else '<p class="muted small">V tomto období nic.</p>')
+                items = '<p class="muted small">V tomto období nic.</p>'
             more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v období)</p>'
                     if lst["total"] > len(lst["items"]) else "")
             out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p>{items}{more}</section>')
@@ -106,7 +99,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     # --- poslední zasedání ---------------------------------------------------------------
     sess_votes = []
-    for name in ("ep_highlights", "laws", "splits", "close"):
+    for name in ("laws", "splits", "close", "against_result"):
         for it in kv["lists"]["session"][name]["items"]:
             if it["id"] not in [i for i, _ in sess_votes]:
                 sess_votes.append((it["id"], it["reason"]))
@@ -164,7 +157,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     body = hero + session_html + delegation_html + explore_html + key_html + about
     title = "EP Watch CZ – jak hlasují čeští europoslanci"
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
-    meta = og_meta(title, desc, "", base_url, "og/default.png", "EP Watch CZ: jak hlasují čeští europoslanci", card=True)
+    meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
     html = page(title, body, root="", current=None, description=desc, meta=meta,
                 scripts='<script src="app.js"></script>\n<script src="hub.js"></script>\n')
     return "index.html", html

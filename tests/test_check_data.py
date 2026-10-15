@@ -99,15 +99,25 @@ def test_delegations_checked(tmp_path):
     assert not problems and len(warnings) == 1 and "liší" in warnings[0]
 
 
-def test_key_votes_checked(tmp_path):
-    d = tmp_path / "data"
-    (d / "manual").mkdir(parents=True)
-    (d / "votes").mkdir()
-    assert cd.check_key_votes(d) == []  # soubor chybí
-    (d / "manual" / "key_votes.json").write_text(json.dumps({"items": []}))
-    (d / "votes" / "search.json").write_text(json.dumps({"rows": [[1, "2025-01-01"], [2, "2025-01-02"]]}))
-    assert cd.check_key_votes(d) == []  # prázdná šablona je v pořádku
-    (d / "manual" / "key_votes.json").write_text(json.dumps({"items": [
-        {"vote_id": 2, "source_url": "https://www.europarl.europa.eu/news/x"}, {"vote_id": 9, "source_url": "https://example.test"}]}))
-    problems = cd.check_key_votes(d)
-    assert any("neexistuje" in p for p in problems) and any("source_url" in p for p in problems)
+def test_speeches_checked(tmp_path):
+    prev, new = tmp_path / "prev", tmp_path / "new"
+    prev.mkdir(); new.mkdir()
+    assert cd.check_speeches(prev, new) == []  # soubory chybí
+    (prev / "speeches.json").write_text(json.dumps({"meps": {"1": [{"id": "a"}, {"id": "b"}], "2": []}}))
+    (new / "speeches.json").write_text(json.dumps({"meps": {"1": [{"id": "a"}, {"id": "b"}, {"id": "c"}], "2": []}}))
+    assert cd.check_speeches(prev, new) == []
+    (new / "speeches.json").write_text(json.dumps({"meps": {"1": [], "2": []}}))
+    problems = cd.check_speeches(prev, new)
+    assert any("klesl" in p for p in problems) and any("poslanec 1" in p for p in problems)
+
+
+def test_attendance_checked(tmp_path):
+    prev, new = tmp_path / "prev", tmp_path / "new"
+    prev.mkdir(); new.mkdir()
+    assert cd.check_attendance(prev, new) == []
+    (prev / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}, {"date": "2025-01-02", "attendees": 5}]}))
+    (new / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}, {"date": "2025-01-02", "attendees": 0}]}))
+    problems = cd.check_attendance(prev, new)
+    assert any("prázdná" in p for p in problems) and not any("klesl" in p for p in problems)
+    (new / "attendance.json").write_text(json.dumps({"days": [{"date": "2025-01-01", "attendees": 5}]}))
+    assert any("klesl" in p for p in cd.check_attendance(prev, new))

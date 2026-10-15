@@ -1,5 +1,9 @@
 # Zadání: projevy v plénu a pozměňovací návrhy ve výborech
 
+> **Stav (15. 10. 2026):** část 1 (projevy v plénu) je hotová (`scripts/fetch_speeches.py`, `scripts/activity.py`). Část 2 (pozměňovací návrhy ve výborech)
+> není: Parltrack dump `ep_amendments` je naposledy z 3. 2. 2026 (`.zst`; `.lz` z 11. 11. 2024), takže by pokrýval jen část období a čísla by nebyla
+> srovnatelná. Vrátit se k ní, až bude dump aktuální nebo EP nabídne pozměňovací návrhy přes API. Medián EP u projevů se neuvádí (1 500 dotazů týdně).
+
 Navazuje na stránku **Vlastní práce** (`public/prace.html`, data `data/work.json`). Cíl: ukázat co nejúplněji,
 kolik toho kdo dělá, a přitom zůstat u čísel, která spočítá kód z oficiálních dat. Platí všechna tvrdá pravidla
 z `CLAUDE.md` (žádný scraping, žádná vymyšlená data, validace vstupů, čísla počítá kód).

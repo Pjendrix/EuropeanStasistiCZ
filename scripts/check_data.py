@@ -93,21 +93,36 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
     p2, w2 = check_delegations(data_dir)
-    p3 = check_key_votes(data_dir)
+    p3 = check_speeches(prev_dir, data_dir) + check_attendance(prev_dir, data_dir)
     return problems + p2 + p3, warnings + w2
 
 
-def check_key_votes(data_dir: Path) -> list[str]:
-    """data/manual/key_votes.json (ručně doplňované hlavní body zasedání podle EP): každá položka má existující vote_id
-    a odkaz source_url na tiskovou zprávu EP (scripts/key_votes.py)."""
-    doc = _load(data_dir / "manual" / "key_votes.json")
-    if doc is None:
+def check_speeches(prev_dir: Path | None, data_dir: Path) -> list[str]:
+    """data/speeches.json (projevy v plénu z EP Open Data): počet záznamů nesmí klesnout a poslanec, který projevy měl,
+    o ně nesmí přijít (projevy se zpětně nemažou, pokles znamená změnu formátu nebo výpadek API)."""
+    new, old = _load(data_dir / "speeches.json"), _load(prev_dir / "speeches.json") if prev_dir else None
+    if new is None or old is None:
         return []
-    search = _load(data_dir / "votes" / "search.json")
-    if not search:
+    problems = []
+    n_new, n_old = sum(len(v) for v in new["meps"].values()), sum(len(v) for v in old["meps"].values())
+    if n_new < n_old:
+        problems.append(f"počet záznamů o projevech klesl z {n_old} na {n_new}")
+    for mep_id, rows in old["meps"].items():
+        if rows and not new["meps"].get(mep_id):
+            problems.append(f"poslanec {mep_id} měl {len(rows)} záznamů o projevech a teď žádný")
+    return problems
+
+
+def check_attendance(prev_dir: Path | None, data_dir: Path) -> list[str]:
+    """data/attendance.json (prezenční listiny plenárních dnů z EP Open Data): počet dnů nesmí klesnout a každý den má
+    listinu (attendees > 0); den s listinou se zpětně nemaže."""
+    new, old = _load(data_dir / "attendance.json"), _load(prev_dir / "attendance.json") if prev_dir else None
+    if new is None:
         return []
-    from key_votes import validate_items
-    return validate_items(doc, {row[0] for row in search["rows"]})
+    problems = [f"prezenční listina {d['date']} je prázdná" for d in new["days"] if not d.get("attendees")]
+    if old and len(new["days"]) < len(old["days"]):
+        problems.append(f"počet plenárních dnů s prezenční listinou klesl z {len(old['days'])} na {len(new['days'])}")
+    return problems
 
 
 def check_delegations(data_dir: Path) -> tuple[list[str], list[str]]:

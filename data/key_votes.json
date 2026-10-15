@@ -19,10 +19,6 @@
  },
  "lists": {
   "session": {
-   "ep_highlights": {
-    "total": 0,
-    "items": []
-   },
    "laws": {
     "total": 9,
     "items": [
@@ -97,13 +93,30 @@
       "reason": "Výsledek 413 : 210, rozdíl 203 hlasů"
      }
     ]
+   },
+   "against_result": {
+    "total": 4,
+    "items": [
+     {
+      "id": 198175,
+      "reason": "Češi 14 pro : 2 proti, parlament ale text zamítl"
+     },
+     {
+      "id": 198176,
+      "reason": "Češi 14 pro : 2 proti, parlament ale text zamítl"
+     },
+     {
+      "id": 198194,
+      "reason": "Češi 13 pro : 5 proti, parlament ale text zamítl"
+     },
+     {
+      "id": 198193,
+      "reason": "Češi 11 pro : 5 proti, parlament ale text zamítl"
+     }
+    ]
    }
   },
   "m3": {
-   "ep_highlights": {
-    "total": 0,
-    "items": []
-   },
    "laws": {
     "total": 21,
     "items": [
@@ -178,13 +191,34 @@
       "reason": "Výsledek 388 : 248, rozdíl 140 hlasů"
      }
     ]
+   },
+   "against_result": {
+    "total": 16,
+    "items": [
+     {
+      "id": 195543,
+      "reason": "Češi 3 pro : 14 proti, parlament ale text přijal"
+     },
+     {
+      "id": 198175,
+      "reason": "Češi 14 pro : 2 proti, parlament ale text zamítl"
+     },
+     {
+      "id": 198176,
+      "reason": "Češi 14 pro : 2 proti, parlament ale text zamítl"
+     },
+     {
+      "id": 195340,
+      "reason": "Češi 3 pro : 13 proti, parlament ale text přijal"
+     },
+     {
+      "id": 198194,
+      "reason": "Češi 13 pro : 5 proti, parlament ale text zamítl"
+     }
+    ]
    }
   },
   "m12": {
-   "ep_highlights": {
-    "total": 0,
-    "items": []
-   },
    "laws": {
     "total": 99,
     "items": [
@@ -259,13 +293,34 @@
       "reason": "Výsledek 282 : 259, rozdíl 23 hlasů"
      }
     ]
+   },
+   "against_result": {
+    "total": 73,
+    "items": [
+     {
+      "id": 182703,
+      "reason": "Češi 3 pro : 17 proti, parlament ale text přijal"
+     },
+     {
+      "id": 182705,
+      "reason": "Češi 3 pro : 17 proti, parlament ale text přijal"
+     },
+     {
+      "id": 179508,
+      "reason": "Češi 4 pro : 16 proti, parlament ale text přijal"
+     },
+     {
+      "id": 181832,
+      "reason": "Češi 5 pro : 16 proti, parlament ale text přijal"
+     },
+     {
+      "id": 181542,
+      "reason": "Češi 5 pro : 15 proti, parlament ale text přijal"
+     }
+    ]
    }
   },
   "all": {
-   "ep_highlights": {
-    "total": 0,
-    "items": []
-   },
    "laws": {
     "total": 143,
     "items": [
@@ -338,6 +393,31 @@
      {
       "id": 198175,
       "reason": "Výsledek 282 : 259, rozdíl 23 hlasů"
+     }
+    ]
+   },
+   "against_result": {
+    "total": 116,
+    "items": [
+     {
+      "id": 182703,
+      "reason": "Češi 3 pro : 17 proti, parlament ale text přijal"
+     },
+     {
+      "id": 182705,
+      "reason": "Češi 3 pro : 17 proti, parlament ale text přijal"
+     },
+     {
+      "id": 179508,
+      "reason": "Češi 4 pro : 16 proti, parlament ale text přijal"
+     },
+     {
+      "id": 181832,
+      "reason": "Češi 5 pro : 16 proti, parlament ale text přijal"
+     },
+     {
+      "id": 169894,
+      "reason": "Češi 6 pro : 15 proti, parlament ale text přijal"
      }
     ]
    }
@@ -629,6 +709,44 @@
     4
    ]
   },
+  "195543": {
+   "id": 195543,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603 × T25",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 460,
+    "against": 189,
+    "abstention": 14
+   },
+   "cz": [
+    3,
+    14,
+    0,
+    4
+   ]
+  },
+  "195340": {
+   "id": 195340,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87705",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 466,
+    "against": 175,
+    "abstention": 16
+   },
+   "cz": [
+    3,
+    13,
+    0,
+    5
+   ]
+  },
   "191944": {
    "id": 191944,
    "date": "2026-04-30",
@@ -781,6 +899,101 @@
     1
    ]
   },
+  "182703": {
+   "id": 182703,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 479,
+    "against": 173,
+    "abstention": 8
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ]
+  },
+  "182705": {
+   "id": 182705,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified sugar beet KWS20-1",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 455,
+    "against": 169,
+    "abstention": 8
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ]
+  },
+  "179508": {
+   "id": 179508,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP51291",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 433,
+    "against": 166,
+    "abstention": 9
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    0
+   ]
+  },
+  "181832": {
+   "id": 181832,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton MON 88913",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 452,
+    "against": 182,
+    "abstention": 13
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ]
+  },
+  "181542": {
+   "id": 181542,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Institutional aspects of the report on the future of European competitiveness (Draghi Report)",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 330,
+    "against": 273,
+    "abstention": 38
+   },
+   "cz": [
+    5,
+    15,
+    1,
+    0
+   ]
+  },
   "172211": {
    "id": 172211,
    "date": "2025-03-12",
@@ -799,15 +1012,34 @@
     9,
     0
    ]
+  },
+  "169894": {
+   "id": 169894,
+   "date": "2024-10-22",
+   "month": "2024-10",
+   "title": "2022 discharge: EU general budget – European Council and Council",
+   "vote_kind": "final",
+   "result": "ADOPTED",
+   "counts": {
+    "for": 431,
+    "against": 131,
+    "abstention": 83
+   },
+   "cz": [
+    6,
+    15,
+    0,
+    0
+   ]
   }
  },
  "rules": {
-  "ep_highlights": "Hlasování, která EP sám uvedl mezi hlavními body zasedání (tisková zpráva EP). Doplňuje autor ručně.",
   "laws": "Závěrečné hlasování nebo prozatímní dohoda v legislativní proceduře (COD, CNS, APP), od nejnovějších.",
   "splits": "Závěrečná hlasování, ve kterých se čeští poslanci nejvíc rozdělili (menšina mezi hlasy pro a proti).",
-  "close": "Závěrečná hlasování s nejmenším rozdílem hlasů pro a proti."
+  "close": "Závěrečná hlasování s nejmenším rozdílem hlasů pro a proti v celém parlamentu.",
+  "against_result": "Závěrečná hlasování, ve kterých většina českých hlasů pro a proti šla proti výsledku."
  },
- "note": "Klíčová hlasování nevybíráme my. Bereme ta, která EP sám uvedl mezi hlavními body zasedání, a k nim všechna závěrečná hlasování o zákonech.",
+ "note": "Klíčová hlasování nevybíráme ručně: každý seznam má jedno pravidlo, které se dá napsat do jedné věty, a čísla jsou z dat hlasování.",
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",

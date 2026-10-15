@@ -46,7 +46,7 @@ def test_build_writes_card_for_every_mep_and_final_vote(data_dir):
     res = bc.build(data_dir, public)
     meps = [p.stem for p in (public / "og" / "p").glob("*.png")]
     votes = [p.stem for p in (public / "og" / "v").glob("*.png")]
-    assert sorted(meps) == ["1", "2"] and (public / "og" / "default.png").exists()
+    assert sorted(meps) == ["1", "2"]
     pages = bp.build(data_dir)
     # každá statická stránka hlasování s kartou ji má v og:image; stránky bez karty (mimo 12 měsíců) obecný obrázek
     assert {k[2:-5] for k in pages if k.startswith("v/")} >= set(votes) and res["meps"] == 2

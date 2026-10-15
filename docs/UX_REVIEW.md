@@ -147,6 +147,6 @@ Loga nahrává autor ručně (viz `docs/LOGA.md`). Úkol pro kód:
   Doplnit `colors.json` z oficiálních manuálů (ODS má logomanuál s barvami).
 
 ## U12 Kontrola
-**Stav (15. 10. 2026): částečně** (axe-core bez chyb při ruční kontrole 14 stránek v obou režimech; automatizace v CI čeká na Fázi 3).
+**Stav (15. 10. 2026): hotovo** (`tests/e2e/check-web.mjs` + `.github/workflows/web-check.yml`: konzole, přetékání při 320/390/1366 px a axe-core ve světlém i tmavém režimu na 13 stránkách; běží u pull requestů).
 - Playwright screenshoty úvodu, profilu, detailu a seznamu (desktop 1366, mobil 390, světlý/tmavý) před a po.
 - axe-core bez chyb na všech stránkách.
