@@ -49,15 +49,3 @@ def test_window_median_uses_only_votes_in_window():
 def test_window_threshold_short_windows():
     from benchmarks import window_threshold
     assert window_threshold(6154) == 100 and window_threshold(60) == 30 and window_threshold(1) == 1
-
-
-def test_monthly_median_uses_members_with_half_of_the_months_votes():
-    gc = {i: {"EPP": [1, 0, 0, 1]} for i in range(1, 5)}
-    # řádky (hlasování, poslanec, pozice, frakce); hlasování 1–2 v lednu, 3–4 v únoru
-    rows = [(1, 1, "FOR", "EPP"), (2, 1, "FOR", "EPP"), (3, 1, "FOR", "EPP"), (4, 1, "FOR", "EPP"),
-            (1, 2, "FOR", "EPP"), (2, 2, "DID_NOT_VOTE", "EPP"), (3, 2, "DID_NOT_VOTE", "EPP"), (4, 2, "DID_NOT_VOTE", "EPP"),
-            (3, 3, "FOR", "EPP")]  # poslanec 3 má v únoru v datech jen 1 ze 2 hlasování (polovina), v lednu žádné
-    dates = {1: "2025-01-10", 2: "2025-01-20", 3: "2025-02-10", 4: "2025-02-20"}
-    b = compute_benchmarks(rows, gc, set(), min_votes=2, vote_dates=dates)
-    assert b["monthly"]["2025-01"] == {"votes": 2, "meps": 2, "attendance": 0.75}    # 1,0 a 0,5
-    assert b["monthly"]["2025-02"] == {"votes": 2, "meps": 3, "attendance": 1.0}     # 1,0, 0,0 a 1,0

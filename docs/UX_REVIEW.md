@@ -8,7 +8,7 @@ Každý úkol = commit `ux: <id> <popis>`. Vizuální vzor karty: `docs/mockups/
 ---
 
 ## U1 Sémantické barevné tokeny
-**Stav (15. 10. 2026): hotovo** (tokeny, výsledky s ikonou; čára mediánu EP v grafu účasti po měsících: revize D10).
+**Stav (15. 10. 2026): hotovo** (tokeny, výsledky s ikonou).
 **Proč:** modrá dnes znamená odkaz, hlas pro, „přijato“, docházku, EPP i štítek „závěrečné“.
 Lišta loajality má barvu ECR (#6366F1), lišta shody barvu ESN (#0EA5E9). Barvy proto nic neříkají.
 

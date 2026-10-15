@@ -1,0 +1,431 @@
+{
+ "source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2",
+  "license": "CC BY 4.0"
+ },
+ "updated": "2026-10-15",
+ "complete": true,
+ "totals": {
+  "meps": 24,
+  "reports_lead": 39,
+  "reports_shadow": 141,
+  "reports_adopted": 85,
+  "opinions": 73,
+  "questions": 455,
+  "speeches": 793,
+  "speeches_minutes": 983,
+  "written_statements": 15,
+  "presence": [
+   2269,
+   2520
+  ]
+ },
+ "timeline": [
+  {
+   "month": "2024-07",
+   "speeches": 1,
+   "questions": 3
+  },
+  {
+   "month": "2024-08",
+   "speeches": 0,
+   "questions": 2
+  },
+  {
+   "month": "2024-09",
+   "speeches": 31,
+   "questions": 11
+  },
+  {
+   "month": "2024-10",
+   "speeches": 59,
+   "questions": 24
+  },
+  {
+   "month": "2024-11",
+   "speeches": 44,
+   "questions": 19
+  },
+  {
+   "month": "2024-12",
+   "speeches": 36,
+   "questions": 16
+  },
+  {
+   "month": "2025-01",
+   "speeches": 23,
+   "questions": 13
+  },
+  {
+   "month": "2025-02",
+   "speeches": 25,
+   "questions": 36
+  },
+  {
+   "month": "2025-03",
+   "speeches": 34,
+   "questions": 16
+  },
+  {
+   "month": "2025-04",
+   "speeches": 23,
+   "questions": 15
+  },
+  {
+   "month": "2025-05",
+   "speeches": 35,
+   "questions": 11
+  },
+  {
+   "month": "2025-06",
+   "speeches": 14,
+   "questions": 16
+  },
+  {
+   "month": "2025-07",
+   "speeches": 22,
+   "questions": 9
+  },
+  {
+   "month": "2025-08",
+   "speeches": 0,
+   "questions": 2
+  },
+  {
+   "month": "2025-09",
+   "speeches": 32,
+   "questions": 16
+  },
+  {
+   "month": "2025-10",
+   "speeches": 51,
+   "questions": 26
+  },
+  {
+   "month": "2025-11",
+   "speeches": 49,
+   "questions": 24
+  },
+  {
+   "month": "2025-12",
+   "speeches": 42,
+   "questions": 25
+  },
+  {
+   "month": "2026-01",
+   "speeches": 24,
+   "questions": 19
+  },
+  {
+   "month": "2026-02",
+   "speeches": 20,
+   "questions": 18
+  },
+  {
+   "month": "2026-03",
+   "speeches": 52,
+   "questions": 26
+  },
+  {
+   "month": "2026-04",
+   "speeches": 33,
+   "questions": 32
+  },
+  {
+   "month": "2026-05",
+   "speeches": 41,
+   "questions": 13
+  },
+  {
+   "month": "2026-06",
+   "speeches": 29,
+   "questions": 24
+  },
+  {
+   "month": "2026-07",
+   "speeches": 22,
+   "questions": 11
+  },
+  {
+   "month": "2026-08",
+   "speeches": 0,
+   "questions": 5
+  },
+  {
+   "month": "2026-09",
+   "speeches": 24,
+   "questions": 20
+  },
+  {
+   "month": "2026-10",
+   "speeches": 27,
+   "questions": 3
+  }
+ ],
+ "by_process": [
+  {
+   "process_type": "COD",
+   "reports_lead": 10,
+   "reports_shadow": 72,
+   "adopted": 31,
+   "legislative": true,
+   "label": "legislativní, řádný postup"
+  },
+  {
+   "process_type": "INI",
+   "reports_lead": 6,
+   "reports_shadow": 35,
+   "adopted": 24,
+   "legislative": false,
+   "label": "z vlastního podnětu"
+  },
+  {
+   "process_type": "NLE",
+   "reports_lead": 11,
+   "reports_shadow": 17,
+   "adopted": 15,
+   "legislative": false,
+   "label": "nelegislativní akt"
+  },
+  {
+   "process_type": "DEC",
+   "reports_lead": 1,
+   "reports_shadow": 13,
+   "adopted": 12,
+   "legislative": false,
+   "label": "absolutorium"
+  },
+  {
+   "process_type": "DEA",
+   "reports_lead": 8,
+   "reports_shadow": 0,
+   "adopted": 0,
+   "legislative": false,
+   "label": "akt v přenesené pravomoci"
+  },
+  {
+   "process_type": "CNS",
+   "reports_lead": 3,
+   "reports_shadow": 3,
+   "adopted": 3,
+   "legislative": true,
+   "label": "legislativní, konzultace"
+  },
+  {
+   "process_type": "RSP",
+   "reports_lead": 0,
+   "reports_shadow": 1,
+   "adopted": 0,
+   "legislative": false,
+   "label": "usnesení k tématu"
+  }
+ ],
+ "by_group": [
+  {
+   "code": "PFE",
+   "short_label": "PfE",
+   "meps": 11,
+   "reports_lead": 16,
+   "reports_shadow": 88,
+   "opinions": 44,
+   "questions": 345,
+   "speeches": 196
+  },
+  {
+   "code": "PPE",
+   "short_label": "PPE",
+   "meps": 5,
+   "reports_lead": 11,
+   "reports_shadow": 18,
+   "opinions": 29,
+   "questions": 184,
+   "speeches": 211
+  },
+  {
+   "code": "ECR",
+   "short_label": "ECR",
+   "meps": 4,
+   "reports_lead": 13,
+   "reports_shadow": 31,
+   "opinions": 32,
+   "questions": 203,
+   "speeches": 166
+  },
+  {
+   "code": "NI",
+   "short_label": "NI",
+   "meps": 2,
+   "reports_lead": 0,
+   "reports_shadow": 0,
+   "opinions": 4,
+   "questions": 61,
+   "speeches": 137
+  },
+  {
+   "code": "ESN",
+   "short_label": "ESN",
+   "meps": 1,
+   "reports_lead": 0,
+   "reports_shadow": 5,
+   "opinions": 0,
+   "questions": 13,
+   "speeches": 32
+  },
+  {
+   "code": "VERTS-ALE",
+   "short_label": "Verts/ALE",
+   "meps": 1,
+   "reports_lead": 2,
+   "reports_shadow": 18,
+   "opinions": 5,
+   "questions": 44,
+   "speeches": 51
+  }
+ ],
+ "recent_adopted": [
+  {
+   "vote_id": 197360,
+   "date": "2026-10-06",
+   "report": "2026/0078(COD)",
+   "title": "Zavedení programu pro pružné a rychlé inovace v oblasti obrany – AGILE",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [],
+   "shadow": [
+    256840
+   ]
+  },
+  {
+   "vote_id": 196161,
+   "date": "2026-09-16",
+   "report": "2025/0176(COD)",
+   "title": "Změna nařízení (ES) č. 1907/2006, (ES) č. 1272/2008, (EU) č. 528/2012, (EU) 2019/1021 a (EU) 2021/697, pokud jde o obrannou připravenost, usnadnění investic do obrany a podmínky v obranném průmyslu",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [],
+   "shadow": [
+    197537,
+    256843
+   ]
+  },
+  {
+   "vote_id": 196116,
+   "date": "2026-09-16",
+   "report": "2025/0177(COD)",
+   "title": "Změna směrnic 2009/43/ES a 2009/81/ES, pokud jde o zjednodušení transferů produktů pro obranné účely uvnitř EU a zjednodušení zadávání veřejných zakázek v oblasti obrany a bezpečnosti",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [],
+   "shadow": [
+    256844,
+    256853
+   ]
+  },
+  {
+   "vote_id": 196114,
+   "date": "2026-09-16",
+   "report": "2025/0172(COD)",
+   "title": "Urychlení povolovacích postupů u projektů v oblasti obranné připravenosti",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [],
+   "shadow": [
+    256853
+   ]
+  },
+  {
+   "vote_id": 195855,
+   "date": "2026-09-16",
+   "report": "A10-0204/2026",
+   "title": "DOPORUČENÍ k návrhu rozhodnutí Rady o uzavření Dohody mezi Evropskou unií a Švýcarskou konfederací o předávání údajů jmenné evidence cestujících (PNR) za účelem prevence, odhalování, vyšetřování a stíhání teroristických trestných činů a závažné trestné činnosti",
+   "process_type": "NLE",
+   "legislative": false,
+   "lead": [
+    220840
+   ],
+   "shadow": []
+  },
+  {
+   "vote_id": 195854,
+   "date": "2026-09-16",
+   "report": "2025/0111(NLE)",
+   "title": "Dohoda mezi Evropskou unií a Spojeným královstvím Velké Británie a Severního Irska o spolupráci při uplatňování jejich právních předpisů o hospodářské soutěži",
+   "process_type": "NLE",
+   "legislative": false,
+   "lead": [],
+   "shadow": [
+    256844
+   ]
+  },
+  {
+   "vote_id": 195830,
+   "date": "2026-09-16",
+   "report": "2025/0268(NLE)",
+   "title": "Program pomoci pro účely vyřazení jaderné elektrárny Ignalina v Litvě z provozu na období 2028–2034 a o zrušení nařízení (EU) 2021/101",
+   "process_type": "NLE",
+   "legislative": false,
+   "lead": [],
+   "shadow": [
+    197528
+   ]
+  },
+  {
+   "vote_id": 196438,
+   "date": "2026-09-15",
+   "report": "2026/0085(COD)",
+   "title": "Změna rozhodnutí (EU) 2015/1814, pokud jde o ukončení zneplatňování povolenek v rezervě tržní stability\n\n",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [],
+   "shadow": [
+    197528,
+    197537
+   ]
+  },
+  {
+   "vote_id": 196227,
+   "date": "2026-09-15",
+   "report": "A10-0098/2026",
+   "title": "ZPRÁVA o návrhu rozhodnutí Evropského parlamentu a Rady, kterým se mění rozhodnutí (EU) 2015/1814, pokud jde o rezervu tržní stability pro budovy, silniční dopravu a další odvětví",
+   "process_type": "COD",
+   "legislative": true,
+   "lead": [
+    256847
+   ],
+   "shadow": [
+    256843
+   ]
+  },
+  {
+   "vote_id": 195987,
+   "date": "2026-09-15",
+   "report": "2025/2069(INI)",
+   "title": "Zjištění a doporučení zvláštního výboru pro Evropský štít pro demokracii",
+   "process_type": "INI",
+   "legislative": false,
+   "lead": [],
+   "shadow": [
+    220840
+   ]
+  }
+ ],
+ "adopted_with_vote": 83,
+ "sources": {
+  "own_work": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2",
+   "license": "CC BY 4.0"
+  },
+  "speeches": {
+   "name": "EP Open Data API v2, /speeches",
+   "url": "https://data.europarl.europa.eu/api/v2/speeches",
+   "license": "CC BY 4.0"
+  },
+  "presence": {
+   "name": "EP Open Data API v2, /meetings (prezenční listiny)",
+   "url": "https://data.europarl.europa.eu/api/v2/meetings",
+   "license": "CC BY 4.0"
+  }
+ }
+}

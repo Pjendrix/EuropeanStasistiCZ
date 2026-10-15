@@ -1,15 +1,8 @@
-// Úvodní stránka (index.html, generuje scripts/hub.py): jen vyhledávání a přepínač období klíčových hlasování.
+// Úvodní stránka (index.html, generuje scripts/hub.py): jen vyhledávání.
 // Obsah stránky je statický, bez tohoto skriptu zůstane vše čitelné a odkazy fungují.
 "use strict";
 
 setNav("");
-
-// --- přepínač období -------------------------------------------------------------------
-document.querySelectorAll('input[name="kv-period"]').forEach((r) => {
-  r.addEventListener("change", () => {
-    document.querySelectorAll(".kv-period").forEach((el) => { el.hidden = el.dataset.period !== r.value; });
-  });
-});
 
 // --- vyhledávání poslanců, stran a hlasování ---------------------------------------------
 const q = document.getElementById("hub-q");
