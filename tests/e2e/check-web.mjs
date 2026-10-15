@@ -65,6 +65,27 @@ for (const scheme of ["light", "dark"]) {
     await ctx.close();
   }
 }
+// S3: nabídka Sdílet není nikdy překrytá (sticky lišta, stacking context) a Esc ji zavře i s návratem fokusu.
+// Bez reducedMotion, aby běžela animace .reveal, která chybu původně způsobovala.
+for (const width of [1366, 390]) {
+  const ctx = await browser.newContext({ viewport: { width, height: 800 } });
+  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`]) {
+    const page = await ctx.newPage();
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    await page.waitForTimeout(1200);
+    const where = `${url} [sdílení, ${width}px]`;
+    if (!(await page.$("[data-share]"))) { problems.push(`${where}: chybí tlačítko Sdílet`); await page.close(); continue; }
+    await page.click("[data-share]");
+    const covered = await page.evaluate(() => [...document.querySelectorAll(".share-menu [role=menuitem]")].filter((e) => {
+      const q = e.getBoundingClientRect(); return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2)); }).map((e) => e.textContent.trim()));
+    if (covered.length) problems.push(`${where}: nabídku překrývá jiný prvek: ${covered.join(", ")}`);
+    await page.keyboard.press("Escape");
+    const state = await page.evaluate(() => ({ open: Boolean(document.querySelector(".share-menu")), focus: document.activeElement?.matches("[data-share]") }));
+    if (state.open || !state.focus) problems.push(`${where}: Esc nezavřel nabídku nebo nevrátil fokus`);
+    await page.close();
+  }
+  await ctx.close();
+}
 await browser.close();
 server.close();
 if (problems.length) {
