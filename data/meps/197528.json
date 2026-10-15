@@ -132,7 +132,8 @@
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
   "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
-  "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
+  "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se počítá jednou.",
+  "work_profile": "Profil vlastní práce (stránka Vlastní práce) počítá přidělené role bez ohledu na výsledek hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí ani body záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádná váha by nebyla podložená. Podepsané návrhy usnesení se ukazují zvlášť a do třetin nevstupují: podepisují je desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává.",
   "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "total": {
@@ -4317,10 +4318,10 @@
   },
   "summary": {
    "report": {
-    "count": 9,
-    "voted": 4,
-    "adopted": 4,
-    "no_vote": 5,
+    "count": 5,
+    "voted": 2,
+    "adopted": 2,
+    "no_vote": 3,
     "other": 0
    },
    "shadow_report": {
@@ -4357,19 +4358,28 @@
    }
   },
   "passed": {
-   "lead_adopted": 4,
-   "lead_adopted_legislative": 2,
-   "lead_pending": 5,
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 1,
+   "lead_pending": 3,
    "shadow_adopted": 14,
    "shadow_adopted_legislative": 4,
    "shadow_pending": 9,
-   "resolutions_adopted": 0,
+   "resolutions_adopted": 0
+  },
+  "roles": {
+   "lead_reports": 5,
+   "lead_opinions": 1,
+   "shadow_reports": 23,
+   "shadow_opinions": 8,
+   "motions_signed": 23,
    "delegation": {
-    "texts_adopted": 18,
-    "rank": 1,
+    "tiers": {
+     "lead_reports": "top",
+     "lead_opinions": "mid",
+     "shadow_reports": "top",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
    }
   },
@@ -5739,26 +5749,6 @@
     "legislative": false
    },
    {
-    "id": "proc-2025-2121",
-    "label": "2025/2121(INI)",
-    "date": "2025-08-06",
-    "title": {
-     "cs": "Boj proti podvodům v oblasti DPH – účinnost přeshraniční spolupráce v oblasti podvodů v oblasti DPH a její dopad na rozpočet EU",
-     "en": "Combating VAT fraud – the effectiveness of cross-border cooperation when it comes to VAT fraud and its impact on the EU budget"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2121(INI)",
-    "type": "report",
-    "role": "RAPPORTEUR",
-    "group": "PFE",
-    "committee": "CONT",
-    "status": "no_vote",
-    "vote_id": null,
-    "vote_date": null,
-    "report": "A10-0213/2026",
-    "process_type": "INI",
-    "legislative": false
-   },
-   {
     "id": "E-10-2025-003117",
     "label": "E-003117/2025",
     "date": "2025-07-28",
@@ -5773,26 +5763,6 @@
     "status": "answered",
     "answer_date": "2025-10-07",
     "authors_total": 18
-   },
-   {
-    "id": "proc-2025-0524",
-    "label": "2025/0524(COD)",
-    "date": "2025-07-15",
-    "title": {
-     "cs": "Změna nařízení (EU) č. 2021/1119, kterým se stanoví rámec pro dosažení klimatické neutrality",
-     "en": "Amending Regulation (EU) 2021/1119 establishing the framework for achieving climate neutrality"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0524(COD)",
-    "type": "report",
-    "role": "RAPPORTEUR",
-    "group": "PFE",
-    "committee": "ENVI",
-    "status": "ADOPTED",
-    "vote_id": 184178,
-    "vote_date": "2026-02-10",
-    "report": "A10-0223/2025",
-    "process_type": "COD",
-    "legislative": true
    },
    {
     "id": "P-10-2025-002901",
@@ -6053,26 +6023,6 @@
     "report": "A10-0272/2025",
     "process_type": "COD",
     "legislative": true
-   },
-   {
-    "id": "proc-2025-0802",
-    "label": "2025/0802(NLE)",
-    "date": "2025-03-19",
-    "title": {
-     "cs": "Částečná obměna členů Účetního dvora – kandidát za Chorvatsko",
-     "en": "Partial renewal of Members of the Court of Auditors - HR nominee"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0802(NLE)",
-    "type": "report",
-    "role": "RAPPORTEUR",
-    "group": "PFE",
-    "committee": "CONT",
-    "status": "no_vote",
-    "vote_id": null,
-    "vote_date": null,
-    "report": "A10-0088/2025",
-    "process_type": "NLE",
-    "legislative": false
    },
    {
     "id": "E-10-2025-001138",
@@ -6605,26 +6555,6 @@
     "status": "answered",
     "answer_date": "2024-11-20",
     "authors_total": 6
-   },
-   {
-    "id": "proc-2024-2052",
-    "label": "2024/2052(INI)",
-    "date": "2024-09-18",
-    "title": {
-     "cs": "Kontrola finančních činností Evropské investiční banky – výroční zpráva za rok 2023",
-     "en": "Control of the financial activities of the European Investment Bank – annual report 2023"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2052(INI)",
-    "type": "report",
-    "role": "RAPPORTEUR",
-    "group": "PFE",
-    "committee": "CONT",
-    "status": "ADOPTED",
-    "vote_id": 175044,
-    "vote_date": "2025-05-06",
-    "report": "A10-0068/2025",
-    "process_type": "INI",
-    "legislative": false
    },
    {
     "id": "B-10-2024-0062",

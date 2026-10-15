@@ -197,11 +197,24 @@ def test_profile_without_benchmarks(data_dir):
 
 def test_work_ranking_file(data_dir):
     own = {"source": "MOCK", "updated": "2026-10-15", "complete": True, "type_labels": {},
-           "meps": {"1": {"summary": {}, "items": [], "passed": {"lead_adopted": 2, "shadow_adopted": 1,
-                    "delegation": {"texts_adopted": 3, "rank": 1, "of": 1, "median": 3, "max": 3, "mandate_from": None}}}}}
+           "meps": {"1": {"summary": {}, "items": [], "passed": {"lead_adopted": 2, "shadow_adopted": 1},
+                    "roles": {"lead_reports": 3, "lead_opinions": 1, "motions_signed": 7,
+                              "delegation": {"tiers": {"lead_reports": "top"}, "of": 1, "mandate_from": None}}}}}
     (data_dir / "own_work.json").write_text(json.dumps(own), encoding="utf-8")
     bw.run(data_dir, "2024-11-01")
     work = json.loads((data_dir / "work.json").read_text(encoding="utf-8"))
     rows = {r["id"]: r for r in work["meps"]}
-    assert rows[1]["lead_adopted"] == 2 and rows[1]["delegation"]["rank"] == 1
-    assert rows[2]["lead_adopted"] == 0 and rows[2]["delegation"] is None  # bez dat nic nevymýšlíme
+    assert rows[1]["lead_adopted"] == 2 and rows[1]["lead_reports"] == 3 and rows[1]["motions_signed"] == 7
+    assert rows[1]["shadow_opinions"] == 0 and rows[1]["delegation"]["tiers"]["lead_reports"] == "top"
+    assert rows[2]["lead_reports"] == 0 and rows[2]["delegation"] is None  # bez dat nic nevymýšlíme
+
+
+def test_functions_only_current_chairs_and_bureau():
+    m = {"committees": [
+            {"role": "CHAIR", "code": "AGRI", "name_cs": "Zemědělství", "start": "2024-07-23", "end": None},
+            {"role": "MEMBER", "code": "ENVI", "name_cs": "ŽP", "start": "2024-07-23", "end": None},
+            {"role": "CHAIR_VICE", "code": "ECON", "name_cs": "Hosp.", "start": "2024-07-23", "end": "2025-01-01"}],
+         "groups": [{"role": "MEMBER_BUREAU", "code": "ECR", "name_cs": "ECR", "start": "2024-07-16", "end": None},
+                    {"role": "MEMBER", "code": "ECR", "name_cs": "ECR", "start": "2024-07-16", "end": None}]}
+    f = bw.functions(m, "2026-01-01")
+    assert [(x["kind"], x["role"], x["code"]) for x in f] == [("committee", "CHAIR", "AGRI"), ("group", "MEMBER_BUREAU", "ECR")]

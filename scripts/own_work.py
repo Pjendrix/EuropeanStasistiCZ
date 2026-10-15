@@ -104,7 +104,16 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
     def add(mep_id, entry):
         out.setdefault(mep_id, []).append(entry)
 
+    # Procedury, u kterých má poslanec zprávu jako dokument. Spočítat předem, protože pořadí položek v datech
+    # není zaručené (procedura může přijít dřív než dokument zprávy a zpráva by se započetla dvakrát).
     report_procs: dict[int, set] = {}
+    for item in proposals:
+        if item["kind"] == "report":
+            for p in item["participants"]:
+                report_procs.setdefault(p["mep_id"], set()).add(item.get("procedure"))
+    # Jedna role v jedné proceduře = jedna položka. EP někdy uvádí stejnou roli vícekrát (jiné datum, bez výboru),
+    # z dat ale nejde poznat, jestli jde o různé výbory, takže se počítá jednou.
+    seen_roles: set[tuple] = set()
     for item in proposals:
         base = {"id": item["id"], "label": item.get("label"), "date": item.get("date"), "title": item.get("title"),
                 "url": item.get("url")}
@@ -118,8 +127,6 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                 if rc_status != "no_vote":
                     status, extra = "superseded", {"joint_motion": rc, "joint_result": rc_status, "joint_vote_id": rc_vote}
             for p in item["participants"]:
-                if kind == "report":
-                    report_procs.setdefault(p["mep_id"], set()).add(item.get("procedure"))
                 add(p["mep_id"], {**base, "type": kind, "role": p["role"], "status": status, "vote_id": vote_id,
                                   "vote_date": vote_date, "signatories_total": item.get("signatories_total"),
                                   **(ptype(item.get("procedure")) if kind == "report" else {}),
@@ -139,6 +146,9 @@ def link(proposals: list[dict], documents: dict, votes: list[dict]) -> dict[int,
                     typ = "shadow_opinion"
                 else:
                     continue
+                if (p["mep_id"], typ, item["procedure"]) in seen_roles:
+                    continue
+                seen_roles.add((p["mep_id"], typ, item["procedure"]))
                 if typ in ("report", "shadow_report"):
                     status, vote_id, vote_date, report_label = report_status(item["procedure"])
                 else:
@@ -196,24 +206,48 @@ def passed(entries: list[dict]) -> dict:
     }
 
 
-def rank_delegation(passed_by_mep: dict[str, dict], members: dict[str, str] | None = None,
-                    key: str = "texts_adopted") -> dict[str, dict | None]:
-    """Pořadí v české delegaci podle počtu přijatých zpráv (zpravodaj + stínový). Shodný počet = shodné místo.
+# Přidělené role (práce), ne výsledek hlasování: kategorie profilu na stránce „Vlastní práce“.
+# Klíč → typy položek z link(). Usnesení se počítají zvlášť a do třetin nevstupují (spolupodpis desítek
+# poslanců za frakci; společné návrhy navíc sepisují jen některé frakce).
+ROLE_TYPES = {
+    "lead_reports": ("report",),
+    "lead_opinions": ("opinion",),
+    "shadow_reports": ("shadow_report",),
+    "shadow_opinions": ("shadow_opinion",),
+}
+TIER_KEYS = list(ROLE_TYPES)
 
-    members = {ID: začátek mandátu} poslanců v mandátu (současná delegace); jen mezi nimi se pořadí počítá.
-    Poslanec delegace bez jediné zprávy má 0. Bývalí poslanci pořadí nedostanou (None), protože srovnávat
-    počty za různě dlouhá období nedává smysl. Bez members se počítá ze všech v passed_by_mep."""
+
+def roles(entries: list[dict]) -> dict:
+    """Kolik textů poslanec dostal na starost podle role (bez ohledu na výsledek hlasování) a kolik návrhů
+    usnesení (vlastních i společných) podepsal. Jen počty z dat, žádné váhy ani body."""
+    out = {k: sum(1 for e in entries if e["type"] in types) for k, types in ROLE_TYPES.items()}
+    out["motions_signed"] = sum(1 for e in entries if e["type"] in ("motion", "joint_motion"))
+    return out
+
+
+def tier(value: int, values: list[int]) -> str | None:
+    """Třetina v delegaci: podíl poslanců s menší hodnotou. 0 = bez třetiny (None), shodná hodnota = shodná třetina.
+    top ≥ 2/3, mid ≥ 1/3, jinak low."""
+    if not value or not values:
+        return None
+    below = sum(1 for v in values if v < value) / len(values)
+    return "top" if below >= 2 / 3 else "mid" if below >= 1 / 3 else "low"
+
+
+def delegation_profile(roles_by_mep: dict[str, dict], members: dict[str, str] | None = None) -> dict[str, dict | None]:
+    """Profil v české delegaci: u každé kategorie z TIER_KEYS třetina mezi současnými poslanci. Žádné celkové pořadí.
+
+    members = {ID: začátek mandátu} poslanců v mandátu (současná delegace); jen mezi nimi se srovnává.
+    Poslanec delegace bez dat má všude 0. Bývalí poslanci profil nedostanou (None), protože srovnávat počty
+    za různě dlouhá období nedává smysl. Bez members se srovnává mezi všemi v roles_by_mep."""
     if members is None:
-        members = {k: None for k in passed_by_mep}
-    values = {k: (passed_by_mep[k]["lead_adopted"] + passed_by_mep[k]["shadow_adopted"]) if k in passed_by_mep else 0
-              for k in members}
-    ordered = sorted(values.values(), reverse=True)
-    n = len(ordered)
-    median = (ordered[(n - 1) // 2] + ordered[n // 2]) / 2 if n else None
+        members = {k: None for k in roles_by_mep}
+    value = lambda k, key: (roles_by_mep.get(k) or {}).get(key, 0)
+    columns = {key: [value(k, key) for k in members] for key in TIER_KEYS}
     first_start = min((v for v in members.values() if v), default=None)
-    out: dict[str, dict | None] = {k: None for k in passed_by_mep}
-    for k, val in values.items():
-        start = members[k]
-        out[k] = {key: val, "rank": ordered.index(val) + 1, "of": n, "median": median, "max": ordered[0] if n else None,
+    out: dict[str, dict | None] = {k: None for k in roles_by_mep}
+    for k, start in members.items():
+        out[k] = {"tiers": {key: tier(value(k, key), columns[key]) for key in TIER_KEYS}, "of": len(members),
                   "mandate_from": start if start and first_start and start > first_start else None}
     return out

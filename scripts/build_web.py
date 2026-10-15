@@ -276,16 +276,38 @@ PASSED_KEYS = ["lead_adopted", "lead_adopted_legislative", "lead_pending", "shad
                "shadow_adopted_legislative", "shadow_pending", "resolutions_adopted"]
 
 
-def build_work(meps: list[dict], own: dict | None, day: str) -> dict | None:
-    """Žebříček vlastní práce: počty z own_work.json (spočítal own_work.passed / rank_delegation), nic nového."""
+ROLE_KEYS = ["lead_reports", "lead_opinions", "shadow_reports", "shadow_opinions", "motions_signed"]
+
+
+# Funkce, které EP uvádí u členství ve výboru nebo frakci (fetch_meps.py). Řadové členství se neukazuje.
+FUNCTION_ROLES = {"committee": ("CHAIR", "CHAIR_VICE"), "group": ("CHAIR", "CHAIR_VICE", "MEMBER_BUREAU")}
+
+
+def functions(m: dict, day: str) -> list[dict]:
+    """Funkce platné k danému dni: předseda/místopředseda výboru, předseda/místopředseda/předsednictvo frakce."""
+    active = lambda x: x["start"] <= day and (x["end"] is None or day <= x["end"])
+    out = [{"kind": "committee", "role": x["role"], "code": x["code"], "name_cs": x.get("name_cs")}
+           for x in m.get("committees", []) if x.get("role") in FUNCTION_ROLES["committee"] and active(x)]
+    out += [{"kind": "group", "role": x["role"], "code": x["code"], "name_cs": x.get("name_cs")}
+            for x in m.get("groups", []) if x.get("role") in FUNCTION_ROLES["group"] and active(x)]
+    order = {"CHAIR": 0, "CHAIR_VICE": 1, "MEMBER_BUREAU": 2}
+    return sorted(out, key=lambda f: (f["kind"] != "committee", order[f["role"]], f["code"] or ""))
+
+
+def build_work(meps: list[dict], own: dict | None, day: str, stats: dict | None = None) -> dict | None:
+    """Profil vlastní práce: počty z own_work.json (spočítal own_work.passed / roles / delegation_profile),
+    docházka ze stats.json a funkce z meps.json, nic nového."""
     if own is None:
         return None
     rows = []
     for m in meps:
         entry = own["meps"].get(str(m["id"])) or {}
         passed = entry.get("passed") or {}
+        roles = entry.get("roles") or {}
+        total = ((stats or {}).get("meps", {}).get(str(m["id"])) or {}).get("total") or {}
         rows.append({**mep_summary(m, day), **{k: passed.get(k, 0) for k in PASSED_KEYS},
-                     "delegation": passed.get("delegation")})
+                     **{k: roles.get(k, 0) for k in ROLE_KEYS}, "delegation": roles.get("delegation"),
+                     "attendance": total.get("attendance"), "functions": functions(m, day)})
     return {"source": own["source"], "updated": own["updated"], "complete": own["complete"], "meps": rows}
 
 
@@ -357,7 +379,9 @@ def run(data_dir: Path, day: str) -> dict:
 
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
-    work = build_work(meps, own, day)
+    work = build_work(meps, own, day, stats)
+    if work is not None and bench is not None:
+        work["attendance_ep_median"] = bench["ep"].get("attendance")
     if work is not None:
         write_json(data_dir / "work.json", work)
     profiles_dir = data_dir / "meps"

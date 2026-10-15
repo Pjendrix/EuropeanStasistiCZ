@@ -65,13 +65,22 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 0,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 4,
+    "shadow_reports": 0,
+    "shadow_opinions": 0,
+    "motions_signed": 4,
     "delegation": {
-     "texts_adopted": 0,
-     "rank": 18,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": "top",
+      "shadow_reports": null,
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -975,7 +984,14 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 2,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 2,
+    "shadow_opinions": 1,
+    "motions_signed": 0,
     "delegation": null
    },
    "items": [
@@ -1204,10 +1220,10 @@
   "124701": {
    "summary": {
     "report": {
-     "count": 2,
+     "count": 1,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 2,
+     "no_vote": 1,
      "other": 0
     },
     "shadow_report": {
@@ -1246,17 +1262,26 @@
    "passed": {
     "lead_adopted": 0,
     "lead_adopted_legislative": 0,
-    "lead_pending": 2,
+    "lead_pending": 1,
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 4,
-    "resolutions_adopted": 33,
+    "resolutions_adopted": 33
+   },
+   "roles": {
+    "lead_reports": 1,
+    "lead_opinions": 0,
+    "shadow_reports": 5,
+    "shadow_opinions": 0,
+    "motions_signed": 95,
     "delegation": {
-     "texts_adopted": 1,
-     "rank": 16,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": null,
+      "shadow_reports": "mid",
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -3110,26 +3135,6 @@
      "legislative": true
     },
     {
-     "id": "proc-2023-0112",
-     "label": "2023/0112(COD)",
-     "date": "2024-09-12",
-     "title": {
-      "cs": "Změna směrnice 2014/59/EU, pokud jde o opatření včasného zásahu, podmínky zahájení řešení krize a financování opatření k řešení krize",
-      "en": "Amending Directive 2014/59/EU as regards early intervention measures, conditions for resolution and financing of resolution action"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0112(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "ECON",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0066/2026",
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
      "id": "proc-2023-0111",
      "label": "2023/0111(COD)",
      "date": "2024-09-12",
@@ -3154,10 +3159,10 @@
   "124713": {
    "summary": {
     "report": {
-     "count": 10,
-     "voted": 2,
-     "adopted": 2,
-     "no_vote": 8,
+     "count": 6,
+     "voted": 1,
+     "adopted": 1,
+     "no_vote": 5,
      "other": 0
     },
     "shadow_report": {
@@ -3171,7 +3176,7 @@
      "count": 4
     },
     "shadow_opinion": {
-     "count": 14
+     "count": 13
     },
     "motion": {
      "count": 69,
@@ -3194,19 +3199,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 2,
+    "lead_adopted": 1,
     "lead_adopted_legislative": 0,
-    "lead_pending": 8,
+    "lead_pending": 5,
     "shadow_adopted": 2,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 6,
-    "resolutions_adopted": 46,
+    "resolutions_adopted": 46
+   },
+   "roles": {
+    "lead_reports": 6,
+    "lead_opinions": 4,
+    "shadow_reports": 9,
+    "shadow_opinions": 13,
+    "motions_signed": 135,
     "delegation": {
-     "texts_adopted": 4,
-     "rank": 11,
+     "tiers": {
+      "lead_reports": "top",
+      "lead_opinions": "top",
+      "shadow_reports": "mid",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -3732,26 +3746,6 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 28
-    },
-    {
-     "id": "proc-2026-0196",
-     "label": "2026/0196(BUD)",
-     "date": "2026-06-26",
-     "title": {
-      "cs": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
-      "en": "General budget of the European Union for the financial year 2027 - all sections"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0196(BUD)",
-     "type": "shadow_opinion",
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "PPE",
-     "committee": null,
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "BUD",
-     "legislative": false
     },
     {
      "id": "E-10-2026-002638",
@@ -5439,26 +5433,6 @@
      "authors_total": 1
     },
     {
-     "id": "proc-2025-0808",
-     "label": "2025/0808(NLE)",
-     "date": "2025-10-20",
-     "title": {
-      "cs": "Částečná obměna členů Účetního dvora – kandidát FR",
-      "en": "Partial renewal of Members of the Court of Auditors - FR nominee"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0808(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "CONT",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0219/2025",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
      "id": "proc-2025-0807",
      "label": "2025/0807(NLE)",
      "date": "2025-10-20",
@@ -6237,26 +6211,6 @@
      "authors_total": 1
     },
     {
-     "id": "proc-2025-0804",
-     "label": "2025/0804(NLE)",
-     "date": "2025-06-18",
-     "title": {
-      "cs": "Částečná obměna členů Účetního dvora – kandidát NL",
-      "en": "Partial renewal of Members of the Court of Auditors - NL nominee"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0804(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "CONT",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0149/2025",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
      "id": "E-10-2025-002429",
      "label": "E-002429/2025",
      "date": "2025-06-17",
@@ -6913,26 +6867,6 @@
      "status": "answered",
      "answer_date": "2025-04-03",
      "authors_total": 39
-    },
-    {
-     "id": "proc-2025-0801",
-     "label": "2025/0801(NLE)",
-     "date": "2025-02-24",
-     "title": {
-      "cs": "Částečná obměna členů Účetního dvora – kandidát RO",
-      "en": "Partial renewal of Members of the Court of Auditors - RO nominee"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0801(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "CONT",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0039/2025",
-     "process_type": "NLE",
-     "legislative": false
     },
     {
      "id": "E-10-2025-000775",
@@ -7927,26 +7861,6 @@
      "authors_total": 1
     },
     {
-     "id": "proc-2024-2029",
-     "label": "2024/2029(DEC)",
-     "date": "2024-09-11",
-     "title": {
-      "cs": "Udělení absolutoria za rok 2023: souhrnný rozpočet EU - Úřad evropského veřejného žalobce (EPPO)",
-      "en": "2023 discharge: General budget of the EU - European Public Prosecutors Office (the ‘EPPO’)"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2029(DEC)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "CONT",
-     "status": "ADOPTED",
-     "vote_id": 175136,
-     "vote_date": "2025-05-07",
-     "report": "A10-0051/2025",
-     "process_type": "DEC",
-     "legislative": false
-    },
-    {
      "id": "E-10-2024-001642",
      "label": "E-001642/2024",
      "date": "2024-09-06",
@@ -8051,10 +7965,10 @@
   "197528": {
    "summary": {
     "report": {
-     "count": 9,
-     "voted": 4,
-     "adopted": 4,
-     "no_vote": 5,
+     "count": 5,
+     "voted": 2,
+     "adopted": 2,
+     "no_vote": 3,
      "other": 0
     },
     "shadow_report": {
@@ -8091,19 +8005,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 4,
-    "lead_adopted_legislative": 2,
-    "lead_pending": 5,
+    "lead_adopted": 2,
+    "lead_adopted_legislative": 1,
+    "lead_pending": 3,
     "shadow_adopted": 14,
     "shadow_adopted_legislative": 4,
     "shadow_pending": 9,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 5,
+    "lead_opinions": 1,
+    "shadow_reports": 23,
+    "shadow_opinions": 8,
+    "motions_signed": 23,
     "delegation": {
-     "texts_adopted": 18,
-     "rank": 1,
+     "tiers": {
+      "lead_reports": "top",
+      "lead_opinions": "mid",
+      "shadow_reports": "top",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -9473,26 +9396,6 @@
      "legislative": false
     },
     {
-     "id": "proc-2025-2121",
-     "label": "2025/2121(INI)",
-     "date": "2025-08-06",
-     "title": {
-      "cs": "Boj proti podvodům v oblasti DPH – účinnost přeshraniční spolupráce v oblasti podvodů v oblasti DPH a její dopad na rozpočet EU",
-      "en": "Combating VAT fraud – the effectiveness of cross-border cooperation when it comes to VAT fraud and its impact on the EU budget"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2121(INI)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "CONT",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0213/2026",
-     "process_type": "INI",
-     "legislative": false
-    },
-    {
      "id": "E-10-2025-003117",
      "label": "E-003117/2025",
      "date": "2025-07-28",
@@ -9507,26 +9410,6 @@
      "status": "answered",
      "answer_date": "2025-10-07",
      "authors_total": 18
-    },
-    {
-     "id": "proc-2025-0524",
-     "label": "2025/0524(COD)",
-     "date": "2025-07-15",
-     "title": {
-      "cs": "Změna nařízení (EU) č. 2021/1119, kterým se stanoví rámec pro dosažení klimatické neutrality",
-      "en": "Amending Regulation (EU) 2021/1119 establishing the framework for achieving climate neutrality"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0524(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "ENVI",
-     "status": "ADOPTED",
-     "vote_id": 184178,
-     "vote_date": "2026-02-10",
-     "report": "A10-0223/2025",
-     "process_type": "COD",
-     "legislative": true
     },
     {
      "id": "P-10-2025-002901",
@@ -9787,26 +9670,6 @@
      "report": "A10-0272/2025",
      "process_type": "COD",
      "legislative": true
-    },
-    {
-     "id": "proc-2025-0802",
-     "label": "2025/0802(NLE)",
-     "date": "2025-03-19",
-     "title": {
-      "cs": "Částečná obměna členů Účetního dvora – kandidát za Chorvatsko",
-      "en": "Partial renewal of Members of the Court of Auditors - HR nominee"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0802(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "CONT",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": "A10-0088/2025",
-     "process_type": "NLE",
-     "legislative": false
     },
     {
      "id": "E-10-2025-001138",
@@ -10341,26 +10204,6 @@
      "authors_total": 6
     },
     {
-     "id": "proc-2024-2052",
-     "label": "2024/2052(INI)",
-     "date": "2024-09-18",
-     "title": {
-      "cs": "Kontrola finančních činností Evropské investiční banky – výroční zpráva za rok 2023",
-      "en": "Control of the financial activities of the European Investment Bank – annual report 2023"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2052(INI)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "CONT",
-     "status": "ADOPTED",
-     "vote_id": 175044,
-     "vote_date": "2025-05-06",
-     "report": "A10-0068/2025",
-     "process_type": "INI",
-     "legislative": false
-    },
-    {
      "id": "B-10-2024-0062",
      "label": "B10-0062/2024",
      "date": "2024-09-17",
@@ -10510,13 +10353,22 @@
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 5,
     "shadow_pending": 4,
-    "resolutions_adopted": 64,
+    "resolutions_adopted": 64
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 9,
+    "shadow_opinions": 11,
+    "motions_signed": 181,
     "delegation": {
-     "texts_adopted": 5,
-     "rank": 7,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "mid",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -14491,13 +14343,22 @@
     "shadow_adopted": 11,
     "shadow_adopted_legislative": 8,
     "shadow_pending": 6,
-    "resolutions_adopted": 17,
+    "resolutions_adopted": 17
+   },
+   "roles": {
+    "lead_reports": 2,
+    "lead_opinions": 0,
+    "shadow_reports": 18,
+    "shadow_opinions": 5,
+    "motions_signed": 52,
     "delegation": {
-     "texts_adopted": 11,
-     "rank": 3,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": null,
+      "shadow_reports": "top",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -16627,9 +16488,9 @@
   "197552": {
    "summary": {
     "report": {
-     "count": 15,
-     "voted": 8,
-     "adopted": 8,
+     "count": 11,
+     "voted": 4,
+     "adopted": 4,
      "no_vote": 7,
      "other": 0
     },
@@ -16667,19 +16528,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 8,
-    "lead_adopted_legislative": 8,
+    "lead_adopted": 4,
+    "lead_adopted_legislative": 4,
     "lead_pending": 7,
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 2,
-    "resolutions_adopted": 55,
+    "resolutions_adopted": 55
+   },
+   "roles": {
+    "lead_reports": 11,
+    "lead_opinions": 14,
+    "shadow_reports": 3,
+    "shadow_opinions": 0,
+    "motions_signed": 170,
     "delegation": {
-     "texts_adopted": 9,
-     "rank": 4,
+     "tiers": {
+      "lead_reports": "top",
+      "lead_opinions": "top",
+      "shadow_reports": "low",
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -20029,66 +19899,6 @@
      "joint_vote_id": 170917
     },
     {
-     "id": "proc-2024-0027",
-     "label": "2024/0027(COD)",
-     "date": "2024-11-20",
-     "title": {
-      "cs": "Udělení rovnocennosti s požadavky EU Moldavsku a Ukrajině, pokud jde o přehlídky porostu a produkci osiva",
-      "en": "Granting equivalence with EU requirements to Moldova and Ukraine as regards field inspections and production of seed"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0027(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "ECR",
-     "committee": "AGRI",
-     "status": "ADOPTED",
-     "vote_id": 176688,
-     "vote_date": "2025-05-22",
-     "report": "A10-0043/2025",
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2024-0274",
-     "label": "2024/0274(COD)",
-     "date": "2024-11-19",
-     "title": {
-      "cs": "Zvláštní opatření v rámci Evropského zemědělského fondu pro rozvoj venkova (EZFRV) s cílem poskytnout dodatečnou pomoc členským státům postiženým přírodními katastrofami",
-      "en": "Specific measures under the European Agricultural Fund for Rural Development (EAFRD) to provide additional assistance to Member States affected by natural disasters"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0274(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "ECR",
-     "committee": "AGRI",
-     "status": "ADOPTED",
-     "vote_id": 171125,
-     "vote_date": "2024-12-17",
-     "report": "A10-0026/2024",
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2024-0214",
-     "label": "2024/0214(COD)",
-     "date": "2024-11-12",
-     "title": {
-      "cs": "Reprodukční materiál lesních dřevin kategorie „testovaný“, jeho označování a názvy orgánů příslušných pro schvalování a kontrolu produkce",
-      "en": "Forest reproductive material of the ‘tested’ category, its labelling and the names of the authorities responsible for the approval and control of the production"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0214(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "ECR",
-     "committee": "AGRI",
-     "status": "ADOPTED",
-     "vote_id": 171138,
-     "vote_date": "2024-12-17",
-     "report": "A10-0022/2024",
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
      "id": "E-10-2024-002503",
      "label": "E-002503/2024",
      "date": "2024-11-12",
@@ -20551,26 +20361,6 @@
      "report": null,
      "process_type": "DEA",
      "legislative": false
-    },
-    {
-     "id": "proc-2023-0447",
-     "label": "2023/0447(COD)",
-     "date": "2024-07-24",
-     "title": {
-      "cs": "Dobré životní podmínky psů a koček a jejich sledovatelnost",
-      "en": "Welfare of dogs and cats and their traceability  "
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0447(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "ECR",
-     "committee": "AGRI",
-     "status": "ADOPTED",
-     "vote_id": 189922,
-     "vote_date": "2026-04-28",
-     "report": "A10-0104/2025",
-     "process_type": "COD",
-     "legislative": true
     }
    ]
   },
@@ -20623,13 +20413,22 @@
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 4,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 5,
+    "shadow_opinions": 0,
+    "motions_signed": 5,
     "delegation": {
-     "texts_adopted": 1,
-     "rank": 16,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "mid",
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -21027,9 +20826,9 @@
   "220840": {
    "summary": {
     "report": {
-     "count": 13,
-     "voted": 12,
-     "adopted": 12,
+     "count": 7,
+     "voted": 6,
+     "adopted": 6,
      "no_vote": 1,
      "other": 0
     },
@@ -21067,19 +20866,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 12,
+    "lead_adopted": 6,
     "lead_adopted_legislative": 0,
     "lead_pending": 1,
     "shadow_adopted": 4,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 5,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 7,
+    "lead_opinions": 1,
+    "shadow_reports": 9,
+    "shadow_opinions": 2,
+    "motions_signed": 21,
     "delegation": {
-     "texts_adopted": 16,
-     "rank": 2,
+     "tiers": {
+      "lead_reports": "top",
+      "lead_opinions": "mid",
+      "shadow_reports": "mid",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -21261,26 +21069,6 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 8
-    },
-    {
-     "id": "proc-2025-0343",
-     "label": "2025/0343(NLE)",
-     "date": "2026-06-01",
-     "title": {
-      "cs": "Uzavření Dohody mezi Evropskou unií a Švýcarskou konfederací o předávání údajů jmenné evidence cestujících (PNR) za účelem prevence, odhalování, vyšetřování a stíhání teroristických trestných činů a závažné trestné činnosti",
-      "en": "Conclusion of an agreement between the European Union and the Swiss Confederation on the transfer of passenger name record (PNR) data for the prevention, detection, investigation and prosecution of terrorist offences and serious crime"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0343(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 195855,
-     "vote_date": "2026-09-16",
-     "report": "A10-0204/2026",
-     "process_type": "NLE",
-     "legislative": false
     },
     {
      "id": "B-10-2026-0261",
@@ -21509,26 +21297,6 @@
      "legislative": true
     },
     {
-     "id": "proc-2024-0155",
-     "label": "2024/0155(NLE)",
-     "date": "2026-02-23",
-     "title": {
-      "cs": "Uzavření Dohody mezi Evropskou unií a Libanonskou republikou o spolupráci mezi Agenturou Evropské unie pro justiční spolupráci v trestních věcech (Eurojust) a orgány Libanonské republiky příslušnými pro justiční spolupráci v trestních věcech",
-      "en": "Conclusion of an Agreement between the European Union and the Republic of Lebanon on the cooperation between the European Union Agency for Criminal Justice Cooperation (Eurojust) and the authorities of the Republic of Lebanon competent for judicial cooperation in criminal matters"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0155(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 192445,
-     "vote_date": "2026-05-20",
-     "report": "A10-0132/2026",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
      "id": "E-10-2026-000680",
      "label": "E-000680/2026",
      "date": "2026-02-17",
@@ -21563,46 +21331,6 @@
      "report": "A10-0073/2026",
      "process_type": "COD",
      "legislative": true
-    },
-    {
-     "id": "proc-2025-0156",
-     "label": "2025/0156(NLE)",
-     "date": "2026-01-26",
-     "title": {
-      "cs": "Uzavření jménem Evropské unie Dohody mezi Evropskou unií a Islandem o předávání údajů jmenné evidence cestujících (PNR) za účelem předcházení, odhalování, vyšetřování a stíhání teroristických trestných činů a závažné trestné činnosti ",
-      "en": "Conclusion, on behalf of the European Union, of the Agreement between the European Union and Iceland on the transfer of Passenger Name Record (PNR) data to prevent, detect, investigate and prosecute terrorist offences and serious crime"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0156(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 189930,
-     "vote_date": "2026-04-29",
-     "report": "A10-0072/2026",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
-     "id": "proc-2025-0145",
-     "label": "2025/0145(NLE)",
-     "date": "2026-01-26",
-     "title": {
-      "cs": "Uzavření jménem Evropské unie Dohody mezi Evropskou unií a Norským královstvím o předávání údajů jmenné registrace cestujících (PNR) za účelem předcházení teroristickým trestným činům a závažné trestné činnosti a jejich odhalování, vyšetřování a stíhání",
-      "en": "Conclusion, on behalf of the European Union, of the Agreement between the European Union and the Kingdom of Norway on the transfer of Passenger Name Record (PNR) data to prevent, detect, investigate and prosecute terrorist offences and serious crime"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0145(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 190098,
-     "vote_date": "2026-04-29",
-     "report": "A10-0071/2026",
-     "process_type": "NLE",
-     "legislative": false
     },
     {
      "id": "B-10-2026-0061",
@@ -21885,26 +21613,6 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 83
-    },
-    {
-     "id": "proc-2024-0305",
-     "label": "2024/0305(NLE)",
-     "date": "2025-09-22",
-     "title": {
-      "cs": "Dohoda mezi Evropskou unií a Bosnou a Hercegovinou o operativních činnostech Evropské agentury pro pohraniční a pobřežní stráž v Bosně a Hercegovině",
-      "en": "Agreement between the European Union and Bosnia and Herzegovina on operational activities carried out by the European Border and Coast Guard Agency in Bosnia and Herzegovina"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0305(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 183058,
-     "vote_date": "2026-01-21",
-     "report": "A10-0248/2025",
-     "process_type": "NLE",
-     "legislative": false
     },
     {
      "id": "E-10-2025-003648",
@@ -22385,26 +22093,6 @@
      "signatories_total": 38
     },
     {
-     "id": "proc-2024-0167",
-     "label": "2024/0167(NLE)",
-     "date": "2024-11-21",
-     "title": {
-      "cs": "Uzavření Dohody mezi Evropskou unií a Bosnou a Hercegovinou o spolupráci mezi Agenturou Evropské unie pro justiční spolupráci v trestních věcech (Eurojust) a orgány Bosny a Hercegoviny příslušnými pro justiční spolupráci v trestních věcech jménem Evropské unie",
-      "en": "Conclusion, on behalf of the European Union, of an Agreement between the European Union and Bosnia and Herzegovina on the cooperation between the European Union Agency for Criminal Justice Cooperation (Eurojust) and the authorities of Bosnia and Herzegovina competent for judicial cooperation in criminal matters"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0167(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 173686,
-     "vote_date": "2025-04-02",
-     "report": "A10-0027/2025",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
      "id": "E-10-2024-002503",
      "label": "E-002503/2024",
      "date": "2024-11-12",
@@ -22570,13 +22258,22 @@
     "shadow_adopted": 2,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 0,
-    "resolutions_adopted": 45,
+    "resolutions_adopted": 45
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 2,
+    "shadow_opinions": 1,
+    "motions_signed": 113,
     "delegation": {
-     "texts_adopted": 2,
-     "rank": 14,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "low",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -25067,7 +24764,7 @@
      "count": 2
     },
     "shadow_opinion": {
-     "count": 11
+     "count": 10
     },
     "motion": {
      "count": 10,
@@ -25096,13 +24793,22 @@
     "shadow_adopted": 2,
     "shadow_adopted_legislative": 2,
     "shadow_pending": 9,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 1,
+    "lead_opinions": 2,
+    "shadow_reports": 11,
+    "shadow_opinions": 10,
+    "motions_signed": 10,
     "delegation": {
-     "texts_adopted": 2,
-     "rank": 14,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": "top",
+      "shadow_reports": "top",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -25500,26 +25206,6 @@
      "role": "RAPPORTEUR_OPINION",
      "group": "PFE",
      "committee": "ITRE",
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2025-0221",
-     "label": "2025/0221(COD)",
-     "date": "2026-01-19",
-     "title": {
-      "cs": "Zřízení Nástroje pro propojení Evropy na období 2028–2034, změna nařízení (EU) 2024/1679 a zrušení nařízení (EU) 2021/1153",
-      "en": "Establishing the Connecting Europe Facility for the period 2028-2034, amending Regulation (EU) 2024/1679 and repealing Regulation (EU) 2021/1153"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0221(COD)",
-     "type": "shadow_opinion",
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "PFE",
-     "committee": null,
      "status": null,
      "vote_id": null,
      "vote_date": null,
@@ -26448,7 +26134,7 @@
      "count": 0
     },
     "shadow_opinion": {
-     "count": 4
+     "count": 2
     },
     "motion": {
      "count": 10,
@@ -26477,13 +26163,22 @@
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 2,
     "shadow_pending": 6,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 11,
+    "shadow_opinions": 2,
+    "motions_signed": 10,
     "delegation": {
-     "texts_adopted": 5,
-     "rank": 7,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "top",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -26629,46 +26324,6 @@
      "vote_id": null,
      "vote_date": null,
      "report": "A10-0176/2026",
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2025-0555",
-     "label": "2025/0555(COD)",
-     "date": "2026-02-25",
-     "title": {
-      "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
-      "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
-     "type": "shadow_opinion",
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "PFE",
-     "committee": null,
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2025-0555",
-     "label": "2025/0555(COD)",
-     "date": "2026-01-23",
-     "title": {
-      "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
-      "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
-     "type": "shadow_opinion",
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "PFE",
-     "committee": null,
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
      "process_type": "COD",
      "legislative": true
     },
@@ -27514,13 +27169,22 @@
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 7,
-    "resolutions_adopted": 55,
+    "resolutions_adopted": 55
+   },
+   "roles": {
+    "lead_reports": 1,
+    "lead_opinions": 0,
+    "shadow_reports": 12,
+    "shadow_opinions": 1,
+    "motions_signed": 181,
     "delegation": {
-     "texts_adopted": 5,
-     "rank": 7,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": null,
+      "shadow_reports": "top",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -32269,9 +31933,9 @@
   "256846": {
    "summary": {
     "report": {
-     "count": 4,
-     "voted": 4,
-     "adopted": 4,
+     "count": 2,
+     "voted": 2,
+     "adopted": 2,
      "no_vote": 0,
      "other": 0
     },
@@ -32309,19 +31973,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 4,
+    "lead_adopted": 2,
     "lead_adopted_legislative": 0,
     "lead_pending": 0,
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 1,
-    "resolutions_adopted": 24,
+    "resolutions_adopted": 24
+   },
+   "roles": {
+    "lead_reports": 2,
+    "lead_opinions": 1,
+    "shadow_reports": 1,
+    "shadow_opinions": 0,
+    "motions_signed": 64,
     "delegation": {
-     "texts_adopted": 4,
-     "rank": 11,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": "mid",
+      "shadow_reports": "low",
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -32959,26 +32632,6 @@
      "legislative": true
     },
     {
-     "id": "proc-2025-2251",
-     "label": "2025/2251(INI)",
-     "date": "2025-11-04",
-     "title": {
-      "cs": "Zpráva Komise o Bosně a Hercegovině za rok 2025",
-      "en": "2025 Commission report on Bosnia and Herzegovina"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2251(INI)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "AFET",
-     "status": "ADOPTED",
-     "vote_id": 193857,
-     "vote_date": "2026-06-17",
-     "report": "A10-0165/2026",
-     "process_type": "INI",
-     "legislative": false
-    },
-    {
      "id": "RC-10-2025-0451",
      "label": null,
      "date": "2025-10-17",
@@ -33389,26 +33042,6 @@
      "joint_vote_id": 171462
     },
     {
-     "id": "proc-2025-2018",
-     "label": "2025/2018(INI)",
-     "date": "2024-11-14",
-     "title": {
-      "cs": "Zprávy Komise o Bosně a Hercegovině z let 2023 a 2024",
-      "en": "2023 and 2024 Commission reports on Bosnia and Herzegovina"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2018(INI)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "AFET",
-     "status": "ADOPTED",
-     "vote_id": 177763,
-     "vote_date": "2025-07-09",
-     "report": "A10-0108/2025",
-     "process_type": "INI",
-     "legislative": false
-    },
-    {
      "id": "RC-10-2024-0072",
      "label": null,
      "date": "2024-10-08",
@@ -33623,9 +33256,9 @@
   "256847": {
    "summary": {
     "report": {
-     "count": 3,
-     "voted": 2,
-     "adopted": 2,
+     "count": 2,
+     "voted": 1,
+     "adopted": 1,
      "no_vote": 1,
      "other": 0
     },
@@ -33663,19 +33296,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 2,
-    "lead_adopted_legislative": 2,
+    "lead_adopted": 1,
+    "lead_adopted_legislative": 1,
     "lead_pending": 1,
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 0,
-    "resolutions_adopted": 52,
+    "resolutions_adopted": 52
+   },
+   "roles": {
+    "lead_reports": 2,
+    "lead_opinions": 6,
+    "shadow_reports": 1,
+    "shadow_opinions": 4,
+    "motions_signed": 137,
     "delegation": {
-     "texts_adopted": 3,
-     "rank": 13,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": "top",
+      "shadow_reports": "low",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -34906,26 +34548,6 @@
      "vote_id": null,
      "vote_date": null,
      "report": null,
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
-     "id": "proc-2025-0380",
-     "label": "2025/0380(COD)",
-     "date": "2025-12-18",
-     "title": {
-      "cs": "Změna rozhodnutí (EU) 2015/1814, pokud jde o rezervu tržní stability pro budovy, silniční dopravu a další odvětví",
-      "en": "Amending Decision (EU) 2015/1814 as regards the market stability reserve for the buildings, road transport and additional sector"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0380(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PPE",
-     "committee": "ENVI",
-     "status": "ADOPTED",
-     "vote_id": 196227,
-     "vote_date": "2026-09-15",
-     "report": "A10-0098/2026",
      "process_type": "COD",
      "legislative": true
     },
@@ -36812,7 +36434,14 @@
     "shadow_adopted": 4,
     "shadow_adopted_legislative": 3,
     "shadow_pending": 1,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 1,
+    "lead_opinions": 1,
+    "shadow_reports": 5,
+    "shadow_opinions": 0,
+    "motions_signed": 10,
     "delegation": null
    },
    "items": [
@@ -37807,13 +37436,22 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 0,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 0,
+    "shadow_opinions": 0,
+    "motions_signed": 5,
     "delegation": {
-     "texts_adopted": 0,
-     "rank": 18,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": null,
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -38175,9 +37813,9 @@
   "256852": {
    "summary": {
     "report": {
-     "count": 2,
-     "voted": 2,
-     "adopted": 2,
+     "count": 1,
+     "voted": 1,
+     "adopted": 1,
      "no_vote": 0,
      "other": 0
     },
@@ -38215,19 +37853,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 2,
+    "lead_adopted": 1,
     "lead_adopted_legislative": 0,
     "lead_pending": 0,
     "shadow_adopted": 7,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 0,
-    "resolutions_adopted": 7,
+    "resolutions_adopted": 7
+   },
+   "roles": {
+    "lead_reports": 1,
+    "lead_opinions": 0,
+    "shadow_reports": 7,
+    "shadow_opinions": 6,
+    "motions_signed": 68,
     "delegation": {
-     "texts_adopted": 9,
-     "rank": 4,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": null,
+      "shadow_reports": "mid",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -39820,26 +39467,6 @@
      "authors_total": 9
     },
     {
-     "id": "proc-2024-0321",
-     "label": "2024/0321(NLE)",
-     "date": "2025-05-12",
-     "title": {
-      "cs": "Uzavření Dohody mezi Evropskou unií a Brazilskou federativní republikou o spolupráci s Agenturou Evropské unie pro spolupráci v oblasti prosazování práva (Europol) a brazilskou federální policií a jejich prostřednictvím jménem Evropské unie",
-      "en": "Conclusion, on behalf of the European Union, of the Agreement between the European Union and the Federative Republic of Brazil on cooperation with and through the European Union Agency for Law Enforcement Cooperation (Europol) and the Federal Police of Brazil"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0321(NLE)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "ADOPTED",
-     "vote_id": 178336,
-     "vote_date": "2025-09-09",
-     "report": "A10-0142/2025",
-     "process_type": "NLE",
-     "legislative": false
-    },
-    {
      "id": "E-10-2025-001739",
      "label": "E-001739/2025",
      "date": "2025-04-30",
@@ -40858,13 +40485,22 @@
     "shadow_adopted": 8,
     "shadow_adopted_legislative": 4,
     "shadow_pending": 4,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 1,
+    "shadow_reports": 12,
+    "shadow_opinions": 7,
+    "motions_signed": 11,
     "delegation": {
-     "texts_adopted": 8,
-     "rank": 6,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": "mid",
+      "shadow_reports": "top",
+      "shadow_opinions": "top"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": null
     }
    },
@@ -41885,9 +41521,9 @@
   "261038": {
    "summary": {
     "report": {
-     "count": 4,
-     "voted": 4,
-     "adopted": 2,
+     "count": 2,
+     "voted": 2,
+     "adopted": 1,
      "no_vote": 0,
      "other": 0
     },
@@ -41925,19 +41561,28 @@
     }
    },
    "passed": {
-    "lead_adopted": 2,
-    "lead_adopted_legislative": 2,
+    "lead_adopted": 1,
+    "lead_adopted_legislative": 1,
     "lead_pending": 0,
     "shadow_adopted": 3,
     "shadow_adopted_legislative": 2,
     "shadow_pending": 7,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 2,
+    "lead_opinions": 0,
+    "shadow_reports": 10,
+    "shadow_opinions": 5,
+    "motions_signed": 5,
     "delegation": {
-     "texts_adopted": 5,
-     "rank": 7,
+     "tiers": {
+      "lead_reports": "mid",
+      "lead_opinions": null,
+      "shadow_reports": "top",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": "2024-08-01"
     }
    },
@@ -42655,46 +42300,6 @@
      "signatories_total": 85
     },
     {
-     "id": "proc-2025-0581",
-     "label": "2025/0581(CNS)",
-     "date": "2025-09-11",
-     "title": {
-      "cs": "Změna směrnice (EU) 2020/262, pokud jde o obecnou úpravu spotřební daně z tabákových výrobků a výrobků souvisejících s tabákovými výrobky",
-      "en": "Amending Directive (EU) 2020/262 as regards the general arrangements for excise duty in respect of tobacco and tobacco related products"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0581(CNS)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "ECON",
-     "status": "ADOPTED",
-     "vote_id": 193557,
-     "vote_date": "2026-06-17",
-     "report": "A10-0160/2026",
-     "process_type": "CNS",
-     "legislative": true
-    },
-    {
-     "id": "proc-2025-0580",
-     "label": "2025/0580(CNS)",
-     "date": "2025-09-11",
-     "title": {
-      "cs": "Struktura a sazby spotřební daně z tabákových výrobků a výrobků souvisejících s tabákovými výrobky (přepracované znění)",
-      "en": "Structure and rates of excise duty applied to tobacco and tobacco related products (recast)"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0580(CNS)",
-     "type": "report",
-     "role": "RAPPORTEUR",
-     "group": "PFE",
-     "committee": "ECON",
-     "status": "REJECTED",
-     "vote_id": 193822,
-     "vote_date": "2026-06-17",
-     "report": "A10-0161/2026",
-     "process_type": "CNS",
-     "legislative": true
-    },
-    {
      "id": "P-10-2025-002901",
      "label": "P-002901/2025",
      "date": "2025-07-15",
@@ -43249,13 +42854,22 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 3,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 3,
+    "shadow_opinions": 0,
+    "motions_signed": 8,
     "delegation": {
-     "texts_adopted": 0,
-     "rank": 18,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "low",
+      "shadow_opinions": null
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": "2025-07-31"
     }
    },
@@ -43547,13 +43161,22 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 2,
-    "resolutions_adopted": 0,
+    "resolutions_adopted": 0
+   },
+   "roles": {
+    "lead_reports": 0,
+    "lead_opinions": 0,
+    "shadow_reports": 2,
+    "shadow_opinions": 3,
+    "motions_signed": 6,
     "delegation": {
-     "texts_adopted": 0,
-     "rank": 18,
+     "tiers": {
+      "lead_reports": null,
+      "lead_opinions": null,
+      "shadow_reports": "low",
+      "shadow_opinions": "mid"
+     },
      "of": 21,
-     "median": 4.0,
-     "max": 18,
      "mandate_from": "2025-10-04"
     }
    },
