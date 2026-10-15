@@ -128,6 +128,17 @@ def test_passed_and_delegation_rank():
     assert ranks["a"]["of"] == 3 and ranks["a"]["median"] == 2 and ranks["a"]["max"] == 4
 
 
+def test_rank_only_current_delegation():
+    p = {"lead_adopted": 1, "shadow_adopted": 1}
+    passed = {"a": p, "b": {**p, "lead_adopted": 5}, "old": {**p, "shadow_adopted": 9}}
+    # současná delegace a, b, c (c bez jediné zprávy = 0); „old“ už není v mandátu
+    ranks = ow.rank_delegation(passed, {"a": "2024-07-16", "b": "2024-07-16", "c": "2025-10-04"})
+    assert ranks["old"] is None
+    assert (ranks["b"]["rank"], ranks["a"]["rank"], ranks["c"]["rank"]) == (1, 2, 3)
+    assert ranks["a"]["of"] == 3 and ranks["c"]["texts_adopted"] == 0 and ranks["b"]["max"] == 6
+    assert ranks["c"]["mandate_from"] == "2025-10-04" and ranks["a"]["mandate_from"] is None
+
+
 def test_process_type_from_procedure():
     proposals = [
         {"id": "proc-MOCK", "kind": "procedure", "procedure": "2024-0001", "process_type": "COD", "label": "2024/0001(COD)",

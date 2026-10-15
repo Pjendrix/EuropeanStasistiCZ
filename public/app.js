@@ -458,7 +458,6 @@ function groupBench(bench, groups, epCode) {
 
 // --- citace a export ---------------------------------------------------------
 
-// Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
 // „Vysvětlit s AI“: web sám AI nevolá. Připraví neutrální dotaz s odkazy na oficiální zdroje a otevře ho
 // v AI nástroji podle volby čtenáře. Claude a ChatGPT dotaz převezmou z odkazu (?q=), Gemini oficiálně ne:
 // dotaz se zkopíruje do schránky a Gemini se otevře. Odpověď AI není součást webu a web za ni neručí.
@@ -470,7 +469,8 @@ function aiPrompt({ v, kind, final, desc, adopted, c }) {
     `Hlasování: ${voteTitle(v)}${v.reference ? ` (${v.reference})` : ""}`,
     !final && desc ? `Předmět dílčího hlasování: ${desc}` : null,
     `Datum: ${v.date}${kind ? `, typ: ${KIND_LABEL[kind] || kind}` : ""}`,
-    `Výsledek: ${RESULT_LABEL[v.result] || "neuveden"} (${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo)`,
+    `Výsledek: ${resultText({ ...v, vote_kind: kind })} (${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo)`,
+    KIND_NOTE[kind] ? KIND_NOTE[kind] : null,
     adopted ? `Přijatý text: ${adopted}` : null,
     v.procedure?.reference ? `Legislativní observatoř: https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}` : null,
     `Údaje o hlasování: ${v.source_url}`,
@@ -504,6 +504,7 @@ document.addEventListener("click", (ev) => {
   }
 });
 
+// Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
 function citeButton(text) {
   return `<button type="button" class="cite-btn" data-cite="${esc(text)}" aria-label="Citovat" title="Citovat (zkopíruje větu se zdrojem)">${CITE_ICON}</button>`;
 }

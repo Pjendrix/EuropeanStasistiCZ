@@ -600,7 +600,7 @@ main h2[id] { scroll-margin-top: 4rem; }
 
 /* Vlastní práce: podnadpisy a štítek typu procedury (legislativní zvýrazněné). */
 .own-sub { font-size: 1.05rem; margin: 1.4rem 0 .6rem; }
-.own-list .badge { font-size: .7rem; padding: .05rem .45rem; margin-left: .35rem; vertical-align: middle; }
+.own-list .badge { font-size: .75rem; padding: .05rem .45rem; margin-left: .35rem; vertical-align: middle; }
 .own-list .badge.leg { color: var(--text); border-color: var(--gold); }
 
 /* Vysvětlit s AI (odkazy ven s připraveným dotazem). */

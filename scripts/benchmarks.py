@@ -24,7 +24,7 @@ DEFINITION = (
     "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají "
     f"v datech HowTheyVote aspoň {MIN_VOTES} hlasování. Počítá se stejně jako u českých poslanců (docházka, "
     "docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou "
-    "všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců záměrně neuvádíme."
+    "všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců v celém EP záměrně neuvádíme."
 )
 
 

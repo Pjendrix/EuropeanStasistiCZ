@@ -196,11 +196,24 @@ def passed(entries: list[dict]) -> dict:
     }
 
 
-def rank_delegation(passed_by_mep: dict[str, dict], key: str = "texts_adopted") -> dict[str, dict]:
-    """Pořadí v české delegaci podle počtu přijatých zpráv (zpravodaj + stínový). Shodný počet = shodné místo."""
-    values = {k: v["lead_adopted"] + v["shadow_adopted"] for k, v in passed_by_mep.items()}
+def rank_delegation(passed_by_mep: dict[str, dict], members: dict[str, str] | None = None,
+                    key: str = "texts_adopted") -> dict[str, dict | None]:
+    """Pořadí v české delegaci podle počtu přijatých zpráv (zpravodaj + stínový). Shodný počet = shodné místo.
+
+    members = {ID: začátek mandátu} poslanců v mandátu (současná delegace); jen mezi nimi se pořadí počítá.
+    Poslanec delegace bez jediné zprávy má 0. Bývalí poslanci pořadí nedostanou (None), protože srovnávat
+    počty za různě dlouhá období nedává smysl. Bez members se počítá ze všech v passed_by_mep."""
+    if members is None:
+        members = {k: None for k in passed_by_mep}
+    values = {k: (passed_by_mep[k]["lead_adopted"] + passed_by_mep[k]["shadow_adopted"]) if k in passed_by_mep else 0
+              for k in members}
     ordered = sorted(values.values(), reverse=True)
     n = len(ordered)
     median = (ordered[(n - 1) // 2] + ordered[n // 2]) / 2 if n else None
-    return {k: {key: val, "rank": ordered.index(val) + 1, "of": n, "median": median, "max": ordered[0] if n else None}
-            for k, val in values.items()}
+    first_start = min((v for v in members.values() if v), default=None)
+    out: dict[str, dict | None] = {k: None for k in passed_by_mep}
+    for k, val in values.items():
+        start = members[k]
+        out[k] = {key: val, "rank": ordered.index(val) + 1, "of": n, "median": median, "max": ordered[0] if n else None,
+                  "mandate_from": start if start and first_start and start > first_start else None}
+    return out
