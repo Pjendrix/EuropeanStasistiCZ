@@ -93,21 +93,7 @@ def check(prev_dir: Path | None, data_dir: Path, today: str, seats: int = CZ_SEA
         if gone:
             problems.append(f"ze seznamu zmizeli poslanci s ID {sorted(gone)}")
     p2, w2 = check_delegations(data_dir)
-    p3 = check_key_votes(data_dir)
-    return problems + p2 + p3, warnings + w2
-
-
-def check_key_votes(data_dir: Path) -> list[str]:
-    """data/manual/key_votes.json (ručně doplňované hlavní body zasedání podle EP): každá položka má existující vote_id
-    a odkaz source_url na tiskovou zprávu EP (scripts/key_votes.py)."""
-    doc = _load(data_dir / "manual" / "key_votes.json")
-    if doc is None:
-        return []
-    search = _load(data_dir / "votes" / "search.json")
-    if not search:
-        return []
-    from key_votes import validate_items
-    return validate_items(doc, {row[0] for row in search["rows"]})
+    return problems + p2, warnings + w2
 
 
 def check_delegations(data_dir: Path) -> tuple[list[str], list[str]]:

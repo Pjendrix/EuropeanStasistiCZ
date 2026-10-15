@@ -97,17 +97,3 @@ def test_delegations_checked(tmp_path):
     (d / "stats.json").write_text(json.dumps({"votes_analysis": {"unity": {"united": 4, "considered": 10}}}))
     problems, warnings = cd.check_delegations(d)
     assert not problems and len(warnings) == 1 and "liší" in warnings[0]
-
-
-def test_key_votes_checked(tmp_path):
-    d = tmp_path / "data"
-    (d / "manual").mkdir(parents=True)
-    (d / "votes").mkdir()
-    assert cd.check_key_votes(d) == []  # soubor chybí
-    (d / "manual" / "key_votes.json").write_text(json.dumps({"items": []}))
-    (d / "votes" / "search.json").write_text(json.dumps({"rows": [[1, "2025-01-01"], [2, "2025-01-02"]]}))
-    assert cd.check_key_votes(d) == []  # prázdná šablona je v pořádku
-    (d / "manual" / "key_votes.json").write_text(json.dumps({"items": [
-        {"vote_id": 2, "source_url": "https://www.europarl.europa.eu/news/x"}, {"vote_id": 9, "source_url": "https://example.test"}]}))
-    problems = cd.check_key_votes(d)
-    assert any("neexistuje" in p for p in problems) and any("source_url" in p for p in problems)

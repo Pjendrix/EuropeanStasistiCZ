@@ -92,9 +92,9 @@ def test_hub_is_static_index_with_blocks_and_period_lists(data_dir):
     pages = built(data_dir)
     html = pages["index.html"]
     assert "Jak hlasují čeští europoslanci" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
-    # všechna čtyři období jsou ve statickém HTML, výchozí viditelné; šablona key_votes.json je prázdná = vysvětlení u hlavních bodů EP
+    # všechna čtyři období jsou ve statickém HTML, výchozí viditelné
     assert html.count('class="kv-period"') == 4 and html.count(" hidden>") >= 3
-    assert "Zatím nic. Seznam doplňuje autor podle tiskových zpráv EP." in html
+    assert "Zatím nic" not in html and "Zákony, o kterých se rozhodlo" in html and "Češi proti výsledku" in html
     assert "poslanci.html" in html and "o-projektu.html#metodika" in html
 
 
