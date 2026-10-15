@@ -37,7 +37,9 @@ function timeline(mep, groups, parties) {
   const lastEnd = mep.mandates[mep.mandates.length - 1].end;
   const end = lastEnd && lastEnd < today ? lastEnd : today;
   const t0 = Date.parse(start), t1 = Date.parse(end);
-  const W = 1000, X0 = 90, span = Math.max(t1 - t0, 1);
+  // Šířka podle obrazovky, aby text v SVG zůstal čitelný i na mobilu (viewBox se jinak zmenší na třetinu).
+  const vw = Math.min(window.innerWidth || 1000, document.documentElement.clientWidth || 1000);
+  const W = vw < 700 ? Math.max(vw - 72, 240) : 1000, X0 = W < 700 ? 56 : 90, span = Math.max(t1 - t0, 1);
   const x = (d) => X0 + ((Math.min(Math.max(Date.parse(d), t0), t1) - t0) / span) * (W - X0);
   const row = (items, y, label, colorOf, textOf) => `<text x="0" y="${y + 17}" class="tl-row">${label}</text>` +
     items.map((it) => {
@@ -45,11 +47,13 @@ function timeline(mep, groups, parties) {
       const txt = textOf(it);
       const fill = colorOf(it);
       return `<rect x="${x1.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="24" rx="5" fill="${fill}"><title>${esc(txt)}: ${periodText(it)}</title></rect>` +
-        (w > 60 ? `<text x="${(x1 + 8).toFixed(1)}" y="${y + 17}" class="tl-seg" fill="${textOn(fill)}">${esc(txt)}</text>` : "");
+        (w > txt.length * 7.5 + 12 ? `<text x="${(x1 + 8).toFixed(1)}" y="${y + 17}" class="tl-seg" fill="${textOn(fill)}">${esc(txt)}</text>` : "");
     }).join("");
   const years = [];
   for (let yr = Number(start.slice(0, 4)) + 1; yr <= Number(end.slice(0, 4)); yr++) years.push(`${yr}-01-01`);
-  const ticks = years.map((d) => `<line x1="${x(d)}" x2="${x(d)}" y1="0" y2="68" class="tl-tick"/><text x="${x(d) + 4}" y="84" class="tl-year">${d.slice(0, 4)}</text>`).join("");
+  // popisek roku jen tam, kde nepřekryje datum začátku (vlevo) a konce (vpravo)
+  const ticks = years.map((d) => `<line x1="${x(d)}" x2="${x(d)}" y1="0" y2="68" class="tl-tick"/>` +
+    (x(d) > X0 + 80 && x(d) < W - 80 ? `<text x="${x(d) + 4}" y="84" class="tl-year">${d.slice(0, 4)}</text>` : "")).join("");
   const gOf = (it) => groups.find((g) => g.ep_code === it.code || g.code === it.code);
   const pOf = (it) => parties.find((p) => String(p.id) === String(it.org_id));
   const desc = [...mep.groups.map((it) => `frakce ${CZ_GROUP_LABEL[gOf(it)?.code] || it.short_label} ${periodText(it)}`),
@@ -70,9 +74,10 @@ function monthlyChart(monthly) {
     const v = pct(pair);
     const [y, m] = k.split("-");
     const showYear = i === 0 || m === "01";
+    const sparse = !showYear && Number(m) % 3 !== 1; // na úzké obrazovce jen každý třetí měsíc
     return `<button type="button" class="col" data-month="${k}">
       <span class="bar-fill ${v === 0 ? "zero" : ""}" style="height:${v ? v * 100 : 0}%"></span>
-      <span class="col-label" aria-hidden="true">${Number(m)}${showYear ? `<br><b>${y.slice(2)}</b>` : ""}</span>
+      <span class="col-label${sparse ? " col-sparse" : ""}" aria-hidden="true">${Number(m)}${showYear ? `<br><b>${y.slice(2)}</b>` : ""}</span>
       <span class="sr-only">${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování</span></button>`;
   }).join("");
   return `<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>

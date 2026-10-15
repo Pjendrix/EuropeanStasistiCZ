@@ -84,7 +84,7 @@ def key_votes_html(kv: dict, limit: int | None = None) -> str:
         items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"][:limit]) or '<p class="muted small">Nic.</p>'
         more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v 10. období)</p>'
                 if lst["total"] > len(lst["items"][:limit]) else "")
-        out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p>{items}{more}</section>')
+        out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p><div class="hub-cards">{items}</div>{more}</section>')
     out.append("</div>")
     out.append(f'<p class="small muted">{esc(kv["note"])} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>')
     return "".join(out)
@@ -138,7 +138,7 @@ def votes_overview_html(data_dir: Path) -> str:
 <section class="hub-block" aria-labelledby="h-sess">
   <h2 id="h-sess">Co se naposledy odhlasovalo</h2>
   <p class="small muted">Zasedání {fmt_date(session["from"])} – {fmt_date(session["to"])} · <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">Celé zasedání</a></p>
-  <div class="hub-lists three">{sess_cards}</div>
+  <div class="hub-lists three hub-cards">{sess_cards}</div>
 </section>
 <section class="hub-block" aria-labelledby="h-key">
   <h2 id="h-key">Klíčová hlasování</h2>
