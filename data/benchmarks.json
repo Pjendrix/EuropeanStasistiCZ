@@ -1,0 +1,69 @@
+{
+ "min_votes": 100,
+ "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (docházka, docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců záměrně neuvádíme.",
+ "ep": {
+  "meps": 742,
+  "attendance": 0.899,
+  "attendance_main": 0.9062,
+  "group_loyalty": 0.9322
+ },
+ "groups": {
+  "ECR": {
+   "meps": 85,
+   "attendance": 0.9166,
+   "attendance_main": 0.9172,
+   "group_loyalty": 0.9115
+  },
+  "EPP": {
+   "meps": 197,
+   "attendance": 0.898,
+   "attendance_main": 0.9078,
+   "group_loyalty": 0.9365
+  },
+  "ESN": {
+   "meps": 28,
+   "attendance": 0.9144,
+   "attendance_main": 0.9148,
+   "group_loyalty": 0.9392
+  },
+  "GREEN_EFA": {
+   "meps": 54,
+   "attendance": 0.9192,
+   "attendance_main": 0.9211,
+   "group_loyalty": 0.9714
+  },
+  "GUE_NGL": {
+   "meps": 48,
+   "attendance": 0.8823,
+   "attendance_main": 0.8742,
+   "group_loyalty": 0.926
+  },
+  "NI": {
+   "meps": 40,
+   "attendance": 0.9076,
+   "attendance_main": 0.9156,
+   "group_loyalty": null
+  },
+  "PFE": {
+   "meps": 95,
+   "attendance": 0.8887,
+   "attendance_main": 0.895,
+   "group_loyalty": 0.8311
+  },
+  "RENEW": {
+   "meps": 81,
+   "attendance": 0.8988,
+   "attendance_main": 0.9094,
+   "group_loyalty": 0.9549
+  },
+  "SD": {
+   "meps": 139,
+   "attendance": 0.8906,
+   "attendance_main": 0.8922,
+   "group_loyalty": 0.9627
+  }
+ },
+ "source": {
+  "release": "2026-10-10"
+ }
+}

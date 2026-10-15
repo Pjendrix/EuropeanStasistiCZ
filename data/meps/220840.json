@@ -109,8 +109,8 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
-  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, procedurální hlasování, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
@@ -2198,7 +2198,26 @@
    "description_cs": "Návrh Komise"
   }
  ],
- "benchmarks": null,
+ "benchmarks": {
+  "source": {
+   "release": "2026-10-10"
+  },
+  "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (docházka, docházka u závěrečných hlasování, loajalita k frakci k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Pořadí poslanců záměrně neuvádíme.",
+  "min_votes": 100,
+  "ep": {
+   "meps": 742,
+   "attendance": 0.899,
+   "attendance_main": 0.9062,
+   "group_loyalty": 0.9322
+  },
+  "group_code": "PFE",
+  "group": {
+   "meps": 95,
+   "attendance": 0.8887,
+   "attendance_main": 0.895,
+   "group_loyalty": 0.8311
+  }
+ },
  "against_group": {
   "count": 1473,
   "count_main": 242,

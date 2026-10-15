@@ -3,8 +3,11 @@
  "short_label": "SPD",
  "name": "Svoboda a přímá demokracie",
  "independent": false,
- "color": null,
- "logo": null,
+ "color": "#9A3412",
+ "brand_color": null,
+ "chart_color": "#9A3412",
+ "logo": "assets/logos/cz/6864.svg",
+ "logo_source": "https://spd.cz/volby2025/ke-stazeni/ (soubor https://spd.cz/wp-content/uploads/2025/05/SPD_LOGO_RGB.svg)",
  "members": 1,
  "total": {
   "attendance": [
@@ -79,8 +82,8 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
-  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, procedurální hlasování, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
