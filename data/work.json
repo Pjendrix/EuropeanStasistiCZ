@@ -38,14 +38,26 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 0,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 4,
+   "shadow_reports": 0,
+   "shadow_opinions": 0,
+   "motions_signed": 4,
    "delegation": {
-    "texts_adopted": 0,
-    "rank": 18,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": "top",
+     "shadow_reports": null,
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5592,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 118949,
@@ -78,7 +90,17 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 2,
    "resolutions_adopted": 0,
-   "delegation": null
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 2,
+   "shadow_opinions": 1,
+   "motions_signed": 0,
+   "delegation": null,
+   "attendance": [
+    1185,
+    2094
+   ],
+   "functions": []
   },
   {
    "id": 124701,
@@ -106,19 +128,38 @@
    },
    "lead_adopted": 0,
    "lead_adopted_legislative": 0,
-   "lead_pending": 2,
+   "lead_pending": 1,
    "shadow_adopted": 1,
    "shadow_adopted_legislative": 0,
    "shadow_pending": 4,
    "resolutions_adopted": 33,
+   "lead_reports": 1,
+   "lead_opinions": 0,
+   "shadow_reports": 5,
+   "shadow_opinions": 0,
+   "motions_signed": 95,
    "delegation": {
-    "texts_adopted": 1,
-    "rank": 16,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": null,
+     "shadow_reports": "mid",
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5916,
+    6154
+   ],
+   "functions": [
+    {
+     "kind": "committee",
+     "role": "CHAIR_VICE",
+     "code": "ECON",
+     "name_cs": "Hospodářský a měnový výbor"
+    }
+   ]
   },
   {
    "id": 124713,
@@ -144,21 +185,33 @@
     "id": 6770,
     "short_label": "KDU-ČSL"
    },
-   "lead_adopted": 2,
+   "lead_adopted": 1,
    "lead_adopted_legislative": 0,
-   "lead_pending": 8,
+   "lead_pending": 5,
    "shadow_adopted": 2,
    "shadow_adopted_legislative": 0,
    "shadow_pending": 6,
    "resolutions_adopted": 46,
+   "lead_reports": 6,
+   "lead_opinions": 4,
+   "shadow_reports": 9,
+   "shadow_opinions": 13,
+   "motions_signed": 135,
    "delegation": {
-    "texts_adopted": 4,
-    "rank": 11,
+    "tiers": {
+     "lead_reports": "top",
+     "lead_opinions": "top",
+     "shadow_reports": "mid",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5566,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 197526,
@@ -188,7 +241,17 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 0,
    "resolutions_adopted": 0,
-   "delegation": null
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 0,
+   "shadow_opinions": 0,
+   "motions_signed": 0,
+   "delegation": null,
+   "attendance": [
+    0,
+    24
+   ],
+   "functions": []
   },
   {
    "id": 197528,
@@ -214,21 +277,40 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
-   "lead_adopted": 4,
-   "lead_adopted_legislative": 2,
-   "lead_pending": 5,
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 1,
+   "lead_pending": 3,
    "shadow_adopted": 14,
    "shadow_adopted_legislative": 4,
    "shadow_pending": 9,
    "resolutions_adopted": 0,
+   "lead_reports": 5,
+   "lead_opinions": 1,
+   "shadow_reports": 23,
+   "shadow_opinions": 8,
+   "motions_signed": 23,
    "delegation": {
-    "texts_adopted": 18,
-    "rank": 1,
+    "tiers": {
+     "lead_reports": "top",
+     "lead_opinions": "mid",
+     "shadow_reports": "top",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5406,
+    6154
+   ],
+   "functions": [
+    {
+     "kind": "group",
+     "role": "MEMBER_BUREAU",
+     "code": "PFE",
+     "name_cs": "skupina Patrioti pro Evropu"
+    }
+   ]
   },
   {
    "id": 197537,
@@ -261,14 +343,33 @@
    "shadow_adopted_legislative": 5,
    "shadow_pending": 4,
    "resolutions_adopted": 64,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 9,
+   "shadow_opinions": 11,
+   "motions_signed": 181,
    "delegation": {
-    "texts_adopted": 5,
-    "rank": 7,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "mid",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5533,
+    6154
+   ],
+   "functions": [
+    {
+     "kind": "group",
+     "role": "CHAIR_VICE",
+     "code": "ECR",
+     "name_cs": "skupina Evropských konzervativců a reformistů"
+    }
+   ]
   },
   {
    "id": 197549,
@@ -301,14 +402,26 @@
    "shadow_adopted_legislative": 8,
    "shadow_pending": 6,
    "resolutions_adopted": 17,
+   "lead_reports": 2,
+   "lead_opinions": 0,
+   "shadow_reports": 18,
+   "shadow_opinions": 5,
+   "motions_signed": 52,
    "delegation": {
-    "texts_adopted": 11,
-    "rank": 3,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": null,
+     "shadow_reports": "top",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5604,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 197552,
@@ -334,21 +447,46 @@
     "id": 6768,
     "short_label": "ODS"
    },
-   "lead_adopted": 8,
-   "lead_adopted_legislative": 8,
+   "lead_adopted": 4,
+   "lead_adopted_legislative": 4,
    "lead_pending": 7,
    "shadow_adopted": 1,
    "shadow_adopted_legislative": 1,
    "shadow_pending": 2,
    "resolutions_adopted": 55,
+   "lead_reports": 11,
+   "lead_opinions": 14,
+   "shadow_reports": 3,
+   "shadow_opinions": 0,
+   "motions_signed": 170,
    "delegation": {
-    "texts_adopted": 9,
-    "rank": 4,
+    "tiers": {
+     "lead_reports": "top",
+     "lead_opinions": "top",
+     "shadow_reports": "low",
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5749,
+    6154
+   ],
+   "functions": [
+    {
+     "kind": "committee",
+     "role": "CHAIR",
+     "code": "AGRI",
+     "name_cs": "Výbor pro zemědělství a rozvoj venkova"
+    },
+    {
+     "kind": "group",
+     "role": "MEMBER_BUREAU",
+     "code": "ECR",
+     "name_cs": "skupina Evropských konzervativců a reformistů"
+    }
+   ]
   },
   {
    "id": 197556,
@@ -381,14 +519,26 @@
    "shadow_adopted_legislative": 1,
    "shadow_pending": 4,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 5,
+   "shadow_opinions": 0,
+   "motions_signed": 5,
    "delegation": {
-    "texts_adopted": 1,
-    "rank": 16,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "mid",
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5644,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 220840,
@@ -414,21 +564,33 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
-   "lead_adopted": 12,
+   "lead_adopted": 6,
    "lead_adopted_legislative": 0,
    "lead_pending": 1,
    "shadow_adopted": 4,
    "shadow_adopted_legislative": 1,
    "shadow_pending": 5,
    "resolutions_adopted": 0,
+   "lead_reports": 7,
+   "lead_opinions": 1,
+   "shadow_reports": 9,
+   "shadow_opinions": 2,
+   "motions_signed": 21,
    "delegation": {
-    "texts_adopted": 16,
-    "rank": 2,
+    "tiers": {
+     "lead_reports": "top",
+     "lead_opinions": "mid",
+     "shadow_reports": "mid",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5736,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256840,
@@ -461,14 +623,26 @@
    "shadow_adopted_legislative": 1,
    "shadow_pending": 0,
    "resolutions_adopted": 45,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 2,
+   "shadow_opinions": 1,
+   "motions_signed": 113,
    "delegation": {
-    "texts_adopted": 2,
-    "rank": 14,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "low",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5832,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256843,
@@ -501,14 +675,26 @@
    "shadow_adopted_legislative": 2,
    "shadow_pending": 9,
    "resolutions_adopted": 0,
+   "lead_reports": 1,
+   "lead_opinions": 2,
+   "shadow_reports": 11,
+   "shadow_opinions": 10,
+   "motions_signed": 10,
    "delegation": {
-    "texts_adopted": 2,
-    "rank": 14,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": "top",
+     "shadow_reports": "top",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5383,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256844,
@@ -541,14 +727,26 @@
    "shadow_adopted_legislative": 2,
    "shadow_pending": 6,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 11,
+   "shadow_opinions": 2,
+   "motions_signed": 10,
    "delegation": {
-    "texts_adopted": 5,
-    "rank": 7,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "top",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5232,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256845,
@@ -581,14 +779,26 @@
    "shadow_adopted_legislative": 1,
    "shadow_pending": 7,
    "resolutions_adopted": 55,
+   "lead_reports": 1,
+   "lead_opinions": 0,
+   "shadow_reports": 12,
+   "shadow_opinions": 1,
+   "motions_signed": 181,
    "delegation": {
-    "texts_adopted": 5,
-    "rank": 7,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": null,
+     "shadow_reports": "top",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    6007,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256846,
@@ -614,21 +824,33 @@
     "id": 6793,
     "short_label": "TOP09/STAN"
    },
-   "lead_adopted": 4,
+   "lead_adopted": 2,
    "lead_adopted_legislative": 0,
    "lead_pending": 0,
    "shadow_adopted": 0,
    "shadow_adopted_legislative": 0,
    "shadow_pending": 1,
    "resolutions_adopted": 24,
+   "lead_reports": 2,
+   "lead_opinions": 1,
+   "shadow_reports": 1,
+   "shadow_opinions": 0,
+   "motions_signed": 64,
    "delegation": {
-    "texts_adopted": 4,
-    "rank": 11,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": "mid",
+     "shadow_reports": "low",
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5886,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256847,
@@ -654,21 +876,33 @@
     "id": 6835,
     "short_label": "STAN"
    },
-   "lead_adopted": 2,
-   "lead_adopted_legislative": 2,
+   "lead_adopted": 1,
+   "lead_adopted_legislative": 1,
    "lead_pending": 1,
    "shadow_adopted": 1,
    "shadow_adopted_legislative": 1,
    "shadow_pending": 0,
    "resolutions_adopted": 52,
+   "lead_reports": 2,
+   "lead_opinions": 6,
+   "shadow_reports": 1,
+   "shadow_opinions": 4,
+   "motions_signed": 137,
    "delegation": {
-    "texts_adopted": 3,
-    "rank": 13,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": "top",
+     "shadow_reports": "low",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5878,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256850,
@@ -701,7 +935,17 @@
    "shadow_adopted_legislative": 3,
    "shadow_pending": 1,
    "resolutions_adopted": 0,
-   "delegation": null
+   "lead_reports": 1,
+   "lead_opinions": 1,
+   "shadow_reports": 5,
+   "shadow_opinions": 0,
+   "motions_signed": 10,
+   "delegation": null,
+   "attendance": [
+    2100,
+    2299
+   ],
+   "functions": []
   },
   {
    "id": 256851,
@@ -734,14 +978,26 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 0,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 0,
+   "shadow_opinions": 0,
+   "motions_signed": 5,
    "delegation": {
-    "texts_adopted": 0,
-    "rank": 18,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": null,
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5634,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256852,
@@ -767,21 +1023,33 @@
     "id": 6843,
     "short_label": "Ind."
    },
-   "lead_adopted": 2,
+   "lead_adopted": 1,
    "lead_adopted_legislative": 0,
    "lead_pending": 0,
    "shadow_adopted": 7,
    "shadow_adopted_legislative": 0,
    "shadow_pending": 0,
    "resolutions_adopted": 7,
+   "lead_reports": 1,
+   "lead_opinions": 0,
+   "shadow_reports": 7,
+   "shadow_opinions": 6,
+   "motions_signed": 68,
    "delegation": {
-    "texts_adopted": 9,
-    "rank": 4,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": null,
+     "shadow_reports": "mid",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    5600,
+    6154
+   ],
+   "functions": []
   },
   {
    "id": 256853,
@@ -814,14 +1082,33 @@
    "shadow_adopted_legislative": 4,
    "shadow_pending": 4,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 1,
+   "shadow_reports": 12,
+   "shadow_opinions": 7,
+   "motions_signed": 11,
    "delegation": {
-    "texts_adopted": 8,
-    "rank": 6,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": "mid",
+     "shadow_reports": "top",
+     "shadow_opinions": "top"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": null
-   }
+   },
+   "attendance": [
+    4923,
+    6154
+   ],
+   "functions": [
+    {
+     "kind": "group",
+     "role": "CHAIR_VICE",
+     "code": "PFE",
+     "name_cs": "skupina Patrioti pro Evropu"
+    }
+   ]
   },
   {
    "id": 261038,
@@ -847,21 +1134,33 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
-   "lead_adopted": 2,
-   "lead_adopted_legislative": 2,
+   "lead_adopted": 1,
+   "lead_adopted_legislative": 1,
    "lead_pending": 0,
    "shadow_adopted": 3,
    "shadow_adopted_legislative": 2,
    "shadow_pending": 7,
    "resolutions_adopted": 0,
+   "lead_reports": 2,
+   "lead_opinions": 0,
+   "shadow_reports": 10,
+   "shadow_opinions": 5,
+   "motions_signed": 5,
    "delegation": {
-    "texts_adopted": 5,
-    "rank": 7,
+    "tiers": {
+     "lead_reports": "mid",
+     "lead_opinions": null,
+     "shadow_reports": "top",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": "2024-08-01"
-   }
+   },
+   "attendance": [
+    5755,
+    6036
+   ],
+   "functions": []
   },
   {
    "id": 270261,
@@ -894,14 +1193,26 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 3,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 3,
+   "shadow_opinions": 0,
+   "motions_signed": 8,
    "delegation": {
-    "texts_adopted": 0,
-    "rank": 18,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "low",
+     "shadow_opinions": null
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": "2025-07-31"
-   }
+   },
+   "attendance": [
+    3281,
+    4060
+   ],
+   "functions": []
   },
   {
    "id": 272024,
@@ -934,14 +1245,27 @@
    "shadow_adopted_legislative": 0,
    "shadow_pending": 2,
    "resolutions_adopted": 0,
+   "lead_reports": 0,
+   "lead_opinions": 0,
+   "shadow_reports": 2,
+   "shadow_opinions": 3,
+   "motions_signed": 6,
    "delegation": {
-    "texts_adopted": 0,
-    "rank": 18,
+    "tiers": {
+     "lead_reports": null,
+     "lead_opinions": null,
+     "shadow_reports": "low",
+     "shadow_opinions": "mid"
+    },
     "of": 21,
-    "median": 4.0,
-    "max": 18,
     "mandate_from": "2025-10-04"
-   }
+   },
+   "attendance": [
+    3705,
+    3730
+   ],
+   "functions": []
   }
- ]
+ ],
+ "attendance_ep_median": 0.899
 }

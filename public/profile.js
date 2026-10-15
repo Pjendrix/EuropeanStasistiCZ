@@ -159,40 +159,48 @@ function ownItem(e) {
     ${label ? `<div class="small"><span class="${cls}" title="${e.status === "no_vote" ? esc(NO_VOTE_NOTE) : ""}">${label}</span>${e.note === "rejection_adopted" ? " (Parlament přijal návrh na zamítnutí)" : ""}${e.joint_result ? ` (společný návrh: ${RESULT_LABEL[e.joint_result] || e.joint_result})` : ""}${voteLink}</div>` : ""}</li>`;
 }
 
-// „Co prošlo“: přijaté texty podle role, nahoře nad podrobnými počty. Jen počty z own_work.json, žádné body ani váhy.
+// „Vlastní práce“: přidělené role (zpravodaj/stínový u zpráv a stanovisek) s třetinou v delegaci, bez celkového pořadí.
+// Jen počty z own_work.json, žádné body ani váhy.
 function passedCard(label, value, details, suffix = "") {
   return `<div class="card metric"><div class="label">${label}</div><div class="value">${value === null ? "–" : `${fmtNum(value)}${suffix}`}</div>
     ${details.filter(Boolean).map((d) => `<div class="detail">${d}</div>`).join("")}</div>`;
 }
 
+const TIER_TEXT = { top: "▲ horní třetina delegace", mid: "● střední třetina delegace", low: "▼ dolní třetina delegace" };
+
 function ownPassed(ow, mep) {
-  const p = ow.passed;
-  if (!p) return "";
-  const d = p.delegation;
+  const p = ow.passed, r = ow.roles;
+  if (!p || !r) return "";
+  const d = r.delegation;
+  const tierLine = (k) => (!d ? "" : r[k] ? `<strong>${TIER_TEXT[d.tiers[k]]}</strong>` : "");
   const leg = (n) => (n ? `z toho legislativních <strong>${fmtNum(n)}</strong>` : "");
-  const pending = (n) => (n ? `dalších ${fmtNum(n)} zatím bez jmenovitého hlasování` : "");
-  const adopted = ow.items.filter((e) => (e.type === "report" || e.type === "shadow_report") && e.status === "ADOPTED");
+  const status = (adopted, pending) => [adopted ? `prošlo <strong>${fmtNum(adopted)}</strong>` : "",
+    pending ? `${fmtNum(pending)} zatím bez jmenovitého hlasování` : ""].filter(Boolean).join(" · ");
+  const adoptedList = ow.items.filter((e) => (e.type === "report" || e.type === "shadow_report") && e.status === "ADOPTED");
+  const zprav = byGender(mep, "zpravodaj", "zpravodajka"), stin = byGender(mep, "stínový zpravodaj", "stínová zpravodajka");
   const cards = [
-    passedCard(`Přijaté zprávy – ${byGender(mep, "zpravodaj", "zpravodajka")}`, p.lead_adopted,
-      ["text vedl" + byGender(mep, "", "a") + " za celý Parlament", leg(p.lead_adopted_legislative), pending(p.lead_pending)]),
-    passedCard(`Přijaté zprávy – ${byGender(mep, "stínový zpravodaj", "stínová zpravodajka")}`, p.shadow_adopted,
-      ["vyjednával" + byGender(mep, "", "a") + " text za svou frakci", leg(p.shadow_adopted_legislative), pending(p.shadow_pending)]),
-    passedCard("Přijatá usnesení", p.resolutions_adopted,
-      ["vlastní a společné návrhy usnesení, pod kterými je podepsán" + byGender(mep, "", "a")]),
-    d ? passedCard("Pořadí v české delegaci", d.rank, [
-      `podle přijatých zpráv (zpravodaj + stínový): <strong>${fmtNum(d.texts_adopted)}</strong>`,
-      `mezi ${fmtNum(d.of)} současnými poslanci · medián ${fmtNum(d.median)} · nejvíc ${fmtNum(d.max)}`,
-      d.mandate_from ? `pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024` : "",
-      'shodný počet = shodné místo · <a href="prace.html">celý žebříček</a>'], ".")
-      : passedCard("Pořadí v české delegaci", null, ["počítá se jen mezi současnými poslanci; " +
-          byGender(mep, "bývalý poslanec", "bývalá poslankyně") + " se neřadí"]),
+    passedCard(`Zprávy – ${zprav}`, r.lead_reports,
+      [tierLine("lead_reports"), "text vedl" + byGender(mep, "", "a") + " za výbor", status(p.lead_adopted, p.lead_pending), leg(p.lead_adopted_legislative)]),
+    passedCard(`Stanoviska – ${zprav}`, r.lead_opinions,
+      [tierLine("lead_opinions"), "stanovisko dalšího výboru k cizí zprávě"]),
+    passedCard(`Zprávy – ${stin}`, r.shadow_reports,
+      [tierLine("shadow_reports"), "vyjednával" + byGender(mep, "", "a") + " text za svou frakci", status(p.shadow_adopted, p.shadow_pending), leg(p.shadow_adopted_legislative)]),
+    passedCard(`Stanoviska – ${stin}`, r.shadow_opinions,
+      [tierLine("shadow_opinions"), "vyjednával" + byGender(mep, "", "a") + " stanovisko za svou frakci"]),
+    passedCard("Podepsané návrhy usnesení", r.motions_signed,
+      [p.resolutions_adopted ? `z toho přijato ${fmtNum(p.resolutions_adopted)}` : "",
+        "nesrovnává se: návrh podepisují desítky poslanců za frakci"]),
   ].join("");
-  const list = adopted.length ? `<details class="card own-list" open><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adopted.length})</summary>
-      <ul class="plain">${adopted.map(ownItem).join("")}</ul></details>` : "";
-  return `<h3 class="own-sub">Co prošlo</h3><div class="metrics">${cards}</div>${list}
-    <p class="small muted">Zpravodaj/ka připravuje text za celý Parlament, stínový/á zpravodaj/ka ho vyjednává za svou frakci.
-      Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). „Bez jmenovitého hlasování“
-      zahrnuje texty, které se ještě projednávají. Pořadí jen srovnává počty mezi současnými poslanci (v mandátu k poslednímu hlasování v datech), neříká nic o významu jednotlivých textů.</p>
+  const note = d ? `Třetina = kde poslanec stojí mezi ${fmtNum(d.of)} současnými poslanci delegace v dané kategorii;
+      celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}
+      <a href="prace.html">Srovnání celé delegace</a>.`
+    : `${byGender(mep, "Bývalý poslanec", "Bývalá poslankyně")} se se současnou delegací nesrovnává (jiné období).`;
+  const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>
+      <ul class="plain">${adoptedList.map(ownItem).join("")}</ul></details>` : "";
+  return `<h3 class="own-sub">Vlastní práce v delegaci</h3><div class="metrics">${cards}</div>${list}
+    <p class="small muted">Zpravodaj/ka píše text za výbor (zprávu výboru, který věc vede, nebo stanovisko dalšího výboru),
+      stínový/á zpravodaj/ka ho vyjednává za svou frakci. Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.
+      Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). ${note}</p>
     <h3 class="own-sub">Všechna práce podle typu</h3>`;
 }
 
@@ -356,7 +364,7 @@ function periodText(x) {
           <div class="card"><ul class="plain">
             ${mep.groups.map((x) => { const go = groups.find((y) => y.ep_code === x.code || y.code === x.code);
               return `<li>${entityCell(go || { code: x.code }, { name: x.name_cs || x.name_en || x.short_label, size: 24, slot: "sm",
-                sub: `${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : x.short_label)} · ${periodText(x)}` })}</li>`; }).join("")}
+                sub: `${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : x.short_label)}${x.role && x.role !== "MEMBER" ? ` · <strong>${ROLE_LABEL[x.role] || esc(x.role)}</strong>` : ""} · ${periodText(x)}` })}</li>`; }).join("")}
             ${mep.parties.map((x) => { const po = parties.find((y) => String(y.id) === String(x.org_id));
               if (po?.independent) return `<li>${partyBadge(x.org_id, x.short_label, parties, mep)}<div class="small muted">${periodText(x)}</div></li>`;
               return `<li>${entityCell(po || {}, { name: x.name || x.short_label, href: po ? `party.html?id=${po.id}` : "", size: 24, slot: "sm",
