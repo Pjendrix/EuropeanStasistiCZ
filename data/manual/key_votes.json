@@ -1,0 +1,10 @@
+{
+ "note": "Klíčová hlasování nevybíráme my. Bereme ta, která EP sám uvedl mezi hlavními body zasedání (tisková zpráva EP), a k nim všechna závěrečná hlasování o zákonech. Tento soubor doplňuje autor ručně. Žádný scraping webu EP ani médií: u každé položky je odkaz na tiskovou zprávu EP, kterou autor přečetl.",
+ "schema": {
+  "vote_id": "ID hlasování z HowTheyVote (číslo v adrese vote.html?id=…), musí existovat",
+  "source_url": "odkaz na tiskovou zprávu EP o zasedání, https://www.europarl.europa.eu/…, povinný",
+  "press_date": "datum tiskové zprávy RRRR-MM-DD, nepovinné",
+  "media": "nepovinné, jen kontext: [{\"url\": \"https://…\", \"outlet\": \"ČT24\", \"date\": \"RRRR-MM-DD\"}]; ukazuje se až od dvou médií a výběr neovlivňuje"
+ },
+ "items": []
+}

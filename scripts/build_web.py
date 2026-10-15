@@ -29,6 +29,7 @@ from pathlib import Path
 
 from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_positions, in_mandate, load_votes,
                            require, topic_codes)
+from key_votes import build_key_votes
 from labels_cs import translate
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -412,6 +413,11 @@ def run(data_dir: Path, day: str) -> dict:
     if bench is not None:
         require(bench, ["ep", "groups"], "benchmarks.json")
 
+    kv_path = data_dir / "manual" / "key_votes.json"
+    kv_doc = json.loads(kv_path.read_text(encoding="utf-8")) if kv_path.exists() else None
+    key = build_key_votes(votes, kv_doc, by_id)
+    key["sources"] = stats["sources"]
+    write_json(data_dir / "key_votes.json", key)
     write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels, bench))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     work = build_work(meps, own, day, stats)
