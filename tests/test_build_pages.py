@@ -93,7 +93,7 @@ def test_hub_is_gateway_with_three_doors(data_dir):
     html = pages["index.html"]
     assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
     assert html.count('class="home-door ') == 3
-    for href in ("poslanci.html", "votes.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
+    for href in ("poslanci.html", "hlasovani.html", "votes.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
                  "o-projektu.html#metodika"):
         assert f'href="{href}"' in html
     # úvodka je rozcestník: seznamy hlasování a portréty jsou na stránkách Hlasování a Poslanci
@@ -103,15 +103,15 @@ def test_hub_is_gateway_with_three_doors(data_dir):
 def test_blocks_for_manual_pages(data_dir, tmp_path):
     built(data_dir)
     root = Path(__file__).resolve().parent.parent
-    for name in ("poslanci.html", "votes.html"):
+    for name in ("poslanci.html", "hlasovani.html"):
         (tmp_path / name).write_text((root / "public" / name).read_text(encoding="utf-8"), encoding="utf-8")
     assert bp.sync_blocks(tmp_path, data_dir) == 3
     assert bp.sync_blocks(tmp_path, data_dir) == 0  # podruhé beze změny
     mep = (tmp_path / "poslanci.html").read_text(encoding="utf-8")
     assert "Kdo jsou čeští poslanci" in mep and 'class="hub-strip heads-strip"' in mep
-    votes = (tmp_path / "votes.html").read_text(encoding="utf-8")
+    votes = (tmp_path / "hlasovani.html").read_text(encoding="utf-8")
     assert "Co se naposledy odhlasovalo" in votes and "Nejnovější zákony" in votes and "Češi proti výsledku" in votes
-    assert "<h1>Jmenovitá hlasování</h1>" in votes and 'id="all-votes"' in votes and 'href="#all-votes"' in votes
+    assert "<h1>Jmenovitá hlasování</h1>" in votes and 'href="votes.html"' in votes
 
 
 def test_group_majority_and_party_votes_text():

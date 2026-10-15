@@ -3,7 +3,7 @@
 - hub_page: hero s vyhledáváním (hub.js), tři velké vstupy (Poslanci, Hlasování, Práce) a klidný seznam dalších pohledů.
   Na úvodce nejsou žádná čísla kromě data aktualizace, je to hlavně rozcestník.
 - heads_html: portréty poslanců po frakcích, blok na poslanci.html (build_pages.sync_block).
-- votes_overview_html: poslední zasedání a klíčová hlasování, přehled na začátku votes.html. Tabulka s filtry je pod ním v rozbalení.
+- votes_overview_html: poslední zasedání a klíčová hlasování, přehled na hlasovani.html. Tabulka s filtry je na votes.html.
 
 Všechna čísla jsou z data/*.json (compute_stats.py, build_web.py), nic se tu nepočítá nově kromě součtů a skládání vět.
 """
@@ -133,7 +133,7 @@ def votes_overview_html(data_dir: Path) -> str:
         ("temata.html", "Podle témat"), ("rozkol.html", "Kde se Češi rozdělili"),
         ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")))
     return f"""<div class="vo-tools">
-  <div class="vo-chips"><span class="vo-label">Další pohledy</span>{chips}<a class="vo-chip vo-chip-main" href="#all-votes">Všechna hlasování{arrow}</a></div>
+  <div class="vo-chips"><span class="vo-label">Další pohledy</span>{chips}<a class="vo-chip vo-chip-main" href="votes.html">Všechna hlasování{arrow}</a></div>
 </div>
 <section class="hub-block" aria-labelledby="h-sess">
   <h2 id="h-sess">Co se naposledy odhlasovalo</h2>
@@ -174,7 +174,7 @@ def votes_hero_html(data_dir: Path) -> str:
       <div class="kpis">
         <div class="kpi-grid kpi-2">
           <div class="kpi"><div class="k-label">Jmenovitých hlasování</div><div class="k-value">{fmt_num(overview["votes_total"])}</div>
-            <div class="k-note">od {fmt_date(overview["period"]["from"])} · <a href="#all-votes">seznam hlasování</a></div></div>
+            <div class="k-note">od {fmt_date(overview["period"]["from"])} · <a href="votes.html">seznam hlasování</a></div></div>
           <div class="kpi"><div class="k-label">Na posledním zasedání</div><div class="k-value">{fmt_num(session["votes"])}</div>
             <div class="k-note">{fmt_num(session["main"])} závěrečných, {fmt_num(session["adopted_main"])} přijato · <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">celé zasedání</a></div></div>
         </div>
@@ -203,7 +203,7 @@ _GLYPH = {
 
 DOORS = [
     ("poslanci.html", "01", "Poslanci", "Profil každého z českých europoslanců.", "meps", "blue"),
-    ("votes.html", "02", "Hlasování", "Jak hlasoval Parlament a jak v tom Češi.", "votes", "navy"),
+    ("hlasovani.html", "02", "Hlasování", "Jak hlasoval Parlament a jak v tom Češi.", "votes", "navy"),
     ("prace.html", "03", "Práce", "Zprávy, stanoviska, projevy a otázky Komisi.", "work", "paper"),
 ]
 
