@@ -60,7 +60,7 @@ for (const scheme of ["light", "dark"]) {
           const out = { lead: [], long: [] };
           document.querySelectorAll("p.lead").forEach((p) => { if (p.id !== "headline" && p.textContent.trim().length > 160 && !p.closest("[popover]") && !p.classList.contains("vote-desc")) out.lead.push(p.textContent.trim().length); });
           document.querySelectorAll("main p, main .source").forEach((p) => {
-            if (p.closest("details, [popover], .table-wrap") || p.classList.contains("vote-desc") || !p.offsetParent) return;
+            if (p.closest("details, [popover], .table-wrap") || p.classList.contains("vote-desc") || p.querySelector(":scope > .tag") || !p.offsetParent) return;
             const c = p.cloneNode(true);
             c.querySelectorAll("[popover]").forEach((x) => x.remove());
             const t = c.textContent.trim();
