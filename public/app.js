@@ -470,17 +470,39 @@ function groupBench(bench, groups, epCode) {
 // „Vysvětlit s AI“: web sám AI nevolá. Připraví neutrální dotaz s odkazy na oficiální zdroje a otevře ho
 // v AI nástroji podle volby čtenáře. Claude a ChatGPT dotaz převezmou z odkazu (?q=), Gemini oficiálně ne:
 // dotaz se zkopíruje do schránky a Gemini se otevře. Odpověď AI není součást webu a web za ni neručí.
+// Odkaz na text dokumentu na webu EP (A = zpráva výboru, B = návrh usnesení, RC = společný návrh usnesení).
+// HTML verze, kterou AI nástroje umí přečíst líp než PDF; C (postoje Rady) na webu EP v této podobě nejsou.
+function epDocUrl(ref) {
+  const m = /^(RC-B|A|B)(\d+)-(\d{4})\/(\d{4})/.exec(ref || "");
+  return m ? `https://www.europarl.europa.eu/doceo/document/${m[1] === "RC-B" ? "RC" : m[1]}-${m[2]}-${m[4]}-${m[3]}_CS.html` : null;
+}
+
+function adoptedTextHtmlUrl(ref) {
+  const m = /^P(\d+)_TA\((\d{4})\)(\d{4})$/.exec(ref || "");
+  return m ? `https://www.europarl.europa.eu/doceo/document/TA-${m[1]}-${m[2]}-${m[3]}_CS.html` : null;
+}
+
 function aiPrompt({ v, kind, final, desc, adopted, c }) {
+  const doc = epDocUrl(v.reference);
+  const ta = adoptedTextHtmlUrl(v.texts_adopted_reference) || adopted;
   const lines = [
-    "Vysvětli mi stručně a neutrálně česky, o čem bylo toto hlasování v Evropském parlamentu a co jeho výsledek znamená v praxi.",
-    "Vycházej jen z oficiálních dokumentů na odkazech níže; když něco z nich nevyplývá, napiš to. Uveď hlavní argumenty pro i proti, nehodnoť politiky.",
+    "Vysvětli mi stručně a neutrálně česky, o čem bylo toto hlasování v Evropském parlamentu:",
+    "1. V 3–5 bodech shrň, co projednávaný text obsahuje nebo navrhuje (hlavní požadavky a opatření).",
+    !final && desc ? "2. Vysvětli, o čem bylo toto dílčí hlasování (pozměňovací návrh, odstavec…) a co by změnilo." : null,
+    `${!final && desc ? 3 : 2}. Co výsledek znamená v praxi: je text závazný, co následuje dál.`,
+    `${!final && desc ? 4 : 3}. Hlavní argumenty pro i proti, jak je uváděly frakce nebo rozprava. Nehodnoť politiky.`,
     "",
-    `Hlasování: ${voteTitle(v)}${v.reference ? ` (${v.reference})` : ""}`,
+    "Text najdeš na odkazech níže na webu Evropského parlamentu. Když odkaz nejde otevřít, vyhledej dokument podle jeho čísla na europarl.europa.eu.",
+    "Čísla o hlasování ber jen z údajů níže. Co nevychází z dokumentů EP, výslovně označ jako obecný kontext.",
+    "",
+    `Hlasování: ${voteTitle(v)}${v.reference ? ` (dokument ${v.reference})` : ""}`,
+    v.procedure?.reference ? `Procedura: ${v.procedure.reference}` : null,
     !final && desc ? `Předmět dílčího hlasování: ${desc}` : null,
     `Datum: ${v.date}${kind ? `, typ: ${KIND_LABEL[kind] || kind}` : ""}`,
     `Výsledek: ${resultText({ ...v, vote_kind: kind })} (${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo)`,
     KIND_NOTE[kind] ? KIND_NOTE[kind] : null,
-    adopted ? `Přijatý text: ${adopted}` : null,
+    doc ? `Text dokumentu: ${doc}` : null,
+    ta ? `Přijatý text: ${ta}` : null,
     v.procedure?.reference ? `Legislativní observatoř: https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}` : null,
     `Údaje o hlasování: ${v.source_url}`,
   ];
