@@ -643,3 +643,5 @@ main h2[id] { scroll-margin-top: 4rem; }
 .th-sub { font-size: .68rem; text-transform: none; letter-spacing: 0; font-weight: 500; margin-top: .15rem; }
 .fn-line { color: var(--text); opacity: .85; margin-top: .1rem; }
 .fn-line abbr { text-decoration: none; }
+
+.th-note { font-weight: 400; text-transform: none; letter-spacing: 0; white-space: nowrap; }

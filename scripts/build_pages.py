@@ -53,6 +53,11 @@ def fmt_pct(pair_or_value) -> str:
     return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
 
 
+def meps_count(n: int) -> str:
+    """„1 poslanec“, „3 poslanci“, „5 poslanců“."""
+    return f"{n} " + ("poslanec" if n == 1 else "poslanci" if 2 <= n <= 4 else "poslanců")
+
+
 def fmt_date(iso: str | None) -> str:
     if not iso:
         return ""
@@ -237,7 +242,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     name = pp.get("name") or pp["short_label"]
     coh = pp["cohesion"]
-    desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {pp['members']} poslanců v 10. období, " \
+    desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {meps_count(pp['members'])} v 10. období, " \
            f"jednotnost {fmt_pct(coh)}. Data z HowTheyVote.eu a EP."
     members = "".join(
         f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a>'
@@ -253,19 +258,23 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         w = f' width="{round(h * pp["logo_aspect"])}"' if pp.get("logo_aspect") else ""
         heading = (f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{ROOT}{esc(pp["logo"])}" '
                    f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>')
+    splits_value = (f"{fmt_num(pp['splits_count'])} z {fmt_num(coh[1])} ({fmt_pct(pp['splits_count'] / coh[1])})"
+                    if coh[1] else "jen 1 poslanec")
     body = f"""<p class="small"><a href="{ROOT}party.html">← Všechny strany</a></p>
 {heading}
-<p class="muted">{esc(pp['short_label'])} · {pp['members']} poslanců v 10. volebním období ·
+<p class="muted">{esc(pp['short_label'])} · {meps_count(pp['members'])} v 10. volebním období ·
   <a href="{ROOT}party.html?id={pp['id']}">interaktivní stránka strany</a></p>
 <div class="metrics">
   {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany", "", cite)}
   {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
-  <div class="card metric"><div class="label">Rozdělená hlasování</div><div class="value">{fmt_num(pp['splits_count'])}</div>
-    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}</div></div>
+  <div class="card metric"><div class="label">Hlasování, kde se strana rozdělila</div><div class="value">{splits_value}</div>
+    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}{
+      f" z {fmt_num(pp['cohesion_main'][1])}" if pp['cohesion_main'][1] else ""}</div></div>
 </div>
 <h2>Poslanci</h2>
 <div class="card"><ul class="plain">{members}</ul></div>
-<p class="source">Příslušnost ke straně k datu hlasování. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
+<p class="source">Příslušnost ke straně k datu hlasování. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností
+  se rozejít. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
   <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="{ROOT}o-projektu.html#metodika">metodika</a>.</p>"""
     title = f"{name} – EP Watch CZ"
     return f"s/{pp['id']}.html", page(title, body, root=ROOT, current="parties", description=desc,

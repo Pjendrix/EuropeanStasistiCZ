@@ -156,6 +156,11 @@ function fmtMonth(ym) {
   return `${months[Number(m) - 1]} ${y}`;
 }
 
+// „1 poslanec“, „3 poslanci“, „5 poslanců“.
+function mepsCount(n) {
+  return `${fmtNum(n)} ${n === 1 ? "poslanec" : n >= 2 && n <= 4 ? "poslanci" : "poslanců"}`;
+}
+
 function pctCell(pair, title) {
   const v = pct(pair);
   const detail = pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])}` : "nepočítá se";
