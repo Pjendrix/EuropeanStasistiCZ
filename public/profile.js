@@ -342,7 +342,7 @@ function periodText(x) {
       <p class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
         ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×. ${sourceLine(stats)}</p>
 
-      ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}</p>` : ""}
+      ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}${b.window ? ` Mediány u ${byGender(mep, "tohoto poslance", "této poslankyně")} jsou počítané jen z ${fmtNum(b.window.votes)} hlasování v době mandátu (${fmtDate(b.window.from)} – ${b.window.to ? fmtDate(b.window.to) : "dosud"}).` : ""}</p>` : ""}
 
       ${hasOwn ? `<h2 id="vlastni-prace">Práce na textech</h2>
       <p class="small muted">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>

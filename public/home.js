@@ -160,7 +160,8 @@ function renderSession(session) {
 }
 
 // Karta poslance: účast na hlasování vůči mediánu EP, hlasování s frakcí vůči mediánu vlastní frakce (U2).
-function mepCard({ m, s, g, p, active }, groups, parties, bench) {
+function mepCard({ m, s, g, p, active }, groups, parties, benchAll) {
+  const bench = benchFor(benchAll, m);
   const gObj = groups.find((x) => x.ep_code === g?.code);
   const pObj = parties.find((x) => String(x.id) === String(p?.id));
   const isNI = (gObj?.code || g?.code) === "NI";
@@ -260,9 +261,9 @@ function groupedCards(list, groups, parties, bench) {
             if (!p) return `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`;
             if (po?.independent) return `<div class="entity-cell"><span class="logo-slot sm"></span>${partyBadge(p.id, p.short_label, parties, m)}</div>`;
             return entityCell(po || {}, { name: p.short_label, href: po ? `party.html?id=${po.id}` : "", size: 22, slot: "sm" }); })()}</td>
-          <td>${benchRow("Účast na hlasování", s.attendance, bench?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
+          <td>${benchRow("Účast na hlasování", s.attendance, benchFor(bench, m)?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
           <td class="num">${pctCell(s.attendance_main)}</td>
-          <td>${benchRow("Hlasuje s frakcí", s.group_loyalty, isNI ? null : (groupBench(bench, groups, g?.code)?.group_loyalty ?? null), "medián frakce",
+          <td>${benchRow("Hlasuje s frakcí", s.group_loyalty, isNI ? null : (groupBench(benchFor(bench, m), groups, g?.code)?.group_loyalty ?? null), "medián frakce",
             { compact: true, naText: isNI ? NI_NOTE : "nepočítá se" })}</td>
           <td class="num">${pctCell(s.cz_agreement)}</td>
         </tr>`;

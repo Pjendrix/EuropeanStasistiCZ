@@ -118,12 +118,14 @@ def mep_summary(m: dict, day: str) -> dict:
     }
 
 
-def build_overview(meps: list[dict], stats: dict, day: str, topic_labels: dict | None = None) -> dict:
+def build_overview(meps: list[dict], stats: dict, day: str, topic_labels: dict | None = None,
+                   bench: dict | None = None) -> dict:
     return {
         "sources": stats["sources"], "period": stats["period"], "votes_total": stats["votes_total"],
         "topics": [{**t, "label_cs": (topic_labels or {}).get(t["code"])} for t in stats.get("topics", [])],
         "definitions": stats["definitions"], "short_mandate_days": SHORT_MANDATE_DAYS,
-        "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]} for m in meps],
+        "meps": [{**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"],
+                  "bench_key": bench_key(m) if bench_window(m, bench) else None} for m in meps],
     }
 
 
@@ -178,8 +180,21 @@ def mep_benchmarks(mep: dict, votes: list[dict], bench: dict | None) -> dict | N
     if not bench:
         return None
     code = last_group_code(mep, votes)
-    return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": bench.get("min_votes"),
-            "ep": bench["ep"], "group_code": code, "group": bench["groups"].get(code) if code else None}
+    w = bench_window(mep, bench)
+    src = w or bench  # poslanec s kratším mandátem: mediány jen z hlasování v době jeho mandátu (D7)
+    return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": src.get("min_votes"),
+            "ep": src["ep"], "group_code": code, "group": src["groups"].get(code) if code else None,
+            "window": {"from": w["from"], "to": w["to"], "votes": w["votes"]} if w else None}
+
+
+def bench_key(mep: dict) -> str:
+    """Klíč okna mandátu poslance v benchmarks.json (od prvního začátku do posledního konce mandátu)."""
+    ends = [x["end"] for x in mep["mandates"]]
+    return f"{min(x['start'] for x in mep['mandates'])}_{'' if None in ends else max(ends)}"
+
+
+def bench_window(mep: dict, bench: dict | None) -> dict | None:
+    return ((bench or {}).get("windows") or {}).get(bench_key(mep))
 
 
 def build_profile(mep: dict, meps: list[dict], stats: dict, votes: list[dict], day: str,
@@ -377,7 +392,7 @@ def run(data_dir: Path, day: str) -> dict:
     if bench is not None:
         require(bench, ["ep", "groups"], "benchmarks.json")
 
-    write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels))
+    write_json(data_dir / "overview.json", build_overview(meps, stats, day, topic_labels, bench))
     write_json(data_dir / "agreement.json", build_agreement(meps, stats, day), compact=True)
     work = build_work(meps, own, day, stats)
     if work is not None and bench is not None:

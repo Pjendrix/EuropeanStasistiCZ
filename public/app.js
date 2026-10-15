@@ -464,6 +464,12 @@ function benchRow(label, pair, median, refLabel, opts = {}) {
     ${compact || !(note + below) ? "" : `<p class="bench-note">${esc(note + below)}</p>`}</div>`;
 }
 
+// Mediány platné pro poslance: kdo má kratší mandát, porovnává se s mediánem jen z hlasování v době svého mandátu (D7).
+function benchFor(bench, mep) {
+  const w = bench && mep?.bench_key ? bench.windows?.[mep.bench_key] : null;
+  return w ? { ...bench, ep: w.ep, groups: w.groups } : bench;
+}
+
 // Medián frakce poslance z benchmarks.json (klíče jsou kódy HowTheyVote, poslanec má kód EP).
 function groupBench(bench, groups, epCode) {
   if (!bench || !epCode) return null;

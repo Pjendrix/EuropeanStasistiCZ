@@ -25,7 +25,7 @@ import pandas as pd
 import requests
 
 from labels_cs import translate
-from benchmarks import compute_benchmarks
+from benchmarks import compute_benchmarks, window_key
 from delegations import compute_delegations
 from vote_kinds import FINAL_KINDS, classify
 
@@ -322,6 +322,23 @@ def write_index(months: dict[str, dict], groups: pd.DataFrame, out_dir: Path, re
     (out_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def mandate_windows(meps_path: Path, since: str = TERM_START) -> dict[str, tuple[str, str | None]]:
+    """Okna mandátu českých poslanců (od prvního začátku do posledního konce) kromě plného období, pro srovnání
+    s mediánem EP za stejné období (benchmarks.py). Bez data/meps.json se mediány počítají jen za celé období."""
+    if not meps_path.exists():
+        return {}
+    meps = json.loads(meps_path.read_text(encoding="utf-8"))["meps"]
+    windows = {}
+    for m in meps:
+        start = min(x["start"] for x in m["mandates"])
+        ends = [x["end"] for x in m["mandates"]]
+        end = None if None in ends else max(ends)
+        if start <= since and end is None:
+            continue
+        windows[window_key(start, end)] = (start, end)
+    return windows
+
+
 def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_START,
         benchmarks_path: Path | None = None, delegations_path: Path | None = None) -> dict[str, dict]:
     votes = load_votes(csv_dir, since)
@@ -342,7 +359,8 @@ def run(csv_dir: Path, out_dir: Path, release: str | None, since: str = TERM_STA
     rows = pd.concat(all_rows, ignore_index=True) if all_rows else pd.DataFrame(columns=["vote_id", "member_id", "position", "group_code"])
     bench = compute_benchmarks(zip(rows["vote_id"].astype(int), rows["member_id"].astype(int), rows["position"],
                                    [g if isinstance(g, str) and g else None for g in rows["group_code"]]),
-                               group_counts, final_ids)
+                               group_counts, final_ids, windows=mandate_windows(out_dir.parent / "meps.json", since),
+                               vote_dates={int(i): d[:10] for i, d in zip(votes["id"], votes["timestamp"])})
     bench["source"] = {"release": release}
     (benchmarks_path or out_dir.parent / "benchmarks.json").write_text(
         json.dumps(bench, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
