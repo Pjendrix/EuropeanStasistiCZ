@@ -2,12 +2,12 @@
  "_poznamka": "Ruční údaje o logech. Každé logo: soubor v public/, oficiální zdroj (URL stránky, odkud je staženo), datum stažení, podmínky použití, varianta (full = celé logo, symbol = jen značka). Logo se neupravuje. Záznam s file=null = logo zatím chybí (web ukáže tečku + zkratku).",
  "groups": {
   "EPP": {
-   "file": null,
-   "source": "https://eppgroup.eu/who-we-are/logo-graphic-charter",
-   "retrieved": null,
-   "terms": "Web EPP: logo nelze použít bez výslovného souhlasu – vyžádat",
+   "file": "assets/logos/ep/EPP.webp",
+   "source": "https://eppgroup.eu/who-we-are/logo-graphic-charter – soubor ručně uložil autor webu (Logos.zip, 15. 10. 2026)",
+   "retrieved": "2026-10-15",
+   "terms": "Web EPP uvádí, že logo nelze použít bez souhlasu; autor webu ho používá v rámci informačního užití (jen k identifikaci frakce, bez úprav). Na žádost vlastníka bude odstraněno.",
    "variant": "full",
-   "chybi": "soubor připraven (Logos.zip), ale EPP vyžaduje výslovný souhlas s použitím loga; zapnout až po souhlasu"
+   "note": "PNG 434×258 převeden do bezeztrátového WebP 279×126; oříznut jen prázdný okraj, kresba beze změny"
   },
   "ECR": {
    "file": "assets/logos/ep/ECR.webp",

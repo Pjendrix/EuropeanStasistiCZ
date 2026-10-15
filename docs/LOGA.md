@@ -5,16 +5,15 @@ a používají se jen k identifikaci. Když logo chybí, web ukáže tečku v ba
 
 ## Stav k 15. 10. 2026
 
-Na webu jsou loga všech českých stran a všech frakcí kromě EPP (bez úprav kresby; rastry jen oříznuté o prázdný okraj
+Na webu jsou loga všech českých stran a všech frakcí (bez úprav kresby; rastry jen oříznuté o prázdný okraj
 a převedené do bezeztrátového WebP s výškou nejvýš 128 px; zdroj u každého v `data/manual/logos.json`):
 ODS, Piráti, STAN, KSČM, SPD, Motoristé sobě, ANO 2011, Přísaha, KDU-ČSL, TOP 09 (kandidátka TOP09/STAN);
-ECR (česká verze EKR), PfE, Renew Europe, S&D, The Left, Zelení/ESA, ESN.
+ECR (česká verze EKR), PfE, Renew Europe, S&D, The Left, Zelení/ESA, ESN, EPP.
 
-ANO, Přísaha, KDU-ČSL, The Left, Zelení/ESA a ESN uložil ručně autor webu (15. 10. 2026); u nich je ve `source`
+ANO, Přísaha, KDU-ČSL, The Left, Zelení/ESA, ESN a EPP uložil ručně autor webu (15. 10. 2026); u nich je ve `source`
 oficiální web, přesnou stránku se souborem je dobré doplnit. TOP 09 je bajt po bajtu shodné s https://www.top09.cz/styles/assets/svg/logo.svg.
 
-**EPP**: soubor je připravený, ale web EPP uvádí, že logo nelze použít bez výslovného souhlasu. Zapnout až po souhlasu
-(`python scripts/add_logo.py ep EPP <soubor> --source <URL>`).
+**EPP**: web EPP uvádí, že logo nelze použít bez souhlasu. Autor webu ho používá v rámci informačního užití (jen k identifikaci frakce, bez úprav); na žádost vlastníka bude odstraněno.
 
 ## Formát a umístění
 
