@@ -134,7 +134,7 @@ function renderSession(session) {
   document.getElementById("ses-list").innerHTML = list.length ? list.map((v) => `
     <a class="vrow" href="vote.html?id=${v.id}&m=${v.month}">
       <div class="vrow-head"><span class="vrow-title">${kindTag(v)}${esc(voteTitle(v))}</span>
-        <span class="pill-result ${v.result || ""}">${resultText(v)}</span></div>
+        <span class="pill-result ${v.result || ""}">${resultHtml(v)}</span></div>
       <div class="split grow" role="img" aria-label="${v.cz[0]} pro, ${v.cz[1]} proti, ${v.cz[2]} se zdrželo, ${v.cz[3]} nehlasovalo">
         ${keys.map((k, i) => `<span class="s-${k}" style="width:${(v.cz[i] / total(v.cz)) * 100}%"></span>`).join("")}</div>
       <span class="tip">${v.cz[0]} pro · ${v.cz[1]} proti · ${v.cz[2]} zdržel/a se · ${v.cz[3]} nehlasoval/a</span>

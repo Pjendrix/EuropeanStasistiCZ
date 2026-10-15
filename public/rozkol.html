@@ -94,7 +94,7 @@ setNav("splits");
       el.innerHTML = list.map((x) => `<div class="card list-card">
         <div class="small muted">${fmtDate(x.date)} ${kindTag(x)}
           · rozkol ${x.split.toLocaleString("cs-CZ")} · Češi ${x.cz[0]} pro, ${x.cz[1]} proti, ${x.cz[2]} se zdrželo
-          · výsledek <span class="result-${x.result || ""}">${resultText(x)}</span></div>
+          · výsledek <span class="result-${x.result || ""}">${resultHtml(x)}</span></div>
         <a class="vote-title" href="vote.html?id=${x.id}&m=${x.month}">${esc(voteTitle(x))}</a>
         <div class="small muted">${esc(voteSubtitle(x))}</div>
         ${namesByPosition(x.positions, meps, ["FOR", "AGAINST"])}

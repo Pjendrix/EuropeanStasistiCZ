@@ -372,7 +372,7 @@ function periodText(x) {
         <td><a class="vote-title" href="vote.html?id=${v.id}&m=${month}">${esc(voteTitle(v))}</a>
           <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
         <td class="pos pos-${pos.position}">${positionFor(pos.position, mep)}</td>
-        <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultText(v)}</td></tr>`).join("")}</tbody>
+        <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td></tr>`).join("")}</tbody>
     </table></div>
     <p class="source">Zdroj: <a href="https://howtheyvote.eu/members/${mep.id}">HowTheyVote.eu</a>.
       Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>`

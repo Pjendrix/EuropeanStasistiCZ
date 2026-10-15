@@ -70,7 +70,7 @@ setNav("decisive");
         <div class="small muted">${fmtDate(v.date)} ${kindTag(v)}</div>
         <a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
         <div class="small muted">${esc(voteSubtitle(v))}</div>
-        <p class="small">Výsledek: <span class="result-${v.result}">${resultText(v)}</span>
+        <p class="small">Výsledek: <span class="result-${v.result}">${resultHtml(v)}</span>
           (${c.for} pro : ${c.against} proti, rozdíl ${Math.abs(c.for - c.against)}).
           Bez Čechů (${v.cz[0]} pro, ${v.cz[1]} proti) by to bylo ${c.for - v.cz[0]} : ${c.against - v.cz[1]},
           tedy <span class="result-${v.alternative_result}">${RESULT_LABEL[v.alternative_result]}</span>.

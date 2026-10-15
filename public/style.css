@@ -35,6 +35,12 @@
   --shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 12px 32px -18px rgba(15, 23, 42, .18);
   --shadow-hover: 0 18px 40px -18px rgba(59, 130, 246, .45), 0 0 0 1px rgba(245, 158, 11, .55);
 
+  /* Sémantické barvy: --data = hodnota poslance, --bench = medián (EP / frakce), --for/--against/--abst/--absent = jen hlasy.
+     Identita frakcí a stran (tečky, proužek karty, rámeček avataru) je v datech (groups.json, parties.json), ne v CSS. */
+  --data: #334155;
+  --bench: #B45309;
+  --link: #1E3A8A;
+  --mx-max: 60%;
   /* pro / proti: modrá / oranžová (rozlišitelné i při poruchách barvocitu) */
   --for: #2563EB;
   --against: #EA580C;
@@ -63,6 +69,10 @@
     --shadow: none;
     --abst: #94A3B8;
     --absent: #64748B;
+    --data: #CBD5E1;
+    --bench: #F59E0B;
+    --link: #BFDBFE;
+    --mx-max: 42%;
     --for: #3B82F6;
     --against: #F97316;
     --for-text: #93C5FD;
@@ -84,6 +94,10 @@
   --shadow: none;
   --abst: #94A3B8;
   --absent: #64748B;
+  --data: #CBD5E1;
+  --bench: #F59E0B;
+  --link: #BFDBFE;
+  --mx-max: 42%;
   --for: #3B82F6;
   --against: #F97316;
   --for-text: #93C5FD;
@@ -104,8 +118,8 @@ body {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
-a { color: var(--accent); text-underline-offset: 3px; }
-a:hover { text-decoration-thickness: 2px; }
+a { color: var(--link); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--gold); text-decoration-thickness: 2px; }
 h1 { font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.08; font-weight: 300; letter-spacing: -.03em; margin: 0 0 .6rem; }
 h1 strong, h1 b { font-weight: 700; }
 h2 { font-size: 1.3rem; font-weight: 600; letter-spacing: -.01em; margin: 2.25rem 0 .9rem; }
@@ -247,7 +261,7 @@ tr.former td { opacity: .72; }
 .mep-cell { display: flex; align-items: center; gap: .65rem; min-width: 12rem; }
 .mep-cell img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); flex: none; }
 .mep-cell a { font-weight: 600; text-decoration: none; color: var(--text); }
-.mep-cell a:hover { color: var(--accent); }
+.mep-cell a:hover { text-decoration: underline; text-decoration-color: var(--gold); }
 
 /* --- štítky, čísla ------------------------------------------------------- */
 .badge {
@@ -257,21 +271,24 @@ tr.former td { opacity: .72; }
 }
 .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--badge-dot, var(--muted)); flex: none; }
 .badge img { height: 1.1em; width: auto; }
+.logo-tile { display: inline-flex; align-items: center; flex: none; padding: 4px; border-radius: 6px; background: #FFFFFF; box-shadow: 0 0 0 1px var(--border); box-sizing: content-box; }
+.logo-tile img { height: 100%; width: auto; display: block; }
 .badge.outline { background: transparent; color: var(--muted); }
 .badge.outline::before { display: none; }
 .badge-link { text-decoration: none; }
 .badge-link:hover .badge { border-color: var(--gold); }
 .pct small { display: block; color: var(--muted); font-size: .75rem; }
 .bar { height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; margin-top: .3rem; min-width: 60px; }
-.bar > span { display: block; height: 100%; background: var(--cz-blue); border-radius: 999px; }
+.bar > span { display: block; height: 100%; background: var(--data); border-radius: 999px; }
 
 .pos { font-weight: 600; white-space: nowrap; }
 .pos-FOR { color: var(--for-text); }
 .pos-AGAINST { color: var(--against-text); }
 .pos-ABSTENTION { color: var(--muted); }
 .pos-DID_NOT_VOTE { color: var(--muted); font-weight: 500; }
-.result-ADOPTED { color: var(--for-text); font-weight: 600; }
-.result-REJECTED { color: var(--against-text); font-weight: 600; }
+/* Výsledek bez barev pro/proti: text + ikona (✓ / ✕, aria-hidden). */
+.result-ADOPTED, .result-REJECTED { color: var(--text); font-weight: 600; }
+.res-icon { display: inline-block; width: 1.1em; text-align: center; font-weight: 700; }
 
 .split { display: flex; height: 10px; border-radius: 999px; overflow: hidden; min-width: 90px; background: var(--track); }
 .split span { display: block; height: 100%; }
@@ -282,8 +299,8 @@ tr.former td { opacity: .72; }
 .legend i.absent { background: repeating-linear-gradient(135deg, var(--absent) 0 3px, transparent 3px 6px) !important; border: 1px solid var(--absent); }
 
 .vote-title { font-weight: 600; text-decoration: none; color: var(--text); }
-.vote-title:hover { color: var(--accent); }
-.tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: .1rem .5rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-right: .3rem; }
+.vote-title:hover { text-decoration: underline; text-decoration-color: var(--gold); }
+.tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: .1rem .5rem; border-radius: 999px; background: var(--chip); color: var(--text); border: 1px solid var(--border); margin-right: .3rem; }
 .tag.kind-rejection, .tag.kind-mandate, .tag.kind-urgency, .tag.kind-other { background: var(--chip); color: var(--text); border: 1px solid var(--border); }
 .tag.kind-amendment, .tag.kind-split_part { background: transparent; color: var(--muted); border: 1px solid var(--border); }
 .note { border-left: 3px solid var(--gold); padding: .5rem .8rem; background: var(--accent-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
@@ -314,9 +331,9 @@ tr.former td { opacity: .72; }
 .chart-wrap .chart { flex: 1; background: linear-gradient(to bottom, var(--track) 1px, transparent 1px) 0 .5rem / 100% calc((100% - .5rem) / 2) repeat-y; }
 .chart-y { display: flex; flex-direction: column; justify-content: space-between; font-size: .75rem; color: var(--muted); height: 150px; padding-top: .2rem; text-align: right; white-space: nowrap; }
 .chart .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 6px; background: none; border: 0; padding: 0; cursor: pointer; position: relative; font: inherit; color: inherit; }
-.chart .col .bar-fill { display: block; background: linear-gradient(to top, var(--cz-blue), #60A5FA); border-radius: 6px 6px 2px 2px; opacity: .85; transform-origin: bottom; transition: opacity .2s ease; }
+.chart .col .bar-fill { display: block; background: var(--data); border-radius: 6px 6px 2px 2px; opacity: .85; transform-origin: bottom; transition: opacity .2s ease; }
 .chart .col.active .bar-fill, .chart .col:hover .bar-fill { opacity: 1; box-shadow: 0 0 0 2px var(--gold); }
-.chart .col .bar-fill.zero { height: 3px !important; background: var(--cz-red); }
+.chart .col .bar-fill.zero { height: 3px !important; background: var(--data); opacity: .5; }
 .chart .col-label { position: absolute; top: 100%; left: 0; right: 0; text-align: center; font-size: .75rem; line-height: 1.15; color: var(--muted); padding-top: 3px; }
 .contact-form { display: grid; gap: .8rem; max-width: 40rem; margin: 1rem 0; }
 .contact-form label { display: grid; gap: .3rem; font-weight: 600; font-size: .9rem; }
@@ -328,7 +345,7 @@ tr.former td { opacity: .72; }
 :root[data-theme="dark"] .btn-send { background: var(--accent); color: var(--navy); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-send { background: var(--accent); color: var(--navy); } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.cite-btn, .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--accent); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.cite-btn, .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--link); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
 .cite-btn:hover, .csv-btn:hover { border-color: var(--gold); }
 .csv-btn { margin: 0 0 .6rem; }
 .more-btn { margin-top: .6rem; min-height: 40px; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--chip); color: var(--text); font: inherit; font-size: .9rem; cursor: pointer; }
@@ -378,8 +395,7 @@ ul.plain li:last-child { border-bottom: none; }
 .vrow .tip { display: block; margin-top: .3rem; font-size: .75rem; color: var(--muted); }
 
 .pill-result { flex: none; font-size: .75rem; font-weight: 600; padding: .1rem .55rem; border-radius: 999px; }
-.pill-result.ADOPTED { background: rgba(37, 99, 235, .12); color: var(--for-text); }
-.pill-result.REJECTED { background: rgba(234, 88, 12, .12); color: var(--against-text); }
+.pill-result { background: var(--chip); color: var(--text); border: 1px solid var(--border); }
 .legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin-top: .8rem; font-size: .75rem; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: .35rem; }
 .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
@@ -419,11 +435,11 @@ table.matrix .mx-head { writing-mode: vertical-rl; transform: rotate(180deg); te
 table.matrix .mx-head a { color: var(--text); text-decoration: none; }
 table.matrix .mx-row { text-align: left; white-space: nowrap; text-transform: none; letter-spacing: 0; font-size: .82rem; color: var(--text); }
 table.matrix .mx-row a { color: var(--text); text-decoration: none; font-weight: 600; }
-table.matrix td.mx { background: color-mix(in srgb, var(--cz-blue) calc(var(--p) * 85%), var(--surface)); min-width: 2.4rem; }
+/* Škála je omezená (--mx-max), aby text měl vždy kontrast aspoň 4,5 : 1 (světlý režim tmavé písmo, tmavý světlé). */
+table.matrix td.mx { background: color-mix(in srgb, var(--data) calc(var(--p) * var(--mx-max)), var(--surface)); min-width: 2.4rem; }
 table.matrix td.mx small { display: block; font-size: .75rem; }
 table.matrix td.mx-weak { background: var(--bg); color: var(--muted); }
 table.matrix td.mx { color: var(--text); }
-table.matrix td.mx-dark { color: #F8FAFC; }
 table.matrix td.mx-self, table.matrix td.mx-none { color: var(--muted); background: var(--bg); }
 table.matrix tbody tr:hover { background: none; }
 
@@ -484,4 +500,10 @@ table.matrix tbody tr:hover { background: none; }
   a { color: #000; }
   main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .75em; color: #333; word-break: break-all; }
   .split span, .legend i, .badge::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* Dotykové cíle aspoň 44 px (U10). */
+@media (pointer: coarse) {
+  .group-chip, .cite-btn, .csv-btn, .more-btn, .subnav a, .theme-toggle { min-height: 44px; }
+  .cite-btn, .csv-btn { padding: 0 1rem; }
 }
