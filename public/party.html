@@ -82,6 +82,7 @@ async function detailPage(id) {
     : '<p class="muted">Žádné takové hlasování.</p>';
   main.innerHTML = `
     <p class="small"><a href="party.html">← Všechny strany</a></p>
+    ${p.logo ? `<div class="logo-row">${logoTile(p, 48)}</div>` : ""}
     <h1>${esc(p.name || p.short_label)} ${partyBadge(p.id, p.short_label, parties)}</h1>
     <p class="small"><a href="s/${p.id}.html">Trvalý odkaz</a></p>
 

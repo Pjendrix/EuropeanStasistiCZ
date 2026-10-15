@@ -1,25 +1,155 @@
 {
  "_poznamka": "Ruční údaje o logech. Každé logo: soubor v public/, oficiální zdroj (URL stránky, odkud je staženo), datum stažení, podmínky použití, varianta (full = celé logo, symbol = jen značka). Logo se neupravuje. Záznam s file=null = logo zatím chybí (web ukáže tečku + zkratku).",
  "groups": {
-  "EPP": {"file": null, "source": "https://eppgroup.eu/who-we-are/logo-graphic-charter", "retrieved": null, "terms": "Web EPP: logo nelze použít bez výslovného souhlasu – vyžádat", "variant": "full"},
-  "ECR": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "PFE": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "GREEN_EFA": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "ESN": {"file": null, "source": "https://esn-group.eu/", "retrieved": null, "terms": null, "variant": "full"},
-  "SD": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "RENEW": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "GUE_NGL": {"file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"}
+  "EPP": {
+   "file": null,
+   "source": "https://eppgroup.eu/who-we-are/logo-graphic-charter",
+   "retrieved": null,
+   "terms": "Web EPP: logo nelze použít bez výslovného souhlasu – vyžádat",
+   "variant": "full",
+   "chybi": "EPP: logo nelze použít bez výslovného souhlasu (vyžádat)"
+  },
+  "ECR": {
+   "file": "assets/logos/ep/ECR.webp",
+   "source": "https://ecrgroup.eu/logos_branding (balíček https://www.ecrgroup.eu/ECRg-logos-Czech.zip, MAIN_LOGO_CZECH_REPUBLIC_CZECH.png)",
+   "retrieved": "2026-10-15",
+   "terms": "stránka Logos & branding pro veřejnost; jen k identifikaci",
+   "variant": "full",
+   "note": "PNG 4962×4978 převeden do bezeztrátového WebP 128×128 (jen formát a velikost)"
+  },
+  "PFE": {
+   "file": "assets/logos/ep/PFE.svg",
+   "source": "https://patriots.eu (soubor https://patriots.eu/wp-content/uploads/2020/11/PATRIOTS_footer.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "podmínky na webu neuvedeny; jen k identifikaci",
+   "variant": "full",
+   "note": "barevná varianta z patičky oficiálního webu (v hlavičce je bílá na tmavém)"
+  },
+  "GREEN_EFA": {
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "na greens-efa.eu nenalezena stránka s logy"
+  },
+  "ESN": {
+   "file": null,
+   "source": "https://esn-group.eu/",
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "na esn-group.eu nalezena jen bílá verze pro tmavé pozadí"
+  },
+  "SD": {
+   "file": "assets/logos/ep/SD.svg",
+   "source": "https://www.socialistsanddemocrats.eu/sd-logos (soubor https://www.socialistsanddemocrats.eu/themes/custom/sd/images/svg/sd-logo-red.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "stránka S&D logos pro veřejnost; jen k identifikaci",
+   "variant": "full"
+  },
+  "RENEW": {
+   "file": "assets/logos/ep/RENEW.svg",
+   "source": "https://www.reneweuropegroup.eu (soubor https://renew-europe.files.svdcdn.com/production/main/global/renew-europe-logo.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "podmínky na webu neuvedeny; jen k identifikaci",
+   "variant": "full"
+  },
+  "GUE_NGL": {
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "left.eu vrací 403 z našeho prostředí"
+  }
  },
  "parties": {
-  "6794": {"_nazev": "ANO 2011", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6768": {"_nazev": "ODS", "file": null, "source": "https://www.ods.cz/docs/o-nas/ods-logomanual-web.pdf", "retrieved": null, "terms": null, "variant": "full"},
-  "6835": {"_nazev": "STAN", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6793": {"_nazev": "TOP09/STAN (zobrazit logo TOP 09, ověřit členství poslanců)", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6770": {"_nazev": "KDU-ČSL", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6862": {"_nazev": "Piráti", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6864": {"_nazev": "SPD", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "6769": {"_nazev": "KSČM", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "7034": {"_nazev": "Motoristé sobě", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"},
-  "7033": {"_nazev": "Přísaha", "file": null, "source": null, "retrieved": null, "terms": null, "variant": "full"}
+  "6794": {
+   "_nazev": "ANO 2011",
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "web anobudoucnosti.cz z našeho prostředí neodpovídá (ověřit ručně)"
+  },
+  "6768": {
+   "_nazev": "ODS",
+   "file": "assets/logos/cz/6768.webp",
+   "source": "https://www.ods.cz (soubor https://www.ods.cz/img/logo/ods-logo-plna-barva.jpg; barvy podle https://www.ods.cz/docs/o-nas/ods-logomanual-web.pdf)",
+   "retrieved": "2026-10-15",
+   "terms": "podmínky na webu neuvedeny; jen k identifikaci",
+   "variant": "full",
+   "note": "JPG 800×350 převeden do bezeztrátového WebP 293×128 (jen formát a velikost, kresba beze změny)"
+  },
+  "6835": {
+   "_nazev": "STAN",
+   "file": "assets/logos/cz/6835.svg",
+   "source": "https://www.starostove.cz/ke-stazeni (soubor https://www.starostove.cz/files/logo-stan-pink.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "volně ke stažení na stránce Ke stažení; jen k identifikaci",
+   "variant": "full"
+  },
+  "6793": {
+   "_nazev": "TOP09/STAN (zobrazit logo TOP 09, ověřit členství poslanců)",
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "EP vede kandidátku TOP09/STAN; logo konkrétní strany poslance až po ověření členství"
+  },
+  "6770": {
+   "_nazev": "KDU-ČSL",
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "na kdu.cz nalezena jen bílá verze pro tmavé pozadí"
+  },
+  "6862": {
+   "_nazev": "Piráti",
+   "file": "assets/logos/cz/6862.svg",
+   "source": "https://pirati.cz/download/ (soubor https://pirati.cz/documents/220/logo.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "volně ke stažení na stránce Ke stažení; jen k identifikaci",
+   "variant": "full"
+  },
+  "6864": {
+   "_nazev": "SPD",
+   "file": "assets/logos/cz/6864.svg",
+   "source": "https://spd.cz/volby2025/ke-stazeni/ (soubor https://spd.cz/wp-content/uploads/2025/05/SPD_LOGO_RGB.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "volně ke stažení na stránce Ke stažení; jen k identifikaci",
+   "variant": "full"
+  },
+  "6769": {
+   "_nazev": "KSČM",
+   "file": "assets/logos/cz/6769.svg",
+   "source": "https://www.kscm.cz/ke-stazeni-a-sdileni/ (soubor https://www.kscm.cz/wp-content/uploads/logo-KSCM-cmyk.svg)",
+   "retrieved": "2026-10-15",
+   "terms": "volně ke stažení na stránce Ke stažení a sdílení; jen k identifikaci",
+   "variant": "full"
+  },
+  "7034": {
+   "_nazev": "Motoristé sobě",
+   "file": "assets/logos/cz/7034.webp",
+   "source": "https://motoristesobe.cz/hlavni-stranka-wall-media/ (soubor https://motoristesobe.cz/wp-content/uploads/Motoriste_logo_dark.png)",
+   "retrieved": "2026-10-15",
+   "terms": "podmínky na webu neuvedeny; jen k identifikaci",
+   "variant": "full",
+   "note": "PNG 1000×347 převeden do bezeztrátového WebP 369×128 (jen formát a velikost)"
+  },
+  "7033": {
+   "_nazev": "Přísaha",
+   "file": null,
+   "source": null,
+   "retrieved": null,
+   "terms": null,
+   "variant": "full",
+   "chybi": "web hnutiprisaha.cz z našeho prostředí neodpovídá"
+  }
  }
 }

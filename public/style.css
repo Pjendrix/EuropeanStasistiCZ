@@ -274,7 +274,9 @@ tr.former td { opacity: .72; }
 .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--badge-dot, var(--muted)); flex: none; }
 .badge img { height: 1.1em; width: auto; }
 .logo-tile { display: inline-flex; align-items: center; flex: none; padding: 4px; border-radius: 6px; background: #FFFFFF; box-shadow: 0 0 0 1px var(--border); box-sizing: content-box; }
-.logo-tile img { height: 100%; width: auto; display: block; }
+.logo-tile img { height: 100%; width: auto; max-width: 160px; display: block; object-fit: contain; border-radius: 0; box-shadow: none; background: none; }
+.group-chip .logo-tile { padding: 2px; }
+.logo-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .5rem 0; }
 .badge.outline { background: transparent; color: var(--muted); }
 .badge.outline::before { display: none; }
 .badge-link { text-decoration: none; }
@@ -418,7 +420,7 @@ ul.plain li:last-child { border-bottom: none; }
 .mep-card:hover, .mep-card:focus-visible { transform: scale(1.02); box-shadow: var(--shadow-hover); }
 .mep-card.former { opacity: .75; }
 .mep-card-head { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; }
-.mep-card-head img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); flex: none; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ring, var(--muted)); }
+.mep-card-head > img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--track); flex: none; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ring, var(--muted)); }
 .mep-card-head .name { font-weight: 600; font-size: .98rem; line-height: 1.25; }
 .mep-card-head .sub { font-size: .78rem; color: var(--muted); }
 .mep-card-body { display: flex; align-items: center; gap: 1rem; }
@@ -537,8 +539,10 @@ table.matrix tbody tr:hover { background: none; }
 /* --- karta poslance (U2) ------------------------------------------------------ */
 .mep-card { position: relative; overflow: hidden; border-left: 4px solid var(--g, var(--muted)); }
 .mep-card-head { align-items: flex-start; }
-.mep-card-head img, .mep-card-head .avatar-initials { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--g, var(--muted)); }
+.mep-card-head > img, .mep-card-head .avatar-initials { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--g, var(--muted)); }
 .mep-card-head .logo-tile { margin-left: auto; }
+.mep-card-head .logo-tile img { max-width: 64px; }
+.mep-card-head > div { flex: 1; }
 .mep-card .sub .dot, .group-head .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--g, var(--muted)); margin-right: .35rem; vertical-align: middle; }
 .group-head .dot { width: 10px; height: 10px; margin: 0; }
 .group-block { margin-bottom: 1.75rem; }
@@ -553,7 +557,7 @@ table.matrix tbody tr:hover { background: none; }
   .mep-card { padding: .75rem .9rem; }
   .mep-card:hover, .mep-card:focus-visible { transform: none; }
   .mep-card-head { margin-bottom: .25rem; gap: .6rem; }
-  .mep-card-head img, .mep-card-head .avatar-initials { width: 40px !important; height: 40px !important; }
+  .mep-card-head > img, .mep-card-head .avatar-initials { width: 40px !important; height: 40px !important; }
   .mep-card-head .logo-tile, .mep-card .bench + .bench, .mep-card .bench-note, .mep-card .note { display: none; }
   .mep-card .bench { margin-top: .25rem; }
   .mep-card .bench-top b { font-size: 1rem; }
