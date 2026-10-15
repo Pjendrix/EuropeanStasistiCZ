@@ -7,6 +7,8 @@
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 "use strict";
 
+const SHARE_ROOT = document.currentScript ? new URL(".", document.currentScript.src).href : "";
+
 const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" } };
 const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B",
   for: "#60A5FA", against: "#FB923C", abst: "#94A3B8", absent: "#475569", track: "#334155" };
@@ -75,54 +77,93 @@ function barOps(x, y, w, h, counts) {
   return out;
 }
 
-// Karta hlasování: obsah ve svislém toku, vystředěný mezi hlavičkou a patičkou.
+const SHARE_KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
+const SHARE_SHORT = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdrž.", DID_NOT_VOTE: "nehl." };
+
+// Řádky stran pro kartu z czPartyRows() (app.js); zrcadlo card_parties() v scripts/vote_parties.py.
+// Když by se strany nevešly (víc než 12), sloučí se jednočlenné do „ostatní“.
+function shareCardParties(rows, maxRows = 12) {
+  let items = rows.map((r) => ({ label: r.label, groups: r.groups, positions: SHARE_KEYS.flatMap((k) => r.members[k].map(() => k)), total: r.total }));
+  if (items.length > maxRows) {
+    const keep = items.filter((i) => i.total > 1), rest = items.filter((i) => i.total === 1);
+    while (keep.length >= maxRows && keep.length) rest.unshift(keep.pop());
+    keep.push({ label: "ostatní", groups: rest.map((i) => i.label).sort((a, b) => a.localeCompare(b, "cs")),
+      positions: rest.flatMap((i) => i.positions).sort((a, b) => SHARE_KEYS.indexOf(a) - SHARE_KEYS.indexOf(b)), total: rest.reduce((n, i) => n + i.total, 0) });
+    items = keep;
+  }
+  return items;
+}
+
+const partySummary = (positions) => SHARE_KEYS.map((k) => [positions.filter((p) => p === k).length, SHARE_SHORT[k]]).filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(" · ");
+
+// Karta hlasování (S5): název, výsledek větou, celý EP, Češi po stranách (barva tečky = hlas). Obsah vystředěný mezi hlavičkou a patičkou.
 function voteCardOps(d, f) {
-  const H = f.h;
+  const H = f.h, story = f.h > 1500;
   const ops = [];
   let y = 0;
-  const title = wrapText(d.title, 58, 700, 936, 4);
-  title.forEach((l, i) => ops.push(T(72, y + 58 + i * 72, l, 58, 700, SC.white)));
-  y += title.length * 72 + 24;
+  const title = wrapText(d.title, 58, 700, 936, 3);
+  title.forEach((l, i) => ops.push(T(72, y + 58 + i * 68, l, 58, 700, SC.white)));
+  y += title.length * 68 + 14;
   if (d.subtitle) {
     const sub = wrapText(d.subtitle, 28, 500, 936, 2);
     sub.forEach((l, i) => ops.push(T(72, y + 28 + i * 38, l, 28, 500, SC.soft)));
-    y += sub.length * 38 + 20;
+    y += sub.length * 38 + 10;
   }
-  y += 28;
+  y += 22;
   const ok = d.result === "ADOPTED";
   const pill = (d.resultLabel || "").toUpperCase();
-  const pw = measureText(pill, 26, 800) + 44;
-  ops.push(RECT(72, y, pw, 52, 26, ok ? SC.white : "#334155"), T(72 + pw / 2, y + 36, pill, 26, 800, ok ? SC.navy : SC.white, "center"));
+  const icon = ok || d.result === "REJECTED" ? 34 : 0;
+  const pw = measureText(pill, 26, 800) + 44 + icon;
+  const fg = ok ? SC.navy : SC.white;
+  ops.push(RECT(72, y, pw, 52, 26, ok ? SC.white : "#334155"));
+  if (icon) {   // ✓ / ✕ kreslené čarami (písmo ikonu nemusí mít)
+    const cx = 72 + 34, cy = y + 26;
+    if (ok) ops.push(LINE(cx - 9, cy, cx - 2, cy + 8, fg, 4), LINE(cx - 2, cy + 8, cx + 10, cy - 8, fg, 4));
+    else ops.push(LINE(cx - 8, cy - 8, cx + 8, cy + 8, fg, 4), LINE(cx + 8, cy - 8, cx - 8, cy + 8, fg, 4));
+  }
+  ops.push(T(72 + icon + (pw - icon) / 2 + 2, y + 36, pill, 26, 800, fg, "center"));
   const sent = wrapText(d.sentence, 30, 600, 936 - pw - 20, 2);
   sent.forEach((l, i) => ops.push(T(72 + pw + 20, y + 36 + i * 38, l, 30, 600, SC.white)));
-  y += Math.max(52, sent.length * 38) + 36;
-  ops.push(T(72, y + 24, `Celý EP: ${fmtNum(d.ep[0])} pro · ${fmtNum(d.ep[1])} proti · ${fmtNum(d.ep[2])} zdržel se`, 28, 500, SC.soft), ...barOps(72, y + 48, 936, 16, d.ep));
-  y += 112;
-  // Češi: tečky podle frakcí, barva = hlas
-  const KEYS4 = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
-  const czTotal = KEYS4.map((k) => d.groups.reduce((n, g) => n + g.positions.filter((p) => p === k).length, 0));
-  ops.push(T(72, y + 22, "JAK HLASOVALI ČEŠI", 22, 800, SC.gold),
-    T(72, y + 62, fitText(czCountsText(czTotal) || "žádný poslanec v mandátu", 32, 600, 936), 32, 600, SC.white));
+  y += Math.max(52, sent.length * 38) + 34;
+  ops.push(T(72, y + 24, fitText(`Celý EP: ${fmtNum(d.ep[0])} pro · ${fmtNum(d.ep[1])} proti · ${fmtNum(d.ep[2])} zdržel se · ${fmtNum(d.ep[3])} nehlasovalo`, 28, 500, 936), 28, 500, SC.soft),
+    ...barOps(72, y + 48, 936, 16, d.ep));
   y += 100;
-  const r = 20;
-  let x = 72;
-  d.groups.forEach((g) => {
-    g.positions.forEach((p) => {
-      if (x + 2 * r > 1008) { x = 72; y += 2 * r + 12; }
-      ops.push(p === "DID_NOT_VOTE" ? CIRC(x + r, y + r, r - 2, null, SC.absent, 4) : CIRC(x + r, y + r, r, SC_POS[p]));
-      x += 2 * r + 8;
-    });
-    x += 18;
+  // Češi: souhrn s barevnými tečkami (zároveň legenda), pak mřížka stran
+  const czTotal = SHARE_KEYS.map((k) => d.parties.reduce((n, g) => n + g.positions.filter((p) => p === k).length, 0));
+  ops.push(T(72, y + 30, "JAK HLASOVALI ČEŠI", 22, 800, SC.gold));
+  let lx = 1008;
+  [...SHARE_KEYS].reverse().forEach((k) => {
+    const n = czTotal[SHARE_KEYS.indexOf(k)];
+    if (!n) return;
+    const txt = `${n} ${SHARE_SHORT[k]}`, w = measureText(txt, 30, 700);
+    ops.push(T(lx, y + 32, txt, 30, 700, k === "DID_NOT_VOTE" ? SC.soft : SC_POS[k], "right"));
+    ops.push(k === "DID_NOT_VOTE" ? CIRC(lx - w - 20, y + 22, 8, null, SC.absent, 3) : CIRC(lx - w - 20, y + 22, 9, SC_POS[k]));
+    lx -= w + 56;
   });
-  y += 2 * r + 28;
-  const lines = d.groups.map((g) => `${g.label} ${KEYS4.map((k) => [g.positions.filter((p) => p === k).length, POSITION_LABEL[k].replace("/a", "")])
-    .filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ")}`);
-  const summary = wrapText(lines.join("  ·  "), 24, 500, 936, f.h > 1500 ? 4 : 3);
-  summary.forEach((l, i) => ops.push(T(72, y + 24 + i * 34, l, 24, 500, SC.soft)));
-  y += summary.length * 34 + 8;
-  const top = 172, bottom = H - 150;
+  if (!d.parties.length) ops.push(T(1008, y + 32, "žádný poslanec v mandátu", 28, 600, SC.white, "right"));
+  y += 52;
+  ops.push(LINE(72, y, 1008, y, "#334155", 2));
+  const cols = story ? 1 : 2, colW = cols === 1 ? 936 : 448, perCol = Math.ceil(d.parties.length / cols);
+  const rowH = story ? 104 : 96;
+  d.parties.forEach((g, i) => {
+    const col = cols === 1 ? 0 : Math.floor(i / perCol), row = cols === 1 ? i : i % perCol;
+    const x0 = 72 + col * (colW + 40), ry = y + row * rowH;
+    const groups = g.groups.join(" · ");
+    ops.push(T(x0, ry + 38, fitText(g.label, 30, 800, colW), 30, 800, SC.white),
+      T(x0 + measureText(g.label, 30, 800) + 12, ry + 38, fitText(groups, 20, 500, colW - measureText(g.label, 30, 800) - 12), 20, 500, SC.muted));
+    const r = 13;
+    const right = partySummary(g.positions), rw = measureText(right, 24, 500);
+    const maxDots = Math.max(Math.floor((colW - rw - 20) / (2 * r + 6)), 1);
+    g.positions.slice(0, maxDots).forEach((p, j) => {
+      const cx = x0 + r + j * (2 * r + 6), cy = ry + 64;
+      ops.push(p === "DID_NOT_VOTE" ? CIRC(cx, cy, r - 2, null, SC.absent, 3) : CIRC(cx, cy, r, SC_POS[p]));
+    });
+    ops.push(T(x0 + colW, ry + 72, right, 24, 500, SC.soft, "right"), LINE(x0, ry + rowH - 8, x0 + colW, ry + rowH - 8, "#1E293B", 2));
+  });
+  y += perCol * rowH + 6;
+  const top = 160, bottom = H - 150;
   return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
-    ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", d.urlShort)];
+    ...shareFooter(H, `Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
 // Karta poslance: portrét, účast na hlasování a hlasuje s frakcí s mediánem, práce na textech. Bez pořadí a hodnocení.
@@ -195,7 +236,7 @@ async function renderCardPng(ctx, formatKey) {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
-  _symbolImg = await loadImage("assets/brand/symbol-white.svg");
+  _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   if (ctx.kind === "mep") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
   const ops = ctx.kind === "vote" ? voteCardOps(data, f) : mepCardOps(data, f);
   const canvas = document.createElement("canvas");

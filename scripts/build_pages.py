@@ -25,14 +25,14 @@ from pathlib import Path
 
 from build_cards import card_vote_ids, result_sentence
 from build_web import vote_title
+from vote_parties import (POSITION_LABEL, POSITIONS, by_gender, card_parties, group_label, party_rows,  # noqa: F401
+                          position_for, position_phrase)
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import page
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
-POSITION_LABEL = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel/a se", "DID_NOT_VOTE": "nehlasoval/a"}
-POSITIONS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]
 RESULT_LABEL = {"ADOPTED": "přijato", "REJECTED": "zamítnuto", "LAPSED": "propadlo", "WITHDRAWN": "staženo"}
 HTV = "https://howtheyvote.eu"
 NBSP = " "
@@ -82,41 +82,6 @@ def party_votes_text(cz: list[dict]) -> list[tuple[str, str]]:
     return [(k, ", ".join(f"{by[k][pos]} {names[pos]}" for pos in POSITIONS if by[k][pos])) for k in order]
 
 
-def position_phrase(position: str, members: list[dict]) -> str:
-    """Slovo hlasu ve správném rodě a čísle: „pro“, „zdržela se“, „zdrželi se“, „nehlasovaly“."""
-    if position == "FOR":
-        return "pro"
-    if position == "AGAINST":
-        return "proti"
-    if len(members) == 1:
-        return position_for(position, members[0])
-    fem = all(m.get("gender") == "FEMALE" for m in members)
-    if position == "ABSTENTION":
-        return "zdržely se" if fem else "zdrželi se"
-    return "nehlasovaly" if fem else "nehlasovali"
-
-
-def party_rows(cz: list[dict], meps_by_id: dict, parties: list[dict], groups: list[dict]) -> list[dict]:
-    """Čeští poslanci podle strany k datu hlasování. Strany od největší (podle počtu poslanců v hlasování), pak abecedně.
-    Skupina bez strany je „Ind.“ (štítek z parties.json). Frakce k datu hlasování; když se liší, vypíšou se všechny."""
-    by_id = {p["id"]: p for p in parties}
-    rows: dict[str, dict] = {}
-    for p in cz:
-        entry = by_id.get(p.get("national_party_id"))
-        label = (entry or {}).get("short_label") or (p.get("national_party") if p.get("national_party") not in (None, "Independent") else "Ind.")
-        row = rows.setdefault(label, {"label": label, "color": (entry or {}).get("chart_color"), "groups": [], "members": {k: [] for k in POSITIONS}})
-        g = group_label(p.get("group_code"), groups)
-        if g not in row["groups"]:
-            row["groups"].append(g)
-        row["members"][p["position"]].append(meps_by_id[p["member_id"]])
-    for row in rows.values():
-        row["groups"].sort()
-        for k in POSITIONS:
-            row["members"][k].sort(key=lambda m: m.get("sort_label") or m["name"])
-        row["total"] = sum(len(v) for v in row["members"].values())
-    return sorted(rows.values(), key=lambda r: (-r["total"], r["label"]))
-
-
 def party_rows_html(rows: list[dict], root: str) -> str:
     out = []
     for r in rows:
@@ -138,23 +103,6 @@ def fmt_date(iso: str | None) -> str:
         return ""
     y, m, d = iso[:10].split("-")
     return f"{int(d)}. {int(m)}. {y}"
-
-
-def by_gender(mep: dict, male: str, female: str) -> str:
-    g = mep.get("gender")
-    if g == "FEMALE":
-        return female
-    if g == "MALE":
-        return male
-    return f"{male}/{female[len(male):]}" if female.startswith(male) else f"{male} / {female}"
-
-
-def position_for(position: str, mep: dict) -> str:
-    if position == "ABSTENTION":
-        return by_gender(mep, "zdržel se", "zdržela se")
-    if position == "DID_NOT_VOTE":
-        return by_gender(mep, "nehlasoval", "nehlasovala")
-    return POSITION_LABEL[position]
 
 
 def display_name(mep: dict) -> str:
@@ -207,15 +155,6 @@ def og_meta(title: str, description: str, path: str, base_url: str | None, image
                           f'<meta property="og:image:alt" content="{esc(image_alt or title)}">',
                           '<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:image" content="{esc(img)}">']
     return "\n".join(lines) + "\n"
-
-
-def group_label(code: str | None, groups: list[dict]) -> str:
-    if not code:
-        return "bez frakce"
-    g = next((x for x in groups if x["code"] == code or x.get("ep_code") == code), None)
-    if g and g["code"] == "NI":
-        return "nezařazení"
-    return g["short_label"] if g else code
 
 
 def kind_of(v: dict) -> tuple[str, bool]:
@@ -399,7 +338,8 @@ def adopted_text_url(ref: str | None) -> str | None:
 
 
 def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, has_card: bool = False,
-              roles: list[dict] | None = None, parties: list[dict] | None = None) -> tuple[str, str]:
+              roles: list[dict] | None = None, parties: list[dict] | None = None,
+              data_day: str | None = None) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
     desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
@@ -436,7 +376,18 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
         f'<tr{" class=cz-row" if code in cz_groups else ""}><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}'
         f'<td>{esc(group_majority_label(row) or "bez jasné většiny")}</td><td>{split_bar(row)}</td></tr>'
         for code, row in sorted(v["group_counts"].items(), key=lambda x: -sum(x[1])))
-    party_html = party_rows_html(party_rows(cz, meps_by_id, parties or [], groups), ROOT)
+    rows = party_rows(cz, meps_by_id, parties or [], groups)
+    party_html = party_rows_html(rows, ROOT)
+    sentence = result_sentence(kind, v.get("result"))
+    share_data = {
+        "title": title_txt, "subtitle": " · ".join(x for x in (desc_cs or v.get("description"), v.get("reference")) if x),
+        "date": v["date"], "kindLabel": KIND_LABELS.get(kind, "hlasování"), "result": v.get("result"), "resultLabel": result,
+        "sentence": sentence, "ep": total, "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
+        "dataDay": data_day or v["date"],
+    }
+    share_script = ("<script>window.shareContext = () => { const url = location.href.split(\"#\")[0]; return { kind: \"vote\", url, "
+                    f"filename: \"ep-watch-hlasovani-{v['id']}\", text: {json.dumps(f'{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False)}, "
+                    f"data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace('</', '<\\/')}, {{ urlShort: url.replace(/^https?:\\/\\//, \"\") }}) }}; }};</script>\n")
     n_groups = len(v["group_counts"])
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
@@ -455,6 +406,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>
+<p class="share-row"><button type="button" class="more-btn share-btn" data-share aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Sdílet</button></p>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="pill-result result-{v.get('result') or ''}">{result}</span></div>
@@ -482,7 +434,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,
                                      meta=og_meta(title, desc, f"v/{v['id']}.html", base_url,
                                                   f"og/v/{v['id']}.png" if has_card else None, desc, card=True),
-                                     scripts=f'<script src="{ROOT}app.js"></script>\n')
+                                     scripts=f'<script src="{ROOT}app.js"></script>\n{share_script}<script src="{ROOT}share.js"></script>\n')
 
 
 # --- běh -----------------------------------------------------------------------------
@@ -502,6 +454,8 @@ def build(data_dir: Path) -> dict[str, str]:
     meps_doc = read(data_dir / "meps.json")
     apply_name_overrides(meps_doc["meps"], data_dir / "manual" / "overrides.json")
     meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
+    release = (overview.get("sources") or {}).get("votes", {}).get("release") or ""
+    data_day = release if len(release) == 10 and release[4] == "-" else overview["period"]["to"]  # export HowTheyVote = „data k“
     out = {}
     for m in overview["meps"]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
@@ -520,7 +474,7 @@ def build(data_dir: Path) -> dict[str, str]:
     with_card = card_vote_ids(votes)  # závěrečná hlasování za 12 měsíců mají kartu (build_cards.py), starší obecný obrázek
     for v in votes:
         if is_final(v):
-            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties)
+            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day)
             out[path] = html
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
     if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists():

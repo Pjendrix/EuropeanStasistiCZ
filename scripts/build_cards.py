@@ -28,6 +28,7 @@ from pathlib import Path
 
 from build_web import vote_title
 from compute_stats import FormatError, active_positions, load_votes, require
+from vote_parties import SHORT_LABEL, card_parties, group_label, party_rows  # noqa: F401
 from vote_kinds import KIND_LABELS, classify, is_final
 
 W, H = 1200, 630
@@ -198,63 +199,50 @@ def to_png(img) -> bytes:
 
 # --- karty ----------------------------------------------------------------------------
 
-def group_label(code: str | None, groups: list[dict]) -> str:
-    if not code:
-        return "bez frakce"
-    g = next((x for x in groups if x["code"] == code or x.get("ep_code") == code), None)
-    if g and g["code"] == "NI":
-        return "nezařazení"
-    return g["short_label"] if g else code
-
-
-def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None) -> bytes:
+def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, parties: list[dict] | None = None,
+              data_day: str | None = None) -> bytes:
+    """OG náhled 1200 × 630 (S5): název, výsledek větou, celý EP, souhrn Čechů a jeden řádek stran (zkrácený „…“)."""
     kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
     img, d = new_card()
     header(img, d, f"{fmt_date(v['date'])} · {KIND_LABELS.get(kind, 'hlasování')}")
-    for i, line in enumerate(wrap(d, vote_title(v), font(46, 700), W - 112, 3)):
-        d.text((56, 92 + i * 58), line, font=font(46, 700), fill=WHITE)
-    # výsledek a celý EP
+    title = wrap(d, vote_title(v), font(50, 700), W - 112, 2)
+    for i, line in enumerate(title):
+        d.text((56, 100 + i * 62), line, font=font(50, 700), fill=WHITE)
+    y = 100 + len(title) * 62
+    sub = " · ".join(x for x in (v.get("description_cs") or v.get("description"), v.get("reference")) if x)
+    if sub:
+        d.text((56, y + 4), fit(d, sub, font(24, 500), W - 112), font=font(24, 500), fill=SOFT)
     c = v["counts"]
-    y = 296
+    y = 300
     ok = v.get("result") == "ADOPTED"
     pill = RESULT_LABEL.get(v.get("result"), "neuveden").upper()
-    pw = int(text_w(d, pill, font(22, 800))) + 36
-    d.rounded_rectangle([56, y, 56 + pw, y + 40], radius=20, fill=WHITE if ok else (51, 65, 85))
-    d.text((56 + pw / 2, y + 20), pill, font=font(22, 800), fill=NAVY if ok else WHITE, anchor="mm")
-    d.text((56 + pw + 18, y + 20), fit(d, result_sentence(kind, v.get("result")), font(24, 600), W - 112 - pw - 18),
-           font=font(24, 600), fill=WHITE, anchor="lm")
-    d.text((56, y + 58), f"Celý EP: {fmt_num(c['for'])} pro · {fmt_num(c['against'])} proti · {fmt_num(c['abstention'])} zdržel se",
-           font=font(22, 500), fill=SOFT)
-    stacked_bar(d, 56, y + 96, W - 112, 12, [c["for"], c["against"], c["abstention"], c["did_not_vote"]])
-    # Češi: tečky podle frakcí, barva = hlas
+    icon = 28 if v.get("result") in ("ADOPTED", "REJECTED") else 0
+    pw = int(text_w(d, pill, font(22, 800))) + 36 + icon
+    fg = NAVY if ok else WHITE
+    d.rounded_rectangle([56, y, 56 + pw, y + 44], radius=22, fill=WHITE if ok else (51, 65, 85))
+    if icon:  # ✓ / ✕ čarami (písmo ikonu nemusí mít)
+        cx, cy = 56 + 28, y + 22
+        if ok:
+            d.line([(cx - 7, cy), (cx - 2, cy + 6), (cx + 8, cy - 6)], fill=fg, width=3)
+        else:
+            d.line([(cx - 6, cy - 6), (cx + 6, cy + 6)], fill=fg, width=3)
+            d.line([(cx + 6, cy - 6), (cx - 6, cy + 6)], fill=fg, width=3)
+    d.text((56 + icon + (pw - icon) / 2 + 2, y + 22), pill, font=font(22, 800), fill=fg, anchor="mm")
+    sentence = result_sentence(kind, v.get("result"))
+    d.text((56 + pw + 20, y + 22), fit(d, sentence, font(24, 600), W - 112 - pw - 20), font=font(24, 600), fill=WHITE, anchor="lm")
+    d.text((56, y + 66), f"Celý EP: {fmt_num(c['for'])} pro · {fmt_num(c['against'])} proti · {fmt_num(c['abstention'])} zdrželo se"
+           f" · {fmt_num(c['did_not_vote'])} nehlasovalo", font=font(22, 500), fill=SOFT)
+    stacked_bar(d, 56, y + 100, W - 112, 12, [c["for"], c["against"], c["abstention"], c["did_not_vote"]])
     cz = active_positions(v, meps_by_id)
     cnt = Counter(p["position"] for p in cz)
-    d.text((56, 428), "JAK HLASOVALI ČEŠI", font=font(18, 800), fill=GOLD)
-    d.text((56 + text_w(d, "JAK HLASOVALI ČEŠI   ", font(18, 800)), 424),
-           " · ".join(f"{cnt[p]} {POS_LABEL[p]}" for p in POSITIONS if cnt[p]) or "žádný poslanec v mandátu",
-           font=font(24, 600), fill=WHITE)
-    by_group: dict[str, list[dict]] = {}
-    for p in cz:
-        by_group.setdefault(p["group_code"] or "", []).append(p)
-    order = sorted(by_group, key=lambda g: (-len(by_group[g]), group_label(g or None, groups)))
-    x, r = 56, 15
-    for g in order:
-        for p in sorted(by_group[g], key=lambda p: POSITIONS.index(p["position"])):
-            if p["position"] == "DID_NOT_VOTE":
-                d.ellipse([x, 470, x + 2 * r, 470 + 2 * r], outline=ABSENT_C, width=3)
-            else:
-                d.ellipse([x, 470, x + 2 * r, 470 + 2 * r], fill=POS_COLOR[p["position"]])
-            x += 2 * r + 6
-        x += 16
-    lines = []
-    for g in order:
-        gc = Counter(p["position"] for p in by_group[g])
-        lines.append(f"{group_label(g or None, groups)} " + ", ".join(f"{gc[p]} {POS_LABEL[p]}" for p in POSITIONS if gc[p]))
-    summary = "  ·  ".join(lines)
-    for i, line in enumerate(wrap(d, summary, font(21, 500), W - 112, 2)):
-        d.text((56, 516 + i * 28), line, font=font(21, 500), fill=SOFT)
+    d.text((56, 456), "Češi: " + (" · ".join(f"{cnt[p]} {POS_LABEL[p]}" for p in POSITIONS if cnt[p]) or "žádný poslanec v mandátu"),
+           font=font(26, 700), fill=WHITE)
+    rows = card_parties(party_rows(cz, meps_by_id, parties or [], groups))
+    line = "  ·  ".join(f"{r['label']}: " + ", ".join(f"{r['positions'].count(k)} {SHORT_LABEL[k]}" for k in POSITIONS if k in r["positions"])
+                        for r in rows)
+    d.text((56, 504), fit(d, line, font(21, 500), W - 112), font=font(21, 500), fill=SOFT)
     url = f"{base_url.rstrip('/').split('://', 1)[-1]}/v/{v['id']}" if base_url else None
-    footer(d, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", url)
+    footer(d, f"Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k {fmt_date(data_day or v['date'])}", url)
     return to_png(img)
 
 
@@ -364,7 +352,7 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
     wanted = card_vote_ids(votes)
     for v in votes:
         if v["id"] in wanted:
-            put(f"v/{v['id']}.png", vote_card(v, meps_by_id, groups, base_url))
+            put(f"v/{v['id']}.png", vote_card(v, meps_by_id, groups, base_url, parties, data_day))
     d = public / "og" / "v"
     for f in d.glob("*.png"):
         if int(f.stem) not in wanted:

@@ -106,7 +106,7 @@ for (const scheme of ["light", "dark"]) {
 // Bez reducedMotion, aby běžela animace .reveal, která chybu původně způsobovala.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 800 } });
-  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`]) {
+  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`, `v/${voteId}.html`]) {
     const page = await ctx.newPage();
     await page.goto(base + url, { waitUntil: "networkidle" });
     await page.waitForTimeout(1200);
@@ -116,6 +116,13 @@ for (const width of [1366, 390]) {
     const covered = await page.evaluate(() => [...document.querySelectorAll(".share-menu [role=menuitem]")].filter((e) => {
       const q = e.getBoundingClientRect(); return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2)); }).map((e) => e.textContent.trim()));
     if (covered.length) problems.push(`${where}: nabídku překrývá jiný prvek: ${covered.join(", ")}`);
+    if (width === 1366 && url.startsWith("v/")) {  // S5: karta hlasování se na statické stránce stáhne jako PNG 1080 × 1350
+      const [dl] = await Promise.all([page.waitForEvent("download"), page.click('.share-menu [data-act="download:post"]')]);
+      const buf = await (await import("node:fs/promises")).readFile(await dl.path());
+      const okPng = buf.slice(1, 4).toString() === "PNG" && buf.readUInt32BE(16) === 1080 && buf.readUInt32BE(20) === 1350;
+      if (!okPng) problems.push(`${where}: stažená karta není PNG 1080 × 1350`);
+      await page.click("[data-share]");
+    }
     await page.keyboard.press("Escape");
     const state = await page.evaluate(() => ({ open: Boolean(document.querySelector(".share-menu")), focus: document.activeElement?.matches("[data-share]") }));
     if (state.open || !state.focus) problems.push(`${where}: Esc nezavřel nabídku nebo nevrátil fokus`);
