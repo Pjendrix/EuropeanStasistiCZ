@@ -232,10 +232,12 @@ def build_decisive(stats: dict, votes_by_id: dict, meps_by_id: dict) -> dict:
 
 def build_splits(stats: dict, votes_by_id: dict, meps_by_id: dict) -> dict:
     sp = stats["votes_analysis"]["splits"]
-    # Pozice jen jako {ID poslance: volba}, aby soubor zůstal malý.
-    item = lambda x: {**vote_summary(votes_by_id[x["id"]], meps_by_id), "split": x["split"],
-                      "positions": {str(p["member_id"]): p["position"]
-                                    for p in cz_positions(votes_by_id[x["id"]], meps_by_id)}}
+    # Pozice jen jako {ID poslance: volba} a frakce k datu hlasování {ID: kód}, aby soubor zůstal malý.
+    def item(x):
+        pos = cz_positions(votes_by_id[x["id"]], meps_by_id)
+        return {**vote_summary(votes_by_id[x["id"]], meps_by_id), "split": x["split"],
+                "positions": {str(p["member_id"]): p["position"] for p in pos},
+                "groups": {str(p["member_id"]): p["group_code"] for p in pos}}
     ls = sp["last_session"]
     return {
         "sources": stats["sources"], "count": sp["count"], "count_main": sp["count_main"],

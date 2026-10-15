@@ -90,7 +90,7 @@ async function detailPage(id) {
       <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Docházka</th><th class="num">Loajalita k frakci</th></tr></thead>
       <tbody>${p.member_list.map((m) => `<tr>
         <td><div class="mep-cell"><img src="${photoUrl(m)}" alt="" loading="lazy">
-          <div><a href="mep.html?id=${m.id}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
+          <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
         <td class="small">${m.party_periods.map((x) => `${fmtDate(x.start)} – ${x.end ? fmtDate(x.end) : "dosud"}`).join("<br>")}</td>
         <td class="num">${pctCell(m.total.attendance)}</td>
         <td class="num">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>

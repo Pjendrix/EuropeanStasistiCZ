@@ -92,8 +92,8 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${final ? (desc ? `<p class="muted">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
         `<p class="lead" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p>${esc(v.procedure.title)}</p>` : ""}
-      ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(INVERTED_NOTE)}
-        ${v.result === "ADOPTED" ? "Návrh na zamítnutí byl přijat, Parlament tedy text zamítl." : v.result === "REJECTED" ? "Návrh na zamítnutí neprošel, text tedy zamítnut nebyl." : ""}</p>` : ""}
+      ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
+      ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
         <a href="vote.html?id=${finalVote.id}&m=${finalVote.month}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <p class="small">
@@ -105,8 +105,8 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 
       <div class="metrics">
         <div class="card metric"><div class="label">Výsledek</div>
-          <div class="value result-${v.result || ""}">${RESULT_LABEL[v.result] || "neuveden"}</div>
-          ${inverted && v.result ? `<div class="detail"><strong>${esc(resultText(kv))}</strong></div>` : ""}
+          <div class="value-sentence">${esc(resultSentence(kind || (final ? "final" : ""), v.result))}</div>
+          <div class="detail"><span class="pill-result">${resultHtml(kv)}</span></div>
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div>
           ${citeButton(`Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]})` : ""}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`)}</div>
@@ -121,16 +121,21 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       </div>
 
       <h2>Jak hlasovali Češi</h2>
+      ${czDots(cz, meps, groups)}
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:var(--for)"></i>pro</span><span><i style="background:var(--against)"></i>proti</span>
+        <span><i style="background:var(--abst)"></i>zdržel/a se</span><span><i class="absent"></i>nehlasoval/a</span>
+      </div>
       <div class="positions-grid">
-        ${KEYS.map((k) => {
+        ${KEYS.filter((k) => czCounts[KEYS.indexOf(k)] > 0).map((k) => {
           const list = cz.filter((p) => p.position === k)
             .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
           return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
-            <ul class="plain">${list.map((p) => `<li><a href="mep.html?id=${p.member_id}">${esc(displayName(meps[p.member_id]))}</a>
-              <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties) : ""}</div></li>`).join("")
-              || '<li class="muted">nikdo</li>'}</ul></div>`;
+            <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
+              <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
         }).join("")}
       </div>
+      ${KEYS.some((k, i) => !czCounts[i]) ? `<p class="small muted">Nikdo z Čechů: ${KEYS.filter((k, i) => !czCounts[i]).map((k) => POSITION_LABEL[k]).join(", ")}.</p>` : ""}
       <div id="cz-csv"></div>
       <p class="source">Frakce a strana jsou uvedené k datu hlasování. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
 

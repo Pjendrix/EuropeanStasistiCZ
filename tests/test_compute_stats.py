@@ -139,10 +139,10 @@ def test_run_writes_files(tmp_path):
     assert stats["period"] == {"from": "2024-09-16", "to": "2024-09-16"}
     groups = json.loads((data / "groups.json").read_text(encoding="utf-8"))
     assert groups == [{"code": "EPP", "ep_code": "PPE", "short_label": "EPP", "label": "MOCK EPP",
-                       "name_cs": "MOCK lidovci", "color": None, "logo": None}]
+                       "name_cs": "MOCK lidovci", "color": None, "logo": None, "brand_color": None, "chart_color": None, "logo_source": None}]
     parties = json.loads((data / "parties.json").read_text(encoding="utf-8"))
     assert parties == [{"id": 20, "short_label": "MOCK_P", "name": "MOCK strana", "independent": False,
-                        "color": None, "logo": "assets/logos/cz/20.svg"}]
+                        "color": None, "logo": "assets/logos/cz/20.svg", "brand_color": None, "chart_color": None, "logo_source": None}]
 
 
 def test_manual_colors_are_merged_and_never_written(tmp_path):
@@ -161,6 +161,38 @@ def test_manual_colors_are_merged_and_never_written(tmp_path):
 
 def test_manual_missing_file_is_empty(tmp_path):
     assert cs.load_manual(tmp_path / "nic.json") == {"groups": {}, "parties": {}}
+
+
+def test_brand_color_wins_and_needs_source(tmp_path):
+    path = tmp_path / "colors.json"
+    path.write_text(json.dumps({"groups": {"EPP": {"brand_color": "#004494", "brand_source": "MOCK_URL",
+                                                   "chart_color": "#3B82F6"}}, "parties": {}}), encoding="utf-8")
+    g = cs.build_groups([{"code": "EPP", "label": "MOCK", "short_label": "EPP"}], [], [], tmp_path, cs.load_manual(path))[0]
+    assert (g["color"], g["brand_color"], g["chart_color"]) == ("#004494", "#004494", "#3B82F6")
+    path.write_text(json.dumps({"groups": {"EPP": {"brand_color": "#004494"}}, "parties": {}}), encoding="utf-8")
+    with pytest.raises(cs.FormatError, match="brand_source"):
+        cs.load_manual(path)
+
+
+def test_logos_manifest(tmp_path):
+    public = tmp_path / "public"
+    (public / "assets" / "logos" / "ep").mkdir(parents=True)
+    (public / "assets" / "logos" / "ep" / "ECR.svg").write_text("<svg/>", encoding="utf-8")
+    path = tmp_path / "logos.json"
+    path.write_text(json.dumps({"groups": {"ECR": {"file": "assets/logos/ep/ECR.svg", "source": "MOCK_URL"},
+                                           "EPP": {"file": None, "source": "MOCK"}}, "parties": {}}), encoding="utf-8")
+    logos = cs.load_logos(path, public)
+    assert logos["groups"] == {"ECR": {"logo": "assets/logos/ep/ECR.svg", "logo_source": "MOCK_URL"}}
+    g = cs.build_groups([{"code": "ECR", "label": "MOCK", "short_label": "ECR"}], [], [], public / "assets", None, logos)[0]
+    assert g["logo"] == "assets/logos/ep/ECR.svg" and g["logo_source"] == "MOCK_URL"
+    path.write_text(json.dumps({"groups": {"ECR": {"file": "assets/logos/ep/ECR.svg", "source": None}}, "parties": {}}),
+                    encoding="utf-8")
+    with pytest.raises(cs.FormatError, match="bez zdroje"):
+        cs.load_logos(path, public)
+    path.write_text(json.dumps({"groups": {"ECR": {"file": "assets/chybi.svg", "source": "x"}}, "parties": {}}),
+                    encoding="utf-8")
+    with pytest.raises(cs.FormatError, match="neexistuje"):
+        cs.load_logos(path, public)
 
 
 @pytest.mark.parametrize("color", ["red", "#12345", "#GGGGGG"])

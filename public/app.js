@@ -37,14 +37,22 @@ const RESULT_NOTE = {
 const KIND_LABEL = {
   final: "závěrečné hlasování",
   provisional_agreement: "prozatímní dohoda s Radou",
+  objection: "námitka proti aktu Komise",
   rejection: "návrh na zamítnutí",
   mandate: "mandát k jednání s Radou",
   urgency: "naléhavý postup",
   amendment: "pozměňovací návrh",
   split_part: "dílčí hlasování",
-  other: "procedurální / ostatní",
+  procedural: "procedurální hlasování",
+  other: "ostatní",
 };
-const INVERTED_NOTE = "Hlasovalo se o návrhu na zamítnutí: hlas PRO = text zamítnout, hlas PROTI = text ponechat.";
+const FINAL_KINDS = ["final", "provisional_agreement", "objection"];
+// Co znamená hlas PRO u typů, kde to není zřejmé (stejné texty jako KIND_NOTES ve vote_kinds.py).
+const KIND_NOTE = {
+  rejection: "Hlasovalo se o návrhu na zamítnutí: hlas PRO = text zamítnout, hlas PROTI = text ponechat.",
+  objection: "Hlasovalo se o usnesení, kterým Parlament vznáší námitku proti aktu Komise (čl. 114 nebo 115 jednacího řádu): hlas PRO = vznést námitku (nesouhlas s aktem), hlas PROTI = námitku nevznášet.",
+};
+const INVERTED_NOTE = KIND_NOTE.rejection;
 const SHORT_MANDATE_NOTE = "Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.";
 const INDEPENDENT_NOTE = "EP Open Data uvádí poslance jako nezávislého (Independent, zkratka Ind.), tedy bez národní strany.";
 const NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí.";
@@ -60,18 +68,17 @@ const COMMITTEE_TYPE = { STANDING: "stálý výbor", SUB: "podvýbor", TEMPORARY
 // Česká zkratka tam, kde zdroj dává anglický popis místo zkratky.
 const CZ_GROUP_LABEL = { NI: "nezařazení" };
 
-// Neutrální paleta pro štítky, dokud nejsou ručně doplněné barvy v data/manual/colors.json.
-const PALETTE = ["#3B82F6", "#E11D48", "#14B8A6", "#A855F7", "#F59E0B", "#6366F1", "#0EA5E9", "#EC4899", "#84CC16", "#64748B", "#F97316"];
+// Barva identity frakce nebo strany je v datech (groups.json / parties.json z data/manual/colors.json):
+// oficiální brand_color, jinak chart_color zvolená kvůli rozlišitelnosti. V JS žádné barvy dat.
+function groupColor(g) {
+  return (g && (g.color || g.chart_color)) || "var(--muted)";
+}
 
-// Barvy frakcí (kód HowTheyVote). Ručně nastavená barva v data/manual/colors.json má přednost.
-const GROUP_COLORS = {
-  EPP: "#3B82F6", SD: "#E11D48", RENEW: "#F59E0B", GREEN_EFA: "#14B8A6", ECR: "#6366F1",
-  PFE: "#A855F7", ESN: "#0EA5E9", GUE_NGL: "#BE123C", NI: "#94A3B8",
-};
-function groupColor(g, fallbackKey) {
-  if (g && g.color) return g.color;
-  if (g && GROUP_COLORS[g.code]) return GROUP_COLORS[g.code];
-  return colorFor(fallbackKey || (g && g.code) || "");
+// Logo na bílé dlaždici (funguje i v tmavém režimu bez úpravy loga); jen na místech s dost místa, ne v drobných štítcích.
+function logoTile(entity, height = 28) {
+  if (!entity || !entity.logo) return "";
+  const name = entity.name_cs || entity.name || entity.label || entity.short_label || "";
+  return `<span class="logo-tile" style="height:${height}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" loading="lazy"></span>`;
 }
 
 const cache = new Map();
@@ -107,11 +114,11 @@ function pct(pair) {
 // Velké procento s počítadlem (animuje se při vjetí do obrazu).
 function countPct(value) {
   if (value === null || value === undefined) return "–";
-  return `<span data-count="${(value * 100).toFixed(1)}" data-decimals="1" data-suffix=" %">${fmtPct(value)}</span>`;
+  return `<span data-count="${(value * 100).toFixed(1)}" data-decimals="1" data-suffix="&nbsp;%">${fmtPct(value)}</span>`;
 }
 
 function fmtPct(value) {
-  return value === null ? "–" : (value * 100).toLocaleString("cs-CZ", { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + " %";
+  return value === null ? "–" : (value * 100).toLocaleString("cs-CZ", { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + "\u00a0%";
 }
 
 function fmtNum(n) {
@@ -157,42 +164,44 @@ function mandateText(mep) {
   return mep.mandates.map((m) => `${fmtDate(m.start)} – ${m.end ? fmtDate(m.end) : "dosud"}`).join(", ");
 }
 
-// Stabilní barva z kódu (FNV-1a hash): nezávisí na pořadí v seznamu ani na tom, co přibude.
-function colorFor(key) {
-  let h = 0x811c9dc5;
-  for (const ch of String(key)) {
-    h ^= ch.codePointAt(0);
-    h = Math.imul(h, 0x01000193) >>> 0;
-  }
-  return PALETTE[h % PALETTE.length];
-}
-
 // Štítek frakce. code = kód HowTheyVote (EPP, PFE…) nebo EP kód (PPE…), groups = groups.json.
 function groupBadge(code, groups, epCode) {
   if (!code && !epCode) return '<span class="badge outline">bez frakce</span>';
   const g = groups.find((x) => x.code === code) || groups.find((x) => epCode && x.ep_code === epCode);
   const label = g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (code || epCode);
   const title = g ? (g.name_cs || g.label) : label;
-  const logo = g && g.logo ? `<img src="${esc(g.logo)}" alt="">` : "";
-  return `<span class="badge" style="--badge-dot:${groupColor(g, label)}" title="${esc(title)}">${logo}${esc(label)}</span>`;
+  return `<span class="badge" style="--badge-dot:${groupColor(g)}" title="${esc(title)}">${esc(label)}</span>`;
 }
 
-function partyBadge(id, label, parties) {
+// mep (nepovinné) = poslanec kvůli rodu u „nezávislý/á“.
+function partyBadge(id, label, parties, mep) {
   if (!id) return '<span class="badge outline">bez strany</span>';
   const p = parties.find((x) => String(x.id) === String(id));
   // EP vede poslance bez strany jako „Independent“ (zkratka Ind.); nejde o stranu.
-  if (p && p.independent) return `<span class="badge outline" title="${esc(INDEPENDENT_NOTE)}">nezávislý/á</span>`;
+  if (p && p.independent) return `<span class="badge outline" title="${esc(INDEPENDENT_NOTE)}">${mep ? byGender(mep, "nezávislý", "nezávislá") : "nezávislý/á"}</span>`;
   const text = p ? p.short_label : label;
-  const dot = p && p.color ? p.color : colorFor(id);
-  const logo = p && p.logo ? `<img src="${esc(p.logo)}" alt="">` : "";
-  return `<span class="badge" style="--badge-dot:${dot}" title="${esc(p ? p.name : text)}">${logo}${esc(text)}</span>`;
+  return `<span class="badge" style="--badge-dot:${groupColor(p)}" title="${esc(p ? p.name : text)}">${esc(text)}</span>`;
 }
 
 // Štítek strany s odkazem na stránku strany (nezávislí stránku nemají).
-function partyLink(id, label, parties) {
+function partyLink(id, label, parties, mep) {
   const p = parties.find((x) => String(x.id) === String(id));
-  const badge = partyBadge(id, label, parties);
+  const badge = partyBadge(id, label, parties, mep);
   return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
+}
+
+// Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
+function mepUrl(id) {
+  return `p/${id}.html`;
+}
+
+// Počty Čechů: pro a proti výrazně, zdržení a nehlasování menším písmem.
+function czCountsText(cz) {
+  return `${cz[0]} pro · ${cz[1]} proti · ${cz[2]} se zdrželo · ${cz[3]} nehlasovalo`;
+}
+
+function czCountsHtml(cz) {
+  return `<span class="cz-counts"><b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
 }
 
 function photoUrl(mep, thumb = false) {
@@ -236,23 +245,65 @@ function voteSubtitle(v) {
 
 // Štítek typu hlasování; starší data bez vote_kind ukážou jen „hlavní“.
 function kindTag(v) {
-  if (v.vote_kind) return `<span class="tag kind-${esc(v.vote_kind)}" title="${v.inverted || v.vote_kind === "rejection" ? esc(INVERTED_NOTE) : ""}">${esc(KIND_LABEL[v.vote_kind] || v.vote_kind)}</span>`;
+  if (v.vote_kind) return `<span class="tag kind-${esc(v.vote_kind)}" title="${esc(KIND_NOTE[v.vote_kind] || "")}">${esc(KIND_LABEL[v.vote_kind] || v.vote_kind)}</span>`;
   return v.is_main ? '<span class="tag">hlavní</span>' : "";
 }
 
-// Výsledek slovy; u návrhu na zamítnutí i co to znamená pro text.
+// Výsledek slovy; u návrhu na zamítnutí a námitky i co to znamená.
 function resultText(v) {
   const base = RESULT_LABEL[v.result] || "neuveden";
-  if (!(v.inverted || v.vote_kind === "rejection")) return base;
-  if (v.result === "ADOPTED") return `${base} = text zamítnut`;
-  if (v.result === "REJECTED") return `${base} = text nezamítnut`;
+  if (v.inverted || v.vote_kind === "rejection") {
+    if (v.result === "ADOPTED") return `${base} = text zamítnut`;
+    if (v.result === "REJECTED") return `${base} = text nezamítnut`;
+  }
+  if (v.vote_kind === "objection") {
+    if (v.result === "ADOPTED") return `${base} = Parlament vznesl námitku`;
+    if (v.result === "REJECTED") return `${base} = námitka neprošla`;
+  }
   return base;
+}
+
+// Výsledek jako věta podle typu hlasování (nadpis výsledkové karty na detailu).
+function resultSentence(kind, result) {
+  const ok = result === "ADOPTED", no = result === "REJECTED";
+  if (!ok && !no) return RESULT_LABEL[result] ? RESULT_LABEL[result][0].toUpperCase() + RESULT_LABEL[result].slice(1) : "Výsledek neuveden";
+  const S = {
+    rejection: ["Návrh na zamítnutí prošel – text je zamítnut", "Návrh na zamítnutí neprošel – text zůstává"],
+    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla"],
+    amendment: ["Pozměňovací návrh byl přijat", "Pozměňovací návrh byl zamítnut"],
+    split_part: ["Tato část textu byla přijata", "Tato část textu byla zamítnuta"],
+    final: ["Parlament text přijal", "Parlament text zamítl"],
+    provisional_agreement: ["Parlament dohodu s Radou schválil", "Parlament dohodu s Radou zamítl"],
+    mandate: ["Mandát k jednání s Radou schválen", "Mandát k jednání s Radou neschválen"],
+    urgency: ["Naléhavý postup schválen", "Naléhavý postup zamítnut"],
+  }[kind];
+  return S ? S[ok ? 0 : 1] : (ok ? "Přijato" : "Zamítnuto");
+}
+
+// Tečky českých poslanců seskupené podle frakcí, obarvené podle hlasu (pro/proti/zdržel se/nehlasoval).
+function czDots(positions, mepsById, groups) {
+  const by = {};
+  positions.forEach((p) => { (by[p.group_code || "–"] = by[p.group_code || "–"] || []).push(p); });
+  const order = Object.keys(by).sort((a, b) => by[b].length - by[a].length || a.localeCompare(b));
+  const counts = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].map((k) => positions.filter((p) => p.position === k).length);
+  return `<div class="cz-dots" role="img" aria-label="${esc(`Čeští poslanci: ${czCountsText(counts)}`)}">${order.map((code) => {
+    const g = groups.find((x) => x.code === code);
+    const label = g ? (CZ_GROUP_LABEL[code] || g.short_label) : code;
+    return `<span class="cz-dot-group"><span class="cz-dot-label">${esc(label)}</span>${by[code]
+      .map((p) => `<i class="cz-dot d-${p.position}" title="${esc(`${displayName(mepsById[p.member_id] || { name: "?" })}: ${POSITION_LABEL[p.position]}`)}"></i>`).join("")}</span>`;
+  }).join("")}</div>`;
+}
+
+// Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
+function resultHtml(v) {
+  const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
+  return `<span class="res-icon" aria-hidden="true">${icon}</span>${esc(resultText(v))}`;
 }
 
 // Závěrečné hlasování o textu (nebo o prozatímní dohodě); starší data jen podle is_main.
 function isFinal(v) {
   if (v.is_final !== undefined) return v.is_final;
-  return v.vote_kind ? ["final", "provisional_agreement"].includes(v.vote_kind) : Boolean(v.is_main);
+  return v.vote_kind ? FINAL_KINDS.includes(v.vote_kind) : Boolean(v.is_main);
 }
 
 // Přijatý text v češtině (PDF z EP Open Data) podle texts_adopted_reference „P10_TA(2026)0230“.
@@ -319,12 +370,12 @@ function voteRow(v, extra = "") {
     <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultText(v)}</td>
+    <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
   </tr>`;
 }
 
 function czCell(cz) {
-  return `<td>${splitBar(cz)}<div class="small muted">${cz.join(" / ")}</div></td>`;
+  return `<td>${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
 }
 
 // Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].
@@ -335,14 +386,14 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
       .map((p) => mepsById[p.member_id])
       .filter(Boolean)
       .sort((a, b) => displayName(a).localeCompare(displayName(b), "cs"))
-      .map((m) => `<a href="mep.html?id=${m.id}">${esc(displayName(m))}</a>`);
+      .map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`);
     return names.length ? `<div class="small"><span class="pos pos-${k}">${POSITION_LABEL[k]} (${names.length}):</span> ${names.join(", ")}</div>` : "";
   }).join("");
 }
 
 
 // Dlouhé tabulky sbalit na prvních n řádků s tlačítkem „Zobrazit všech N“.
-function collapseTables(root, n = 5) {
+function collapseTables(root, n = window.matchMedia("(max-width: 640px)").matches ? 3 : 5) {
   root.querySelectorAll(".table-wrap table").forEach((table) => {
     const rows = [...table.tBodies[0]?.rows || []];
     if (rows.length <= n + 1 || table.dataset.collapsed) return;
@@ -357,12 +408,51 @@ function collapseTables(root, n = 5) {
   });
 }
 
+// --- srovnání s mediánem (benchRow) ---------------------------------------------
+
+const BENCH_MIN = 0.6; // osa 60–100 %; nižší hodnoty se přilepí k levému okraji (číslo je vždy v textu)
+
+// Řádek: popisek a číslo, pod tím proužek (tečka = poslanec, čárka = medián) a věta se srovnáním.
+// pair = [čitatel, jmenovatel], median = podíl nebo null, refLabel = „medián EP“ / „medián frakce“,
+// naText = věta, když se metrika nepočítá. compact = bez věty pod proužkem (tabulka, mobil).
+function benchRow(label, pair, median, refLabel, opts = {}) {
+  const { naText = "nepočítá se", compact = false } = opts;
+  const v = pct(pair);
+  if (v === null) {
+    return `<div class="bench"><div class="bench-top"><span class="bench-label">${label}</span><b>–</b></div>
+      <p class="bench-note">${esc(naText)}</p></div>`;
+  }
+  const pos = (x) => `${(Math.max(0, Math.min(1, (x - BENCH_MIN) / (1 - BENCH_MIN))) * 100).toFixed(2)}%`;
+  const hasMed = median !== null && median !== undefined;
+  let note = "";
+  if (hasMed) {
+    const d = Math.round((v - median) * 1000) / 10;
+    const abs = Math.abs(d).toLocaleString("cs-CZ", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs} p. b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
+  }
+  const below = v < BENCH_MIN ? ` Hodnota je pod rozsahem osy (${fmtPct(v)}).` : "";
+  const aria = `${label} ${fmtPct(v)}${hasMed ? `, ${refLabel} ${fmtPct(median)}` : ""}`;
+  return `<div class="bench${compact ? " compact" : ""}" role="group" aria-label="${esc(aria)}">
+    <div class="bench-top"><span class="bench-label">${label}</span><b>${fmtPct(v)}</b></div>
+    <div class="bench-strip" aria-hidden="true"><i class="bench-track"></i><i class="bench-dot" style="left:${pos(v)}"></i>
+      ${hasMed ? `<i class="bench-med" style="left:${pos(median)}"></i>` : ""}</div>
+    ${compact || !(note + below) ? "" : `<p class="bench-note">${esc(note + below)}</p>`}</div>`;
+}
+
+// Medián frakce poslance z benchmarks.json (klíče jsou kódy HowTheyVote, poslanec má kód EP).
+function groupBench(bench, groups, epCode) {
+  if (!bench || !epCode) return null;
+  const g = groups.find((x) => x.ep_code === epCode || x.code === epCode);
+  return g ? bench.groups?.[g.code] || null : null;
+}
+
 // --- citace a export ---------------------------------------------------------
 
 // Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
 function citeButton(text) {
-  return `<button type="button" class="cite-btn" data-cite="${esc(text)}">Citovat</button>`;
+  return `<button type="button" class="cite-btn" data-cite="${esc(text)}" aria-label="Citovat" title="Citovat (zkopíruje větu se zdrojem)">${CITE_ICON}</button>`;
 }
+const CITE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg>';
 
 async function citeText(text) {
   let release = "";
@@ -377,11 +467,12 @@ document.addEventListener("click", async (ev) => {
   const text = await citeText(btn.dataset.cite);
   try {
     await navigator.clipboard.writeText(text);
-    btn.textContent = "Zkopírováno";
+    btn.classList.add("done");
+    btn.setAttribute("aria-label", "Citace zkopírována");
   } catch (e) {
     window.prompt("Zkopírujte citaci:", text);
   }
-  setTimeout(() => { btn.textContent = "Citovat"; }, 2000);
+  setTimeout(() => { btn.classList.remove("done"); btn.setAttribute("aria-label", "Citovat"); }, 2000);
 });
 
 // Tlačítko „Stáhnout CSV“; rows = pole polí (první řádek = záhlaví). Oddělovač středník kvůli českému Excelu.
@@ -498,6 +589,18 @@ const motion = (() => {
   }
   return { scan };
 })();
+
+// Stránky s <base href="../"> (p/{id}.html): odkaz „#kotva“ by vedl na úvodní stránku, proto se kotvy řeší tady.
+document.addEventListener("click", (ev) => {
+  const a = ev.target.closest('a[href^="#"]');
+  if (!a || !document.querySelector("base")) return;
+  const target = document.getElementById(a.getAttribute("href").slice(1));
+  if (!target) return;
+  ev.preventDefault();
+  history.replaceState(null, "", location.pathname + location.search + a.getAttribute("href"));
+  target.scrollIntoView({ behavior: REDUCED_MOTION ? "auto" : "smooth" });
+  if (a.classList.contains("skip-link")) { target.setAttribute("tabindex", "-1"); target.focus(); }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   setupThemeToggle();

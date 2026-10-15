@@ -8,8 +8,9 @@ import fetch_photos as fp  # noqa: E402
 
 
 class Resp:
-    def __init__(self, content, ctype="image/jpeg"):
-        self.content, self.headers = content, {"Content-Type": ctype}
+    def __init__(self, content, ctype="image/jpeg", status=200, headers=None):
+        self.content, self.status_code = content, status
+        self.headers = {"Content-Type": ctype, **(headers or {})}
 
     def raise_for_status(self):
         pass
@@ -30,9 +31,9 @@ URL = "https://www.europarl.europa.eu/mepphoto/1.jpg"
 def test_saves_and_skips_unchanged(tmp_path):
     meps = [{"id": 1, "photo_url": URL}, {"id": 2, "photo_url": None}]
     s = Session(Resp(b"MOCK_JPEG"))
-    assert fp.fetch_photos(meps, tmp_path, s, 0) == {"saved": 1, "unchanged": 0, "missing": 1}
+    assert fp.fetch_photos(meps, tmp_path, s, 0) == {"saved": 1, "unchanged": 0, "missing": 1, "blocked": 0}
     assert (tmp_path / "1.jpg").read_bytes() == b"MOCK_JPEG"
-    assert fp.fetch_photos(meps, tmp_path, s, 0) == {"saved": 0, "unchanged": 1, "missing": 1}
+    assert fp.fetch_photos(meps, tmp_path, s, 0) == {"saved": 0, "unchanged": 1, "missing": 1, "blocked": 0}
 
 
 def test_rejects_non_jpeg(tmp_path):
@@ -53,3 +54,12 @@ def test_make_thumbs(tmp_path):
     with Image.open(tmp_path / "thumbs" / "1.webp") as im:
         assert im.size == (160, 200) and im.format == "WEBP"
     assert fp.make_thumbs(meps, tmp_path) == 0  # už existuje
+
+
+def test_waf_block_keeps_existing_and_stops(tmp_path):
+    (tmp_path / "1.jpg").write_bytes(b"MOCK_OLD")
+    meps = [{"id": 1, "photo_url": URL}, {"id": 2, "photo_url": URL.replace("1.jpg", "2.jpg")}]
+    s = Session(Resp(b"", "text/html; charset=UTF-8", status=202, headers={"x-amzn-waf-action": "challenge"}))
+    assert fp.fetch_photos(meps, tmp_path, s, 0) == {"saved": 0, "unchanged": 0, "missing": 0, "blocked": 2}
+    assert len(s.urls) == 1  # po první blokaci už se nedotazuje
+    assert (tmp_path / "1.jpg").read_bytes() == b"MOCK_OLD"

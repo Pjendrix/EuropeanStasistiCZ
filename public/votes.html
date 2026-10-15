@@ -54,7 +54,7 @@
         <th class="num">Datum</th>
         <th>Hlasování</th>
         <th>Výsledek</th>
-        <th>Češi: pro / proti / zdrž. / nehl.</th>
+        <th>Češi</th>
       </tr></thead>
       <tbody><tr><td colspan="4" class="loading">Načítám…</td></tr></tbody>
     </table>
@@ -128,9 +128,9 @@ setNav("votes");
         return `<tr>
           <td class="num">${fmtDate(v.date)}</td>
           <td><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
-            <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
-          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultText(v)}</td>
-          <td>${splitBar(counts)}<div class="small muted">${counts.join(" / ")}</div></td>
+            <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
+          <td class="result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+          <td>${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>
         </tr>`;
       }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
     };

@@ -43,7 +43,7 @@
     <label>Seřadit podle shody s <select id="anchor"><option value="">— abecedně —</option></select></label>
   </div>
   <div id="matrix" class="loading">Načítám…</div>
-  <p class="small muted">Buňka: procento shody, pod ním počet společných hlasování. Tmavší barva = vyšší shoda (barva rozlišuje rozsah 30–100 %).
+  <p class="small muted">Buňka: procento shody, pod ním počet společných hlasování. Výraznější barva = vyšší shoda (barva rozlišuje rozsah 30–100 %).
     Dvojice s méně než 50 společnými hlasováními jsou šedé (číslo je málo spolehlivé). Na mobilu tabulku posuň do strany.</p>
   <p class="source" id="source"></p>
 </main>
@@ -87,13 +87,13 @@ const LIMIT = 50;
         const p = v[0] / v[1];
         const weak = v[1] < LIMIT;
         const shade = Math.max(0, (p - 0.3) / 0.7); // barva rozlišuje hlavně rozsah 30–100 %
-        return `<td class="mx ${weak ? "mx-weak" : shade > 0.75 ? "mx-dark" : ""}" style="--p:${weak ? 0 : shade.toFixed(3)}" title="${esc(displayName(r))} a ${esc(displayName(c))}: ${fmtPct(p)} (${v[0]} z ${v[1]})">
+        return `<td class="mx ${weak ? "mx-weak" : ""}" style="--p:${weak ? 0 : shade.toFixed(3)}" title="${esc(displayName(r))} a ${esc(displayName(c))}: ${fmtPct(p)} (${v[0]} z ${v[1]})">
           ${Math.round(p * 100)}<small>${fmtNum(v[1])}</small></td>`;
       };
       el.className = "table-wrap";
       el.innerHTML = `<table class="matrix"><thead><tr><th class="sticky-col">Poslanec</th>${list.map((c) =>
-        `<th class="mx-head"><a href="mep.html?id=${c.id}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
-        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="mep.html?id=${r.id}">${esc(displayName(r))}</a>
+        `<th class="mx-head"><a href="${mepUrl(c.id)}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
+        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="${mepUrl(r.id)}">${esc(displayName(r))}</a>
           <div>${groupBadge(null, groups, r.group?.code)}</div></th>${list.map((c) => td(r, c)).join("")}</tr>`).join("")}</tbody></table>`;
     };
     former.addEventListener("change", render);

@@ -28,10 +28,17 @@ class FormatError(RuntimeError):
     """Neočekávaná odpověď nebo vstup."""
 
 
+def blocked(r) -> bool:
+    """Ochrana webu EP proti botům (AWS WAF) vrací místo obrázku prázdnou odpověď 202 nebo HTML výzvu."""
+    return r.status_code == 202 or "x-amzn-waf-action" in {k.lower() for k in r.headers}
+
+
 def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float = MIN_INTERVAL) -> dict[str, int]:
+    """Stáhne portréty. Když web EP stahování zablokuje, ponechá dosavadní soubory, ohlásí to a skončí bez chyby:
+    portrét není důvod, proč neaktualizovat data. Jiný obsah než JPEG bez blokace je chyba formátu."""
     out_dir.mkdir(parents=True, exist_ok=True)
-    result = {"saved": 0, "unchanged": 0, "missing": 0}
-    for m in meps:
+    result = {"saved": 0, "unchanged": 0, "missing": 0, "blocked": 0}
+    for i, m in enumerate(meps):
         url = m.get("photo_url")
         if not url:
             result["missing"] += 1
@@ -39,6 +46,14 @@ def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float =
         if not url.startswith(ALLOWED_PREFIX):
             raise FormatError(f"poslanec {m['id']}: neočekávaná URL portrétu {url}")
         r = session.get(url, timeout=60)
+        if blocked(r):
+            # Další dotazy by byly zablokované taky; zbytek přeskočit a nechat stávající portréty.
+            rest = [x for x in meps[i:] if x.get("photo_url")]
+            have = sum((out_dir / f"{x['id']}.jpg").exists() for x in rest)
+            result["blocked"] = len(rest)
+            print(f"::warning::Web EP zablokoval stahování portrétů (HTTP {r.status_code}); ponechávám stávající "
+                  f"({have} z {len(rest)} existuje).", file=sys.stderr)
+            break
         r.raise_for_status()
         ctype = r.headers.get("Content-Type", "")
         if not ctype.startswith("image/jpeg"):

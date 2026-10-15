@@ -3,5 +3,19 @@
   "framework": null,
   "installCommand": "",
   "buildCommand": "mkdir -p public/data && cp -r data/. public/data/",
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/mep.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "(?<id>\\d+)"
+        }
+      ],
+      "destination": "/p/:id.html",
+      "permanent": true
+    }
+  ]
 }

@@ -67,3 +67,20 @@ def test_main_exit_code(states):
     prev, new = states
     write_state(new, [("2024-09", 1)], [mep(1)])
     assert cd.main(["--prev", str(prev), "--data", str(new), "--today", "2025-01-15"]) == 1
+
+
+def test_logo_warnings(tmp_path):
+    import check_data as cd
+    public, data = tmp_path / "public", tmp_path / "data"
+    (public / "assets").mkdir(parents=True)
+    data.mkdir()
+    (public / "assets" / "ok.svg").write_text("<svg><path d='M0 0'/></svg>", encoding="utf-8")
+    (public / "assets" / "bad.svg").write_text("<svg onload='x()'><a href='https://example.test'/></svg>", encoding="utf-8")
+    (public / "assets" / "big.png").write_bytes(b"0" * 70_000)
+    (data / "groups.json").write_text(json.dumps([
+        {"code": "A", "logo": "assets/ok.svg", "logo_source": "MOCK"},
+        {"code": "B", "logo": "assets/bad.svg", "logo_source": "MOCK"},
+        {"code": "C", "logo": "assets/big.png", "logo_source": None}]), encoding="utf-8")
+    w = " | ".join(cd.check_logos(data, public))
+    assert "A" not in [x.split()[1] for x in cd.check_logos(data, public)]
+    assert "SVG assets/bad.svg" in w and "70 kB" in w and "C (assets/big.png) nemá" in w
