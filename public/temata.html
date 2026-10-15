@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hlasování podle témat – EP Watch CZ</title>
+<meta name="description" content="Kolik se v Evropském parlamentu hlasovalo o kterých tématech a jak v nich hlasovali čeští poslanci. Témata jsou pevná pravidla nad tématy Legislativní observatoře EP, počty spočítal skript.">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/brand/favicon-simple.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0F172A">
+<link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
+  (function () {
+    var d = document.documentElement; d.classList.add("js");
+    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") d.dataset.theme = t; } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Přejít na obsah</a>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html"><svg class="brand-mark" viewBox="-158 -100 262 200" aria-hidden="true"><mask id="brand-hl"><rect x="-160" y="-100" width="270" height="200" fill="#fff"/><circle cx="-60" cy="-13" r="12" fill="#000"/></mask><g fill="currentColor"><path d="M-137,0 C-110,-70 20,-70 47,0 C20,70 -110,70 -137,0 Z" fill="none" stroke="currentColor" stroke-width="15"/><circle cx="-45" cy="2" r="40" mask="url(#brand-hl)"/><path d="M-40.0,-82.2 L-36.5,-74.0 L-27.6,-73.3 L-34.4,-67.4 L-32.3,-58.7 L-40.0,-63.4 L-47.6,-58.7 L-45.5,-67.4 L-52.3,-73.3 L-43.4,-74.0 Z M0.0,-93.0 L3.4,-84.7 L12.3,-84.0 L5.5,-78.1 L7.6,-69.4 L0.0,-74.1 L-7.6,-69.4 L-5.5,-78.1 L-12.3,-84.0 L-3.4,-84.7 Z M40.0,-82.2 L43.4,-74.0 L52.3,-73.3 L45.5,-67.4 L47.6,-58.7 L40.0,-63.4 L32.3,-58.7 L34.4,-67.4 L27.6,-73.3 L36.5,-74.0 Z M69.2,-53.0 L72.7,-44.7 L81.6,-44.0 L74.8,-38.1 L76.9,-29.4 L69.2,-34.1 L61.6,-29.4 L63.7,-38.1 L56.9,-44.0 L65.8,-44.7 Z M80.0,-13.0 L83.4,-4.7 L92.3,-4.0 L85.5,1.8 L87.6,10.5 L80.0,5.8 L72.3,10.5 L74.4,1.8 L67.6,-4.0 L76.5,-4.7 Z M69.2,27.0 L72.7,35.2 L81.6,35.9 L74.8,41.8 L76.9,50.5 L69.2,45.8 L61.6,50.5 L63.7,41.8 L56.9,35.9 L65.8,35.2 Z M40.0,56.2 L43.4,64.5 L52.3,65.2 L45.5,71.0 L47.6,79.8 L40.0,75.1 L32.3,79.8 L34.4,71.0 L27.6,65.2 L36.5,64.5 Z M0.0,67.0 L3.4,75.2 L12.3,75.9 L5.5,81.8 L7.6,90.5 L0.0,85.8 L-7.6,90.5 L-5.5,81.8 L-12.3,75.9 L-3.4,75.2 Z M-40.0,56.2 L-36.5,64.5 L-27.6,65.2 L-34.4,71.0 L-32.3,79.8 L-40.0,75.1 L-47.6,79.8 L-45.5,71.0 L-52.3,65.2 L-43.4,64.5 Z"/></g></svg><span class="brand-text"><b>EP</b> Watch <b>CZ</b></span></a>
+  <nav aria-label="Hlavní navigace">
+    <a href="poslanci.html" data-page="meps">Poslanci</a>
+    <a href="party.html" data-page="parties">Strany</a>
+    <a href="votes.html" data-page="votes">Hlasování</a>
+    <a href="prace.html" data-page="work">Práce poslanců</a>
+    <a href="rozkol.html" data-page="analyses">Analýzy</a>
+    <a href="o-projektu.html" data-page="about">O projektu</a>
+  </nav>
+  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main id="main">
+  <nav class="subnav" aria-label="Hlasování">
+    <a href="votes.html" data-page="votes-list">Všechna hlasování</a>
+    <a href="temata.html" data-page="votes-topics">Podle témat</a>
+  </nav>
+  <h1>Hlasování podle témat</h1>
+  <div class="lead-row"><p class="lead">V kterých oblastech se hlasuje nejvíc a jak v nich hlasovali čeští poslanci.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-topics" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-topics" class="info-pop" role="note">
+    <p>Témata jsou pevná pravidla nad tématy Legislativní observatoře EP (OEIL), žádná AI. Jedno hlasování může spadat do víc témat a počítá se do každého z nich; hlasování bez tématu OEIL je v řádku „Bez tématu“.</p>
+    <p><strong>Češi jednotně</strong> = podíl závěrečných hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na jedné straně (počítají se jen hlasování s aspoň dvěma takovými poslanci). <strong>Jak hlasovali Češi</strong> = všechny hlasy českých poslanců v závěrečných hlasováních tématu. <strong>Účast Čechů</strong> = podíl hlasů pro, proti nebo zdržel se (ne „nehlasoval“) ze všech hlasování tématu v době mandátu. Čísla nejsou hodnocení ani pořadí. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+  </div></span></div>
+  <div class="table-wrap">
+    <table id="topics" class="compact stack">
+      <thead><tr>
+        <th data-key="label"><button>Téma</button></th>
+        <th data-key="votes" class="num"><button title="Všechna jmenovitá hlasování, ve kterých se téma vyskytuje">Hlasování</button></th>
+        <th data-key="final" class="num"><button title="Hlasování o celém textu nebo o prozatímní dohodě s Radou">Závěrečná</button></th>
+        <th data-key="united" class="num"><button title="Podíl závěrečných hlasování, ve kterých byli čeští poslanci jednotní">Češi jednotně</button></th>
+        <th>Jak hlasovali Češi <span class="muted">(závěrečná)</span></th>
+        <th data-key="attendance" class="num"><button title="Podíl hlasů pro, proti nebo zdržel se ze všech hlasování tématu">Účast Čechů</button></th>
+        <th><span class="sr-only">Seznam</span></th>
+      </tr></thead>
+      <tbody><tr><td colspan="7" class="loading">Načítám…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="source" id="source"></p>
+</main>
+
+<footer class="site-footer"><div class="inner">
+  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
+  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
+  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+setNav("votes");
+setNav("votes-topics");
+(async () => {
+  const tbody = document.querySelector("#topics tbody");
+  try {
+    const [d] = await Promise.all([getJSON("category_stats.json"), loadCategories()]);
+    const ratio = (p) => (p && p[1] ? p[0] / p[1] : null);
+    const rows = d.categories.map((c) => ({ ...c, united: ratio(c.cz_united_final), attendance: ratio(c.cz_attendance) }));
+    const icon = (k) => (CATEGORY_META[k] ? `<span class="cat-ico sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATEGORY_META[k].icon}</svg></span>` : "");
+    const render = (list) => {
+      tbody.innerHTML = list.map((c) => {
+        const link = c.key === "none" ? "" : `<a href="votes.html?c=${c.key}&f=final">Seznam závěrečných</a>`;
+        const cz = c.cz_final;
+        return `<tr>
+          <td class="title"><span class="cat-inline">${icon(c.key)}<strong>${esc(c.label)}</strong></span></td>
+          <td class="num" data-label="Hlasování">${fmtNum(c.votes)}</td>
+          <td class="num" data-label="Závěrečná">${fmtNum(c.final)}</td>
+          <td class="num" data-label="Češi jednotně">${c.united === null ? "–" : `${fmtPct(c.united)}<div class="small muted">${fmtNum(c.cz_united_final[0])} z ${fmtNum(c.cz_united_final[1])}</div>`}</td>
+          <td class="extra cz" data-label="Jak hlasovali Češi">${cz.some(Boolean) ? `${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div>` : "–"}</td>
+          <td class="num" data-label="Účast Čechů">${c.attendance === null ? "–" : fmtPct(c.attendance)}</td>
+          <td class="link-cell">${link}</td></tr>`;
+      }).join("");
+    };
+    const columns = { label: (c) => c.label, votes: (c) => c.votes, final: (c) => c.final, united: (c) => c.united, attendance: (c) => c.attendance };
+    sortable(document.getElementById("topics"), columns, () => rows, render, { key: "votes", dir: -1 });
+    document.getElementById("source").innerHTML = sourceLine(d);
+  } catch (e) {
+    showError(tbody.closest(".table-wrap"), e);
+  }
+})();
+</script>
+</body>
+</html>

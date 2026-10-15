@@ -28,12 +28,15 @@ function renderKpis(ov, bench) {
   document.getElementById("hero-eyebrow").textContent = `10. volební období · data k ${fmtDate(ov.period.to)}`;
 }
 
-// Pod čísly jen řádek s tématy (úvodní stránka už je rozcestník, dlaždice „Najít poslance“ a „Co se naposledy odhlasovalo“ by se opakovaly).
-function renderEntries(ov) {
+// Pod čísly řádek s tématy: stejné kategorie jako v tabulce „Podle témat“ (data/category_stats.json), od nejčastějších.
+async function renderEntries() {
   const el = document.getElementById("entries");
   if (!el) return;
-  const topics = (ov.topics || []).slice(0, 6);
-  el.innerHTML = topics.length ? `<span class="entry-label">Témata</span><span class="entry-topics">${topics.map((t) => `<a href="votes.html?t=${esc(t.code)}&f=final">${esc(t.label_cs || t.label || t.code)}</a>`).join("")}</span>` : "";
+  try {
+    const [d] = await Promise.all([getJSON("category_stats.json"), loadCategories()]);
+    const cats = d.categories.filter((c) => c.key !== "none" && CATEGORY_META[c.key]).sort((a, b) => b.final - a.final || a.label.localeCompare(b.label, "cs")).slice(0, 8);
+    el.innerHTML = cats.length ? `<span class="entry-label">Témata</span><span class="entry-topics">${cats.map((c) => `<a href="votes.html?c=${esc(c.key)}&f=final"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATEGORY_META[c.key].icon}</svg>${esc(c.label)}</a>`).join("")}<a class="entry-all" href="temata.html">všechna témata a čísla →</a></span>` : "";
+  } catch (e) { el.innerHTML = ""; }
 }
 
 function htvCode(m, groups) {
@@ -46,7 +49,26 @@ function groupName(code, groups) {
 }
 
 // Půlkruh: frakce zleva doprava, mezi bloky frakcí mezera, nad blokem zkratka (barva není jediné vodítko).
-function renderDelegation(ov, groups) {
+// Strany ve vybrané frakci: zkratka, celý název (když ho zdroj má), odkaz na oficiální web a jména poslanců.
+// Web strany = adresa, ze které pochází její logo (parties.json → logo_source, ručně ověřený oficiální zdroj); jiné popisy neuvádíme.
+function partyWeb(p) {
+  const m = /https?:\/\/[^\s/)]+/.exec(p?.logo_source || "");
+  return m ? m[0] : null;
+}
+function partyLines(members, parties) {
+  const by = {};
+  members.forEach((m) => { const k = m.party?.id ?? "none"; (by[k] = by[k] || []).push(m); });
+  return `<ul class="party-lines">${Object.values(by).sort((a, b) => b.length - a.length || displayName(a[0]).localeCompare(displayName(b[0]), "cs")).map((ms) => {
+    const p = parties.find((x) => String(x.id) === String(ms[0].party?.id));
+    const label = p && !p.independent ? p.short_label : "bez strany";
+    const full = p && !p.independent && p.name && p.name !== p.short_label && !/czechia/i.test(p.name) ? p.name : "";
+    const web = p && !p.independent ? partyWeb(p) : null;
+    return `<li><span class="party-name"><span class="dot" style="background:${groupColor(p)}"></span><strong>${esc(label)}</strong>${full ? ` <span class="muted">${esc(full)}</span>` : ""}${web ? ` · <a class="ext" href="${esc(web)}" rel="noopener">oficiální web</a>` : ""}</span>
+      <span class="party-members">${ms.map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}</span></li>`;
+  }).join("")}</ul>`;
+}
+
+function renderDelegation(ov, groups, parties) {
   const active = ov.meps.filter(isActive);
   const people = active
     .map((m) => ({ m, code: htvCode(m, groups) }))
@@ -111,7 +133,7 @@ function renderDelegation(ov, groups) {
     document.getElementById("hemi-n").textContent = code ? byCode[code].length : n;
     document.getElementById("hemi-label").textContent = code ? groupName(code, groups) : "křesel";
     document.getElementById("hemi-names").innerHTML = code
-      ? `<strong>${esc(groupName(code, groups))}:</strong> ${byCode[code].map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}`
+      ? `<strong>${esc(groupName(code, groups))}</strong>${partyLines(byCode[code], parties)}`
       : `Česká delegace má ${n} poslanců v ${codes.length} frakcích Evropského parlamentu. Vyberte frakci pro jména.`;
   };
   // Výběr frakce kliknutím (funguje dotykem i klávesnicí); najetí myší je jen bonus.
@@ -144,7 +166,7 @@ function renderSession(session) {
   document.getElementById("ses-list").innerHTML = list.length ? list.map((v) => `
     <a class="vrow" href="vote.html?id=${v.id}&m=${v.month}">
       <div class="vrow-head"><span class="vrow-title">${catChip(v)}${onlyFinal ? "" : kindTag(v)}${esc(voteTitle(v))}</span>
-        <span class="pill-result ${v.result || ""}">${resultHtml(v)}</span></div>
+        ${resultHtml(v)}</div>
       <div class="split grow" role="img" aria-label="${v.cz[0]} pro, ${v.cz[1]} proti, ${v.cz[2]} se zdrželo, ${v.cz[3]} nehlasovalo">
         ${keys.map((k, i) => `<span class="s-${k}" style="width:${(v.cz[i] / total(v.cz)) * 100}%"></span>`).join("")}</div>
       <span class="tip">${czCountsText(v.cz)}</span>
@@ -203,10 +225,10 @@ function groupedCards(list, groups, parties, bench) {
     if (!bench) document.getElementById("bench-key").hidden = true;
     renderKpis(ov, bench);
     Promise.all([getJSON("session.json"), loadCategories()]).then(([session]) => {
-      renderEntries(ov);
+      renderEntries();
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));
-    renderDelegation(ov, groups);
+    renderDelegation(ov, groups, parties);
 
     document.getElementById("source").innerHTML = sourceLine(ov) +
       (bench ? infoButton(`<p>Mediány: ${esc(bench.definition || "")}</p>`, "Definice mediánů") : "");

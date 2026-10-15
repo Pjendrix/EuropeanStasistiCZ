@@ -27,7 +27,7 @@
     <a href="poslanci.html" data-page="meps">Poslanci</a>
     <a href="party.html" data-page="parties">Strany</a>
     <a href="votes.html" data-page="votes">Hlasování</a>
-    <a href="prace.html" data-page="work">Práce</a>
+    <a href="prace.html" data-page="work">Práce poslanců</a>
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
@@ -79,9 +79,6 @@ setNav("splits");
     document.getElementById("source").innerHTML = sourceLine(d);
     const u = d.unity;
     if (u && u.considered) {
-      const peerLine = dl && dl.peers.length ? `<div class="detail">Pro srovnání: u delegací s ${dl.seats_range[0]}–${dl.seats_range[1]} poslanci vychází
-          jednotnost ${spanText(dl.peer_range.unity, (x) => fmtPct(x))} ve všech hlasováních a ${spanText(dl.peer_range.unity_final, (x) => fmtPct(x))} u závěrečných.
-          <a href="#delegace">Čísla jednotlivých delegací</a></div>` : "";
       if (dl && dl.peers.length) document.getElementById("peers").innerHTML = `<details class="card" id="delegace"><summary><strong>Jednotnost delegací podobné velikosti</strong></summary>${delegationTable(dl, [
         { label: "Jednotně – všechna hlasování", get: (m) => `${fmtPct(m.unity[0] / m.unity[1])}<div class="small muted">${fmtNum(m.unity[0])} z ${fmtNum(m.unity[1])}</div>` },
         { label: "Jednotně – závěrečná", get: (m) => `${fmtPct(m.unity_final[0] / m.unity_final[1])}<div class="small muted">${fmtNum(m.unity_final[0])} z ${fmtNum(m.unity_final[1])}</div>` },
@@ -91,21 +88,19 @@ setNav("splits");
       const hasNI = cur.some((m) => !m.group?.code || m.group.code === "NI");
       const fin = u.considered_final
         ? `<div class="value">${countPct(u.united_final / u.considered_final)}</div>
-        <div class="detail">${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)} závěrečných hlasování (o celém textu, prozatímní dohodě s Radou nebo námitce): všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně.</div>`
+        <div class="detail">${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)} závěrečných hlasování${infoButton(`
+          <p>Jednotně = všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně. Závěrečná hlasování jsou o celém textu, prozatímní dohodě s Radou nebo námitce proti aktu Komise.</p>
+          <p>Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) to bylo ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}. Výrazné rozdělení (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</p>
+          ${dl && dl.peers.length ? `<p>Pro srovnání: u delegací s ${dl.seats_range[0]}–${dl.seats_range[1]} poslanci vychází jednotnost ${spanText(dl.peer_range.unity, (x) => fmtPct(x))} ve všech hlasováních a ${spanText(dl.peer_range.unity_final, (x) => fmtPct(x))} u závěrečných (<a href="#delegace">čísla jednotlivých delegací</a>).</p>` : ""}
+          <p>Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Definice, srovnání a metodika")}</div>`
         : "";
-      document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}
-        <div class="detail">Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}.
-          Výrazné rozdělení (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
-        ${peerLine}
-        <div class="detail">Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“.
-          <a href="o-projektu.html#metodika">Jak počítáme</a></div>`;
+      document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}`;
     }
     getJSON("decisive.json").then((dec) => {
       const fin = dec.decisive_final ?? dec.votes.filter(isFinal).length;
       document.getElementById("decisive").innerHTML = `<div class="label">Rozhodly české hlasy</div>
         <div class="value"><span data-count="${dec.votes.length}">${fmtNum(dec.votes.length)}</span></div>
-        <div class="detail">těsných hlasování, která by bez hlasů Čechů dopadla opačně; z toho závěrečných ${fmtNum(fin)}</div>
-        <div class="detail"><a href="rozhodujici.html">seznam hlasování</a></div>`;
+        <div class="detail">těsných hlasování, která by bez českých hlasů dopadla opačně${infoButton(`<p>Z toho závěrečných ${fmtNum(fin)}. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon.</p>`, "Podrobnosti")} · <a href="rozhodujici.html">seznam</a></div>`;
     }).catch(() => {});
     const view = new URLSearchParams(location.search).get("v");
     if (view) document.querySelector(`input[value="${CSS.escape(view)}"]`)?.click();

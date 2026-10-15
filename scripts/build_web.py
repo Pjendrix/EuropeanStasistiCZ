@@ -31,6 +31,7 @@ from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_position
                            require, topic_codes)
 from activity import count_activity
 from attendance import count_presence
+from category_stats import category_stats
 from categories import CATEGORIES, categories_for, icon_inner
 from key_votes import build_key_votes
 from work_hub import build_work_hub
@@ -497,6 +498,7 @@ def run(data_dir: Path, day: str) -> dict:
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))
+        write_json(data_dir / "category_stats.json", {**category_stats(votes, by_id), "sources": stats["sources"]})
         write_json(data_dir / "categories.json", {k: {"label": n, "icon": icon_inner(k)} for k, n, _ in CATEGORIES})
         write_json(data_dir / "session.json", build_session(stats, votes, votes_by_id, by_id))
         party_index, party_pages = build_parties_web(stats, parties, meps, votes_by_id, day)

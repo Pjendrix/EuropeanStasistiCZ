@@ -94,6 +94,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     kv = _read(data_dir / "key_votes.json")
     work = _read(data_dir / "work.json")
     bench = _read(data_dir / "benchmarks.json")
+    cat_stats = _read(data_dir / "category_stats.json")
     meps = overview["meps"]
     active = [m for m in meps if _active(m)]
     release = overview["sources"]["votes"].get("release")
@@ -155,6 +156,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
             f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="36" height="36" loading="lazy">' for m in active[:5] if m.get("photo_url")) + "</div>" + f'<p class="small muted">{len(active)} v mandátu, {len(meps) - len(active)} {"bývalý" if len(meps) - len(active) == 1 else "bývalí"}</p>'),
         ("party.html", "Strany", f'<div class="hub-logos">{logos}</div>'),
         ("votes.html", "Hlasování", f'<p class="hub-num">{fmt_num(overview["votes_total"])}</p><p class="small muted">jmenovitých hlasování, poslední {fmt_date(overview["period"]["to"])}</p>'),
+        *([("temata.html", "Hlasování podle témat", f'<p class="hub-num">{len([c for c in cat_stats["categories"] if c["key"] != "none"])}</p><p class="small muted">témat od obrany po rozpočet: kolik se hlasovalo a jak hlasovali Češi</p>')] if cat_stats else []),
         ("rozkol.html", "Kde se Češi rozdělili", (f'<p class="hub-num">{ts["cz"][0]} : {ts["cz"][1]}</p><p class="small muted">poslední: {esc(ts["title"][:80])}{"…" if len(ts["title"]) > 80 else ""}</p>' if ts else "")),
         ("shoda.html", "Kdo s kým hlasuje", f'<p class="hub-num">{len(active)} × {len(active)}</p><p class="small muted">shoda každé dvojice poslanců</p>'),
         ("prace.html", "Práce poslanců", f'<p class="hub-num">{fmt_num(lead)} + {fmt_num(shadow)}</p><p class="small muted">zpráv vedou Češi jako zpravodajové + stínové zprávy za frakci</p>'),

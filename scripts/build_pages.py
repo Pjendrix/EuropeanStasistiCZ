@@ -409,7 +409,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="share-row"><button type="button" class="more-btn share-btn" data-share aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Sdílet</button></p>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
-    <div class="detail"><span class="pill-result result-{v.get('result') or ''}">{result}</span></div>
+    <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>
     <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div>{cite}</div>
   <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
     <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
@@ -485,7 +485,7 @@ def build(data_dir: Path) -> dict[str, str]:
     return out
 
 
-STATIC_PAGES = ["index.html", "poslanci.html", "votes.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
+STATIC_PAGES = ["index.html", "poslanci.html", "votes.html", "temata.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
 
 
 def sitemap(base_url: str, paths: list[str]) -> dict[str, str]:

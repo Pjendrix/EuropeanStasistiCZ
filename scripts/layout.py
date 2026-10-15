@@ -49,7 +49,7 @@ BRAND_MARK = (
 )
 
 NAV = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("votes.html", "votes", "Hlasování"),
-       ("prace.html", "work", "Práce"), ("rozkol.html", "analyses", "Analýzy"), ("o-projektu.html", "about", "O projektu")]
+       ("prace.html", "work", "Práce poslanců"), ("rozkol.html", "analyses", "Analýzy"), ("o-projektu.html", "about", "O projektu")]
 
 THEME_BUTTON = (
     '<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim">'
