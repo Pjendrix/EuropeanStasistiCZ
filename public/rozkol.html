@@ -34,10 +34,10 @@
     <a href="rozkol.html" data-page="splits">Kde se Češi rozdělili</a>
     <a href="rozhodujici.html" data-page="decisive">Kde rozhodly české hlasy</a>
     <a href="shoda.html" data-page="agreement">Kdo s kým hlasuje</a>
-    <a href="prace.html" data-page="work">Vlastní práce</a>
+    <a href="prace.html" data-page="work">Práce na textech</a>
   </nav>
   <h1>Kde se Češi rozdělili</h1>
-  <p class="lead">Hlasování, ve kterých čeští poslanci hlasovali nejvíc rozdílně. Míra rozkolu = menšina mezi hlasy pro a proti
+  <p class="lead">Hlasování, ve kterých čeští poslanci hlasovali nejvíc rozdílně. Míra rozdělení = menšina mezi hlasy pro a proti
     děleno jejich součtem (0,5 = půl na půl); u každého hlasování ukazujeme poměr pro : proti. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
   <div class="metrics" style="margin-bottom:1.5rem">
     <div class="card metric" id="unity"><div class="label">Češi jednotně – závěrečná hlasování</div><div class="value">–</div></div>
@@ -82,7 +82,7 @@ setNav("splits");
         : "";
       document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}
         <div class="detail">Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}.
-          Výrazný rozkol (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
+          Výrazné rozdělení (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
         <div class="detail">Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“.
           <a href="o-projektu.html#metodika">Jak počítáme</a></div>`;
     }
@@ -105,11 +105,11 @@ setNav("splits");
         const ls = d.last_session;
         list = ls.split;
         summary = `Zasedání ${fmtDate(ls.from)} – ${fmtDate(ls.to)}: ${ls.votes} hlasování, Češi se rozdělili v ${ls.split_count} z nich` +
-          (ls.split_count > list.length ? ` (níže ${list.length} s největším rozkolem).` : ".");
+          (ls.split_count > list.length ? ` (níže ${list.length} s největším rozdělením).` : ".");
       } else {
         list = d[v];
         summary = `Za celé období se Češi rozdělili v ${fmtNum(v === "main" ? d.count_main : d.count)} ` +
-          `${v === "main" ? "závěrečných " : ""}hlasováních (aspoň jeden pro a jeden proti). Níže ${list.length} s největším rozkolem.`;
+          `${v === "main" ? "závěrečných " : ""}hlasováních (aspoň jeden pro a jeden proti). Níže ${list.length} s největším rozdělením.`;
       }
       document.getElementById("summary").textContent = summary;
       el.className = "";

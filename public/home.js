@@ -141,7 +141,7 @@ function renderSession(session) {
   const intro = document.getElementById("ses-intro");
   if (intro && u && u.considered) {
     intro.textContent = `Na posledním zasedání hlasovali Češi jednotně v ${fmtNum(u.united)} z ${fmtNum(u.considered)} hlasování, ` +
-      `výrazně rozdělení (menšina aspoň 30 %) byli ${fmtNum(u.strong_split)}×. Níže hlasování s největším rozkolem` +
+      `výrazně rozdělení (menšina aspoň 30 %) byli ${fmtNum(u.strong_split)}×. Níže hlasování s největším rozdělením` +
       (onlyFinal ? " mezi závěrečnými." : ".");
   }
   const keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];

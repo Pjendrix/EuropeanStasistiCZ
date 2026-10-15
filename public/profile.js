@@ -159,7 +159,7 @@ function ownItem(e) {
     ${label ? `<div class="small"><span class="${cls}" title="${e.status === "no_vote" ? esc(NO_VOTE_NOTE) : ""}">${label}</span>${e.note === "rejection_adopted" ? " (Parlament přijal návrh na zamítnutí)" : ""}${e.joint_result ? ` (společný návrh: ${RESULT_LABEL[e.joint_result] || e.joint_result})` : ""}${voteLink}</div>` : ""}</li>`;
 }
 
-// „Vlastní práce“: přidělené role (zpravodaj/stínový u zpráv a stanovisek) s třetinou v delegaci, bez celkového pořadí.
+// „Práce na textech“: přidělené role (zpravodaj/stínový u zpráv a stanovisek) s třetinou v delegaci, bez celkového pořadí.
 // Jen počty z own_work.json, žádné body ani váhy.
 function passedCard(label, value, details, suffix = "") {
   return `<div class="card metric"><div class="label">${label}</div><div class="value">${value === null ? "–" : `${fmtNum(value)}${suffix}`}</div>
@@ -197,7 +197,7 @@ function ownPassed(ow, mep) {
     : `${byGender(mep, "Bývalý poslanec", "Bývalá poslankyně")} se se současnou delegací nesrovnává (jiné období).`;
   const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>
       <ul class="plain">${adoptedList.map(ownItem).join("")}</ul></details>` : "";
-  return `<h3 class="own-sub">Vlastní práce v delegaci</h3><div class="metrics">${cards}</div>${list}
+  return `<h3 class="own-sub">Práce na textech v delegaci</h3><div class="metrics">${cards}</div>${list}
     <p class="small muted">Zpravodaj/ka píše text za výbor (zprávu výboru, který věc vede, nebo stanovisko dalšího výboru),
       stínový/á zpravodaj/ka ho vyjednává za svou frakci. Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.
       Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). ${note}</p>
@@ -316,7 +316,7 @@ function periodText(x) {
 
       <p class="lead" style="margin-top:1.5rem">${summarySentence(mep, t, profile)}</p>
       <nav class="subnav profile-nav" aria-label="Části profilu">
-        <a href="${here}#dochazka">Účast na hlasování</a>${hasOwn ? `<a href="${here}#vlastni-prace">Vlastní práce</a>` : ""}
+        <a href="${here}#dochazka">Účast na hlasování</a>${hasOwn ? `<a href="${here}#vlastni-prace">Práce na textech</a>` : ""}
         <a href="${here}#frakce">Frakce a strana</a><a href="${here}#temata">Témata</a>
         <a href="${here}#s-kym">S kým hlasuje</a><a href="${here}#posledni">Poslední hlasování</a>
       </nav>
@@ -339,7 +339,8 @@ function periodText(x) {
 
       ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}</p>` : ""}
 
-      ${hasOwn ? `<h2 id="vlastni-prace">Vlastní práce</h2>
+      ${hasOwn ? `<h2 id="vlastni-prace">Práce na textech</h2>
+      <p class="small muted">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
       <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
         U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
       ${ownWork(ow, mep)}` : ""}

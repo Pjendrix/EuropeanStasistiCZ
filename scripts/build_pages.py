@@ -53,6 +53,9 @@ def fmt_pct(pair_or_value) -> str:
     return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
 
 
+WORK_INTRO = "Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je."
+
+
 def meps_count(n: int) -> str:
     """„1 poslanec“, „3 poslanci“, „5 poslanců“."""
     return f"{n} " + ("poslanec" if n == 1 else "poslanci" if 2 <= n <= 4 else "poslanců")
@@ -194,7 +197,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
                      f'<li><strong>Stanoviska jako stínový/á zpravodaj/ka</strong>: {fmt_num(ro["shadow_opinions"])}</li>'
                      f'<li><strong>Podepsané návrhy usnesení</strong>: {fmt_num(ro["motions_signed"])} (přijato {fmt_num(pa["resolutions_adopted"])})</li>') + items
         if items:
-            own_html = (f'<h2 id="vlastni-prace">Vlastní práce</h2><div class="card"><ul class="plain">{items}</ul>'
+            own_html = (f'<h2 id="vlastni-prace">Práce na textech</h2><p class="small muted">{WORK_INTRO}</p><div class="card"><ul class="plain">{items}</ul>'
                         f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
                         f'Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>')
     pos = t["positions"]

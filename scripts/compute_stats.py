@@ -33,7 +33,7 @@ VOTED = {"FOR", "AGAINST", "ABSTENTION"}
 NO_GROUP = {None, "NI"}  # nezařazení nejsou frakce, loajalita se nepočítá
 RESULTS_DECIDED = {"ADOPTED", "REJECTED"}  # LAPSED, WITHDRAWN a chybějící výsledek se do souladu nepočítají
 CLOSE_MARGIN = 21  # těsné hlasování: |pro − proti| <= 21 (počet českých křesel)
-STRONG_SPLIT = 0.3  # výrazný rozkol mezi Čechy: menšina tvoří aspoň 30 % hlasů pro a proti
+STRONG_SPLIT = 0.3  # výrazné rozdělení mezi Čechy: menšina tvoří aspoň 30 % hlasů pro a proti
 TOP_TOPICS = 10
 RECENT = 10
 INDEPENDENT = "Independent"  # EP tak označuje poslance bez strany; nejde o stranu
@@ -71,15 +71,15 @@ DEFINITIONS = {
                       "spolehlivě spočítat.",
     "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná "
                      "většina jeho frakce k datu hlasování.",
-    "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
+    "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno "
                 "součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se "
                 "nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
     "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, "
                 "byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). "
-                f"Výrazný rozkol: menšina tvoří aspoň {int(STRONG_SPLIT * 100)} % hlasů pro a proti.",
+                f"Výrazné rozdělení: menšina tvoří aspoň {int(STRONG_SPLIT * 100)} % hlasů pro a proti.",
     "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali "
                       "stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
-    "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení "
+    "own_work": "Práce na textech: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení "
                 "(poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje "
                 "výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. "
                 "Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako "
@@ -87,7 +87,7 @@ DEFINITIONS = {
                 "zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje "
                 "neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se "
                 "počítá jednou.",
-    "work_profile": "Profil vlastní práce (stránka Vlastní práce) počítá přidělené role bez ohledu na výsledek "
+    "work_profile": "Profil práce na textech (stránka Práce na textech) počítá přidělené role bez ohledu na výsledek "
                     "hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které "
                     "vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými "
                     "poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí "
@@ -163,7 +163,7 @@ def decisive_alternative(vote: dict, active: list[dict]) -> str | None:
 
 
 def cz_split(active: list[dict]) -> tuple[float, int, int] | None:
-    """(míra rozkolu, pro, proti) mezi Čechy; None, pokud nejsou na obou stranách."""
+    """(míra rozdělení, pro, proti) mezi Čechy; None, pokud nejsou na obou stranách."""
     n_for = sum(p["position"] == "FOR" for p in active)
     n_against = sum(p["position"] == "AGAINST" for p in active)
     if not n_for or not n_against:

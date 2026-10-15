@@ -88,6 +88,9 @@
 
   <h2 id="opravy">Opravy a změny metodiky</h2>
   <div class="card"><ul class="plain">
+    <li><strong>15. 10. 2026</strong> – Změna názvů v textech: „rozkol“ je nově „rozdělení“ (míra rozdělení, výrazné rozdělení), protože
+      slovo zní dramaticky. „Vlastní práce“ je nově „Práce na textech“, aby název nenaznačoval, že hlasování není práce poslance.
+      Čísla se nezměnila.</li>
     <li><strong>15. 10. 2026</strong> – Strany: místo počtu „rozdělila se 199×“ ukazujeme podíl („199 z 5 721, 3,5 %“), protože absolutní
       počet závisí na délce mandátu a počtu poslanců. U účasti na hlasování je medián EP, strany jsou řazené podle počtu poslanců a doplnili
       jsme větu, že u stran s více poslanci je jednotnost přirozeně nižší.</li>
@@ -170,7 +173,7 @@ setNav("about");
       cz_agreement: "Shoda s ostatními Čechy", pairwise: "S kým hlasuje stejně",
       outcome_agreement: "Soulad s výsledkem", group_outcome_agreement: "Soulad s výsledkem – průměr frakce",
       close_votes: "Těsná hlasování", decisive_votes: "Kde rozhodly české hlasy", against_group: "Hlasování proti frakci",
-      cz_split: "Kde se Češi rozdělili", cz_unity: "Češi jednotně", party_cohesion: "Jednotnost strany", topics: "Témata", own_work: "Vlastní práce",
+      cz_split: "Kde se Češi rozdělili", cz_unity: "Češi jednotně", party_cohesion: "Jednotnost strany", topics: "Témata", own_work: "Práce na textech",
     };
     el.innerHTML = Object.entries(stats.definitions)
       .map(([k, text]) => `<li><strong>${esc(names[k] || k)}</strong>: ${esc(text)}</li>`).join("");
