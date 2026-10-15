@@ -103,6 +103,8 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
       </p>
 
+      ${askAiBox({ v, kind, final, desc, adopted, c })}
+
       <div class="metrics">
         <div class="card metric"><div class="label">Výsledek</div>
           <div class="value-sentence">${esc(resultSentence(kind || (final ? "final" : ""), v.result))}</div>

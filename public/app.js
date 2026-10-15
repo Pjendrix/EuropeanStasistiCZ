@@ -459,6 +459,51 @@ function groupBench(bench, groups, epCode) {
 // --- citace a export ---------------------------------------------------------
 
 // Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
+// „Vysvětlit s AI“: web sám AI nevolá. Připraví neutrální dotaz s odkazy na oficiální zdroje a otevře ho
+// v AI nástroji podle volby čtenáře. Claude a ChatGPT dotaz převezmou z odkazu (?q=), Gemini oficiálně ne:
+// dotaz se zkopíruje do schránky a Gemini se otevře. Odpověď AI není součást webu a web za ni neručí.
+function aiPrompt({ v, kind, final, desc, adopted, c }) {
+  const lines = [
+    "Vysvětli mi stručně a neutrálně česky, o čem bylo toto hlasování v Evropském parlamentu a co jeho výsledek znamená v praxi.",
+    "Vycházej jen z oficiálních dokumentů na odkazech níže; když něco z nich nevyplývá, napiš to. Uveď hlavní argumenty pro i proti, nehodnoť politiky.",
+    "",
+    `Hlasování: ${voteTitle(v)}${v.reference ? ` (${v.reference})` : ""}`,
+    !final && desc ? `Předmět dílčího hlasování: ${desc}` : null,
+    `Datum: ${v.date}${kind ? `, typ: ${KIND_LABEL[kind] || kind}` : ""}`,
+    `Výsledek: ${RESULT_LABEL[v.result] || "neuveden"} (${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo)`,
+    adopted ? `Přijatý text: ${adopted}` : null,
+    v.procedure?.reference ? `Legislativní observatoř: https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}` : null,
+    `Údaje o hlasování: ${v.source_url}`,
+  ];
+  return lines.filter((x) => x !== null).join("\n");
+}
+
+function askAiBox(ctx) {
+  const prompt = aiPrompt(ctx);
+  const q = encodeURIComponent(prompt);
+  return `<details class="card ask-ai"><summary><strong>Vysvětlit s pomocí AI</strong> <span class="small muted">(otevře se mimo tento web)</span></summary>
+    <p class="small muted">Dotaz se odešle do vybraného AI nástroje mimo tento web; jeho odpověď neověřujeme. Dotaz odkazuje jen na oficiální dokumenty; odpověď si vždy ověřte ve zdroji.</p>
+    <div class="ask-ai-row">
+      <a class="more-btn" href="https://claude.ai/new?q=${q}" target="_blank" rel="noopener">Claude</a>
+      <a class="more-btn" href="https://chatgpt.com/?q=${q}" target="_blank" rel="noopener">ChatGPT</a>
+      <a class="more-btn" href="https://gemini.google.com/app" target="_blank" rel="noopener" data-copy-prompt="${esc(prompt)}" title="Dotaz se zkopíruje do schránky, v Gemini ho vložte (Ctrl+V)">Gemini (vložit ze schránky)</a>
+      <button type="button" class="more-btn" data-copy-prompt="${esc(prompt)}">Zkopírovat dotaz</button>
+    </div>
+    <pre class="ask-ai-prompt small">${esc(prompt)}</pre>
+  </details>`;
+}
+
+document.addEventListener("click", (ev) => {
+  const el = ev.target.closest("[data-copy-prompt]");
+  if (!el) return;
+  try { navigator.clipboard?.writeText(el.dataset.copyPrompt); } catch (e) { /* schránka nedostupná */ }
+  if (el.tagName === "BUTTON") {
+    const old = el.textContent;
+    el.textContent = "Zkopírováno";
+    setTimeout(() => { el.textContent = old; }, 1500);
+  }
+});
+
 function citeButton(text) {
   return `<button type="button" class="cite-btn" data-cite="${esc(text)}" aria-label="Citovat" title="Citovat (zkopíruje větu se zdrojem)">${CITE_ICON}</button>`;
 }
