@@ -732,8 +732,6 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .hub-lists.three { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
 .hub-list h3 { margin: 0 0 .2rem; }
 .hub-vote { display: grid; gap: .35rem; margin-top: .75rem; }
-.period-switch { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin: .5rem 0 1rem; }
-.period-switch label { display: inline-flex; align-items: center; gap: .4rem; min-height: 32px; }
 .hub-strip { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
 .hub-group { display: grid; gap: .3rem; }
 .hub-avs { display: flex; flex-wrap: wrap; gap: .3rem; }

@@ -14,15 +14,13 @@ from pathlib import Path
 
 from build_pages import (POSITIONS, RESULT_LABEL, esc, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
                          og_meta, split_bar)
-from key_votes import PERIOD_LABEL, PERIODS
 from vote_kinds import KIND_LABELS
 
-DEFAULT_PERIOD = "m3"
 LIST_TITLES = {
-    "laws": ("Zákony, o kterých se rozhodlo", "Závěrečné hlasování nebo prozatímní dohoda v legislativním postupu."),
-    "splits": ("Kde se Češi nejvíc rozdělili", "Závěrečná hlasování s největším rozdělením českých poslanců."),
-    "close": ("Nejtěsnější výsledky", "Závěrečná hlasování s nejmenším rozdílem hlasů pro a proti."),
-    "against_result": ("Češi proti výsledku", "Závěrečná hlasování, ve kterých většina českých hlasů šla proti výsledku."),
+    "laws": ("Nejnovější zákony", "Poslední závěrečná hlasování nebo prozatímní dohody v legislativním postupu."),
+    "splits": ("Kde se Češi nejvíc rozdělili", "Závěrečná hlasování 10. období s největším rozdělením českých poslanců."),
+    "close": ("Nejtěsnější výsledky", "Závěrečná hlasování 10. období s nejmenším rozdílem hlasů pro a proti."),
+    "against_result": ("Češi proti výsledku", "Závěrečná hlasování 10. období, ve kterých většina českých hlasů šla proti výsledku."),
 }
 
 
@@ -49,22 +47,16 @@ def vote_card(v: dict, reason: str) -> str:
 
 
 def key_votes_html(kv: dict) -> str:
-    out = ['<div class="period-switch" role="radiogroup" aria-label="Období">']
-    for p in PERIODS:
-        out.append(f'<label><input type="radio" name="kv-period" value="{p}"{" checked" if p == DEFAULT_PERIOD else ""}> {esc(PERIOD_LABEL[p])}</label>')
+    """Čtyři seznamy za celé období: zákony od nejnovějších, ostatní podle svého pravidla. Přepínač období tu není:
+    výběr za kratší období se od celého skoro neliší a ukazoval by pořád stejná hlasování, poslední zasedání má blok výš."""
+    out = ['<div class="hub-lists">']
+    for name, (title, rule) in LIST_TITLES.items():
+        lst = kv["lists"]["all"][name]
+        items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"]) or '<p class="muted small">Nic.</p>'
+        more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v 10. období)</p>'
+                if lst["total"] > len(lst["items"]) else "")
+        out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p>{items}{more}</section>')
     out.append("</div>")
-    for p in PERIODS:
-        hidden = "" if p == DEFAULT_PERIOD else " hidden"
-        out.append(f'<div class="kv-period" data-period="{p}"{hidden}><div class="hub-lists">')
-        for name, (title, rule) in LIST_TITLES.items():
-            lst = kv["lists"][p][name]
-            items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"])
-            if not items:
-                items = '<p class="muted small">V tomto období nic.</p>'
-            more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v období)</p>'
-                    if lst["total"] > len(lst["items"]) else "")
-            out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p>{items}{more}</section>')
-        out.append("</div></div>")
     out.append(f'<p class="small muted">{esc(kv["note"])} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>')
     return "".join(out)
 
