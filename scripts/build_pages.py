@@ -7,7 +7,7 @@ Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
   public/sitemap.xml, public/robots.txt   jen když je v data/manual/site.json adresa webu
 
 Profil poslance má jen tuto adresu (mep.html přesměrovává): statický obsah + profile.js s interakcemi.
-Strany a hlasování mají i interaktivní stránky (party.html, vote.html), statické na ně odkazují. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
+Strana má jen adresu s/{id}.html (party.html?id= přesměrovává): statický obsah + party.js. Hlasování mají i interaktivní stránku (vote.html), statická na ni odkazuje. Nic se nepočítá znovu: čísla jsou ze souborů z compute_stats.py a build_web.py.
 Stránky nemají datum sestavení, takže se v gitu mění, jen když se změní data.
 
 Použití:
@@ -249,10 +249,11 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     desc = f"{name} ({pp['short_label']}) v Evropském parlamentu: {meps_count(pp['members'])} v 10. období, " \
            f"jednotnost {fmt_pct(coh)}. Data z HowTheyVote.eu a EP."
     members = "".join(
-        f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a>'
+        f'<li><a href="p/{m["id"]}.html">{esc(display_name(m))}</a>'
         f'<div class="small muted">{", ".join(fmt_date(x["start"]) + " – " + (fmt_date(x["end"]) if x.get("end") else "dosud") for x in m["party_periods"])}'
         f' · účast na hlasování {fmt_pct(m["total"]["attendance"])}</div></li>'
-        for m in sorted(pp["member_list"], key=lambda m: m.get("sort_label") or m["name"]))
+        for m in sorted(pp["member_list"], key=lambda m: (-(m["total"]["attendance"][0] / m["total"]["attendance"][1])
+                                                          if m["total"]["attendance"][1] else 1, m.get("sort_label") or m["name"])))
     cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
                        f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""
     heading = f"<h1>{esc(name)}</h1>"
@@ -260,14 +261,13 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         a = pp.get("logo_aspect")  # stejná výška jako logoHeight() v app.js
         h = 40 if not a or a <= 1 else round(40 * max(0.42, a ** -0.4), 1)
         w = f' width="{round(h * pp["logo_aspect"])}"' if pp.get("logo_aspect") else ""
-        heading = (f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{ROOT}{esc(pp["logo"])}" '
+        heading = (f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{esc(pp["logo"])}" '
                    f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>')
     splits_value = (f"{fmt_num(pp['splits_count'])} z {fmt_num(coh[1])} ({fmt_pct(pp['splits_count'] / coh[1])})"
                     if coh[1] else "jen 1 poslanec")
-    body = f"""<p class="small"><a href="{ROOT}party.html">← Všechny strany</a></p>
+    body = f"""<p class="small"><a href="party.html">← Všechny strany</a></p>
 {heading}
-<p class="muted">{esc(pp['short_label'])} · {meps_count(pp['members'])} v 10. volebním období ·
-  <a href="{ROOT}party.html?id={pp['id']}">interaktivní stránka strany</a></p>
+<p class="muted">{esc(pp['short_label'])} · {meps_count(pp['members'])} v 10. volebním období</p>
 <div class="metrics">
   {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany", "", cite)}
   {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
@@ -279,11 +279,13 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
 <div class="card"><ul class="plain">{members}</ul></div>
 <p class="source">Příslušnost ke straně k datu hlasování. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností
   se rozejít. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
-  <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="{ROOT}o-projektu.html#metodika">metodika</a>.</p>"""
+  <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="o-projektu.html#metodika">metodika</a>.</p>"""
     title = f"{name} – EP Watch CZ"
-    return f"s/{pp['id']}.html", page(title, body, root=ROOT, current="parties", description=desc,
-                                      meta=og_meta(title, desc, f"s/{pp['id']}.html", base_url),
-                                      scripts=f'<script src="{ROOT}app.js"></script>\n')
+    # Jedna adresa strany: <base href="../">, party.js obsah nahradí interaktivní verzí (jako u profilu poslance).
+    path = f"s/{pp['id']}.html"
+    return path, page(title, body, root="", base="../", path=path, current="parties", description=desc,
+                      meta=og_meta(title, desc, path, base_url), main_attrs=f'data-party="{pp["id"]}"',
+                      scripts='<script src="app.js"></script>\n<script src="party.js"></script>\n')
 
 
 # --- hlasování -----------------------------------------------------------------------

@@ -3,6 +3,7 @@
 Výstup:
   data/overview.json        souhrn pro úvodní tabulku (poslanci + hlavní metriky)
   data/meps/{id}.json       vše pro profil poslance
+  data/meps/{id}_votes.json hlasy poslance u všech hlasování v mandátu (filtr „Poslanec“ v seznamu hlasování)
   data/votes/search.json    odlehčený seznam všech hlasování pro seznam a vyhledávání
   data/decisive.json        těsná a rozhodující hlasování
   data/splits.json          kde se Češi rozdělili (poslední zasedání, celé období)
@@ -364,6 +365,24 @@ def build_parties_web(stats: dict, parties: list[dict], meps: list[dict], votes_
     return {"sources": stats["sources"], "parties": index}, pages
 
 
+POSITION_LETTER = {"FOR": "F", "AGAINST": "A", "ABSTENTION": "B", "DID_NOT_VOTE": "N"}
+
+
+def mep_votes(mep: dict, votes: list[dict]) -> dict:
+    """Hlas poslance u všech hlasování v době jeho mandátu (data/meps/{id}_votes.json): ids a řetězec písmen F/A/B/N
+    (pro, proti, zdržel se, nehlasoval) ve stejném pořadí. Slouží filtru „Poslanec“ v seznamu hlasování."""
+    ids, letters = [], []
+    for v in votes:
+        if not in_mandate(mep["mandates"], v["date"]):
+            continue
+        for p in v["cz_positions"]:
+            if p["member_id"] == mep["id"]:
+                ids.append(v["id"])
+                letters.append(POSITION_LETTER[p["position"]])
+                break
+    return {"ids": ids, "positions": "".join(letters)}
+
+
 def write_json(path: Path, obj, compact: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(obj, ensure_ascii=False, separators=(",", ":")) if compact else \
@@ -404,6 +423,8 @@ def run(data_dir: Path, day: str) -> dict:
     for m in meps:
         write_json(profiles_dir / f"{m['id']}.json", build_profile(m, meps, stats, votes, day, votes_by_id, own,
                                                                       topic_labels, bench))
+    for m in meps:
+        write_json(profiles_dir / f"{m['id']}_votes.json", mep_votes(m, votes), compact=True)
     if "votes_analysis" in stats:
         write_json(data_dir / "decisive.json", build_decisive(stats, votes_by_id, by_id))
         write_json(data_dir / "splits.json", build_splits(stats, votes_by_id, by_id))

@@ -211,10 +211,15 @@ function partyBadge(id, label, parties, mep) {
 function partyLink(id, label, parties, mep) {
   const p = parties.find((x) => String(x.id) === String(id));
   const badge = partyBadge(id, label, parties, mep);
-  return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
+  return p && !p.independent ? `<a href="${partyUrl(p.id)}" class="badge-link">${badge}</a>` : badge;
 }
 
 // Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
+// Jedna adresa strany (s/{id}.html; party.html?id= se přesměrovává).
+function partyUrl(id) {
+  return `s/${id}.html`;
+}
+
 function mepUrl(id) {
   return `p/${id}.html`;
 }

@@ -16,6 +16,18 @@
       ],
       "destination": "/p/:id.html",
       "permanent": true
+    },
+    {
+      "source": "/party.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "(?<id>\\d+)"
+        }
+      ],
+      "destination": "/s/:id.html",
+      "permanent": true
     }
   ]
 }

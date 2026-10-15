@@ -260,7 +260,7 @@ function groupedCards(list, groups, parties, bench) {
           <td>${(() => { const po = p ? parties.find((x) => String(x.id) === String(p.id)) : null;
             if (!p) return `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">neuvedeno</span>`;
             if (po?.independent) return `<div class="entity-cell"><span class="logo-slot sm"></span>${partyBadge(p.id, p.short_label, parties, m)}</div>`;
-            return entityCell(po || {}, { name: p.short_label, href: po ? `party.html?id=${po.id}` : "", size: 22, slot: "sm" }); })()}</td>
+            return entityCell(po || {}, { name: p.short_label, href: po ? partyUrl(po.id) : "", size: 22, slot: "sm" }); })()}</td>
           <td>${benchRow("Účast na hlasování", s.attendance, benchFor(bench, m)?.ep?.attendance ?? null, "medián EP", { compact: true })}</td>
           <td class="num">${pctCell(s.attendance_main)}</td>
           <td>${benchRow("Hlasuje s frakcí", s.group_loyalty, isNI ? null : (groupBench(benchFor(bench, m), groups, g?.code)?.group_loyalty ?? null), "medián frakce",

@@ -377,7 +377,7 @@ function periodText(x) {
                 sub: `${esc(go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : x.short_label)}${x.role && x.role !== "MEMBER" ? ` · <strong>${ROLE_LABEL[x.role] || esc(x.role)}</strong>` : ""} · ${periodText(x)}` })}</li>`; }).join("")}
             ${mep.parties.map((x) => { const po = parties.find((y) => String(y.id) === String(x.org_id));
               if (po?.independent) return `<li>${partyBadge(x.org_id, x.short_label, parties, mep)}<div class="small muted">${periodText(x)}</div></li>`;
-              return `<li>${entityCell(po || {}, { name: x.name || x.short_label, href: po ? `party.html?id=${po.id}` : "", size: 24, slot: "sm",
+              return `<li>${entityCell(po || {}, { name: x.name || x.short_label, href: po ? partyUrl(po.id) : "", size: 24, slot: "sm",
                 sub: `${esc(x.short_label)} · ${periodText(x)}` })}</li>`; }).join("") || `<li class="muted">${esc(NO_PARTY_NOTE)}</li>`}
           </ul>
           <p class="source">Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a></p></div>
@@ -437,6 +437,17 @@ function periodText(x) {
 
       <h2 id="posledni">Poslední závěrečná hlasování</h2>
       <div id="recent" class="loading">Načítám…</div>
+      <form class="card mep-search" action="votes.html" method="get" role="search" aria-label="Hledání v hlasováních poslance">
+        <h3 style="margin-top:0">Jak ${byGender(mep, "hlasoval", "hlasovala")} o…?</h3>
+        <input type="hidden" name="mep" value="${mep.id}">
+        <div class="controls">
+          <input type="search" name="q" placeholder="Hledat v názvech hlasování (např. klima, migrace)" aria-label="Hledat v hlasováních">
+          <label>Téma <select name="t"><option value="">všechna témata</option>${profile.topics.map((x) => `<option value="${esc(x.code)}">${esc(x.label_cs || x.label || x.code)}</option>`).join("")}</select></label>
+          <label>Typ <select name="f"><option value="final">jen závěrečná</option><option value="main">všechna hlavní</option><option value="all">všechna hlasování</option></select></label>
+          <button type="submit" class="more-btn">Hledat</button>
+        </div>
+        <p class="small muted">Výsledek ukáže přímo ${byGender(mep, "jeho", "její")} hlas u každého hlasování v době mandátu, s odkazem na detail.</p>
+      </form>
       <p class="small profile-links foot-only">${extLinks}</p>
     `;
 
