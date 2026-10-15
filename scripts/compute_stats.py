@@ -435,8 +435,8 @@ COLOR_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
 def load_manual(path: Path) -> dict:
-    """data/manual/colors.json: {"groups": {kód: {"color", "logo"}}, "parties": {id: {...}}}.
-    Chybějící soubor = žádné ruční údaje."""
+    """data/manual/colors.json: {"groups": {kód: {...}}, "parties": {id: {...}}} s poli brand_color (oficiální,
+    vždy s brand_source) a chart_color (barva webu kvůli rozlišitelnosti). Chybějící soubor = žádné ruční údaje."""
     if not path.exists():
         return {"groups": {}, "parties": {}}
     manual = json.loads(path.read_text(encoding="utf-8"))
@@ -445,18 +445,51 @@ def load_manual(path: Path) -> dict:
         for key, entry in manual[kind].items():
             if not isinstance(entry, dict):
                 raise FormatError(f"{path}: {kind}.{key} musí být objekt")
-            color = entry.get("color")
-            if color is not None and not COLOR_RE.match(color):
-                raise FormatError(f"{path}: {kind}.{key}.color '{color}' není ve tvaru #RRGGBB")
-            logo = entry.get("logo")
-            if logo is not None and not isinstance(logo, str):
-                raise FormatError(f"{path}: {kind}.{key}.logo musí být text nebo null")
+            for field in ("brand_color", "chart_color", "color"):
+                color = entry.get(field)
+                if color is not None and not COLOR_RE.match(color):
+                    raise FormatError(f"{path}: {kind}.{key}.{field} '{color}' není ve tvaru #RRGGBB")
+            if entry.get("brand_color") and not entry.get("brand_source"):
+                raise FormatError(f"{path}: {kind}.{key}.brand_color nemá brand_source (odkud barva je)")
     return manual
 
 
+def load_logos(path: Path, public: Path) -> dict:
+    """data/manual/logos.json: {"groups": {kód: {"file", "source", ...}}, "parties": {id: {...}}}.
+    Použije se jen záznam se souborem, který v public/ existuje a má uvedený zdroj."""
+    if not path.exists():
+        return {"groups": {}, "parties": {}}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    require(doc, ["groups", "parties"], str(path))
+    out = {"groups": {}, "parties": {}}
+    for kind in ("groups", "parties"):
+        for key, entry in doc[kind].items():
+            f = entry.get("file")
+            if not f:
+                continue
+            if not (public / f).exists():
+                raise FormatError(f"{path}: {kind}.{key}.file '{f}' v public/ neexistuje")
+            if not entry.get("source"):
+                raise FormatError(f"{path}: {kind}.{key} má logo bez zdroje (source)")
+            out[kind][key] = {"logo": f, "logo_source": entry["source"]}
+    return out
+
+
+def identity(manual: dict, logos: dict, key: str, assets: Path, kind_dir: str) -> dict:
+    """Barvy a logo strany nebo frakce: oficiální barva má přednost, jinak barva webu."""
+    m = manual.get(key, {})
+    brand = m.get("brand_color")
+    chart = m.get("chart_color") or m.get("color")
+    lg = logos.get(key) or {}
+    logo = lg.get("logo") or m.get("logo") or find_logo(assets, kind_dir, key)
+    return {"color": brand or chart, "brand_color": brand, "chart_color": chart or brand,
+            "logo": logo, "logo_source": lg.get("logo_source")}
+
+
 def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], assets: Path,
-                 manual: dict | None = None) -> list[dict]:
+                 manual: dict | None = None, logos: dict | None = None) -> list[dict]:
     manual = (manual or {}).get("groups", {})
+    logos = (logos or {}).get("groups", {})
     mapping = derive_group_codes(meps, votes)
     names_cs = {g["code"]: g["name_cs"] for m in meps for g in m["groups"]}
     out = []
@@ -468,14 +501,14 @@ def build_groups(index_groups: list[dict], meps: list[dict], votes: list[dict], 
             "short_label": g["short_label"],
             "label": g["label"],
             "name_cs": names_cs.get(ep_code),
-            "color": manual.get(g["code"], {}).get("color"),
-            "logo": manual.get(g["code"], {}).get("logo") or find_logo(assets, "ep", g["code"]),
+            **identity(manual, logos, g["code"], assets, "ep"),
         })
     return out
 
 
-def build_parties(meps: list[dict], assets: Path, manual: dict | None = None) -> list[dict]:
+def build_parties(meps: list[dict], assets: Path, manual: dict | None = None, logos: dict | None = None) -> list[dict]:
     manual = (manual or {}).get("parties", {})
+    logos = (logos or {}).get("parties", {})
     parties = {}
     for m in meps:
         for p in m["parties"]:
@@ -484,8 +517,7 @@ def build_parties(meps: list[dict], assets: Path, manual: dict | None = None) ->
                 "short_label": p["short_label"],
                 "name": p["name"],
                 "independent": p["name"] == INDEPENDENT,
-                "color": manual.get(p["org_id"], {}).get("color"),
-                "logo": manual.get(p["org_id"], {}).get("logo") or find_logo(assets, "cz", p["org_id"]),
+                **identity(manual, logos, p["org_id"], assets, "cz"),
             }
     return [parties[k] for k in sorted(parties, key=int)]
 
@@ -547,8 +579,9 @@ def run(data_dir: Path, assets: Path) -> dict:
     if own is not None:
         write("own_work.json", own)
     manual = load_manual(data_dir / "manual" / "colors.json")
-    write("groups.json", build_groups(index["groups"], meps, votes, assets, manual))
-    write("parties.json", build_parties(meps, assets, manual))
+    logos = load_logos(data_dir / "manual" / "logos.json", assets.parent)
+    write("groups.json", build_groups(index["groups"], meps, votes, assets, manual, logos))
+    write("parties.json", build_parties(meps, assets, manual, logos))
     return stats
 
 

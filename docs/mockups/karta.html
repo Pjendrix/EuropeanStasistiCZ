@@ -1,0 +1,54 @@
+<!doctype html><html lang="cs"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:PJS;font-weight:200 700;src:url(../../public/assets/fonts/plus-jakarta-sans-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF}
+@font-face{font-family:PJS;font-weight:200 700;src:url(../../public/assets/fonts/plus-jakarta-sans-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+:root{--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:rgba(15,23,42,.09);--track:#E2E8F0;--ink:#334155;--bench:#B45309}
+body{margin:0;background:var(--bg);font:15px/1.45 PJS,system-ui,sans-serif;color:var(--text);padding:28px;width:1240px}
+h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.key{font-size:13px;color:var(--muted);margin:0 0 16px;display:flex;gap:18px;align-items:center}
+.key i{display:inline-block;vertical-align:middle;margin-right:6px}
+.k-dot{width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.k-tick{width:2px;height:12px;background:var(--bench)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px 18px 16px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--g)}
+.head{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.head img{width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:top}
+.name{font-weight:600;font-size:16px;line-height:1.2}
+.sub{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center;margin-top:2px}
+.logo{margin-left:auto;align-self:flex-start;height:28px;min-width:44px;padding:0 6px;border-radius:6px;background:#fff;border:1px dashed #CBD5E1;font-size:10px;color:#94A3B8;display:flex;align-items:center;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--g);display:inline-block}
+.row{margin-top:12px}
+.top{display:flex;justify-content:space-between;align-items:baseline}
+.lab{font-size:13px;color:var(--muted)}
+.val{font-size:20px;font-weight:600;letter-spacing:-.01em}
+.strip{position:relative;height:16px;margin:4px 0 2px}
+.strip .tr{position:absolute;left:0;right:0;top:7px;height:3px;border-radius:2px;background:var(--track)}
+.strip .md{position:absolute;top:0;width:3px;height:17px;background:var(--bench);border-radius:2px;transform:translateX(-50%);box-shadow:0 0 0 1.5px #fff;z-index:2}
+.strip .pt{position:absolute;top:3px;width:11px;height:11px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px #fff;transform:translateX(-50%)}
+.cmp{font-size:12.5px;color:var(--muted)}
+.cmp b{color:var(--text);font-weight:600}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:#94A3B8;margin-top:-2px}
+.na{font-size:13px;color:var(--muted);padding:6px 0}
+</style></head><body>
+<!-- Mockup z UX review 14. 10. 2026. Hodnoty natvrdo z overview.json a benchmarks.json (export 2026-10-10). Jen vzor pro implementaci, na web nenasazovat. -->
+<h2>Návrh karty poslance</h2>
+<p class="key"><span><i class="k-dot"></i>poslanec/poslankyně</span><span><i class="k-tick"></i>medián: celý EP u docházky, vlastní frakce u loajality</span><span>osa 60–100 %</span></p>
+<div class="grid" id="g"></div>
+<script>
+const D=[
+ ["256852","Nikola Bartůšek","ECR","nezávislá","#4F46E5",91.0,80.9,91.2],
+ ["220840","Jaroslav Bžoch","PfE","ANO 2011","#7C3AED",93.2,74.2,83.1],
+ ["197549","Markéta Gregorová","Greens/EFA","Piráti","#16A34A",91.1,96.5,97.1],
+ ["256845","Ondřej Krutílek","ECR","ODS","#4F46E5",97.6,82.6,91.2],
+ ["256853","Klára Dostálová","PfE","ANO 2011","#7C3AED",80.0,75.5,83.1],
+ ["23699","Kateřina Konečná","nezařazení","KSČM","#94A3B8",90.9,null,null]];
+const EP=89.9, pos=v=>((v-60)/40*100).toFixed(2)+"%";
+const diff=(v,m)=>{const d=Math.round((v-m)*10)/10;const s=Math.abs(d).toLocaleString("cs-CZ",{minimumFractionDigits:1});return d===0?"stejně jako medián":(d>0?`o <b>${s} p. b.</b> víc`:`o <b>${s} p. b.</b> méně`)};
+const row=(lab,v,m,ref)=>v==null?`<div class="row"><div class="top"><span class="lab">${lab}</span><span class="val">–</span></div><div class="na">nezařazení nemají frakci, nepočítá se</div></div>`:
+`<div class="row"><div class="top"><span class="lab">${lab}</span><span class="val">${v.toLocaleString("cs-CZ",{minimumFractionDigits:1})} %</span></div>
+<div class="strip"><span class="tr"></span><span class="pt" style="left:${pos(v)}"></span><span class="md" style="left:${pos(m)}"></span></div>
+<div class="cmp">${diff(v,m)} než ${ref} (${m.toLocaleString("cs-CZ",{minimumFractionDigits:1})} %)</div></div>`;
+g.innerHTML=D.map(([id,n,gr,p,c,a,l,lm])=>`<div class="card" style="--g:${c}"><div class="head"><img src="../../public/assets/photos/thumbs/${id}.webp" alt=""><div><div class="name">${n}</div><div class="sub"><span class="dot"></span>${gr} · ${p}</div></div><div class="logo">logo</div></div>
+${row("Docházka",a,EP,"medián EP")}${row("Loajalita k frakci",l,lm,"medián frakce")}</div>`).join("");
+</script></body></html>

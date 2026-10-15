@@ -5,7 +5,9 @@ Porovná nová data s předchozím stavem (záloha složky data/ před stažení
   - žádný měsíc z předchozího stavu nesmí zmizet,
   - aktivních poslanců za ČR (mandát platný k danému dni) musí být 21; o jednoho méně
     je jen varování (uprázdněné místo, než nastoupí náhradník), jiný počet je chyba,
-  - žádný poslanec 10. období nesmí ze seznamu zmizet.
+  - žádný poslanec 10. období nesmí ze seznamu zmizet,
+  - loga stran a frakcí (jen varování): logo bez zdroje v data/manual/logos.json, soubor větší než 60 kB,
+    SVG s <script>, atributy on…= , javascript: nebo externím odkazem.
 Při chybě vypíše všechny problémy a skončí kódem 1, workflow pak nic necommitne.
 Varování se vypíší jako GitHub anotace (::warning::) a běh pokračuje.
 
@@ -18,10 +20,35 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import re
 import sys
 from pathlib import Path
 
 CZ_SEATS = 21
+LOGO_MAX_BYTES = 60_000
+UNSAFE_SVG = re.compile(r"<script|\son[a-z]+\s*=|javascript:|(?:xlink:)?href\s*=\s*[\"'](?:https?:)?//", re.I)
+
+
+def check_logos(data_dir: Path, public: Path) -> list[str]:
+    """Varování k logům v groups.json a parties.json (soubory nahrává autor ručně)."""
+    warnings = []
+    for name in ("groups.json", "parties.json"):
+        for e in _load(data_dir / name) or []:
+            logo = e.get("logo")
+            if not logo:
+                continue
+            label = e.get("short_label") or e.get("code") or e.get("id")
+            if not e.get("logo_source"):
+                warnings.append(f"logo {label} ({logo}) nemá v data/manual/logos.json uvedený zdroj")
+            f = public / logo
+            if not f.exists():
+                warnings.append(f"logo {label}: soubor {logo} neexistuje")
+                continue
+            if f.stat().st_size > LOGO_MAX_BYTES:
+                warnings.append(f"logo {label}: soubor {logo} má {f.stat().st_size // 1000} kB (víc než 60 kB)")
+            if f.suffix == ".svg" and UNSAFE_SVG.search(f.read_text(encoding="utf-8", errors="replace")):
+                warnings.append(f"logo {label}: SVG {logo} obsahuje skript, obsluhu události nebo externí odkaz; pročistit")
+    return warnings
 
 
 def _load(path: Path):
@@ -74,8 +101,10 @@ def main(argv=None) -> int:
     p.add_argument("--prev", type=Path, help="záloha složky data/ z předchozího běhu")
     p.add_argument("--data", type=Path, default=root / "data")
     p.add_argument("--today", default=dt.datetime.now(dt.timezone.utc).date().isoformat())
+    p.add_argument("--public", type=Path, default=root / "public")
     args = p.parse_args(argv)
     problems, warnings = check(args.prev, args.data, args.today)
+    warnings += check_logos(args.data, args.public)
     for w in warnings:
         print(f"::warning title=Kontrola dat::{w}")
     if problems:
