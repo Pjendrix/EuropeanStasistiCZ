@@ -206,9 +206,7 @@ function ownPassed(ow, mep) {
   const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>
       <ul class="plain">${adoptedList.map(ownItem).join("")}</ul></details>` : "";
   return `<h3 class="own-sub">Práce na textech v delegaci</h3><div class="metrics">${cards}</div>${list}
-    <p class="small muted">Zpravodaj/ka píše text za výbor (zprávu výboru, který věc vede, nebo stanovisko dalšího výboru),
-      stínový/á zpravodaj/ka ho vyjednává za svou frakci. Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.
-      Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). ${note}</p>
+    ${noteLine("Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.", `Zpravodaj/ka píše text za výbor (zprávu výboru, který věc vede, nebo stanovisko dalšího výboru), stínový/á zpravodaj/ka ho vyjednává za svou frakci. Počítají se všechny přidělené texty bez ohledu na výsledek hlasování. Legislativní = Parlament spolurozhoduje o právním předpisu (procedury COD, CNS, APP). ${note}`)}
     <h3 class="own-sub">Všechna práce podle typu</h3>`;
 }
 
@@ -223,7 +221,7 @@ function activityBlock(a, mep) {
         a.speech_items ? `v ${fmtNum(a.speech_items)} bodech jednání` : "", "jen počet, bez srovnání s kolegy"])}
       ${passedCard("Písemná prohlášení", a.written_statements, ["počítáme zvlášť: dají se psát hromadně"])}
     </div>
-    <p class="source">Počty v době mandátu. Zdroj: ${src} (CC BY 4.0), stav k ${fmtDate(a.updated)}. Projevy ani prohlášení nevypovídají o kvalitě ani vlivu a nejsou součástí třetin.</p>`;
+    ${noteLine(`Zdroj: ${src} (CC BY 4.0) · stav k ${fmtDate(a.updated)}`, "Počty v době mandátu. Projevy ani prohlášení nevypovídají o kvalitě ani vlivu a nejsou součástí třetin.", "source")}`;
 }
 
 // Prezence na zasedání podle prezenční listiny EP (D1): jiná metrika než účast na hlasování, bez mediánu a bez pořadí.
@@ -248,9 +246,8 @@ function ownWork(ow, mep) {
   }).join("");
   return `${mep ? ownPassed(ow, mep) : ""}${cards ? `<div class="metrics">${cards}</div>` : '<p class="muted">V datech EP není žádná zpráva, usnesení ani otázka.</p>'}
     ${lists}
-    <p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), výsledky hlasování
-      <a href="https://howtheyvote.eu">HowTheyVote.eu</a>. Aktualizováno ${fmtDate(ow.updated)}${ow.complete ? "" : " (stahování ještě neskončilo, data nejsou úplná)"}.
-      Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: ${esc(NO_VOTE_NOTE)} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`;
+    ${noteLine(`Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · aktualizováno ${fmtDate(ow.updated)}${ow.complete ? "" : " (data nejsou úplná)"}`,
+      `Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: ${esc(NO_VOTE_NOTE)} <a href="o-projektu.html#metodika">Jak počítáme</a>.`, "source")}`;
 }
 
 // Souhrn ve větě ze šablony; všechna čísla jsou ze stats.json (spočítal skript).
@@ -296,15 +293,32 @@ function periodText(x) {
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
     const pageUrl = new URL(`p/${mep.id}.html`, document.baseURI).href;
     window.shareContext = () => {
-      const ro = profile.own_work?.roles;
+      const ro = profile.own_work?.roles, ows = profile.own_work?.summary, pas = profile.own_work?.passed;
+      const gObj = groups.find((x) => x.ep_code === g?.code);
+      const pObj = p ? parties.find((x) => String(x.id) === String(p.org_id)) : null;
+      const partyLabel = p ? (p.short_label === "Ind." || pObj?.independent ? byGender(mep, "nezávislý", "nezávislá") : p.short_label) : "";
+      const groupLabel = g ? (CZ_GROUP_LABEL[gObj?.code] || gObj?.short_label || g.short_label) : "";
+      const day = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : null);
+      const today = new Date().toISOString().slice(0, 10);
+      const cNow = mep.committees.filter((c) => !c.end || c.end >= today);
+      const top = profile.pairwise.filter((x) => x.total >= 100).map((x) => ({ name: displayName(x), party: x.party?.short_label || "", share: x.same / x.total }))
+        .sort((a, b) => b.share - a.share).slice(0, 3);
       return {
         kind: "mep", url: pageUrl, filename: `ep-watch-${mep.id}`,
         text: `${name}: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(pct(t.attendance))} jmenovitých hlasování (medián EP ${b?.ep?.attendance != null ? fmtPct(b.ep.attendance) : "–"}). Zdroj: HowTheyVote.eu, EP Watch CZ`,
         data: {
-          name, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: /^\d{4}-\d{2}-\d{2}$/.test(profile.sources?.votes?.release || "") ? profile.sources.votes.release : new Date().toISOString().slice(0, 10),
-          subtitle: [g ? (CZ_GROUP_LABEL[groups.find((x) => x.ep_code === g.code)?.code] || g.short_label) : "", p ? p.short_label : "", active ? "" : "bývalý poslanec"].filter(Boolean).join(" · "),
+          name, female: mep.gender === "FEMALE" ? true : mep.gender === "MALE" ? false : null, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: day(profile.sources?.votes?.release) || today, workDay: day(profile.own_work?.updated) || day(profile.activity?.updated),
+          chips: [groupLabel && { label: groupLabel, color: groupColor(gObj) }, partyLabel && { label: partyLabel, color: groupColor(pObj) }].filter(Boolean),
+          mandate: active ? `v mandátu od ${since}` : `mandát ${mandateText(mep)}`,
           attendance: t.attendance, attendanceMedian: b?.ep?.attendance ?? null, loyalty: isNI ? null : t.group_loyalty, loyaltyMedian: isNI ? null : (b?.group?.group_loyalty ?? null),
-          work: ro ? `Práce na textech: zprávy ${ro.lead_reports} · stínové ${ro.shadow_reports} · stanoviska ${ro.lead_opinions + ro.shadow_opinions}` : "",
+          positions: t.positions, outcome: t.outcome, groupOutcome: t.group_outcome, attendanceMain: t.attendance_main, attendanceMainMedian: b?.ep?.attendance_main ?? null,
+          pairwiseTop: top,
+          ownWork: ro ? { leadReports: ro.lead_reports, leadAdopted: pas?.lead_adopted ?? null, leadOpinions: ro.lead_opinions, shadowReports: ro.shadow_reports } : null,
+          speeches: profile.activity ? profile.activity.speeches : null, speechesMinutes: profile.activity ? profile.activity.speeches_minutes : null,
+          questions: ows?.question ? ows.question.count : null, questionsAnswered: ows?.question ? ows.question.answered : null,
+          presence: profile.presence && profile.presence.days ? { present: profile.presence.present, days: profile.presence.days } : null,
+          committees: { members: cNow.filter((c) => c.role !== "MEMBER_SUBSTITUTE").map((c) => ({ code: c.code, name: c.name_cs || c.name_en || "" })),
+            substitutes: cNow.filter((c) => c.role === "MEMBER_SUBSTITUTE").map((c) => c.code) },
           urlShort: pageUrl.replace(/^https?:\/\//, ""),
         },
       };
@@ -381,21 +395,19 @@ function periodText(x) {
           { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
         ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, "", cite("shoda s ostatními českými poslanci", t.cz_agreement))}
       </div>
-      <p class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
-        ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×. ${sourceLine(stats)}</p>
+      <div class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
+        ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×.${infoButton(`<p>${sourceLine(stats)}</p>`, "Zdroj")}</div>
 
-      ${b ? `<p class="small muted" id="srovnani">Srovnání s celým EP: ${esc(b.definition || "")}${b.window ? ` Mediány u ${byGender(mep, "tohoto poslance", "této poslankyně")} jsou počítané jen z ${fmtNum(b.window.votes)} hlasování v době mandátu (${fmtDate(b.window.from)} – ${b.window.to ? fmtDate(b.window.to) : "dosud"}).` : ""}</p>` : ""}
+      ${b ? `<div id="srovnani">${noteLine("Medián EP je prostřední hodnota všech poslanců.", `Srovnání s celým EP: ${esc(b.definition || "")}${b.window ? ` Mediány u ${byGender(mep, "tohoto poslance", "této poslankyně")} jsou počítané jen z ${fmtNum(b.window.votes)} hlasování v době mandátu (${fmtDate(b.window.from)} – ${b.window.to ? fmtDate(b.window.to) : "dosud"}).` : ""}`)}</div>` : ""}
 
       ${hasOwn ? `<h2 id="vlastni-prace">Práce na textech</h2>
-      <p class="small muted">Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
-      <p class="small muted">Zprávy, stínové zprávy, stanoviska, návrhy usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}.
-        U zpráv a usnesení výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.</p>
+      ${noteLine(`Zprávy, stanoviska, usnesení a otázky, na kterých se ${byGender(mep, "podílel", "podílela")}. Počty, ne kvalita.`,
+        `Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je. U zpráv a usnesení je uveden výsledek závěrečného jmenovitého hlasování v plénu (nebo přijatého návrhu na zamítnutí), vždy po typech zvlášť.`)}
       ${ownWork(ow, mep)}` : ""}
       ${activityBlock(profile.activity, mep)}
 
       <h2 id="soulad">Soulad s výsledkem hlasování</h2>
-      <p class="small muted">Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo. Číslo hlavně odráží velikost a pozici frakce;
-        hlasovat proti většině je legitimní opoziční role. Proto ho vždy srovnáváme s průměrem frakce.</p>
+      ${noteLine(`Jak často hlasoval${byGender(mep, "", "a")} tak, jak hlasování nakonec dopadlo.`, `Číslo hlavně odráží velikost a pozici frakce; hlasovat proti většině je legitimní opoziční role. Proto ho vždy srovnáváme s průměrem frakce.`)}
       <div class="metrics">
         ${outcomeCard("Všechna hlasování", t.outcome, t.group_outcome, "jen informativní", mep)}
         ${outcomeCard("Závěrečná hlasování", t.outcome_main, t.group_outcome_main, "jen informativní", mep)}
@@ -408,8 +420,7 @@ function periodText(x) {
 
       <h2 id="mesice">Účast na hlasování po měsících</h2>
       <div class="card">${monthlyChart(profile.monthly)}
-        <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok.
-        Nízká čárka = v měsíci ${byGender(mep, "nehlasoval", "nehlasovala")} ani jednou. Klepnutím na sloupec se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
+        ${noteLine("Sloupec = podíl hlasování v měsíci. Klepnutím ukážete přesné číslo.", `Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok. Nízká čárka = v měsíci ${byGender(mep, "nehlasoval", "nehlasovala")} ani jednou. Měsíce bez zasedání (srpen) chybí.`)}</div>
 
       <div class="grid-2">
         <section>
@@ -448,15 +459,13 @@ function periodText(x) {
 
       <h2 id="rozhodly">Kde rozhodly české hlasy</h2>
       <div class="card">
-        <p class="small muted">Těsná hlasování, která by bez hlasů českých poslanců dopadla opačně; většinou pozměňovací návrhy a dílčí hlasování
-          (<a href="rozhodujici.html">všechna taková hlasování</a>).
-          Ukazuje se, jak ${byGender(mep, "hlasoval", "hlasovala")} v těch, která proběhla v době ${byGender(mep, "jeho", "jejího")} mandátu.</p>
+        ${noteLine(`Těsná hlasování, která by bez českých hlasů dopadla opačně (<a href="rozhodujici.html">všechna</a>).`, `Většinou pozměňovací návrhy a dílčí hlasování. Ukazuje se, jak ${byGender(mep, "hlasoval", "hlasovala")} v těch, která proběhla v době ${byGender(mep, "jeho", "jejího")} mandátu.`)}
         ${voteTable(profile.decisive, "<th>Volba</th><th>Na straně výsledku</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>${sideCell(v)}`)}
       </div>
 
       <h2 id="temata">Podle témat</h2>
       <div class="card">
-        <p class="small muted">Deset témat s nejvíce hlasováními podle Legislativní observatoře EP. Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).</p>
+        ${noteLine("Deset témat s nejvíce hlasováními podle Legislativní observatoře EP.", "Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).")}
         <div class="table-wrap"><table class="stack topics">
           <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Účast na hlasování</th><th class="num">Pro / proti / zdržel${byGender(mep, "", "a")} se</th><th class="num">Hlasuje s frakcí</th></tr></thead>
           <tbody>${profile.topics.map((x) => `<tr>
@@ -470,8 +479,7 @@ function periodText(x) {
 
       <h2 id="s-kym">S kým hlasuje stejně</h2>
       <div class="card">
-        <p class="small muted">Podíl hlasování, kde oba hlasovali a hlasovali stejně (jen dvojice s aspoň 50 společnými hlasováními).
-          <a href="shoda.html?id=${mep.id}">Celá tabulka shody všech českých poslanců</a>.</p>
+        ${noteLine(`Podíl hlasování, kde oba hlasovali stejně. <a href="shoda.html?id=${mep.id}">Celá tabulka shody</a>.`, "Jen dvojice s aspoň 50 společnými hlasováními.")}
         ${pairs.length ? `<div class="grid-2">
           <div><h3>Nejčastěji stejně</h3><ul class="plain">${pairs.slice(0, 5).map(pairLi).join("")}</ul></div>
           <div><h3>Nejméně často stejně</h3><ul class="plain">${pairs.slice(-5).reverse().map(pairLi).join("")}</ul></div>

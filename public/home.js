@@ -209,7 +209,7 @@ function groupedCards(list, groups, parties, bench) {
     renderDelegation(ov, groups);
 
     document.getElementById("source").innerHTML = sourceLine(ov) +
-      (bench ? ` Mediány: ${esc(bench.definition || "")}` : "");
+      (bench ? infoButton(`<p>Mediány: ${esc(bench.definition || "")}</p>`, "Definice mediánů") : "");
     document.getElementById("source").before(csvButton("poslanci.csv", () => [
       ["id", "poslanec", "frakce", "strana", "v_mandatu", "ucast_na_hlasovani", "hlasovani_v_dobe_mandatu", "ucast_zaverecna", "hlasuje_s_frakci", "shoda_s_cechy"],
       ...ov.meps.map((m) => [m.id, displayName(m), m.group?.short_label || "", m.party?.short_label || "", isActive(m) ? "ano" : "ne",

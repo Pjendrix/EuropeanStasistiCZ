@@ -80,7 +80,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     # --- hero -------------------------------------------------------------------------
     hero = f"""<section class="hub-hero" aria-labelledby="h1">
   <h1 id="h1">Jak hlasují čeští europoslanci</h1>
-  <p class="lead">Každé jmenovité hlasování v Evropském parlamentu, účast na hlasování a spolupráce napříč frakcemi. Jen ověřená data z oficiálních zdrojů, čísla počítá skript, ne AI.</p>
+  <p class="lead">Jmenovitá hlasování, účast a spolupráce napříč frakcemi. Ověřená data, čísla počítá skript, ne AI.</p>
   <div class="hub-search" role="search">
     <label for="hub-q" class="sr-only">Najdi poslance, stranu nebo hlasování</label>
     <input id="hub-q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list">

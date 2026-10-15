@@ -346,6 +346,57 @@ function czDots(positions, mepsById, groups) {
   }).join("")}</div>`;
 }
 
+// Slovo hlasu ve správném rodě a čísle (zrcadlo position_phrase v scripts/build_pages.py).
+function positionPhrase(position, members) {
+  if (position === "FOR") return "pro";
+  if (position === "AGAINST") return "proti";
+  if (members.length === 1) return positionFor(position, members[0]);
+  const fem = members.every((m) => m.gender === "FEMALE");
+  if (position === "ABSTENTION") return fem ? "zdržely se" : "zdrželi se";
+  return fem ? "nehlasovaly" : "nehlasovali";
+}
+
+// Čeští poslanci v hlasování podle strany (k datu hlasování); strany od největší, pak abecedně. Stejná logika jako party_rows v Pythonu.
+function czPartyRows(positions, mepsById, parties, groups) {
+  const byId = Object.fromEntries(parties.map((p) => [p.id, p]));
+  const rows = {};
+  positions.forEach((p) => {
+    const entry = byId[p.national_party_id];
+    const label = entry?.short_label || (p.national_party && p.national_party !== "Independent" ? p.national_party : "Ind.");
+    const r = (rows[label] = rows[label] || { label, color: entry?.chart_color || null, groups: [], members: { FOR: [], AGAINST: [], ABSTENTION: [], DID_NOT_VOTE: [] } });
+    const g = groups.find((x) => x.code === p.group_code);
+    const gl = p.group_code ? (g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : p.group_code) : "bez frakce";
+    if (!r.groups.includes(gl)) r.groups.push(gl);
+    r.members[p.position].push(mepsById[p.member_id]);
+  });
+  return Object.values(rows).map((r) => {
+    r.groups.sort((a, b) => a.localeCompare(b, "cs"));
+    Object.values(r.members).forEach((l) => l.sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs")));
+    r.total = Object.values(r.members).reduce((n, l) => n + l.length, 0);
+    return r;
+  }).sort((a, b) => b.total - a.total || a.label.localeCompare(b.label, "cs"));
+}
+
+function czPartyRowsHtml(rows) {
+  const KEYS4 = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
+  return rows.map((r) => {
+    const dots = KEYS4.flatMap((k) => r.members[k].map((m) => `<i class="cz-dot d-${k}" title="${esc(`${displayName(m)}: ${positionPhrase(k, [m])}`)}"></i>`)).join("");
+    const names = KEYS4.filter((k) => r.members[k].length).map((k) =>
+      `<span class="pr-group"><b class="pos pos-${k}">${esc(positionPhrase(k, r.members[k]))}</b> ${r.members[k].map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}</span>`).join(" · ");
+    return `<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"${r.color ? ` style="background:${esc(r.color)}"` : ""}></span><b>${esc(r.label)}</b></span>
+      <span class="small muted">${esc(r.groups.join(", "))}</span></div><div class="pr-dots" aria-hidden="true">${dots}</div><div class="pr-names">${names}</div></div>`;
+  }).join("");
+}
+
+// Přepínač „Podle stran | Podle hlasu“ (detail hlasování, statický i interaktivní).
+document.addEventListener("click", (ev) => {
+  const btn = ev.target.closest("[data-cz-view]");
+  if (!btn) return;
+  const box = btn.closest(".cz-views");
+  box.dataset.view = btn.dataset.czView;
+  box.querySelectorAll("[data-cz-view]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+});
+
 // Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
 function resultHtml(v) {
   const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
@@ -408,10 +459,11 @@ function sortable(table, columns, rows, render, initial) {
 
 function sourceLine(stats) {
   const rel = stats?.sources?.votes?.release;
-  return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a
-    <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0). Čísla počítá skript
-    <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>,
-    <a href="o-projektu.html#metodika">metodika</a>.`;
+  const date = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? ` · data k ${fmtDate(rel.slice(0, 10))}` : "";
+  return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
+    + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
+      Čísla počítá skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
+      <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Zdroj a metodika");
 }
 
 // --- sdílené části pro seznamy hlasování -------------------------------------
@@ -727,6 +779,54 @@ document.addEventListener("click", (ev) => {
   history.replaceState(null, "", location.pathname + location.search + a.getAttribute("href"));
   target.scrollIntoView({ behavior: REDUCED_MOTION ? "auto" : "smooth" });
   if (a.classList.contains("skip-link")) { target.setAttribute("tabindex", "-1"); target.focus(); }
+});
+
+// --- tlačítko ⓘ s vysvětlením (S1) --------------------------------------------------------------
+// Vysvětlivky, definice a metodika jsou o jedno kliknutí dál: nativní popover (top layer), jinak fallback.
+let infoSeq = 0;
+function infoButton(html, label = "Jak to číst, definice a zdroj") {
+  const id = `info-${++infoSeq}-${Math.random().toString(36).slice(2, 6)}`;
+  return `<span class="info-wrap"><button type="button" class="info-btn" popovertarget="${id}" aria-label="${esc(label)}" aria-expanded="false">ⓘ</button>`
+    + `<div popover id="${id}" class="info-pop" role="note">${html}</div></span>`;
+}
+// Jednořádková poznámka s ⓘ: krátký text vidět, zbytek (definice, metodika, zdroje) po kliknutí.
+function noteLine(short, long, cls = "small muted") {
+  return `<div class="${cls}">${short}${long ? infoButton(`<p>${long}</p>`) : ""}</div>`;
+}
+const HAS_POPOVER = typeof HTMLElement !== "undefined" && "popover" in HTMLElement.prototype;
+if (!HAS_POPOVER) document.documentElement.classList.add("no-popover");
+
+function placeInfo(pop, btn) {
+  const r = btn.getBoundingClientRect();
+  const w = Math.min(pop.offsetWidth || 420, window.innerWidth - 16);
+  pop.style.inset = "auto";
+  pop.style.margin = "0";
+  pop.style.left = `${Math.min(Math.max(8, r.left), window.innerWidth - w - 8)}px`;
+  const below = r.bottom + 6;
+  pop.style.top = `${below + pop.offsetHeight > window.innerHeight - 8 ? Math.max(8, r.top - 6 - pop.offsetHeight) : below}px`;
+}
+function infoPopFor(btn) { return document.getElementById(btn.getAttribute("popovertarget")); }
+document.addEventListener("beforetoggle", (ev) => {
+  if (!ev.target.classList?.contains("info-pop")) return;
+  const btn = document.querySelector(`[popovertarget="${ev.target.id}"]`);
+  if (ev.newState === "open" && btn) { btn.setAttribute("aria-expanded", "true"); requestAnimationFrame(() => placeInfo(ev.target, btn)); }
+  else btn?.setAttribute("aria-expanded", "false");
+}, true);
+document.addEventListener("click", (ev) => {
+  if (HAS_POPOVER) return;
+  const btn = ev.target.closest(".info-btn");
+  document.querySelectorAll(".info-pop.open").forEach((p) => { if (!btn || p !== infoPopFor(btn)) { p.classList.remove("open"); document.querySelector(`[popovertarget="${p.id}"]`)?.setAttribute("aria-expanded", "false"); } });
+  if (btn) {
+    const p = infoPopFor(btn);
+    const open = p.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+    if (open) placeInfo(p, btn);
+  }
+});
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Escape" || HAS_POPOVER) return;
+  const p = document.querySelector(".info-pop.open");
+  if (p) { p.classList.remove("open"); const b = document.querySelector(`[popovertarget="${p.id}"]`); b?.setAttribute("aria-expanded", "false"); b?.focus(); }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

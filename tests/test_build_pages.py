@@ -104,3 +104,26 @@ def test_group_majority_and_party_votes_text():
     cz = [{"national_party": "A", "position": "FOR"}, {"national_party": "A", "position": "FOR"},
           {"national_party": "B", "position": "AGAINST"}, {"national_party": "Independent", "position": "DID_NOT_VOTE"}]
     assert bp.party_votes_text(cz) == [("A", "2 pro"), ("B", "1 proti"), ("bez strany", "1 nehlasoval")]
+
+
+def test_party_rows_order_dots_and_verbs():
+    meps = {i: {"id": i, "name": f"MOCK {n}", "sort_label": n, "gender": g} for i, n, g in
+            [(1, "Aaa", "MALE"), (2, "Bbb", "FEMALE"), (3, "Ccc", "FEMALE"), (4, "Ddd", "MALE"), (5, "Eee", "MALE")]}
+    parties = [{"id": 10, "short_label": "AA", "chart_color": "#111111"}, {"id": 20, "short_label": "BB", "chart_color": "#222222"},
+               {"id": 30, "short_label": "Ind.", "chart_color": None}]
+    groups = [{"code": "EPP", "short_label": "EPP"}, {"code": "NI", "short_label": "NI"}]
+    cz = [{"member_id": 1, "position": "FOR", "national_party_id": 20, "group_code": "EPP"},
+          {"member_id": 2, "position": "ABSTENTION", "national_party_id": 10, "group_code": "EPP"},
+          {"member_id": 3, "position": "ABSTENTION", "national_party_id": 10, "group_code": "NI"},
+          {"member_id": 4, "position": "DID_NOT_VOTE", "national_party_id": 30, "group_code": "NI"},
+          {"member_id": 5, "position": "AGAINST", "national_party_id": 10, "group_code": "EPP"}]
+    rows = bp.party_rows(cz, meps, parties, groups)
+    assert [r["label"] for r in rows] == ["AA", "BB", "Ind."]       # největší strana první, pak abecedně
+    assert sum(r["total"] for r in rows) == len(cz)                  # součet teček = počet poslanců
+    assert rows[0]["groups"] == ["EPP", "nezařazení"]                # frakce k datu hlasování, obě vypsané
+    html = bp.party_rows_html(rows, "../")
+    assert html.count('class="cz-dot') == len(cz)
+    assert "zdržely se" in html and "zdrželi se" not in html         # obě ženy → ženský plurál
+    assert bp.position_phrase("DID_NOT_VOTE", [meps[4]]) == "nehlasoval"
+    assert bp.position_phrase("ABSTENTION", [meps[1], meps[2]]) == "zdrželi se"
+    assert not bp.party_rows([], meps, parties, groups)              # prázdná strana se nevypíše

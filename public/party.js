@@ -15,9 +15,7 @@ async function listPage() {
   const epMed = bench?.ep?.attendance;
   main.innerHTML = `
     <h1>České strany v Evropském parlamentu</h1>
-    <p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období. Příslušnost ke straně se bere
-      k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. Strany jsou řazené podle počtu poslanců. U stran s více poslanci je jednotnost
-      přirozeně nižší: víc lidí, víc možností se rozejít. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+    <div class="lead-row"><p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období.</p>${infoButton(`<p>Příslušnost ke straně se bere k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. Strany jsou řazené podle počtu poslanců. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností se rozejít. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`)}</div>
     <div class="table-wrap"><table>
       <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Účast na hlasování${epMed != null ? `<div class="small muted th-note">medián EP ${fmtPct(epMed)}</div>` : ""}</th>
         <th class="num">Jednotnost</th><th class="num">Hlasování, kde se strana rozdělila</th></tr></thead>

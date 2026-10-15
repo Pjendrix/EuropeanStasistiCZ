@@ -41,15 +41,15 @@
     <a href="shoda.html" data-page="agreement">Kdo s kým hlasuje</a>
   </nav>
   <h1>Shoda mezi českými poslanci</h1>
-  <p class="lead">Jak často hlasovali dva čeští poslanci stejně: podíl hlasování, kde oba hlasovali (pro, proti nebo se zdrželi)
-    a hlasovali stejně. Počítají se jen hlasování, kdy byli oba v mandátu. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+  <div class="lead-row"><p class="lead">Jak často hlasovali dva čeští poslanci stejně.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-shoda" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-shoda" class="info-pop" role="note">
+    <p>Jak často hlasovali dva čeští poslanci stejně: podíl hlasování, kde oba hlasovali (pro, proti nebo se zdrželi) a hlasovali stejně. Počítají se jen hlasování, kdy byli oba v mandátu. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
+  </div></span></div>
   <div class="controls">
     <label><input type="checkbox" id="former"> zobrazit i bývalé poslance</label>
     <label>Seřadit podle shody s <select id="anchor"><option value="">— abecedně —</option></select></label>
   </div>
   <div id="matrix" class="loading">Načítám…</div>
-  <p class="small muted">Buňka: procento shody, pod ním počet společných hlasování. Výraznější barva = vyšší shoda (barva rozlišuje rozsah 30–100 %).
-    Dvojice s méně než 50 společnými hlasováními jsou šedé (číslo je málo spolehlivé). Na mobilu tabulku posuň do strany.</p>
+  <div class="small muted">Buňka = % shody a počet společných hlasování. Šedé = méně než 50 společných.<span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-shoda-cell" aria-label="Jak číst tabulku" aria-expanded="false">ⓘ</button><div popover id="i-shoda-cell" class="info-pop" role="note"><p>Buňka: procento shody, pod ním počet společných hlasování. Výraznější barva = vyšší shoda (barva rozlišuje rozsah 30–100 %). Dvojice s méně než 50 společnými hlasováními jsou šedé (číslo je málo spolehlivé). Na mobilu tabulku posuň do strany.</p></div></span></div>
   <p class="source" id="source"></p>
 </main>
 

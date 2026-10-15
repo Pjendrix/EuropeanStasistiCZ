@@ -54,6 +54,23 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      if (!url.startsWith("o-projektu")) {
+        // S1: textový rozpočet. Úvodní věta ≤ 160 znaků, žádný viditelný odstavec > 220 znaků mimo details a popover.
+        const text = await page.evaluate(() => {
+          const out = { lead: [], long: [] };
+          document.querySelectorAll("p.lead").forEach((p) => { if (p.id !== "headline" && p.textContent.trim().length > 160 && !p.closest("[popover]") && !p.classList.contains("vote-desc")) out.lead.push(p.textContent.trim().length); });
+          document.querySelectorAll("main p, main .source").forEach((p) => {
+            if (p.closest("details, [popover], .table-wrap") || p.classList.contains("vote-desc") || p.querySelector(":scope > .tag") || !p.offsetParent) return;
+            const c = p.cloneNode(true);
+            c.querySelectorAll("[popover]").forEach((x) => x.remove());
+            const t = c.textContent.trim();
+            if (t.length > 220) out.long.push(`${t.length} znaků: ${t.slice(0, 60)}…`);
+          });
+          return out;
+        });
+        text.lead.forEach((n) => problems.push(`${where}: .lead má ${n} znaků (max 160)`));
+        text.long.forEach((t) => problems.push(`${where}: dlouhý viditelný odstavec ${t}`));
+      }
       if (width === 1366) {
         await page.addScriptTag({ content: axeSource });
         const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
@@ -65,11 +82,31 @@ for (const scheme of ["light", "dark"]) {
     await ctx.close();
   }
 }
+// S1: ⓘ se otevře klikem i klávesou a zavře Esc.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
+  for (const url of ["prace-poslanci.html", "shoda.html", "votes.html"]) {
+    const page = await ctx.newPage();
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const btn = page.locator(".info-btn").first();
+    if (!(await btn.count())) { problems.push(`${url}: chybí tlačítko ⓘ`); await page.close(); continue; }
+    const visible = () => page.evaluate(() => Boolean(document.querySelector(".info-pop:popover-open, .info-pop.open")));
+    await btn.click();
+    if (!(await visible())) problems.push(`${url}: ⓘ se neotevřelo klikem`);
+    await page.keyboard.press("Escape");
+    if (await visible()) problems.push(`${url}: Esc nezavřel ⓘ`);
+    await btn.focus(); await page.keyboard.press("Enter");
+    if (!(await visible())) problems.push(`${url}: ⓘ se neotevřelo klávesou`);
+    await page.keyboard.press("Escape");
+    await page.close();
+  }
+  await ctx.close();
+}
 // S3: nabídka Sdílet není nikdy překrytá (sticky lišta, stacking context) a Esc ji zavře i s návratem fokusu.
 // Bez reducedMotion, aby běžela animace .reveal, která chybu původně způsobovala.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 800 } });
-  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`]) {
+  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`, `v/${voteId}.html`]) {
     const page = await ctx.newPage();
     await page.goto(base + url, { waitUntil: "networkidle" });
     await page.waitForTimeout(1200);
@@ -79,6 +116,22 @@ for (const width of [1366, 390]) {
     const covered = await page.evaluate(() => [...document.querySelectorAll(".share-menu [role=menuitem]")].filter((e) => {
       const q = e.getBoundingClientRect(); return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2)); }).map((e) => e.textContent.trim()));
     if (covered.length) problems.push(`${where}: nabídku překrývá jiný prvek: ${covered.join(", ")}`);
+    if (width === 1366 && url.startsWith("v/")) {  // S5: karta hlasování se na statické stránce stáhne jako PNG 1080 × 1350
+      const [dl] = await Promise.all([page.waitForEvent("download"), page.click('.share-menu [data-act="download:post"]')]);
+      const buf = await (await import("node:fs/promises")).readFile(await dl.path());
+      const okPng = buf.slice(1, 4).toString() === "PNG" && buf.readUInt32BE(16) === 1080 && buf.readUInt32BE(20) === 1350;
+      if (!okPng) problems.push(`${where}: stažená karta není PNG 1080 × 1350`);
+      await page.click("[data-share]");
+    }
+    if (width === 1366 && url.startsWith("p/")) {  // S4: základní karta a oba slidy detailu 4 : 5, story 9 : 16 (kreslí se v prohlížeči)
+      const sizes = await page.evaluate(async () => {
+        const out = {};
+        for (const k of ["post", "slide2", "slide3", "story"]) { const b = await createImageBitmap(await renderCardPng(window.shareContext(), k)); out[k] = [b.width, b.height]; }
+        return out;
+      });
+      for (const [k, [w, h]] of Object.entries(sizes)) if (w !== 1080 || h !== (k === "story" ? 1920 : 1350)) problems.push(`${where}: karta ${k} má rozměr ${w}×${h}`);
+      if (!(await page.$('.share-menu [data-act="download:detail"]'))) problems.push(`${where}: v nabídce chybí „detail, 3 obrázky“`);
+    }
     await page.keyboard.press("Escape");
     const state = await page.evaluate(() => ({ open: Boolean(document.querySelector(".share-menu")), focus: document.activeElement?.matches("[data-share]") }));
     if (state.open || !state.focus) problems.push(`${where}: Esc nezavřel nabídku nebo nevrátil fokus`);
