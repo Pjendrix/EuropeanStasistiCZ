@@ -223,18 +223,22 @@ function ownWork(ow, mep) {
 
 // Souhrn ve větě ze šablony; všechna čísla jsou ze stats.json (spočítal skript).
 function summarySentence(mep, t, profile) {
-  const parts = [];
   const att = pct(t.attendance);
-  if (att !== null) parts.push(`${byGender(mep, "Hlasoval", "Hlasovala")} v ${fmtPct(att)} jmenovitých hlasování ze svého mandátu (${fmtNum(t.attendance[0])} z ${fmtNum(t.attendance[1])})`);
   const loy = pct(t.group_loyalty);
-  if (loy !== null) parts.push(`s většinou své frakce ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(loy)} případů`);
-  const ow = profile.own_work;
-  const reports = ow?.summary?.report?.count;
-  if (reports) parts.push(`${byGender(mep, "byl zpravodajem nebo spoluzpravodajem", "byla zpravodajkou nebo spoluzpravodajkou")} ${fmtNum(reports)} ${reports === 1 ? "zprávy" : "zpráv"}`);
-  const pa = ow?.passed;
-  const adoptedTexts = pa ? pa.lead_adopted + pa.shadow_adopted : 0;
-  if (adoptedTexts) parts.push(`Parlament ${byGender(mep, "mu", "jí")} jako ${byGender(mep, "zpravodaji nebo stínovému zpravodaji", "zpravodajce nebo stínové zpravodajce")} přijal ${fmtNum(adoptedTexts)} ${adoptedTexts === 1 ? "zprávu" : adoptedTexts < 5 ? "zprávy" : "zpráv"}`);
-  return parts.length ? esc(parts.join(", ") + ".") : "";
+  const ro = profile.own_work?.roles;
+  const pa = profile.own_work?.passed;
+  const plural = (n) => `${fmtNum(n)} ${n === 1 ? "zprávu" : n < 5 ? "zprávy" : "zpráv"}`;
+  const adoptedOf = (n, adopted) => (n && adopted ? `, z toho ${fmtNum(adopted)} Parlament přijal` : "");
+  const sentences = [];
+  if (att !== null || loy !== null) {
+    const first = att !== null ? `${byGender(mep, "Hlasoval", "Hlasovala")} v ${fmtPct(att)} jmenovitých hlasování ze svého mandátu (${fmtNum(t.attendance[0])} z ${fmtNum(t.attendance[1])})` : "";
+    const second = loy !== null ? `v ${fmtPct(loy)} ${byGender(mep, "hlasoval", "hlasovala")} stejně jako většina ${byGender(mep, "jeho", "její")} frakce` : "";
+    sentences.push(esc(first && second ? `${first} a ${second}` : first || `${byGender(mep, "Hlasoval", "Hlasovala")} ${second}`));
+  }
+  // Zpravodaj text píše za výbor, stínový zpravodaj ho jen vyjednává za frakci: každá role má vlastní větu.
+  if (ro?.lead_reports) sentences.push(esc(`${byGender(mep, "Vedl", "Vedla")} ${plural(ro.lead_reports)} výboru${adoptedOf(ro.lead_reports, pa?.lead_adopted)}`));
+  if (ro?.shadow_reports) sentences.push(esc(`Jako ${byGender(mep, "stínový zpravodaj", "stínová zpravodajka")} ${byGender(mep, "vyjednával", "vyjednávala")} za frakci ${plural(ro.shadow_reports)}${adoptedOf(ro.shadow_reports, pa?.shadow_adopted)}`));
+  return sentences.map((s) => s + ".").join(" ");
 }
 
 function periodText(x) {
