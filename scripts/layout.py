@@ -58,6 +58,43 @@ THEME_BUTTON = (
 )
 
 
+# Mobilní spodní lišta (jako v aplikaci): 4 hlavní sekce + „Více“ (spodní panel s analýzami a projektem). Na desktopu skrytá.
+_I = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{}</svg>'
+TAB_ICONS = {
+    "meps": _I.format('<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/>'),
+    "parties": _I.format('<path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/>'),
+    "votes": _I.format('<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/>'),
+    "work": _I.format('<path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/>'),
+    "more": _I.format('<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>'),
+}
+TABS = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("hlasovani.html", "votes", "Hlasování"),
+        ("prace.html", "work", "Práce")]
+MORE_PAGES = ("analyses", "about")
+SHEET = [
+    ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")]),
+    ("Hlasování a strany", [("votes.html", "Všechna hlasování"), ("temata.html", "Hlasování podle témat"), ("party.html?v=eu", "Evropské frakce"),
+                            ("prace-poslanci.html", "Práce po poslancích")]),
+    ("Projekt", [("o-projektu.html", "O projektu a metodika"), ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby")]),
+]
+
+
+def tabbar(root: str = "", current: str | None = None) -> str:
+    cur = lambda page: ' aria-current="page"' if page == current else ""
+    tabs = "".join(f'<a href="{root}{href}" data-page="{page}"{cur(page)}>{TAB_ICONS[page]}<span>{label}</span></a>'
+                   for href, page, label in TABS)
+    more_cur = ' aria-current="page"' if current in MORE_PAGES else ""
+    groups = "".join(f'<p class="sheet-h">{esc_(title)}</p><ul>' + "".join(f'<li><a href="{root}{h}">{esc_(t)}</a></li>' for h, t in links) + "</ul>"
+                     for title, links in SHEET)
+    return (f'<nav class="tabbar" aria-label="Hlavní navigace (mobil)">{tabs}'
+            f'<button type="button" class="tab-more" popovertarget="more-sheet" data-pages="{" ".join(MORE_PAGES)}"{more_cur}>{TAB_ICONS["more"]}<span>Více</span></button></nav>\n'
+            f'<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div>{groups}'
+            f'<p class="sheet-foot"><a href="{REPO}">Výpočty na GitHubu</a></p></div><!--/tabbar-->')
+
+
+def esc_(s: str) -> str:
+    return escape(s, quote=False)
+
+
 def head_assets(root: str = "") -> str:
     """Část <head> od ikony po styly (titulek a popis si stránka píše sama)."""
     return "\n".join([
@@ -77,7 +114,8 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
             f'  <a class="brand" href="{root}index.html">{BRAND_MARK}{BRAND_TEXT}</a>\n'
             f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
             f'  {THEME_BUTTON}\n'
-            f'</div></header>')
+            f'</div></header>\n'
+            f'{tabbar(root, current)}')
 
 
 def footer(root: str = "") -> str:
@@ -110,7 +148,7 @@ def page(title: str, body: str, *, root: str = "", current: str | None = None, d
 # --- srovnání ručních stránek -----------------------------------------------------
 
 _HEAD_RE = re.compile(r'<link rel="icon".*?<link rel="stylesheet" href="style.css">', re.S)
-_HEADER_RE = re.compile(r'<a class="skip-link".*?</div></header>', re.S)
+_HEADER_RE = re.compile(r'<a class="skip-link".*?</div></header>(?:\n<nav class="tabbar".*?<!--/tabbar-->)?', re.S)
 _FOOTER_RE = re.compile(r'<footer class="site-footer">.*?</footer>', re.S)
 
 
