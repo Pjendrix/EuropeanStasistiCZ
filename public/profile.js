@@ -238,6 +238,8 @@ function periodText(x) {
         </figure>
         <div>
           <h1>${esc(name)}</h1>
+          ${(() => { const gl = logoTile(groups.find((x) => x.ep_code === g?.code), 32), pl = p ? logoTile(parties.find((x) => String(x.id) === String(p.org_id)), 32) : "";
+            return gl || pl ? `<div class="logo-row">${gl}${pl}</div>` : ""; })()}
           <div class="facts">
             ${groupBadge(null, groups, g?.code)}${prevGroups ? `<span class="small muted">(${esc(prevGroups)})</span>` : ""}
             ${p ? partyLink(p.org_id, p.short_label, parties, mep) : `<span class="badge outline" title="${esc(NO_PARTY_NOTE)}">strana neuvedena</span>`}
