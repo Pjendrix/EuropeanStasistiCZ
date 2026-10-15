@@ -137,9 +137,11 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
   max-width: 1280px; margin: 0 auto; padding: .85rem 20px;
   display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.5rem;
 }
-.brand { display: inline-flex; align-items: center; gap: .65rem; color: #F8FAFC; text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; }
-.brand span { color: var(--gold); }
-.brand-mark { width: 34px; height: 34px; flex: none; }
+.brand { display: inline-flex; align-items: center; gap: .55rem; color: #F8FAFC; text-decoration: none; font-weight: 400; font-size: 1.2rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand b { font-weight: 800; }
+.brand-mark { width: 47px; height: 36px; flex: none; }
+.brand:hover .brand-mark { color: var(--gold); }
+@media (max-width: 360px) { .brand-text { font-size: 1.05rem; } .brand-mark { width: 39px; height: 30px; } }
 .skip-link { position: absolute; left: 12px; top: -60px; z-index: 10; padding: .6rem 1rem; border-radius: 999px; background: var(--gold); color: var(--navy); font-weight: 700; text-decoration: none; }
 .skip-link:focus { top: 12px; }
 .site-header nav { display: flex; flex-wrap: wrap; gap: .25rem; flex: 1; }

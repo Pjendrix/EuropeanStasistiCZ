@@ -1,7 +1,7 @@
 """Karty ke sdílení (X12): náhledy odkazů 1200 × 630 pro poslance a závěrečná hlasování.
 
 Výstup: public/og/p/{id}.png (poslanci), public/og/v/{id}.png (závěrečná hlasování za posledních 12 měsíců
-od posledního hlasování v datech), public/og/default.png (obecná karta webu). Stránky p/ a v/ je mají v og:image
+od posledního hlasování v datech), (obecný náhled s logem je public/assets/brand/og-default.png). Stránky p/ a v/ je mají v og:image
 (scripts/build_pages.py). Starší hlasování mají obecný obrázek, aby repo nenarůstalo.
 
 Pravidla karty (viz docs/REVIZE_2026-10-15.md, X12): každá karta má zdroj, adresu stránky a datum; u poslance vždy
@@ -147,9 +147,26 @@ def new_card():
     return img, d
 
 
-def header(d, right: str) -> None:
-    d.text((56, 38), "EP WATCH", font=font(26, 800), fill=GOLD)
-    d.text((56 + text_w(d, "EP WATCH ", font(26, 800)), 38), "CZ", font=font(26, 800), fill=WHITE)
+_symbol = None
+
+
+def symbol():
+    """Symbol loga (oko + oblouk hvězd) v bílé, z public/assets/brand/symbol-white.svg (vykreslený do PNG)."""
+    global _symbol
+    if _symbol is None:
+        from PIL import Image
+        im = Image.open(Path(__file__).resolve().parent / "brand" / "symbol-white.png").convert("RGBA")
+        _symbol = im.resize((68, 52), Image.LANCZOS)
+    return _symbol
+
+
+def header(img, d, right: str) -> None:
+    """Hlavička karty: symbol loga a „EP Watch CZ“ (EP a CZ tučně), vpravo datum nebo typ hlasování."""
+    img.paste(symbol(), (56, 26), symbol())
+    x = 56 + 68 + 14
+    for s, w in (("EP", 800), (" Watch ", 400), ("CZ", 800)):
+        d.text((x, 38), s, font=font(30, w), fill=WHITE)
+        x += text_w(d, s, font(30, w))
     d.text((W - 56, 42), right, font=font(22, 500), fill=SOFT, anchor="ra")
 
 
@@ -193,7 +210,7 @@ def group_label(code: str | None, groups: list[dict]) -> str:
 def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None) -> bytes:
     kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
     img, d = new_card()
-    header(d, f"{fmt_date(v['date'])} · {KIND_LABELS.get(kind, 'hlasování')}")
+    header(img, d, f"{fmt_date(v['date'])} · {KIND_LABELS.get(kind, 'hlasování')}")
     for i, line in enumerate(wrap(d, vote_title(v), font(46, 700), W - 112, 3)):
         d.text((56, 92 + i * 58), line, font=font(46, 700), fill=WHITE)
     # výsledek a celý EP
@@ -246,7 +263,7 @@ def mep_card(prof: dict, group_text: str, party_text: str, photo: Path | None, d
     from PIL import Image
     mep = prof["mep"]
     img, d = new_card()
-    header(d, f"data k {fmt_date(data_day)}")
+    header(img, d, f"data k {fmt_date(data_day)}")
     name = " ".join(x for x in (mep.get("given_name"), mep.get("family_name")) if x) or mep["name"]
     px, py, pw, ph = 56, 100, 210, 262
     if photo and photo.exists():
@@ -298,17 +315,6 @@ def mep_card(prof: dict, group_text: str, party_text: str, photo: Path | None, d
     return to_png(img)
 
 
-def default_card(base_url: str | None, data_day: str) -> bytes:
-    img, d = new_card()
-    header(d, f"data k {fmt_date(data_day)}")
-    d.text((56, 190), "Jak hlasují čeští", font=font(76, 800), fill=WHITE)
-    d.text((56, 280), "europoslanci", font=font(76, 800), fill=GOLD)
-    d.text((56, 400), "Každé jmenovité hlasování v Evropském parlamentu,", font=font(30, 500), fill=SOFT)
-    d.text((56, 442), "účast na hlasování a spolupráce napříč frakcemi.", font=font(30, 500), fill=SOFT)
-    footer(d, "Nezávislý projekt · data: HowTheyVote.eu, EP Open Data · čísla počítá skript, ne AI", base_url.split("://", 1)[-1] if base_url else None)
-    return to_png(img)
-
-
 # --- celek ----------------------------------------------------------------------------
 
 def read(path: Path):
@@ -341,7 +347,6 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
             f.write_bytes(png)
             written += 1
 
-    put("default.png", default_card(base_url, data_day))
     ov = {m["id"]: m for m in overview["meps"]}
     for mid in sorted(ov):
         prof = read(data_dir / "meps" / f"{mid}.json")

@@ -134,6 +134,9 @@ def cite_button(text: str) -> str:
             f'title="Citovat (zkopíruje větu se zdrojem)">{CITE_ICON}</button>')
 
 
+OG_DEFAULT = "assets/brand/og-default.png"  # z scripts/build_brand.py, 1200 × 630
+
+
 def og_meta(title: str, description: str, path: str, base_url: str | None, image: str | None = None,
             image_alt: str | None = None, card: bool = False) -> str:
     """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json).
@@ -143,6 +146,8 @@ def og_meta(title: str, description: str, path: str, base_url: str | None, image
     if base_url:
         url = base_url.rstrip("/") + "/" + path
         lines += [f'<link rel="canonical" href="{esc(url)}">', f'<meta property="og:url" content="{esc(url)}">']
+        image = image or OG_DEFAULT  # bez vlastní karty výchozí náhled s logem (scripts/build_brand.py)
+        card = card or image == OG_DEFAULT
         if image:
             img = base_url.rstrip("/") + "/" + image
             lines.append(f'<meta property="og:image" content="{esc(img)}">')
@@ -311,7 +316,7 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     # Jedna adresa strany: <base href="../">, party.js obsah nahradí interaktivní verzí (jako u profilu poslance).
     path = f"s/{pp['id']}.html"
     return path, page(title, body, root="", base="../", path=path, current="parties", description=desc,
-                      meta=og_meta(title, desc, path, base_url, "og/default.png", "EP Watch CZ: jak hlasují čeští europoslanci", card=True),
+                      meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
                       main_attrs=f'data-party="{pp["id"]}"',
                       scripts='<script src="app.js"></script>\n<script src="party.js"></script>\n')
 
@@ -390,7 +395,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     title = f"{title_txt} ({fmt_date(v['date'])}) – EP Watch CZ"
     return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,
                                      meta=og_meta(title, desc, f"v/{v['id']}.html", base_url,
-                                                  f"og/v/{v['id']}.png" if has_card else "og/default.png", desc, card=True),
+                                                  f"og/v/{v['id']}.png" if has_card else None, desc, card=True),
                                      scripts=f'<script src="{ROOT}app.js"></script>\n')
 
 

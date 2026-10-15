@@ -19,10 +19,11 @@ from pathlib import Path
 
 REPO = "https://github.com/Pjendrix/EuropeanStasistiCZ"
 
-ICON = ('<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E'
-        '%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231f4fbf%22/%3E%3Ctext x=%2216%22 y=%2222%22 '
-        'font-size=%2214%22 font-family=%22sans-serif%22 font-weight=%22700%22 text-anchor=%22middle%22 '
-        'fill=%22white%22%3ECZ%3C/text%3E%3C/svg%3E">')
+ICON = ('<link rel="icon" href="{root}favicon.ico" sizes="32x32">\n'
+        '<link rel="icon" href="{root}assets/brand/favicon-simple.svg" type="image/svg+xml">\n'
+        '<link rel="apple-touch-icon" href="{root}assets/brand/apple-touch-icon.png">\n'
+        '<link rel="manifest" href="{root}site.webmanifest">\n'
+        '<meta name="theme-color" content="#0F172A">')
 
 THEME_SCRIPT = """<script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
@@ -32,17 +33,19 @@ THEME_SCRIPT = """<script>
   })();
 </script>"""
 
+# Logo: oko + oblouk hvězd (zdroj: scripts/build_brand.py, soubory v public/assets/brand/).
+# Barva = currentColor; odlesk v duhovce je průhledný (maska), takže funguje na jakémkoli pozadí.
+
+BRAND_TEXT = '<span class="brand-text"><b>EP</b> Watch <b>CZ</b></span>'
+
 BRAND_MARK = (
-    '<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true">'
-    '<circle cx="17.00" cy="2.50" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="4.44" r="1.6" fill="#F59E0B"/>'
-    '<circle cx="29.56" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="31.50" cy="17.00" r="1.6" fill="#F59E0B"/>'
-    '<circle cx="29.56" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="24.25" cy="29.56" r="1.6" fill="#F59E0B"/>'
-    '<circle cx="17.00" cy="31.50" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="29.56" r="1.6" fill="#F59E0B"/>'
-    '<circle cx="4.44" cy="24.25" r="1.6" fill="#F59E0B"/><circle cx="2.50" cy="17.00" r="1.6" fill="#F59E0B"/>'
-    '<circle cx="4.44" cy="9.75" r="1.6" fill="#F59E0B"/><circle cx="9.75" cy="4.44" r="1.6" fill="#F59E0B"/>'
-    '<clipPath id="czc"><circle cx="17" cy="17" r="8"/></clipPath><g clip-path="url(#czc)">'
-    '<rect x="9" y="9" width="16" height="8" fill="#F8FAFC"/><rect x="9" y="17" width="16" height="8" fill="#E11D48"/>'
-    '<path d="M9 9 L18 17 L9 25 Z" fill="#3B82F6"/></g></svg>'
+    '<svg class="brand-mark" viewBox="-158 -100 262 200" aria-hidden="true">'
+    '<mask id="brand-hl"><rect x="-160" y="-100" width="270" height="200" fill="#fff"/>'
+    '<circle cx="-60" cy="-13" r="12" fill="#000"/></mask>'
+    '<g fill="currentColor"><path d="M-137,0 C-110,-70 20,-70 47,0 C20,70 -110,70 -137,0 Z" fill="none" '
+    'stroke="currentColor" stroke-width="15"/>'
+    '<circle cx="-45" cy="2" r="40" mask="url(#brand-hl)"/>'
+    '<path d="M-40.0,-82.2 L-36.5,-74.0 L-27.6,-73.3 L-34.4,-67.4 L-32.3,-58.7 L-40.0,-63.4 L-47.6,-58.7 L-45.5,-67.4 L-52.3,-73.3 L-43.4,-74.0 Z M0.0,-93.0 L3.4,-84.7 L12.3,-84.0 L5.5,-78.1 L7.6,-69.4 L0.0,-74.1 L-7.6,-69.4 L-5.5,-78.1 L-12.3,-84.0 L-3.4,-84.7 Z M40.0,-82.2 L43.4,-74.0 L52.3,-73.3 L45.5,-67.4 L47.6,-58.7 L40.0,-63.4 L32.3,-58.7 L34.4,-67.4 L27.6,-73.3 L36.5,-74.0 Z M69.2,-53.0 L72.7,-44.7 L81.6,-44.0 L74.8,-38.1 L76.9,-29.4 L69.2,-34.1 L61.6,-29.4 L63.7,-38.1 L56.9,-44.0 L65.8,-44.7 Z M80.0,-13.0 L83.4,-4.7 L92.3,-4.0 L85.5,1.8 L87.6,10.5 L80.0,5.8 L72.3,10.5 L74.4,1.8 L67.6,-4.0 L76.5,-4.7 Z M69.2,27.0 L72.7,35.2 L81.6,35.9 L74.8,41.8 L76.9,50.5 L69.2,45.8 L61.6,50.5 L63.7,41.8 L56.9,35.9 L65.8,35.2 Z M40.0,56.2 L43.4,64.5 L52.3,65.2 L45.5,71.0 L47.6,79.8 L40.0,75.1 L32.3,79.8 L34.4,71.0 L27.6,65.2 L36.5,64.5 Z M0.0,67.0 L3.4,75.2 L12.3,75.9 L5.5,81.8 L7.6,90.5 L0.0,85.8 L-7.6,90.5 L-5.5,81.8 L-12.3,75.9 L-3.4,75.2 Z M-40.0,56.2 L-36.5,64.5 L-27.6,65.2 L-34.4,71.0 L-32.3,79.8 L-40.0,75.1 L-47.6,79.8 L-45.5,71.0 L-52.3,65.2 L-43.4,64.5 Z"/></g></svg>'
 )
 
 NAV = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("votes.html", "votes", "Hlasování"),
@@ -58,7 +61,7 @@ THEME_BUTTON = (
 def head_assets(root: str = "") -> str:
     """Část <head> od ikony po styly (titulek a popis si stránka píše sama)."""
     return "\n".join([
-        ICON,
+        ICON.format(root=root),
         f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
         THEME_SCRIPT,
         f'<link rel="stylesheet" href="{root}style.css">',
@@ -71,7 +74,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
         for href, page, label in NAV)
     return (f'<a class="skip-link" href="{skip_href}">Přejít na obsah</a>\n'
             f'<header class="site-header"><div class="inner">\n'
-            f'  <a class="brand" href="{root}index.html">{BRAND_MARK}EP Watch <span>CZ</span></a>\n'
+            f'  <a class="brand" href="{root}index.html">{BRAND_MARK}{BRAND_TEXT}</a>\n'
             f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
             f'  {THEME_BUTTON}\n'
             f'</div></header>')

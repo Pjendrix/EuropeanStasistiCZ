@@ -164,7 +164,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     body = hero + session_html + delegation_html + explore_html + key_html + about
     title = "EP Watch CZ – jak hlasují čeští europoslanci"
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
-    meta = og_meta(title, desc, "", base_url, "og/default.png", "EP Watch CZ: jak hlasují čeští europoslanci", card=True)
+    meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
     html = page(title, body, root="", current=None, description=desc, meta=meta,
                 scripts='<script src="app.js"></script>\n<script src="hub.js"></script>\n')
     return "index.html", html

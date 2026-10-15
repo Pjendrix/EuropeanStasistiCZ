@@ -49,9 +49,13 @@ const CIRC = (x, y, r, fill, stroke, sw) => ({ k: "circ", x, y, r, fill, stroke,
 const LINE = (x1, y1, x2, y2, stroke, sw) => ({ k: "line", x1, y1, x2, y2, stroke, sw });
 const shift = (ops, dy) => ops.map((o) => ({ ...o, ...("y" in o ? { y: o.y + dy } : {}), ...("y1" in o ? { y1: o.y1 + dy, y2: o.y2 + dy } : {}) }));
 
+let _symbolImg = null; // symbol loga (assets/brand/symbol-white.svg), načte se před kreslením
+
 function shareHeader(right) {
-  return [T(72, 112, "EP WATCH", 34, 800, SC.gold), T(72 + measureText("EP WATCH ", 34, 800), 112, "CZ", 34, 800, SC.white),
-    T(1008, 112, right, 26, 500, SC.soft, "right")];
+  const x = 72 + 102 + 18;
+  return [...(_symbolImg ? [{ k: "image", img: _symbolImg, x: 72, y: 66, w: 102, h: 78, r: 0 }] : []),
+    T(x, 118, "EP", 38, 800, SC.white), T(x + measureText("EP", 38, 800), 118, " Watch ", 38, 400, SC.white),
+    T(x + measureText("EP", 38, 800) + measureText(" Watch ", 38, 400), 118, "CZ", 38, 800, SC.white), T(1008, 112, right, 26, 500, SC.soft, "right")];
 }
 
 function shareFooter(H, left, url) {
@@ -191,6 +195,7 @@ async function renderCardPng(ctx, formatKey) {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
+  _symbolImg = await loadImage("assets/brand/symbol-white.svg");
   if (ctx.kind === "mep") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
   const ops = ctx.kind === "vote" ? voteCardOps(data, f) : mepCardOps(data, f);
   const canvas = document.createElement("canvas");
@@ -231,7 +236,7 @@ async function renderCardPng(ctx, formatKey) {
       c.save();
       roundRectPath(c, o.x, o.y, o.w, o.h, o.r);
       c.clip();
-      const s = Math.max(o.w / o.img.width, o.h / o.img.height); // vyplnit, oříznout dole (portrét od hlavy)
+      const s = o.r ? Math.max(o.w / o.img.width, o.h / o.img.height) : Math.min(o.w / o.img.width, o.h / o.img.height); // portrét vyplní a ořízne, logo se vejde celé
       c.drawImage(o.img, o.x + (o.w - o.img.width * s) / 2, o.y, o.img.width * s, o.img.height * s);
       c.restore();
     }
