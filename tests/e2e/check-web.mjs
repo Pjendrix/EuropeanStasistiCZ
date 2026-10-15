@@ -123,6 +123,15 @@ for (const width of [1366, 390]) {
       if (!okPng) problems.push(`${where}: stažená karta není PNG 1080 × 1350`);
       await page.click("[data-share]");
     }
+    if (width === 1366 && url.startsWith("p/")) {  // S4: základní karta a oba slidy detailu 4 : 5, story 9 : 16 (kreslí se v prohlížeči)
+      const sizes = await page.evaluate(async () => {
+        const out = {};
+        for (const k of ["post", "slide2", "slide3", "story"]) { const b = await createImageBitmap(await renderCardPng(window.shareContext(), k)); out[k] = [b.width, b.height]; }
+        return out;
+      });
+      for (const [k, [w, h]] of Object.entries(sizes)) if (w !== 1080 || h !== (k === "story" ? 1920 : 1350)) problems.push(`${where}: karta ${k} má rozměr ${w}×${h}`);
+      if (!(await page.$('.share-menu [data-act="download:detail"]'))) problems.push(`${where}: v nabídce chybí „detail, 3 obrázky“`);
+    }
     await page.keyboard.press("Escape");
     const state = await page.evaluate(() => ({ open: Boolean(document.querySelector(".share-menu")), focus: document.activeElement?.matches("[data-share]") }));
     if (state.open || !state.focus) problems.push(`${where}: Esc nezavřel nabídku nebo nevrátil fokus`);

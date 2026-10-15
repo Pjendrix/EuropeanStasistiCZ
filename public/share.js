@@ -9,7 +9,8 @@
 
 const SHARE_ROOT = document.currentScript ? new URL(".", document.currentScript.src).href : "";
 
-const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" } };
+const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
+  slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
 const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B",
   for: "#60A5FA", against: "#FB923C", abst: "#94A3B8", absent: "#475569", track: "#334155" };
 const SC_POS = { FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent };
@@ -166,45 +167,154 @@ function voteCardOps(d, f) {
     ...shareFooter(H, `Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
-// Karta poslance: portrét, účast na hlasování a hlasuje s frakcí s mediánem, práce na textech. Bez pořadí a hodnocení.
-function mepCardOps(d, f) {
-  const H = f.h;
+// --- karta poslance (S4): základní karta + detail (2. a 3. obrázek carouselu) ----------------------------
+// Bez pořadí, bez hodnocení barvou, bez log: frakce a strana jen jako tečka a zkratka. Chybějící hodnota se vynechá.
+
+function chipOps(x, y, label, color) {
+  const w = measureText(label, 28, 600) + 62;
+  return { w, ops: [RECT(x, y, w, 52, 26, "#1E293B"), CIRC(x + 28, y + 26, 8, color || SC.muted), T(x + 46, y + 36, label, 28, 600, SC.white)] };
+}
+
+function sectionTitle(y, s) { return T(72, y, s, 26, 800, SC.gold); }
+
+// Metrika s posuvníkem 60–100 % (stejná osa jako benchRow na webu), mediánem a „x z y“.
+function metricOps(x, y, w, label, pair, median, medLabel) {
+  const share = pair && pair[1] ? pair[0] / pair[1] : null;
+  const lo = 0.6, pos = (v) => x + w * Math.min(Math.max((v - lo) / (1 - lo), 0), 1);
+  const ops = [T(x, y + 30, fitText(label, 30, 600, w), 30, 600, SC.soft), T(x, y + 120, share === null ? "–" : fmtPct(share), 90, 800, SC.white),
+    RECT(x, y + 152, w, 10, 5, SC.track)];
+  if (share !== null) ops.push(CIRC(pos(share), y + 157, 14, SC.white));
+  if (median != null) ops.push(LINE(pos(median), y + 138, pos(median), y + 176, SC.gold, 6), T(x, y + 212, `${medLabel} ${fmtPct(median)}`, 28, 700, SC.gold));
+  if (pair && pair[1]) ops.push(T(x, y + (median != null ? 248 : 212), `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování`, 24, 500, SC.muted));
+  return ops;
+}
+
+// 1/3 Základní karta: portrét, jméno, frakce · strana, mandát, dvě čísla s mediánem.
+function mepBasicOps(d, f) {
+  const H = f.h, story = f.h > 1500;
   const ops = [];
-  let y = 0;
-  const pw = 300, ph = 375;
-  if (d.photo) {
-    ops.push({ k: "image", img: d.photo, x: 72, y, w: pw, h: ph, r: 26 }, RECT(70, y - 2, pw + 4, ph + 4, 28, null, SC.gold, 4),
-      T(72, y + ph + 34, "© European Union – Source: EP", 20, 500, SC.muted));
-  }
-  const nx = d.photo ? 72 + pw + 44 : 72;
-  const nameLines = wrapText(d.name, 56, 800, 1008 - nx, 3);
-  nameLines.forEach((l, i) => ops.push(T(nx, y + 62 + i * 64, l, 56, 800, SC.white)));
-  const sub = wrapText(d.subtitle, 28, 600, 1008 - nx, 3);
-  sub.forEach((l, i) => ops.push(T(nx, y + 62 + nameLines.length * 64 + 8 + i * 38, l, 28, 600, SC.soft)));
-  y += Math.max(ph + 70, 62 + nameLines.length * 64 + sub.length * 38 + 30) + 30;
-  const metric = (label, pair, median, medLabel) => {
-    const share = pair && pair[1] ? pair[0] / pair[1] : null;
-    const bx = 72, bw = 936, lo = 0.6;
-    const pos = (v) => bx + bw * Math.min(Math.max((v - lo) / (1 - lo), 0), 1);
-    ops.push(T(72, y + 30, label, 30, 600, SC.soft), T(72, y + 100, share === null ? "–" : fmtPct(share), 72, 800, SC.white),
-      RECT(bx, y + 126, bw, 10, 5, SC.track));
-    if (share !== null) ops.push(CIRC(pos(share), y + 131, 14, SC.white));
-    if (median != null) ops.push(LINE(pos(median), y + 112, pos(median), y + 150, SC.gold, 6), T(bx, y + 186, `${medLabel} ${fmtPct(median)}`, 24, 700, SC.gold));
-    if (pair && pair[1]) ops.push(T(bx + bw, y + 186, `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování`, 24, 500, SC.muted, "right"));
-    y += 220;
-  };
-  metric("Účast na hlasování", d.attendance, d.attendanceMedian, "medián EP");
-  metric("Hlasuje s frakcí", d.loyalty && d.loyalty[1] ? d.loyalty : null, d.loyaltyMedian, "medián frakce");
-  if (d.work) {
-    const wl = wrapText(d.work, 30, 600, 936, 2);
-    wl.forEach((l, i) => ops.push(T(72, y + 32 + i * 40, l, 30, 600, SC.white)));
-    y += wl.length * 40 + 24;
-  }
-  ops.push(T(72, y + 28, "Bez pořadí a hodnocení: čísla spočítal skript z oficiálních dat.", 24, 500, SC.soft));
+  const pw = 380, ph = 475, y0 = 0;
+  if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: y0, w: pw, h: ph, r: 26 }, RECT(70, y0 - 2, pw + 4, ph + 4, 28, null, SC.gold, 4),
+    T(72, y0 + ph + 32, "© European Union – Source: EP", 20, 500, SC.muted));
+  const nx = d.photo ? 72 + pw + 50 : 72, nw = 1008 - nx;
+  const nameLines = wrapText(d.name, 72, 800, nw, 3);
+  let chips = [], cx = nx, cy = 0;
+  const chipRows = [];
+  (d.chips || []).forEach((c) => {
+    const w = measureText(c.label, 28, 600) + 62;
+    if (cx + w > 1008 && cx > nx) { cx = nx; cy += 62; }
+    chipRows.push({ c, x: cx, y: cy }); cx += w + 12;
+  });
+  const chipH = chipRows.length ? cy + 52 : 0;
+  const mand = d.mandate ? wrapText(d.mandate, 28, 500, nw, 2) : [];
+  const blockH = nameLines.length * 80 + 24 + chipH + (mand.length ? 20 + mand.length * 38 : 0);
+  let by = y0 + Math.max((ph - blockH) / 2, 0);
+  nameLines.forEach((l, i) => ops.push(T(nx, by + 62 + i * 80, l, 72, 800, SC.white)));
+  by += nameLines.length * 80 + 24;
+  chipRows.forEach(({ c, x, y }) => { const r = chipOps(x, by + y, c.label, c.color); ops.push(...r.ops); });
+  by += chipH + 20;
+  mand.forEach((l, i) => ops.push(T(nx, by + 28 + i * 38, l, 28, 500, SC.soft)));
+  let y = y0 + ph + (story ? 150 : 96);
+  ops.push(...metricOps(72, y, 430, "Účast na hlasování", d.attendance, d.attendanceMedian, "medián EP"));
+  if (d.loyalty && d.loyalty[1]) ops.push(...metricOps(578, y, 430, "Hlasuje s frakcí", d.loyalty, d.loyaltyMedian, "medián frakce"));
+  y += 290 + (story ? 50 : 0);
+  ops.push(T(72, y + 30, "Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.", 26, 500, SC.soft));
   y += 50;
   const top = 172, bottom = H - 150;
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
     ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", d.urlShort)];
+}
+
+// Mini hlavička 2. a 3. obrázku: kulatý portrét, jméno, frakce · strana, „2 / 3“.
+function mepMiniHead(d, n) {
+  const ops = [];
+  if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 54, null, SC.gold, 4));
+  const nx = d.photo ? 200 : 72;
+  ops.push(T(nx, 238, fitText(d.name, 52, 800, 700), 52, 800, SC.white),
+    T(nx, 280, fitText((d.chips || []).map((c) => c.label).join(" · "), 28, 500, 700), 28, 500, SC.soft), T(1008, 252, `${n} / 3`, 30, 500, SC.muted, "right"));
+  return ops;
+}
+
+const SLIDE_FOOT = { 2: "Zdroj: HowTheyVote.eu (ODbL) · výpočet EP Watch CZ · bez pořadí a hodnocení", 3: "Zdroj: EP Open Data (CC BY 4.0) · počty, ne hodnocení kvality práce" };
+
+function tileOps(x, y, w, h, label, value, sub) {
+  const ops = [RECT(x, y, w, h, 28, "#16213A"), T(x + 28, y + 44, fitText(label, 26, 600, w - 56), 26, 600, SC.soft), T(x + 28, y + 118, value, 68, 800, SC.white)];
+  if (sub) wrapText(sub, 22, 500, w - 56, 2).forEach((l, i) => ops.push(T(x + 28, y + 156 + i * 28, l, 22, 500, SC.muted)));
+  return ops;
+}
+
+// 2/3 Jak hlasuje: rozložení hlasů, soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
+function mepVotingOps(d, f) {
+  const ops = [...mepMiniHead(d, 2)];
+  let y = 384;
+  const pos = d.positions;
+  if (pos) {
+    const total = SHARE_KEYS.reduce((n, k) => n + (pos[k] || 0), 0);
+    ops.push(sectionTitle(y, `JAK HLASOVAL · ${fmtNum(total)} HLASOVÁNÍ`), ...barOps(72, y + 28, 936, 34, SHARE_KEYS.map((k) => pos[k] || 0)));
+    let lx = 72;
+    const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržel se", DID_NOT_VOTE: "nehlasoval" };
+    SHARE_KEYS.forEach((k) => {
+      const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
+      ops.push(k === "DID_NOT_VOTE" ? CIRC(lx + 9, y + 104, 8, null, SC.absent, 3) : CIRC(lx + 9, y + 104, 9, SC_POS[k]), T(lx + 28, y + 114, t, 30, 600, SC.white));
+      lx += measureText(t, 30, 600) + 58;
+    });
+    y += 200;
+  }
+  const tiles = [];
+  if (d.outcome && d.outcome[1]) tiles.push(["Hlasoval jako většina EP", fmtPct(d.outcome[0] / d.outcome[1]),
+    `${fmtNum(d.outcome[0])} z ${fmtNum(d.outcome[1])}${d.groupOutcome && d.groupOutcome[1] ? ` · průměr frakce ${fmtPct(d.groupOutcome[0] / d.groupOutcome[1])}` : ""}`]);
+  if (d.attendanceMain && d.attendanceMain[1]) tiles.push(["Účast u závěrečných hlasování", fmtPct(d.attendanceMain[0] / d.attendanceMain[1]),
+    `${fmtNum(d.attendanceMain[0])} z ${fmtNum(d.attendanceMain[1])}${d.attendanceMainMedian != null ? ` · medián EP ${fmtPct(d.attendanceMainMedian)}` : ""}`]);
+  if (tiles.length) {
+    ops.push(sectionTitle(y, "SROVNÁNÍ"));
+    tiles.forEach((t, i) => ops.push(...tileOps(72 + i * 488, y + 28, tiles.length === 1 ? 936 : 448, 200, ...t)));
+    y += 290;
+  }
+  if (d.pairwiseTop && d.pairwiseTop.length) {
+    ops.push(sectionTitle(y, "NEJČASTĚJI HLASUJE STEJNĚ JAKO"));
+    d.pairwiseTop.forEach((p, i) => {
+      const ry = y + 62 + i * 70;
+      ops.push(T(72, ry, fitText(`${p.name}${p.party ? ` · ${p.party}` : ""}`, 32, 600, 780), 32, 600, SC.white), T(1008, ry, fmtPct(p.share), 32, 700, SC.white, "right"),
+        LINE(72, ry + 20, 1008, ry + 20, "#334155", 2));
+    });
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[2], d.urlShort)];
+}
+
+const committeeShort = (n) => { const t = String(n || "").replace(/^(Výbor|Podvýbor) pro /i, ""); return t.charAt(0).toUpperCase() + t.slice(1); };
+const committeeLine = (list) => list.map((c) => `${c.code} ${committeeShort(c.name)}`.trim()).join(" · ");
+
+// 3/3 Práce na textech a v plénu: počty, ne kvalita; chybějící data se vynechají.
+function mepWorkOps(d, f) {
+  const ops = [...mepMiniHead(d, 3)];
+  let y = 384;
+  const w = d.ownWork;
+  if (w) {
+    ops.push(sectionTitle(y, "PRÁCE NA TEXTECH"));
+    const adoptedNote = (n, adopted) => (n && adopted != null ? (adopted === n ? (n === 1 ? "Parlament přijal" : "všechny Parlament přijal") : `přijato ${fmtNum(adopted)}`) : "");
+    [["Vedl zprávy", w.leadReports, adoptedNote(w.leadReports, w.leadAdopted)], ["Stanoviska výborů", w.leadOpinions, d.female ? "jako zpravodajka" : d.female === false ? "jako zpravodaj" : "jako zpravodaj/ka"],
+      ["Stínové zprávy", w.shadowReports, `vyjednáv${d.female ? "ala" : d.female === false ? "al" : "al/a"} za frakci`]].forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, t[0], fmtNum(t[1]), t[2])));
+    y += 300;
+  }
+  const pl = [];
+  if (d.speeches != null) pl.push(["Projevy", fmtNum(d.speeches), d.speechesMinutes != null ? `celkem ${fmtNum(Math.round(d.speechesMinutes))} min` : ""]);
+  if (d.questions != null) pl.push(["Otázky Komisi", fmtNum(d.questions), d.questionsAnswered != null ? (d.questionsAnswered === d.questions && d.questions ? "všechny zodpovězené" : `zodpovězeno ${fmtNum(d.questionsAnswered)}`) : ""]);
+  if (d.presence && d.presence.days) pl.push(["Prezence", fmtPct(d.presence.present / d.presence.days), `${fmtNum(d.presence.present)} ze ${fmtNum(d.presence.days)} dnů (EP)`]);
+  if (pl.length) {
+    ops.push(sectionTitle(y, "V PLÉNU"));
+    pl.forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, ...t)));
+    y += 300;
+  }
+  if (d.committees && (d.committees.members.length || d.committees.substitutes.length)) {
+    ops.push(sectionTitle(y, "VÝBORY (ČLEN)"));
+    let cy = y + 56;
+    if (d.committees.members.length) {
+      wrapText(committeeLine(d.committees.members), 28, 500, 936, 2).forEach((l, i) => ops.push(T(72, cy + i * 38, l, 28, 500, SC.soft)));
+      cy += 38 * Math.min(2, Math.ceil(measureText(committeeLine(d.committees.members), 28, 500) / 936)) + 8;
+    }
+    if (d.committees.substitutes.length) ops.push(T(72, cy, fitText(`náhradník: ${d.committees.substitutes.join(", ")}`, 28, 500, 936), 28, 500, SC.muted));
+  }
+  return [...shareHeader(`data k ${fmtDate(d.workDay || d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[3], d.urlShort)];
 }
 
 // --- kreslení na canvas → PNG ---------------------------------------------------------
@@ -238,7 +348,7 @@ async function renderCardPng(ctx, formatKey) {
   const data = { ...ctx.data };
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   if (ctx.kind === "mep") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
-  const ops = ctx.kind === "vote" ? voteCardOps(data, f) : mepCardOps(data, f);
+  const ops = ctx.kind === "vote" ? voteCardOps(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
   const canvas = document.createElement("canvas");
   canvas.width = f.w;
   canvas.height = f.h;
@@ -322,22 +432,30 @@ function placeShareMenu(menu, trigger) {
   menu.style.left = `${Math.min(Math.max(8, r.right - w), window.innerWidth - w - 8)}px`;
 }
 
+async function cardFile(ctx, formatKey) {
+  const blob = await renderCardPng(ctx, formatKey);
+  return new File([blob], `${ctx.filename}-${formatKey}.png`, { type: "image/png" });
+}
+
+function downloadFile(file) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(file);
+  a.download = file.name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+// kind: native | download; formatKey: post | story | detail (= tři obrázky 4 : 5: základní karta + dva slidy detailu)
 async function shareAction(kind, ctx, formatKey, btn) {
   const old = btn.textContent;
   btn.disabled = true;
   btn.textContent = "Vytvářím…";
   try {
-    const blob = await renderCardPng(ctx, formatKey);
-    const file = new File([blob], `${ctx.filename}-${formatKey}.png`, { type: "image/png" });
-    if (kind === "native") {
-      await navigator.share({ files: [file], text: ctx.text, url: ctx.url });
-    } else {
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = file.name;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    }
+    const keys = formatKey === "detail" ? ["post", "slide2", "slide3"] : [formatKey];
+    const files = [];
+    for (const k of keys) files.push(await cardFile(ctx, k));
+    if (kind === "native") await navigator.share({ files, text: ctx.text, url: ctx.url });
+    else files.forEach(downloadFile);
   } catch (e) {
     if (e?.name !== "AbortError") alert(e?.message || "Sdílení se nepodařilo.");
   } finally {
@@ -356,10 +474,20 @@ function openShareMenu(trigger) {
   const menu = document.createElement("div");
   menu.className = "share-menu card";
   menu.setAttribute("role", "menu");
-  menu.innerHTML = `
-    ${canNative ? '<button type="button" role="menuitem" data-act="native:post">Sdílet obrázek…</button>' : ""}
+  const isMep = ctx.kind === "mep";
+  const manyFiles = () => navigator.canShare && navigator.canShare({ files: [1, 2, 3].map((i) => new File([new Blob()], `x${i}.png`, { type: "image/png" })) });
+  const items = isMep
+    ? `${canNative ? '<button type="button" role="menuitem" data-act="native:post">Sdílet obrázek…</button>' : ""}
+    ${canNative && manyFiles() ? '<button type="button" role="menuitem" data-act="native:detail">Sdílet detail (3 obrázky)…</button>' : ""}
+    <button type="button" role="menuitem" data-act="download:post">Stáhnout – základní karta (4 : 5)</button>
+    <button type="button" role="menuitem" data-act="download:detail">Stáhnout – detail, 3 obrázky (4 : 5)</button>
+    <button type="button" role="menuitem" data-act="download:story">Stáhnout – story (9 : 16)</button>`
+    : `${canNative ? '<button type="button" role="menuitem" data-act="native:post">Sdílet obrázek…</button>' : ""}
     <button type="button" role="menuitem" data-act="download:post">Stáhnout obrázek – ${SHARE_FORMATS.post.label}</button>
-    <button type="button" role="menuitem" data-act="download:story">Stáhnout obrázek – ${SHARE_FORMATS.story.label}</button>
+    <button type="button" role="menuitem" data-act="download:story">Stáhnout obrázek – ${SHARE_FORMATS.story.label}</button>`;
+  menu.innerHTML = `
+    ${items}
+    <hr class="share-sep">
     <button type="button" role="menuitem" data-act="link">Kopírovat odkaz</button>
     <a role="menuitem" href="https://twitter.com/intent/tweet?text=${enc(ctx.text)}&url=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer">Sdílet na X</a>
     <a role="menuitem" href="https://www.facebook.com/sharer/sharer.php?u=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer">Sdílet na Facebooku</a>

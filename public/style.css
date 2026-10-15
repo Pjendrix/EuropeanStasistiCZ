@@ -824,3 +824,4 @@ details.explain p { margin: .5rem 0; }
 details.explain.wide { max-width: none; margin-top: 1.5rem; }
 details.links-more { margin: .3rem 0 1rem; font-size: .875rem; }
 details.links-more summary { cursor: pointer; color: var(--muted); }
+.share-sep { border: 0; border-top: 1px solid var(--border); margin: .25rem .5rem; }

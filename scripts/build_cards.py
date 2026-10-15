@@ -193,7 +193,7 @@ def to_png(img) -> bytes:
     """PNG s paletou (menší soubor, deterministické)."""
     from PIL import Image
     buf = io.BytesIO()
-    img.quantize(colors=96, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(buf, format="PNG", optimize=True)
+    img.quantize(colors=96, method=Image.Quantize.MAXCOVERAGE, dither=Image.Dither.NONE).save(buf, format="PNG", optimize=True)
     return buf.getvalue()
 
 
@@ -246,8 +246,16 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     return to_png(img)
 
 
-def mep_card(prof: dict, group_text: str, party_text: str, photo: Path | None, data_day: str,
+def hex_rgb(c: str | None) -> tuple[int, int, int]:
+    if c and len(c) == 7 and c.startswith("#"):
+        return tuple(int(c[i:i + 2], 16) for i in (1, 3, 5))
+    return MUTED
+
+
+def mep_card(prof: dict, chips: list[tuple[str, str | None]], mandate_text: str, photo: Path | None, data_day: str,
              base_url: str | None) -> bytes:
+    """OG náhled 1200 × 630 = základní karta poslance na šířku: portrét vlevo, jméno, frakce · strana jako tečka a zkratka
+    (bez log), dvě čísla s mediánem. Práce na textech je na detailu (3. obrázek carouselu na webu)."""
     from PIL import Image
     mep = prof["mep"]
     img, d = new_card()
@@ -267,8 +275,15 @@ def mep_card(prof: dict, group_text: str, party_text: str, photo: Path | None, d
         d.text((px, py + ph + 12), "© European Union – Source: EP", font=font(15, 500), fill=MUTED)
     x0 = px + pw + 48
     d.text((x0, 96), fit(d, name, font(54, 800), W - x0 - 56), font=font(54, 800), fill=WHITE)
-    sub = " · ".join(x for x in (group_text, party_text) if x)
-    d.text((x0, 168), fit(d, sub, font(26, 600), W - x0 - 56), font=font(26, 600), fill=SOFT)
+    cx = x0
+    for label, color in chips:
+        w = int(text_w(d, label, font(24, 600))) + 52
+        d.rounded_rectangle([cx, 166, cx + w, 210], radius=22, fill=(30, 41, 59))
+        d.ellipse([cx + 16, 180, cx + 30, 194], fill=hex_rgb(color))
+        d.text((cx + 40, 188), label, font=font(24, 600), fill=WHITE, anchor="lm")
+        cx += w + 10
+    if mandate_text:
+        d.text((x0, 226), fit(d, mandate_text, font(22, 500), W - x0 - 56), font=font(22, 500), fill=SOFT)
 
     t, b = prof["total"], prof.get("benchmarks") or {}
 
@@ -290,14 +305,9 @@ def mep_card(prof: dict, group_text: str, party_text: str, photo: Path | None, d
 
     ep_med = (b.get("ep") or {}).get("attendance")
     grp_med = (b.get("group") or {}).get("group_loyalty")
-    metric(222, "Účast na hlasování", t["attendance"], ep_med, "medián EP")
-    metric(332, "Hlasuje s frakcí", t["group_loyalty"] if t["group_loyalty"][1] else None, grp_med, "medián frakce")
-    roles = (prof.get("own_work") or {}).get("roles")
-    if roles:
-        txt = (f"Práce na textech: zprávy {roles['lead_reports']} · stínové {roles['shadow_reports']} · "
-               f"stanoviska {roles['lead_opinions'] + roles['shadow_opinions']}")
-        d.text((x0, 448), fit(d, txt, font(24, 600), W - x0 - 56), font=font(24, 600), fill=WHITE)
-    d.text((x0, 490), "Bez pořadí a hodnocení: čísla spočítal skript z oficiálních dat.", font=font(20, 500), fill=SOFT)
+    metric(280, "Účast na hlasování", t["attendance"], ep_med, "medián EP")
+    metric(390, "Hlasuje s frakcí", t["group_loyalty"] if t["group_loyalty"][1] else None, grp_med, "medián frakce")
+    d.text((x0, 508), "Bez pořadí a hodnocení: čísla spočítal skript z oficiálních dat.", font=font(20, 500), fill=SOFT)
     url = f"{base_url.rstrip('/').split('://', 1)[-1]}/p/{mep['id']}" if base_url else None
     footer(d, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", url)
     return to_png(img)
@@ -344,10 +354,12 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
         party = next((x for x in parties if p and str(x["id"]) == str(p["id"])), None)
         party_text = "" if not p else ("nezávislý/á" if p["short_label"] == "Ind." or (party or {}).get("independent") else p["short_label"])
         mandate = min((x["start"] for x in prof["mep"].get("mandates") or [] if x.get("start")), default=None)
-        extra = f"v mandátu od {fmt_date(mandate)}" if mandate and mandate > "2024-07-16" else ""
-        sub_party = " · ".join(x for x in (party_text, extra) if x)
+        g_obj = next((x for x in groups if g and (x["code"] == g["code"] or x.get("ep_code") == g["code"])), None)
+        chips = [(group_label(g["code"] if g else None, groups), (g_obj or {}).get("chart_color"))] if g else []
+        if party_text:
+            chips.append((party_text, (party or {}).get("chart_color")))
         photo = public / "assets" / "photos" / f"{mid}.jpg"
-        put(f"p/{mid}.png", mep_card(prof, group_label(g["code"] if g else None, groups), sub_party, photo, data_day, base_url))
+        put(f"p/{mid}.png", mep_card(prof, chips, f"v mandátu od {fmt_date(mandate)}" if mandate else "", photo, data_day, base_url))
     _, votes = load_votes(data_dir / "votes")
     wanted = card_vote_ids(votes)
     for v in votes:

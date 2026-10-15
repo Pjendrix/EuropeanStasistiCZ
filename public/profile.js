@@ -293,15 +293,32 @@ function periodText(x) {
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
     const pageUrl = new URL(`p/${mep.id}.html`, document.baseURI).href;
     window.shareContext = () => {
-      const ro = profile.own_work?.roles;
+      const ro = profile.own_work?.roles, ows = profile.own_work?.summary, pas = profile.own_work?.passed;
+      const gObj = groups.find((x) => x.ep_code === g?.code);
+      const pObj = p ? parties.find((x) => String(x.id) === String(p.org_id)) : null;
+      const partyLabel = p ? (p.short_label === "Ind." || pObj?.independent ? byGender(mep, "nezávislý", "nezávislá") : p.short_label) : "";
+      const groupLabel = g ? (CZ_GROUP_LABEL[gObj?.code] || gObj?.short_label || g.short_label) : "";
+      const day = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : null);
+      const today = new Date().toISOString().slice(0, 10);
+      const cNow = mep.committees.filter((c) => !c.end || c.end >= today);
+      const top = profile.pairwise.filter((x) => x.total >= 100).map((x) => ({ name: displayName(x), party: x.party?.short_label || "", share: x.same / x.total }))
+        .sort((a, b) => b.share - a.share).slice(0, 3);
       return {
         kind: "mep", url: pageUrl, filename: `ep-watch-${mep.id}`,
         text: `${name}: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(pct(t.attendance))} jmenovitých hlasování (medián EP ${b?.ep?.attendance != null ? fmtPct(b.ep.attendance) : "–"}). Zdroj: HowTheyVote.eu, EP Watch CZ`,
         data: {
-          name, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: /^\d{4}-\d{2}-\d{2}$/.test(profile.sources?.votes?.release || "") ? profile.sources.votes.release : new Date().toISOString().slice(0, 10),
-          subtitle: [g ? (CZ_GROUP_LABEL[groups.find((x) => x.ep_code === g.code)?.code] || g.short_label) : "", p ? p.short_label : "", active ? "" : "bývalý poslanec"].filter(Boolean).join(" · "),
+          name, female: mep.gender === "FEMALE" ? true : mep.gender === "MALE" ? false : null, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: day(profile.sources?.votes?.release) || today, workDay: day(profile.own_work?.updated) || day(profile.activity?.updated),
+          chips: [groupLabel && { label: groupLabel, color: groupColor(gObj) }, partyLabel && { label: partyLabel, color: groupColor(pObj) }].filter(Boolean),
+          mandate: active ? `v mandátu od ${since}` : `mandát ${mandateText(mep)}`,
           attendance: t.attendance, attendanceMedian: b?.ep?.attendance ?? null, loyalty: isNI ? null : t.group_loyalty, loyaltyMedian: isNI ? null : (b?.group?.group_loyalty ?? null),
-          work: ro ? `Práce na textech: zprávy ${ro.lead_reports} · stínové ${ro.shadow_reports} · stanoviska ${ro.lead_opinions + ro.shadow_opinions}` : "",
+          positions: t.positions, outcome: t.outcome, groupOutcome: t.group_outcome, attendanceMain: t.attendance_main, attendanceMainMedian: b?.ep?.attendance_main ?? null,
+          pairwiseTop: top,
+          ownWork: ro ? { leadReports: ro.lead_reports, leadAdopted: pas?.lead_adopted ?? null, leadOpinions: ro.lead_opinions, shadowReports: ro.shadow_reports } : null,
+          speeches: profile.activity ? profile.activity.speeches : null, speechesMinutes: profile.activity ? profile.activity.speeches_minutes : null,
+          questions: ows?.question ? ows.question.count : null, questionsAnswered: ows?.question ? ows.question.answered : null,
+          presence: profile.presence && profile.presence.days ? { present: profile.presence.present, days: profile.presence.days } : null,
+          committees: { members: cNow.filter((c) => c.role !== "MEMBER_SUBSTITUTE").map((c) => ({ code: c.code, name: c.name_cs || c.name_en || "" })),
+            substitutes: cNow.filter((c) => c.role === "MEMBER_SUBSTITUTE").map((c) => c.code) },
           urlShort: pageUrl.replace(/^https?:\/\//, ""),
         },
       };
