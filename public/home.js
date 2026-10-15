@@ -28,17 +28,12 @@ function renderKpis(ov, bench) {
   document.getElementById("hero-eyebrow").textContent = `10. volební období · data k ${fmtDate(ov.period.to)}`;
 }
 
-// Tři vstupy pod čísly: poslanec, co se naposledy odhlasovalo, témata.
-function renderEntries(ov, session) {
+// Pod čísly jen řádek s tématy (úvodní stránka už je rozcestník, dlaždice „Najít poslance“ a „Co se naposledy odhlasovalo“ by se opakovaly).
+function renderEntries(ov) {
   const el = document.getElementById("entries");
   if (!el) return;
   const topics = (ov.topics || []).slice(0, 6);
-  el.innerHTML = `
-    <a class="entry" href="#poslanci"><strong>Najít poslance</strong><span>${fmtNum(ov.meps.filter(isActive).length)} poslanců v mandátu, jejich hlasování a účast</span></a>
-    <a class="entry" href="votes.html?m=${esc((session.to || "").slice(0, 7))}&f=final&od=${esc(session.from || "")}"><strong>Co se naposledy odhlasovalo</strong>
-      <span>závěrečná hlasování ze zasedání ${fmtDate(session.from)} – ${fmtDate(session.to)}</span></a>
-    <div class="entry"><strong>Témata</strong>
-      <span class="entry-topics">${topics.map((t) => `<a href="votes.html?t=${esc(t.code)}&f=final">${esc(t.label_cs || t.label || t.code)}</a>`).join("") || "připravuje se"}</span></div>`;
+  el.innerHTML = topics.length ? `<span class="entry-label">Témata</span><span class="entry-topics">${topics.map((t) => `<a href="votes.html?t=${esc(t.code)}&f=final">${esc(t.label_cs || t.label || t.code)}</a>`).join("")}</span>` : "";
 }
 
 function htvCode(m, groups) {
@@ -208,7 +203,7 @@ function groupedCards(list, groups, parties, bench) {
     if (!bench) document.getElementById("bench-key").hidden = true;
     renderKpis(ov, bench);
     getJSON("session.json").then((session) => {
-      renderEntries(ov, session);
+      renderEntries(ov);
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));
     renderDelegation(ov, groups);
