@@ -17,22 +17,87 @@
   "to": "2026-10-08"
  },
  "votes_total": 6154,
+ "topics": [
+  {
+   "code": "6.10",
+   "label": "Common foreign and security policy (CFSP)",
+   "votes": 1562,
+   "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)"
+  },
+  {
+   "code": "8.70",
+   "label": "Budget of the Union",
+   "votes": 922,
+   "label_cs": "Rozpočet Unie"
+  },
+  {
+   "code": "4.10",
+   "label": "Social policy, social charter and protocol",
+   "votes": 708,
+   "label_cs": "Sociální politika, sociální charta a protokol"
+  },
+  {
+   "code": "3.70",
+   "label": "Environmental policy",
+   "votes": 551,
+   "label_cs": "Politika životního prostředí"
+  },
+  {
+   "code": "6.40",
+   "label": "Relations with third countries",
+   "votes": 487,
+   "label_cs": "Vztahy se třetími zeměmi"
+  },
+  {
+   "code": "6.20",
+   "label": "Common commercial policy in general",
+   "votes": 331,
+   "label_cs": "Společná obchodní politika obecně"
+  },
+  {
+   "code": "8.20",
+   "label": "Enlargement of the Union",
+   "votes": 312,
+   "label_cs": "Rozšíření Unie"
+  },
+  {
+   "code": "8.40",
+   "label": "Institutions of the Union",
+   "votes": 276,
+   "label_cs": "Orgány Unie"
+  },
+  {
+   "code": "3.30",
+   "label": null,
+   "votes": 248,
+   "label_cs": null
+  },
+  {
+   "code": "3.45",
+   "label": "Enterprise policy, inter-company cooperation",
+   "votes": 215,
+   "label_cs": "Podniková politika, spolupráce podniků"
+  }
+ ],
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
   "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
-  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
   "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
+ "short_mandate_days": 60,
  "meps": [
   {
    "id": 23699,
@@ -49,6 +114,7 @@
      "mandate_id": "16868"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -63,8 +129,8 @@
      6154
     ],
     "attendance_main": [
-     609,
-     680
+     575,
+     640
     ],
     "group_loyalty": [
      0,
@@ -83,8 +149,8 @@
      4984
     ],
     "outcome_main": [
-     231,
-     505
+     221,
+     473
     ],
     "outcome_close": [
      60,
@@ -121,6 +187,7 @@
      "mandate_id": "16875"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -135,16 +202,16 @@
      2094
     ],
     "attendance_main": [
-     122,
-     221
+     120,
+     215
     ],
     "group_loyalty": [
      859,
      1184
     ],
     "group_loyalty_main": [
-     71,
-     122
+     69,
+     120
     ],
     "cz_agreement": [
      1013,
@@ -156,7 +223,7 @@
     ],
     "outcome_main": [
      74,
-     95
+     93
     ],
     "outcome_close": [
      17,
@@ -168,7 +235,7 @@
     ],
     "group_outcome_main": [
      3431,
-     6471
+     6322
     ],
     "positions": {
      "FOR": 642,
@@ -193,6 +260,7 @@
      "mandate_id": "16877"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -207,16 +275,16 @@
      6154
     ],
     "attendance_main": [
-     669,
-     680
+     629,
+     640
     ],
     "group_loyalty": [
      5326,
      5916
     ],
     "group_loyalty_main": [
-     646,
-     669
+     608,
+     629
     ],
     "cz_agreement": [
      2757,
@@ -227,8 +295,8 @@
      5521
     ],
     "outcome_main": [
-     617,
-     657
+     579,
+     618
     ],
     "outcome_close": [
      57,
@@ -239,8 +307,8 @@
      874998
     ],
     "group_outcome_main": [
-     99320,
-     105837
+     93389,
+     99497
     ],
     "positions": {
      "FOR": 2441,
@@ -265,6 +333,7 @@
      "mandate_id": "16896"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -279,16 +348,16 @@
      6154
     ],
     "attendance_main": [
-     620,
-     680
+     585,
+     640
     ],
     "group_loyalty": [
      5095,
      5566
     ],
     "group_loyalty_main": [
-     593,
-     620
+     558,
+     585
     ],
     "cz_agreement": [
      2850,
@@ -299,8 +368,8 @@
      5450
     ],
     "outcome_main": [
-     555,
-     606
+     522,
+     571
     ],
     "outcome_close": [
      71,
@@ -311,8 +380,8 @@
      871919
     ],
     "group_outcome_main": [
-     91901,
-     97995
+     86494,
+     92236
     ],
     "positions": {
      "FOR": 2150,
@@ -337,6 +406,7 @@
      "mandate_id": "16871"
     }
    ],
+   "short_mandate": true,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -406,6 +476,7 @@
      "mandate_id": "16873"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -420,16 +491,16 @@
      6154
     ],
     "attendance_main": [
-     602,
-     680
+     565,
+     640
     ],
     "group_loyalty": [
      3989,
      5391
     ],
     "group_loyalty_main": [
-     357,
-     602
+     331,
+     565
     ],
     "cz_agreement": [
      4546,
@@ -440,8 +511,8 @@
      4572
     ],
     "outcome_main": [
-     367,
-     478
+     344,
+     446
     ],
     "outcome_close": [
      49,
@@ -452,8 +523,8 @@
      310473
     ],
     "group_outcome_main": [
-     18436,
-     31170
+     16957,
+     28843
     ],
     "positions": {
      "FOR": 2752,
@@ -478,6 +549,7 @@
      "mandate_id": "16879"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -492,16 +564,16 @@
      6154
     ],
     "attendance_main": [
-     617,
-     680
+     580,
+     640
     ],
     "group_loyalty": [
      4735,
      5516
     ],
     "group_loyalty_main": [
-     480,
-     612
+     448,
+     575
     ],
     "cz_agreement": [
      4137,
@@ -512,8 +584,8 @@
      5052
     ],
     "outcome_main": [
-     405,
-     537
+     379,
+     505
     ],
     "outcome_close": [
      64,
@@ -524,8 +596,8 @@
      334771
     ],
     "group_outcome_main": [
-     27620,
-     34800
+     25778,
+     32548
     ],
     "positions": {
      "FOR": 2733,
@@ -550,6 +622,7 @@
      "mandate_id": "16866"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "VERTS-ALE",
     "short_label": "Verts/ALE"
@@ -564,16 +637,16 @@
      6154
     ],
     "attendance_main": [
-     618,
-     680
+     580,
+     640
     ],
     "group_loyalty": [
      5405,
      5603
     ],
     "group_loyalty_main": [
-     586,
-     618
+     551,
+     580
     ],
     "cz_agreement": [
      1597,
@@ -584,8 +657,8 @@
      5337
     ],
     "outcome_main": [
-     511,
-     591
+     494,
+     555
     ],
     "outcome_close": [
      70,
@@ -596,8 +669,8 @@
      249854
     ],
     "group_outcome_main": [
-     23102,
-     27140
+     22313,
+     25520
     ],
     "positions": {
      "FOR": 2928,
@@ -622,6 +695,7 @@
      "mandate_id": "16869"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -636,16 +710,16 @@
      6154
     ],
     "attendance_main": [
-     635,
-     680
+     598,
+     640
     ],
     "group_loyalty": [
      4711,
      5732
     ],
     "group_loyalty_main": [
-     475,
-     630
+     445,
+     593
     ],
     "cz_agreement": [
      4294,
@@ -656,8 +730,8 @@
      5211
     ],
     "outcome_main": [
-     424,
-     544
+     400,
+     513
     ],
     "outcome_close": [
      64,
@@ -668,8 +742,8 @@
      344288
     ],
     "group_outcome_main": [
-     28367,
-     35057
+     26562,
+     32853
     ],
     "positions": {
      "FOR": 2934,
@@ -694,6 +768,7 @@
      "mandate_id": "16870"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ESN",
     "short_label": "ESN"
@@ -708,16 +783,16 @@
      6154
     ],
     "attendance_main": [
-     639,
-     680
+     605,
+     640
     ],
     "group_loyalty": [
      3973,
      5635
     ],
     "group_loyalty_main": [
-     511,
-     638
+     478,
+     604
     ],
     "cz_agreement": [
      2882,
@@ -728,8 +803,8 @@
      4652
     ],
     "outcome_main": [
-     165,
-     507
+     153,
+     474
     ],
     "outcome_close": [
      49,
@@ -740,8 +815,8 @@
      102836
     ],
     "group_outcome_main": [
-     3714,
-     11045
+     3390,
+     10264
     ],
     "positions": {
      "FOR": 2722,
@@ -766,6 +841,7 @@
      "mandate_id": "16884"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -780,16 +856,16 @@
      6154
     ],
     "attendance_main": [
-     638,
-     680
+     600,
+     640
     ],
     "group_loyalty": [
      4243,
      5716
     ],
     "group_loyalty_main": [
-     384,
-     637
+     357,
+     599
     ],
     "cz_agreement": [
      4807,
@@ -800,8 +876,8 @@
      4823
     ],
     "outcome_main": [
-     397,
-     510
+     371,
+     477
     ],
     "outcome_close": [
      50,
@@ -812,8 +888,8 @@
      326989
     ],
     "group_outcome_main": [
-     20350,
-     33176
+     18695,
+     30772
     ],
     "positions": {
      "FOR": 2891,
@@ -838,6 +914,7 @@
      "mandate_id": "16886"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -852,16 +929,16 @@
      6154
     ],
     "attendance_main": [
-     652,
-     680
+     614,
+     640
     ],
     "group_loyalty": [
      5225,
      5832
     ],
     "group_loyalty_main": [
-     631,
-     652
+     594,
+     614
     ],
     "cz_agreement": [
      2947,
@@ -872,8 +949,8 @@
      5549
     ],
     "outcome_main": [
-     605,
-     637
+     568,
+     599
     ],
     "outcome_close": [
      63,
@@ -884,8 +961,8 @@
      882350
     ],
     "group_outcome_main": [
-     96951,
-     102817
+     91107,
+     96611
     ],
     "positions": {
      "FOR": 2615,
@@ -910,6 +987,7 @@
      "mandate_id": "16889"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -924,16 +1002,16 @@
      6154
     ],
     "attendance_main": [
-     602,
-     680
+     566,
+     640
     ],
     "group_loyalty": [
      3992,
      5365
     ],
     "group_loyalty_main": [
-     366,
-     601
+     341,
+     565
     ],
     "cz_agreement": [
      4505,
@@ -944,8 +1022,8 @@
      4564
     ],
     "outcome_main": [
-     368,
-     481
+     345,
+     450
     ],
     "outcome_close": [
      48,
@@ -956,8 +1034,8 @@
      309016
     ],
     "group_outcome_main": [
-     19079,
-     31285
+     17623,
+     29026
     ],
     "positions": {
      "FOR": 2736,
@@ -982,6 +1060,7 @@
      "mandate_id": "16890"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -996,16 +1075,16 @@
      6154
     ],
     "attendance_main": [
-     595,
-     680
+     559,
+     640
     ],
     "group_loyalty": [
      3887,
      5214
     ],
     "group_loyalty_main": [
-     361,
-     595
+     336,
+     559
     ],
     "cz_agreement": [
      4335,
@@ -1016,8 +1095,8 @@
      4382
     ],
     "outcome_main": [
-     367,
-     476
+     344,
+     445
     ],
     "outcome_close": [
      47,
@@ -1028,8 +1107,8 @@
      297061
     ],
     "group_outcome_main": [
-     19349,
-     31042
+     17773,
+     28807
     ],
     "positions": {
      "FOR": 2621,
@@ -1054,6 +1133,7 @@
      "mandate_id": "16891"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1068,16 +1148,16 @@
      6154
     ],
     "attendance_main": [
-     665,
-     680
+     625,
+     640
     ],
     "group_loyalty": [
      4946,
      5990
     ],
     "group_loyalty_main": [
-     506,
-     660
+     471,
+     620
     ],
     "cz_agreement": [
      4474,
@@ -1088,8 +1168,8 @@
      5462
     ],
     "outcome_main": [
-     442,
-     573
+     416,
+     538
     ],
     "outcome_close": [
      71,
@@ -1100,8 +1180,8 @@
      359326
     ],
     "group_outcome_main": [
-     29492,
-     36756
+     27592,
+     34307
     ],
     "positions": {
      "FOR": 3083,
@@ -1126,6 +1206,7 @@
      "mandate_id": "16893"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1140,16 +1221,16 @@
      6154
     ],
     "attendance_main": [
-     653,
-     680
+     613,
+     640
     ],
     "group_loyalty": [
      5266,
      5886
     ],
     "group_loyalty_main": [
-     631,
-     653
+     592,
+     613
     ],
     "cz_agreement": [
      2935,
@@ -1160,8 +1241,8 @@
      5454
     ],
     "outcome_main": [
-     606,
-     635
+     566,
+     595
     ],
     "outcome_close": [
      58,
@@ -1172,8 +1253,8 @@
      868684
     ],
     "group_outcome_main": [
-     96779,
-     102198
+     90557,
+     95662
     ],
     "positions": {
      "FOR": 2441,
@@ -1198,6 +1279,7 @@
      "mandate_id": "16894"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1212,16 +1294,16 @@
      6154
     ],
     "attendance_main": [
-     648,
-     680
+     611,
+     640
     ],
     "group_loyalty": [
      5261,
      5878
     ],
     "group_loyalty_main": [
-     628,
-     648
+     593,
+     611
     ],
     "cz_agreement": [
      2951,
@@ -1232,8 +1314,8 @@
      5597
     ],
     "outcome_main": [
-     605,
-     638
+     570,
+     601
     ],
     "outcome_close": [
      66,
@@ -1244,8 +1326,8 @@
      892562
     ],
     "group_outcome_main": [
-     96839,
-     103234
+     91153,
+     97136
     ],
     "positions": {
      "FOR": 2612,
@@ -1270,6 +1352,7 @@
      "mandate_id": "16895"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1284,16 +1367,16 @@
      2299
     ],
     "attendance_main": [
-     233,
-     250
+     227,
+     244
     ],
     "group_loyalty": [
      1575,
      2092
     ],
     "group_loyalty_main": [
-     176,
-     233
+     170,
+     227
     ],
     "cz_agreement": [
      1364,
@@ -1304,8 +1387,8 @@
      1961
     ],
     "outcome_main": [
-     99,
-     215
+     96,
+     209
     ],
     "outcome_close": [
      30,
@@ -1316,8 +1399,8 @@
      132729
     ],
     "group_outcome_main": [
-     7267,
-     14334
+     7057,
+     13876
     ],
     "positions": {
      "FOR": 1087,
@@ -1342,6 +1425,7 @@
      "mandate_id": "16897"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -1356,8 +1440,8 @@
      6154
     ],
     "attendance_main": [
-     634,
-     680
+     598,
+     640
     ],
     "group_loyalty": [
      0,
@@ -1376,8 +1460,8 @@
      4798
     ],
     "outcome_main": [
-     262,
-     517
+     249,
+     484
     ],
     "outcome_close": [
      57,
@@ -1414,6 +1498,7 @@
      "mandate_id": "16898"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1428,16 +1513,16 @@
      6154
     ],
     "attendance_main": [
-     611,
-     680
+     576,
+     640
     ],
     "group_loyalty": [
      3410,
      4215
     ],
     "group_loyalty_main": [
-     331,
-     466
+     310,
+     442
     ],
     "cz_agreement": [
      4451,
@@ -1448,8 +1533,8 @@
      4970
     ],
     "outcome_main": [
-     390,
-     505
+     365,
+     474
     ],
     "outcome_close": [
      55,
@@ -1460,8 +1545,8 @@
      259270
     ],
     "group_outcome_main": [
-     16476,
-     25502
+     15241,
+     23794
     ],
     "positions": {
      "FOR": 2987,
@@ -1473,9 +1558,9 @@
   },
   {
    "id": 256853,
-   "name": "Klara DOSTALOVA",
-   "given_name": "Klara",
-   "family_name": "Dostalova",
+   "name": "Klára DOSTÁLOVÁ",
+   "given_name": "Klára",
+   "family_name": "Dostálová",
    "sort_label": "DOSTALOVAK",
    "gender": "FEMALE",
    "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
@@ -1486,6 +1571,7 @@
      "mandate_id": "16899"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1500,16 +1586,16 @@
      6154
     ],
     "attendance_main": [
-     540,
-     680
+     509,
+     640
     ],
     "group_loyalty": [
      3704,
      4907
     ],
     "group_loyalty_main": [
-     331,
-     540
+     311,
+     509
     ],
     "cz_agreement": [
      4173,
@@ -1520,8 +1606,8 @@
      4213
     ],
     "outcome_main": [
-     330,
-     427
+     311,
+     401
     ],
     "outcome_close": [
      43,
@@ -1532,8 +1618,8 @@
      288347
     ],
     "group_outcome_main": [
-     17120,
-     28125
+     15920,
+     26241
     ],
     "positions": {
      "FOR": 2527,
@@ -1558,6 +1644,7 @@
      "mandate_id": "17552"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1572,16 +1659,16 @@
      6036
     ],
     "attendance_main": [
-     641,
-     671
+     604,
+     631
     ],
     "group_loyalty": [
      4336,
      5738
     ],
     "group_loyalty_main": [
-     387,
-     640
+     360,
+     603
     ],
     "cz_agreement": [
      4824,
@@ -1592,8 +1679,8 @@
      4870
     ],
     "outcome_main": [
-     393,
-     508
+     368,
+     476
     ],
     "outcome_close": [
      48,
@@ -1604,8 +1691,8 @@
      331256
     ],
     "group_outcome_main": [
-     19981,
-     33092
+     18360,
+     30767
     ],
     "positions": {
      "FOR": 2930,
@@ -1630,6 +1717,7 @@
      "mandate_id": "17561"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1644,16 +1732,16 @@
      4060
     ],
     "attendance_main": [
-     374,
-     459
+     345,
+     425
     ],
     "group_loyalty": [
      2480,
      3271
     ],
     "group_loyalty_main": [
-     232,
-     374
+     211,
+     345
     ],
     "cz_agreement": [
      2764,
@@ -1664,8 +1752,8 @@
      2786
     ],
     "outcome_main": [
-     236,
-     302
+     216,
+     276
     ],
     "outcome_close": [
      30,
@@ -1676,8 +1764,8 @@
      189493
     ],
     "group_outcome_main": [
-     11943,
-     19700
+     10714,
+     17816
     ],
     "positions": {
      "FOR": 1634,
@@ -1702,6 +1790,7 @@
      "mandate_id": "17563"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1716,16 +1805,16 @@
      3730
     ],
     "attendance_main": [
-     404,
-     406
+     370,
+     372
     ],
     "group_loyalty": [
      3134,
      3692
     ],
     "group_loyalty_main": [
-     261,
-     403
+     236,
+     369
     ],
     "cz_agreement": [
      2728,
@@ -1736,8 +1825,8 @@
      3202
     ],
     "outcome_main": [
-     206,
-     301
+     183,
+     272
     ],
     "outcome_close": [
      33,
@@ -1748,8 +1837,8 @@
      216441
     ],
     "group_outcome_main": [
-     11792,
-     19529
+     10367,
+     17454
     ],
     "positions": {
      "FOR": 1825,

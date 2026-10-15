@@ -82,6 +82,8 @@
    }
   ]
  },
+ "short_mandate": false,
+ "mandate_days": 822,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -97,19 +99,21 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
   "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
-  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
   "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "total": {
   "attendance": [
@@ -117,16 +121,16 @@
    6154
   ],
   "attendance_main": [
-   617,
-   680
+   580,
+   640
   ],
   "group_loyalty": [
    4735,
    5516
   ],
   "group_loyalty_main": [
-   480,
-   612
+   448,
+   575
   ],
   "cz_agreement": [
    4137,
@@ -137,8 +141,8 @@
    5052
   ],
   "outcome_main": [
-   405,
-   537
+   379,
+   505
   ],
   "outcome_close": [
    64,
@@ -149,8 +153,8 @@
    334771
   ],
   "group_outcome_main": [
-   27620,
-   34800
+   25778,
+   32548
   ],
   "positions": {
    "FOR": 2733,
@@ -378,7 +382,7 @@
     79
    ],
    "outcome_main": [
-    12,
+    13,
     17
    ],
    "outcome_close": [
@@ -390,8 +394,8 @@
     4890
    ],
    "group_outcome_main": [
-    800,
-    1031
+    849,
+    1036
    ],
    "positions": {
     "FOR": 40,
@@ -550,16 +554,16 @@
     348
    ],
    "attendance_main": [
-    21,
-    21
+    18,
+    18
    ],
    "group_loyalty": [
     316,
     347
    ],
    "group_loyalty_main": [
-    18,
-    21
+    16,
+    18
    ],
    "cz_agreement": [
     265,
@@ -570,8 +574,8 @@
     313
    ],
    "outcome_main": [
-    12,
-    17
+    10,
+    14
    ],
    "outcome_close": [
     7,
@@ -582,8 +586,8 @@
     21417
    ],
    "group_outcome_main": [
-    786,
-    1145
+    694,
+    962
    ],
    "positions": {
     "FOR": 177,
@@ -598,8 +602,8 @@
     393
    ],
    "attendance_main": [
-    51,
-    51
+    49,
+    49
    ],
    "group_loyalty": [
     335,
@@ -607,7 +611,7 @@
    ],
    "group_loyalty_main": [
     30,
-    51
+    49
    ],
    "cz_agreement": [
     297,
@@ -694,16 +698,16 @@
     226
    ],
    "attendance_main": [
-    31,
-    32
+    30,
+    31
    ],
    "group_loyalty": [
     195,
     222
    ],
    "group_loyalty_main": [
-    27,
-    31
+    26,
+    30
    ],
    "cz_agreement": [
     162,
@@ -714,8 +718,8 @@
     216
    ],
    "outcome_main": [
-    26,
-    29
+    25,
+    28
    ],
    "outcome_close": [
     1,
@@ -726,8 +730,8 @@
     15106
    ],
    "group_outcome_main": [
-    1842,
-    2093
+    1764,
+    2015
    ],
    "positions": {
     "FOR": 133,
@@ -790,16 +794,16 @@
     382
    ],
    "attendance_main": [
-    43,
-    43
+    41,
+    41
    ],
    "group_loyalty": [
     298,
     379
    ],
    "group_loyalty_main": [
-    29,
-    43
+    27,
+    41
    ],
    "cz_agreement": [
     280,
@@ -810,8 +814,8 @@
     343
    ],
    "outcome_main": [
-    19,
-    34
+    18,
+    32
    ],
    "outcome_close": [
     3,
@@ -822,8 +826,8 @@
     21429
    ],
    "group_outcome_main": [
-    1363,
-    2041
+    1276,
+    1908
    ],
    "positions": {
     "FOR": 185,
@@ -838,16 +842,16 @@
     570
    ],
    "attendance_main": [
-    51,
-    51
+    47,
+    47
    ],
    "group_loyalty": [
     520,
     564
    ],
    "group_loyalty_main": [
-    43,
-    51
+    39,
+    47
    ],
    "cz_agreement": [
     431,
@@ -858,8 +862,8 @@
     530
    ],
    "outcome_main": [
-    36,
-    49
+    33,
+    45
    ],
    "outcome_close": [
     5,
@@ -870,8 +874,8 @@
     36189
    ],
    "group_outcome_main": [
-    2405,
-    3232
+    2192,
+    2943
    ],
    "positions": {
     "FOR": 302,
@@ -886,16 +890,16 @@
     155
    ],
    "attendance_main": [
-    31,
-    31
+    26,
+    26
    ],
    "group_loyalty": [
     97,
     150
    ],
    "group_loyalty_main": [
-    25,
-    31
+    20,
+    26
    ],
    "cz_agreement": [
     76,
@@ -906,8 +910,8 @@
     134
    ],
    "outcome_main": [
-    22,
-    30
+    17,
+    25
    ],
    "outcome_close": [
     3,
@@ -918,8 +922,8 @@
     8985
    ],
    "group_outcome_main": [
-    1677,
-    1982
+    1311,
+    1613
    ],
    "positions": {
     "FOR": 58,
@@ -934,16 +938,16 @@
     237
    ],
    "attendance_main": [
-    14,
-    22
+    13,
+    21
    ],
    "group_loyalty": [
     161,
     178
    ],
    "group_loyalty_main": [
-    12,
-    13
+    11,
+    12
    ],
    "cz_agreement": [
     136,
@@ -954,8 +958,8 @@
     162
    ],
    "outcome_main": [
-    6,
-    10
+    5,
+    9
    ],
    "outcome_close": [
     0,
@@ -966,8 +970,8 @@
     11029
    ],
    "group_outcome_main": [
-    356,
-    662
+    292,
+    593
    ],
    "positions": {
     "FOR": 79,
@@ -982,16 +986,16 @@
     237
    ],
    "attendance_main": [
-    28,
-    28
+    26,
+    26
    ],
    "group_loyalty": [
     196,
     234
    ],
    "group_loyalty_main": [
-    21,
-    28
+    19,
+    26
    ],
    "cz_agreement": [
     153,
@@ -1002,8 +1006,8 @@
     204
    ],
    "outcome_main": [
-    16,
-    26
+    15,
+    24
    ],
    "outcome_close": [
     5,
@@ -1014,8 +1018,8 @@
     11978
    ],
    "group_outcome_main": [
-    1293,
-    1672
+    1220,
+    1549
    ],
    "positions": {
     "FOR": 99,
@@ -1030,16 +1034,16 @@
     364
    ],
    "attendance_main": [
-    44,
-    44
+    38,
+    38
    ],
    "group_loyalty": [
     321,
     362
    ],
    "group_loyalty_main": [
-    35,
-    44
+    31,
+    38
    ],
    "cz_agreement": [
     308,
@@ -1050,8 +1054,8 @@
     341
    ],
    "outcome_main": [
-    28,
-    36
+    23,
+    30
    ],
    "outcome_close": [
     2,
@@ -1062,8 +1066,8 @@
     23202
    ],
    "group_outcome_main": [
-    1900,
-    2388
+    1526,
+    1958
    ],
    "positions": {
     "FOR": 171,
@@ -1078,16 +1082,16 @@
     591
    ],
    "attendance_main": [
-    50,
-    51
+    48,
+    49
    ],
    "group_loyalty": [
     498,
     586
    ],
    "group_loyalty_main": [
-    42,
-    49
+    40,
+    47
    ],
    "cz_agreement": [
     440,
@@ -1098,8 +1102,8 @@
     533
    ],
    "outcome_main": [
-    32,
-    46
+    30,
+    44
    ],
    "outcome_close": [
     5,
@@ -1110,8 +1114,8 @@
     36742
    ],
    "group_outcome_main": [
-    2145,
-    2989
+    1991,
+    2833
    ],
    "positions": {
     "FOR": 279,
@@ -1126,16 +1130,16 @@
     201
    ],
    "attendance_main": [
-    24,
-    25
+    21,
+    22
    ],
    "group_loyalty": [
     163,
     199
    ],
    "group_loyalty_main": [
-    21,
-    24
+    18,
+    21
    ],
    "cz_agreement": [
     141,
@@ -1174,16 +1178,16 @@
     246
    ],
    "attendance_main": [
-    33,
-    35
+    30,
+    32
    ],
    "group_loyalty": [
     204,
     240
    ],
    "group_loyalty_main": [
-    27,
-    33
+    24,
+    30
    ],
    "cz_agreement": [
     203,
@@ -1194,8 +1198,8 @@
     223
    ],
    "outcome_main": [
-    28,
-    30
+    25,
+    27
    ],
    "outcome_close": [
     7,
@@ -1206,8 +1210,8 @@
     14698
    ],
    "group_outcome_main": [
-    1550,
-    1770
+    1376,
+    1567
    ],
    "positions": {
     "FOR": 128,
@@ -1223,7 +1227,7 @@
    ],
    "attendance_main": [
     0,
-    34
+    31
    ],
    "group_loyalty": [
     0,
@@ -1270,16 +1274,16 @@
     360
    ],
    "attendance_main": [
-    30,
-    40
+    28,
+    38
    ],
    "group_loyalty": [
     206,
     235
    ],
    "group_loyalty_main": [
-    23,
-    30
+    21,
+    28
    ],
    "cz_agreement": [
     168,
@@ -1290,8 +1294,8 @@
     212
    ],
    "outcome_main": [
-    17,
-    25
+    15,
+    23
    ],
    "outcome_close": [
     0,
@@ -1302,8 +1306,8 @@
     15001
    ],
    "group_outcome_main": [
-    1412,
-    1728
+    1269,
+    1579
    ],
    "positions": {
     "FOR": 126,
@@ -1318,16 +1322,16 @@
     227
    ],
    "attendance_main": [
-    26,
-    26
+    25,
+    25
    ],
    "group_loyalty": [
     209,
     226
    ],
    "group_loyalty_main": [
-    21,
-    26
+    20,
+    25
    ],
    "cz_agreement": [
     205,
@@ -1338,8 +1342,8 @@
     215
    ],
    "outcome_main": [
-    15,
-    24
+    14,
+    23
    ],
    "outcome_close": [
     1,
@@ -1350,8 +1354,8 @@
     15299
    ],
    "group_outcome_main": [
-    1167,
-    1687
+    1094,
+    1612
    ],
    "positions": {
     "FOR": 114,
@@ -1377,6 +1381,7 @@
      "mandate_id": "16891"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1403,6 +1408,7 @@
      "mandate_id": "16869"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1429,6 +1435,7 @@
      "mandate_id": "16898"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1455,6 +1462,7 @@
      "mandate_id": "16875"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1481,6 +1489,7 @@
      "mandate_id": "17561"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1507,6 +1516,7 @@
      "mandate_id": "17563"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1520,9 +1530,9 @@
   },
   {
    "id": 256853,
-   "name": "Klara DOSTALOVA",
-   "given_name": "Klara",
-   "family_name": "Dostalova",
+   "name": "Klára DOSTÁLOVÁ",
+   "given_name": "Klára",
+   "family_name": "Dostálová",
    "sort_label": "DOSTALOVAK",
    "gender": "FEMALE",
    "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
@@ -1533,6 +1543,7 @@
      "mandate_id": "16899"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1559,6 +1570,7 @@
      "mandate_id": "17552"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1585,6 +1597,7 @@
      "mandate_id": "16884"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1611,6 +1624,7 @@
      "mandate_id": "16889"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1637,6 +1651,7 @@
      "mandate_id": "16873"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1663,6 +1678,7 @@
      "mandate_id": "16890"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1689,6 +1705,7 @@
      "mandate_id": "16895"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1715,6 +1732,7 @@
      "mandate_id": "16896"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1741,6 +1759,7 @@
      "mandate_id": "16886"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1767,6 +1786,7 @@
      "mandate_id": "16894"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1793,6 +1813,7 @@
      "mandate_id": "16893"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1819,6 +1840,7 @@
      "mandate_id": "16870"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ESN",
     "short_label": "ESN"
@@ -1845,6 +1867,7 @@
      "mandate_id": "16877"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1871,6 +1894,7 @@
      "mandate_id": "16897"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -1897,6 +1921,7 @@
      "mandate_id": "16868"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -1923,6 +1948,7 @@
      "mandate_id": "16866"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "VERTS-ALE",
     "short_label": "Verts/ALE"
@@ -1945,7 +1971,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198216,
@@ -1956,7 +1986,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198204,
@@ -1967,7 +2001,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198252,
@@ -1978,7 +2016,11 @@
    "description": "Proposition de résolution",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198251,
@@ -1989,7 +2031,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198261,
@@ -2000,7 +2046,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198176,
@@ -2011,7 +2061,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198175,
@@ -2022,7 +2076,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198194,
@@ -2033,7 +2091,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198193,
@@ -2044,7 +2106,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 197457,
@@ -2055,7 +2121,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197497,
@@ -2066,7 +2136,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "AGAINST",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197501,
@@ -2077,7 +2151,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "AGAINST",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197464,
@@ -2088,7 +2166,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "AGAINST",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197509,
@@ -2099,12 +2181,17 @@
    "description": "Proposition de la Commission",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "ECR"
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise"
   }
  ],
+ "benchmarks": null,
  "against_group": {
   "count": 781,
-  "count_main": 132,
+  "count_main": 127,
   "recent": [
    {
     "id": 198022,
@@ -2127,6 +2214,12 @@
      2,
      3
     ],
+    "amendment_number": "117",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za bodem odůvodnění A - PN 117",
     "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2152,6 +2245,12 @@
      1,
      3
     ],
+    "amendment_number": "39",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za odst. 9 - PN 39",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2177,6 +2276,12 @@
      2,
      3
     ],
+    "amendment_number": "31",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1 - PN 31, 2. část",
     "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2202,6 +2307,12 @@
      0,
      3
     ],
+    "amendment_number": "31",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1 - PN 31, 1. část",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2227,6 +2338,12 @@
      5,
      3
     ],
+    "amendment_number": "10",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za odst. 7 - PN 10",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2252,6 +2369,12 @@
      1,
      3
     ],
+    "amendment_number": "9",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 7 - PN 9",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2277,6 +2400,12 @@
      5,
      3
     ],
+    "amendment_number": "7",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za odst. 6 - PN 7",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "ABSTENTION"
@@ -2302,6 +2431,12 @@
      3,
      1
     ],
+    "amendment_number": "§",
+    "texts_adopted_reference": null,
+    "vote_kind": "split_part",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": null,
     "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2327,6 +2462,12 @@
      0,
      1
     ],
+    "amendment_number": "35",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1, písm. ai - PN 35",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2352,6 +2493,12 @@
      11,
      2
     ],
+    "amendment_number": "64",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1, za písm. i - PN 64",
     "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2379,6 +2526,12 @@
      0,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2404,6 +2557,12 @@
      0,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2429,6 +2588,12 @@
      0,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2454,6 +2619,12 @@
      6,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh Komise",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "AGAINST"
@@ -2479,6 +2650,12 @@
      1,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh nařízení Rady",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2504,6 +2681,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2529,6 +2712,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2554,6 +2743,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2579,6 +2774,12 @@
      2,
      4
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR"
@@ -2604,6 +2805,12 @@
      0,
      3
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh Komise",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "ABSTENTION"
@@ -2632,6 +2839,12 @@
     0,
     4
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 7, 2. část",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -2655,6 +2868,12 @@
     0,
     4
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13 - PN 10",
    "position": "FOR"
   },
   {
@@ -2678,6 +2897,12 @@
     1,
     3
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 8 - PN 8",
    "position": "FOR"
   },
   {
@@ -2701,6 +2926,12 @@
     0,
     1
    ],
+   "amendment_number": "90",
+   "texts_adopted_reference": "P10_TA(2026)0211",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 3 - PN 90",
    "position": "AGAINST"
   },
   {
@@ -2724,6 +2955,12 @@
     2,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. ad - PN 34",
    "position": "AGAINST"
   },
   {
@@ -2747,6 +2984,12 @@
     1,
     0
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. aa - PN 31",
    "position": "AGAINST"
   },
   {
@@ -2770,6 +3013,12 @@
     8,
     1
    ],
+   "amendment_number": "117",
+   "texts_adopted_reference": "P10_TA(2026)0138",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 2, pododstavec 1, bod 2, podbod a, za podbodem i - PN 117",
    "position": "AGAINST"
   },
   {
@@ -2793,6 +3042,12 @@
     1,
     1
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21 - PN 6",
    "position": "AGAINST"
   },
   {
@@ -2816,6 +3071,12 @@
     9,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Před článkem 1; nařízení (EU) 2021/1232 - článek 3 - odstavec 1 - písm. a - PN 34",
    "position": "FOR"
   },
   {
@@ -2839,6 +3100,12 @@
     0,
     2
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0051",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění G, 3. část",
    "position": "AGAINST"
   },
   {
@@ -2862,6 +3129,12 @@
     2,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění AG - PN 10",
    "position": "AGAINST"
   },
   {
@@ -2885,6 +3158,12 @@
     7,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 63 - PN 9",
    "position": "AGAINST"
   },
   {
@@ -2908,6 +3187,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 10, 2. část",
    "position": "AGAINST"
   },
   {
@@ -2931,6 +3216,12 @@
     3,
     1
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0244",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 36 - PN 3, 1. část",
    "position": "FOR"
   },
   {
@@ -2954,6 +3245,12 @@
     2,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0231",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13, 2. část",
    "position": "AGAINST"
   },
   {
@@ -2977,6 +3274,12 @@
     7,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1",
    "position": "AGAINST"
   },
   {
@@ -3000,6 +3303,12 @@
     0,
     1
    ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0087",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 96 - PN 1",
    "position": "FOR"
   },
   {
@@ -3023,6 +3332,12 @@
     2,
     2
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": "P10_TA(2025)0079",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 57 - PN 8",
    "position": "AGAINST"
   },
   {
@@ -3046,6 +3361,12 @@
     1,
     3
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0062",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění B - PN 3",
    "position": "FOR"
   },
   {
@@ -3069,6 +3390,12 @@
     0,
     0
    ],
+   "amendment_number": "146",
+   "texts_adopted_reference": "P10_TA(2025)0058",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 125 - PN 146",
    "position": "FOR"
   },
   {
@@ -3092,6 +3419,12 @@
     2,
     0
    ],
+   "amendment_number": "65",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 22 - PN 65",
    "position": "FOR"
   },
   {
@@ -3115,6 +3448,12 @@
     8,
     0
    ],
+   "amendment_number": "79",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 18 - PN 79",
    "position": "AGAINST"
   },
   {
@@ -3138,6 +3477,12 @@
     1,
     1
    ],
+   "amendment_number": "56",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 11 - PN 56",
    "position": "FOR"
   },
   {
@@ -3161,6 +3506,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2024)0075",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. u, 2. část",
    "position": "AGAINST"
   },
   {
@@ -3184,6 +3535,12 @@
     1,
     1
    ],
+   "amendment_number": "16",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5 - PN 16, 1. část",
    "position": "FOR"
   },
   {
@@ -3207,6 +3564,12 @@
     6,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 10",
    "position": "FOR"
   },
   {
@@ -3230,6 +3593,12 @@
     6,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 9",
    "position": "FOR"
   },
   {
@@ -3253,6 +3622,12 @@
     5,
     4
    ],
+   "amendment_number": "7",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 7",
    "position": "FOR"
   },
   {
@@ -3276,6 +3651,12 @@
     4,
     3
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 6",
    "position": "FOR"
   },
   {
@@ -3299,6 +3680,12 @@
     4,
     3
    ],
+   "amendment_number": "5",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 5",
    "position": "FOR"
   },
   {
@@ -3322,6 +3709,12 @@
     5,
     2
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 3",
    "position": "FOR"
   },
   {
@@ -3345,6 +3738,12 @@
     0,
     3
    ],
+   "amendment_number": "67",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 91 - PN 67, 1. část",
    "position": "AGAINST"
   }
  ],
@@ -3352,21 +3751,22 @@
   {
    "code": "6.10",
    "label": "Common foreign and security policy (CFSP)",
+   "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)",
    "attendance": [
     1395,
     1562
    ],
    "attendance_main": [
-    109,
-    125
+    105,
+    121
    ],
    "group_loyalty": [
     1281,
     1392
    ],
    "group_loyalty_main": [
-    100,
-    107
+    96,
+    103
    ],
    "cz_agreement": [
     1065,
@@ -3377,8 +3777,8 @@
     1280
    ],
    "outcome_main": [
-    92,
-    94
+    88,
+    90
    ],
    "outcome_close": [
     7,
@@ -3389,8 +3789,8 @@
     82757
    ],
    "group_outcome_main": [
-    5345,
-    5698
+    5059,
+    5401
    ],
    "positions": {
     "FOR": 725,
@@ -3402,6 +3802,7 @@
   {
    "code": "8.70",
    "label": "Budget of the Union",
+   "label_cs": "Rozpočet Unie",
    "attendance": [
     910,
     922
@@ -3452,6 +3853,7 @@
   {
    "code": "4.10",
    "label": "Social policy, social charter and protocol",
+   "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
     674,
     708
@@ -3502,21 +3904,22 @@
   {
    "code": "3.70",
    "label": "Environmental policy",
+   "label_cs": "Politika životního prostředí",
    "attendance": [
     493,
     551
    ],
    "attendance_main": [
-    60,
-    69
+    50,
+    59
    ],
    "group_loyalty": [
     453,
     493
    ],
    "group_loyalty_main": [
-    51,
-    60
+    41,
+    50
    ],
    "cz_agreement": [
     408,
@@ -3527,8 +3930,8 @@
     468
    ],
    "outcome_main": [
-    36,
-    51
+    30,
+    42
    ],
    "outcome_close": [
     3,
@@ -3539,8 +3942,8 @@
     32729
    ],
    "group_outcome_main": [
-    2347,
-    3429
+    1942,
+    2843
    ],
    "positions": {
     "FOR": 310,
@@ -3552,6 +3955,7 @@
   {
    "code": "6.40",
    "label": "Relations with third countries",
+   "label_cs": "Vztahy se třetími zeměmi",
    "attendance": [
     435,
     487
@@ -3602,21 +4006,22 @@
   {
    "code": "6.20",
    "label": "Common commercial policy in general",
+   "label_cs": "Společná obchodní politika obecně",
    "attendance": [
     287,
     331
    ],
    "attendance_main": [
-    57,
-    61
+    54,
+    58
    ],
    "group_loyalty": [
     245,
     286
    ],
    "group_loyalty_main": [
-    51,
-    56
+    48,
+    53
    ],
    "cz_agreement": [
     208,
@@ -3627,8 +4032,8 @@
     270
    ],
    "outcome_main": [
-    51,
-    52
+    48,
+    49
    ],
    "outcome_close": [
     4,
@@ -3639,8 +4044,8 @@
     18444
    ],
    "group_outcome_main": [
-    3253,
-    3470
+    3037,
+    3249
    ],
    "positions": {
     "FOR": 149,
@@ -3652,6 +4057,7 @@
   {
    "code": "8.20",
    "label": "Enlargement of the Union",
+   "label_cs": "Rozšíření Unie",
    "attendance": [
     238,
     312
@@ -3702,6 +4108,7 @@
   {
    "code": "8.40",
    "label": "Institutions of the Union",
+   "label_cs": "Orgány Unie",
    "attendance": [
     252,
     276
@@ -3752,13 +4159,14 @@
   {
    "code": "3.30",
    "label": null,
+   "label_cs": null,
    "attendance": [
     183,
     248
    ],
    "attendance_main": [
-    30,
-    36
+    29,
+    33
    ],
    "group_loyalty": [
     151,
@@ -3766,7 +4174,7 @@
    ],
    "group_loyalty_main": [
     24,
-    30
+    29
    ],
    "cz_agreement": [
     127,
@@ -3778,7 +4186,7 @@
    ],
    "outcome_main": [
     25,
-    29
+    28
    ],
    "outcome_close": [
     1,
@@ -3789,8 +4197,8 @@
     11240
    ],
    "group_outcome_main": [
-    1626,
-    1777
+    1561,
+    1702
    ],
    "positions": {
     "FOR": 118,
@@ -3802,21 +4210,22 @@
   {
    "code": "3.45",
    "label": "Enterprise policy, inter-company cooperation",
+   "label_cs": "Podniková politika, spolupráce podniků",
    "attendance": [
     214,
     215
    ],
    "attendance_main": [
-    19,
-    19
+    15,
+    15
    ],
    "group_loyalty": [
     207,
     213
    ],
    "group_loyalty_main": [
-    18,
-    19
+    14,
+    15
    ],
    "cz_agreement": [
     194,
@@ -3827,8 +4236,8 @@
     210
    ],
    "outcome_main": [
-    16,
-    18
+    12,
+    14
    ],
    "outcome_close": [
     3,
@@ -3839,8 +4248,8 @@
     15102
    ],
    "group_outcome_main": [
-    1059,
-    1177
+    763,
+    878
    ],
    "positions": {
     "FOR": 121,
@@ -3850,5 +4259,3734 @@
    }
   }
  ],
- "own_work": null
+ "own_work": {
+  "source": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2",
+   "license": "CC BY 4.0"
+  },
+  "updated": "2026-10-14",
+  "complete": false,
+  "type_labels": {
+   "report": "Zprávy (zpravodaj/ka)",
+   "shadow_report": "Stínové zprávy",
+   "opinion": "Stanoviska výborů (zpravodaj/ka)",
+   "shadow_opinion": "Stínová stanoviska",
+   "motion": "Návrhy usnesení",
+   "joint_motion": "Společné návrhy usnesení",
+   "question": "Otázky Komisi a Radě"
+  },
+  "summary": {
+   "report": {
+    "count": 0,
+    "voted": 0,
+    "adopted": 0,
+    "no_vote": 0,
+    "other": 0
+   },
+   "shadow_report": {
+    "count": 8,
+    "voted": 5,
+    "adopted": 5,
+    "no_vote": 3,
+    "other": 0
+   },
+   "opinion": {
+    "count": 0
+   },
+   "shadow_opinion": {
+    "count": 11
+   },
+   "motion": {
+    "count": 98,
+    "voted": 0,
+    "adopted": 0,
+    "no_vote": 29,
+    "other": 0,
+    "superseded": 69
+   },
+   "joint_motion": {
+    "count": 83,
+    "voted": 64,
+    "adopted": 64,
+    "no_vote": 19,
+    "other": 0
+   },
+   "question": {
+    "count": 14,
+    "answered": 14
+   }
+  },
+  "items": [
+   {
+    "id": "RC-10-2026-0452",
+    "label": null,
+    "date": "2026-10-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o stavu lidských práv v Íránu, zejména případech Taráne Rahímíové a Lejly Abolhasaníové",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0452_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 198261,
+    "vote_date": "2026-10-08",
+    "signatories_total": 80
+   },
+   {
+    "id": "RC-10-2026-0443",
+    "label": null,
+    "date": "2026-10-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o snahách vládnoucí strany Gruzínský sen zakázat v Gruzii opoziční strany",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0443_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 198251,
+    "vote_date": "2026-10-08",
+    "signatories_total": 68
+   },
+   {
+    "id": "RC-10-2026-0438",
+    "label": null,
+    "date": "2026-10-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případech Əliho Kərimliho, Anara Məmmədliho a dalších politických vězňů v Ázerbájdžánu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0438_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 198252,
+    "vote_date": "2026-10-08",
+    "signatories_total": 51
+   },
+   {
+    "id": "RC-10-2026-0441",
+    "label": null,
+    "date": "2026-10-06",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o nedemokratických volbách do ruské Státní dumy v roce 2026 a jejich důsledcích pro občanskou společnost",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0441_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 198216,
+    "vote_date": "2026-10-08",
+    "signatories_total": 56
+   },
+   {
+    "id": "B-10-2026-0464",
+    "label": "B10-0464/2026",
+    "date": "2026-10-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on human Rights situation in Iran, notably the cases of Taraneh Rahimi and Leila Abolhasani"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0464_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 28,
+    "joint_motion": "RC-10-2026-0452",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 198261
+   },
+   {
+    "id": "B-10-2026-0460",
+    "label": "B10-0460/2026",
+    "date": "2026-10-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the cases of Ali Karimli, Anar Mammadli and other political prisonersin Azerbaijan"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0460_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2026-0438",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 198252
+   },
+   {
+    "id": "B-10-2026-0459",
+    "label": "B10-0459/2026",
+    "date": "2026-10-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION attempts by the ruling party Georgian Dream to ban opposition parties in Georgia"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0459_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20,
+    "joint_motion": "RC-10-2026-0443",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 198251
+   },
+   {
+    "id": "B-10-2026-0449",
+    "label": null,
+    "date": "2026-10-05",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o nedemokratických volbách do ruské Státní dumy v roce 2026 a jejich důsledcích pro občanskou společnost",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0449_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 25,
+    "joint_motion": "RC-10-2026-0441",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 198216
+   },
+   {
+    "id": "RC-10-2026-0404",
+    "label": null,
+    "date": "2026-09-16",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o povolební represi v Zambii a zabití Mutotweho Kafwayi",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0404_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 197216,
+    "vote_date": "2026-09-17",
+    "signatories_total": 68
+   },
+   {
+    "id": "RC-10-2026-0398",
+    "label": null,
+    "date": "2026-09-16",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o zhoršování situace v oblasti svobody sdělovacích prostředků a svobody projevu v Hongkongu v návaznosti na zatčení majitelky knihkupectví Leticie Wong a odsouzení Lee Cheuk-yana a Chow Hang-tung",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0398_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 197236,
+    "vote_date": "2026-09-17",
+    "signatories_total": 70
+   },
+   {
+    "id": "RC-10-2026-0394",
+    "label": null,
+    "date": "2026-09-16",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o politických vězních na Kubě, zejména případ Félixe Navarra a jeho dcery Saylí Navarrové",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0394_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 197242,
+    "vote_date": "2026-09-17",
+    "signatories_total": 69
+   },
+   {
+    "id": "B-10-2026-0420",
+    "label": "B10-0420/2026",
+    "date": "2026-09-14",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on post-electoral repression in Zambia and the killing of Mutotwe Kafwaya"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0420_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20,
+    "joint_motion": "RC-10-2026-0404",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 197216
+   },
+   {
+    "id": "B-10-2026-0419",
+    "label": "B10-0419/2026",
+    "date": "2026-09-14",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Political prisoners in Cuba, the case of Félix Navarro and his daughter Saylí Navarro"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0419_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 27,
+    "joint_motion": "RC-10-2026-0394",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 197242
+   },
+   {
+    "id": "B-10-2026-0407",
+    "label": "B10-0407/2026",
+    "date": "2026-09-14",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Deteriorating situation of media freedom and freedom of expression in Hong-Kong, amid the recent arrest of bookseller Leticia Wong and the convictions of Lee Cheuk-yan and Chow Hang-tung"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0407_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 24,
+    "joint_motion": "RC-10-2026-0398",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 197236
+   },
+   {
+    "id": "B-10-2026-0373",
+    "label": null,
+    "date": "2026-07-31",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o potřebě bojovat proti gangům migrantů páchajícím grooming",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0373_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 81
+   },
+   {
+    "id": "proc-2026-0196",
+    "label": "2026/0196(BUD)",
+    "date": "2026-07-08",
+    "title": {
+     "cs": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+     "en": "General budget of the European Union for the financial year 2027 - all sections"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0196(BUD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2026-0346",
+    "label": null,
+    "date": "2026-07-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o únosu, nucené konverzi a dětském sňatku Marie Šahbázové a ochraně dívek v Pákistánu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0346_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 67
+   },
+   {
+    "id": "RC-10-2026-0345",
+    "label": null,
+    "date": "2026-07-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o neustálém pronásledování křesťanů v Nigérii, zejména o masakru ve vesnici Kawel",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0345_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 75
+   },
+   {
+    "id": "B-10-2026-0363",
+    "label": "B10-0363/2026",
+    "date": "2026-07-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the Threat of War Crimes, the Escalating Violations of International Humanitarian Law and the Human Rights Situation in El-Obeid, Sudan"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0363_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16
+   },
+   {
+    "id": "B-10-2026-0356",
+    "label": "B10-0356/2026",
+    "date": "2026-07-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the ongoing persecution of Christians in Nigeria, notably the Kawel village massacre"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0356_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 30
+   },
+   {
+    "id": "B-10-2026-0351",
+    "label": "B10-0351/2026",
+    "date": "2026-07-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the abduction, forced conversion and child marriage of Maria Shahbaz and the protection of girls in Pakistan"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0351_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 27
+   },
+   {
+    "id": "RC-10-2026-0322",
+    "label": null,
+    "date": "2026-06-17",
+    "title": {
+     "cs": null,
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0322_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 56
+   },
+   {
+    "id": "RC-10-2026-0318",
+    "label": null,
+    "date": "2026-06-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o neustávajícím omezování občanského prostoru a základních svobod v Burkině Faso",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0318_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 56
+   },
+   {
+    "id": "RC-10-2026-0294",
+    "label": null,
+    "date": "2026-06-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o zhoršující se situaci politických vězňů v Bělorusku, zejména o případu Aljaksandry Pulinovičové",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0294_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 75
+   },
+   {
+    "id": "RC-10-2026-0292",
+    "label": null,
+    "date": "2026-06-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o politických vězních v Nikaragui – případy Carlose Brenese, Salvadory del Socorro Martínezové Aburtové a Brooklyna Rivery",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0292_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 60
+   },
+   {
+    "id": "B-10-2026-0329",
+    "label": "B10-0329/2026",
+    "date": "2026-06-17",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Continued crackdown on civic space and fundamental freedoms in Burkina Faso"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0329_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19
+   },
+   {
+    "id": "proc-2026-0085",
+    "label": "2026/0085(COD)",
+    "date": "2026-06-16",
+    "title": {
+     "cs": "Změna rozhodnutí (EU) 2015/1814, pokud jde o ukončení zneplatňování povolenek v rezervě tržní stability\n\n",
+     "en": "Amending Decision (EU) 2015/1814 as regards ceasing the invalidation of allowances in the market stability reserve"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0085(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 196438,
+    "vote_date": "2026-09-15",
+    "report": "A10-0230/2026"
+   },
+   {
+    "id": "RC-10-2026-0304",
+    "label": null,
+    "date": "2026-06-16",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o nepřijatelných provokacích Ruska a pronikání ruských dronů nad území Rumunska, pobaltských států a Finska",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0304_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 79
+   },
+   {
+    "id": "RC-10-2026-0285",
+    "label": null,
+    "date": "2026-06-16",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o politické represi a humanitární situaci na Kubě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0285_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 34
+   },
+   {
+    "id": "B-10-2026-0327",
+    "label": "B10-0327/2026",
+    "date": "2026-06-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the deteriorating situation of political prisoners in Belarus, in particular the case of Aliaksandra Pulinovich"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0327_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20
+   },
+   {
+    "id": "B-10-2026-0322",
+    "label": "B10-0322/2026",
+    "date": "2026-06-15",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION continued crackdown on civic space and fundamental freedoms in Burkina Faso"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0322_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18
+   },
+   {
+    "id": "B-10-2026-0317",
+    "label": "B10-0317/2026",
+    "date": "2026-06-15",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Political prisoners in Nicaragua - the cases of Carlos Brenes, Salvadora del Socorro Martínez Aburto and Brooklyn Rivera"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0317_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21
+   },
+   {
+    "id": "B-10-2026-0308",
+    "label": "B10-0308/2026",
+    "date": "2026-06-15",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o nepřijatelných provokativních činnostech Ruska a vnikání jeho bezpilotních letounů na území Rumunska, pobaltských států a Finska",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0308_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17
+   },
+   {
+    "id": "B-10-2026-0291",
+    "label": "B10-0291/2026",
+    "date": "2026-06-12",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o politických represích a humanitární situaci na Kubě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0291_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 13
+   },
+   {
+    "id": "B-10-2026-0271",
+    "label": "B10-0271/2026",
+    "date": "2026-06-03",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o kvalitě a včasnosti odpovědí Evropské komise na otázky poslanců k písemnému zodpovězení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0271_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 34
+   },
+   {
+    "id": "proc-2025-0422",
+    "label": "2025/0422(COD)",
+    "date": "2026-06-02",
+    "title": {
+     "cs": "Změna nařízení Evropského parlamentu a Rady (ES) č. 561/2006, (EU) 2018/858, (EU) 2019/2144 a (EU) 2024/1257, pokud jde o zjednodušení technických požadavků a zkušebních postupů pro motorová vozidla, a zrušení směrnice Rady 70/157/EHS a nařízení Evropského parlamentu a Rady č. 540/2014",
+     "en": "Amending Regulations (EC) No 561/2006, (EU) 2018/858, (EU) 2019/2144 and (EU) 2024/1257 of the European Parliament and of the Council as regards the simplification of technical requirements and testing procedures for motor vehicles and repealing Council Directive 70/157/EEC and Regulation No 540/2014 of the European Parliament and of the Council"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0422(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2026-0260",
+    "label": null,
+    "date": "2026-05-20",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o represích a popravách demonstrantů, disidentů, politických vězňů a náboženských menšin v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0260_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 193412,
+    "vote_date": "2026-05-21",
+    "signatories_total": 78
+   },
+   {
+    "id": "RC-10-2026-0248",
+    "label": null,
+    "date": "2026-05-20",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případech obránců lidských práv a ochránců životního prostředí Andrie Yunuse a Muhammada Rosidiho v Indonésii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0248_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 193395,
+    "vote_date": "2026-05-21",
+    "signatories_total": 50
+   },
+   {
+    "id": "B-10-2026-0266",
+    "label": "B10-0266/2026",
+    "date": "2026-05-18",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on Repression and execution of protesters, dissidents, political prisoners and religious minorities in Iran"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0266_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18,
+    "joint_motion": "RC-10-2026-0260",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 193412
+   },
+   {
+    "id": "B-10-2026-0264",
+    "label": "B10-0264/2026",
+    "date": "2026-05-18",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the cases of human rights and environmental defenders Andrie Yunus and Muhammad Rosidi in Indonesia"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0264_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12,
+    "joint_motion": "RC-10-2026-0248",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 193395
+   },
+   {
+    "id": "B-10-2026-0258",
+    "label": "B10-0258/2026",
+    "date": "2026-05-18",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the situation of women and girls in Afghanistan following the Taliban's adoption of the Criminal Procedure Code for Courts"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0258_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21,
+    "joint_motion": "RC-10-2026-0247",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 193420
+   },
+   {
+    "id": "RC-10-2026-0217",
+    "label": null,
+    "date": "2026-04-29",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o chybách a nedostatcích „zákona o amnestii“ ve Venezuele",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0217_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 192373,
+    "vote_date": "2026-04-30",
+    "signatories_total": 56
+   },
+   {
+    "id": "RC-10-2026-0216",
+    "label": null,
+    "date": "2026-04-29",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o novém čínském zákoně o „etnické jednotě a pokroku“ a rostoucím potlačování etnických identit",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0216_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 192365,
+    "vote_date": "2026-04-30",
+    "signatories_total": 63
+   },
+   {
+    "id": "RC-10-2026-0209",
+    "label": null,
+    "date": "2026-04-29",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o zhoršující se situaci v oblasti obchodování s lidmi a vykořisťování ze strany zločineckých skupin na Haiti",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0209_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 192361,
+    "vote_date": "2026-04-30",
+    "signatories_total": 54
+   },
+   {
+    "id": "B-10-2026-0234",
+    "label": "B10-0234/2026",
+    "date": "2026-04-27",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION New Chinese law on “ethnic unity and progress” and the intensified suppression of ethnic identities"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0234_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2026-0216",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 192365
+   },
+   {
+    "id": "B-10-2026-0231",
+    "label": "B10-0231/2026",
+    "date": "2026-04-27",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Shortcomings and deficiencies of the 'Amnesty Law' in Venezuela"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0231_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2026-0217",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 192373
+   },
+   {
+    "id": "B-10-2026-0230",
+    "label": "B10-0230/2026",
+    "date": "2026-04-27",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on escalating trafficking and exploitation by criminal groups in Haiti"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0230_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21,
+    "joint_motion": "RC-10-2026-0209",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 192361
+   },
+   {
+    "id": "B-10-2026-0227",
+    "label": "B10-0227/2026",
+    "date": "2026-04-27",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zajištění odpovědnosti a spravedlnosti v reakci na pokračující útoky Ruska na civilní obyvatelstvo na Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0227_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17,
+    "joint_motion": "RC-10-2026-0201",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 192341
+   },
+   {
+    "id": "B-10-2026-0200",
+    "label": "B10-0200/2026",
+    "date": "2026-04-24",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o podpoře demokratické odolnosti Arménie",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0200_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 10,
+    "joint_motion": "RC-10-2026-0195",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 192321
+   },
+   {
+    "id": "proc-2025-0176",
+    "label": "2025/0176(COD)",
+    "date": "2026-03-26",
+    "title": {
+     "cs": "Změna nařízení (ES) č. 1907/2006, (ES) č. 1272/2008, (EU) č. 528/2012, (EU) 2019/1021 a (EU) 2021/697, pokud jde o obrannou připravenost, usnadnění investic do obrany a podmínky v obranném průmyslu",
+     "en": "Amending Regulations (EC) No 1907/2006, (EC) No 1272/2008, (EU) No 528/2012, (EU) 2019/1021 and (EU) 2021/697 as regards defence readiness and facilitating defence investments and conditions for defence industry"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0176(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 196161,
+    "vote_date": "2026-09-16",
+    "report": "A10-0273/2025"
+   },
+   {
+    "id": "proc-2025-0408",
+    "label": "2025/0408(COD)",
+    "date": "2026-03-19",
+    "title": {
+     "cs": "Změna nařízení (EU) č. 528/2012, pokud jde o prodloužení některých lhůt pro ochranu údajů",
+     "en": "Amending Regulation (EU) No 528/2012 as regards the extension of certain data protection periods"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0408(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 190096,
+    "vote_date": "2026-04-28",
+    "report": "A10-0094/2026"
+   },
+   {
+    "id": "proc-2025-0420",
+    "label": "2025/0420(COD)",
+    "date": "2026-03-18",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/631, pokud jde o výkonnostní normy pro emise CO2 pro nová lehká užitková vozidla a označování vozidel a zrušení směrnice 1999/94/ES",
+     "en": "Amending Regulation (EU) 2019/631 as regards CO2 emission performance standards for new light duty vehicles and vehicle labelling and repealing Directive 1999/94/EC"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0420(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2026-0159",
+    "label": null,
+    "date": "2026-03-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o svévolném zadržení prezidenta Mohameda Bazouma juntou v Nigeru",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0159_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 189129,
+    "vote_date": "2026-03-12",
+    "signatories_total": 62
+   },
+   {
+    "id": "RC-10-2026-0158",
+    "label": null,
+    "date": "2026-03-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Eleny Choštariové a politických vězňů za režimu strany Gruzínský sen",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0158_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 189151,
+    "vote_date": "2026-03-12",
+    "signatories_total": 70
+   },
+   {
+    "id": "RC-10-2026-0157",
+    "label": null,
+    "date": "2026-03-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o obchodování s lidmi a závažném porušování lidských práv v souvislosti s náborem cizích státních příslušníků, zejména z Afriky, pro ruskou útočnou válku na Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0157_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 189169,
+    "vote_date": "2026-03-12",
+    "signatories_total": 79
+   },
+   {
+    "id": "B-10-2026-0175",
+    "label": "B10-0175/2026",
+    "date": "2026-03-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Human trafficking and grave human rights violations linked to the recruitment of non-Russian nationals, in particular from Africa, for Russia’s war of aggression in Ukraine"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0175_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 27,
+    "joint_motion": "RC-10-2026-0157",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 189169
+   },
+   {
+    "id": "B-10-2026-0174",
+    "label": "B10-0174/2026",
+    "date": "2026-03-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the case of Elene Khoshtaria and other Political Prisoners under the Georgian Dream Regime"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0174_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2026-0158",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 189151
+   },
+   {
+    "id": "B-10-2026-0173",
+    "label": "B10-0173/2026",
+    "date": "2026-03-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the arbitrary detention of President Mohamed Bazoum by the junta in Niger"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0173_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14,
+    "joint_motion": "RC-10-2026-0159",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 189129
+   },
+   {
+    "id": "B-10-2026-0154",
+    "label": "B10-0154/2026",
+    "date": "2026-03-03",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zastavení rozšiřování mešit a islámských center v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0154_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 38
+   },
+   {
+    "id": "proc-2025-2246",
+    "label": "2025/2246(BUI)",
+    "date": "2026-02-23",
+    "title": {
+     "cs": "Pokyny pro rozpočet na rok 2027 – oddíl III",
+     "en": "Guidelines for the 2027 Budget - Section III"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2246(BUI)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2026-0143",
+    "label": null,
+    "date": "2026-02-12",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o čtyřech letech útočné války Ruska proti Ukrajině a způsobu, jak může Evropa přispět ke spravedlivému míru a trvalé bezpečnosti na Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0143_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 185885,
+    "vote_date": "2026-02-24",
+    "signatories_total": 74
+   },
+   {
+    "id": "RC-10-2026-0121",
+    "label": null,
+    "date": "2026-02-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situace v Ugandě po volbách a výhrůžkách opozičnímu vůdci Bobimu Wineovi",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0121_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 185282,
+    "vote_date": "2026-02-12",
+    "signatories_total": 48
+   },
+   {
+    "id": "RC-10-2026-0120",
+    "label": null,
+    "date": "2026-02-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o cíleném vyhošťování zahraničních novinářů a křesťanů v Turecku pod záminkou národní bezpečnosti",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0120_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 185292,
+    "vote_date": "2026-02-12",
+    "signatories_total": 56
+   },
+   {
+    "id": "RC-10-2026-0114",
+    "label": null,
+    "date": "2026-02-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situaci v severovýchodní Sýrii, násilí proti civilnímu obyvatelstvu a nutnosti zachovat udržitelné příměří",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0114_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 185339,
+    "vote_date": "2026-02-12",
+    "signatories_total": 45
+   },
+   {
+    "id": "RC-10-2026-0110",
+    "label": null,
+    "date": "2026-02-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o systematickém útlaku, nelidských podmínkách a svévolném zadržování ze strany íránského režimu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0110_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 185289,
+    "vote_date": "2026-02-12",
+    "signatories_total": 67
+   },
+   {
+    "id": "proc-2025-0847",
+    "label": "2025/0847(COD)",
+    "date": "2026-02-10",
+    "title": {
+     "cs": "Rámec opatření pro usnadnění přepravy vojenského vybavení, materiálu a personálu v celé Unii",
+     "en": "Framework of measures to facilitate the transport of military equipment, goods and personnel across the Union"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0847(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": "A10-0176/2026"
+   },
+   {
+    "id": "B-10-2026-0145",
+    "label": "B10-0145/2026",
+    "date": "2026-02-10",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o čtyřech letech útočné války Ruska proti Ukrajině a způsobu, jak může Evropa přispět ke spravedlivému míru a trvalé bezpečnosti na Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0145_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20,
+    "joint_motion": "RC-10-2026-0143",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 185885
+   },
+   {
+    "id": "B-10-2026-0137",
+    "label": "B10-0137/2026",
+    "date": "2026-02-09",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o situaci v severovýchodní Sýrii, násilí proti civilnímu obyvatelstvu a nutnosti zachovat udržitelné příměří",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0137_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21,
+    "joint_motion": "RC-10-2026-0114",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 185339
+   },
+   {
+    "id": "B-10-2026-0134",
+    "label": "B10-0134/2026",
+    "date": "2026-02-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Targeted expulsions of foreign journalists and Christians in Türkiye under national security pretexts"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0134_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21,
+    "joint_motion": "RC-10-2026-0120",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 185292
+   },
+   {
+    "id": "B-10-2026-0133",
+    "label": "B10-0133/2026",
+    "date": "2026-02-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION systemic oppression, inhumane conditions and arbitrary detentions by the regime in Iran"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0133_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 31,
+    "joint_motion": "RC-10-2026-0110",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 185289
+   },
+   {
+    "id": "B-10-2026-0132",
+    "label": "B10-0132/2026",
+    "date": "2026-02-09",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the post-election situation in Uganda and threats against opposition leader Bobi Wine"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0132_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14,
+    "joint_motion": "RC-10-2026-0121",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 185282
+   },
+   {
+    "id": "RC-10-2026-0068",
+    "label": null,
+    "date": "2026-01-21",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení a hrozícím trestu pro Jimmyho Laie v Hongkongu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0068_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 184067,
+    "vote_date": "2026-01-22",
+    "signatories_total": 59
+   },
+   {
+    "id": "RC-10-2026-0064",
+    "label": null,
+    "date": "2026-01-21",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o prezidentských volbách v Hondurasu, neuznání výsledku stávající administrativou a útocích na opoziční poslance Národního kongresu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0064_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 53
+   },
+   {
+    "id": "RC-10-2026-0071",
+    "label": null,
+    "date": "2026-01-20",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o brutálních represích proti demonstrantům v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0071_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 184027,
+    "vote_date": "2026-01-22",
+    "signatories_total": 49
+   },
+   {
+    "id": "B-10-2026-0096",
+    "label": "B10-0096/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the Case of Joseph Figueira Martin in the Central African Republic"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0096_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2026-0066",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 184066
+   },
+   {
+    "id": "B-10-2026-0090",
+    "label": "B10-0090/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Presidential elections in Honduras, the non-recognition of the outcome by the incumbent administration and the attacks on opposition members of the National Assembly"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0090_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18
+   },
+   {
+    "id": "B-10-2026-0086",
+    "label": "B10-0086/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Conviction and imminent sentencing of Jimmy Lai in Hong Kong"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0086_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 23,
+    "joint_motion": "RC-10-2026-0068",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 184067
+   },
+   {
+    "id": "B-10-2026-0083",
+    "label": "B10-0083/2026",
+    "date": "2026-01-19",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o brutálních represích proti demonstrantům v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0083_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 30,
+    "joint_motion": "RC-10-2026-0071",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 184027
+   },
+   {
+    "id": "proc-2025-0555",
+    "label": "2025/0555(COD)",
+    "date": "2026-01-14",
+    "title": {
+     "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
+     "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0577",
+    "label": null,
+    "date": "2025-12-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o hromadných únosech dětí v Nigérii, včetně dětí z katolické školy sv. Marie v Papiri",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0577_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182968,
+    "vote_date": "2025-12-18",
+    "signatories_total": 73
+   },
+   {
+    "id": "RC-10-2025-0568",
+    "label": null,
+    "date": "2025-12-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o vážné politické situaci v Guineji-Bissau po převratu dne 26. listopadu 2025",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0568_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182963,
+    "vote_date": "2025-12-18",
+    "signatories_total": 56
+   },
+   {
+    "id": "RC-10-2025-0567",
+    "label": null,
+    "date": "2025-12-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o svévolném zatčení a odsouzení akademických pracovníků Bəhruze Səmədova a İqbala Əbilova v Ázerbájdžánu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0567_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182962,
+    "vote_date": "2025-12-18",
+    "signatories_total": 51
+   },
+   {
+    "id": "B-10-2025-0590",
+    "label": "B10-0590/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the mass kidnapping of children in Nigeria, including those from St Mary’s Catholic School in Papiri"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0590_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 33,
+    "joint_motion": "RC-10-2025-0577",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182968
+   },
+   {
+    "id": "B-10-2025-0582",
+    "label": "B10-0582/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o pokračujících běloruských hybridních útocích proti Litvě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0582_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19,
+    "joint_motion": "RC-10-2025-0571",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182922
+   },
+   {
+    "id": "B-10-2025-0581",
+    "label": "B10-0581/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION arbitrary arrest and sentencing of academics Bahruz Samadov and Igbal Abilov in Azerbaijan"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0581_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 13,
+    "joint_motion": "RC-10-2025-0567",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182962
+   },
+   {
+    "id": "B-10-2025-0579",
+    "label": "B10-0579/2025",
+    "date": "2025-12-15",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the grave political situation in Guinea-Bissau after the coup of 26 November"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0579_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14,
+    "joint_motion": "RC-10-2025-0568",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182963
+   },
+   {
+    "id": "RC-10-2025-0533",
+    "label": null,
+    "date": "2025-11-26",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o eskalaci války a humanitární katastrofě v Súdánu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0533_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182288,
+    "vote_date": "2025-11-27",
+    "signatories_total": 23
+   },
+   {
+    "id": "RC-10-2025-0528",
+    "label": null,
+    "date": "2025-11-26",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o stupňujících se represích vůči baháistům v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0528_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182317,
+    "vote_date": "2025-11-27",
+    "signatories_total": 59
+   },
+   {
+    "id": "RC-10-2025-0514",
+    "label": null,
+    "date": "2025-11-26",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o povolebním zabíjení a zhoršení situace v oblasti lidských práv v Tanzanii, včetně případu uvězněného opozičního vůdce Tundua Lissua",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0514_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182305,
+    "vote_date": "2025-11-27",
+    "signatories_total": 56
+   },
+   {
+    "id": "proc-2025-0221",
+    "label": "2025/0221(COD)",
+    "date": "2025-11-25",
+    "title": {
+     "cs": "Zřízení Nástroje pro propojení Evropy na období 2028–2034, změna nařízení (EU) 2024/1679 a zrušení nařízení (EU) 2021/1153",
+     "en": "Establishing the Connecting Europe Facility for the period 2028-2034, amending Regulation (EU) 2024/1679 and repealing Regulation (EU) 2021/1153"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0221(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0545",
+    "label": null,
+    "date": "2025-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o postoji EU k navrženému plánu a úsilí EU o spravedlivý a trvalý mír na Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0545_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182353,
+    "vote_date": "2025-11-27",
+    "signatories_total": 75
+   },
+   {
+    "id": "RC-10-2025-0508",
+    "label": null,
+    "date": "2025-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o politické situaci v Myanmaru včetně humanitární krize Rohingyů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0508_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 182257,
+    "vote_date": "2025-11-27",
+    "signatories_total": 35
+   },
+   {
+    "id": "B-10-2025-0543",
+    "label": "B10-0543/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o eskalaci války a humanitární katastrofě v Súdánu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0543_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21,
+    "joint_motion": "RC-10-2025-0533",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182288
+   },
+   {
+    "id": "B-10-2025-0537",
+    "label": "B10-0537/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Rule of law and human rights situation in Tunisia, particularly the case of Sonia Dahmani"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0537_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 15
+   },
+   {
+    "id": "B-10-2025-0535",
+    "label": "B10-0535/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION escalating repression of the Baha'is in Iran"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0535_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 24,
+    "joint_motion": "RC-10-2025-0528",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182317
+   },
+   {
+    "id": "B-10-2025-0530",
+    "label": "B10-0530/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The post-election killings and the deteriorating human rights situation in Tanzania, including the case of imprisoned opposition leader Tundu Lissu"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0530_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19,
+    "joint_motion": "RC-10-2025-0514",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182305
+   },
+   {
+    "id": "B-10-2025-0523",
+    "label": "B10-0523/2025",
+    "date": "2025-11-24",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o politické situaci v Myanmaru včetně humanitární krize Rohingyů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0523_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11,
+    "joint_motion": "RC-10-2025-0508",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 182257
+   },
+   {
+    "id": "E-10-2025-004561",
+    "label": "E-004561/2025",
+    "date": "2025-11-14",
+    "title": {
+     "cs": "Poskytování finančních a regulačních pobídek pro jadernou energetiku v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004561_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 48
+   },
+   {
+    "id": "RC-10-2025-0459",
+    "label": null,
+    "date": "2025-10-21",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o polarizaci a zvýšené represi v Srbsku – rok po tragédii v Novém Sadu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0459_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 180245,
+    "vote_date": "2025-10-22",
+    "signatories_total": 43
+   },
+   {
+    "id": "B-10-2025-0476",
+    "label": "B10-0476/2025",
+    "date": "2025-10-20",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o obnově partnerství mezi EU a Afrikou: stanovení společných priorit před summitem v Angole",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0476_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 15
+   },
+   {
+    "id": "RC-10-2025-0451",
+    "label": null,
+    "date": "2025-10-17",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situaci v Bělorusku pět let po zmanipulovaných prezidentských volbách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0451_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 179918,
+    "vote_date": "2025-10-22",
+    "signatories_total": 58
+   },
+   {
+    "id": "B-10-2025-0468",
+    "label": "B10-0468/2025",
+    "date": "2025-10-17",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o polarizaci a zvýšené represi v Srbsku – rok po tragédii v Novém Sadu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0468_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8,
+    "joint_motion": "RC-10-2025-0459",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 180245
+   },
+   {
+    "id": "B-10-2025-0455",
+    "label": "B10-0455/2025",
+    "date": "2025-10-15",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o situaci v Bělorusku pět let po zmanipulovaných prezidentských volbách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0455_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11,
+    "joint_motion": "RC-10-2025-0451",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 179918
+   },
+   {
+    "id": "RC-10-2025-0439",
+    "label": null,
+    "date": "2025-10-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o svévolném zadržování občanů EU Javiera Marañóna Montera a Davida Rodrígueze Ballesty v Rovníkové Guineji",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0439_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 54
+   },
+   {
+    "id": "RC-10-2025-0412",
+    "label": null,
+    "date": "2025-10-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o 10. výročí uvěznění švédského nakladatele Kueje Min-chaje v Číně",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0412_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 179776,
+    "vote_date": "2025-10-09",
+    "signatories_total": 67
+   },
+   {
+    "id": "RC-10-2025-0411",
+    "label": null,
+    "date": "2025-10-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o humanitární a bezpečnostní situaci na Haiti, zejména rostoucí moci zločineckých gangů a nedávném masakru ve městě Cabaret",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0411_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 179775,
+    "vote_date": "2025-10-09",
+    "signatories_total": 62
+   },
+   {
+    "id": "RC-10-2025-0419",
+    "label": null,
+    "date": "2025-10-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o společné reakci na nedávné narušení vzdušného prostoru a kritické infrastruktury členských států EU Ruskem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0419_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 179770,
+    "vote_date": "2025-10-09",
+    "signatories_total": 73
+   },
+   {
+    "id": "RC-10-2025-0415",
+    "label": null,
+    "date": "2025-10-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situaci v Afghánistánu: podpora žen a komunit, kterých se dotkla nedávná zemětřesení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0415_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 179720,
+    "vote_date": "2025-10-09",
+    "signatories_total": 45
+   },
+   {
+    "id": "B-10-2025-0442",
+    "label": "B10-0442/2025",
+    "date": "2025-10-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the arbitrary detention of EU citizens Javier Marañón Montero and David Rodríguez Ballesta in Equatorial Guinea"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0442_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12
+   },
+   {
+    "id": "B-10-2025-0436",
+    "label": "B10-0436/2025",
+    "date": "2025-10-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The Humanitarian and security situation in Haiti, in particular the rising power of criminal gangs and the recent massacre in Cabaret"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0436_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2025-0411",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 179775
+   },
+   {
+    "id": "B-10-2025-0435",
+    "label": "B10-0435/2025",
+    "date": "2025-10-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on 10th anniversary of the detention of jailed Swedish publisher Gui Minhai in China"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0435_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 15,
+    "joint_motion": "RC-10-2025-0412",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 179776
+   },
+   {
+    "id": "B-10-2025-0427",
+    "label": "B10-0427/2025",
+    "date": "2025-10-06",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o situaci v Afghánistánu: podpora žen a komunit, kterých se dotkla nedávná zemětřesení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0427_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2025-0415",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 179720
+   },
+   {
+    "id": "B-10-2025-0424",
+    "label": "B10-0424/2025",
+    "date": "2025-10-06",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o společné reakci na nedávné narušení vzdušného prostoru a kritické infrastruktury členských států EU Ruskem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0424_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 22,
+    "joint_motion": "RC-10-2025-0419",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 179770
+   },
+   {
+    "id": "RC-10-2025-0392",
+    "label": null,
+    "date": "2025-09-10",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Victoire Ingabireové ve Rwandě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0392_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 178979,
+    "vote_date": "2025-09-11",
+    "signatories_total": 60
+   },
+   {
+    "id": "RC-10-2025-0377",
+    "label": null,
+    "date": "2025-09-10",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Abdula Azíze Gomy, svévolně zadržovaného v Togu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0377_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 56
+   },
+   {
+    "id": "B-10-2025-0395",
+    "label": "B10-0395/2025",
+    "date": "2025-09-08",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the case of Victoire Ingabire in Rwanda"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0395_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12,
+    "joint_motion": "RC-10-2025-0392",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 178979
+   },
+   {
+    "id": "B-10-2025-0382",
+    "label": "B10-0382/2025",
+    "date": "2025-09-08",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the case of Abdoul Aziz Goma, arbitrarily detained in Togo"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0382_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11
+   },
+   {
+    "id": "RC-10-2025-0355",
+    "label": null,
+    "date": "2025-09-05",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o posílení odolnosti Moldavska vůči ruským hybridním hrozbám a nepřátelskému vměšování",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0355_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 178788,
+    "vote_date": "2025-09-10",
+    "signatories_total": 61
+   },
+   {
+    "id": "B-10-2025-0361",
+    "label": "B10-0361/2025",
+    "date": "2025-09-03",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o posílení odolnosti Moldavska vůči ruským hybridním hrozbám a zlovolnému vměšování",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0361_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17,
+    "joint_motion": "RC-10-2025-0355",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 178788
+   },
+   {
+    "id": "E-10-2025-003339",
+    "label": "E-003339/2025",
+    "date": "2025-09-01",
+    "title": {
+     "cs": "Zvláštní zpráva Evropského účetního dvora č. 11/2025 o transparentnosti financování EU pro nevládní organizace",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-003339_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-11-25",
+    "authors_total": 58
+   },
+   {
+    "id": "proc-2025-0210",
+    "label": "2025/0210(BUD)",
+    "date": "2025-07-10",
+    "title": {
+     "cs": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2026 – všechny oddíly",
+     "en": "General budget of the European Union for the financial year 2026 - all sections"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0210(BUD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0335",
+    "label": null,
+    "date": "2025-07-09",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o naléhavé potřebě ochrany náboženských menšin v Sýrii po nedávném teroristickém útoku na kostel Mar Elias v Damašku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0335_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 178245,
+    "vote_date": "2025-07-10",
+    "signatories_total": 71
+   },
+   {
+    "id": "RC-10-2025-0327",
+    "label": null,
+    "date": "2025-07-09",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o svévolném zatčení a mučení belgicko-portugalského výzkumníka Josepha Figueiry Martina ve Středoafrické republice",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0327_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 178218,
+    "vote_date": "2025-07-10",
+    "signatories_total": 50
+   },
+   {
+    "id": "B-10-2025-0345",
+    "label": "B10-0345/2025",
+    "date": "2025-07-07",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION urgent need to protect religious minorities in Syria following the recent terrorist attack on Mar Elias Church in Damascus "
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0345_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 24,
+    "joint_motion": "RC-10-2025-0335",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 178245
+   },
+   {
+    "id": "B-10-2025-0342",
+    "label": "B10-0342/2025",
+    "date": "2025-07-07",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the arbitrary arrest and torture of Belgian-Portuguese researcher Joseph Figueira Martin in Central African Republic "
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0342_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18,
+    "joint_motion": "RC-10-2025-0327",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 178218
+   },
+   {
+    "id": "RC-10-2025-0304",
+    "label": null,
+    "date": "2025-07-04",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o dopadech války vedené Ruskem proti Ukrajině na lidské životy a naléhavé potřebě ukončit ruskou agresi: situace nelegálně zadržovaných civilistů a válečných zajatců a pokračující bombardování civilistů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0304_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 178062,
+    "vote_date": "2025-07-09",
+    "signatories_total": 64
+   },
+   {
+    "id": "B-10-2025-0308",
+    "label": "B10-0308/2025",
+    "date": "2025-07-02",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o dopadech války vedené Ruskem proti Ukrajině na lidské životy a naléhavé potřebě ukončit ruskou agresi: situace nezákonně zadržovaných civilistů a válečných zajatců a pokračující bombardování civilistů",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0308_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19,
+    "joint_motion": "RC-10-2025-0304",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 178062
+   },
+   {
+    "id": "E-10-2025-002493",
+    "label": "E-002493/2025",
+    "date": "2025-06-20",
+    "title": {
+     "cs": "Financování nevládních organizací prostřednictvím programu LIFE",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-002493_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-08-27",
+    "authors_total": 34
+   },
+   {
+    "id": "RC-10-2025-0291",
+    "label": null,
+    "date": "2025-06-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o rozpuštění politických stran a represi opozice v Mali",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0291_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 177616,
+    "vote_date": "2025-06-19",
+    "signatories_total": 55
+   },
+   {
+    "id": "RC-10-2025-0284",
+    "label": null,
+    "date": "2025-06-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Ahmada Rezy Džalálího v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0284_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 177602,
+    "vote_date": "2025-06-19",
+    "signatories_total": 63
+   },
+   {
+    "id": "RC-10-2025-0282",
+    "label": null,
+    "date": "2025-06-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o svobodě sdělovacích prostředků v Gruzii, zejména o případu Mzii Amaglobeliové",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0282_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 177595,
+    "vote_date": "2025-06-19",
+    "signatories_total": 62
+   },
+   {
+    "id": "B-10-2025-0300",
+    "label": "B10-0300/2025",
+    "date": "2025-06-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION case of Ahmadreza Jalali in Iran"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0300_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20,
+    "joint_motion": "RC-10-2025-0284",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 177602
+   },
+   {
+    "id": "B-10-2025-0298",
+    "label": "B10-0298/2025",
+    "date": "2025-06-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the dissolution of political parties and the crackdown on the opposition in Mali"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0298_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11,
+    "joint_motion": "RC-10-2025-0291",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 177616
+   },
+   {
+    "id": "B-10-2025-0295",
+    "label": "B10-0295/2025",
+    "date": "2025-06-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION media freedom in Georgia, particularly the case of Mzia Amaglobeli"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0295_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14,
+    "joint_motion": "RC-10-2025-0282",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 177595
+   },
+   {
+    "id": "proc-2025-0084",
+    "label": "2025/0084(COD)",
+    "date": "2025-05-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2021/1058 a (EU) 2021/1056, pokud jde o zvláštní opatření k řešení strategických výzev v souvislosti s přezkumem v polovině období",
+     "en": "Amending Regulations (EU) 2021/1058 and (EU) 2021/1056 as regards specific measures to address strategic challenges in the context of the mid-term review"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0084(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0249",
+    "label": null,
+    "date": "2025-05-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o návratu ukrajinských dětí nuceně přemístěných a deportovaných Ruskem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0249_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 176309,
+    "vote_date": "2025-05-08",
+    "signatories_total": 85
+   },
+   {
+    "id": "RC-10-2025-0248",
+    "label": null,
+    "date": "2025-05-07",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o porušování náboženské svobody v Tibetu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0248_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 176343,
+    "vote_date": "2025-05-08",
+    "signatories_total": 58
+   },
+   {
+    "id": "proc-2025-0045",
+    "label": "2025/0045(COD)",
+    "date": "2025-05-06",
+    "title": {
+     "cs": "Změna směrnic 2006/43/ES, 2013/34/EU, (EU) 2022/2464 a (EU) 2024/1760 týkající se některých požadavků na podávání zpráv podniků o udržitelnosti a požadavků náležité péče",
+     "en": "Amending Directives 2006/43/EC, 2013/34/EU, (EU) 2022/2464 and (EU) 2024/1760 as regards certain corporate sustainability reporting and due diligence requirements"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0045(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "B-10-2025-0265",
+    "label": "B10-0265/2025",
+    "date": "2025-05-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the arrest and risk of execution of Tundu Lissu, Chair of Chadema, the main opposition party in Tanzania"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0265_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12
+   },
+   {
+    "id": "B-10-2025-0259",
+    "label": "B10-0259/2025",
+    "date": "2025-05-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on violations of religious freedom in Tibet"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0259_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18,
+    "joint_motion": "RC-10-2025-0248",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 176343
+   },
+   {
+    "id": "B-10-2025-0258",
+    "label": "B10-0258/2025",
+    "date": "2025-05-05",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Return of Ukrainian children forcibly transferred and deported by Russia"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0258_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 22,
+    "joint_motion": "RC-10-2025-0249",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 176309
+   },
+   {
+    "id": "proc-2025-0039",
+    "label": "2025/0039(COD)",
+    "date": "2025-04-16",
+    "title": {
+     "cs": "Změna nařízení (EU) 2023/956 týkající se zjednodušení a posílení mechanismu uhlíkového vyrovnání na hranicích",
+     "en": "Amending Regulation (EU) 2023/956 as regards simplifying and strengthening the carbon border adjustment mechanism"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0039(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 178285,
+    "vote_date": "2025-09-10",
+    "report": "A10-0085/2025"
+   },
+   {
+    "id": "RC-10-2025-0230",
+    "label": null,
+    "date": "2025-04-02",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o pronásledování novinářů v Kamerunu, zejména o případech Amadoua Vamoulkého, Kingsleye Fomunyuye Njoky, Mancha Bibixyho, Thomase Awaha Juniora a Tsiho Conrada",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0230_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 45
+   },
+   {
+    "id": "RC-10-2025-0220",
+    "label": null,
+    "date": "2025-04-02",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o masových popravách v Íránu a o potvrzení trestu smrti uděleného aktivistům Behrúzu Ehsánímu a Mehdímu Hassanímu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0220_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 60
+   },
+   {
+    "id": "RC-10-2025-0219",
+    "label": null,
+    "date": "2025-04-02",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o bezprostředním riziku dalších represí Lukašenkova režimu v Bělorusku – hrozby vyšetřovacího výboru",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0219_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 174988,
+    "vote_date": "2025-04-03",
+    "signatories_total": 73
+   },
+   {
+    "id": "E-10-2025-001357",
+    "label": "E-001357/2025",
+    "date": "2025-04-02",
+    "title": {
+     "cs": "Financování stanice Rádio Svobodná Evropa",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001357_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-03",
+    "authors_total": 39
+   },
+   {
+    "id": "E-10-2025-001328",
+    "label": "E-001328/2025",
+    "date": "2025-04-01",
+    "title": {
+     "cs": "Povinné cíle týkající se podnikových vozových parků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001328_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-05-15",
+    "authors_total": 48
+   },
+   {
+    "id": "E-10-2025-001325",
+    "label": "E-001325/2025",
+    "date": "2025-04-01",
+    "title": {
+     "cs": "Reakce Komise na dopad nařízení o digitálních trzích na konkurenceschopnost podniků v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001325_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-05-13",
+    "authors_total": 20
+   },
+   {
+    "id": "B-10-2025-0237",
+    "label": "B10-0237/2025",
+    "date": "2025-03-31",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on Prosecution of journalists in Cameroon, notably the cases of Amadou Vamoulké, Kingsley Fomunyuy Njoka, Mancho Bibixy, Thomas Awah Junior and Tsi Conrad"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0237_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 10
+   },
+   {
+    "id": "B-10-2025-0226",
+    "label": "B10-0226/2025",
+    "date": "2025-03-31",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on execution spree in Iran and confirmation of the death sentences of activists Behrouz Ehsani and Mehdi Hassani"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0226_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 10
+   },
+   {
+    "id": "B-10-2025-0223",
+    "label": "B10-0223/2025",
+    "date": "2025-03-31",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION immediate risk of further repression by Lukashenka’s regime in Belarus – threats from the Investigative Committee"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0223_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 15,
+    "joint_motion": "RC-10-2025-0219",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 174988
+   },
+   {
+    "id": "proc-2024-2051",
+    "label": "2024/2051(INI)",
+    "date": "2025-03-13",
+    "title": {
+     "cs": "Přepracovaný dlouhodobý rozpočet Unie v měnícím se světě",
+     "en": "A revamped long-term budget for the Union in a changing world"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2051(INI)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0175",
+    "label": null,
+    "date": "2025-03-12",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o vážné politické a humanitární krizi a krizi v oblasti lidských práv v Súdánu, zejména o sexuálním násilí a zneužívání dětí",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0175_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 173001,
+    "vote_date": "2025-03-13",
+    "signatories_total": 52
+   },
+   {
+    "id": "RC-10-2025-0156",
+    "label": null,
+    "date": "2025-03-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o pokračování neochvějné podpory EU Ukrajině tři roky od začátku ruské válečné agrese",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0156_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 172663,
+    "vote_date": "2025-03-12",
+    "signatories_total": 79
+   },
+   {
+    "id": "RC-10-2025-0146",
+    "label": null,
+    "date": "2025-03-10",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o bílé knize o budoucnosti evropské obrany",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0146_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 35
+   },
+   {
+    "id": "B-10-2025-0168",
+    "label": "B10-0168/2025",
+    "date": "2025-03-07",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o pokračování neochvějné podpory EU Ukrajině tři roky od začátku ruské válečné agrese",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0168_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17,
+    "joint_motion": "RC-10-2025-0156",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 172663
+   },
+   {
+    "id": "B-10-2025-0149",
+    "label": "B10-0149/2025",
+    "date": "2025-03-05",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o bílé knize o budoucnosti evropské obrany",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0149_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16
+   },
+   {
+    "id": "proc-2024-2110",
+    "label": "2024/2110(BUI)",
+    "date": "2025-02-12",
+    "title": {
+     "cs": "Pokyny pro rozpočet na rok 2026 - oddíl III",
+     "en": "Guidelines for the 2026 Budget - Section III"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2110(BUI)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "RC-10-2025-0106",
+    "label": null,
+    "date": "2025-02-12",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o dalším zhoršení politické situace v Gruzii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0106_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171911,
+    "vote_date": "2025-02-13",
+    "signatories_total": 57
+   },
+   {
+    "id": "RC-10-2025-0100",
+    "label": null,
+    "date": "2025-02-12",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o nedávných odvoláních a zatýkání starostů v Turecku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0100_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 46
+   },
+   {
+    "id": "B-10-2025-0135",
+    "label": "B10-0135/2025",
+    "date": "2025-02-10",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Repression by the Ortega-Murillo regime in Nicaragua, targeting human rights defenders, political opponents and religious communities in particular"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0135_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "B-10-2025-0124",
+    "label": "B10-0124/2025",
+    "date": "2025-02-10",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Recent dismissals and arrests of mayors in Turkiye"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0124_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8
+   },
+   {
+    "id": "B-10-2025-0123",
+    "label": "B10-0123/2025",
+    "date": "2025-02-10",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on continuing detention and risk of the death penalty for individuals in Nigeria charged with blasphemy, notably the case of Yahaya Sharif-Aminu"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0123_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 13
+   },
+   {
+    "id": "B-10-2025-0118",
+    "label": "B10-0118/2025",
+    "date": "2025-02-10",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o dalším zhoršování politické situace v Gruzii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0118_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12,
+    "joint_motion": "RC-10-2025-0106",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171911
+   },
+   {
+    "id": "E-10-2025-000473",
+    "label": "E-000473/2025",
+    "date": "2025-02-03",
+    "title": {
+     "cs": "„Ztracená generace“",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000473_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-04-24",
+    "authors_total": 8
+   },
+   {
+    "id": "proc-2023-0284",
+    "label": "2023/0284(COD)",
+    "date": "2025-01-31",
+    "title": {
+     "cs": "Požadavky na oběhové hospodářství pro konstrukci vozidel a nakládání s vozidly s ukončenou životností, změna nařízení (EU) 2018/858 a (EU) 2019/1020 a zrušení směrnic 2000/53/ES a 2005/64/ES",
+     "en": "Circularity requirements for vehicle design and on management of end-of-life vehicles, amending Regulations (EU) 2018/858 and 2019/1020 and repealing Directives 2000/53/EC and 2005/64/EC"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0284(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "ECR",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 193648,
+    "vote_date": "2026-06-18",
+    "report": "A10-0158/2025"
+   },
+   {
+    "id": "E-10-2025-000403",
+    "label": "E-000403/2025",
+    "date": "2025-01-29",
+    "title": {
+     "cs": "Reakce Komise na to, že Spojené státy odstoupily od Pařížské dohody",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000403_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-24",
+    "authors_total": 37
+   },
+   {
+    "id": "proc-2024-2085",
+    "label": "2024/2085(INI)",
+    "date": "2025-01-27",
+    "title": {
+     "cs": "Zpráva o provádění Nástroje pro oživení a odolnost",
+     "en": "Implementation report on the Recovery and Resilience Facility"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2085(INI)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "E-10-2025-000357",
+    "label": "E-000357/2025",
+    "date": "2025-01-27",
+    "title": {
+     "cs": "Finanční prostředky Komise určené nevládním organizacím působícím v oblasti životního prostředí s cílem ovlivnit názory poslanců Evropského parlamentu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000357_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-05-05",
+    "authors_total": 65
+   },
+   {
+    "id": "RC-10-2025-0087",
+    "label": null,
+    "date": "2025-01-22",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Boualema Sansala v Alžírsku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0087_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171594,
+    "vote_date": "2025-01-23",
+    "signatories_total": 36
+   },
+   {
+    "id": "RC-10-2025-0066",
+    "label": null,
+    "date": "2025-01-22",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o systematickém potlačování lidských práv v Íránu, zejména případy Pachšán Azízíové a Veríše Morádíové, a braní státních příslušníků EU jako rukojmích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0066_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171607,
+    "vote_date": "2025-01-23",
+    "signatories_total": 66
+   },
+   {
+    "id": "RC-10-2025-0064",
+    "label": null,
+    "date": "2025-01-21",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situaci ve Venezuele po uzurpaci úřadu prezidenta dne 10. ledna 2025",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2025-0064_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171587,
+    "vote_date": "2025-01-23",
+    "signatories_total": 32
+   },
+   {
+    "id": "B-10-2025-0093",
+    "label": "B10-0093/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the case of Boualem Sansal in Algeria"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0093_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 7,
+    "joint_motion": "RC-10-2025-0087",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171594
+   },
+   {
+    "id": "B-10-2025-0086",
+    "label": "B10-0086/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Systematic repression of human rights in Iran, notably the cases of Pakhshan Azizi and Wrisha Moradi, and the taking of EU citizens as hostages"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0086_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 9,
+    "joint_motion": "RC-10-2025-0066",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171607
+   },
+   {
+    "id": "B-10-2025-0084",
+    "label": "B10-0084/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the case of Jean-Jacques Wondo in the Democratic Republic of the Congo"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0084_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11
+   },
+   {
+    "id": "B-10-2025-0083",
+    "label": "B10-0083/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o situaci ve Venezuele po uzurpaci úřadu prezidenta dne 10. ledna 2025",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0083_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17,
+    "joint_motion": "RC-10-2025-0064",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171587
+   },
+   {
+    "id": "B-10-2025-0079",
+    "label": "B10-0079/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o dezinformacích a falšování historie ze strany Ruska v zájmu ospravedlnění jeho válečné agrese proti Ukrajině",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0079_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 17,
+    "joint_motion": "RC-10-2025-0074",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171628
+   },
+   {
+    "id": "B-10-2025-0059",
+    "label": "B10-0059/2025",
+    "date": "2025-01-17",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o potřebě jednat v souvislosti s pokračujícím útlakem a zinscenovanými volbami v Bělorusku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0059_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2025-0055",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171462
+   },
+   {
+    "id": "RC-10-2024-0222",
+    "label": null,
+    "date": "2024-12-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o situaci v oblasti lidských práv v Kyrgyzstánu, zejména případu Temirlana Sultanbekova",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0222_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171397,
+    "vote_date": "2024-12-19",
+    "signatories_total": 31
+   },
+   {
+    "id": "RC-10-2024-0219",
+    "label": null,
+    "date": "2024-12-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o 11. roce okupace Autonomní republiky Krym a města Sevastopol ze strany Ruské federace a o zhoršující se situaci v oblasti lidských práv na okupovaném Krymu, zejména o případech Iryny Danylovič, Tofika Abdulhazijeva a Ameta Sulejmanova",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0219_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171398,
+    "vote_date": "2024-12-19",
+    "signatories_total": 62
+   },
+   {
+    "id": "RC-10-2024-0218",
+    "label": null,
+    "date": "2024-12-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o pokračujících represích proti občanské společnosti a nezávislým sdělovacím prostředkům v Ázerbájdžánu a případech dr. Qubada İbadoğlua, Anara Mammadliho, Kamrana Mammadliho, Rufata Safarova a stanice Meydan TV",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0218_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 171396,
+    "vote_date": "2024-12-19",
+    "signatories_total": 39
+   },
+   {
+    "id": "E-10-2024-002958",
+    "label": "E-002958/2024",
+    "date": "2024-12-16",
+    "title": {
+     "cs": "Přijetí strategie EU pro jadernou fúzi",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-002958_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-17",
+    "authors_total": 16
+   },
+   {
+    "id": "B-10-2024-0236",
+    "label": "B10-0236/2024",
+    "date": "2024-12-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION continued repression of civil society and independent media in Azerbaijan and the cases of Dr Gubad Ibadoghlu, Anar Mammadli, Kamran Mammadli, Rufat Safarov and Meydan TV"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0236_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8,
+    "joint_motion": "RC-10-2024-0218",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171396
+   },
+   {
+    "id": "B-10-2024-0235",
+    "label": "B10-0235/2024",
+    "date": "2024-12-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION 11th year of the occupation of the Autonomous Republic of Crimea and the city of Sevastopol by the Russian Federation and the deteriorating human rights situation in occupied Crimea, notably the cases of Iryna Danylovych, Tofik Abdulhaziiev and Amet Suleymanov"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0235_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14,
+    "joint_motion": "RC-10-2024-0219",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171398
+   },
+   {
+    "id": "B-10-2024-0230",
+    "label": "B10-0230/2024",
+    "date": "2024-12-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the human rights situation in Kyrgyzstan, in particular the case of Temirlan Sultanbekov"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0230_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 10,
+    "joint_motion": "RC-10-2024-0222",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 171397
+   },
+   {
+    "id": "P-10-2024-002955",
+    "label": "P-002955/2024",
+    "date": "2024-12-14",
+    "title": {
+     "cs": "Nové emisní normy CO<sub>2</sub> pro vozový park EU: osobní automobily a lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2024-002955_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-15",
+    "authors_total": 23
+   },
+   {
+    "id": "RC-10-2024-0208",
+    "label": null,
+    "date": "2024-11-27",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o Hongkongu, zejména o případech Jimmyho Laie a 45 aktivistů, kteří byli nedávno odsouzeni na základě zákona o národní bezpečnosti",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0208_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170875,
+    "vote_date": "2024-11-28",
+    "signatories_total": 55
+   },
+   {
+    "id": "RC-10-2024-0190",
+    "label": null,
+    "date": "2024-11-27",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o zmenšujícím se prostoru pro občanskou společnost v Kambodži, zejména pokud jde o případ organizace na obranu práv pracovníků CENTRAL",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0190_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170880,
+    "vote_date": "2024-11-28",
+    "signatories_total": 43
+   },
+   {
+    "id": "RC-10-2024-0188",
+    "label": null,
+    "date": "2024-11-27",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o sílícím systematickém utlačování žen v Íránu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0188_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170871,
+    "vote_date": "2024-11-28",
+    "signatories_total": 66
+   },
+   {
+    "id": "RC-10-2024-0191",
+    "label": null,
+    "date": "2024-11-26",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o posílení neochvějné podpory EU Ukrajině proti válečné agresi Ruska a rostoucí vojenské spolupráci mezi Ruskem a Severní Koreou",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0191_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170917,
+    "vote_date": "2024-11-28",
+    "signatories_total": 81
+   },
+   {
+    "id": "RC-10-2024-0179",
+    "label": null,
+    "date": "2024-11-26",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o zhoršující se krizi demokracie v Gruzii po nedávných parlamentních volbách a údajných volebních podvodech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0179_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170866,
+    "vote_date": "2024-11-28",
+    "signatories_total": 55
+   },
+   {
+    "id": "B-10-2024-0212",
+    "label": "B10-0212/2024",
+    "date": "2024-11-25",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on Hong Kong, notably the cases of Jimmy Lai and the 45 activists recently convicted under the national security law"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0212_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2024-0208",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170875
+   },
+   {
+    "id": "B-10-2024-0207",
+    "label": "B10-0207/2024",
+    "date": "2024-11-25",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The increasing and systemic repression against women in Iran"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0207_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2024-0188",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170871
+   },
+   {
+    "id": "B-10-2024-0206",
+    "label": "B10-0206/2024",
+    "date": "2024-11-25",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The shrinking space for civil society in Cambodia, in particular the case of the labour rights organisation CENTRAL"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0206_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 9,
+    "joint_motion": "RC-10-2024-0190",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170880
+   },
+   {
+    "id": "B-10-2024-0200",
+    "label": "B10-0200/2024",
+    "date": "2024-11-25",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o posílení neochvějné podpory EU Ukrajině proti válečné agresi Ruska a rostoucí vojenské spolupráci mezi Ruskem a Severní Koreou",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0200_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2024-0191",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170917
+   },
+   {
+    "id": "B-10-2024-0184",
+    "label": "B10-0184/2024",
+    "date": "2024-11-22",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zhoršující se krizi demokracie v Gruzii po nedávných parlamentních volbách a údajných volebních podvodech",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0184_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 12,
+    "joint_motion": "RC-10-2024-0179",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170866
+   },
+   {
+    "id": "E-10-2024-002503",
+    "label": "E-002503/2024",
+    "date": "2024-11-12",
+    "title": {
+     "cs": "Otázka týkající se sankcí ukládaných výrobcům od roku 2025 podle nařízení o emisích CO2 z lehkých vozidel",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-002503_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-07",
+    "authors_total": 53
+   },
+   {
+    "id": "RC-10-2024-0161",
+    "label": null,
+    "date": "2024-11-11",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o opatřeních EU vůči ruské „stínové flotile“ a o zajištění vymáhání veškerých sankcí vůči Rusku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0161_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 61
+   },
+   {
+    "id": "B-10-2024-0166",
+    "label": "B10-0166/2024",
+    "date": "2024-11-06",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o opatřeních EU proti ruským stínovým flotilám a zajištění plného prosazování sankcí vůči Rusku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0166_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 15
+   },
+   {
+    "id": "RC-10-2024-0134",
+    "label": null,
+    "date": "2024-10-23",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o nesprávné interpretaci rezoluce OSN 2758 ze strany Čínské lidové republiky a pokračujících vojenských provokacích Číny v okolí Tchaj-wanu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0134_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 170351,
+    "vote_date": "2024-10-24",
+    "signatories_total": 38
+   },
+   {
+    "id": "B-10-2024-0138",
+    "label": "B10-0138/2024",
+    "date": "2024-10-21",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o nesprávné interpretaci rezoluce OSN 2758 ze strany Čínské lidové republiky a pokračujících vojenských provokacích Číny v okolí Tchaj-wanu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0138_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2024-0134",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 170351
+   },
+   {
+    "id": "RC-10-2024-0101",
+    "label": null,
+    "date": "2024-10-09",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případech nespravedlivě vězněných Ujgurů v Číně, zejména Ilhama Tohtiho a Gulšany Abbásové",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0101_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 64
+   },
+   {
+    "id": "RC-10-2024-0089",
+    "label": null,
+    "date": "2024-10-09",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o Iráku, zejména o situaci v oblasti ženských práv a o nedávném návrhu na změnu zákona o postavení jednotlivce",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0089_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 58
+   },
+   {
+    "id": "RC-10-2024-0072",
+    "label": null,
+    "date": "2024-10-08",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o posílení odolnosti Moldavska vůči ruskému vměšování před nadcházejícími prezidentskými volbami a ústavním referendem o vstupu do EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0072_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 169770,
+    "vote_date": "2024-10-09",
+    "signatories_total": 92
+   },
+   {
+    "id": "B-10-2024-0118",
+    "label": "B10-0118/2024",
+    "date": "2024-10-07",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The case of unjustly imprisoned Uyghurs in China, notably Ilham Tohti and Gulshan Abbas"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0118_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21
+   },
+   {
+    "id": "B-10-2024-0094",
+    "label": "B10-0094/2024",
+    "date": "2024-10-07",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Iraq, notably the situation of women’s rights and recent proposal to amend the Personal Status Law"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0094_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 23
+   },
+   {
+    "id": "B-10-2024-0073",
+    "label": "B10-0073/2024",
+    "date": "2024-10-02",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o posílení odolnosti Moldavska vůči ruskému vměšování před nadcházejícími prezidentskými volbami",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0073_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19,
+    "joint_motion": "RC-10-2024-0072",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 169770
+   },
+   {
+    "id": "B-10-2024-0071",
+    "label": "B10-0071/2024",
+    "date": "2024-10-02",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zhoršování stavu demokracie a ohrožení politického pluralismu v Gruzii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0071_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 16,
+    "joint_motion": "RC-10-2024-0070",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 169808
+   },
+   {
+    "id": "RC-10-2024-0057",
+    "label": null,
+    "date": "2024-09-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ničivých povodních ve střední a východní Evropě, ztrátách na životech a připravenosti EU reagovat na tyto katastrofy, které ještě zhoršila změna klimatu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0057_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 125
+   },
+   {
+    "id": "RC-10-2024-0022",
+    "label": null,
+    "date": "2024-09-18",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Josého Daniela Ferrera Garcíi na Kubě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2024-0022_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "ADOPTED",
+    "vote_id": 169541,
+    "vote_date": "2024-09-19",
+    "signatories_total": 38
+   },
+   {
+    "id": "B-10-2024-0060",
+    "label": "B10-0060/2024",
+    "date": "2024-09-17",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o ničivých povodních ve střední a východní Evropě, ztrátách na životech a připravenosti EU reagovat na tyto katastrofy, které ještě zhoršila změna klimatu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0060_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 28
+   },
+   {
+    "id": "proc-2024-0176",
+    "label": "2024/0176(BUD)",
+    "date": "2024-09-09",
+    "title": {
+     "cs": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2025 – všechny oddíly",
+     "en": "General budget of the European Union for the financial year 2025 - all sections"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0176(BUD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "ECR",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "E-10-2024-001642",
+    "label": "E-001642/2024",
+    "date": "2024-09-06",
+    "title": {
+     "cs": "Možný retroaktivní zákaz osobních vozidel s dieselovým motorem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-001642_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-31",
+    "authors_total": 16
+   },
+   {
+    "id": "P-10-2024-001520",
+    "label": "P-001520/2024",
+    "date": "2024-08-19",
+    "title": {
+     "cs": "Financování fyzických struktur na ochranu hranic ze strany EU, jako jsou stěny, ploty nebo jiné zábrany",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2024-001520_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2024-10-01",
+    "authors_total": 25
+   }
+  ]
+ }
 }

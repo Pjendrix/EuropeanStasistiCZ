@@ -15,6 +15,18 @@
  "close_margin": 21,
  "close_count": 153,
  "close_count_main": 4,
+ "decisive_final": 0,
+ "definition": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+ "kind_labels": {
+  "final": "závěrečné hlasování",
+  "provisional_agreement": "prozatímní dohoda s Radou",
+  "rejection": "návrh na zamítnutí",
+  "mandate": "mandát k jednání s Radou",
+  "urgency": "naléhavý postup",
+  "amendment": "pozměňovací návrh",
+  "split_part": "dílčí hlasování",
+  "other": "procedurální / ostatní"
+ },
  "votes": [
   {
    "id": 195767,
@@ -37,6 +49,12 @@
     0,
     4
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 7, 2. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -188,6 +206,12 @@
     0,
     4
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13 - PN 10",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -339,6 +363,12 @@
     1,
     3
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 8 - PN 8",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -490,6 +520,12 @@
     0,
     1
    ],
+   "amendment_number": "90",
+   "texts_adopted_reference": "P10_TA(2026)0211",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 3 - PN 90",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -641,6 +677,12 @@
     2,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. ad - PN 34",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -792,6 +834,12 @@
     1,
     0
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. aa - PN 31",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -943,6 +991,12 @@
     8,
     1
    ],
+   "amendment_number": "117",
+   "texts_adopted_reference": "P10_TA(2026)0138",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 2, pododstavec 1, bod 2, podbod a, za podbodem i - PN 117",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -1094,6 +1148,12 @@
     1,
     1
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21 - PN 6",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -1245,6 +1305,12 @@
     9,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Před článkem 1; nařízení (EU) 2021/1232 - článek 3 - odstavec 1 - písm. a - PN 34",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -1396,6 +1462,12 @@
     0,
     2
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0051",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění G, 3. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -1547,6 +1619,12 @@
     2,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění AG - PN 10",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -1698,6 +1776,12 @@
     7,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 63 - PN 9",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -1849,6 +1933,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 10, 2. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -2000,6 +2090,12 @@
     3,
     1
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0244",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 36 - PN 3, 1. část",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -2151,6 +2247,12 @@
     2,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0231",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13, 2. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -2296,6 +2398,12 @@
     7,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -2447,6 +2555,12 @@
     0,
     1
    ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0087",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 96 - PN 1",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -2598,6 +2712,12 @@
     2,
     2
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": "P10_TA(2025)0079",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 57 - PN 8",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -2749,6 +2869,12 @@
     1,
     3
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0062",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění B - PN 3",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -2900,6 +3026,12 @@
     0,
     0
    ],
+   "amendment_number": "146",
+   "texts_adopted_reference": "P10_TA(2025)0058",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 125 - PN 146",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -3051,6 +3183,12 @@
     2,
     0
    ],
+   "amendment_number": "65",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 22 - PN 65",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -3202,6 +3340,12 @@
     8,
     0
    ],
+   "amendment_number": "79",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 18 - PN 79",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -3353,6 +3497,12 @@
     1,
     1
    ],
+   "amendment_number": "56",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 11 - PN 56",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -3504,6 +3654,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2024)0075",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. u, 2. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {
@@ -3655,6 +3811,12 @@
     1,
     1
    ],
+   "amendment_number": "16",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5 - PN 16, 1. část",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -3806,6 +3968,12 @@
     6,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 10",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -3957,6 +4125,12 @@
     6,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 9",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -4108,6 +4282,12 @@
     5,
     4
    ],
+   "amendment_number": "7",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 7",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -4259,6 +4439,12 @@
     4,
     3
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 6",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -4410,6 +4596,12 @@
     4,
     3
    ],
+   "amendment_number": "5",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 5",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -4561,6 +4753,12 @@
     5,
     2
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 3",
    "alternative_result": "REJECTED",
    "positions": [
     {
@@ -4712,6 +4910,12 @@
     0,
     3
    ],
+   "amendment_number": "67",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 91 - PN 67, 1. část",
    "alternative_result": "ADOPTED",
    "positions": [
     {

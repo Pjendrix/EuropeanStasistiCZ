@@ -12,16 +12,16 @@
    6662
   ],
   "attendance_main": [
-   685,
-   718
+   639,
+   670
   ],
   "group_loyalty": [
    4770,
    5824
   ],
   "group_loyalty_main": [
-   423,
-   625
+   392,
+   585
   ],
   "cz_agreement": [
    4945,
@@ -32,8 +32,8 @@
    5553
   ],
   "outcome_main": [
-   373,
-   535
+   338,
+   492
   ],
   "outcome_close": [
    57,
@@ -44,8 +44,8 @@
    350432
   ],
   "group_outcome_main": [
-   19343,
-   32334
+   17412,
+   29605
   ],
   "positions": {
    "FOR": 3236,
@@ -59,11 +59,11 @@
   1754
  ],
  "cohesion_main": [
-  140,
-  182
+  124,
+  164
  ],
  "splits_count": 88,
- "splits_count_main": 5,
+ "splits_count_main": 4,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -79,19 +79,21 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
   "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
-  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
   "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "member_list": [
   {
@@ -109,6 +111,7 @@
      "mandate_id": "16898"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -129,16 +132,16 @@
      6154
     ],
     "attendance_main": [
-     611,
-     680
+     576,
+     640
     ],
     "group_loyalty": [
      3410,
      4215
     ],
     "group_loyalty_main": [
-     331,
-     466
+     310,
+     442
     ],
     "cz_agreement": [
      4451,
@@ -149,8 +152,8 @@
      4970
     ],
     "outcome_main": [
-     390,
-     505
+     365,
+     474
     ],
     "outcome_close": [
      55,
@@ -161,8 +164,8 @@
      259270
     ],
     "group_outcome_main": [
-     16476,
-     25502
+     15241,
+     23794
     ],
     "positions": {
      "FOR": 2987,
@@ -187,6 +190,7 @@
      "mandate_id": "17563"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -207,16 +211,16 @@
      3730
     ],
     "attendance_main": [
-     404,
-     406
+     370,
+     372
     ],
     "group_loyalty": [
      3134,
      3692
     ],
     "group_loyalty_main": [
-     261,
-     403
+     236,
+     369
     ],
     "cz_agreement": [
      2728,
@@ -227,8 +231,8 @@
      3202
     ],
     "outcome_main": [
-     206,
-     301
+     183,
+     272
     ],
     "outcome_close": [
      33,
@@ -239,8 +243,8 @@
      216441
     ],
     "group_outcome_main": [
-     11792,
-     19529
+     10367,
+     17454
     ],
     "positions": {
      "FOR": 1825,
@@ -273,6 +277,12 @@
     7,
     2
    ],
+   "amendment_number": "87",
+   "texts_adopted_reference": "P10_TA(2026)0098",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1 - bod 21; nařízení (EU) 2024/1689 - článek 63 - odstavec 1 - PN 87, 2. část",
    "positions": [
     {
      "member_id": 256852,
@@ -309,6 +319,12 @@
     0,
     1
    ],
+   "amendment_number": "32",
+   "texts_adopted_reference": "P10_TA(2026)0098",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1 - bod 5; nařízení (EU) 2024/1689; za článkem 4 - odstavec 2 - PN 32",
    "positions": [
     {
      "member_id": 256852,
@@ -345,6 +361,12 @@
     0,
     1
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2026)0098",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1 - bod 5; nařízení (EU) 2024/1689; za článkem 4 - odstavec 1 - PN 31",
    "positions": [
     {
      "member_id": 256852,
@@ -381,6 +403,12 @@
     8,
     0
    ],
+   "amendment_number": "57",
+   "texts_adopted_reference": "P10_TA(2026)0096",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 4 - PN 57",
    "positions": [
     {
      "member_id": 256852,
@@ -417,6 +445,12 @@
     8,
     0
    ],
+   "amendment_number": "56",
+   "texts_adopted_reference": "P10_TA(2026)0096",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 3 - PN 56",
    "positions": [
     {
      "member_id": 256852,
@@ -453,6 +487,12 @@
     8,
     0
    ],
+   "amendment_number": "55",
+   "texts_adopted_reference": "P10_TA(2026)0096",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 2 - PN 55",
    "positions": [
     {
      "member_id": 256852,
@@ -489,6 +529,12 @@
     2,
     0
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1; nařízení (EU) 2021/1232 - článek 10 - PN 31",
    "positions": [
     {
      "member_id": 256852,
@@ -525,6 +571,12 @@
     3,
     0
    ],
+   "amendment_number": "33",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1; nařízení (EU) 2021/1232 - článek 10 - PN 33",
    "positions": [
     {
      "member_id": 256852,
@@ -561,6 +613,12 @@
     6,
     1
    ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2026)0086",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 12 - PN 1",
    "positions": [
     {
      "member_id": 256852,
@@ -597,6 +655,12 @@
     0,
     1
    ],
+   "amendment_number": "41",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 21 - PN 41",
    "positions": [
     {
      "member_id": 256852,
@@ -633,6 +697,12 @@
     8,
     1
    ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2026)0081",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 2 - PN 1",
    "positions": [
     {
      "member_id": 256852,
@@ -669,6 +739,12 @@
     0,
     2
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0078",
+   "vote_kind": "other",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Návrh doporučení (celý text)",
    "positions": [
     {
      "member_id": 256852,
@@ -705,6 +781,12 @@
     7,
     2
    ],
+   "amendment_number": "15",
+   "texts_adopted_reference": "P10_TA(2026)0076",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 8 - PN 15",
    "positions": [
     {
      "member_id": 256852,
@@ -741,6 +823,12 @@
     6,
     2
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0075",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 28, 2. část",
    "positions": [
     {
      "member_id": 256852,
@@ -777,6 +865,12 @@
     1,
     2
    ],
+   "amendment_number": "2",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Před článkem 1; nařízení (EU) 2021/1232 - článek 3 - odstavec 1 - písm. b - PN 2, 2. část",
    "positions": [
     {
      "member_id": 256852,
@@ -813,6 +907,12 @@
     0,
     2
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "rejection",
+   "is_final": false,
+   "inverted": true,
+   "description_cs": "Návrh na zamítnutí",
    "positions": [
     {
      "member_id": 256852,
@@ -849,6 +949,12 @@
     1,
     1
    ],
+   "amendment_number": "2",
+   "texts_adopted_reference": "P10_TA(2026)0067",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 16 - PN 2",
    "positions": [
     {
      "member_id": 256852,
@@ -885,6 +991,12 @@
     0,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0067",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 8, 2. část",
    "positions": [
     {
      "member_id": 256852,
@@ -921,6 +1033,12 @@
     1,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0064",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 47",
    "positions": [
     {
      "member_id": 256852,
@@ -957,6 +1075,12 @@
     0,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0064",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 57, 2. část",
    "positions": [
     {
      "member_id": 256852,
@@ -974,42 +1098,6 @@
   }
  ],
  "splits_main": [
-  {
-   "id": 186941,
-   "date": "2026-03-11",
-   "month": "2026-03",
-   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
-   "reference": "A10-0040/2026",
-   "description": "Proposition de rejet",
-   "result": "REJECTED",
-   "is_main": true,
-   "counts": {
-    "for": 172,
-    "against": 435,
-    "abstention": 14,
-    "did_not_vote": 97
-   },
-   "cz": [
-    13,
-    6,
-    0,
-    2
-   ],
-   "positions": [
-    {
-     "member_id": 256852,
-     "position": "FOR",
-     "group_code": "NI",
-     "national_party_id": 7033
-    },
-    {
-     "member_id": 272024,
-     "position": "AGAINST",
-     "group_code": "PFE",
-     "national_party_id": 7033
-    }
-   ]
-  },
   {
    "id": 183022,
    "date": "2026-01-20",
@@ -1031,6 +1119,12 @@
     2,
     1
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0004",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
    "positions": [
     {
      "member_id": 256852,
@@ -1067,6 +1161,12 @@
     9,
     2
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
    "positions": [
     {
      "member_id": 256852,
@@ -1103,6 +1203,12 @@
     0,
     0
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0289",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
    "positions": [
     {
      "member_id": 256852,
@@ -1139,6 +1245,12 @@
     2,
     2
    ],
+   "amendment_number": "20",
+   "texts_adopted_reference": "P10_TA(2025)0046",
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 20",
    "positions": [
     {
      "member_id": 256852,

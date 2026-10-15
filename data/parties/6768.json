@@ -12,16 +12,16 @@
    18462
   ],
   "attendance_main": [
-   1917,
-   2040
+   1803,
+   1920
   ],
   "group_loyalty": [
    14392,
    17238
   ],
   "group_loyalty_main": [
-   1461,
-   1902
+   1364,
+   1788
   ],
   "cz_agreement": [
    12905,
@@ -32,8 +32,8 @@
    15725
   ],
   "outcome_main": [
-   1271,
-   1654
+   1195,
+   1556
   ],
   "outcome_close": [
    199,
@@ -44,8 +44,8 @@
    1038385
   ],
   "group_outcome_main": [
-   85479,
-   106613
+   79932,
+   99708
   ],
   "positions": {
    "FOR": 8750,
@@ -59,11 +59,11 @@
   5721
  ],
  "cohesion_main": [
-  599,
-  633
+  564,
+  596
  ],
  "splits_count": 199,
- "splits_count_main": 7,
+ "splits_count_main": 6,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -79,19 +79,21 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
   "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
-  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
   "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "member_list": [
   {
@@ -109,6 +111,7 @@
      "mandate_id": "16879"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -129,16 +132,16 @@
      6154
     ],
     "attendance_main": [
-     617,
-     680
+     580,
+     640
     ],
     "group_loyalty": [
      4735,
      5516
     ],
     "group_loyalty_main": [
-     480,
-     612
+     448,
+     575
     ],
     "cz_agreement": [
      4137,
@@ -149,8 +152,8 @@
      5052
     ],
     "outcome_main": [
-     405,
-     537
+     379,
+     505
     ],
     "outcome_close": [
      64,
@@ -161,8 +164,8 @@
      334771
     ],
     "group_outcome_main": [
-     27620,
-     34800
+     25778,
+     32548
     ],
     "positions": {
      "FOR": 2733,
@@ -187,6 +190,7 @@
      "mandate_id": "16869"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -207,16 +211,16 @@
      6154
     ],
     "attendance_main": [
-     635,
-     680
+     598,
+     640
     ],
     "group_loyalty": [
      4711,
      5732
     ],
     "group_loyalty_main": [
-     475,
-     630
+     445,
+     593
     ],
     "cz_agreement": [
      4294,
@@ -227,8 +231,8 @@
      5211
     ],
     "outcome_main": [
-     424,
-     544
+     400,
+     513
     ],
     "outcome_close": [
      64,
@@ -239,8 +243,8 @@
      344288
     ],
     "group_outcome_main": [
-     28367,
-     35057
+     26562,
+     32853
     ],
     "positions": {
      "FOR": 2934,
@@ -265,6 +269,7 @@
      "mandate_id": "16891"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -285,16 +290,16 @@
      6154
     ],
     "attendance_main": [
-     665,
-     680
+     625,
+     640
     ],
     "group_loyalty": [
      4946,
      5990
     ],
     "group_loyalty_main": [
-     506,
-     660
+     471,
+     620
     ],
     "cz_agreement": [
      4474,
@@ -305,8 +310,8 @@
      5462
     ],
     "outcome_main": [
-     442,
-     573
+     416,
+     538
     ],
     "outcome_close": [
      71,
@@ -317,8 +322,8 @@
      359326
     ],
     "group_outcome_main": [
-     29492,
-     36756
+     27592,
+     34307
     ],
     "positions": {
      "FOR": 3083,
@@ -351,6 +356,12 @@
     4,
     3
    ],
+   "amendment_number": "118",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění A - PN 118",
    "positions": [
     {
      "member_id": 197537,
@@ -393,6 +404,12 @@
     3,
     4
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1 - PN 31, 3. část",
    "positions": [
     {
      "member_id": 197537,
@@ -435,6 +452,12 @@
     5,
     3
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 7 - PN 10",
    "positions": [
     {
      "member_id": 197537,
@@ -477,6 +500,12 @@
     1,
     1
    ],
+   "amendment_number": "12",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, za písm. a - PN 12",
    "positions": [
     {
      "member_id": 197537,
@@ -519,6 +548,12 @@
     6,
     6
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 9",
    "positions": [
     {
      "member_id": 197537,
@@ -561,6 +596,12 @@
     5,
     7
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AC, 2. část",
    "positions": [
     {
      "member_id": 197537,
@@ -603,6 +644,12 @@
     0,
     7
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AC, 1. část",
    "positions": [
     {
      "member_id": 197537,
@@ -645,6 +692,12 @@
     5,
     6
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AA",
    "positions": [
     {
      "member_id": 197537,
@@ -687,6 +740,12 @@
     2,
     6
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění Z",
    "positions": [
     {
      "member_id": 197537,
@@ -729,6 +788,12 @@
     5,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 63, 2. část",
    "positions": [
     {
      "member_id": 197537,
@@ -771,6 +836,12 @@
     3,
     6
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 60",
    "positions": [
     {
      "member_id": 197537,
@@ -813,6 +884,12 @@
     1,
     6
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 48, 1. část",
    "positions": [
     {
      "member_id": 197537,
@@ -855,6 +932,12 @@
     0,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 46, 2. část",
    "positions": [
     {
      "member_id": 197537,
@@ -897,6 +980,12 @@
     0,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 46, 1. část",
    "positions": [
     {
      "member_id": 197537,
@@ -939,6 +1028,12 @@
     1,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 45, 3. část",
    "positions": [
     {
      "member_id": 197537,
@@ -981,6 +1076,12 @@
     1,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 45, 2. část",
    "positions": [
     {
      "member_id": 197537,
@@ -1023,6 +1124,12 @@
     5,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 44",
    "positions": [
     {
      "member_id": 197537,
@@ -1065,6 +1172,12 @@
     5,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 43, 1. část",
    "positions": [
     {
      "member_id": 197537,
@@ -1107,6 +1220,12 @@
     4,
     5
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 41",
    "positions": [
     {
      "member_id": 197537,
@@ -1149,6 +1268,12 @@
     6,
     4
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21, 2. část",
    "positions": [
     {
      "member_id": 197537,
@@ -1173,48 +1298,6 @@
  ],
  "splits_main": [
   {
-   "id": 196482,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Acceleration of permit-granting for defence readiness projects (Omnibus V)",
-   "reference": "A10-0271/2025",
-   "description": "Proposition de rejet - Am 64",
-   "result": "REJECTED",
-   "is_main": true,
-   "counts": {
-    "for": 95,
-    "against": 546,
-    "abstention": 22,
-    "did_not_vote": 54
-   },
-   "cz": [
-    4,
-    14,
-    0,
-    3
-   ],
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
    "id": 196438,
    "date": "2026-09-15",
    "month": "2026-09",
@@ -1235,6 +1318,12 @@
     1,
     2
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
    "positions": [
     {
      "member_id": 197537,
@@ -1277,6 +1366,12 @@
     2,
     1
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0002",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
    "positions": [
     {
      "member_id": 197537,
@@ -1319,6 +1414,12 @@
     3,
     1
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0265",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
    "positions": [
     {
      "member_id": 197537,
@@ -1361,6 +1462,12 @@
     0,
     1
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0198",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
    "positions": [
     {
      "member_id": 197537,
@@ -1403,6 +1510,12 @@
     0,
     1
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0120",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Rady",
    "positions": [
     {
      "member_id": 197537,
@@ -1445,6 +1558,12 @@
     8,
     0
    ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0056",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
    "positions": [
     {
      "member_id": 197537,

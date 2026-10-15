@@ -112,6 +112,8 @@
    }
   ]
  },
+ "short_mandate": false,
+ "mandate_days": 822,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -127,19 +129,21 @@
  },
  "definitions": {
   "attendance": "Podíl jmenovitých hlasování, ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Počítají se jen hlasování v době jeho mandátu podle EP.",
-  "attendance_main": "Docházka jen u hlavních (závěrečných) hlasování o celém textu.",
+  "attendance_main": "Docházka jen u závěrečných hlasování: o celém textu nebo o prozatímní dohodě s Radou. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.",
+  "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, ostatní.",
   "group_loyalty": "Podíl hlasování, kde poslanec hlasoval stejně jako většina jeho frakce (k datu hlasování). Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.",
   "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.",
   "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.",
   "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.",
   "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.",
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
-  "decisive_votes": "Rozhodující hlasování: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
+  "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "against_group": "Hlasování proti frakci: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.",
   "cz_split": "Míra rozkolu mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
+  "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazný rozkol: menšina tvoří aspoň 30 % hlasů pro a proti.",
   "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.",
   "own_work": "Vlastní práce: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data.",
-  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote, v angličtině. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
+  "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."
  },
  "total": {
   "attendance": [
@@ -147,16 +151,16 @@
    6154
   ],
   "attendance_main": [
-   595,
-   680
+   559,
+   640
   ],
   "group_loyalty": [
    3887,
    5214
   ],
   "group_loyalty_main": [
-   361,
-   595
+   336,
+   559
   ],
   "cz_agreement": [
    4335,
@@ -167,8 +171,8 @@
    4382
   ],
   "outcome_main": [
-   367,
-   476
+   344,
+   445
   ],
   "outcome_close": [
    47,
@@ -179,8 +183,8 @@
    297061
   ],
   "group_outcome_main": [
-   19349,
-   31042
+   17773,
+   28807
   ],
   "positions": {
    "FOR": 2621,
@@ -408,7 +412,7 @@
     75
    ],
    "outcome_main": [
-    12,
+    13,
     14
    ],
    "outcome_close": [
@@ -420,8 +424,8 @@
     5072
    ],
    "group_outcome_main": [
-    655,
-    855
+    731,
+    866
    ],
    "positions": {
     "FOR": 47,
@@ -580,16 +584,16 @@
     348
    ],
    "attendance_main": [
-    16,
-    21
+    15,
+    18
    ],
    "group_loyalty": [
     218,
     279
    ],
    "group_loyalty_main": [
-    12,
-    16
+    11,
+    15
    ],
    "cz_agreement": [
     245,
@@ -600,8 +604,8 @@
     236
    ],
    "outcome_main": [
-    8,
-    12
+    7,
+    11
    ],
    "outcome_close": [
     5,
@@ -612,8 +616,8 @@
     16973
    ],
    "group_outcome_main": [
-    471,
-    905
+    393,
+    827
    ],
    "positions": {
     "FOR": 136,
@@ -628,16 +632,16 @@
     393
    ],
    "attendance_main": [
-    43,
-    51
+    41,
+    49
    ],
    "group_loyalty": [
     239,
     319
    ],
    "group_loyalty_main": [
-    20,
-    43
+    18,
+    41
    ],
    "cz_agreement": [
     280,
@@ -648,8 +652,8 @@
     269
    ],
    "outcome_main": [
-    20,
-    27
+    18,
+    25
    ],
    "outcome_close": [
     1,
@@ -660,8 +664,8 @@
     19646
    ],
    "group_outcome_main": [
-    861,
-    1949
+    735,
+    1789
    ],
    "positions": {
     "FOR": 192,
@@ -724,16 +728,16 @@
     226
    ],
    "attendance_main": [
-    30,
-    32
+    29,
+    31
    ],
    "group_loyalty": [
     137,
     214
    ],
    "group_loyalty_main": [
-    14,
-    30
+    13,
+    29
    ],
    "cz_agreement": [
     166,
@@ -744,8 +748,8 @@
     178
    ],
    "outcome_main": [
-    20,
-    24
+    19,
+    23
    ],
    "outcome_close": [
     0,
@@ -756,8 +760,8 @@
     12642
    ],
    "group_outcome_main": [
-    962,
-    1539
+    880,
+    1457
    ],
    "positions": {
     "FOR": 118,
@@ -821,7 +825,7 @@
    ],
    "attendance_main": [
     21,
-    43
+    41
    ],
    "group_loyalty": [
     93,
@@ -868,16 +872,16 @@
     570
    ],
    "attendance_main": [
-    49,
-    51
+    45,
+    47
    ],
    "group_loyalty": [
     447,
     560
    ],
    "group_loyalty_main": [
-    31,
-    49
+    28,
+    45
    ],
    "cz_agreement": [
     497,
@@ -888,8 +892,8 @@
     470
    ],
    "outcome_main": [
-    28,
-    38
+    25,
+    34
    ],
    "outcome_close": [
     3,
@@ -900,8 +904,8 @@
     33821
    ],
    "group_outcome_main": [
-    1538,
-    2552
+    1365,
+    2259
    ],
    "positions": {
     "FOR": 289,
@@ -916,16 +920,16 @@
     155
    ],
    "attendance_main": [
-    31,
-    31
+    26,
+    26
    ],
    "group_loyalty": [
     123,
     153
    ],
    "group_loyalty_main": [
-    23,
-    31
+    19,
+    26
    ],
    "cz_agreement": [
     133,
@@ -936,8 +940,8 @@
     124
    ],
    "outcome_main": [
-    21,
-    25
+    17,
+    21
    ],
    "outcome_close": [
     2,
@@ -948,8 +952,8 @@
     8949
    ],
    "group_outcome_main": [
-    1466,
-    1761
+    1154,
+    1449
    ],
    "positions": {
     "FOR": 104,
@@ -964,8 +968,8 @@
     237
    ],
    "attendance_main": [
-    21,
-    22
+    20,
+    21
    ],
    "group_loyalty": [
     162,
@@ -973,7 +977,7 @@
    ],
    "group_loyalty_main": [
     10,
-    21
+    20
    ],
    "cz_agreement": [
     189,
@@ -985,7 +989,7 @@
    ],
    "outcome_main": [
     9,
-    15
+    14
    ],
    "outcome_close": [
     0,
@@ -996,8 +1000,8 @@
     12829
    ],
    "group_outcome_main": [
-    382,
-    923
+    319,
+    851
    ],
    "positions": {
     "FOR": 95,
@@ -1012,16 +1016,16 @@
     237
    ],
    "attendance_main": [
-    28,
-    28
+    26,
+    26
    ],
    "group_loyalty": [
     157,
     235
    ],
    "group_loyalty_main": [
-    17,
-    28
+    15,
+    26
    ],
    "cz_agreement": [
     185,
@@ -1032,8 +1036,8 @@
     193
    ],
    "outcome_main": [
-    18,
-    26
+    17,
+    24
    ],
    "outcome_close": [
     4,
@@ -1044,8 +1048,8 @@
     11099
    ],
    "group_outcome_main": [
-    1037,
-    1579
+    966,
+    1437
    ],
    "positions": {
     "FOR": 106,
@@ -1060,16 +1064,16 @@
     364
    ],
    "attendance_main": [
-    44,
-    44
+    38,
+    38
    ],
    "group_loyalty": [
     287,
     362
    ],
    "group_loyalty_main": [
-    22,
-    44
+    20,
+    38
    ],
    "cz_agreement": [
     311,
@@ -1080,8 +1084,8 @@
     325
    ],
    "outcome_main": [
-    27,
-    34
+    23,
+    29
    ],
    "outcome_close": [
     1,
@@ -1092,8 +1096,8 @@
     19962
    ],
    "group_outcome_main": [
-    1277,
-    2043
+    1027,
+    1696
    ],
    "positions": {
     "FOR": 167,
@@ -1108,16 +1112,16 @@
     591
    ],
    "attendance_main": [
-    51,
-    51
+    49,
+    49
    ],
    "group_loyalty": [
     446,
     579
    ],
    "group_loyalty_main": [
-    34,
-    51
+    32,
+    49
    ],
    "cz_agreement": [
     468,
@@ -1128,8 +1132,8 @@
     486
    ],
    "outcome_main": [
-    33,
-    43
+    31,
+    41
    ],
    "outcome_close": [
     3,
@@ -1140,8 +1144,8 @@
     33496
    ],
    "group_outcome_main": [
-    1665,
-    2918
+    1535,
+    2782
    ],
    "positions": {
     "FOR": 296,
@@ -1156,8 +1160,8 @@
     201
    ],
    "attendance_main": [
-    22,
-    25
+    19,
+    22
    ],
    "group_loyalty": [
     124,
@@ -1165,7 +1169,7 @@
    ],
    "group_loyalty_main": [
     12,
-    22
+    19
    ],
    "cz_agreement": [
     129,
@@ -1204,16 +1208,16 @@
     246
    ],
    "attendance_main": [
-    33,
-    35
+    30,
+    32
    ],
    "group_loyalty": [
     170,
     230
    ],
    "group_loyalty_main": [
-    17,
-    33
+    14,
+    30
    ],
    "cz_agreement": [
     192,
@@ -1224,8 +1228,8 @@
     204
    ],
    "outcome_main": [
-    25,
-    29
+    23,
+    26
    ],
    "outcome_close": [
     6,
@@ -1236,8 +1240,8 @@
     13149
    ],
    "group_outcome_main": [
-    953,
-    1777
+    812,
+    1561
    ],
    "positions": {
     "FOR": 112,
@@ -1252,16 +1256,16 @@
     285
    ],
    "attendance_main": [
-    34,
-    34
+    31,
+    31
    ],
    "group_loyalty": [
     181,
     283
    ],
    "group_loyalty_main": [
-    17,
-    34
+    15,
+    31
    ],
    "cz_agreement": [
     248,
@@ -1272,8 +1276,8 @@
     244
    ],
    "outcome_main": [
-    23,
-    32
+    22,
+    29
    ],
    "outcome_close": [
     3,
@@ -1284,8 +1288,8 @@
     15593
    ],
    "group_outcome_main": [
-    1015,
-    1945
+    973,
+    1740
    ],
    "positions": {
     "FOR": 121,
@@ -1300,16 +1304,16 @@
     360
    ],
    "attendance_main": [
-    36,
-    40
+    34,
+    38
    ],
    "group_loyalty": [
     272,
     352
    ],
    "group_loyalty_main": [
-    24,
-    36
+    22,
+    34
    ],
    "cz_agreement": [
     278,
@@ -1320,8 +1324,8 @@
     286
    ],
    "outcome_main": [
-    23,
-    32
+    21,
+    30
    ],
    "outcome_close": [
     0,
@@ -1332,8 +1336,8 @@
     19328
    ],
    "group_outcome_main": [
-    1321,
-    2008
+    1197,
+    1871
    ],
    "positions": {
     "FOR": 192,
@@ -1348,16 +1352,16 @@
     227
    ],
    "attendance_main": [
-    16,
-    26
+    15,
+    25
    ],
    "group_loyalty": [
     65,
     81
    ],
    "group_loyalty_main": [
-    10,
-    16
+    9,
+    15
    ],
    "cz_agreement": [
     74,
@@ -1368,8 +1372,8 @@
     74
    ],
    "outcome_main": [
-    12,
-    13
+    11,
+    12
    ],
    "outcome_close": [
     1,
@@ -1380,8 +1384,8 @@
     4589
    ],
    "group_outcome_main": [
-    493,
-    858
+    433,
+    792
    ],
    "positions": {
     "FOR": 49,
@@ -1407,6 +1411,7 @@
      "mandate_id": "16873"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1433,6 +1438,7 @@
      "mandate_id": "17552"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1446,9 +1452,9 @@
   },
   {
    "id": 256853,
-   "name": "Klara DOSTALOVA",
-   "given_name": "Klara",
-   "family_name": "Dostalova",
+   "name": "Klára DOSTÁLOVÁ",
+   "given_name": "Klára",
+   "family_name": "Dostálová",
    "sort_label": "DOSTALOVAK",
    "gender": "FEMALE",
    "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
@@ -1459,6 +1465,7 @@
      "mandate_id": "16899"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1485,6 +1492,7 @@
      "mandate_id": "16889"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1511,6 +1519,7 @@
      "mandate_id": "16884"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1537,6 +1546,7 @@
      "mandate_id": "17561"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1563,6 +1573,7 @@
      "mandate_id": "16875"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1589,6 +1600,7 @@
      "mandate_id": "16898"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1615,6 +1627,7 @@
      "mandate_id": "17563"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1641,6 +1654,7 @@
      "mandate_id": "16879"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1667,6 +1681,7 @@
      "mandate_id": "16869"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1693,6 +1708,7 @@
      "mandate_id": "16891"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ECR",
     "short_label": "ECR"
@@ -1719,6 +1735,7 @@
      "mandate_id": "16895"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PFE",
     "short_label": "PfE"
@@ -1745,6 +1762,7 @@
      "mandate_id": "16870"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "ESN",
     "short_label": "ESN"
@@ -1771,6 +1789,7 @@
      "mandate_id": "16868"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -1797,6 +1816,7 @@
      "mandate_id": "16897"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "NI",
     "short_label": "NI"
@@ -1823,6 +1843,7 @@
      "mandate_id": "16896"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1849,6 +1870,7 @@
      "mandate_id": "16886"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1875,6 +1897,7 @@
      "mandate_id": "16894"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1901,6 +1924,7 @@
      "mandate_id": "16893"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1927,6 +1951,7 @@
      "mandate_id": "16877"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "PPE",
     "short_label": "PPE"
@@ -1953,6 +1978,7 @@
      "mandate_id": "16866"
     }
    ],
+   "short_mandate": false,
    "group": {
     "code": "VERTS-ALE",
     "short_label": "Verts/ALE"
@@ -1975,7 +2001,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198216,
@@ -1986,7 +2016,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198204,
@@ -1997,7 +2031,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198252,
@@ -2008,7 +2046,11 @@
    "description": "Proposition de résolution",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198251,
@@ -2019,7 +2061,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198261,
@@ -2030,7 +2076,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 198176,
@@ -2041,7 +2091,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198175,
@@ -2052,7 +2106,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198194,
@@ -2063,7 +2121,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 198193,
@@ -2074,7 +2136,11 @@
    "description": "Proposition de résolution",
    "result": "REJECTED",
    "position": "DID_NOT_VOTE",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   },
   {
    "id": 197457,
@@ -2085,7 +2151,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197497,
@@ -2096,7 +2166,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197501,
@@ -2107,7 +2181,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197464,
@@ -2118,7 +2196,11 @@
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
   },
   {
    "id": 197509,
@@ -2129,12 +2211,17 @@
    "description": "Proposition de la Commission",
    "result": "ADOPTED",
    "position": "ABSTENTION",
-   "group_code": "PFE"
+   "group_code": "PFE",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise"
   }
  ],
+ "benchmarks": null,
  "against_group": {
   "count": 1327,
-  "count_main": 234,
+  "count_main": 223,
   "recent": [
    {
     "id": 197860,
@@ -2157,6 +2244,12 @@
      1,
      1
     ],
+    "amendment_number": "9",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za bodem odůvodnění L - PN 9",
     "position": "AGAINST",
     "group_code": "PFE",
     "group_majority": "ABSTENTION"
@@ -2182,6 +2275,12 @@
      6,
      1
     ],
+    "amendment_number": "51",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za bodem odůvodnění G - PN 51",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "FOR"
@@ -2207,6 +2306,12 @@
      0,
      1
     ],
+    "amendment_number": "5",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za bodem odůvodnění F - PN 5",
     "position": "AGAINST",
     "group_code": "PFE",
     "group_majority": "ABSTENTION"
@@ -2232,6 +2337,12 @@
      3,
      1
     ],
+    "amendment_number": "42",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1, za písm. ao - PN 42",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "ABSTENTION"
@@ -2257,6 +2368,12 @@
      11,
      2
     ],
+    "amendment_number": "64",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 1, za písm. i - PN 64",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "FOR"
@@ -2282,6 +2399,12 @@
      6,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh Komise",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2307,6 +2430,12 @@
      2,
      1
     ],
+    "amendment_number": "39",
+    "texts_adopted_reference": null,
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Článek 1 - pododstavec 1 - bod 1; směrnice (EU) 2015/637 - článek 7 - za odstavcem 4 - PN 39",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2332,6 +2461,12 @@
      1,
      2
     ],
+    "amendment_number": "18",
+    "texts_adopted_reference": null,
+    "vote_kind": "provisional_agreement",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Prozatímní dohoda - PN 18",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2357,6 +2492,12 @@
      6,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2382,6 +2523,12 @@
      8,
      1
     ],
+    "amendment_number": "§",
+    "texts_adopted_reference": null,
+    "vote_kind": "split_part",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": null,
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "ABSTENTION"
@@ -2409,6 +2556,12 @@
      6,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh Komise",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2434,6 +2587,12 @@
      1,
      2
     ],
+    "amendment_number": "18",
+    "texts_adopted_reference": null,
+    "vote_kind": "provisional_agreement",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Prozatímní dohoda - PN 18",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2459,6 +2618,12 @@
      6,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "ABSTENTION",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2484,6 +2649,12 @@
      1,
      1
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh nařízení Rady",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2509,6 +2680,12 @@
      3,
      1
     ],
+    "amendment_number": "2",
+    "texts_adopted_reference": null,
+    "vote_kind": "provisional_agreement",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Prozatímní dohoda - PN 2",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2534,6 +2711,12 @@
      3,
      1
     ],
+    "amendment_number": "2",
+    "texts_adopted_reference": null,
+    "vote_kind": "provisional_agreement",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Prozatímní dohoda - PN 2",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2559,6 +2742,12 @@
      1,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
     "position": "FOR",
     "group_code": "PFE",
     "group_majority": "AGAINST"
@@ -2584,6 +2773,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "PFE",
     "group_majority": "FOR"
@@ -2609,6 +2804,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "PFE",
     "group_majority": "FOR"
@@ -2634,6 +2835,12 @@
      0,
      6
     ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
     "position": "AGAINST",
     "group_code": "PFE",
     "group_majority": "FOR"
@@ -2662,6 +2869,12 @@
     0,
     4
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 7, 2. část",
    "position": "AGAINST"
   },
   {
@@ -2685,6 +2898,12 @@
     0,
     4
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13 - PN 10",
    "position": "FOR"
   },
   {
@@ -2708,6 +2927,12 @@
     1,
     3
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 8 - PN 8",
    "position": "FOR"
   },
   {
@@ -2731,6 +2956,12 @@
     0,
     1
    ],
+   "amendment_number": "90",
+   "texts_adopted_reference": "P10_TA(2026)0211",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 3 - PN 90",
    "position": "AGAINST"
   },
   {
@@ -2754,6 +2985,12 @@
     2,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. ad - PN 34",
    "position": "AGAINST"
   },
   {
@@ -2777,6 +3014,12 @@
     1,
     0
    ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. aa - PN 31",
    "position": "AGAINST"
   },
   {
@@ -2800,6 +3043,12 @@
     8,
     1
    ],
+   "amendment_number": "117",
+   "texts_adopted_reference": "P10_TA(2026)0138",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 2, pododstavec 1, bod 2, podbod a, za podbodem i - PN 117",
    "position": "ABSTENTION"
   },
   {
@@ -2823,6 +3072,12 @@
     1,
     1
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21 - PN 6",
    "position": "AGAINST"
   },
   {
@@ -2846,6 +3101,12 @@
     9,
     0
    ],
+   "amendment_number": "34",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Před článkem 1; nařízení (EU) 2021/1232 - článek 3 - odstavec 1 - písm. a - PN 34",
    "position": "ABSTENTION"
   },
   {
@@ -2869,6 +3130,12 @@
     0,
     2
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0051",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění G, 3. část",
    "position": "AGAINST"
   },
   {
@@ -2892,6 +3159,12 @@
     2,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění AG - PN 10",
    "position": "AGAINST"
   },
   {
@@ -2915,6 +3188,12 @@
     7,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": "P10_TA(2026)0049",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 63 - PN 9",
    "position": "ABSTENTION"
   },
   {
@@ -2938,6 +3217,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 10, 2. část",
    "position": "AGAINST"
   },
   {
@@ -2961,6 +3246,12 @@
     3,
     1
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0244",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 36 - PN 3, 1. část",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -2984,6 +3275,12 @@
     2,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0231",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13, 2. část",
    "position": "AGAINST"
   },
   {
@@ -3007,6 +3304,12 @@
     7,
     1
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -3030,6 +3333,12 @@
     0,
     1
    ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0087",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 96 - PN 1",
    "position": "FOR"
   },
   {
@@ -3053,6 +3362,12 @@
     2,
     2
    ],
+   "amendment_number": "8",
+   "texts_adopted_reference": "P10_TA(2025)0079",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 57 - PN 8",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -3076,6 +3391,12 @@
     1,
     3
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0062",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění B - PN 3",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -3099,6 +3420,12 @@
     0,
     0
    ],
+   "amendment_number": "146",
+   "texts_adopted_reference": "P10_TA(2025)0058",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 125 - PN 146",
    "position": "FOR"
   },
   {
@@ -3122,6 +3449,12 @@
     2,
     0
    ],
+   "amendment_number": "65",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 22 - PN 65",
    "position": "FOR"
   },
   {
@@ -3145,6 +3478,12 @@
     8,
     0
    ],
+   "amendment_number": "79",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 18 - PN 79",
    "position": "ABSTENTION"
   },
   {
@@ -3168,6 +3507,12 @@
     1,
     1
    ],
+   "amendment_number": "56",
+   "texts_adopted_reference": "P10_TA(2025)0051",
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 11 - PN 56",
    "position": "FOR"
   },
   {
@@ -3191,6 +3536,12 @@
     1,
     3
    ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2024)0075",
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. u, 2. část",
    "position": "AGAINST"
   },
   {
@@ -3214,6 +3565,12 @@
     1,
     1
    ],
+   "amendment_number": "16",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5 - PN 16, 1. část",
    "position": "FOR"
   },
   {
@@ -3237,6 +3594,12 @@
     6,
     2
    ],
+   "amendment_number": "10",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 10",
    "position": "FOR"
   },
   {
@@ -3260,6 +3623,12 @@
     6,
     2
    ],
+   "amendment_number": "9",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 9",
    "position": "FOR"
   },
   {
@@ -3283,6 +3652,12 @@
     5,
     4
    ],
+   "amendment_number": "7",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 7",
    "position": "FOR"
   },
   {
@@ -3306,6 +3681,12 @@
     4,
     3
    ],
+   "amendment_number": "6",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 6",
    "position": "FOR"
   },
   {
@@ -3329,6 +3710,12 @@
     4,
     3
    ],
+   "amendment_number": "5",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 5",
    "position": "DID_NOT_VOTE"
   },
   {
@@ -3352,6 +3739,12 @@
     5,
     2
    ],
+   "amendment_number": "3",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, odst. 1, před bodem 1 nařízení (EU) 2023/1115 - PN 3",
    "position": "FOR"
   },
   {
@@ -3375,6 +3768,12 @@
     0,
     3
    ],
+   "amendment_number": "67",
+   "texts_adopted_reference": null,
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 91 - PN 67, 1. část",
    "position": "AGAINST"
   }
  ],
@@ -3382,21 +3781,22 @@
   {
    "code": "6.10",
    "label": "Common foreign and security policy (CFSP)",
+   "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)",
    "attendance": [
     1366,
     1562
    ],
    "attendance_main": [
-    112,
-    125
+    108,
+    121
    ],
    "group_loyalty": [
     991,
     1357
    ],
    "group_loyalty_main": [
-    77,
-    112
+    74,
+    108
    ],
    "cz_agreement": [
     1072,
@@ -3407,8 +3807,8 @@
     1120
    ],
    "outcome_main": [
-    84,
-    93
+    80,
+    89
    ],
    "outcome_close": [
     8,
@@ -3419,8 +3819,8 @@
     70687
    ],
    "group_outcome_main": [
-    3550,
-    4906
+    3350,
+    4643
    ],
    "positions": {
     "FOR": 629,
@@ -3432,6 +3832,7 @@
   {
    "code": "8.70",
    "label": "Budget of the Union",
+   "label_cs": "Rozpočet Unie",
    "attendance": [
     726,
     922
@@ -3482,6 +3883,7 @@
   {
    "code": "4.10",
    "label": "Social policy, social charter and protocol",
+   "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
     649,
     708
@@ -3532,21 +3934,22 @@
   {
    "code": "3.70",
    "label": "Environmental policy",
+   "label_cs": "Politika životního prostředí",
    "attendance": [
     448,
     551
    ],
    "attendance_main": [
-    57,
-    69
+    48,
+    59
    ],
    "group_loyalty": [
     386,
     448
    ],
    "group_loyalty_main": [
-    43,
-    57
+    35,
+    48
    ],
    "cz_agreement": [
     414,
@@ -3557,8 +3960,8 @@
     416
    ],
    "outcome_main": [
-    34,
-    49
+    29,
+    41
    ],
    "outcome_close": [
     2,
@@ -3569,8 +3972,8 @@
     30744
    ],
    "group_outcome_main": [
-    2075,
-    3457
+    1701,
+    2878
    ],
    "positions": {
     "FOR": 310,
@@ -3582,6 +3985,7 @@
   {
    "code": "6.40",
    "label": "Relations with third countries",
+   "label_cs": "Vztahy se třetími zeměmi",
    "attendance": [
     446,
     487
@@ -3632,13 +4036,14 @@
   {
    "code": "6.20",
    "label": "Common commercial policy in general",
+   "label_cs": "Společná obchodní politika obecně",
    "attendance": [
     275,
     331
    ],
    "attendance_main": [
-    52,
-    61
+    49,
+    58
    ],
    "group_loyalty": [
     203,
@@ -3646,7 +4051,7 @@
    ],
    "group_loyalty_main": [
     27,
-    52
+    49
    ],
    "cz_agreement": [
     237,
@@ -3657,8 +4062,8 @@
     233
    ],
    "outcome_main": [
-    42,
-    44
+    40,
+    42
    ],
    "outcome_close": [
     3,
@@ -3669,8 +4074,8 @@
     16404
    ],
    "group_outcome_main": [
-    1798,
-    2803
+    1737,
+    2662
    ],
    "positions": {
     "FOR": 142,
@@ -3682,6 +4087,7 @@
   {
    "code": "8.20",
    "label": "Enlargement of the Union",
+   "label_cs": "Rozšíření Unie",
    "attendance": [
     265,
     312
@@ -3732,6 +4138,7 @@
   {
    "code": "8.40",
    "label": "Institutions of the Union",
+   "label_cs": "Orgány Unie",
    "attendance": [
     246,
     276
@@ -3782,21 +4189,22 @@
   {
    "code": "3.30",
    "label": null,
+   "label_cs": null,
    "attendance": [
     228,
     248
    ],
    "attendance_main": [
-    34,
-    36
+    31,
+    33
    ],
    "group_loyalty": [
     150,
     228
    ],
    "group_loyalty_main": [
-    23,
-    34
+    22,
+    31
    ],
    "cz_agreement": [
     197,
@@ -3807,8 +4215,8 @@
     195
    ],
    "outcome_main": [
-    20,
-    26
+    19,
+    23
    ],
    "outcome_close": [
     1,
@@ -3819,8 +4227,8 @@
     12659
    ],
    "group_outcome_main": [
-    1066,
-    1425
+    979,
+    1226
    ],
    "positions": {
     "FOR": 128,
@@ -3832,21 +4240,22 @@
   {
    "code": "3.45",
    "label": "Enterprise policy, inter-company cooperation",
+   "label_cs": "Podniková politika, spolupráce podniků",
    "attendance": [
     213,
     215
    ],
    "attendance_main": [
-    18,
-    19
+    14,
+    15
    ],
    "group_loyalty": [
     199,
     213
    ],
    "group_loyalty_main": [
-    15,
-    18
+    11,
+    14
    ],
    "cz_agreement": [
     199,
@@ -3857,8 +4266,8 @@
     195
    ],
    "outcome_main": [
-    14,
-    15
+    10,
+    11
    ],
    "outcome_close": [
     0,
@@ -3869,8 +4278,8 @@
     14471
    ],
    "group_outcome_main": [
-    932,
-    1025
+    644,
+    731
    ],
    "positions": {
     "FOR": 126,
@@ -3880,5 +4289,786 @@
    }
   }
  ],
- "own_work": null
+ "own_work": {
+  "source": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2",
+   "license": "CC BY 4.0"
+  },
+  "updated": "2026-10-14",
+  "complete": false,
+  "type_labels": {
+   "report": "Zprávy (zpravodaj/ka)",
+   "shadow_report": "Stínové zprávy",
+   "opinion": "Stanoviska výborů (zpravodaj/ka)",
+   "shadow_opinion": "Stínová stanoviska",
+   "motion": "Návrhy usnesení",
+   "joint_motion": "Společné návrhy usnesení",
+   "question": "Otázky Komisi a Radě"
+  },
+  "summary": {
+   "report": {
+    "count": 0,
+    "voted": 0,
+    "adopted": 0,
+    "no_vote": 0,
+    "other": 0
+   },
+   "shadow_report": {
+    "count": 11,
+    "voted": 5,
+    "adopted": 5,
+    "no_vote": 6,
+    "other": 0
+   },
+   "opinion": {
+    "count": 0
+   },
+   "shadow_opinion": {
+    "count": 4
+   },
+   "motion": {
+    "count": 10,
+    "voted": 2,
+    "adopted": 0,
+    "no_vote": 7,
+    "other": 0,
+    "superseded": 1
+   },
+   "joint_motion": {
+    "count": 0,
+    "voted": 0,
+    "adopted": 0,
+    "no_vote": 0,
+    "other": 0
+   },
+   "question": {
+    "count": 18,
+    "answered": 17
+   }
+  },
+  "items": [
+   {
+    "id": "proc-2026-2113",
+    "label": "2026/2113(INI)",
+    "date": "2026-09-24",
+    "title": {
+     "cs": "Daňový rámec pro osoby s velmi vysokým čistým jměním",
+     "en": "A tax framework for ultra-high-net-worth individuals"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2113(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "proc-2026-2121",
+    "label": "2026/2121(INI)",
+    "date": "2026-09-23",
+    "title": {
+     "cs": "Evropská centrální banka – výroční zpráva 2026",
+     "en": "European Central Bank – annual report 2026"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2121(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "proc-2026-2025",
+    "label": "2026/2025(INI)",
+    "date": "2026-06-08",
+    "title": {
+     "cs": "Od prototypů k schopnostem – umožnění novým aktérům v oblasti obrany rozšířit své působení",
+     "en": "From prototypes to capabilities – enabling new defence actors to scale up"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2025(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "B-10-2026-0154",
+    "label": "B10-0154/2026",
+    "date": "2026-03-03",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zastavení rozšiřování mešit a islámských center v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0154_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 38
+   },
+   {
+    "id": "proc-2025-0847",
+    "label": "2025/0847(COD)",
+    "date": "2026-02-25",
+    "title": {
+     "cs": "Rámec opatření pro usnadnění přepravy vojenského vybavení, materiálu a personálu v celé Unii",
+     "en": "Framework of measures to facilitate the transport of military equipment, goods and personnel across the Union"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0847(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": "A10-0176/2026"
+   },
+   {
+    "id": "proc-2025-0555",
+    "label": "2025/0555(COD)",
+    "date": "2026-02-25",
+    "title": {
+     "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
+     "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "PFE",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "proc-2025-0555",
+    "label": "2025/0555(COD)",
+    "date": "2026-01-23",
+    "title": {
+     "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
+     "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "PFE",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "proc-2025-0361",
+    "label": "2025/0361(COD)",
+    "date": "2026-01-21",
+    "title": {
+     "cs": "Změna nařízení (EU) 2019/2088 o zveřejňování informací souvisejících s udržitelností v odvětví finančních služeb, nařízení (EU) č. 1286/2014 o sděleních klíčových informací týkajících se strukturovaných retailových investičních produktů\na pojistných produktů s investiční složkou a zrušení nařízení Komise v přenesené pravomoci (EU) 2022/1288",
+     "en": "Amending Regulation (EU) 2019/2088 on sustainability-related disclosures in the financial services sector (SFDR), Regulation (EU) No 1286/2014 on key information documents for packaged retail and insurance-based investment products (PRIIPs) and repealing Commission Delegated Regulation (EU) 2022/1288"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0361(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": "A10-0234/2026"
+   },
+   {
+    "id": "B-10-2026-0061",
+    "label": "B10-0061/2026",
+    "date": "2026-01-14",
+    "title": {
+     "cs": "NÁVRH USNESENÍ týkající se žádosti o posudek Soudního dvora o slučitelnosti zamýšlených smluv o navrhované Dohodě o partnerství mezi Evropskou unií a jejími členskými státy na jedné straně a Společným jihoamerickým trhem, Argentinskou republikou, Brazilskou federativní republikou, Paraguayskou republikou a Uruguayskou východní republikou na straně druhé a o navrhované Prozatímní dohodě o obchodu mezi Evropskou unií na jedné straně a Společným jihoamerickým trhem, Argentinskou republikou, Brazilskou federativní republikou, Paraguayskou republikou a Uruguayskou východní republikou na straně druhé",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0061_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "REJECTED",
+    "vote_id": 183885,
+    "vote_date": "2026-01-21",
+    "signatories_total": 102
+   },
+   {
+    "id": "proc-2025-0555",
+    "label": "2025/0555(COD)",
+    "date": "2025-12-10",
+    "title": {
+     "cs": "Zřízení Evropského fondu pro konkurenceschopnost („ECF“), včetně zvláštního programu pro výzkum a inovace v oblasti obrany",
+     "en": "Establishing the European Competitiveness Fund ('ECF’), including the specific programme for defence research and innovation activities"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0555(COD)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "PFE",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "proc-2025-0111",
+    "label": "2025/0111(NLE)",
+    "date": "2025-12-10",
+    "title": {
+     "cs": "Dohoda mezi Evropskou unií a Spojeným královstvím Velké Británie a Severního Irska o spolupráci při uplatňování jejich právních předpisů o hospodářské soutěži",
+     "en": "Agreement between the European Union and the United Kingdom of Great Britain and Northern Ireland regarding cooperation on the application of their competition laws"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0111(NLE)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 195854,
+    "vote_date": "2026-09-16",
+    "report": "A10-0203/2026"
+   },
+   {
+    "id": "E-10-2025-004561",
+    "label": "E-004561/2025",
+    "date": "2025-11-14",
+    "title": {
+     "cs": "Poskytování finančních a regulačních pobídek pro jadernou energetiku v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-004561_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2026-03-23",
+    "authors_total": 48
+   },
+   {
+    "id": "proc-2025-0177",
+    "label": "2025/0177(COD)",
+    "date": "2025-11-12",
+    "title": {
+     "cs": "Změna směrnic 2009/43/ES a 2009/81/ES, pokud jde o zjednodušení transferů produktů pro obranné účely uvnitř EU a zjednodušení zadávání veřejných zakázek v oblasti obrany a bezpečnosti",
+     "en": "Amending Directives 2009/43/EC and 2009/81/EC, as regards the simplification of intra-EU transfers of defence-related products and the simplification of security and defence procurement"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0177(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 196116,
+    "vote_date": "2026-09-16",
+    "report": "A10-0275/2025"
+   },
+   {
+    "id": "E-10-2025-003616",
+    "label": "E-003616/2025",
+    "date": "2025-09-18",
+    "title": {
+     "cs": "Klasifikace politických projevů a satiry podle aktu o digitálních službách",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-003616_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-11-18",
+    "authors_total": 40
+   },
+   {
+    "id": "B-10-2025-0400",
+    "label": "B10-0400/2025",
+    "date": "2025-09-12",
+    "title": {
+     "cs": "NÁVRH NA VYSLOVENÍ NEDŮVĚRY EVROPSKÉ KOMISI NÁVRH NA VYSLOVENÍ NEDŮVĚRY EVROPSKÉ KOMISI",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0400_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "REJECTED",
+    "vote_id": 179569,
+    "vote_date": "2025-10-09",
+    "signatories_total": 85
+   },
+   {
+    "id": "E-10-2025-003117",
+    "label": "E-003117/2025",
+    "date": "2025-07-28",
+    "title": {
+     "cs": "Transparentnost a kvalita odpovědí Evropské komise na otázky poslanců k písemnému zodpovězení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-003117_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-10-07",
+    "authors_total": 18
+   },
+   {
+    "id": "E-10-2025-002371",
+    "label": "E-002371/2025",
+    "date": "2025-06-12",
+    "title": {
+     "cs": "„Rezervoár talentů EU“ jako nové brána masové migrace",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-002371_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-09-10",
+    "authors_total": 27
+   },
+   {
+    "id": "B-10-2025-0279",
+    "label": "B10-0279/2025",
+    "date": "2025-06-12",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o boji proti vytváření nadnárodních islamistických sítí v Evropě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0279_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 61
+   },
+   {
+    "id": "proc-2025-2088",
+    "label": "2025/2088(INI)",
+    "date": "2025-05-16",
+    "title": {
+     "cs": "Drony a nové systémy vedení války – je třeba, aby se EU přizpůsobila současným bezpečnostním výzvám",
+     "en": "Drones and new systems of warfare – the EU‘s need to adapt to be fit for today‘s security challenges"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/2088(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 183021,
+    "vote_date": "2026-01-22",
+    "report": "A10-0270/2025"
+   },
+   {
+    "id": "E-10-2025-001972",
+    "label": "E-001972/2025",
+    "date": "2025-05-16",
+    "title": {
+     "cs": "Návrh na každoroční technické kontroly vozidel starších deseti let",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001972_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-07-17",
+    "authors_total": 29
+   },
+   {
+    "id": "E-10-2025-001739",
+    "label": "E-001739/2025",
+    "date": "2025-04-30",
+    "title": {
+     "cs": "Kontrola a bezpečnost programů podpory pro palestinská území",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001739_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-07-17",
+    "authors_total": 15
+   },
+   {
+    "id": "E-10-2025-001325",
+    "label": "E-001325/2025",
+    "date": "2025-04-01",
+    "title": {
+     "cs": "Reakce Komise na dopad nařízení o digitálních trzích na konkurenceschopnost podniků v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001325_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-05-13",
+    "authors_total": 20
+   },
+   {
+    "id": "E-10-2025-001300",
+    "label": "E-001300/2025",
+    "date": "2025-03-27",
+    "title": {
+     "cs": "Finanční pomoc ve výši 2,5&nbsp;miliardy EUR, kterou chce EU poskytnout Sýrii",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-001300_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-20",
+    "authors_total": 40
+   },
+   {
+    "id": "E-10-2025-000959",
+    "label": "E-000959/2025",
+    "date": "2025-03-06",
+    "title": {
+     "cs": "Vyjasnění pojmu „vměšování“ do demokratické diskuse a voleb",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000959_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-06-03",
+    "authors_total": 26
+   },
+   {
+    "id": "E-10-2025-000839",
+    "label": "E-000839/2025",
+    "date": "2025-02-25",
+    "title": {
+     "cs": "Peníze vyplacené Komisí sdělovacím prostředkům v Evropě",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000839_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 7
+   },
+   {
+    "id": "E-10-2025-000838",
+    "label": "E-000838/2025",
+    "date": "2025-02-25",
+    "title": {
+     "cs": "Finanční prostředky EU pro environmentální lobbistické skupiny určené na prosazování Zelené dohody pro Evropu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000838_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-05-12",
+    "authors_total": 7
+   },
+   {
+    "id": "B-10-2025-0099",
+    "label": "B10-0099/2025",
+    "date": "2025-02-10",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o zaručení práva na svobodu projevu na internetu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0099_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18
+   },
+   {
+    "id": "E-10-2025-000405",
+    "label": "E-000405/2025",
+    "date": "2025-01-29",
+    "title": {
+     "cs": "Nedostatečná transparentnost, zneužívání veřejných prostředků a zajištění řádného řízení v evropských orgánech a institucích",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000405_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-25",
+    "authors_total": 39
+   },
+   {
+    "id": "E-10-2025-000403",
+    "label": "E-000403/2025",
+    "date": "2025-01-29",
+    "title": {
+     "cs": "Reakce Komise na to, že Spojené státy odstoupily od Pařížské dohody",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-000403_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-03-24",
+    "authors_total": 37
+   },
+   {
+    "id": "B-10-2025-0067",
+    "label": "B10-0067/2025",
+    "date": "2025-01-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The systematic repression of human rights in Iran, notably the cases of Pakshan Azizi and Wrisha Moradi, and the taking of EU citizens as hostages"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2025-0067_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 13
+   },
+   {
+    "id": "B-10-2024-0238",
+    "label": "B10-0238/2024",
+    "date": "2024-12-17",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o finanční a organizační podpoře členských států při repatriaci syrských státních příslušníků",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0238_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "P-10-2024-002955",
+    "label": "P-002955/2024",
+    "date": "2024-12-14",
+    "title": {
+     "cs": "Nové emisní normy CO<sub>2</sub> pro vozový park EU: osobní automobily a lehká užitková vozidla",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2024-002955_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-15",
+    "authors_total": 23
+   },
+   {
+    "id": "proc-2024-2108",
+    "label": "2024/2108(INI)",
+    "date": "2024-12-12",
+    "title": {
+     "cs": "Provádění dohody o obchodu a spolupráci mezi EU a Spojeným královstvím",
+     "en": "Implementation of the EU-UK Trade and Cooperation Agreement"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2108(INI)",
+    "type": "shadow_opinion",
+    "role": "RAPPORTEUR_SHADOW_OPINION",
+    "group": "PFE",
+    "committee": null,
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null
+   },
+   {
+    "id": "P-10-2024-002741",
+    "label": "P-002741/2024",
+    "date": "2024-11-29",
+    "title": {
+     "cs": "Databáze Unie pro biopaliva – článek 31a směrnice (EU) 2018/2001 (ve znění směrnice (EU) 2023/2413)",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2024-002741_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-02-21",
+    "authors_total": 4
+   },
+   {
+    "id": "E-10-2024-002503",
+    "label": "E-002503/2024",
+    "date": "2024-11-12",
+    "title": {
+     "cs": "Otázka týkající se sankcí ukládaných výrobcům od roku 2025 podle nařízení o emisích CO2 z lehkých vozidel",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-002503_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-07",
+    "authors_total": 53
+   },
+   {
+    "id": "E-10-2024-002029",
+    "label": "E-002029/2024",
+    "date": "2024-10-11",
+    "title": {
+     "cs": "Krize v oblasti bydlení v EU – naléhavá potřeba zrušit směrnici 2024/1275 o energetické náročnosti budov",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-002029_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2024-11-27",
+    "authors_total": 55
+   },
+   {
+    "id": "proc-2024-2053",
+    "label": "2024/2053(INI)",
+    "date": "2024-09-19",
+    "title": {
+     "cs": "Finanční aktivity Evropské investiční banky - výroční zpráva za rok 2024",
+     "en": "Financial activities of the European Investment Bank – annual report 2024"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/2053(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 177664,
+    "vote_date": "2025-07-08",
+    "report": "A10-0112/2025"
+   },
+   {
+    "id": "B-10-2024-0042",
+    "label": "B10-0042/2024",
+    "date": "2024-09-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The case of José Daniel Ferrer García in Cuba "
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0042_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 11
+   },
+   {
+    "id": "B-10-2024-0040",
+    "label": "B10-0040/2024",
+    "date": "2024-09-16",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION The deteriorating situation of women in Afghanistan due to the recent adoption of the law on the “Promotion of Virtue and Prevention of Vice”"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0040_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "B-10-2024-0027",
+    "label": "B10-0027/2024",
+    "date": "2024-09-16",
+    "title": {
+     "cs": "NÁVRH USNESENÍ o situaci ve Venezuele",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2024-0027_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "superseded",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 10,
+    "joint_motion": "RC-10-2024-0023",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 169623
+   },
+   {
+    "id": "proc-2023-0321",
+    "label": "2023/0321(CNS)",
+    "date": "2024-09-12",
+    "title": {
+     "cs": "Podnikání v Evropě: rámec pro zdanění příjmů (BEFIT)",
+     "en": "Business in Europe: Framework for Income Taxation (BEFIT)"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0321(CNS)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "ADOPTED",
+    "vote_id": 180663,
+    "vote_date": "2025-11-13",
+    "report": "A10-0194/2025"
+   },
+   {
+    "id": "proc-2023-0288",
+    "label": "2023/0288(COD)",
+    "date": "2024-09-12",
+    "title": {
+     "cs": "Evropská statistika trhu práce týkající se podniků, zrušení nařízení Rady (ES) č. 530/1999 a nařízení Evropského parlamentu a Rady (ES) č. 450/2003 a (ES) č. 453/2008.",
+     "en": "European labour market statistics on businesses, repealing Council Regulation (EC) No 530/1999 and Regulations (EC) No 450/2003 and (EC) No 453/2008 of the European Parliament and of the Council"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0288(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": "A10-0057/2025"
+   },
+   {
+    "id": "E-10-2024-001642",
+    "label": "E-001642/2024",
+    "date": "2024-09-06",
+    "title": {
+     "cs": "Možný retroaktivní zákaz osobních vozidel s dieselovým motorem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2024-001642_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "answered",
+    "answer_date": "2025-01-31",
+    "authors_total": 16
+   }
+  ]
+ }
 }
