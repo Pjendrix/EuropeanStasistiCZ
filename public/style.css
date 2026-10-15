@@ -168,7 +168,7 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
 
 /* --- hero (úvodní stránka) ------------------------------------------------ */
 .hero {
-  position: relative; overflow: hidden; color: #F8FAFC;
+  position: relative; overflow: hidden; overflow: clip; color: #F8FAFC;
   background: radial-gradient(1100px 520px at 80% -20%, var(--navy-glow) 0%, var(--navy) 55%, var(--navy-2) 100%);
 }
 .hero-inner { position: relative; max-width: 1280px; margin: 0 auto; padding: 2.5rem 20px 2.5rem; display: flex; flex-wrap: wrap; gap: 2.5rem; align-items: center; }
@@ -217,7 +217,7 @@ main.home { max-width: none; padding: 0; }
 .lead { color: var(--muted); margin: 0 0 1.5rem; max-width: 60rem; font-size: 1.05rem; }
 .muted { color: var(--muted); }
 .small { font-size: .875rem; }
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 1.25rem; }
 .split-panels { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: .5rem; }
 .split-panels > * { flex: 1 1 440px; min-width: 0; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: .75rem 1.5rem; margin: 2.5rem 0 1rem; }
@@ -245,7 +245,7 @@ select { max-width: 100%; text-overflow: ellipsis; }
 input[type="checkbox"], input[type="radio"] { accent-color: var(--cz-blue); width: 18px; height: 18px; }
 
 /* --- tabulky ------------------------------------------------------------- */
-.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.table-wrap { position: relative; overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
 table { border-collapse: collapse; width: 100%; font-size: .95rem; }
 th, td { padding: .7rem .9rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: middle; }
 tbody tr:last-child td { border-bottom: none; }
@@ -548,7 +548,13 @@ table.matrix tbody tr:hover { background: none; }
 
 /* Dotykové cíle aspoň 44 px (U10). */
 @media (pointer: coarse) {
-  .group-chip, .csv-btn, .more-btn, .subnav a, .theme-toggle { min-height: 44px; }
+  .group-chip, .csv-btn, .more-btn, .subnav a, .theme-toggle, .chip { min-height: 44px; }
+  .site-header nav a, .subnav a, summary, .more-btn, .chip { min-height: 44px; display: inline-flex; align-items: center; }
+  summary { display: flex; }
+  .brand, th button { min-height: 44px; }
+  .controls label { min-height: 44px; padding-block: .5rem; }
+  .controls input[type="checkbox"], .controls input[type="radio"] { width: 1.25rem; height: 1.25rem; }
+  .hemi .seat { pointer-events: none; }  /* na dotyku jsou sedadla malá; poslance otevřou štítky pod půlkruhem */
   .cite-btn { width: 44px; height: 44px; top: .3rem; right: .3rem; }
   .csv-btn { padding: 0 1rem; }
 }
@@ -645,3 +651,14 @@ main h2[id] { scroll-margin-top: 4rem; }
 .fn-line abbr { text-decoration: none; }
 
 .th-note { font-weight: 400; text-transform: none; letter-spacing: 0; white-space: nowrap; }
+
+/* Úzké displeje (320 px): nic nesmí natáhnout stránku do šířky (X2). */
+.controls select, .controls input[type="search"], .controls input[type="text"] { max-width: 100%; }
+.chart-wrap .chart { min-width: 0; max-width: 100%; }
+@media (max-width: 400px) {
+  .chart { gap: 2px; }
+  .chart .col { min-width: 3px; }
+  .site-header nav { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+}
+.controls { min-width: 0; max-width: 100%; }
+.grid-2 > * { min-width: 0; }
