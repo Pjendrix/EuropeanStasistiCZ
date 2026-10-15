@@ -876,6 +876,9 @@ details.links-more summary { cursor: pointer; color: var(--muted); }
 .cat-ico.sm svg { width: 14px; height: 14px; }
 
 /* Strany ve vybrané frakci (půlkruh) */
+.group-head-line { color: var(--text); }
+.group-head-line .muted { font-weight: 400; }
+.group-head-line a.ext { text-decoration: underline; }
 .party-lines { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .6rem; }
 .party-lines li { display: grid; gap: .1rem; }
 .party-name { color: var(--text); }
