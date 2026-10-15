@@ -552,12 +552,14 @@ def sync_block(page: Path, name: str, html: str) -> bool:
 
 def sync_blocks(public: Path, data_dir: Path) -> int:
     """Portréty na poslanci.html a přehled na votes.html se generují z dat při každém buildu (týdenní aktualizace)."""
-    from hub import heads_html, votes_overview_html
+    from hub import heads_html, votes_hero_html, votes_overview_html
     changed = 0
     if (data_dir / "overview.json").exists() and (public / "poslanci.html").exists():
         changed += sync_block(public / "poslanci.html", "heads", heads_html(data_dir))
     if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists() and (public / "votes.html").exists():
         changed += sync_block(public / "votes.html", "overview", votes_overview_html(data_dir))
+    if (data_dir / "category_stats.json").exists() and (data_dir / "session.json").exists() and (public / "votes.html").exists():
+        changed += sync_block(public / "votes.html", "hero", votes_hero_html(data_dir))
     return changed
 
 

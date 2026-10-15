@@ -28,17 +28,6 @@ function renderKpis(ov, bench) {
   document.getElementById("hero-eyebrow").textContent = `10. volební období · data k ${fmtDate(ov.period.to)}`;
 }
 
-// Pod čísly řádek s tématy: stejné kategorie jako v tabulce „Podle témat“ (data/category_stats.json), od nejčastějších.
-async function renderEntries() {
-  const el = document.getElementById("entries");
-  if (!el) return;
-  try {
-    const [d] = await Promise.all([getJSON("category_stats.json"), loadCategories()]);
-    const cats = d.categories.filter((c) => c.key !== "none" && CATEGORY_META[c.key]).sort((a, b) => b.final - a.final || a.label.localeCompare(b.label, "cs")).slice(0, 8);
-    el.innerHTML = cats.length ? `<span class="entry-label">Témata</span><span class="entry-topics">${cats.map((c) => `<a href="votes.html?c=${esc(c.key)}&f=final"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CATEGORY_META[c.key].icon}</svg>${esc(c.label)}</a>`).join("")}<a class="entry-all" href="temata.html">všechna témata a čísla →</a></span>` : "";
-  } catch (e) { el.innerHTML = ""; }
-}
-
 function htvCode(m, groups) {
   return (groups.find((g) => g.ep_code === m.group?.code) || {}).code || m.group?.code || "NI";
 }
@@ -234,7 +223,6 @@ function groupedCards(list, groups, parties, bench) {
     if (!bench) document.getElementById("bench-key").hidden = true;
     renderKpis(ov, bench);
     Promise.all([getJSON("session.json"), loadCategories()]).then(([session]) => {
-      renderEntries();
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));
     renderDelegation(ov, groups, parties, await getJSON("group_web.json").catch(() => null));

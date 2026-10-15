@@ -18,6 +18,7 @@ from pathlib import Path
 from build_pages import (POSITIONS, RESULT_LABEL, esc, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
                          og_meta, split_bar)
 from categories import ICON, LABEL, icon_svg
+from hero_art import EMBLEM, STARS
 from vote_kinds import KIND_LABELS
 
 LIST_TITLES = {
@@ -132,17 +133,11 @@ def votes_overview_html(data_dir: Path) -> str:
         ("temata.html", "Podle témat"), ("rozkol.html", "Kde se Češi rozdělili"),
         ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")))
     return f"""<div class="vo-tools">
-  <form class="vo-search" action="votes.html" method="get" role="search">
-    <label for="vo-q" class="sr-only">Hledat hlasování</label>
-    <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování podle názvu nebo čísla…" autocomplete="off">
-    <button type="submit">Hledat</button>
-  </form>
-  <div class="vo-chips">{chips}<a class="vo-chip vo-chip-main" href="#all-votes">Všechna hlasování{arrow}</a></div>
+  <div class="vo-chips"><span class="vo-label">Další pohledy</span>{chips}<a class="vo-chip vo-chip-main" href="#all-votes">Všechna hlasování{arrow}</a></div>
 </div>
 <section class="hub-block" aria-labelledby="h-sess">
   <h2 id="h-sess">Co se naposledy odhlasovalo</h2>
-  <p>Zasedání {fmt_date(session["from"])} – {fmt_date(session["to"])}: {fmt_num(session["votes"])} jmenovitých hlasování, z toho {fmt_num(session["main"])} závěrečných
-    ({fmt_num(session["adopted_main"])} přijato). <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">Celé zasedání</a></p>
+  <p class="small muted">Zasedání {fmt_date(session["from"])} – {fmt_date(session["to"])} · <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">Celé zasedání</a></p>
   <div class="hub-lists three">{sess_cards}</div>
 </section>
 <section class="hub-block" aria-labelledby="h-key">
@@ -151,20 +146,45 @@ def votes_overview_html(data_dir: Path) -> str:
 </section>"""
 
 
+def votes_hero_html(data_dir: Path) -> str:
+    """Hero stránky Hlasování: stejná kostra jako na Poslancích (nadpis, hledání, dvě čísla, témata, vlajka v hvězdách)."""
+    overview = _read(data_dir / "overview.json")
+    session = _read(data_dir / "session.json")
+    stats = _read(data_dir / "category_stats.json")
+    cats = [c for c in stats["categories"] if c["key"] != "none" and c["key"] in LABEL]
+    cats = sorted(cats, key=lambda c: (-c["final"], LABEL[c["key"]]))[:8]
+    topics = "".join(f'<a href="votes.html?c={esc(c["key"])}&amp;f=final">{icon_svg(c["key"])}{esc(LABEL[c["key"]])}</a>' for c in cats)
+    return f"""<section class="hero">
+  {STARS}
+  <div class="hero-inner hero-compact">
+    <div class="hero-copy">
+      <p class="eyebrow">10. volební období · data k {fmt_date(overview["period"]["to"])}</p>
+      <h1>Jmenovitá hlasování</h1>
+      <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
+      <form class="vo-search" action="votes.html" method="get" role="search">
+        <label for="vo-q" class="sr-only">Hledat hlasování</label>
+        <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování podle názvu nebo čísla…" autocomplete="off">
+        <button type="submit">Hledat</button>
+      </form>
+      <div class="kpis">
+        <div class="kpi-grid kpi-2">
+          <div class="kpi"><div class="k-label">Jmenovitých hlasování</div><div class="k-value">{fmt_num(overview["votes_total"])}</div>
+            <div class="k-note">od {fmt_date(overview["period"]["from"])} · <a href="#all-votes">seznam hlasování</a></div></div>
+          <div class="kpi"><div class="k-label">Na posledním zasedání</div><div class="k-value">{fmt_num(session["votes"])}</div>
+            <div class="k-note">{fmt_num(session["main"])} závěrečných, {fmt_num(session["adopted_main"])} přijato · <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">celé zasedání</a></div></div>
+        </div>
+        <div class="entries"><span class="entry-label">Témata</span><span class="entry-topics">{topics}<a class="entry-all" href="temata.html">všechna témata a čísla →</a></span></div>
+      </div>
+    </div>
+    {EMBLEM}
+  </div>
+</section>"""
+
+
 # --- úvodní stránka ---------------------------------------------------------------------------
 
 _ARROW = ('<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
           'stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
-
-# Prsten dvanácti hvězd (čistě dekorace): 12 bodů po 30° na kružnici o poloměru 300 se středem 320, 320.
-_RING_DOTS = "".join(
-    f'<circle cx="{320 + 300 * math.sin(math.radians(30 * k)):.1f}" cy="{320 - 300 * math.cos(math.radians(30 * k)):.1f}" r="7"/>' for k in range(12))
-_RING = ('<svg class="home-ring" viewBox="0 0 640 640" aria-hidden="true" focusable="false">'
-         '<circle cx="320" cy="320" r="300" fill="none" stroke="#fff" stroke-opacity=".16"/>'
-         '<circle cx="320" cy="320" r="220" fill="none" stroke="#fff" stroke-opacity=".10"/>'
-         '<circle cx="320" cy="320" r="140" fill="none" stroke="#fff" stroke-opacity=".08"/>'
-         f'<g class="ring-dots">{_RING_DOTS}</g>'
-         '<circle cx="320" cy="320" r="44" fill="#1E4FA3"/><circle cx="303" cy="303" r="13" fill="#fff"/></svg>')
 
 _GLYPH = {
     "meps": ('<svg aria-hidden="true" width="84" height="84" viewBox="0 0 84 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">'
@@ -201,8 +221,9 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     data_day = fmt_date(release) if release else fmt_date(overview["period"]["to"])
 
     hero = f"""<section class="home-hero" aria-labelledby="h1">
-  <div class="home-art" aria-hidden="true">{_RING}</div>
+  <div class="home-art" aria-hidden="true"></div>
   <div class="home-hero-inner">
+    <div class="home-copy">
     <p class="home-eyebrow"><span class="rule"></span>10. volební období · od 16. 7. 2024</p>
     <h1 id="h1">Co dělají v Bruselu<br><strong>čeští europoslanci.</strong></h1>
     <p class="home-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
@@ -216,6 +237,8 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       <ul id="hub-results" class="hub-results" role="listbox" hidden></ul>
     </div>
     <p class="home-data">Data k {data_day} (export HowTheyVote) · aktualizace každý týden</p>
+    </div>
+    {EMBLEM}
   </div>
 </section>"""
 

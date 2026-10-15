@@ -105,13 +105,13 @@ def test_blocks_for_manual_pages(data_dir, tmp_path):
     root = Path(__file__).resolve().parent.parent
     for name in ("poslanci.html", "votes.html"):
         (tmp_path / name).write_text((root / "public" / name).read_text(encoding="utf-8"), encoding="utf-8")
-    assert bp.sync_blocks(tmp_path, data_dir) == 2
+    assert bp.sync_blocks(tmp_path, data_dir) == 3
     assert bp.sync_blocks(tmp_path, data_dir) == 0  # podruhé beze změny
     mep = (tmp_path / "poslanci.html").read_text(encoding="utf-8")
     assert "Kdo jsou čeští poslanci" in mep and 'class="hub-strip heads-strip"' in mep
     votes = (tmp_path / "votes.html").read_text(encoding="utf-8")
     assert "Co se naposledy odhlasovalo" in votes and "Nejnovější zákony" in votes and "Češi proti výsledku" in votes
-    assert 'id="all-votes"' in votes and 'href="#all-votes"' in votes
+    assert "<h1>Jmenovitá hlasování</h1>" in votes and 'id="all-votes"' in votes and 'href="#all-votes"' in votes
 
 
 def test_group_majority_and_party_votes_text():
