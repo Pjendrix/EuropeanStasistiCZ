@@ -86,7 +86,9 @@ setNav("decisive");
     }
     document.getElementById("source").innerHTML = sourceLine(d);
     el.className = "";
-    el.innerHTML = d.votes.length ? d.votes.map((v) => {
+    const PAGE = 10;
+    let shown = PAGE;
+    const card = (v) => {
       const c = v.counts;
       return `<div class="card list-card">
         <div class="small muted">${fmtDate(v.date)} ${kindTag(v)}</div>
@@ -97,9 +99,16 @@ setNav("decisive");
           Bez Čechů (${v.cz[0]} pro, ${v.cz[1]} proti) by to bylo ${c.for - v.cz[0]} : ${c.against - v.cz[1]},
           tedy <span class="result-${v.alternative_result}">${RESULT_LABEL[v.alternative_result]}</span>.
           <a href="${HTV_SOURCE}/votes/${v.id}">zdroj</a></p>
-        ${namesByPosition(v.positions, meps, ["FOR", "AGAINST"])}
+        <details class="names"><summary class="small">Jak hlasovali Češi (${v.cz[0]} pro, ${v.cz[1]} proti)</summary>${namesByPosition(v.positions, meps, ["FOR", "AGAINST"])}</details>
       </div>`;
-    }).join("") : '<p class="muted">Žádné rozhodující hlasování.</p>';
+    };
+    const draw = () => {
+      el.innerHTML = d.votes.length ? d.votes.slice(0, shown).map(card).join("") +
+        (d.votes.length > shown ? `<button type="button" class="more-btn" id="more">Zobrazit další (${Math.min(PAGE, d.votes.length - shown)} z ${d.votes.length - shown})</button>` : "")
+        : '<p class="muted">Žádné rozhodující hlasování.</p>';
+      document.getElementById("more")?.addEventListener("click", () => { shown += PAGE; draw(); });
+    };
+    draw();
   } catch (e) {
     showError(el, e);
   }

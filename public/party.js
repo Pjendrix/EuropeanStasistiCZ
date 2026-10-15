@@ -61,7 +61,7 @@ async function euDetailPage(code) {
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Poslanec</th><th>Strana</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
       <tbody>${[...g.member_list].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs")).map((m) => `<tr>
-        <td><div class="mep-cell"><img src="${photoUrl(m)}" alt="" loading="lazy"><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></td>
+        <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40"><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></td>
         <td class="wide" data-label="Strana">${m.party ? esc(m.party.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : m.party.short_label) : ""}</td>
         <td class="num" data-label="Účast na hlasování">${pctCell(m.total.attendance)}</td><td class="num" data-label="Hlasuje s frakcí">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>
     </table></div>` : '<p class="muted">Ve skupině nesedí žádný český poslanec.</p>'}
@@ -83,7 +83,9 @@ async function euDetailPage(code) {
     <div id="splits">${rows(g.splits_list)}</div>`;
   document.getElementById("split-main")?.addEventListener("change", (e) => {
     document.getElementById("splits").innerHTML = rows(e.target.checked ? g.splits_list_main : g.splits_list);
+    collapseTables(document.getElementById("splits"));
   });
+  collapseTables(document.getElementById("splits"));
 }
 
 async function listPage() {
@@ -130,7 +132,7 @@ async function detailPage(id) {
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
       <tbody>${[...p.member_list].sort((a, b) => (pct(b.total.attendance) ?? -1) - (pct(a.total.attendance) ?? -1)).map((m) => `<tr>
-        <td><div class="mep-cell"><img src="${photoUrl(m)}" alt="" loading="lazy">
+        <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40">
           <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
         <td class="small wide" data-label="Ve straně (podle EP)">${m.party_periods.map((x) => `${fmtDate(x.start)} – ${x.end ? fmtDate(x.end) : "dosud"}`).join("<br>")}</td>
         <td class="num" data-label="Účast na hlasování">${pctCell(m.total.attendance)}</td>
@@ -155,7 +157,9 @@ async function detailPage(id) {
       <div id="splits">${splitList(p.splits)}</div>`}`;
   document.getElementById("split-main")?.addEventListener("change", (e) => {
     document.getElementById("splits").innerHTML = splitList(e.target.checked ? p.splits_main : p.splits);
+    collapseTables(document.getElementById("splits"));
   });
+  if (!single) collapseTables(document.getElementById("splits"));
 }
 
 (async () => {

@@ -81,7 +81,9 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const groupRows = Object.entries(v.group_counts).sort((a, b) => (b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)));
     const topics = [...v.topics.oeil.map((t) => t.label), ...v.topics.eurovoc.map((t) => t.label), ...v.topics.geo.map((t) => t.label)];
     // Typ hlasování: z dat (nové soubory), jinak ze search.json; starší data ukážou jen hlavní / dílčí.
-    const search = await loadSearch().catch(() => []);
+    // Velký index (1,5 MB) jen když je potřeba: starší data bez typu nebo dílčí hlasování (odkaz na závěrečné).
+    const needSearch = !v.vote_kind || (!isFinal(v) && v.reference);
+    const search = needSearch ? await loadSearch().catch(() => []) : [];
     const row = search.find((x) => x.id === id) || {};
     const kind = v.vote_kind || row.vote_kind;
     const inverted = v.inverted ?? kind === "rejection";

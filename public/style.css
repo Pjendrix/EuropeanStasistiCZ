@@ -1114,3 +1114,24 @@ main.home-page { max-width: none; padding: 0; }
   .vo-chips > * { flex: none; white-space: nowrap; }
 }
 @media (max-width: 760px) { .sheet li a[aria-current="page"] { color: var(--accent); font-weight: 700; } .sheet li a[aria-current="page"]::after { content: "●"; font-size: .7rem; color: var(--accent); } }
+
+/* --- optimalizace mobilu 2 ------------------------------------------------- */
+@media (max-width: 560px) {
+  /* metriky po dvou vedle sebe: kratší stránka, čísla zůstávají čitelná */
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+  .metrics > .card { padding: .8rem .85rem; margin: 0; }
+  .metric .value { font-size: 2rem; }
+  .metric .label { font-size: .8rem; }
+  .metric .detail { font-size: .78rem; overflow-wrap: anywhere; }
+  .chart .col-sparse { visibility: hidden; }
+}
+@media (max-width: 340px) { .metrics { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+  /* karty hlasování na přehledu: vodorovně posuvná řada místo dlouhého sloupce */
+  .hub-cards { display: flex; flex-wrap: nowrap; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin: 0 -16px; padding: 4px 16px 10px; scroll-padding-inline: 16px; }
+  .hub-cards::-webkit-scrollbar { display: none; }
+  .hub-cards > .card { flex: 0 0 min(86%, 340px); scroll-snap-align: start; margin: 0; }
+  .hub-cards > p { flex: 0 0 100%; }
+  .hub-lists { gap: 1.6rem; }
+}

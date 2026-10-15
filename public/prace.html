@@ -119,7 +119,7 @@ setNav("work-overview");
       <div class="chart" role="img" aria-label="${esc(label)} po měsících">${h.timeline.map((x, i) => {
         const [y, m] = x.month.split("-");
         return `<span class="col" title="${esc(`${fmtMonth(x.month)}: ${x[k]}`)}"><span class="bar-fill ${x[k] ? "" : "zero"}" style="height:${(x[k] / max(k)) * 100}%"></span>
-          <span class="col-label" aria-hidden="true">${Number(m)}${i === 0 || m === "01" ? `<br><b>${y.slice(2)}</b>` : ""}</span></span>`;
+          <span class="col-label${i === 0 || m === "01" || Number(m) % 3 === 1 ? "" : " col-sparse"}" aria-hidden="true">${Number(m)}${i === 0 || m === "01" ? `<br><b>${y.slice(2)}</b>` : ""}</span></span>`;
       }).join("")}</div></div>`;
     document.getElementById("timeline").className = "";
     document.getElementById("timeline").innerHTML = series("speeches", "Ústní projevy") + series("questions", "Otázky Komisi a Radě");
@@ -130,7 +130,7 @@ setNav("work-overview");
     const who = (ids) => ids.map((id) => meps[id] ? `<a href="${mepUrl(id)}">${esc(displayName(meps[id]))}</a>` : "").filter(Boolean).join(", ");
     const recent = document.getElementById("recent");
     recent.className = "";
-    recent.innerHTML = `<div class="hub-lists">${h.recent_adopted.map((r) => `<div class="card hub-vote"><div class="small muted">${fmtDate(r.date)} · ${esc(r.report || "")}${r.legislative ? " · legislativní" : ""}</div>
+    recent.innerHTML = `<div class="hub-lists hub-cards">${h.recent_adopted.map((r) => `<div class="card hub-vote"><div class="small muted">${fmtDate(r.date)} · ${esc(r.report || "")}${r.legislative ? " · legislativní" : ""}</div>
       <a class="vote-title" href="vote.html?id=${r.vote_id}&m=${esc((r.date || "").slice(0, 7))}">${esc(r.title || r.report)}</a>
       <div class="small">${r.lead.length ? `Zpravodaj/ka: ${who(r.lead)}` : ""}${r.lead.length && r.shadow.length ? " · " : ""}${r.shadow.length ? `stínoví: ${who(r.shadow)}` : ""}</div></div>`).join("")}</div>`;
 
