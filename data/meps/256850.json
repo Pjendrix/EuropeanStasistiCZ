@@ -3293,6 +3293,22 @@
     "answered": 36
    }
   },
+  "passed": {
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 1,
+   "shadow_adopted": 4,
+   "shadow_adopted_legislative": 3,
+   "shadow_pending": 1,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 4,
+    "rank": 11,
+    "of": 23,
+    "median": 4.0,
+    "max": 18
+   }
+  },
   "items": [
    {
     "id": "B-10-2025-0405",
@@ -3342,7 +3358,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEA",
+    "legislative": false
    },
    {
     "id": "E-10-2025-003616",
@@ -3568,7 +3586,9 @@
     "status": "ADOPTED",
     "vote_id": 184174,
     "vote_date": "2026-02-10",
-    "report": "A10-0173/2025"
+    "report": "A10-0173/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-001893",
@@ -3602,7 +3622,9 @@
     "status": "ADOPTED",
     "vote_id": 178285,
     "vote_date": "2025-09-10",
-    "report": "A10-0085/2025"
+    "report": "A10-0085/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-001346",
@@ -3668,7 +3690,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-001101",
@@ -3718,7 +3742,9 @@
     "status": "ADOPTED",
     "vote_id": 179816,
     "vote_date": "2025-10-21",
-    "report": "A10-0189/2025"
+    "report": "A10-0189/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2023-0376",
@@ -3736,7 +3762,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0249/2025"
+    "report": "A10-0249/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "B-10-2025-0173",
@@ -3994,7 +4022,9 @@
     "status": "ADOPTED",
     "vote_id": 193648,
     "vote_date": "2026-06-18",
-    "report": "A10-0158/2025"
+    "report": "A10-0158/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "P-10-2024-002955",

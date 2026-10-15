@@ -4366,6 +4366,22 @@
     "answered": 17
    }
   },
+  "passed": {
+   "lead_adopted": 0,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 5,
+   "shadow_adopted_legislative": 2,
+   "shadow_pending": 6,
+   "resolutions_adopted": 0,
+   "delegation": {
+    "texts_adopted": 5,
+    "rank": 7,
+    "of": 23,
+    "median": 4.0,
+    "max": 18
+   }
+  },
   "items": [
    {
     "id": "proc-2026-2113",
@@ -4383,7 +4399,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2026-2121",
@@ -4401,7 +4419,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2026-2025",
@@ -4419,7 +4439,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "B-10-2026-0154",
@@ -4453,7 +4475,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0176/2026"
+    "report": "A10-0176/2026",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2025-0555",
@@ -4471,7 +4495,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2025-0555",
@@ -4489,7 +4515,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2025-0361",
@@ -4507,7 +4535,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0234/2026"
+    "report": "A10-0234/2026",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "B-10-2026-0061",
@@ -4541,7 +4571,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2025-0111",
@@ -4559,7 +4591,9 @@
     "status": "ADOPTED",
     "vote_id": 195854,
     "vote_date": "2026-09-16",
-    "report": "A10-0203/2026"
+    "report": "A10-0203/2026",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-004561",
@@ -4593,7 +4627,9 @@
     "status": "ADOPTED",
     "vote_id": 196116,
     "vote_date": "2026-09-16",
-    "report": "A10-0275/2025"
+    "report": "A10-0275/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-003616",
@@ -4691,7 +4727,9 @@
     "status": "ADOPTED",
     "vote_id": 183021,
     "vote_date": "2026-01-22",
-    "report": "A10-0270/2025"
+    "report": "A10-0270/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "E-10-2025-001972",
@@ -4917,7 +4955,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "P-10-2024-002741",
@@ -4983,7 +5023,9 @@
     "status": "ADOPTED",
     "vote_id": 177664,
     "vote_date": "2025-07-08",
-    "report": "A10-0112/2025"
+    "report": "A10-0112/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "B-10-2024-0042",
@@ -5052,7 +5094,9 @@
     "status": "ADOPTED",
     "vote_id": 180663,
     "vote_date": "2025-11-13",
-    "report": "A10-0194/2025"
+    "report": "A10-0194/2025",
+    "process_type": "CNS",
+    "legislative": true
    },
    {
     "id": "proc-2023-0288",
@@ -5070,7 +5114,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0057/2025"
+    "report": "A10-0057/2025",
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2024-001642",

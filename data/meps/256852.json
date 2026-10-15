@@ -4404,6 +4404,22 @@
     "answered": 44
    }
   },
+  "passed": {
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 0,
+   "shadow_adopted": 7,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 0,
+   "resolutions_adopted": 7,
+   "delegation": {
+    "texts_adopted": 9,
+    "rank": 4,
+    "of": 23,
+    "median": 4.0,
+    "max": 18
+   }
+  },
   "items": [
    {
     "id": "RC-10-2026-0452",
@@ -4874,7 +4890,9 @@
     "status": "ADOPTED",
     "vote_id": 193644,
     "vote_date": "2026-06-17",
-    "report": "A10-0106/2026"
+    "report": "A10-0106/2026",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2025-0571",
@@ -4892,7 +4910,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "APP",
+    "legislative": true
    },
    {
     "id": "B-10-2025-0561",
@@ -5070,7 +5090,9 @@
     "status": "ADOPTED",
     "vote_id": 186516,
     "vote_date": "2026-03-11",
-    "report": "A10-0007/2026"
+    "report": "A10-0007/2026",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-004142",
@@ -5376,7 +5398,9 @@
     "status": "ADOPTED",
     "vote_id": 186401,
     "vote_date": "2026-03-11",
-    "report": "A10-0017/2026"
+    "report": "A10-0017/2026",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2025-2119",
@@ -5394,7 +5418,9 @@
     "status": "ADOPTED",
     "vote_id": 184426,
     "vote_date": "2026-02-11",
-    "report": "A10-0005/2026"
+    "report": "A10-0005/2026",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "A-10-2025-0142",
@@ -5410,7 +5436,9 @@
     "status": "ADOPTED",
     "vote_id": 178336,
     "vote_date": "2025-09-09",
-    "signatories_total": null
+    "signatories_total": null,
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "proc-2025-2133",
@@ -5428,7 +5456,9 @@
     "status": "ADOPTED",
     "vote_id": 184187,
     "vote_date": "2026-02-12",
-    "report": "A10-0256/2025"
+    "report": "A10-0256/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "B-10-2025-0319",
@@ -5542,7 +5572,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-002090",
@@ -5576,7 +5608,9 @@
     "status": "ADOPTED",
     "vote_id": 178336,
     "vote_date": "2025-09-09",
-    "report": "A10-0142/2025"
+    "report": "A10-0142/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-001739",
@@ -5674,7 +5708,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "E-10-2025-001085",
@@ -6124,7 +6160,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "P-10-2024-002955",
@@ -6158,7 +6196,9 @@
     "status": "ADOPTED",
     "vote_id": 175396,
     "vote_date": "2025-05-07",
-    "report": "A10-0067/2025"
+    "report": "A10-0067/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2024-2106",
@@ -6176,7 +6216,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "E-10-2024-002791",
@@ -6274,7 +6316,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2024-002172",
@@ -6372,7 +6416,9 @@
     "status": "ADOPTED",
     "vote_id": 172158,
     "vote_date": "2025-03-11",
-    "report": "A10-0014/2025"
+    "report": "A10-0014/2025",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "E-10-2024-001797",

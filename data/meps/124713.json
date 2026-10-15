@@ -4346,6 +4346,22 @@
     "answered": 62
    }
   },
+  "passed": {
+   "lead_adopted": 2,
+   "lead_adopted_legislative": 0,
+   "lead_pending": 8,
+   "shadow_adopted": 2,
+   "shadow_adopted_legislative": 0,
+   "shadow_pending": 6,
+   "resolutions_adopted": 46,
+   "delegation": {
+    "texts_adopted": 4,
+    "rank": 11,
+    "of": 23,
+    "median": 4.0,
+    "max": 18
+   }
+  },
   "items": [
    {
     "id": "RC-10-2026-0452",
@@ -4468,7 +4484,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "RC-10-2026-0404",
@@ -4639,7 +4657,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "BUD",
+    "legislative": false
    },
    {
     "id": "B-10-2026-0362",
@@ -4705,7 +4725,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "BUD",
+    "legislative": false
    },
    {
     "id": "RC-10-2026-0322",
@@ -5166,7 +5188,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "BUI",
+    "legislative": false
    },
    {
     "id": "proc-2025-0590",
@@ -5184,7 +5208,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2026-2006",
@@ -5202,7 +5228,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "proc-2025-0258",
@@ -5220,7 +5248,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2025-0240",
@@ -5238,7 +5268,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "RC-10-2026-0068",
@@ -5358,7 +5390,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "RC-10-2025-0577",
@@ -5618,7 +5652,9 @@
     "status": "REJECTED",
     "vote_id": 190161,
     "vote_date": "2026-04-28",
-    "report": "A10-0080/2026"
+    "report": "A10-0080/2026",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "B-10-2025-0500",
@@ -5682,7 +5718,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "signatories_total": null
+    "signatories_total": null,
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "proc-2025-0809",
@@ -5700,7 +5738,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0238/2025"
+    "report": "A10-0238/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-004304",
@@ -5798,7 +5838,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0219/2025"
+    "report": "A10-0219/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "proc-2025-0807",
@@ -5816,7 +5858,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0218/2025"
+    "report": "A10-0218/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-004121",
@@ -5866,7 +5910,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2025-2154",
@@ -5884,7 +5930,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2025-2155",
@@ -5902,7 +5950,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2025-2145",
@@ -5920,7 +5970,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "RC-10-2025-0439",
@@ -6139,7 +6191,9 @@
     "status": "ADOPTED",
     "vote_id": 190729,
     "vote_date": "2026-04-29",
-    "report": "A10-0085/2026"
+    "report": "A10-0085/2026",
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "RC-10-2025-0392",
@@ -6307,7 +6361,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0213/2026"
+    "report": "A10-0213/2026",
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "A-10-2025-0149",
@@ -6323,7 +6379,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "signatories_total": null
+    "signatories_total": null,
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-003005",
@@ -6357,7 +6415,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-002988",
@@ -6544,7 +6604,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0149/2025"
+    "report": "A10-0149/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-002429",
@@ -6594,7 +6656,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "BUD",
+    "legislative": false
    },
    {
     "id": "E-10-2025-002057",
@@ -6730,7 +6794,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0088/2025"
+    "report": "A10-0088/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "proc-2025-2071",
@@ -6748,7 +6814,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "E-10-2025-001612",
@@ -6940,7 +7008,9 @@
     "status": "ADOPTED",
     "vote_id": 175136,
     "vote_date": "2025-05-07",
-    "signatories_total": null
+    "signatories_total": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "B-10-2025-0236",
@@ -7007,7 +7077,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "signatories_total": null
+    "signatories_total": null,
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-001174",
@@ -7194,7 +7266,9 @@
     "status": "no_vote",
     "vote_id": null,
     "vote_date": null,
-    "report": "A10-0039/2025"
+    "report": "A10-0039/2025",
+    "process_type": "NLE",
+    "legislative": false
    },
    {
     "id": "E-10-2025-000775",
@@ -7691,7 +7765,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "proc-2024-0061",
@@ -7709,7 +7785,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2024-002605",
@@ -7791,7 +7869,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2024-2029",
@@ -7809,7 +7889,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2024-2028",
@@ -7827,7 +7909,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "proc-2024-2019",
@@ -7845,7 +7929,9 @@
     "status": null,
     "vote_id": null,
     "vote_date": null,
-    "report": null
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "E-10-2024-002065",
@@ -8192,7 +8278,9 @@
     "status": "ADOPTED",
     "vote_id": 175136,
     "vote_date": "2025-05-07",
-    "report": "A10-0051/2025"
+    "report": "A10-0051/2025",
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "E-10-2024-001642",
@@ -8226,7 +8314,9 @@
     "status": "ADOPTED",
     "vote_id": 169894,
     "vote_date": "2024-10-22",
-    "report": "A10-0003/2024"
+    "report": "A10-0003/2024",
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "E-10-2024-001594",
