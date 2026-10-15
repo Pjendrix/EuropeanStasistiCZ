@@ -60,37 +60,40 @@ function renderDelegation(ov, groups) {
   const byCode = {};
   people.forEach((p) => { (byCode[p.code] = byCode[p.code] || []).push(p.m); });
   const codes = GROUP_ORDER.filter((c) => byCode[c]);
-  // Pořadí míst: poslanci, mezi frakcemi jedno prázdné místo.
-  const sequence = [];
-  codes.forEach((c, i) => {
-    if (i) sequence.push(null);
-    byCode[c].forEach((m) => sequence.push({ m, code: c }));
-  });
+  // Klasický diagram parlamentu: dvě řady, počet míst v řadě úměrný poloměru (stejné rozestupy),
+  // všechna místa obsazená (žádné prázdné mezery, takže tvar je vždy souměrný). Místa se seřadí podle úhlu
+  // zleva doprava a frakce je dostanou postupně, takže každá frakce tvoří souvislý klín.
+  const sequence = codes.flatMap((c) => byCode[c].map((m) => ({ m, code: c })));
   const n = people.length;
-  const total = sequence.length;
-  const inner = Math.round(total * 0.38);
+  const RADII = [96, 150];
+  const inner = Math.max(1, Math.round(n * RADII[0] / (RADII[0] + RADII[1])));
   const slots = [];
-  [[inner, 92], [total - inner, 150]].forEach(([k, r]) => {
+  [[inner, RADII[0]], [n - inner, RADII[1]]].forEach(([k, r]) => {
     for (let i = 0; i < k; i++) {
       const a = Math.PI - (k === 1 ? 0.5 : i / (k - 1)) * Math.PI;
-      slots.push({ a, x: 200 + r * Math.cos(a), y: 196 - r * Math.sin(a) });
+      slots.push({ a, r, x: 200 + r * Math.cos(a), y: 196 - r * Math.sin(a) });
     }
   });
-  slots.sort((s1, s2) => s2.a - s1.a);
+  // Shodný úhel (krajní místa obou řad): vlevo nejdřív vnější, vpravo nejdřív vnitřní řada, aby byl obraz zrcadlový.
+  slots.sort((s1, s2) => (s2.a - s1.a) || (s1.a > Math.PI / 2 ? s2.r - s1.r : s1.r - s2.r));
   const gcolor = (code) => groupColor(groups.find((x) => x.code === code));
   const angles = {};
   const seats = sequence.map((p, i) => {
-    if (!p) return "";
-    (angles[p.code] = angles[p.code] || []).push(slots[i].a);
+    (angles[p.code] = angles[p.code] || []).push(slots[i]);
     return `<a class="seat" tabindex="-1" href="${mepUrl(p.m.id)}" data-code="${p.code}"
       style="left:${(slots[i].x / 400 * 100).toFixed(2)}%;top:${(slots[i].y / 222 * 100).toFixed(2)}%;background:${gcolor(p.code)}"
       title="${esc(displayName(p.m))} · ${esc(groupName(p.code, groups))}" aria-label="${esc(displayName(p.m))}, ${esc(groupName(p.code, groups))}"></a>`;
   }).join("");
   const labels = codes.map((c) => {
-    const a = angles[c].reduce((x, y) => x + y, 0) / angles[c].length;
-    const x = 200 + 178 * Math.cos(a), y = 196 - 178 * Math.sin(a);
+    const mean = (f) => angles[c].reduce((t, sl) => t + f(sl), 0) / angles[c].length;
+    const a = mean((sl) => sl.a);
+    // Popisek od oblouku ven (vlevo zarovnaný doprava, vpravo doleva); u frakcí dole u základny pod místy,
+    // aby nepřetékal z obrázku.
+    const low = Math.sin(a) < 0.12;
+    const x = low ? mean((sl) => sl.x) : 200 + 166 * Math.cos(a), y = low ? 216 : 196 - 166 * Math.sin(a);
+    const tx = low ? -50 : (-50 + 50 * Math.cos(a)).toFixed(0);
     const g = groups.find((x) => x.code === c);
-    return `<span class="hemi-label" aria-hidden="true" style="left:${(x / 400 * 100).toFixed(2)}%;top:${(y / 222 * 100).toFixed(2)}%">${esc(c === "NI" ? "NI" : (g?.short_label || c))}</span>`;
+    return `<span class="hemi-label" aria-hidden="true" style="left:${(x / 400 * 100).toFixed(2)}%;top:${(y / 222 * 100).toFixed(2)}%;transform:translate(${tx}%,-50%)">${esc(c === "NI" ? "NI" : (g?.short_label || c))}</span>`;
   }).join("");
   const hemi = document.getElementById("hemi");
   hemi.innerHTML = seats + labels +
@@ -99,7 +102,7 @@ function renderDelegation(ov, groups) {
 
   const chips = document.getElementById("group-chips");
   chips.innerHTML = codes.map((c) => `<button type="button" class="group-chip" data-code="${c}" aria-pressed="false">
-      ${logoTile(groups.find((x) => x.code === c), 18) || `<span class="dot" style="background:${gcolor(c)}"></span>`}${esc(groupName(c, groups))} <strong>${byCode[c].length}</strong></button>`).join("");
+      ${logoTile(groups.find((x) => x.code === c), 22) || `<span class="dot" style="background:${gcolor(c)}"></span>`}${esc(groupName(c, groups))} <strong>${byCode[c].length}</strong></button>`).join("");
 
   const focus = (code) => {
     hemi.querySelectorAll(".seat").forEach((s) => {
