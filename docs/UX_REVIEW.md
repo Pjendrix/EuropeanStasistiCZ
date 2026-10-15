@@ -8,6 +8,7 @@ Každý úkol = commit `ux: <id> <popis>`. Vizuální vzor karty: `docs/mockups/
 ---
 
 ## U1 Sémantické barevné tokeny
+**Stav (15. 10. 2026): hotovo** (tokeny, výsledky s ikonou; čára mediánu EP v grafu účasti po měsících: revize D10).
 **Proč:** modrá dnes znamená odkaz, hlas pro, „přijato“, docházku, EPP i štítek „závěrečné“.
 Lišta loajality má barvu ECR (#6366F1), lišta shody barvu ESN (#0EA5E9). Barvy proto nic neříkají.
 
@@ -25,6 +26,7 @@ Lišta loajality má barvu ECR (#6366F1), lišta shody barvu ESN (#0EA5E9). Barv
 **Hotovo když:** v `public/*.js` není žádný hex kód barvy dat; axe bez nových chyb kontrastu.
 
 ## U2 Nová karta poslance (místo kruhu)
+**Stav (15. 10. 2026): hotovo** (karta s mediánem EP a frakce, bez pořadí).
 **Proč:** hodnoty 80–98 % jsou v kruhu k nerozeznání, kruh neumí srovnání a popisek „docházka“
 přetéká přes okraj kruhu.
 
@@ -64,6 +66,7 @@ function benchRow(label, pair, median, refLabel) {
 **Hotovo když:** karta odpovídá mockupu v světlém i tmavém režimu, žádný text nepřetéká při 320 px.
 
 ## U3 Úvodní stránka – méně a jasněji
+**Stav (15. 10. 2026): hotovo** (2 KPI, skupiny podle frakcí; úvod je nově rozcestník, seznam poslanců je na `poslanci.html`: revize X11).
 - Smazat tlačítka „Najít svého poslance“ a „Poslední zasedání“ (duplikují dlaždice pod KPI).
 - KPI jen dvě: počet jmenovitých hlasování a docházka delegace s mediánem EP.
   „Češi jednotně“ a „Rozhodly české hlasy“ přesunout do úvodu stránky Analýzy.
@@ -73,6 +76,7 @@ function benchRow(label, pair, median, refLabel) {
 - Panel „Kde se Češi rozdělili“: štítek typu skrýt, když jsou v seznamu jen závěrečná.
 
 ## U4 Loga v kódu
+**Stav (15. 10. 2026): hotovo** (loga a barvy v kódu, `data/manual/logos.json`).
 Loga nahrává autor ručně (viz `docs/LOGA.md`). Úkol pro kód:
 - `data/manual/logos.json` (šablona v repu): `compute_stats.py` z něj vezme `file` a `source`;
   když záznam chybí, zůstává dnešní `find_logo()`.
@@ -89,6 +93,7 @@ Loga nahrává autor ručně (viz `docs/LOGA.md`). Úkol pro kód:
 - „O projektu“: doplnit „Na žádost vlastníka logo odstraníme.“
 
 ## U5 Profil
+**Stav (15. 10. 2026): hotovo** (jedna adresa `p/{id}.html`; strana má jednu adresu `s/{id}.html`).
 - Metrické karty: místo 4–5 řádků textu `benchRow` (U2) s mediánem EP i frakce; text „5 600 z 6 154“.
 - Hlavička: když se frakce během období měnila, „ECR (do 3. 2. 2026 PfE)“; `partyBadge` s `byGender`
   („nezávislá“ místo „nezávislý/á“).
@@ -100,6 +105,7 @@ Loga nahrává autor ručně (viz `docs/LOGA.md`). Úkol pro kód:
   `mep.html?id=` přesměrovat ve `vercel.json`. Totéž zvážit pro `v/` a `vote.html`.
 
 ## U6 Typ `objection` a výsledky v seznamech
+**Stav (15. 10. 2026): hotovo** (typ `objection`, výsledky s ikonou).
 - `vote_kinds.py`: nový typ `objection` pro „Objection pursuant to Rule 115…“ (36 hlasování vedených
   jako `final`), `inverted: true`, vysvětlivka „Hlasovat PRO = opatření Komise zablokovat“. Testy.
 - Doplnit vzory, které dnes končí jako `other` (log z `fetch_votes.py`: „Proposition de décision du Conseil“,
@@ -111,30 +117,36 @@ Loga nahrává autor ručně (viz `docs/LOGA.md`). Úkol pro kód:
   Prázdné sloupce („nikdo“) sbalit.
 
 ## U7 České názvy a shrnutí závěrečných hlasování
+**Stav (15. 10. 2026): nehotovo** (AI shrnutí a české názvy zatím ne, rozhodnutí autora; potřebuje `ANTHROPIC_API_KEY` v GitHub Secrets).
 - Dle konceptu (Claude Haiku, `data/summaries/`), jen `vote_kind in {final, provisional_agreement}`.
 - Výstup: krátký český název (max. 80 znaků) + 2 věty; označit „AI shrnutí“, anglický originál jako podtitul.
 - Použít v seznamech, panelu na úvodu, profilu, analýzách a statických stránkách (`<title>`, OG).
 - Žádná čísla v AI textu (validace regexem na číslice mimo reference).
 
 ## U8 Analýzy – Kde se Češi rozdělili
+**Stav (15. 10. 2026): hotovo**.
 - Místo dvou řad podtržených jmen: „pro: EPP 4 · ECR 3 · PfE 1“, jména po rozkliknutí.
 - V seznamech jmen odkazy bez podtržení (podtržení na hover/focus).
 - „rozkol 0,474“ nahradit „10 : 9“, desetinné číslo jen v metodice a CSV.
 - Zobrazit 10 položek + „zobrazit další“ (dnes 50 položek, 10 000 px).
 
 ## U9 Mobil
+**Stav (15. 10. 2026): hotovo** (a mobilní karty místo tabulek: revize X1).
 - Seznam poslanců pod 640 px jako kompaktní řádky (avatar 40, jméno, frakce, docházka + mini proužek).
 - Hero na mobilu nejvýš ~1 obrazovka (po U3 by mělo vyjít samo).
 
 ## U10 Kontrast a dotykové cíle
+**Stav (15. 10. 2026): hotovo** (kontrasty, dotykové cíle 44 px včetně menu a podmenu: revize X3).
 - Matice shody: tmavý text do hodnoty ~0,75, bílý až nad (dnes 2,1 : 1 ve 148 buňkách).
 - `.pill-result.REJECTED`: 4,46 : 1 → ztmavit (#9A3412) nebo vyřeší U1.
 - Chipy frakcí, „Citovat“, „CSV“: min. výška 44 px na dotykových zařízeních (`@media (pointer: coarse)`).
 
 ## U11 Barvy stran
+**Stav (15. 10. 2026): částečně** (loga všech stran a frakcí jsou; oficiální `brand_color` zatím jen ODS).
 - Dokud nejsou loga a `brand_color`, barvy z hashe kolidují (SPD a ANO zelené, KSČM fialová jako PfE).
   Doplnit `colors.json` z oficiálních manuálů (ODS má logomanuál s barvami).
 
 ## U12 Kontrola
+**Stav (15. 10. 2026): částečně** (axe-core bez chyb při ruční kontrole 14 stránek v obou režimech; automatizace v CI čeká na Fázi 3).
 - Playwright screenshoty úvodu, profilu, detailu a seznamu (desktop 1366, mobil 390, světlý/tmavý) před a po.
 - axe-core bez chyb na všech stránkách.

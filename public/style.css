@@ -748,3 +748,11 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .hub-logos { display: flex; flex-wrap: wrap; gap: .35rem; }
 .hub-logo { height: 24px; width: auto; max-width: 70px; background: #fff; border-radius: 4px; padding: 2px; box-sizing: content-box; object-fit: contain; }
 .hub-about li { margin: .4rem 0; }
+
+.cz-row td { background: var(--accent-soft); }
+.party-votes { display: flex; flex-wrap: wrap; gap: .4rem .8rem; margin: 0 0 1rem; }
+.party-votes li { background: var(--chip); border-radius: 999px; padding: .3rem .8rem; }
+
+.chart .col-med { position: absolute; left: 0; right: 0; height: 3px; margin-bottom: -1px; background: var(--bench); border-radius: 2px; pointer-events: none; }
+.chart-legend { display: flex; align-items: center; gap: .4rem; margin: 0 0 1rem; }
+.col-med-key { display: inline-block; width: 14px; height: 3px; background: var(--bench); border-radius: 2px; }

@@ -63,6 +63,25 @@ def meps_count(n: int) -> str:
     return f"{n} " + ("poslanec" if n == 1 else "poslanci" if 2 <= n <= 4 else "poslanců")
 
 
+def group_majority_label(row: list[int]) -> str | None:
+    """Většina frakce z počtů [pro, proti, zdržel se, nehlasoval]: jednoznačně nejvíc hlasů, jinak None."""
+    v = row[:3]
+    best = max(v)
+    winners = [i for i, n in enumerate(v) if n == best]
+    return ["pro", "proti", "zdržet se"][winners[0]] if best > 0 and len(winners) == 1 else None
+
+
+def party_votes_text(cz: list[dict]) -> list[tuple[str, str]]:
+    """Hlasy Čechů po českých stranách: [(strana, „3 pro, 1 proti“)], od největší strany."""
+    by: dict[str, dict[str, int]] = {}
+    for p in cz:
+        label = p.get("national_party") if p.get("national_party") and p["national_party"] != "Independent" else "bez strany"
+        by.setdefault(label, {k: 0 for k in POSITIONS})[p["position"]] += 1
+    names = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel se", "DID_NOT_VOTE": "nehlasoval"}
+    order = sorted(by, key=lambda k: (-sum(by[k].values()), k))
+    return [(k, ", ".join(f"{by[k][pos]} {names[pos]}" for pos in POSITIONS if by[k][pos])) for k in order]
+
+
 def fmt_date(iso: str | None) -> str:
     if not iso:
         return ""
@@ -327,9 +346,12 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
             continue
         items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names)
         lists.append(f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>')
+    cz_groups = {p["group_code"] for p in cz}
     group_rows = "".join(
-        f'<tr><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}<td>{split_bar(row)}</td></tr>'
+        f'<tr{" class=cz-row" if code in cz_groups else ""}><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}'
+        f'<td>{esc(group_majority_label(row) or "bez jasné většiny")}</td><td>{split_bar(row)}</td></tr>'
         for code, row in sorted(v["group_counts"].items(), key=lambda x: -sum(x[1])))
+    party_items = "".join(f'<li><strong>{esc(label)}</strong> {esc(text)}</li>' for label, text in party_votes_text(cz))
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
     if adopted:
@@ -357,11 +379,13 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 </div>
 <h2>Jak hlasovali Češi</h2>
 <div class="positions-grid">{"".join(lists)}</div>
+<h3>Podle českých stran</h3><ul class="party-votes plain">{party_items}</ul>
 {f'<p class="small muted">Nikdo z Čechů: {", ".join(nobody)}.</p>' if nobody else ""}
 <p class="source">Jen poslanci v mandátu podle EP; frakce a strana k datu hlasování. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
 <h2>Jak hlasovaly frakce</h2>
-<div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
+<div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Většina frakce</th><th>Rozložení</th></tr></thead>
 <tbody>{group_rows}</tbody></table></div>
+<p class="small muted">Zvýrazněné řádky jsou frakce, ve kterých sedí čeští poslanci. Většina frakce = jednoznačně nejvíc hlasů pro, proti nebo zdržet se.</p>
 <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a>.</p>"""
     title = f"{title_txt} ({fmt_date(v['date'])}) – EP Watch CZ"
     return f"v/{v['id']}.html", page(title, body, root=ROOT, current="votes", description=desc,

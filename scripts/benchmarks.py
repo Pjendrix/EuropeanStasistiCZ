@@ -12,7 +12,7 @@ ID závěrečných hlasování. Výstup: malý slovník pro data/benchmarks.json
 
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 from statistics import median
 
 from compute_stats import VOTED, group_majority
@@ -62,12 +62,19 @@ def compute_benchmarks(rows, group_counts: dict[int, dict[str, list[int]]], fina
             in_window[vote_id] = ks
             for k in ks:
                 n_votes[k] += 1
+    month_of = {vid: d[:7] for vid, d in (vote_dates or {}).items()}  # D10: medián EP po měsících
+    month_votes: Counter = Counter(month_of.values())
+    by_month: dict[tuple[str, int], list[int]] = defaultdict(lambda: [0, 0])
     by_member: dict[tuple[str, int], dict] = defaultdict(_empty)
     by_member_group: dict[tuple[str, int, str], dict] = defaultdict(_empty)
     for vote_id, member_id, position, group in rows:
         voted = position in VOTED
         final = vote_id in final_ids
         gm = group_majority(group_counts.get(vote_id, {}), group)
+        if vote_id in month_of:
+            cell = by_month[(month_of[vote_id], member_id)]
+            cell[0] += voted
+            cell[1] += 1
         for k in ("", *in_window.get(vote_id, ())):
             targets = [by_member[(k, member_id)]]
             if group:
@@ -99,6 +106,12 @@ def compute_benchmarks(rows, group_counts: dict[int, dict[str, list[int]]], fina
                 "groups": {g: medians(items, threshold) for g, items in sorted(groups.items())}}
 
     out = {"min_votes": min_votes, "definition": DEFINITION, **block("", min_votes)}
+    if month_votes:
+        # Medián účasti všech poslanců EP v měsíci; do mediánu poslanci, kteří mají aspoň polovinu hlasování měsíce.
+        out["monthly"] = {}
+        for month, n in sorted(month_votes.items()):
+            vals = [c[0] / c[1] for (mo, _), c in by_month.items() if mo == month and c[1] >= window_threshold(n, min_votes)]
+            out["monthly"][month] = {"votes": n, "meps": len(vals), "attendance": round(median(vals), 4) if vals else None}
     if windows:
         out["windows"] = {k: {"from": windows[k][0], "to": windows[k][1], "votes": n_votes[k],
                               "min_votes": window_threshold(n_votes[k], min_votes), **block(k, window_threshold(n_votes[k], min_votes))}

@@ -298,7 +298,7 @@ function resultSentence(kind, result) {
   if (!ok && !no) return RESULT_LABEL[result] ? RESULT_LABEL[result][0].toUpperCase() + RESULT_LABEL[result].slice(1) : "Výsledek neuveden";
   const S = {
     rejection: ["Návrh na zamítnutí prošel – text je zamítnut", "Návrh na zamítnutí neprošel – text zůstává"],
-    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla"],
+    objection: ["Parlament vznesl námitku proti aktu Komise", "Námitka neprošla – akt Komise platí"],
     amendment: ["Pozměňovací návrh byl přijat", "Pozměňovací návrh byl zamítnut"],
     split_part: ["Tato část textu byla přijata", "Tato část textu byla zamítnuta"],
     final: ["Parlament text přijal", "Parlament text zamítl"],
@@ -307,6 +307,29 @@ function resultSentence(kind, result) {
     urgency: ["Naléhavý postup schválen", "Naléhavý postup zamítnut"],
   }[kind];
   return S ? S[ok ? 0 : 1] : (ok ? "Přijato" : "Zamítnuto");
+}
+
+// Většina frakce z počtů [pro, proti, zdržel se, nehlasoval]: jednoznačně nejvíc hlasů, jinak null (stejné pravidlo jako compute_stats.majority).
+function groupMajorityLabel(row) {
+  const v = row.slice(0, 3);
+  const max = Math.max(...v);
+  const winners = v.map((n, i) => (n === max ? i : -1)).filter((i) => i >= 0);
+  return max > 0 && winners.length === 1 ? ["pro", "proti", "zdržet se"][winners[0]] : null;
+}
+
+// Hlasy Čechů po českých stranách: [{ label, counts: {FOR: n, …} }], strany seřazené podle počtu poslanců.
+function partyVotes(cz) {
+  const by = {};
+  cz.forEach((p) => {
+    const label = p.national_party && p.national_party !== "Independent" ? p.national_party : "bez strany";
+    (by[label] = by[label] || { FOR: 0, AGAINST: 0, ABSTENTION: 0, DID_NOT_VOTE: 0 })[p.position] += 1;
+  });
+  return Object.entries(by).map(([label, counts]) => ({ label, counts, n: Object.values(counts).reduce((a, b) => a + b, 0) }))
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, "cs"));
+}
+
+function partyVotesText(counts) {
+  return [["FOR", "pro"], ["AGAINST", "proti"], ["ABSTENTION", "zdržel se"], ["DID_NOT_VOTE", "nehlasoval"]].filter(([k]) => counts[k]).map(([k, l]) => `${counts[k]} ${l}`).join(", ");
 }
 
 // Tečky českých poslanců seskupené podle frakcí, obarvené podle hlasu (pro/proti/zdržel se/nehlasoval).

@@ -186,7 +186,9 @@ def mep_benchmarks(mep: dict, votes: list[dict], bench: dict | None) -> dict | N
     src = w or bench  # poslanec s kratším mandátem: mediány jen z hlasování v době jeho mandátu (D7)
     return {"source": bench.get("source"), "definition": bench.get("definition"), "min_votes": src.get("min_votes"),
             "ep": src["ep"], "group_code": code, "group": src["groups"].get(code) if code else None,
-            "window": {"from": w["from"], "to": w["to"], "votes": w["votes"]} if w else None}
+            "window": {"from": w["from"], "to": w["to"], "votes": w["votes"]} if w else None,
+            # medián účasti EP po měsících (D10), pro čáru v grafu účasti
+            "monthly_ep": {k: x["attendance"] for k, x in (bench.get("monthly") or {}).items()}}
 
 
 def bench_key(mep: dict) -> str:

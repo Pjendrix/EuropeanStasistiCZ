@@ -96,3 +96,11 @@ def test_hub_is_static_index_with_blocks_and_period_lists(data_dir):
     assert html.count('class="kv-period"') == 4 and html.count(" hidden>") >= 3
     assert "Zatím nic. Seznam doplňuje autor podle tiskových zpráv EP." in html
     assert "poslanci.html" in html and "o-projektu.html#metodika" in html
+
+
+def test_group_majority_and_party_votes_text():
+    assert bp.group_majority_label([10, 2, 0, 5]) == "pro" and bp.group_majority_label([1, 5, 0, 0]) == "proti"
+    assert bp.group_majority_label([3, 3, 0, 1]) is None and bp.group_majority_label([0, 0, 0, 9]) is None
+    cz = [{"national_party": "A", "position": "FOR"}, {"national_party": "A", "position": "FOR"},
+          {"national_party": "B", "position": "AGAINST"}, {"national_party": "Independent", "position": "DID_NOT_VOTE"}]
+    assert bp.party_votes_text(cz) == [("A", "2 pro"), ("B", "1 proti"), ("bez strany", "1 nehlasoval")]

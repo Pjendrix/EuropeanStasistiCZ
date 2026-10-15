@@ -70,6 +70,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const c = v.counts;
     const total = [c.for, c.against, c.abstention, c.did_not_vote];
     const czCounts = KEYS.map((k) => cz.filter((p) => p.position === k).length);
+    const czGroups = new Set(cz.map((p) => p.group_code));
     const groupRows = Object.entries(v.group_counts).sort((a, b) => (b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)));
     const topics = [...v.topics.oeil.map((t) => t.label), ...v.topics.eurovoc.map((t) => t.label), ...v.topics.geo.map((t) => t.label)];
     // Typ hlasování: z dat (nové soubory), jinak ze search.json; starší data ukážou jen hlavní / dílčí.
@@ -159,15 +160,18 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         }).join("")}
       </div>
       ${KEYS.some((k, i) => !czCounts[i]) ? `<p class="small muted">Nikdo z Čechů: ${KEYS.filter((k, i) => !czCounts[i]).map((k) => POSITION_LABEL[k]).join(", ")}.</p>` : ""}
+      <h3 style="margin-bottom:.4rem">Podle českých stran</h3>
+      <ul class="party-votes plain" aria-label="Hlasy podle českých stran">${partyVotes(cz).map((x) => `<li><strong>${esc(x.label)}</strong> ${esc(partyVotesText(x.counts))}</li>`).join("")}</ul>
       <div id="cz-csv"></div>
       <p class="source">Frakce a strana jsou uvedené k datu hlasování. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
 
       <h2>Jak hlasovaly frakce</h2>
       <div class="table-wrap"><table>
-        <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
-        <tbody>${groupRows.map(([code, row]) => `<tr><td><span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupBadge(code, groups)}</span></td>
-          ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${splitBar(row)}</td></tr>`).join("")}</tbody>
+        <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Většina frakce</th><th>Rozložení</th></tr></thead>
+        <tbody>${groupRows.map(([code, row]) => `<tr class="${czGroups.has(code) ? "cz-row" : ""}"><td><span class="dot" style="background:${groupColor(groups.find((x) => x.code === code))}"></span> <span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupBadge(code, groups)}</span></td>
+          ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${groupMajorityLabel(row) || '<span class="muted">bez jasné většiny</span>'}</td><td>${splitBar(row)}</td></tr>`).join("")}</tbody>
       </table></div>
+      <p class="small muted">Zvýrazněné řádky jsou frakce, ve kterých sedí čeští poslanci. Většina frakce = jednoznačně nejvíc hlasů pro, proti nebo zdržet se.</p>
       <p class="source">Počty spočítané z hlasování jednotlivých poslanců. Zdroj: <a href="${esc(v.source_url)}">HowTheyVote.eu</a>.</p>
 
       ${topics.length ? `<h2>Témata</h2><p>${topics.map((t) => `<span class="tag">${esc(t)}</span>`).join(" ")}</p>

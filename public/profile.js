@@ -62,7 +62,7 @@ function timeline(mep, groups, parties) {
   </svg>`;
 }
 
-function monthlyChart(monthly) {
+function monthlyChart(monthly, epMonthly = {}) {
   const months = Object.keys(monthly);
   if (!months.length) return '<p class="muted">Žádná hlasování v době mandátu.</p>';
   const cols = months.map((k, i) => {
@@ -72,16 +72,18 @@ function monthlyChart(monthly) {
     const showYear = i === 0 || m === "01";
     return `<button type="button" class="col" data-month="${k}">
       <span class="bar-fill ${v === 0 ? "zero" : ""}" style="height:${v ? v * 100 : 0}%"></span>
+      ${epMonthly[k] != null ? `<i class="col-med" style="bottom:${epMonthly[k] * 100}%" aria-hidden="true"></i>` : ""}
       <span class="col-label" aria-hidden="true">${Number(m)}${showYear ? `<br><b>${y.slice(2)}</b>` : ""}</span>
-      <span class="sr-only">${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování</span></button>`;
+      <span class="sr-only">${fmtMonth(k)}: ${fmtPct(v)}, ${pair[0]} z ${pair[1]} hlasování${epMonthly[k] != null ? `, medián EP ${fmtPct(epMonthly[k])}` : ""}</span></button>`;
   }).join("");
   return `<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>
     <div class="chart" role="group" aria-label="Účast na hlasování po měsících">${cols}</div></div>
+    ${Object.keys(epMonthly).length ? '<p class="small muted chart-legend"><i class="col-med-key" aria-hidden="true"></i> medián všech poslanců EP v měsíci (jen poslanci s aspoň polovinou hlasování měsíce)</p>' : ""}
     <p class="chart-detail" aria-live="polite"></p>`;
 }
 
 // Hodnota vybraného měsíce pod grafem; klepnutí nebo najetí na sloupec ji změní (funguje i bez myši).
-function bindChart(root, monthly, mep) {
+function bindChart(root, monthly, mep, epMonthly = {}) {
   const detail = root.querySelector(".chart-detail");
   const cols = [...root.querySelectorAll(".chart .col")];
   if (!detail || !cols.length) return;
@@ -90,7 +92,8 @@ function bindChart(root, monthly, mep) {
     const k = btn.dataset.month;
     const a = monthly[k].attendance;
     detail.innerHTML = `<strong>${fmtMonth(k)}</strong>: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtNum(a[0])} z ${fmtNum(a[1])} hlasování
-      (<strong>${fmtPct(pct(a))}</strong>)`;
+      (<strong>${fmtPct(pct(a))}</strong>)${epMonthly[k] != null ? `, medián EP v tomto měsíci ${fmtPct(epMonthly[k])}` : ""}.
+      ${a[1] && !a[0] ? ` V tomto měsíci ${byGender(mep, "nehlasoval", "nehlasovala")}. Důvod EP v datech neuvádí.` : ""}`;
   };
   cols.forEach((c) => { c.addEventListener("click", () => show(c)); c.addEventListener("mouseenter", () => show(c)); c.addEventListener("focus", () => show(c)); });
   show(cols[cols.length - 1]);
@@ -380,7 +383,7 @@ function periodText(x) {
         <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="${esc(mep.source_url)}">EP Open Data</a>.</p></div>
 
       <h2 id="mesice">Účast na hlasování po měsících</h2>
-      <div class="card">${monthlyChart(profile.monthly)}
+      <div class="card">${monthlyChart(profile.monthly, profile.benchmarks?.monthly_ep)}
         <p class="small muted">Sloupec = podíl hlasování v měsíci, ve kterých ${byGender(mep, "hlasoval", "hlasovala")}; pod sloupcem číslo měsíce a rok.
         Nízká čárka = v měsíci ${byGender(mep, "nehlasoval", "nehlasovala")} ani jednou. Klepnutím na sloupec se ukáže přesné číslo. Měsíce bez zasedání (srpen) chybí.</p></div>
 
@@ -467,7 +470,7 @@ function periodText(x) {
       <p class="small profile-links foot-only">${extLinks}</p>
     `;
 
-    bindChart(main, profile.monthly, mep);
+    bindChart(main, profile.monthly, mep, profile.benchmarks?.monthly_ep);
 
     const renderAgainst = () => {
       const el = document.getElementById("against");
