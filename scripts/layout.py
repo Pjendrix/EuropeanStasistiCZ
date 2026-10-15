@@ -82,6 +82,7 @@ def footer(root: str = "") -> str:
             f'  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a '
             f'<a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).\n'
             f'  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.\n'
+            f'  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.\n'
             f'  <a href="{root}o-projektu.html">O projektu</a> · <a href="{root}o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · '
             f'<a href="{REPO}">kód a data na GitHubu</a>.\n'
             f'</div></footer>')
