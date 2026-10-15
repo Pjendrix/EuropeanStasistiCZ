@@ -538,6 +538,29 @@ def sync_definitions(public: Path, data_dir: Path) -> bool:
     return new != old
 
 
+def sync_block(page: Path, name: str, html: str) -> bool:
+    """Přepíše blok mezi <!--sync:NAME--> a <!--/sync:NAME--> v ruční stránce. Vrací True, když se soubor změnil."""
+    rx = re.compile(rf"(<!--sync:{name}-->).*?(<!--/sync:{name}-->)", re.S)
+    old = page.read_text(encoding="utf-8")
+    if len(rx.findall(old)) != 1:
+        raise FormatError(f"{page.name} nemá právě jeden blok <!--sync:{name}-->")
+    new = rx.sub(lambda m: f"{m[1]}\n{html}\n{m[2]}", old)
+    if new != old:
+        page.write_text(new, encoding="utf-8")
+    return new != old
+
+
+def sync_blocks(public: Path, data_dir: Path) -> int:
+    """Portréty na poslanci.html a přehled na votes.html se generují z dat při každém buildu (týdenní aktualizace)."""
+    from hub import heads_html, votes_overview_html
+    changed = 0
+    if (data_dir / "overview.json").exists() and (public / "poslanci.html").exists():
+        changed += sync_block(public / "poslanci.html", "heads", heads_html(data_dir))
+    if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists() and (public / "votes.html").exists():
+        changed += sync_block(public / "votes.html", "overview", votes_overview_html(data_dir))
+    return changed
+
+
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
     """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
@@ -565,6 +588,7 @@ def main(argv=None) -> int:
     try:
         res = write(build(args.data_dir), args.public)
         res["definitions_changed"] = int(sync_definitions(args.public, args.data_dir))
+        res["blocks_changed"] = sync_blocks(args.public, args.data_dir)
     except FormatError as e:
         print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
         return 2

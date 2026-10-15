@@ -1,14 +1,17 @@
-"""Úvodní stránka jako rozcestník (X11): generuje se staticky (index.html), JavaScript (hub.js) jen přidává
-vyhledávání a přepínač období. Seznam poslanců je na poslanci.html.
+"""Úvodní stránka jako vstupní brána (index.html) a bloky vkládané do ručních stránek.
 
-Pořadí bloků: hero s vyhledáváním → poslední zasedání → česká delegace → Prozkoumejte (6 dlaždic s živými čísly)
-→ klíčová hlasování (D13) → O datech. Žádná tabulka, každý blok nejvýš 5 položek a odkaz „vše“. Všechna čísla
-jsou z data/*.json (compute_stats.py, build_web.py), nic se tu nepočítá nově kromě součtů a skládání vět.
+- hub_page: hero s vyhledáváním (hub.js), tři velké vstupy (Poslanci, Hlasování, Práce) a klidný seznam dalších pohledů.
+  Na úvodce nejsou žádná čísla kromě data aktualizace, je to hlavně rozcestník.
+- heads_html: portréty poslanců po frakcích, blok na poslanci.html (build_pages.sync_block).
+- votes_overview_html: poslední zasedání a klíčová hlasování, přehled na začátku votes.html. Tabulka s filtry je pod ním v rozbalení.
+
+Všechna čísla jsou z data/*.json (compute_stats.py, build_web.py), nic se tu nepočítá nově kromě součtů a skládání vět.
 """
 
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path
 
@@ -71,65 +74,33 @@ def vote_card(v: dict, reason: str) -> str:
             f'<div class="ep-line"><span>Celý EP</span>{ep_bar}<span><b class="pro">{c["for"]}</b> : <b class="con">{c["against"]}</b></span></div></div>')
 
 
-def key_votes_html(kv: dict) -> str:
+def key_votes_html(kv: dict, limit: int | None = None) -> str:
     """Čtyři seznamy za celé období: zákony od nejnovějších, ostatní podle svého pravidla. Přepínač období tu není:
     výběr za kratší období se od celého skoro neliší a ukazoval by pořád stejná hlasování, poslední zasedání má blok výš."""
     out = ['<div class="hub-lists">']
     for name, (title, rule) in LIST_TITLES.items():
         lst = kv["lists"]["all"][name]
-        items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"]) or '<p class="muted small">Nic.</p>'
+        items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"][:limit]) or '<p class="muted small">Nic.</p>'
         more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v 10. období)</p>'
-                if lst["total"] > len(lst["items"]) else "")
+                if lst["total"] > len(lst["items"][:limit]) else "")
         out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p>{items}{more}</section>')
     out.append("</div>")
     out.append(f'<p class="small muted">{esc(kv["note"])} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>')
     return "".join(out)
 
 
-def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
+
+# --- bloky vkládané do ručních stránek (build_pages.sync_block) -----------------------------
+
+def heads_html(data_dir: Path) -> str:
+    """Portréty českých poslanců po frakcích (blok „Kdo jsou čeští poslanci“ na poslanci.html)."""
     overview = _read(data_dir / "overview.json")
     groups = _read(data_dir / "groups.json")
-    parties = _read(data_dir / "parties.json")
-    session = _read(data_dir / "session.json")
-    kv = _read(data_dir / "key_votes.json")
-    work = _read(data_dir / "work.json")
     bench = _read(data_dir / "benchmarks.json")
-    cat_stats = _read(data_dir / "category_stats.json")
-    meps = overview["meps"]
-    active = [m for m in meps if _active(m)]
-    release = overview["sources"]["votes"].get("release")
-    release = release if re.fullmatch(r"\d{4}-\d{2}-\d{2}", release or "") else None  # tag exportu HowTheyVote je datum
+    active = [m for m in overview["meps"] if _active(m)]
     dname = lambda m: " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
-    avatar = lambda m, size=44: (f'<a class="hub-av" href="p/{m["id"]}.html" title="{esc(dname(m))}"><img src="assets/photos/thumbs/{m["id"]}.webp" '
-                                 f'alt="{esc(dname(m))}" width="{size}" height="{size}" loading="lazy"></a>' if m.get("photo_url") else "")
-
-    # --- hero -------------------------------------------------------------------------
-    hero = f"""<section class="hub-hero" aria-labelledby="h1">
-  <h1 id="h1">Jak hlasují čeští europoslanci</h1>
-  <p class="lead">Jmenovitá hlasování, účast a spolupráce napříč frakcemi. Ověřená data, čísla počítá skript, ne AI.</p>
-  <div class="hub-search" role="search">
-    <label for="hub-q" class="sr-only">Najdi poslance, stranu nebo hlasování</label>
-    <input id="hub-q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list">
-    <ul id="hub-results" class="hub-results" role="listbox" hidden></ul>
-  </div>
-  <p class="small muted">Data k {fmt_date(release) if release else fmt_date(overview["period"]["to"])} (export HowTheyVote) · hlasování {fmt_date(overview["period"]["from"])} – {fmt_date(overview["period"]["to"])} · aktualizace každý týden</p>
-</section>"""
-
-    # --- poslední zasedání ---------------------------------------------------------------
-    sess_votes = []
-    for name in ("laws", "splits", "close", "against_result"):
-        for it in kv["lists"]["session"][name]["items"]:
-            if it["id"] not in [i for i, _ in sess_votes]:
-                sess_votes.append((it["id"], it["reason"]))
-    sess_cards = "".join(vote_card(kv["votes"][str(i)], r) for i, r in sess_votes[:3])
-    session_html = f"""<section class="hub-block" aria-labelledby="h-sess">
-  <h2 id="h-sess">Co se naposledy odhlasovalo</h2>
-  <p>Zasedání {fmt_date(session["from"])} – {fmt_date(session["to"])}: {fmt_num(session["votes"])} jmenovitých hlasování, z toho {fmt_num(session["main"])} závěrečných
-    ({fmt_num(session["adopted_main"])} přijato). <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">Celé zasedání</a></p>
-  <div class="hub-lists three">{sess_cards}</div>
-</section>"""
-
-    # --- česká delegace -----------------------------------------------------------------
+    avatar = lambda m: (f'<a class="hub-av" href="p/{m["id"]}.html" title="{esc(dname(m))}"><img src="assets/photos/thumbs/{m["id"]}.webp" '
+                        f'alt="{esc(dname(m))}" width="56" height="56" loading="lazy"></a>' if m.get("photo_url") else "")
     by_group: dict[str, list[dict]] = {}
     for m in active:
         by_group.setdefault((m.get("group") or {}).get("code") or "", []).append(m)
@@ -139,44 +110,145 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         + "".join(avatar(m) for m in sorted(by_group[g], key=lambda m: m.get("sort_label") or m["name"])) + "</div></div>" for g in order)
     att = [sum(m["total"]["attendance"][0] for m in active), sum(m["total"]["attendance"][1] for m in active)]
     med = ((bench or {}).get("ep") or {}).get("attendance")
-    delegation_html = f"""<section class="hub-block" aria-labelledby="h-del">
-  <h2 id="h-del">Kdo jsou čeští poslanci</h2>
-  <div class="hub-strip">{strip}</div>
-  <p class="small">Účast delegace na hlasování {fmt_pct(att)}{f" · medián celého EP {fmt_pct(med)}" if med else ""}. Každý poslanec má vlastní stránku, <a href="poslanci.html">půlkruh a tabulka</a> jsou na stránce Poslanci.</p>
+    return f"""<section class="card heads" aria-labelledby="h-heads">
+  <h2 id="h-heads">Kdo jsou čeští poslanci</h2>
+  <div class="hub-strip heads-strip">{strip}</div>
+  <p class="small">Účast delegace na hlasování {fmt_pct(att)}{f" · medián celého EP {fmt_pct(med)}" if med else ""}. Portrét otevře profil poslance.</p>
 </section>"""
 
-    # --- Prozkoumejte (živé dlaždice) ------------------------------------------------------
-    lead = sum(m["lead_reports"] for m in work["meps"] if m.get("delegation")) if work else 0
-    shadow = sum(m["shadow_reports"] for m in work["meps"] if m.get("delegation")) if work else 0
-    logos = "".join(f'<img class="hub-logo" src="{esc(p["logo"])}" alt="{esc(p.get("name") or p["short_label"])}" height="24" loading="lazy">'
-                    for p in parties if p.get("logo") and not p.get("independent"))
-    ts = session["top_splits_main"][0] if session.get("top_splits_main") else None
-    tiles = [
-        ("poslanci.html", "Poslanci", '<div class="hub-avs">' + "".join(
-            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="36" height="36" loading="lazy">' for m in active[:5] if m.get("photo_url")) + "</div>" + f'<p class="small muted">{len(active)} v mandátu, {len(meps) - len(active)} {"bývalý" if len(meps) - len(active) == 1 else "bývalí"}</p>'),
-        ("party.html", "Strany", f'<div class="hub-logos">{logos}</div>'),
-        ("votes.html", "Hlasování", f'<p class="hub-num">{fmt_num(overview["votes_total"])}</p><p class="small muted">jmenovitých hlasování, poslední {fmt_date(overview["period"]["to"])}</p>'),
-        *([("temata.html", "Hlasování podle témat", f'<p class="hub-num">{len([c for c in cat_stats["categories"] if c["key"] != "none"])}</p><p class="small muted">témat od obrany po rozpočet: kolik se hlasovalo a jak hlasovali Češi</p>')] if cat_stats else []),
-        ("rozkol.html", "Kde se Češi rozdělili", (f'<p class="hub-num">{ts["cz"][0]} : {ts["cz"][1]}</p><p class="small muted">poslední: {esc(ts["title"][:80])}{"…" if len(ts["title"]) > 80 else ""}</p>' if ts else "")),
-        ("shoda.html", "Kdo s kým hlasuje", f'<p class="hub-num">{len(active)} × {len(active)}</p><p class="small muted">shoda každé dvojice poslanců</p>'),
-        ("prace.html", "Práce poslanců", f'<p class="hub-num">{fmt_num(lead)} + {fmt_num(shadow)}</p><p class="small muted">zpráv vedou Češi jako zpravodajové + stínové zprávy za frakci</p>'),
-    ]
-    explore = "".join(f'<a class="card hub-tile" href="{h}"><h3>{esc(t)}</h3>{body}</a>' for h, t, body in tiles)
-    explore_html = f'<section class="hub-block" aria-labelledby="h-exp"><h2 id="h-exp">Co tu najdete</h2><div class="hub-tiles">{explore}</div></section>'
 
-    # --- klíčová hlasování -------------------------------------------------------------------
-    key_html = f'<section class="hub-block" aria-labelledby="h-key"><h2 id="h-key">Klíčová hlasování</h2>{key_votes_html(kv)}</section>'
+def votes_overview_html(data_dir: Path) -> str:
+    """Přehled na začátku stránky Hlasování: rozcestník do detailů, poslední zasedání a klíčová hlasování."""
+    session = _read(data_dir / "session.json")
+    kv = _read(data_dir / "key_votes.json")
+    sess_votes: list[tuple[int, str]] = []
+    for name in ("laws", "splits", "close", "against_result"):
+        for it in kv["lists"]["session"][name]["items"]:
+            if it["id"] not in [i for i, _ in sess_votes]:
+                sess_votes.append((it["id"], it["reason"]))
+    sess_cards = "".join(vote_card(kv["votes"][str(i)], r) for i, r in sess_votes[:3])
+    arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+    chips = "".join(f'<a class="vo-chip" href="{h}">{esc(t)}{arrow}</a>' for h, t in (
+        ("temata.html", "Podle témat"), ("rozkol.html", "Kde se Češi rozdělili"),
+        ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")))
+    return f"""<div class="vo-tools">
+  <form class="vo-search" action="votes.html" method="get" role="search">
+    <label for="vo-q" class="sr-only">Hledat hlasování</label>
+    <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování podle názvu nebo čísla…" autocomplete="off">
+    <button type="submit">Hledat</button>
+  </form>
+  <div class="vo-chips">{chips}<a class="vo-chip vo-chip-main" href="#all-votes">Všechna hlasování{arrow}</a></div>
+</div>
+<section class="hub-block" aria-labelledby="h-sess">
+  <h2 id="h-sess">Co se naposledy odhlasovalo</h2>
+  <p>Zasedání {fmt_date(session["from"])} – {fmt_date(session["to"])}: {fmt_num(session["votes"])} jmenovitých hlasování, z toho {fmt_num(session["main"])} závěrečných
+    ({fmt_num(session["adopted_main"])} přijato). <a href="votes.html?od={session["from"]}&amp;m={session["to"][:7]}&amp;f=final">Celé zasedání</a></p>
+  <div class="hub-lists three">{sess_cards}</div>
+</section>
+<section class="hub-block" aria-labelledby="h-key">
+  <h2 id="h-key">Klíčová hlasování</h2>
+  {key_votes_html(kv, 3)}
+</section>"""
 
-    about = """<section class="hub-block" aria-labelledby="h-data"><h2 id="h-data">O datech</h2><ul class="plain hub-about">
-  <li><strong>Zdroje.</strong> HowTheyVote.eu (ODbL) a EP Open Data (CC BY 4.0). Žádný scraping webu, každé číslo má odkaz na zdroj.</li>
-  <li><strong>Čísla počítá skript, ne AI.</strong> Kód je otevřený, metodika má definici u každé metriky a záznam oprav.</li>
-  <li><strong>Chyba?</strong> <a href="o-projektu.html#kontakt">Nahlaste ji</a>, opravíme ji a zapíšeme do změn metodiky.</li>
-</ul><p class="small"><a href="o-projektu.html#metodika">Jak počítáme</a></p></section>"""
 
-    body = hero + session_html + delegation_html + explore_html + key_html + about
+# --- úvodní stránka ---------------------------------------------------------------------------
+
+_ARROW = ('<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+          'stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+
+# Prsten dvanácti hvězd (čistě dekorace): 12 bodů po 30° na kružnici o poloměru 300 se středem 320, 320.
+_RING_DOTS = "".join(
+    f'<circle cx="{320 + 300 * math.sin(math.radians(30 * k)):.1f}" cy="{320 - 300 * math.cos(math.radians(30 * k)):.1f}" r="7"/>' for k in range(12))
+_RING = ('<svg class="home-ring" viewBox="0 0 640 640" aria-hidden="true" focusable="false">'
+         '<circle cx="320" cy="320" r="300" fill="none" stroke="#fff" stroke-opacity=".16"/>'
+         '<circle cx="320" cy="320" r="220" fill="none" stroke="#fff" stroke-opacity=".10"/>'
+         '<circle cx="320" cy="320" r="140" fill="none" stroke="#fff" stroke-opacity=".08"/>'
+         f'<g class="ring-dots">{_RING_DOTS}</g>'
+         '<circle cx="320" cy="320" r="44" fill="#1E4FA3"/><circle cx="303" cy="303" r="13" fill="#fff"/></svg>')
+
+_GLYPH = {
+    "meps": ('<svg aria-hidden="true" width="84" height="84" viewBox="0 0 84 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">'
+             '<circle cx="42" cy="30" r="14"/><path d="M14 74c3-17 14-26 28-26s25 9 28 26"/><circle cx="42" cy="42" r="40" stroke-opacity=".25"/></svg>'),
+    "votes": ('<svg aria-hidden="true" width="84" height="84" viewBox="0 0 84 84" fill="none" stroke-linecap="round">'
+              '<rect x="6" y="22" width="72" height="10" rx="5" stroke="currentColor" stroke-width="2" stroke-opacity=".4"/><rect x="6" y="22" width="44" height="10" rx="5" fill="var(--gold)"/>'
+              '<rect x="6" y="40" width="72" height="10" rx="5" stroke="currentColor" stroke-width="2" stroke-opacity=".4"/><rect x="6" y="40" width="26" height="10" rx="5" fill="currentColor" fill-opacity=".85"/>'
+              '<rect x="6" y="58" width="72" height="10" rx="5" stroke="currentColor" stroke-width="2" stroke-opacity=".4"/><rect x="6" y="58" width="58" height="10" rx="5" fill="#3B82F6"/></svg>'),
+    "work": ('<svg aria-hidden="true" width="84" height="84" viewBox="0 0 84 84" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+             '<path d="M22 8h28l14 14v54H22z" stroke="var(--eu-blue)"/><path d="M50 8v14h14" stroke="var(--eu-blue)"/><path d="M32 40h22M32 50h22M32 60h14" stroke="currentColor"/></svg>'),
+}
+
+DOORS = [
+    ("poslanci.html", "01", "Poslanci", "Profil každého z českých europoslanců.", "meps", "blue"),
+    ("votes.html", "02", "Hlasování", "Jak hlasoval Parlament a jak v tom Češi.", "votes", "navy"),
+    ("prace.html", "03", "Práce", "Zprávy, stanoviska, projevy a otázky Komisi.", "work", "paper"),
+]
+
+MORE = [
+    ("party.html", "Strany", "Jak hlasují české strany."),
+    ("temata.html", "Podle témat", "Kde se hlasuje nejvíc a jak v tom Češi."),
+    ("rozkol.html", "Kde se Češi rozdělili", "Hlasování, ve kterých hlasovali nejvíc rozdílně."),
+    ("rozhodujici.html", "Kde rozhodly české hlasy", "Těsná hlasování, která by bez nich dopadla opačně."),
+    ("shoda.html", "Shoda mezi Čechy", "Jak často hlasovali dva poslanci stejně."),
+]
+
+
+def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
+    """Úvodní stránka = vstupní brána: nadpis, vyhledávání, tři velké vstupy a seznam dalších pohledů. Žádná data v textu,
+    kromě data aktualizace; poslanci jsou na poslanci.html, přehled hlasování na votes.html."""
+    overview = _read(data_dir / "overview.json")
+    release = overview["sources"]["votes"].get("release")
+    release = release if re.fullmatch(r"\d{4}-\d{2}-\d{2}", release or "") else None  # tag exportu HowTheyVote je datum
+    data_day = fmt_date(release) if release else fmt_date(overview["period"]["to"])
+
+    hero = f"""<section class="home-hero" aria-labelledby="h1">
+  <div class="home-art" aria-hidden="true">{_RING}</div>
+  <div class="home-hero-inner">
+    <p class="home-eyebrow"><span class="rule"></span>10. volební období · od 16. 7. 2024</p>
+    <h1 id="h1">Co dělají v Bruselu<br><strong>čeští europoslanci.</strong></h1>
+    <p class="home-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
+    <div class="home-cta">
+      <a class="home-pill solid" href="poslanci.html">Najít poslance {_ARROW}</a>
+      <a class="home-pill ghost" href="votes.html">Poslední hlasování</a>
+    </div>
+    <div class="hub-search home-search" role="search">
+      <label for="hub-q" class="sr-only">Najdi poslance, stranu nebo hlasování</label>
+      <input id="hub-q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list">
+      <ul id="hub-results" class="hub-results" role="listbox" hidden></ul>
+    </div>
+    <p class="home-data">Data k {data_day} (export HowTheyVote) · aktualizace každý týden</p>
+  </div>
+</section>"""
+
+    doors = "".join(
+        f'<a class="home-door door-{tone}" href="{href}"><div class="door-top"><span class="door-no">{no}</span>{_GLYPH[glyph]}</div>'
+        f'<div><h3>{esc(title)}</h3><p>{esc(line)}</p><span class="door-go">Otevřít {_ARROW}</span></div></a>'
+        for href, no, title, line, glyph, tone in DOORS)
+    doors_html = f"""<section class="home-wrap" aria-labelledby="h-doors">
+  <div class="home-head"><div><p class="home-kicker">Začněte tady</p><h2 id="h-doors">Tři cesty <strong>do dat.</strong></h2></div>
+    <p class="home-sub">Podle lidí, podle hlasování, nebo podle práce mimo plénum.</p></div>
+  <div class="home-doors">{doors}</div>
+</section>"""
+
+    rows = "".join(
+        f'<a class="home-row" href="{href}"><span class="row-no">{i:02d}</span><span class="row-title">{esc(t)}</span>'
+        f'<span class="row-line">{esc(line)}</span><span class="row-arrow">{_ARROW}</span></a>'
+        for i, (href, t, line) in enumerate(MORE, 1))
+    more_html = f"""<section class="home-wrap home-more" aria-labelledby="h-more">
+  <div class="home-more-head"><p class="home-kicker">Další pohledy</p><h2 id="h-more">Zajímavé <strong>souvislosti.</strong></h2></div>
+  <div class="home-rows">{rows}</div>
+</section>"""
+
+    band = f"""<section class="home-band" aria-label="Zásady">
+  <div class="home-band-inner">
+    <p>Každé číslo má <strong>odkaz na zdroj.</strong> Žádné pořadí, žádné známky.</p>
+    <a class="home-pill ghost" href="o-projektu.html#metodika">Metodika a zdroje {_ARROW}</a>
+  </div>
+</section>"""
+
+    body = hero + doors_html + more_html + band
     title = "EP Watch CZ – jak hlasují čeští europoslanci"
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
     meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
-    html = page(title, body, root="", current=None, description=desc, meta=meta,
+    html = page(title, body, root="", current=None, description=desc, meta=meta, main_attrs='class="home-page"',
                 scripts='<script src="app.js"></script>\n<script src="hub.js"></script>\n')
     return "index.html", html

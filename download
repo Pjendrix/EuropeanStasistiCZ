@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.cache/
+public/data/
+
+# lokální tajné klíče nikdy do repa (klíče patří do GitHub Secrets)
+.env
+.env.*
+*.pem
+*.key

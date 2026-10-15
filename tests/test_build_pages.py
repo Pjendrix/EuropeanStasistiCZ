@@ -88,14 +88,30 @@ def test_repo_definitions_in_sync_with_overview(tmp_path):
     assert bp.sync_definitions(tmp_path, root / "data") is False
 
 
-def test_hub_is_static_index_with_blocks_and_key_lists(data_dir):
+def test_hub_is_gateway_with_three_doors(data_dir):
     pages = built(data_dir)
     html = pages["index.html"]
-    assert "Jak hlasují čeští europoslanci" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
-    # všechna čtyři období jsou ve statickém HTML, výchozí viditelné
-    assert 'kv-period' not in html and 'name="kv-period"' not in html  # bez přepínače období
-    assert "Zatím nic" not in html and "Nejnovější zákony" in html and "Češi proti výsledku" in html
-    assert "poslanci.html" in html and "o-projektu.html#metodika" in html
+    assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
+    assert html.count('class="home-door ') == 3
+    for href in ("poslanci.html", "votes.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
+                 "o-projektu.html#metodika"):
+        assert f'href="{href}"' in html
+    # úvodka je rozcestník: seznamy hlasování a portréty jsou na stránkách Hlasování a Poslanci
+    assert "hub-vote" not in html and "hub-av" not in html and "Nejnovější zákony" not in html
+
+
+def test_blocks_for_manual_pages(data_dir, tmp_path):
+    built(data_dir)
+    root = Path(__file__).resolve().parent.parent
+    for name in ("poslanci.html", "votes.html"):
+        (tmp_path / name).write_text((root / "public" / name).read_text(encoding="utf-8"), encoding="utf-8")
+    assert bp.sync_blocks(tmp_path, data_dir) == 2
+    assert bp.sync_blocks(tmp_path, data_dir) == 0  # podruhé beze změny
+    mep = (tmp_path / "poslanci.html").read_text(encoding="utf-8")
+    assert "Kdo jsou čeští poslanci" in mep and 'class="hub-strip heads-strip"' in mep
+    votes = (tmp_path / "votes.html").read_text(encoding="utf-8")
+    assert "Co se naposledy odhlasovalo" in votes and "Nejnovější zákony" in votes and "Češi proti výsledku" in votes
+    assert 'id="all-votes"' in votes and 'href="#all-votes"' in votes
 
 
 def test_group_majority_and_party_votes_text():
