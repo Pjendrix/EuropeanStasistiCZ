@@ -307,10 +307,13 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     desc = f"Hlasování Evropského parlamentu {fmt_date(v['date'])}: {title_txt}. Výsledek: {result} " \
            f"({c['for']} pro, {c['against']} proti). Čeští poslanci: {cz_counts[0]} pro, {cz_counts[1]} proti, " \
            f"{cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo."
-    lists = []
+    lists, nobody = [], []
     for k in POSITIONS:
         names = sorted((meps_by_id[p["member_id"]] for p in cz if p["position"] == k), key=lambda m: m.get("sort_label") or m["name"])
-        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names) or '<li class="muted">nikdo</li>'
+        if not names:  # prázdné skupiny se sbalí do jedné věty pod seznamy (jako na interaktivní stránce)
+            nobody.append(POSITION_LABEL[k])
+            continue
+        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names)
         lists.append(f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>')
     group_rows = "".join(
         f'<tr><td>{esc(group_label(code, groups))}</td>{"".join(f"<td class=num>{n}</td>" for n in row)}<td>{split_bar(row)}</td></tr>'
@@ -342,6 +345,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 </div>
 <h2>Jak hlasovali Češi</h2>
 <div class="positions-grid">{"".join(lists)}</div>
+{f'<p class="small muted">Nikdo z Čechů: {", ".join(nobody)}.</p>' if nobody else ""}
 <p class="source">Jen poslanci v mandátu podle EP; frakce a strana k datu hlasování. Zdroj: <a href="{esc(src)}">HowTheyVote.eu</a> (ODbL).</p>
 <h2>Jak hlasovaly frakce</h2>
 <div class="table-wrap"><table><thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Rozložení</th></tr></thead>
