@@ -114,11 +114,11 @@ function pct(pair) {
 // Velké procento s počítadlem (animuje se při vjetí do obrazu).
 function countPct(value) {
   if (value === null || value === undefined) return "–";
-  return `<span data-count="${(value * 100).toFixed(1)}" data-decimals="1" data-suffix=" %">${fmtPct(value)}</span>`;
+  return `<span data-count="${(value * 100).toFixed(1)}" data-decimals="1" data-suffix="&nbsp;%">${fmtPct(value)}</span>`;
 }
 
 function fmtPct(value) {
-  return value === null ? "–" : (value * 100).toLocaleString("cs-CZ", { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + " %";
+  return value === null ? "–" : (value * 100).toLocaleString("cs-CZ", { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + "\u00a0%";
 }
 
 function fmtNum(n) {
@@ -188,6 +188,20 @@ function partyLink(id, label, parties, mep) {
   const p = parties.find((x) => String(x.id) === String(id));
   const badge = partyBadge(id, label, parties, mep);
   return p && !p.independent ? `<a href="party.html?id=${p.id}" class="badge-link">${badge}</a>` : badge;
+}
+
+// Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
+function mepUrl(id) {
+  return `p/${id}.html`;
+}
+
+// Počty Čechů: pro a proti výrazně, zdržení a nehlasování menším písmem.
+function czCountsText(cz) {
+  return `${cz[0]} pro · ${cz[1]} proti · ${cz[2]} se zdrželo · ${cz[3]} nehlasovalo`;
+}
+
+function czCountsHtml(cz) {
+  return `<span class="cz-counts"><b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
 }
 
 function photoUrl(mep, thumb = false) {
@@ -361,6 +375,44 @@ function collapseTables(root, n = 5) {
     btn.addEventListener("click", () => { rows.forEach((r) => { r.hidden = false; }); btn.remove(); });
     table.closest(".table-wrap").after(btn);
   });
+}
+
+// --- srovnání s mediánem (benchRow) ---------------------------------------------
+
+const BENCH_MIN = 0.6; // osa 60–100 %; nižší hodnoty se přilepí k levému okraji (číslo je vždy v textu)
+
+// Řádek: popisek a číslo, pod tím proužek (tečka = poslanec, čárka = medián) a věta se srovnáním.
+// pair = [čitatel, jmenovatel], median = podíl nebo null, refLabel = „medián EP“ / „medián frakce“,
+// naText = věta, když se metrika nepočítá. compact = bez věty pod proužkem (tabulka, mobil).
+function benchRow(label, pair, median, refLabel, opts = {}) {
+  const { naText = "nepočítá se", compact = false } = opts;
+  const v = pct(pair);
+  if (v === null) {
+    return `<div class="bench"><div class="bench-top"><span class="bench-label">${label}</span><b>–</b></div>
+      <p class="bench-note">${esc(naText)}</p></div>`;
+  }
+  const pos = (x) => `${(Math.max(0, Math.min(1, (x - BENCH_MIN) / (1 - BENCH_MIN))) * 100).toFixed(2)}%`;
+  const hasMed = median !== null && median !== undefined;
+  let note = "";
+  if (hasMed) {
+    const d = Math.round((v - median) * 1000) / 10;
+    const abs = Math.abs(d).toLocaleString("cs-CZ", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs} p. b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
+  }
+  const below = v < BENCH_MIN ? ` Hodnota je pod rozsahem osy (${fmtPct(v)}).` : "";
+  const aria = `${label} ${fmtPct(v)}${hasMed ? `, ${refLabel} ${fmtPct(median)}` : ""}`;
+  return `<div class="bench${compact ? " compact" : ""}" role="group" aria-label="${esc(aria)}">
+    <div class="bench-top"><span class="bench-label">${label}</span><b>${fmtPct(v)}</b></div>
+    <div class="bench-strip" aria-hidden="true"><i class="bench-track"></i><i class="bench-dot" style="left:${pos(v)}"></i>
+      ${hasMed ? `<i class="bench-med" style="left:${pos(median)}"></i>` : ""}</div>
+    ${compact ? "" : `<p class="bench-note">${esc(note + below) || `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování`}</p>`}</div>`;
+}
+
+// Medián frakce poslance z benchmarks.json (klíče jsou kódy HowTheyVote, poslanec má kód EP).
+function groupBench(bench, groups, epCode) {
+  if (!bench || !epCode) return null;
+  const g = groups.find((x) => x.ep_code === epCode || x.code === epCode);
+  return g ? bench.groups?.[g.code] || null : null;
 }
 
 // --- citace a export ---------------------------------------------------------

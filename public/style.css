@@ -207,7 +207,9 @@ a.entry:hover, a.entry:focus-visible { border-color: var(--gold); }
 .entry-topics a { color: #F8FAFC; font-size: .8rem; padding: .15rem .6rem; border-radius: 999px; border: 1px solid rgba(248, 250, 252, .25); text-decoration: none; }
 .entry-topics a:hover { border-color: var(--gold); }
 @media (max-width: 760px) { .entries { grid-template-columns: 1fr; } }
+.kpi-grid.kpi-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 760px) { .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero-emblem { display: none; } }
+@media (max-width: 480px) { .kpi-grid.kpi-2 { grid-template-columns: 1fr; } }
 
 /* --- rozložení ----------------------------------------------------------- */
 main, .home .page { max-width: 1280px; margin: 0 auto; padding: 2rem 20px 4rem; }
@@ -456,7 +458,7 @@ table.matrix tbody tr:hover { background: none; }
 .loading { color: var(--muted); }
 .mobile-only { display: none; }
 @media (max-width: 640px) {
-  .desktop-only { display: none; }
+  .desktop-only, .controls label.desktop-only { display: none; }
   .mobile-only { display: revert; }
   label.mobile-only { display: inline-flex; }
   .card { padding: 1.1rem; }
@@ -506,4 +508,46 @@ table.matrix tbody tr:hover { background: none; }
 @media (pointer: coarse) {
   .group-chip, .cite-btn, .csv-btn, .more-btn, .subnav a, .theme-toggle { min-height: 44px; }
   .cite-btn, .csv-btn { padding: 0 1rem; }
+}
+
+/* --- srovnání s mediánem (benchRow) ------------------------------------------ */
+.bench { margin-top: .75rem; }
+.bench-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.bench-label { font-size: .82rem; color: var(--muted); }
+.bench-top b { font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; }
+.bench-strip { position: relative; height: 17px; margin: .25rem 0 .15rem; }
+.bench-track { position: absolute; left: 0; right: 0; top: 7px; height: 3px; border-radius: 2px; background: var(--track); }
+.bench-dot { position: absolute; top: 3px; width: 11px; height: 11px; border-radius: 50%; background: var(--data); box-shadow: 0 0 0 2px var(--surface); transform: translateX(-50%); }
+.bench-med { position: absolute; top: 0; width: 3px; height: 17px; border-radius: 2px; background: var(--bench); box-shadow: 0 0 0 1.5px var(--surface); transform: translateX(-50%); z-index: 2; }
+.bench-note { margin: 0; font-size: .8rem; color: var(--muted); }
+.bench.compact { margin-top: 0; min-width: 9rem; }
+.bench.compact .bench-top b { font-size: 1rem; }
+.bench-key { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: center; margin: 0 0 1rem; }
+.bench-key i { display: inline-block; vertical-align: middle; margin-right: .4rem; }
+.bench-key .k-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--data); }
+.bench-key .k-tick { width: 3px; height: 13px; border-radius: 2px; background: var(--bench); }
+
+/* --- karta poslance (U2) ------------------------------------------------------ */
+.mep-card { position: relative; overflow: hidden; border-left: 4px solid var(--g, var(--muted)); }
+.mep-card-head { align-items: flex-start; }
+.mep-card-head img, .mep-card-head .avatar-initials { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--g, var(--muted)); }
+.mep-card-head .logo-tile { margin-left: auto; }
+.mep-card .sub .dot, .group-head .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--g, var(--muted)); margin-right: .35rem; vertical-align: middle; }
+.group-head .dot { width: 10px; height: 10px; margin: 0; }
+.group-block { margin-bottom: 1.75rem; }
+.group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .75rem; margin: 0 0 .75rem; font-size: 1.05rem; }
+.group-head .small { font-weight: 400; }
+.hemi-label { position: absolute; transform: translate(-50%, -50%); font-size: .75rem; font-weight: 600; color: var(--muted); white-space: nowrap; pointer-events: none; }
+.hemi { aspect-ratio: 400 / 222; }
+.cz-counts small { color: var(--muted); }
+/* Mobil: kompaktní řádky (avatar, jméno, frakce, docházka a proužek) – U9. */
+@media (max-width: 640px) {
+  .mep-grid { grid-template-columns: 1fr; gap: .5rem; }
+  .mep-card { padding: .75rem .9rem; }
+  .mep-card:hover, .mep-card:focus-visible { transform: none; }
+  .mep-card-head { margin-bottom: .25rem; gap: .6rem; }
+  .mep-card-head img, .mep-card-head .avatar-initials { width: 40px !important; height: 40px !important; }
+  .mep-card-head .logo-tile, .mep-card .bench + .bench, .mep-card .bench-note, .mep-card .note { display: none; }
+  .mep-card .bench { margin-top: .25rem; }
+  .mep-card .bench-top b { font-size: 1rem; }
 }

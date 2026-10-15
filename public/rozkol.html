@@ -38,7 +38,10 @@
   <h1>Kde se Češi rozdělili</h1>
   <p class="lead">Hlasování, ve kterých čeští poslanci hlasovali nejvíc rozdílně. Míra rozkolu = menšina mezi hlasy pro a proti
     děleno jejich součtem (0,5 = půl na půl). <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
-  <p id="unity"></p>
+  <div class="metrics" style="margin-bottom:1.5rem">
+    <div class="card metric" id="unity"><div class="label">Češi jednotně</div><div class="value">–</div></div>
+    <div class="card metric" id="decisive"><div class="label">Rozhodly české hlasy</div><div class="value">–</div></div>
+  </div>
   <fieldset class="controls fieldset">
     <legend class="small muted">Zobrazit</legend>
     <label><input type="radio" name="view" value="last_session" checked> poslední zasedání</label>
@@ -68,11 +71,19 @@ setNav("splits");
     document.getElementById("source").innerHTML = sourceLine(d);
     const u = d.unity;
     if (u && u.considered) {
-      document.getElementById("unity").innerHTML =
-        `Češi hlasovali jednotně (všichni hlasující pro nebo proti na jedné straně) v <strong>${fmtNum(u.united)} z ${fmtNum(u.considered)}</strong>
-         hlasování (${fmtPct(u.united / u.considered)}); u závěrečných v ${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)}.
-         Výrazný rozkol (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.`;
+      document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně</div>
+        <div class="value">${countPct(u.united / u.considered)}</div>
+        <div class="detail">${fmtNum(u.united)} z ${fmtNum(u.considered)} hlasování: všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně.
+          U závěrečných ${fmtNum(u.united_final)} z ${fmtNum(u.considered_final)}. Výrazný rozkol (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</div>
+        <div class="detail"><a href="o-projektu.html#metodika">jak počítáme</a></div>`;
     }
+    getJSON("decisive.json").then((dec) => {
+      const fin = dec.decisive_final ?? dec.votes.filter(isFinal).length;
+      document.getElementById("decisive").innerHTML = `<div class="label">Rozhodly české hlasy</div>
+        <div class="value"><span data-count="${dec.votes.length}">${fmtNum(dec.votes.length)}</span></div>
+        <div class="detail">těsných hlasování, která by bez hlasů Čechů dopadla opačně; z toho závěrečných ${fmtNum(fin)}</div>
+        <div class="detail"><a href="rozhodujici.html">seznam hlasování</a></div>`;
+    }).catch(() => {});
     const view = new URLSearchParams(location.search).get("v");
     if (view) document.querySelector(`input[value="${CSS.escape(view)}"]`)?.click();
     const render = () => {
