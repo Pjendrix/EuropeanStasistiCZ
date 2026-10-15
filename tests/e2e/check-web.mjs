@@ -36,7 +36,7 @@ const month = kv.votes[String(voteId)].month;
 const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
 const pages = ["index.html", "poslanci.html", "party.html", "votes.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
-  "prace.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
+  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
 
 const problems = [];
 const browser = await chromium.launch();

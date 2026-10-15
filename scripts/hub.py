@@ -132,7 +132,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         ("votes.html", "Hlasování", f'<p class="hub-num">{fmt_num(overview["votes_total"])}</p><p class="small muted">jmenovitých hlasování, poslední {fmt_date(overview["period"]["to"])}</p>'),
         ("rozkol.html", "Kde se Češi rozdělili", (f'<p class="hub-num">{ts["cz"][0]} : {ts["cz"][1]}</p><p class="small muted">poslední: {esc(ts["title"][:80])}{"…" if len(ts["title"]) > 80 else ""}</p>' if ts else "")),
         ("shoda.html", "Kdo s kým hlasuje", f'<p class="hub-num">{len(active)} × {len(active)}</p><p class="small muted">shoda každé dvojice poslanců</p>'),
-        ("prace.html", "Práce na textech", f'<p class="hub-num">{fmt_num(lead)} + {fmt_num(shadow)}</p><p class="small muted">zpráv vedou Češi jako zpravodajové + stínové zprávy za frakci</p>'),
+        ("prace.html", "Práce poslanců", f'<p class="hub-num">{fmt_num(lead)} + {fmt_num(shadow)}</p><p class="small muted">zpráv vedou Češi jako zpravodajové + stínové zprávy za frakci</p>'),
     ]
     explore = "".join(f'<a class="card hub-tile" href="{h}"><h3>{esc(t)}</h3>{body}</a>' for h, t, body in tiles)
     explore_html = f'<section class="hub-block" aria-labelledby="h-exp"><h2 id="h-exp">Co tu najdete</h2><div class="hub-tiles">{explore}</div></section>'

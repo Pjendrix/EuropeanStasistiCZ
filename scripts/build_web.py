@@ -32,6 +32,7 @@ from compute_stats import (CLOSE_MARGIN, POSITIONS, FormatError, active_position
 from activity import count_activity
 from attendance import count_presence
 from key_votes import build_key_votes
+from work_hub import build_work_hub
 from labels_cs import translate
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -471,6 +472,11 @@ def run(data_dir: Path, day: str) -> dict:
         write_json(data_dir / "vote_roles.json", {"source": own["source"], "updated": own["updated"],
                                                   "votes": build_vote_roles(own)}, compact=True)
     work = build_work(meps, own, day, stats, activity, presence)
+    if own is not None:
+        info = {m["id"]: mep_summary(m, day) for m in meps}
+        hub = build_work_hub(own, meps, info, speeches, attendance)
+        hub["sources"] = {"own_work": own["source"], "speeches": (activity_info or {}).get("source"), "presence": (presence_info or {}).get("source")}
+        write_json(data_dir / "work_hub.json", hub)
     if work is not None and activity_info:
         work["activity_source"] = activity_info
     if work is not None and presence_info:

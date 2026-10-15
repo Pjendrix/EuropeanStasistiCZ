@@ -201,7 +201,7 @@ function ownPassed(ow, mep) {
   ].join("");
   const note = d ? `Třetina = kde poslanec stojí mezi ${fmtNum(d.of)} současnými poslanci delegace v dané kategorii;
       celkové pořadí záměrně nepočítáme.${d.mandate_from ? ` Pozor: mandát má až od ${fmtDate(d.mandate_from)}, ostatní většinou od 16. 7. 2024.` : ""}${d.tiers_skipped ? " Mandát pokrývá méně než 75 % období, proto se třetina neurčuje a počty se s kolegy nesrovnávají." : ""}
-      <a href="prace.html">Srovnání celé delegace</a>.`
+      <a href="prace-poslanci.html">Srovnání celé delegace</a>.`
     : `${byGender(mep, "Bývalý poslanec", "Bývalá poslankyně")} se se současnou delegací nesrovnává (jiné období).`;
   const list = adoptedList.length ? `<details class="card own-list"><summary><strong>Přijaté zprávy, na kterých pracoval${byGender(mep, "", "a")}</strong> (${adoptedList.length})</summary>
       <ul class="plain">${adoptedList.map(ownItem).join("")}</ul></details>` : "";
