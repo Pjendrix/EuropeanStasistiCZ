@@ -357,10 +357,15 @@ table.compact thead tr:last-child th.num { text-align: right; }
 .portrait figcaption { font-size: .75rem; color: var(--muted); margin-top: .5rem; }
 .profile-head p { overflow-wrap: anywhere; }
 .facts { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
+.foot-only { display: none; }
 @media (max-width: 560px) {
-  .profile-head { grid-template-columns: 1fr; }
-  .portrait, .portrait img { width: 120px; }
-  .portrait img { height: 150px; }
+  /* Kompaktní hlavička na mobilu: malá fotka vedle jména, odkazy až dole (X4). */
+  .profile-head { grid-template-columns: 88px minmax(0, 1fr); gap: 1rem; align-items: start; }
+  .portrait, .portrait img { width: 88px; }
+  .portrait img { height: 110px; }
+  .profile-head h1 { font-size: 1.6rem; }
+  .head-only { display: none; }
+  .foot-only { display: block; margin-top: 1rem; }
 }
 
 /* graf docházky */

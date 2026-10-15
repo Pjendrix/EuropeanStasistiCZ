@@ -262,6 +262,8 @@ function periodText(x) {
     const g = currentOf(mep.groups);
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
+    const extLinks = `<a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
+      <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> · <a href="${esc(mep.source_url)}">Data z EP API</a>`;
     const b = profile.benchmarks;
     const isNI = (groups.find((x) => x.ep_code === g?.code)?.code || g?.code) === "NI";
     // Dřívější frakce do hlavičky: „do 3. 2. 2026 PfE“.
@@ -306,11 +308,7 @@ function periodText(x) {
           <p class="muted">Mandát: ${mandateText(mep)}</p>
           ${mep.name_note ? `<p class="small muted">Podoba jména: ${esc(mep.name_note)}</p>` : ""}
           ${profile.short_mandate ? `<p class="small note">${esc(SHORT_MANDATE_NOTE)} Mandát trval ${fmtNum(profile.mandate_days)} dní.</p>` : ""}
-          <p class="small">
-            <a href="${esc(mep.profile_url)}">Profil na webu EP</a> ·
-            <a href="${htvMember}">Hlasování na HowTheyVote.eu</a> ·
-            <a href="${esc(mep.source_url)}">Data z EP API</a>
-          </p>
+          <p class="small profile-links head-only">${extLinks}</p>
         </div>
       </div>
 
@@ -387,7 +385,7 @@ function periodText(x) {
         </section>
       </div>
 
-      <h2 id="proti-frakci">Hlasování proti většině frakce</h2>
+      <h2 id="proti-frakci">Kde hlasoval${byGender(mep, "", "a")} jinak než frakce</h2>
       <div class="card">
         <p>${byGender(mep, "Hlasoval", "Hlasovala")} jinak než většina své frakce ${fmtNum(profile.against_group.count)}× ze
           ${fmtNum(t.group_loyalty[1])} hlasování, ve kterých se to počítá (z toho v závěrečných hlasováních ${fmtNum(profile.against_group.count_main)}×).
@@ -430,6 +428,7 @@ function periodText(x) {
 
       <h2 id="posledni">Poslední závěrečná hlasování</h2>
       <div id="recent" class="loading">Načítám…</div>
+      <p class="small profile-links foot-only">${extLinks}</p>
     `;
 
     bindChart(main, profile.monthly, mep);
@@ -442,7 +441,7 @@ function periodText(x) {
         "<th>Volba / frakce</th>",
         (v) => `<td><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
           <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>`) +
-        '<p class="small muted">Posledních 10 hlasování.</p>';
+        `<p class="small muted">Posledních ${fmtNum((onlyMain ? profile.against_group.recent_main : profile.against_group.recent).length)} z ${fmtNum(onlyMain ? profile.against_group.count_main : profile.against_group.count)}.</p>`;
       collapseTables(el);
     };
     document.getElementById("against-main")?.addEventListener("change", renderAgainst);
