@@ -89,7 +89,7 @@
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
-  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/EuropeanStasistiCZ">kód a data na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a>.
 </div></footer>
 
 <script src="app.js"></script>
@@ -140,7 +140,7 @@ setNav("work-overview");
         <td class="num">${fmtNum(g.opinions)}${avg(g.opinions)}</td><td class="num">${fmtNum(g.speeches)}${avg(g.speeches)}</td><td class="num">${fmtNum(g.questions)}${avg(g.questions)}</td></tr>`;
     }).join("");
     document.getElementById("source").innerHTML = `Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> · <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · aktualizováno ${fmtDate(h.updated)}${h.complete ? "" : " (data nejsou úplná)"}` + infoButton(
-      `<p>EP Open Data (CC BY 4.0), výsledky hlasování HowTheyVote.eu (ODbL). Počty spočítal skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/work_hub.py">work_hub.py</a>. Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data jsou naposledy z února 2026.</p>`, "Zdroj a metodika");
+      `<p>EP Open Data (CC BY 4.0), výsledky hlasování HowTheyVote.eu (ODbL). Počty spočítal skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/work_hub.py">work_hub.py</a>. Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data jsou naposledy z února 2026.</p>`, "Zdroj a metodika");
   } catch (e) {
     showError(kpis, e);
   }

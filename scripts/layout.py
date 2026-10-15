@@ -17,7 +17,7 @@ import sys
 from html import escape
 from pathlib import Path
 
-REPO = "https://github.com/Pjendrix/EuropeanStasistiCZ"
+REPO = "https://github.com/Pjendrix/ep-watch-cz-open"
 
 ICON = ('<link rel="icon" href="{root}favicon.ico" sizes="32x32">\n'
         '<link rel="icon" href="{root}assets/brand/favicon-simple.svg" type="image/svg+xml">\n'
@@ -87,7 +87,7 @@ def footer(root: str = "") -> str:
             f'  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.\n'
             f'  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.\n'
             f'  <a href="{root}o-projektu.html">O projektu</a> · <a href="{root}o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · '
-            f'<a href="{REPO}">kód a data na GitHubu</a>.\n'
+            f'<a href="{REPO}">výpočty na GitHubu</a>.\n'
             f'</div></footer>')
 
 

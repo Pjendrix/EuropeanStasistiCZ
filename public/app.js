@@ -476,7 +476,7 @@ function sourceLine(stats) {
   const date = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? ` · data k ${fmtDate(rel.slice(0, 10))}` : "";
   return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
     + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
-      Čísla počítá skript <a href="https://github.com/Pjendrix/EuropeanStasistiCZ/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
+      Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
       <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Zdroj a metodika");
 }
 
