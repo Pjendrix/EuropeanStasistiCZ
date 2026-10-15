@@ -244,8 +244,15 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         for m in sorted(pp["member_list"], key=lambda m: m.get("sort_label") or m["name"]))
     cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
                        f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""
+    heading = f"<h1>{esc(name)}</h1>"
+    if pp.get("logo"):
+        a = pp.get("logo_aspect")  # stejná výška jako logoHeight() v app.js
+        h = 40 if not a or a <= 1 else round(40 * max(0.42, a ** -0.4), 1)
+        w = f' width="{round(h * pp["logo_aspect"])}"' if pp.get("logo_aspect") else ""
+        heading = (f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{ROOT}{esc(pp["logo"])}" '
+                   f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>')
     body = f"""<p class="small"><a href="{ROOT}party.html">← Všechny strany</a></p>
-<h1>{esc(name)}</h1>
+{heading}
 <p class="muted">{esc(pp['short_label'])} · {pp['members']} poslanců v 10. volebním období ·
   <a href="{ROOT}party.html?id={pp['id']}">interaktivní stránka strany</a></p>
 <div class="metrics">

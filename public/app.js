@@ -91,6 +91,15 @@ function logoTile(entity, size = 28) {
   return `<span class="logo-tile" style="height:${size}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" style="height:${h}px"${w} height="${Math.round(h)}" loading="lazy"></span>`;
 }
 
+// Buňka „logo + název + doplněk“: logo v pevně širokém slotu, aby názvy v tabulce lícovaly i u řádků bez loga
+// (tam je v slotu jen tečka v barvě strany/frakce). size = výška dlaždice loga.
+function entityCell(entity, { name, href, sub = "", size = 28, slot = "" } = {}) {
+  const logo = logoTile(entity, size) || `<span class="dot" style="background:${groupColor(entity)}"></span>`;
+  const title = href ? `<a href="${esc(href)}" class="vote-title">${esc(name)}</a>` : `<span>${esc(name)}</span>`;
+  return `<div class="entity-cell"><span class="logo-slot${slot ? ` ${slot}` : ""}">${logo}</span>
+    <div class="entity-text">${title}${sub ? `<div class="small muted">${sub}</div>` : ""}</div></div>`;
+}
+
 const cache = new Map();
 async function getJSON(path) {
   if (!cache.has(path)) {

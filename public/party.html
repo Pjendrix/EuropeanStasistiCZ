@@ -58,7 +58,7 @@ async function listPage() {
       <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Docházka</th>
         <th class="num">Jednotnost</th><th class="num">Strana se rozdělila</th></tr></thead>
       <tbody>${idx.parties.map((p) => `<tr>
-        <td><a href="party.html?id=${p.id}" class="vote-title">${esc(p.name || p.short_label)}</a> ${partyBadge(p.id, p.short_label, parties)}</td>
+        <td>${entityCell(p, { name: p.name || p.short_label, href: `party.html?id=${p.id}`, sub: esc(p.short_label) })}</td>
         <td class="num">${p.members}</td>
         <td class="num">${pctCell(p.total.attendance)}</td>
         <td class="num">${pctCell(p.cohesion, "všichni poslanci strany hlasovali stejně")}</td>
