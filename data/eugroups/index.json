@@ -1,0 +1,278 @@
+{
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  },
+  "group_web": {
+   "name": "Wikidata (vlastnost P856, oficiální web)",
+   "url": "https://www.wikidata.org",
+   "license": "CC0 1.0"
+  }
+ },
+ "groups": [
+  {
+   "code": "PFE",
+   "short_label": "PfE",
+   "name_cs": "skupina Patrioti pro Evropu",
+   "label": "Patriots for Europe",
+   "color": "#A855F7",
+   "chart_color": "#A855F7",
+   "logo": "assets/logos/ep/PFE.svg",
+   "logo_aspect": 8.53,
+   "web": "https://www.patriotsforeurope.eu/",
+   "cz_members": 8,
+   "attendance": [
+    456108,
+    522803
+   ],
+   "attendance_main": [
+    47544,
+    54369
+   ],
+   "majority": [
+    374091,
+    401209
+   ],
+   "majority_main": [
+    36167,
+    39606
+   ],
+   "splits": 600,
+   "considered": 6133,
+   "splits_main": 61,
+   "considered_main": 632
+  },
+  {
+   "code": "EPP",
+   "short_label": "EPP",
+   "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
+   "label": "European People’s Party",
+   "color": "#3B82F6",
+   "chart_color": "#3B82F6",
+   "logo": "assets/logos/ep/EPP.webp",
+   "logo_aspect": 2.214,
+   "web": "https://www.eppgroup.eu/",
+   "cz_members": 5,
+   "attendance": [
+    994496,
+    1148593
+   ],
+   "attendance_main": [
+    104830,
+    119430
+   ],
+   "majority": [
+    917134,
+    969868
+   ],
+   "majority_main": [
+    98445,
+    102582
+   ],
+   "splits": 241,
+   "considered": 6148,
+   "splits_main": 40,
+   "considered_main": 640
+  },
+  {
+   "code": "ECR",
+   "short_label": "ECR",
+   "name_cs": "skupina Evropských konzervativců a reformistů",
+   "label": "European Conservatives and Reformists",
+   "color": "#6366F1",
+   "chart_color": "#6366F1",
+   "logo": "assets/logos/ep/ECR.webp",
+   "logo_aspect": 1.0,
+   "web": "https://www.ecrgroup.eu/",
+   "cz_members": 4,
+   "attendance": [
+    436521,
+    493761
+   ],
+   "attendance_main": [
+    45747,
+    51341
+   ],
+   "majority": [
+    370071,
+    393810
+   ],
+   "majority_main": [
+    35508,
+    38621
+   ],
+   "splits": 349,
+   "considered": 6126,
+   "splits_main": 46,
+   "considered_main": 634
+  },
+  {
+   "code": "ESN",
+   "short_label": "ESN",
+   "name_cs": "skupina Evropa suverénních národů",
+   "label": "Europe of Sovereign Nations",
+   "color": "#0EA5E9",
+   "chart_color": "#0EA5E9",
+   "logo": "assets/logos/ep/ESN.webp",
+   "logo_aspect": 1.195,
+   "web": "https://esn-group.eu/",
+   "cz_members": 1,
+   "attendance": [
+    146593,
+    164485
+   ],
+   "attendance_main": [
+    15216,
+    17095
+   ],
+   "majority": [
+    123383,
+    128435
+   ],
+   "majority_main": [
+    11835,
+    12211
+   ],
+   "splits": 112,
+   "considered": 5692,
+   "splits_main": 4,
+   "considered_main": 545
+  },
+  {
+   "code": "GREEN_EFA",
+   "short_label": "Greens/EFA",
+   "name_cs": "skupina Zelených / Evropské svobodné aliance",
+   "label": "Greens/European Free Alliance",
+   "color": "#14B8A6",
+   "chart_color": "#14B8A6",
+   "logo": "assets/logos/ep/GREEN_EFA.webp",
+   "logo_aspect": 1.312,
+   "web": "https://www.greens-efa.eu/",
+   "cz_members": 1,
+   "attendance": [
+    292704,
+    326162
+   ],
+   "attendance_main": [
+    30400,
+    33920
+   ],
+   "majority": [
+    273052,
+    279170
+   ],
+   "majority_main": [
+    28092,
+    28692
+   ],
+   "splits": 88,
+   "considered": 6043,
+   "splits_main": 15,
+   "considered_main": 623
+  },
+  {
+   "code": "RENEW",
+   "short_label": "Renew",
+   "name_cs": null,
+   "label": "Renew Europe",
+   "color": "#F59E0B",
+   "chart_color": "#F59E0B",
+   "logo": "assets/logos/ep/RENEW.svg",
+   "logo_aspect": 9.2,
+   "web": null,
+   "cz_members": 0,
+   "attendance": [
+    412116,
+    467957
+   ],
+   "attendance_main": [
+    43038,
+    48693
+   ],
+   "majority": [
+    387705,
+    405646
+   ],
+   "majority_main": [
+    39944,
+    41992
+   ],
+   "splits": 169,
+   "considered": 6149,
+   "splits_main": 41,
+   "considered_main": 637
+  },
+  {
+   "code": "SD",
+   "short_label": "S&D",
+   "name_cs": null,
+   "label": "Progressive Alliance of Socialists and Democrats",
+   "color": "#E11D48",
+   "chart_color": "#E11D48",
+   "logo": "assets/logos/ep/SD.svg",
+   "logo_aspect": 1.0,
+   "web": null,
+   "cz_members": 0,
+   "attendance": [
+    722913,
+    834676
+   ],
+   "attendance_main": [
+    75652,
+    86811
+   ],
+   "majority": [
+    681190,
+    703347
+   ],
+   "majority_main": [
+    72618,
+    74027
+   ],
+   "splits": 94,
+   "considered": 6120,
+   "splits_main": 5,
+   "considered_main": 638
+  },
+  {
+   "code": "GUE_NGL",
+   "short_label": "The Left",
+   "name_cs": null,
+   "label": "The Left in the European Parliament",
+   "color": "#BE123C",
+   "chart_color": "#BE123C",
+   "logo": "assets/logos/ep/GUE_NGL.webp",
+   "logo_aspect": 3.803,
+   "web": null,
+   "cz_members": 0,
+   "attendance": [
+    238060,
+    281405
+   ],
+   "attendance_main": [
+    24703,
+    29254
+   ],
+   "majority": [
+    215032,
+    223475
+   ],
+   "majority_main": [
+    19671,
+    20950
+   ],
+   "splits": 244,
+   "considered": 6096,
+   "splits_main": 53,
+   "considered_main": 613
+  }
+ ]
+}

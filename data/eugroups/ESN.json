@@ -1,0 +1,2127 @@
+{
+ "code": "ESN",
+ "short_label": "ESN",
+ "name_cs": "skupina Evropa suverénních národů",
+ "label": "Europe of Sovereign Nations",
+ "color": "#0EA5E9",
+ "chart_color": "#0EA5E9",
+ "logo": "assets/logos/ep/ESN.webp",
+ "logo_aspect": 1.195,
+ "web": "https://esn-group.eu/",
+ "cz_members": 1,
+ "attendance": [
+  146593,
+  164485
+ ],
+ "attendance_main": [
+  15216,
+  17095
+ ],
+ "majority": [
+  123383,
+  128435
+ ],
+ "majority_main": [
+  11835,
+  12211
+ ],
+ "splits": 112,
+ "considered": 5692,
+ "splits_main": 4,
+ "considered_main": 545,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "member_list": [
+  {
+   "id": 197556,
+   "name": "Ivan DAVID",
+   "given_name": "Ivan",
+   "family_name": "David",
+   "sort_label": "DAVIDI",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197556.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16870"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ESN",
+    "short_label": "ESN"
+   },
+   "party": {
+    "id": 6864,
+    "short_label": "SPD"
+   },
+   "total": {
+    "attendance": [
+     5644,
+     6154
+    ],
+    "attendance_main": [
+     605,
+     640
+    ],
+    "group_loyalty": [
+     3973,
+     5635
+    ],
+    "group_loyalty_main": [
+     478,
+     604
+    ],
+    "cz_agreement": [
+     2882,
+     5439
+    ],
+    "outcome": [
+     1207,
+     4652
+    ],
+    "outcome_main": [
+     153,
+     474
+    ],
+    "outcome_close": [
+     49,
+     103
+    ],
+    "group_outcome": [
+     30940,
+     102836
+    ],
+    "group_outcome_main": [
+     3390,
+     10264
+    ],
+    "positions": {
+     "FOR": 2722,
+     "AGAINST": 1931,
+     "ABSTENTION": 991,
+     "DID_NOT_VOTE": 510
+    }
+   }
+  }
+ ],
+ "splits_list": [
+  {
+   "id": 196808,
+   "date": "2026-09-17",
+   "month": "2026-09",
+   "title": "Impact of social media and the online environment on young people",
+   "reference": "A10-0220/2026",
+   "description": "Considérant AD/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 575,
+    "against": 13,
+    "abstention": 19,
+    "did_not_vote": 110
+   },
+   "cz": [
+    14,
+    0,
+    1,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "dig",
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AD, 1. část",
+   "gc": [
+    5,
+    5,
+    15,
+    2
+   ]
+  },
+  {
+   "id": 192322,
+   "date": "2026-04-30",
+   "month": "2026-04",
+   "title": "Ensuring accountability and justice in response to Russia’s continued attacks against the civilian population in Ukraine",
+   "reference": "RC-B10-0201/2026",
+   "description": "Après le § 4 - Am 5",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 262,
+    "against": 216,
+    "abstention": 91,
+    "did_not_vote": 150
+   },
+   "cz": [
+    15,
+    4,
+    1,
+    1
+   ],
+   "amendment_number": "5",
+   "texts_adopted_reference": "P10_TA(2026)0161",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 4 - PN 5",
+   "gc": [
+    5,
+    5,
+    14,
+    3
+   ]
+  },
+  {
+   "id": 183563,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common security and defence policy – annual report 2025",
+   "reference": "A10-0265/2025",
+   "description": "Après le § 2 - Am 17/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 365,
+    "against": 211,
+    "abstention": 81,
+    "did_not_vote": 62
+   },
+   "cz": [
+    10,
+    9,
+    1,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": "P10_TA(2026)0013",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 2 - PN 17, 2. část",
+   "gc": [
+    5,
+    5,
+    15,
+    2
+   ]
+  },
+  {
+   "id": 181952,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Access to finance for SMEs and scale-ups",
+   "reference": "A10-0185/2025",
+   "description": "Proposition de résolution de remplacement - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 264,
+    "against": 363,
+    "abstention": 39,
+    "did_not_vote": 53
+   },
+   "cz": [
+    2,
+    17,
+    2,
+    0
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0300",
+   "cats": [
+    "eco",
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Alternativní návrh usnesení - PN 1",
+   "gc": [
+    9,
+    9,
+    3,
+    6
+   ]
+  },
+  {
+   "id": 183836,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common foreign and security policy – annual report 2025",
+   "reference": "A10-0253/2025",
+   "description": "§ 89 - Am 40",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 263,
+    "against": 363,
+    "abstention": 36,
+    "did_not_vote": 57
+   },
+   "cz": [
+    14,
+    6,
+    0,
+    1
+   ],
+   "amendment_number": "40",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 89 - PN 40",
+   "gc": [
+    12,
+    13,
+    1,
+    1
+   ]
+  },
+  {
+   "id": 180263,
+   "date": "2025-10-23",
+   "month": "2025-10",
+   "title": "UN Climate Change Conference 2025 in Belém, Brazil (COP30)",
+   "reference": "B10-0445/2025",
+   "description": "§ 78/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 337,
+    "against": 218,
+    "abstention": 18,
+    "did_not_vote": 146
+   },
+   "cz": [
+    6,
+    14,
+    0,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0254",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 78, 2. část",
+   "gc": [
+    11,
+    12,
+    0,
+    4
+   ]
+  },
+  {
+   "id": 195485,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "2025 Commission report on Ukraine",
+   "reference": "A10-0172/2026",
+   "description": "Après le § 32 - Am 35/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 592,
+    "against": 42,
+    "abstention": 11,
+    "did_not_vote": 74
+   },
+   "cz": [
+    13,
+    2,
+    1,
+    5
+   ],
+   "amendment_number": "35",
+   "texts_adopted_reference": null,
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 32 - PN 35, 1. část",
+   "gc": [
+    11,
+    10,
+    3,
+    3
+   ]
+  },
+  {
+   "id": 174369,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common foreign and security policy – annual report 2024",
+   "reference": "A10-0010/2025",
+   "description": "Après le § 9 - Am 31",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 121,
+    "against": 500,
+    "abstention": 52,
+    "did_not_vote": 45
+   },
+   "cz": [
+    3,
+    16,
+    2,
+    0
+   ],
+   "amendment_number": "31",
+   "texts_adopted_reference": "P10_TA(2025)0057",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 9 - PN 31",
+   "gc": [
+    11,
+    10,
+    3,
+    2
+   ]
+  },
+  {
+   "id": 172220,
+   "date": "2025-03-12",
+   "month": "2025-03",
+   "title": "European Semester for economic policy coordination: employment and social priorities for 2025",
+   "reference": "A10-0023/2025",
+   "description": "§ 5",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 469,
+    "against": 60,
+    "abstention": 153,
+    "did_not_vote": 37
+   },
+   "cz": [
+    15,
+    1,
+    5,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0032",
+   "cats": [
+    "soc",
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5",
+   "gc": [
+    10,
+    9,
+    5,
+    2
+   ]
+  },
+  {
+   "id": 194438,
+   "date": "2026-06-17",
+   "month": "2026-06",
+   "title": "Plants obtained by certain new genomic techniques and their food and feed",
+   "reference": "A10-0175/2026",
+   "description": "Après le considérant 18 - Am 19",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 185,
+    "against": 450,
+    "abstention": 21,
+    "did_not_vote": 63
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "amendment_number": "19",
+   "texts_adopted_reference": "P10_TA(2026)0206",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 18 - PN 19",
+   "gc": [
+    12,
+    14,
+    0,
+    1
+   ]
+  },
+  {
+   "id": 192772,
+   "date": "2026-05-20",
+   "month": "2026-05",
+   "title": "Recommendation on the 81st session of the United Nations General Assembly",
+   "reference": "A10-0103/2026",
+   "description": "§ 1, point v - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 189,
+    "against": 444,
+    "abstention": 10,
+    "did_not_vote": 74
+   },
+   "cz": [
+    15,
+    6,
+    0,
+    0
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. v - PN 2",
+   "gc": [
+    12,
+    14,
+    0,
+    1
+   ]
+  },
+  {
+   "id": 195414,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3), and (4)(c): Lead in certain fishing tackle",
+   "reference": "B10-0344/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 197,
+    "against": 455,
+    "abstention": 7,
+    "did_not_vote": 60
+   },
+   "cz": [
+    12,
+    5,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "eco"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    13,
+    11,
+    2,
+    1
+   ]
+  },
+  {
+   "id": 184441,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "European Central Bank – annual report 2025",
+   "reference": "A10-0002/2026",
+   "description": "§ 5",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 621,
+    "against": 20,
+    "abstention": 12,
+    "did_not_vote": 66
+   },
+   "cz": [
+    17,
+    1,
+    0,
+    3
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0034",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5",
+   "gc": [
+    11,
+    13,
+    0,
+    3
+   ]
+  },
+  {
+   "id": 197899,
+   "date": "2026-10-08",
+   "month": "2026-10",
+   "title": "The upcoming EU anti-corruption strategy",
+   "reference": "B10-0423/2026",
+   "description": "Après le § 34 - Am 14",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 121,
+    "against": 261,
+    "abstention": 205,
+    "did_not_vote": 132
+   },
+   "cz": [
+    4,
+    9,
+    5,
+    3
+   ],
+   "amendment_number": "14",
+   "texts_adopted_reference": null,
+   "cats": [
+    "jus"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 34 - PN 14",
+   "gc": [
+    5,
+    6,
+    15,
+    1
+   ]
+  },
+  {
+   "id": 178505,
+   "date": "2025-09-09",
+   "month": "2025-09",
+   "title": "2023 and 2024 reports on Ukraine",
+   "reference": "A10-0154/2025",
+   "description": "Après le § 1 - Am 4",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 365,
+    "against": 182,
+    "abstention": 56,
+    "did_not_vote": 116
+   },
+   "cz": [
+    10,
+    10,
+    0,
+    1
+   ],
+   "amendment_number": "4",
+   "texts_adopted_reference": "P10_TA(2025)0175",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 1 - PN 4",
+   "gc": [
+    6,
+    5,
+    15,
+    1
+   ]
+  },
+  {
+   "id": 170238,
+   "date": "2024-10-23",
+   "month": "2024-10",
+   "title": "Draft general budget of the European Union for 2025 – all sections",
+   "reference": null,
+   "description": null,
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 617,
+    "against": 22,
+    "abstention": 10,
+    "did_not_vote": 70
+   },
+   "cz": [
+    16,
+    0,
+    0,
+    5
+   ],
+   "amendment_number": "693",
+   "texts_adopted_reference": null,
+   "cats": [],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": null,
+   "gc": [
+    11,
+    9,
+    0,
+    5
+   ]
+  },
+  {
+   "id": 171568,
+   "date": "2025-01-23",
+   "month": "2025-01",
+   "title": "Situation in Venezuela following the usurpation of the presidency on 10 January 2025",
+   "reference": "RC-B10-0064/2025",
+   "description": "Après le § 2 - Am 3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 148,
+    "against": 294,
+    "abstention": 12,
+    "did_not_vote": 265
+   },
+   "cz": [
+    8,
+    3,
+    1,
+    9
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0007",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 2 - PN 3",
+   "gc": [
+    10,
+    8,
+    4,
+    4
+   ]
+  },
+  {
+   "id": 192803,
+   "date": "2026-05-20",
+   "month": "2026-05",
+   "title": "Recommendation on the 81st session of the United Nations General Assembly",
+   "reference": "A10-0103/2026",
+   "description": "§ 1, point ap - Am 65",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 327,
+    "against": 264,
+    "abstention": 55,
+    "did_not_vote": 71
+   },
+   "cz": [
+    6,
+    12,
+    2,
+    1
+   ],
+   "amendment_number": "65",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. ap - PN 65",
+   "gc": [
+    11,
+    14,
+    1,
+    1
+   ]
+  },
+  {
+   "id": 184466,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "European Central Bank – annual report 2025",
+   "reference": "A10-0002/2026",
+   "description": "§ 27 - Am 4",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 59,
+    "against": 561,
+    "abstention": 28,
+    "did_not_vote": 71
+   },
+   "cz": [
+    3,
+    15,
+    0,
+    3
+   ],
+   "amendment_number": "4",
+   "texts_adopted_reference": "P10_TA(2026)0034",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 27 - PN 4",
+   "gc": [
+    11,
+    14,
+    0,
+    2
+   ]
+  },
+  {
+   "id": 192780,
+   "date": "2026-05-20",
+   "month": "2026-05",
+   "title": "Recommendation on the 81st session of the United Nations General Assembly",
+   "reference": "A10-0103/2026",
+   "description": "§ 1, après le point aa - Am 53",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 379,
+    "against": 181,
+    "abstention": 78,
+    "did_not_vote": 79
+   },
+   "cz": [
+    7,
+    5,
+    9,
+    0
+   ],
+   "amendment_number": "53",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, za písm. aa - PN 53",
+   "gc": [
+    10,
+    13,
+    3,
+    1
+   ]
+  },
+  {
+   "id": 192775,
+   "date": "2026-05-20",
+   "month": "2026-05",
+   "title": "Recommendation on the 81st session of the United Nations General Assembly",
+   "reference": "A10-0103/2026",
+   "description": "§ 1, point v/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 417,
+    "against": 177,
+    "abstention": 51,
+    "did_not_vote": 72
+   },
+   "cz": [
+    13,
+    7,
+    1,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0182",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. v, 2. část",
+   "gc": [
+    13,
+    10,
+    3,
+    1
+   ]
+  },
+  {
+   "id": 184464,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "European Central Bank – annual report 2025",
+   "reference": "A10-0002/2026",
+   "description": "§ 23 - Am 41",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 438,
+    "against": 158,
+    "abstention": 44,
+    "did_not_vote": 79
+   },
+   "cz": [
+    5,
+    13,
+    0,
+    3
+   ],
+   "amendment_number": "41",
+   "texts_adopted_reference": "P10_TA(2026)0034",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 23 - PN 41",
+   "gc": [
+    13,
+    10,
+    0,
+    4
+   ]
+  },
+  {
+   "id": 197859,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Recommendation on EU-China political relations",
+   "reference": "A10-0237/2026",
+   "description": "Considérant I - Am 8",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 69,
+    "against": 562,
+    "abstention": 30,
+    "did_not_vote": 58
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": "8",
+   "texts_adopted_reference": null,
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění I - PN 8",
+   "gc": [
+    10,
+    14,
+    1,
+    2
+   ]
+  },
+  {
+   "id": 183643,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common security and defence policy – annual report 2025",
+   "reference": "A10-0265/2025",
+   "description": "Après le considérant E - Am 6",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 221,
+    "against": 415,
+    "abstention": 24,
+    "did_not_vote": 59
+   },
+   "cz": [
+    6,
+    8,
+    6,
+    1
+   ],
+   "amendment_number": "6",
+   "texts_adopted_reference": "P10_TA(2026)0013",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění E - PN 6",
+   "gc": [
+    10,
+    14,
+    1,
+    2
+   ]
+  },
+  {
+   "id": 174460,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common foreign and security policy – annual report 2024",
+   "reference": "A10-0010/2025",
+   "description": "§ 97, tiret 3 - Am 9",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 242,
+    "against": 404,
+    "abstention": 22,
+    "did_not_vote": 50
+   },
+   "cz": [
+    14,
+    3,
+    3,
+    1
+   ],
+   "amendment_number": "9",
+   "texts_adopted_reference": "P10_TA(2025)0057",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 97, odrážka 3 - PN 9",
+   "gc": [
+    10,
+    14,
+    0,
+    2
+   ]
+  },
+  {
+   "id": 181931,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Protection of minors online",
+   "reference": "A10-0213/2025",
+   "description": "§ 18",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 628,
+    "against": 25,
+    "abstention": 12,
+    "did_not_vote": 54
+   },
+   "cz": [
+    21,
+    0,
+    0,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0299",
+   "cats": [
+    "dig",
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 18",
+   "gc": [
+    7,
+    10,
+    5,
+    5
+   ]
+  },
+  {
+   "id": 176163,
+   "date": "2025-05-08",
+   "month": "2025-05",
+   "title": "Screening of foreign investments in the Union",
+   "reference": "A10-0061/2025",
+   "description": "Amendements de la commission compétente - votes séparés et votes par division - Am 100",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 370,
+    "against": 196,
+    "abstention": 9,
+    "did_not_vote": 144
+   },
+   "cz": [
+    6,
+    14,
+    0,
+    1
+   ],
+   "amendment_number": "100",
+   "texts_adopted_reference": "P10_TA(2025)0102",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená a dělená hlasování - PN 100",
+   "gc": [
+    13,
+    9,
+    0,
+    5
+   ]
+  },
+  {
+   "id": 183822,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common foreign and security policy – annual report 2025",
+   "reference": "A10-0253/2025",
+   "description": "Après le § 58 - Am 27",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 182,
+    "against": 431,
+    "abstention": 37,
+    "did_not_vote": 69
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": "27",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 58 - PN 27",
+   "gc": [
+    10,
+    15,
+    1,
+    1
+   ]
+  },
+  {
+   "id": 177875,
+   "date": "2025-07-08",
+   "month": "2025-07",
+   "title": "Security of energy supply in the EU",
+   "reference": "A10-0121/2025",
+   "description": "§ 49/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 519,
+    "against": 71,
+    "abstention": 71,
+    "did_not_vote": 58
+   },
+   "cz": [
+    9,
+    9,
+    1,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0146",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 49, 2. část",
+   "gc": [
+    6,
+    4,
+    16,
+    1
+   ]
+  },
+  {
+   "id": 177521,
+   "date": "2025-06-19",
+   "month": "2025-06",
+   "title": "Electricity grids: the backbone of the EU energy system",
+   "reference": "A10-0091/2025",
+   "description": "§ 33/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 530,
+    "against": 20,
+    "abstention": 31,
+    "did_not_vote": 138
+   },
+   "cz": [
+    14,
+    1,
+    0,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0136",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 33, 1. část",
+   "gc": [
+    4,
+    6,
+    15,
+    2
+   ]
+  },
+  {
+   "id": 177516,
+   "date": "2025-06-19",
+   "month": "2025-06",
+   "title": "Electricity grids: the backbone of the EU energy system",
+   "reference": "A10-0091/2025",
+   "description": "§ 22 - Am 7",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 160,
+    "against": 387,
+    "abstention": 29,
+    "did_not_vote": 143
+   },
+   "cz": [
+    9,
+    6,
+    0,
+    6
+   ],
+   "amendment_number": "7",
+   "texts_adopted_reference": "P10_TA(2025)0136",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 22 - PN 7",
+   "gc": [
+    6,
+    4,
+    15,
+    2
+   ]
+  },
+  {
+   "id": 177507,
+   "date": "2025-06-19",
+   "month": "2025-06",
+   "title": "Electricity grids: the backbone of the EU energy system",
+   "reference": "A10-0091/2025",
+   "description": "Après le § 1 - Am 5",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 160,
+    "against": 404,
+    "abstention": 7,
+    "did_not_vote": 148
+   },
+   "cz": [
+    8,
+    6,
+    0,
+    7
+   ],
+   "amendment_number": "5",
+   "texts_adopted_reference": "P10_TA(2025)0136",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 1 - PN 5",
+   "gc": [
+    10,
+    15,
+    0,
+    2
+   ]
+  },
+  {
+   "id": 195631,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "The impact of the 1974 Turkish invasion on Cypriot women and girls, and the crimes committed by Turkish forces and consequences on gender equality",
+   "reference": "B10-0333/2026",
+   "description": "Après le § 22 - Am 16",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 196,
+    "against": 423,
+    "abstention": 17,
+    "did_not_vote": 83
+   },
+   "cz": [
+    11,
+    7,
+    0,
+    3
+   ],
+   "amendment_number": "16",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 22 - PN 16",
+   "gc": [
+    9,
+    14,
+    1,
+    3
+   ]
+  },
+  {
+   "id": 185838,
+   "date": "2026-02-24",
+   "month": "2026-02",
+   "title": "Four years of Russia’s war of aggression against Ukraine and European contributions to a just peace and sustained security for Ukraine",
+   "reference": "RC-B10-0143/2026",
+   "description": "§ 6/8",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 534,
+    "against": 29,
+    "abstention": 18,
+    "did_not_vote": 138
+   },
+   "cz": [
+    16,
+    1,
+    3,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0056",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 6, 8. část",
+   "gc": [
+    14,
+    9,
+    0,
+    5
+   ]
+  },
+  {
+   "id": 184448,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "European Central Bank – annual report 2025",
+   "reference": "A10-0002/2026",
+   "description": "Après le § 9 - Am 2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 328,
+    "against": 281,
+    "abstention": 40,
+    "did_not_vote": 70
+   },
+   "cz": [
+    5,
+    7,
+    6,
+    3
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": "P10_TA(2026)0034",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 9 - PN 2",
+   "gc": [
+    9,
+    14,
+    2,
+    2
+   ]
+  },
+  {
+   "id": 182602,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Bilateral safeguard clause of the EU-Mercosur Partnership Agreement and the EU-Mercosur Interim Trade Agreement for agricultural products",
+   "reference": "A10-0254/2025",
+   "description": "Article 14 - après le § 3 - Am 51",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 195,
+    "against": 442,
+    "abstention": 6,
+    "did_not_vote": 76
+   },
+   "cz": [
+    14,
+    6,
+    0,
+    1
+   ],
+   "amendment_number": "51",
+   "texts_adopted_reference": "P10_TA(2025)0315",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 14 - za odst. 3 - PN 51",
+   "gc": [
+    9,
+    14,
+    0,
+    4
+   ]
+  },
+  {
+   "id": 180262,
+   "date": "2025-10-23",
+   "month": "2025-10",
+   "title": "UN Climate Change Conference 2025 in Belém, Brazil (COP30)",
+   "reference": "B10-0445/2025",
+   "description": "§ 78/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 387,
+    "against": 172,
+    "abstention": 10,
+    "did_not_vote": 150
+   },
+   "cz": [
+    7,
+    13,
+    0,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0254",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 78, 1. část",
+   "gc": [
+    9,
+    14,
+    0,
+    4
+   ]
+  },
+  {
+   "id": 179009,
+   "date": "2025-09-11",
+   "month": "2025-09",
+   "title": "Gaza at breaking point: EU action to combat famine and the urgent need to release hostages and move towards a two-state solution",
+   "reference": "RC-B10-0372/2025",
+   "description": "Après le § 1 - Am 47",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 226,
+    "against": 293,
+    "abstention": 66,
+    "did_not_vote": 134
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "amendment_number": "47",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 1 - PN 47",
+   "gc": [
+    9,
+    14,
+    2,
+    2
+   ]
+  },
+  {
+   "id": 171267,
+   "date": "2024-12-18",
+   "month": "2024-12",
+   "title": "Setting up a Special Committee on the European Democracy Shield, and defining its responsibilities, numerical strength and term of office",
+   "reference": "B10-0216/2024",
+   "description": "§ 1, après le point d - Am 4",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 182,
+    "against": 453,
+    "abstention": 15,
+    "did_not_vote": 69
+   },
+   "cz": [
+    11,
+    6,
+    3,
+    1
+   ],
+   "amendment_number": "4",
+   "texts_adopted_reference": "P10_TA(2024)0065",
+   "cats": [
+    "ins"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, za písm. d - PN 4",
+   "gc": [
+    11,
+    7,
+    4,
+    3
+   ]
+  },
+  {
+   "id": 195512,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "2025 Commission report on Ukraine",
+   "reference": "A10-0172/2026",
+   "description": "Après le § 71 - Am 17",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 218,
+    "against": 421,
+    "abstention": 14,
+    "did_not_vote": 66
+   },
+   "cz": [
+    10,
+    7,
+    0,
+    4
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 71 - PN 17",
+   "gc": [
+    10,
+    16,
+    0,
+    1
+   ]
+  },
+  {
+   "id": 192318,
+   "date": "2026-04-30",
+   "month": "2026-04",
+   "title": "Supporting democratic resilience in Armenia",
+   "reference": "RC-B10-0195/2026",
+   "description": "§ 14/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 522,
+    "against": 18,
+    "abstention": 29,
+    "did_not_vote": 150
+   },
+   "cz": [
+    18,
+    0,
+    2,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0162",
+   "cats": [
+    "def",
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 14, 1. část",
+   "gc": [
+    8,
+    5,
+    10,
+    4
+   ]
+  },
+  {
+   "id": 182687,
+   "date": "2025-12-15",
+   "month": "2025-12",
+   "title": "Tuesday’s agenda – Request by The Left Group (tanker)",
+   "reference": null,
+   "description": null,
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 181,
+    "against": 261,
+    "abstention": 9,
+    "did_not_vote": 268
+   },
+   "cz": [
+    2,
+    13,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [],
+   "vote_kind": "other",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": null,
+   "gc": [
+    8,
+    5,
+    2,
+    12
+   ]
+  },
+  {
+   "id": 197460,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Protection of workers from the risks related to exposure to carcinogens, mutagens or reprotoxic substances at work",
+   "reference": "A10-0100/2026",
+   "description": "Accord provisoire - Am 46",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 499,
+    "against": 49,
+    "abstention": 104,
+    "did_not_vote": 67
+   },
+   "cz": [
+    17,
+    1,
+    2,
+    1
+   ],
+   "amendment_number": "46",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 46",
+   "gc": [
+    8,
+    13,
+    2,
+    4
+   ]
+  },
+  {
+   "id": 182599,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Bilateral safeguard clause of the EU-Mercosur Partnership Agreement and the EU-Mercosur Interim Trade Agreement for agricultural products",
+   "reference": "A10-0254/2025",
+   "description": "Article 12 - § 7 - Am 50S",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 185,
+    "against": 452,
+    "abstention": 10,
+    "did_not_vote": 72
+   },
+   "cz": [
+    11,
+    9,
+    0,
+    1
+   ],
+   "amendment_number": "50D",
+   "texts_adopted_reference": "P10_TA(2025)0315",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 12 - odst. 7 - PN 50S",
+   "gc": [
+    8,
+    13,
+    2,
+    4
+   ]
+  },
+  {
+   "id": 197819,
+   "date": "2026-10-07",
+   "month": "2026-10",
+   "title": "Recommendation on EU-China political relations",
+   "reference": "A10-0237/2026",
+   "description": "§ 1, après le point a - Am 12",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 200,
+    "against": 420,
+    "abstention": 48,
+    "did_not_vote": 51
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": "12",
+   "texts_adopted_reference": null,
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, za písm. a - PN 12",
+   "gc": [
+    9,
+    15,
+    2,
+    1
+   ]
+  },
+  {
+   "id": 189902,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Non-application of customs duties on imports of certain goods",
+   "reference": "A10-0070/2026",
+   "description": "Demande d'ajournement du vote",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 174,
+    "against": 450,
+    "abstention": 16,
+    "did_not_vote": 78
+   },
+   "cz": [
+    4,
+    17,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0097",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "procedural",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Žádost o odložení hlasování",
+   "gc": [
+    9,
+    15,
+    3,
+    0
+   ]
+  },
+  {
+   "id": 184465,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "European Central Bank – annual report 2025",
+   "reference": "A10-0002/2026",
+   "description": "§ 25",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 626,
+    "against": 18,
+    "abstention": 10,
+    "did_not_vote": 65
+   },
+   "cz": [
+    18,
+    0,
+    0,
+    3
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0034",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 25",
+   "gc": [
+    9,
+    15,
+    1,
+    2
+   ]
+  },
+  {
+   "id": 183777,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common foreign and security policy – annual report 2025",
+   "reference": "A10-0253/2025",
+   "description": "Après le § 15 - Am 9",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 289,
+    "against": 326,
+    "abstention": 35,
+    "did_not_vote": 69
+   },
+   "cz": [
+    5,
+    15,
+    0,
+    1
+   ],
+   "amendment_number": "9",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 15 - PN 9",
+   "gc": [
+    9,
+    15,
+    1,
+    2
+   ]
+  },
+  {
+   "id": 183638,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Implementation of the common security and defence policy – annual report 2025",
+   "reference": "A10-0265/2025",
+   "description": "Après le § 81 - Am 14",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 212,
+    "against": 425,
+    "abstention": 25,
+    "did_not_vote": 57
+   },
+   "cz": [
+    6,
+    8,
+    6,
+    1
+   ],
+   "amendment_number": "14",
+   "texts_adopted_reference": "P10_TA(2026)0013",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 81 - PN 14",
+   "gc": [
+    9,
+    15,
+    2,
+    1
+   ]
+  },
+  {
+   "id": 174381,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common foreign and security policy – annual report 2024",
+   "reference": "A10-0010/2025",
+   "description": "Après le § 28 - Am 36",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 114,
+    "against": 532,
+    "abstention": 28,
+    "did_not_vote": 44
+   },
+   "cz": [
+    4,
+    15,
+    2,
+    0
+   ],
+   "amendment_number": "36",
+   "texts_adopted_reference": "P10_TA(2025)0057",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 28 - PN 36",
+   "gc": [
+    9,
+    15,
+    0,
+    2
+   ]
+  }
+ ],
+ "splits_list_main": [
+  {
+   "id": 195414,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3), and (4)(c): Lead in certain fishing tackle",
+   "reference": "B10-0344/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 197,
+    "against": 455,
+    "abstention": 7,
+    "did_not_vote": 60
+   },
+   "cz": [
+    12,
+    5,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "eco"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    13,
+    11,
+    2,
+    1
+   ]
+  },
+  {
+   "id": 197460,
+   "date": "2026-10-06",
+   "month": "2026-10",
+   "title": "Protection of workers from the risks related to exposure to carcinogens, mutagens or reprotoxic substances at work",
+   "reference": "A10-0100/2026",
+   "description": "Accord provisoire - Am 46",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 499,
+    "against": 49,
+    "abstention": 104,
+    "did_not_vote": 67
+   },
+   "cz": [
+    17,
+    1,
+    2,
+    1
+   ],
+   "amendment_number": "46",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 46",
+   "gc": [
+    8,
+    13,
+    2,
+    4
+   ]
+  },
+  {
+   "id": 191581,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Amendment of the European Electoral Act allowing Members to vote in plenary by proxy voting during pregnancy and after giving birth",
+   "reference": "A10-0123/2026",
+   "description": "Projet de décision du Conseil",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 616,
+    "against": 24,
+    "abstention": 8,
+    "did_not_vote": 71
+   },
+   "cz": [
+    17,
+    0,
+    2,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0124",
+   "cats": [
+    "ins"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh rozhodnutí Rady",
+   "gc": [
+    8,
+    14,
+    4,
+    1
+   ]
+  },
+  {
+   "id": 182479,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Providing macro-financial assistance to Jordan",
+   "reference": "A10-0245/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 585,
+    "against": 34,
+    "abstention": 45,
+    "did_not_vote": 55
+   },
+   "cz": [
+    18,
+    1,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0322",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    16,
+    7,
+    0,
+    4
+   ]
+  }
+ ]
+}

@@ -1,0 +1,3429 @@
+{
+ "code": "RENEW",
+ "short_label": "Renew",
+ "name_cs": null,
+ "label": "Renew Europe",
+ "color": "#F59E0B",
+ "chart_color": "#F59E0B",
+ "logo": "assets/logos/ep/RENEW.svg",
+ "logo_aspect": 9.2,
+ "web": null,
+ "cz_members": 0,
+ "attendance": [
+  412116,
+  467957
+ ],
+ "attendance_main": [
+  43038,
+  48693
+ ],
+ "majority": [
+  387705,
+  405646
+ ],
+ "majority_main": [
+  39944,
+  41992
+ ],
+ "splits": 169,
+ "considered": 6149,
+ "splits_main": 41,
+ "considered_main": 637,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "member_list": [],
+ "splits_list": [
+  {
+   "id": 196510,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94313",
+   "reference": "B10-0379/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 457,
+    "against": 184,
+    "abstention": 10,
+    "did_not_vote": 66
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    33,
+    3,
+    9
+   ]
+  },
+  {
+   "id": 170641,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP915635",
+   "reference": "B10-0149/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 58
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 170636,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP23211",
+   "reference": "B10-0150/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 62
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 170631,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216",
+   "reference": "B10-0152/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 165,
+    "abstention": 16,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 184689,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean DBN-09004-6",
+   "reference": "B10-0107/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 461,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 67
+   },
+   "cz": [
+    4,
+    15,
+    0,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    34,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 182886,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "Deforestation Regulation: certain obligations of operators and traders",
+   "reference": "C10-0263/2025",
+   "description": "Accord provisoire - Am 137",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 405,
+    "against": 242,
+    "abstention": 8,
+    "did_not_vote": 64
+   },
+   "cz": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "amendment_number": "137",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 137",
+   "gc": [
+    34,
+    33,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 195341,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216 x NK603 x DAS-40278-9 and its sub-combinations DP 202216 x NK603, DP202216 x DAS-40278-9",
+   "reference": "B10-0336/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 417,
+    "against": 167,
+    "abstention": 15,
+    "did_not_vote": 120
+   },
+   "cz": [
+    2,
+    12,
+    0,
+    7
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    32,
+    33,
+    3,
+    10
+   ]
+  },
+  {
+   "id": 179534,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Amending certain CAP Regulations as regards the conditionality system, types of intervention in the form of direct payment, types of intervention in certain sectors and rural development and annual performance reports, data and interoperability governance, suspensions of payments annual performance clearance and controls and penalties",
+   "reference": "A10-0164/2025",
+   "description": "Amendements de la commission responsable - vote séparé - Am 24",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 387,
+    "against": 227,
+    "abstention": 14,
+    "did_not_vote": 91
+   },
+   "cz": [
+    16,
+    1,
+    3,
+    0
+   ],
+   "amendment_number": "24",
+   "texts_adopted_reference": "P10_TA(2025)0213",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělené hlasování - PN 24",
+   "gc": [
+    32,
+    33,
+    2,
+    8
+   ]
+  },
+  {
+   "id": 171793,
+   "date": "2025-02-12",
+   "month": "2025-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP910521",
+   "reference": "B10-0061/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 477,
+    "against": 152,
+    "abstention": 20,
+    "did_not_vote": 70
+   },
+   "cz": [
+    11,
+    7,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0014",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    33,
+    32,
+    1,
+    9
+   ]
+  },
+  {
+   "id": 174751,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common security and defence policy – annual report 2024",
+   "reference": "A10-0011/2025",
+   "description": "Après le § 57 - Am 101",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 303,
+    "against": 289,
+    "abstention": 62,
+    "did_not_vote": 64
+   },
+   "cz": [
+    8,
+    10,
+    3,
+    0
+   ],
+   "amendment_number": "101",
+   "texts_adopted_reference": "P10_TA(2025)0058",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 57 - PN 101",
+   "gc": [
+    31,
+    32,
+    9,
+    3
+   ]
+  },
+  {
+   "id": 191320,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94637",
+   "reference": "B10-0186/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 412,
+    "against": 145,
+    "abstention": 11,
+    "did_not_vote": 151
+   },
+   "cz": [
+    4,
+    14,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0150",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    29,
+    1,
+    17
+   ]
+  },
+  {
+   "id": 184751,
+   "date": "2026-02-12",
+   "month": "2026-02",
+   "title": "Addressing subcontracting chains and the role of intermediaries in order to protect workers’ rights",
+   "reference": "A10-0256/2025",
+   "description": "§ 11/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 254,
+    "against": 315,
+    "abstention": 7,
+    "did_not_vote": 143
+   },
+   "cz": [
+    3,
+    14,
+    2,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0050",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 11, 2. část",
+   "gc": [
+    30,
+    29,
+    3,
+    13
+   ]
+  },
+  {
+   "id": 170638,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 810",
+   "reference": "B10-0146/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 464,
+    "against": 163,
+    "abstention": 27,
+    "did_not_vote": 65
+   },
+   "cz": [
+    4,
+    9,
+    7,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    35,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 182885,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "Deforestation Regulation: certain obligations of operators and traders",
+   "reference": "C10-0263/2025",
+   "description": "Proposition de rejet - Am 135= 136=",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 138,
+    "against": 512,
+    "abstention": 6,
+    "did_not_vote": 63
+   },
+   "cz": [
+    1,
+    19,
+    0,
+    1
+   ],
+   "amendment_number": "135=\n136=",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "rejection",
+   "is_final": false,
+   "inverted": true,
+   "description_cs": "Návrh na zamítnutí - PN 135= 136=",
+   "gc": [
+    34,
+    32,
+    1,
+    8
+   ]
+  },
+  {
+   "id": 182703,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603",
+   "reference": "B10-0562/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 479,
+    "against": 173,
+    "abstention": 8,
+    "did_not_vote": 59
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0327",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    33,
+    1,
+    10
+   ]
+  },
+  {
+   "id": 175776,
+   "date": "2025-05-07",
+   "month": "2025-05",
+   "title": "Discharge 2023: EU general budget – Commission, executive agencies and European Development Funds",
+   "reference": "A10-0074/2025",
+   "description": "§ 16 - Am 17",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 366,
+    "against": 271,
+    "abstention": 15,
+    "did_not_vote": 67
+   },
+   "cz": [
+    18,
+    2,
+    0,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": "P10_TA(2025)0077",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 16 - PN 17",
+   "gc": [
+    31,
+    33,
+    5,
+    6
+   ]
+  },
+  {
+   "id": 191965,
+   "date": "2026-04-30",
+   "month": "2026-04",
+   "title": "How to secure a sustainable future for the EU livestock sector in light of the need to ensure food security, farmers’ resilience and the challenges posed by animal diseases?",
+   "reference": "A10-0088/2026",
+   "description": "Après le § 46 - Am 8",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 244,
+    "against": 297,
+    "abstention": 41,
+    "did_not_vote": 137
+   },
+   "cz": [
+    6,
+    3,
+    11,
+    1
+   ],
+   "amendment_number": "8",
+   "texts_adopted_reference": "P10_TA(2026)0157",
+   "cats": [
+    "agr",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 46 - PN 8",
+   "gc": [
+    30,
+    32,
+    1,
+    14
+   ]
+  },
+  {
+   "id": 191253,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Simplification of certain requirements and procedures for chemical products",
+   "reference": "A10-0104/2026",
+   "description": "Après le considérant 15 - Am 92",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 202,
+    "against": 279,
+    "abstention": 160,
+    "did_not_vote": 78
+   },
+   "cz": [
+    3,
+    10,
+    7,
+    1
+   ],
+   "amendment_number": "92",
+   "texts_adopted_reference": "P10_TA(2026)0138",
+   "cats": [
+    "eco"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 15 - PN 92",
+   "gc": [
+    15,
+    14,
+    37,
+    11
+   ]
+  },
+  {
+   "id": 181951,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 114(3): amending Delegated Regulation (EU) 2023/2429 as regards origin labelling for fruit and vegetables originating in the non-self-governing territory of Western Sahara",
+   "reference": "B10-0506/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 359,
+    "against": 188,
+    "abstention": 76,
+    "did_not_vote": 96
+   },
+   "cz": [
+    6,
+    13,
+    2,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    30,
+    28,
+    9,
+    8
+   ]
+  },
+  {
+   "id": 177465,
+   "date": "2025-06-19",
+   "month": "2025-06",
+   "title": "Welfare of dogs and cats and their traceability",
+   "reference": "A10-0104/2025",
+   "description": "Amendements de la commission compétente - votes séparés - Am 55/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 385,
+    "against": 146,
+    "abstention": 44,
+    "did_not_vote": 144
+   },
+   "cz": [
+    10,
+    1,
+    4,
+    6
+   ],
+   "amendment_number": "55",
+   "texts_adopted_reference": "P10_TA(2025)0135",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 55, 2. část",
+   "gc": [
+    14,
+    13,
+    32,
+    16
+   ]
+  },
+  {
+   "id": 171364,
+   "date": "2024-12-19",
+   "month": "2024-12",
+   "title": "Amending Directive 2009/38/EC as regards the establishment and functioning of European Works Councils and the effective enforcement of transnational information and consultation rights",
+   "reference": "A10-0029/2024",
+   "description": "Décision d'engager des négociations interinstitutionnelles",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 300,
+    "against": 254,
+    "abstention": 21,
+    "did_not_vote": 144
+   },
+   "cz": [
+    2,
+    15,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "mandate",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Rozhodnutí zahájit jednání s Radou",
+   "gc": [
+    24,
+    22,
+    15,
+    16
+   ]
+  },
+  {
+   "id": 170624,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × NK603",
+   "reference": "B10-0148/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 171,
+    "abstention": 13,
+    "did_not_vote": 61
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0038",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    33,
+    36,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 170627,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × MON 88017 × 59122 and eight of its sub-combinations",
+   "reference": "B10-0147/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 476,
+    "against": 169,
+    "abstention": 14,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0040",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    32,
+    35,
+    2,
+    8
+   ]
+  },
+  {
+   "id": 188576,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Fisheries management approaches for safeguarding sensitive species, tackling invasive species and benefiting local economies",
+   "reference": "A10-0018/2026",
+   "description": "Après le considérant Z - Am 1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 277,
+    "against": 246,
+    "abstention": 90,
+    "did_not_vote": 105
+   },
+   "cz": [
+    10,
+    1,
+    9,
+    1
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2026)0067",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění Z - PN 1",
+   "gc": [
+    31,
+    34,
+    1,
+    10
+   ]
+  },
+  {
+   "id": 181830,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified oilseed rape MON 88302",
+   "reference": "B10-0490/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 456,
+    "against": 166,
+    "abstention": 21,
+    "did_not_vote": 76
+   },
+   "cz": [
+    4,
+    8,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0290",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    34,
+    0,
+    10
+   ]
+  },
+  {
+   "id": 196493,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean GMB151 x DAS-44406-6",
+   "reference": "B10-0380/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 442,
+    "against": 184,
+    "abstention": 12,
+    "did_not_vote": 79
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    30,
+    4,
+    11
+   ]
+  },
+  {
+   "id": 181829,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DAS1131",
+   "reference": "B10-0489/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 171,
+    "abstention": 19,
+    "did_not_vote": 76
+   },
+   "cz": [
+    5,
+    8,
+    8,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0288",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    33,
+    0,
+    12
+   ]
+  },
+  {
+   "id": 195340,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87705",
+   "reference": "B10-0244/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 466,
+    "against": 175,
+    "abstention": 16,
+    "did_not_vote": 62
+   },
+   "cz": [
+    3,
+    13,
+    0,
+    5
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    37,
+    33,
+    4,
+    4
+   ]
+  },
+  {
+   "id": 191959,
+   "date": "2026-04-30",
+   "month": "2026-04",
+   "title": "How to secure a sustainable future for the EU livestock sector in light of the need to ensure food security, farmers’ resilience and the challenges posed by animal diseases?",
+   "reference": "A10-0088/2026",
+   "description": "Après le § 37 - Am 5",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 175,
+    "against": 375,
+    "abstention": 33,
+    "did_not_vote": 136
+   },
+   "cz": [
+    8,
+    4,
+    8,
+    1
+   ],
+   "amendment_number": "5",
+   "texts_adopted_reference": "P10_TA(2026)0157",
+   "cats": [
+    "agr",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 37 - PN 5",
+   "gc": [
+    24,
+    27,
+    14,
+    12
+   ]
+  },
+  {
+   "id": 184691,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton GHB614 × LLCotton25",
+   "reference": "B10-0109/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 463,
+    "against": 164,
+    "abstention": 21,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    35,
+    1,
+    8
+   ]
+  },
+  {
+   "id": 184690,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize T25 (ACS-ZMØØ3-2)",
+   "reference": "B10-0106/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 462,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 66
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    35,
+    1,
+    8
+   ]
+  },
+  {
+   "id": 188574,
+   "date": "2026-03-10",
+   "month": "2026-03",
+   "title": "Fisheries management approaches for safeguarding sensitive species, tackling invasive species and benefiting local economies",
+   "reference": "A10-0018/2026",
+   "description": "§ 17 - Am 3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 217,
+    "against": 306,
+    "abstention": 86,
+    "did_not_vote": 109
+   },
+   "cz": [
+    10,
+    1,
+    9,
+    1
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2026)0067",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 17 - PN 3",
+   "gc": [
+    34,
+    30,
+    1,
+    11
+   ]
+  },
+  {
+   "id": 189270,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Proposition de la Commission",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 228,
+    "against": 311,
+    "abstention": 92,
+    "did_not_vote": 87
+   },
+   "cz": [
+    0,
+    11,
+    10,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "cats": [
+    "dig"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    33,
+    29,
+    6,
+    9
+   ]
+  },
+  {
+   "id": 184692,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton T304-40",
+   "reference": "B10-0108/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 428,
+    "against": 156,
+    "abstention": 22,
+    "did_not_vote": 113
+   },
+   "cz": [
+    4,
+    13,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    29,
+    33,
+    2,
+    11
+   ]
+  },
+  {
+   "id": 197199,
+   "date": "2026-09-17",
+   "month": "2026-09",
+   "title": "The recent hybrid attacks and instrumentalisation of migrants in Ceuta and the need for a coordinated response to protect EU’s external borders",
+   "reference": "B10-0406/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 339,
+    "against": 225,
+    "abstention": 16,
+    "did_not_vote": 137
+   },
+   "cz": [
+    12,
+    1,
+    1,
+    7
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    27,
+    31,
+    5,
+    15
+   ]
+  },
+  {
+   "id": 191247,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Simplification of certain requirements and procedures for chemical products",
+   "reference": "A10-0104/2026",
+   "description": "Article 2, alinéa 1, point 2, sous-point b - Am 96",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 166,
+    "against": 302,
+    "abstention": 178,
+    "did_not_vote": 73
+   },
+   "cz": [
+    3,
+    15,
+    2,
+    1
+   ],
+   "amendment_number": "96",
+   "texts_adopted_reference": "P10_TA(2026)0138",
+   "cats": [
+    "eco"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 2, pododstavec 1, bod 2, podbod b - PN 96",
+   "gc": [
+    15,
+    13,
+    38,
+    11
+   ]
+  },
+  {
+   "id": 172747,
+   "date": "2025-03-12",
+   "month": "2025-03",
+   "title": "White paper on the future of European defence",
+   "reference": "RC-B10-0146/2025/REV1",
+   "description": "§ 32 - Am 10",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 219,
+    "against": 445,
+    "abstention": 15,
+    "did_not_vote": 40
+   },
+   "cz": [
+    4,
+    16,
+    1,
+    0
+   ],
+   "amendment_number": "10",
+   "texts_adopted_reference": "P10_TA(2025)0034",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 32 - PN 10",
+   "gc": [
+    37,
+    32,
+    1,
+    5
+   ]
+  },
+  {
+   "id": 181885,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Deforestation Regulation: certain obligations of operators and traders",
+   "reference": "C10-0263/2025",
+   "description": "Proposition de rejet - Am 1= 37=",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 134,
+    "against": 526,
+    "abstention": 6,
+    "did_not_vote": 53
+   },
+   "cz": [
+    1,
+    20,
+    0,
+    0
+   ],
+   "amendment_number": "1=\n37=",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "rejection",
+   "is_final": false,
+   "inverted": true,
+   "description_cs": "Návrh na zamítnutí - PN 1= 37=",
+   "gc": [
+    31,
+    36,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 179538,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Amending certain CAP Regulations as regards the conditionality system, types of intervention in the form of direct payment, types of intervention in certain sectors and rural development and annual performance reports, data and interoperability governance, suspensions of payments annual performance clearance and controls and penalties",
+   "reference": "A10-0164/2025",
+   "description": "Amendements de la commission responsable - vote séparé - Am 73",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 367,
+    "against": 257,
+    "abstention": 13,
+    "did_not_vote": 82
+   },
+   "cz": [
+    15,
+    4,
+    1,
+    0
+   ],
+   "amendment_number": "73",
+   "texts_adopted_reference": "P10_TA(2025)0213",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělené hlasování - PN 73",
+   "gc": [
+    31,
+    36,
+    0,
+    8
+   ]
+  },
+  {
+   "id": 172812,
+   "date": "2025-03-12",
+   "month": "2025-03",
+   "title": "White paper on the future of European defence",
+   "reference": "RC-B10-0146/2025/REV1",
+   "description": "§ 68 - Am 14",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 231,
+    "against": 390,
+    "abstention": 53,
+    "did_not_vote": 45
+   },
+   "cz": [
+    2,
+    11,
+    8,
+    0
+   ],
+   "amendment_number": "14",
+   "texts_adopted_reference": "P10_TA(2025)0034",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 68 - PN 14",
+   "gc": [
+    36,
+    31,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 195764,
+   "date": "2026-07-09",
+   "month": "2026-07",
+   "title": "The threat of war crimes, the escalating violations of international humanitarian law and the human rights situation in El-Obeid, Sudan",
+   "reference": "B10-0357/2026",
+   "description": "Après le § 6 - Am 5",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 100,
+    "against": 404,
+    "abstention": 94,
+    "did_not_vote": 121
+   },
+   "cz": [
+    1,
+    16,
+    0,
+    4
+   ],
+   "amendment_number": "5",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 6 - PN 5",
+   "gc": [
+    7,
+    6,
+    54,
+    11
+   ]
+  },
+  {
+   "id": 188584,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Après le considérant 4 - Am 18",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 270,
+    "against": 325,
+    "abstention": 9,
+    "did_not_vote": 114
+   },
+   "cz": [
+    16,
+    2,
+    1,
+    2
+   ],
+   "amendment_number": "18",
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "cats": [
+    "dig"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za bodem odůvodnění 4 - PN 18",
+   "gc": [
+    30,
+    35,
+    1,
+    10
+   ]
+  },
+  {
+   "id": 181831,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87427",
+   "reference": "B10-0491/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 426,
+    "against": 157,
+    "abstention": 17,
+    "did_not_vote": 119
+   },
+   "cz": [
+    5,
+    7,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0292",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    35,
+    0,
+    10
+   ]
+  },
+  {
+   "id": 172887,
+   "date": "2025-03-13",
+   "month": "2025-03",
+   "title": "Social and employment aspects of restructuring processes: the need to protect jobs and workers’ rights",
+   "reference": "B10-0143/2025",
+   "description": "§ 5/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 279,
+    "against": 313,
+    "abstention": 19,
+    "did_not_vote": 108
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0039",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5, 2. část",
+   "gc": [
+    34,
+    29,
+    2,
+    10
+   ]
+  },
+  {
+   "id": 180041,
+   "date": "2025-10-22",
+   "month": "2025-10",
+   "title": "General budget of the European Union for the financial year 2026 – all sections",
+   "reference": "A10-0192/2025",
+   "description": "Après le § 36 - Am 3/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 301,
+    "against": 290,
+    "abstention": 48,
+    "did_not_vote": 80
+   },
+   "cz": [
+    15,
+    2,
+    3,
+    1
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0244",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 36 - PN 3, 1. část",
+   "gc": [
+    32,
+    38,
+    2,
+    3
+   ]
+  },
+  {
+   "id": 170637,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 94804",
+   "reference": "B10-0153/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 468,
+    "against": 166,
+    "abstention": 14,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0045",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    37,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 181833,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87708",
+   "reference": "B10-0493/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 179,
+    "abstention": 14,
+    "did_not_vote": 73
+   },
+   "cz": [
+    4,
+    14,
+    3,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0291",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    36,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 181832,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton MON 88913",
+   "reference": "B10-0492/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 452,
+    "against": 182,
+    "abstention": 13,
+    "did_not_vote": 72
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0289",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    36,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 196483,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87460",
+   "reference": "B10-0381/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 433,
+    "against": 159,
+    "abstention": 10,
+    "did_not_vote": 115
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    35,
+    29,
+    2,
+    12
+   ]
+  },
+  {
+   "id": 172925,
+   "date": "2025-03-13",
+   "month": "2025-03",
+   "title": "Social and employment aspects of restructuring processes: the need to protect jobs and workers’ rights",
+   "reference": "B10-0143/2025",
+   "description": "§ 16/4",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 322,
+    "against": 218,
+    "abstention": 77,
+    "did_not_vote": 102
+   },
+   "cz": [
+    4,
+    13,
+    3,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0039",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 16, 4. část",
+   "gc": [
+    35,
+    29,
+    2,
+    9
+   ]
+  }
+ ],
+ "splits_list_main": [
+  {
+   "id": 196510,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94313",
+   "reference": "B10-0379/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 457,
+    "against": 184,
+    "abstention": 10,
+    "did_not_vote": 66
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    33,
+    3,
+    9
+   ]
+  },
+  {
+   "id": 170641,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP915635",
+   "reference": "B10-0149/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 58
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 170636,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP23211",
+   "reference": "B10-0150/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 62
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 170631,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216",
+   "reference": "B10-0152/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 165,
+    "abstention": 16,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    34,
+    34,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 184689,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean DBN-09004-6",
+   "reference": "B10-0107/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 461,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 67
+   },
+   "cz": [
+    4,
+    15,
+    0,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    34,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 182886,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "Deforestation Regulation: certain obligations of operators and traders",
+   "reference": "C10-0263/2025",
+   "description": "Accord provisoire - Am 137",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 405,
+    "against": 242,
+    "abstention": 8,
+    "did_not_vote": 64
+   },
+   "cz": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "amendment_number": "137",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 137",
+   "gc": [
+    34,
+    33,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 195341,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216 x NK603 x DAS-40278-9 and its sub-combinations DP 202216 x NK603, DP202216 x DAS-40278-9",
+   "reference": "B10-0336/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 417,
+    "against": 167,
+    "abstention": 15,
+    "did_not_vote": 120
+   },
+   "cz": [
+    2,
+    12,
+    0,
+    7
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    32,
+    33,
+    3,
+    10
+   ]
+  },
+  {
+   "id": 171793,
+   "date": "2025-02-12",
+   "month": "2025-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP910521",
+   "reference": "B10-0061/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 477,
+    "against": 152,
+    "abstention": 20,
+    "did_not_vote": 70
+   },
+   "cz": [
+    11,
+    7,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0014",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    33,
+    32,
+    1,
+    9
+   ]
+  },
+  {
+   "id": 191320,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94637",
+   "reference": "B10-0186/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 412,
+    "against": 145,
+    "abstention": 11,
+    "did_not_vote": 151
+   },
+   "cz": [
+    4,
+    14,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0150",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    29,
+    1,
+    17
+   ]
+  },
+  {
+   "id": 170638,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 810",
+   "reference": "B10-0146/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 464,
+    "against": 163,
+    "abstention": 27,
+    "did_not_vote": 65
+   },
+   "cz": [
+    4,
+    9,
+    7,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    35,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 182703,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603",
+   "reference": "B10-0562/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 479,
+    "against": 173,
+    "abstention": 8,
+    "did_not_vote": 59
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0327",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    33,
+    1,
+    10
+   ]
+  },
+  {
+   "id": 181951,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 114(3): amending Delegated Regulation (EU) 2023/2429 as regards origin labelling for fruit and vegetables originating in the non-self-governing territory of Western Sahara",
+   "reference": "B10-0506/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 359,
+    "against": 188,
+    "abstention": 76,
+    "did_not_vote": 96
+   },
+   "cz": [
+    6,
+    13,
+    2,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    30,
+    28,
+    9,
+    8
+   ]
+  },
+  {
+   "id": 170624,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × NK603",
+   "reference": "B10-0148/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 171,
+    "abstention": 13,
+    "did_not_vote": 61
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0038",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    33,
+    36,
+    1,
+    7
+   ]
+  },
+  {
+   "id": 170627,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × MON 88017 × 59122 and eight of its sub-combinations",
+   "reference": "B10-0147/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 476,
+    "against": 169,
+    "abstention": 14,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0040",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    32,
+    35,
+    2,
+    8
+   ]
+  },
+  {
+   "id": 181830,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified oilseed rape MON 88302",
+   "reference": "B10-0490/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 456,
+    "against": 166,
+    "abstention": 21,
+    "did_not_vote": 76
+   },
+   "cz": [
+    4,
+    8,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0290",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    34,
+    0,
+    10
+   ]
+  },
+  {
+   "id": 196493,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean GMB151 x DAS-44406-6",
+   "reference": "B10-0380/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 442,
+    "against": 184,
+    "abstention": 12,
+    "did_not_vote": 79
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    33,
+    30,
+    4,
+    11
+   ]
+  },
+  {
+   "id": 181829,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DAS1131",
+   "reference": "B10-0489/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 171,
+    "abstention": 19,
+    "did_not_vote": 76
+   },
+   "cz": [
+    5,
+    8,
+    8,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0288",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    33,
+    0,
+    12
+   ]
+  },
+  {
+   "id": 195340,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87705",
+   "reference": "B10-0244/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 466,
+    "against": 175,
+    "abstention": 16,
+    "did_not_vote": 62
+   },
+   "cz": [
+    3,
+    13,
+    0,
+    5
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    37,
+    33,
+    4,
+    4
+   ]
+  },
+  {
+   "id": 184691,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton GHB614 × LLCotton25",
+   "reference": "B10-0109/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 463,
+    "against": 164,
+    "abstention": 21,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    35,
+    1,
+    8
+   ]
+  },
+  {
+   "id": 184690,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize T25 (ACS-ZMØØ3-2)",
+   "reference": "B10-0106/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 462,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 66
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    35,
+    1,
+    8
+   ]
+  },
+  {
+   "id": 189270,
+   "date": "2026-03-26",
+   "month": "2026-03",
+   "title": "Proposal for a regulation of the European Parliament and of the Council amending Regulation (EU) 2021/1232 as regards the extension of its period of application",
+   "reference": "A10-0040/2026",
+   "description": "Proposition de la Commission",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 228,
+    "against": 311,
+    "abstention": 92,
+    "did_not_vote": 87
+   },
+   "cz": [
+    0,
+    11,
+    10,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0070",
+   "cats": [
+    "dig"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    33,
+    29,
+    6,
+    9
+   ]
+  },
+  {
+   "id": 184692,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton T304-40",
+   "reference": "B10-0108/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 428,
+    "against": 156,
+    "abstention": 22,
+    "did_not_vote": 113
+   },
+   "cz": [
+    4,
+    13,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    29,
+    33,
+    2,
+    11
+   ]
+  },
+  {
+   "id": 197199,
+   "date": "2026-09-17",
+   "month": "2026-09",
+   "title": "The recent hybrid attacks and instrumentalisation of migrants in Ceuta and the need for a coordinated response to protect EU’s external borders",
+   "reference": "B10-0406/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 339,
+    "against": 225,
+    "abstention": 16,
+    "did_not_vote": 137
+   },
+   "cz": [
+    12,
+    1,
+    1,
+    7
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    27,
+    31,
+    5,
+    15
+   ]
+  },
+  {
+   "id": 181831,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87427",
+   "reference": "B10-0491/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 426,
+    "against": 157,
+    "abstention": 17,
+    "did_not_vote": 119
+   },
+   "cz": [
+    5,
+    7,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0292",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    35,
+    0,
+    10
+   ]
+  },
+  {
+   "id": 170637,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 94804",
+   "reference": "B10-0153/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 468,
+    "against": 166,
+    "abstention": 14,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0045",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    31,
+    37,
+    2,
+    7
+   ]
+  },
+  {
+   "id": 181833,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87708",
+   "reference": "B10-0493/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 179,
+    "abstention": 14,
+    "did_not_vote": 73
+   },
+   "cz": [
+    4,
+    14,
+    3,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0291",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    36,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 181832,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton MON 88913",
+   "reference": "B10-0492/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 452,
+    "against": 182,
+    "abstention": 13,
+    "did_not_vote": 72
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0289",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    30,
+    36,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 196483,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87460",
+   "reference": "B10-0381/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 433,
+    "against": 159,
+    "abstention": 10,
+    "did_not_vote": 115
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    35,
+    29,
+    2,
+    12
+   ]
+  },
+  {
+   "id": 182705,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified sugar beet KWS20-1",
+   "reference": "B10-0559/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 455,
+    "against": 169,
+    "abstention": 8,
+    "did_not_vote": 87
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0328",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    28,
+    34,
+    1,
+    12
+   ]
+  },
+  {
+   "id": 170765,
+   "date": "2024-11-28",
+   "month": "2024-11",
+   "title": "Recommendation on smoke- and aerosol-free environments",
+   "reference": "RC-B10-0173/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 152,
+    "against": 378,
+    "abstention": 26,
+    "did_not_vote": 163
+   },
+   "cz": [
+    1,
+    16,
+    3,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    23,
+    28,
+    8,
+    18
+   ]
+  },
+  {
+   "id": 181813,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Deforestation Regulation: certain obligations of operators and traders",
+   "reference": "C10-0263/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 402,
+    "against": 250,
+    "abstention": 8,
+    "did_not_vote": 59
+   },
+   "cz": [
+    19,
+    1,
+    1,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    29,
+    36,
+    2,
+    8
+   ]
+  },
+  {
+   "id": 179508,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP51291",
+   "reference": "B10-0407/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 433,
+    "against": 166,
+    "abstention": 9,
+    "did_not_vote": 111
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0222",
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    37,
+    29,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 171790,
+   "date": "2025-02-12",
+   "month": "2025-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 95275",
+   "reference": "B10-0060/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 467,
+    "against": 156,
+    "abstention": 18,
+    "did_not_vote": 78
+   },
+   "cz": [
+    11,
+    7,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0015",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    29,
+    37,
+    0,
+    9
+   ]
+  },
+  {
+   "id": 195543,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603 × T25",
+   "reference": "B10-0335/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 460,
+    "against": 189,
+    "abstention": 14,
+    "did_not_vote": 56
+   },
+   "cz": [
+    3,
+    14,
+    0,
+    4
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    30,
+    41,
+    3,
+    4
+   ]
+  },
+  {
+   "id": 170398,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "reference": "C10-0119/2024",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 371,
+    "against": 240,
+    "abstention": 30,
+    "did_not_vote": 78
+   },
+   "cz": [
+    18,
+    0,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    29,
+    20,
+    24,
+    4
+   ]
+  },
+  {
+   "id": 176089,
+   "date": "2025-05-08",
+   "month": "2025-05",
+   "title": "Objection pursuant to Rule 115(2) and (3): genetically modified soybean MON 87705 × MON 87708 × MON 87708 × MON 89788",
+   "reference": "B10-0244/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 373,
+    "against": 150,
+    "abstention": 10,
+    "did_not_vote": 186
+   },
+   "cz": [
+    11,
+    7,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0106",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    22,
+    34,
+    2,
+    17
+   ]
+  },
+  {
+   "id": 179275,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Strengthening of the position of farmers in the food supply chain",
+   "reference": "A10-0161/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 532,
+    "against": 78,
+    "abstention": 25,
+    "did_not_vote": 84
+   },
+   "cz": [
+    16,
+    0,
+    4,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0214",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    41,
+    24,
+    3,
+    7
+   ]
+  },
+  {
+   "id": 194134,
+   "date": "2026-06-17",
+   "month": "2026-06",
+   "title": "Common system for the return of third-country nationals staying illegally in the Union (Return Regulation)",
+   "reference": "A10-0048/2026",
+   "description": "Accord provisoire - Am 4",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 418,
+    "against": 218,
+    "abstention": 30,
+    "did_not_vote": 53
+   },
+   "cz": [
+    19,
+    1,
+    0,
+    1
+   ],
+   "amendment_number": "4",
+   "texts_adopted_reference": "P10_TA(2026)0207",
+   "cats": [
+    "jus"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 4",
+   "gc": [
+    37,
+    21,
+    12,
+    8
+   ]
+  },
+  {
+   "id": 183884,
+   "date": "2026-01-21",
+   "month": "2026-01",
+   "title": "Request for opinion from the Court of Justice on the compatibility with the Treaties of the proposed EU-Mercosur Partnership Agreement (EMPA) and Interim Trade Agreement (ITA)",
+   "reference": "B10-0060/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 334,
+    "against": 324,
+    "abstention": 11,
+    "did_not_vote": 50
+   },
+   "cz": [
+    4,
+    8,
+    7,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0008",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    24,
+    46,
+    0,
+    5
+   ]
+  },
+  {
+   "id": 184168,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "Application of the ‘safe third country’ concept",
+   "reference": "A10-0255/2025",
+   "description": "Accord provisoire - Am 13",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 396,
+    "against": 226,
+    "abstention": 30,
+    "did_not_vote": 67
+   },
+   "cz": [
+    17,
+    1,
+    0,
+    3
+   ],
+   "amendment_number": "13",
+   "texts_adopted_reference": "P10_TA(2026)0026",
+   "cats": [
+    "jus"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 13",
+   "gc": [
+    16,
+    33,
+    18,
+    8
+   ]
+  },
+  {
+   "id": 184187,
+   "date": "2026-02-12",
+   "month": "2026-02",
+   "title": "Addressing subcontracting chains and the role of intermediaries in order to protect workers’ rights",
+   "reference": "A10-0256/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 332,
+    "against": 209,
+    "abstention": 33,
+    "did_not_vote": 145
+   },
+   "cz": [
+    2,
+    11,
+    6,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0050",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    39,
+    18,
+    4,
+    14
+   ]
+  }
+ ]
+}

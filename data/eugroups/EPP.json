@@ -1,0 +1,3770 @@
+{
+ "code": "EPP",
+ "short_label": "EPP",
+ "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
+ "label": "European People’s Party",
+ "color": "#3B82F6",
+ "chart_color": "#3B82F6",
+ "logo": "assets/logos/ep/EPP.webp",
+ "logo_aspect": 2.214,
+ "web": "https://www.eppgroup.eu/",
+ "cz_members": 5,
+ "attendance": [
+  994496,
+  1148593
+ ],
+ "attendance_main": [
+  104830,
+  119430
+ ],
+ "majority": [
+  917134,
+  969868
+ ],
+ "majority_main": [
+  98445,
+  102582
+ ],
+ "splits": 241,
+ "considered": 6148,
+ "splits_main": 40,
+ "considered_main": 640,
+ "sources": {
+  "votes": {
+   "name": "HowTheyVote.eu",
+   "url": "https://github.com/HowTheyVote/data",
+   "license": "ODbL",
+   "release": "2026-10-10"
+  },
+  "meps": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
+   "license": "CC BY 4.0"
+  }
+ },
+ "member_list": [
+  {
+   "id": 124701,
+   "name": "Luděk NIEDERMAYER",
+   "given_name": "Luděk",
+   "family_name": "Niedermayer",
+   "sort_label": "NIEDERMAYER",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124701.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16877"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "total": {
+    "attendance": [
+     5916,
+     6154
+    ],
+    "attendance_main": [
+     629,
+     640
+    ],
+    "group_loyalty": [
+     5326,
+     5916
+    ],
+    "group_loyalty_main": [
+     608,
+     629
+    ],
+    "cz_agreement": [
+     2757,
+     5745
+    ],
+    "outcome": [
+     5223,
+     5521
+    ],
+    "outcome_main": [
+     579,
+     618
+    ],
+    "outcome_close": [
+     57,
+     105
+    ],
+    "group_outcome": [
+     804045,
+     874998
+    ],
+    "group_outcome_main": [
+     93389,
+     99497
+    ],
+    "positions": {
+     "FOR": 2441,
+     "AGAINST": 3081,
+     "ABSTENTION": 394,
+     "DID_NOT_VOTE": 238
+    }
+   }
+  },
+  {
+   "id": 124713,
+   "name": "Tomáš ZDECHOVSKÝ",
+   "given_name": "Tomáš",
+   "family_name": "Zdechovský",
+   "sort_label": "ZDECHOVSKY",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124713.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16896"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6770,
+    "short_label": "KDU-ČSL"
+   },
+   "total": {
+    "attendance": [
+     5566,
+     6154
+    ],
+    "attendance_main": [
+     585,
+     640
+    ],
+    "group_loyalty": [
+     5095,
+     5566
+    ],
+    "group_loyalty_main": [
+     558,
+     585
+    ],
+    "cz_agreement": [
+     2850,
+     5410
+    ],
+    "outcome": [
+     4820,
+     5450
+    ],
+    "outcome_main": [
+     522,
+     571
+    ],
+    "outcome_close": [
+     71,
+     138
+    ],
+    "group_outcome": [
+     794264,
+     871919
+    ],
+    "group_outcome_main": [
+     86494,
+     92236
+    ],
+    "positions": {
+     "FOR": 2150,
+     "AGAINST": 3301,
+     "ABSTENTION": 115,
+     "DID_NOT_VOTE": 588
+    }
+   }
+  },
+  {
+   "id": 256840,
+   "name": "Jan FARSKÝ",
+   "given_name": "Jan",
+   "family_name": "Farský",
+   "sort_label": "FARSKYJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256840.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16886"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "total": {
+    "attendance": [
+     5832,
+     6154
+    ],
+    "attendance_main": [
+     614,
+     640
+    ],
+    "group_loyalty": [
+     5225,
+     5832
+    ],
+    "group_loyalty_main": [
+     594,
+     614
+    ],
+    "cz_agreement": [
+     2947,
+     5661
+    ],
+    "outcome": [
+     5094,
+     5549
+    ],
+    "outcome_main": [
+     568,
+     599
+    ],
+    "outcome_close": [
+     63,
+     120
+    ],
+    "group_outcome": [
+     808970,
+     882350
+    ],
+    "group_outcome_main": [
+     91107,
+     96611
+    ],
+    "positions": {
+     "FOR": 2615,
+     "AGAINST": 2935,
+     "ABSTENTION": 282,
+     "DID_NOT_VOTE": 322
+    }
+   }
+  },
+  {
+   "id": 256846,
+   "name": "Ondřej KOLÁŘ",
+   "given_name": "Ondřej",
+   "family_name": "Kolář",
+   "sort_label": "KOLARO",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256846.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16893"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "total": {
+    "attendance": [
+     5886,
+     6154
+    ],
+    "attendance_main": [
+     613,
+     640
+    ],
+    "group_loyalty": [
+     5266,
+     5886
+    ],
+    "group_loyalty_main": [
+     592,
+     613
+    ],
+    "cz_agreement": [
+     2935,
+     5716
+    ],
+    "outcome": [
+     5072,
+     5454
+    ],
+    "outcome_main": [
+     566,
+     595
+    ],
+    "outcome_close": [
+     58,
+     110
+    ],
+    "group_outcome": [
+     798438,
+     868684
+    ],
+    "group_outcome_main": [
+     90557,
+     95662
+    ],
+    "positions": {
+     "FOR": 2441,
+     "AGAINST": 3014,
+     "ABSTENTION": 431,
+     "DID_NOT_VOTE": 268
+    }
+   }
+  },
+  {
+   "id": 256847,
+   "name": "Danuše NERUDOVÁ",
+   "given_name": "Danuše",
+   "family_name": "Nerudová",
+   "sort_label": "NERUDOVAD",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256847.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16894"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6835,
+    "short_label": "STAN"
+   },
+   "total": {
+    "attendance": [
+     5878,
+     6154
+    ],
+    "attendance_main": [
+     611,
+     640
+    ],
+    "group_loyalty": [
+     5261,
+     5878
+    ],
+    "group_loyalty_main": [
+     593,
+     611
+    ],
+    "cz_agreement": [
+     2951,
+     5703
+    ],
+    "outcome": [
+     5157,
+     5597
+    ],
+    "outcome_main": [
+     570,
+     601
+    ],
+    "outcome_close": [
+     66,
+     122
+    ],
+    "group_outcome": [
+     816831,
+     892562
+    ],
+    "group_outcome_main": [
+     91153,
+     97136
+    ],
+    "positions": {
+     "FOR": 2612,
+     "AGAINST": 2986,
+     "ABSTENTION": 280,
+     "DID_NOT_VOTE": 276
+    }
+   }
+  }
+ ],
+ "splits_list": [
+  {
+   "id": 181408,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Framework for achieving climate neutrality",
+   "reference": "A10-0223/2025",
+   "description": "Article 1 - alinéa 1 - après le point 1; Règlement (UE) 2021/1119 - Article 4 - après le paragraphe 1 - Am 58",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 278,
+    "against": 348,
+    "abstention": 14,
+    "did_not_vote": 79
+   },
+   "cz": [
+    17,
+    2,
+    1,
+    1
+   ],
+   "amendment_number": "58",
+   "texts_adopted_reference": "P10_TA(2025)0262",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1 - pododstavec 1 - za bodem 1; nařízení (EU) 2021/1119 - článek 4 - za odstavcem 1 - PN 58",
+   "gc": [
+    86,
+    87,
+    0,
+    15
+   ]
+  },
+  {
+   "id": 188630,
+   "date": "2026-03-11",
+   "month": "2026-03",
+   "title": "EU enlargement strategy",
+   "reference": "A10-0016/2026",
+   "description": "§ 32",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 301,
+    "against": 300,
+    "abstention": 24,
+    "did_not_vote": 93
+   },
+   "cz": [
+    5,
+    14,
+    0,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0077",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 32",
+   "gc": [
+    78,
+    77,
+    4,
+    25
+   ]
+  },
+  {
+   "id": 180520,
+   "date": "2025-10-23",
+   "month": "2025-10",
+   "title": "Soil Monitoring and Resilience (Soil Monitoring Law)",
+   "reference": "A10-0204/2025",
+   "description": "Proposition de rejet - Am 1= 2= 3=",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 220,
+    "against": 341,
+    "abstention": 10,
+    "did_not_vote": 148
+   },
+   "cz": [
+    5,
+    13,
+    2,
+    1
+   ],
+   "amendment_number": "1=\n2=\n3=",
+   "texts_adopted_reference": "P10_TA(2025)0251",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "rejection",
+   "is_final": false,
+   "inverted": true,
+   "description_cs": "Návrh na zamítnutí - PN 1= 2= 3=",
+   "gc": [
+    73,
+    72,
+    3,
+    40
+   ]
+  },
+  {
+   "id": 174529,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Human rights and democracy in the world and the European Union’s policy on the matter – annual report 2024",
+   "reference": "A10-0012/2025",
+   "description": "Après le § 43 - Am 46",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 366,
+    "against": 222,
+    "abstention": 64,
+    "did_not_vote": 66
+   },
+   "cz": [
+    11,
+    6,
+    4,
+    0
+   ],
+   "amendment_number": "46",
+   "texts_adopted_reference": "P10_TA(2025)0059",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 43 - PN 46",
+   "gc": [
+    62,
+    63,
+    37,
+    26
+   ]
+  },
+  {
+   "id": 180165,
+   "date": "2025-10-22",
+   "month": "2025-10",
+   "title": "Institutional consequences of the EU enlargement negotiations",
+   "reference": "A10-0177/2025",
+   "description": "§ 12",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 334,
+    "against": 286,
+    "abstention": 21,
+    "did_not_vote": 78
+   },
+   "cz": [
+    6,
+    14,
+    0,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0247",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 12",
+   "gc": [
+    78,
+    76,
+    12,
+    22
+   ]
+  },
+  {
+   "id": 181951,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 114(3): amending Delegated Regulation (EU) 2023/2429 as regards origin labelling for fruit and vegetables originating in the non-self-governing territory of Western Sahara",
+   "reference": "B10-0506/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 359,
+    "against": 188,
+    "abstention": 76,
+    "did_not_vote": 96
+   },
+   "cz": [
+    6,
+    13,
+    2,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    65,
+    67,
+    38,
+    18
+   ]
+  },
+  {
+   "id": 181643,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Institutional aspects of the report on the future of European competitiveness (Draghi Report)",
+   "reference": "A10-0196/2025",
+   "description": "§ 9/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 315,
+    "against": 291,
+    "abstention": 45,
+    "did_not_vote": 68
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0285",
+   "cats": [
+    "eco",
+    "ins"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 9, 2. část",
+   "gc": [
+    76,
+    73,
+    24,
+    15
+   ]
+  },
+  {
+   "id": 182767,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 358,
+    "against": 202,
+    "abstention": 79,
+    "did_not_vote": 80
+   },
+   "cz": [
+    6,
+    4,
+    9,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    71,
+    68,
+    28,
+    21
+   ]
+  },
+  {
+   "id": 193055,
+   "date": "2026-05-21",
+   "month": "2026-05",
+   "title": "The multiannual plan for the Baltic Sea and ways forward",
+   "reference": "A10-0121/2026",
+   "description": "§ 56/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 378,
+    "against": 171,
+    "abstention": 16,
+    "did_not_vote": 152
+   },
+   "cz": [
+    17,
+    0,
+    0,
+    4
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0189",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 56, 1. část",
+   "gc": [
+    61,
+    58,
+    9,
+    55
+   ]
+  },
+  {
+   "id": 181652,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Institutional aspects of the report on the future of European competitiveness (Draghi Report)",
+   "reference": "A10-0196/2025",
+   "description": "Visa 11",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 320,
+    "against": 280,
+    "abstention": 47,
+    "did_not_vote": 72
+   },
+   "cz": [
+    5,
+    15,
+    1,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0285",
+   "cats": [
+    "eco",
+    "ins"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 11",
+   "gc": [
+    72,
+    68,
+    31,
+    17
+   ]
+  },
+  {
+   "id": 196156,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 390,
+    "against": 218,
+    "abstention": 29,
+    "did_not_vote": 80
+   },
+   "cz": [
+    10,
+    5,
+    1,
+    5
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    69,
+    74,
+    12,
+    29
+   ]
+  },
+  {
+   "id": 175954,
+   "date": "2025-05-07",
+   "month": "2025-05",
+   "title": "A revamped long-term budget for the Union in a changing world",
+   "reference": "A10-0076/2025",
+   "description": "Après le § 37 - Am 7",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 277,
+    "against": 319,
+    "abstention": 51,
+    "did_not_vote": 72
+   },
+   "cz": [
+    17,
+    0,
+    2,
+    2
+   ],
+   "amendment_number": "7",
+   "texts_adopted_reference": "P10_TA(2025)0090",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 37 - PN 7",
+   "gc": [
+    80,
+    86,
+    3,
+    19
+   ]
+  },
+  {
+   "id": 182716,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "§ 2/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 350,
+    "against": 217,
+    "abstention": 74,
+    "did_not_vote": 78
+   },
+   "cz": [
+    5,
+    3,
+    12,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 2, 1. část",
+   "gc": [
+    65,
+    70,
+    30,
+    23
+   ]
+  },
+  {
+   "id": 178094,
+   "date": "2025-07-09",
+   "month": "2025-07",
+   "title": "Implementation and delivery of the Sustainable Development Goals in view of the 2025 High-Level Political Forum",
+   "reference": "A10-0125/2025",
+   "description": "§ 42/6",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 414,
+    "against": 193,
+    "abstention": 52,
+    "did_not_vote": 60
+   },
+   "cz": [
+    14,
+    3,
+    2,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0159",
+   "cats": [
+    "env",
+    "ins"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 42, 6. část",
+   "gc": [
+    64,
+    59,
+    39,
+    26
+   ]
+  },
+  {
+   "id": 181339,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Gender Equality Strategy 2025",
+   "reference": "A10-0210/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 310,
+    "against": 222,
+    "abstention": 68,
+    "did_not_vote": 119
+   },
+   "cz": [
+    3,
+    12,
+    2,
+    4
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    54,
+    59,
+    48,
+    27
+   ]
+  },
+  {
+   "id": 177484,
+   "date": "2025-06-19",
+   "month": "2025-06",
+   "title": "Welfare of dogs and cats and their traceability",
+   "reference": "A10-0104/2025",
+   "description": "Article 4, alinéa 1, tiret 1 - Am 304",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 389,
+    "against": 129,
+    "abstention": 47,
+    "did_not_vote": 154
+   },
+   "cz": [
+    6,
+    9,
+    0,
+    6
+   ],
+   "amendment_number": "304",
+   "texts_adopted_reference": "P10_TA(2025)0135",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 4, pododstavec 1, odrážka 1 - PN 304",
+   "gc": [
+    67,
+    61,
+    5,
+    55
+   ]
+  },
+  {
+   "id": 193099,
+   "date": "2026-05-21",
+   "month": "2026-05",
+   "title": "Advancing towards a care society: addressing the gender care gap",
+   "reference": "A10-0083/2026",
+   "description": "§ 53",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 248,
+    "against": 158,
+    "abstention": 114,
+    "did_not_vote": 197
+   },
+   "cz": [
+    1,
+    2,
+    10,
+    8
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0190",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 53",
+   "gc": [
+    22,
+    20,
+    76,
+    65
+   ]
+  },
+  {
+   "id": 191705,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Situation of fundamental rights in the European Union in 2024 and 2025",
+   "reference": "A10-0042/2026",
+   "description": "Considérant AL",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 378,
+    "against": 197,
+    "abstention": 52,
+    "did_not_vote": 92
+   },
+   "cz": [
+    14,
+    5,
+    1,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AL",
+   "gc": [
+    59,
+    65,
+    27,
+    34
+   ]
+  },
+  {
+   "id": 182757,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Considérant K",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 354,
+    "against": 237,
+    "abstention": 54,
+    "did_not_vote": 74
+   },
+   "cz": [
+    7,
+    3,
+    10,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění K",
+   "gc": [
+    68,
+    75,
+    24,
+    21
+   ]
+  },
+  {
+   "id": 190326,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Importance of consent-based rape legislation in the EU",
+   "reference": "A10-0047/2026",
+   "description": "Considérant AJ/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 394,
+    "against": 217,
+    "abstention": 29,
+    "did_not_vote": 79
+   },
+   "cz": [
+    6,
+    12,
+    2,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "cats": [
+    "jus",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AJ, 2. část",
+   "gc": [
+    67,
+    74,
+    15,
+    29
+   ]
+  },
+  {
+   "id": 170522,
+   "date": "2024-11-14",
+   "month": "2024-11",
+   "title": "UN Climate Change Conference 2024 in Baku, Azerbaijan (COP29)",
+   "reference": "B10-0156/2024",
+   "description": "Après le § 131 - Am 1/1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 250,
+    "against": 358,
+    "abstention": 24,
+    "did_not_vote": 87
+   },
+   "cz": [
+    17,
+    1,
+    1,
+    2
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2024)0035",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 131 - PN 1, 1. část",
+   "gc": [
+    73,
+    81,
+    12,
+    22
+   ]
+  },
+  {
+   "id": 190316,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Importance of consent-based rape legislation in the EU",
+   "reference": "A10-0047/2026",
+   "description": "§ 25/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 361,
+    "against": 218,
+    "abstention": 60,
+    "did_not_vote": 80
+   },
+   "cz": [
+    4,
+    12,
+    4,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "cats": [
+    "jus",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 25, 2. část",
+   "gc": [
+    69,
+    77,
+    14,
+    25
+   ]
+  },
+  {
+   "id": 190313,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Importance of consent-based rape legislation in the EU",
+   "reference": "A10-0047/2026",
+   "description": "§ 21/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 359,
+    "against": 218,
+    "abstention": 62,
+    "did_not_vote": 80
+   },
+   "cz": [
+    5,
+    13,
+    2,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "cats": [
+    "jus",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21, 2. část",
+   "gc": [
+    68,
+    76,
+    16,
+    25
+   ]
+  },
+  {
+   "id": 196640,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Visa 9",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 353,
+    "against": 204,
+    "abstention": 79,
+    "did_not_vote": 81
+   },
+   "cz": [
+    6,
+    3,
+    6,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 9",
+   "gc": [
+    59,
+    66,
+    31,
+    28
+   ]
+  },
+  {
+   "id": 181640,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Institutional aspects of the report on the future of European competitiveness (Draghi Report)",
+   "reference": "A10-0196/2025",
+   "description": "§ 8/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 320,
+    "against": 291,
+    "abstention": 29,
+    "did_not_vote": 79
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0285",
+   "cats": [
+    "eco",
+    "ins"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 8, 2. část",
+   "gc": [
+    87,
+    77,
+    7,
+    17
+   ]
+  },
+  {
+   "id": 181236,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Gender Equality Strategy 2025",
+   "reference": "A10-0210/2025",
+   "description": "§ 28",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 336,
+    "against": 218,
+    "abstention": 58,
+    "did_not_vote": 107
+   },
+   "cz": [
+    4,
+    5,
+    10,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 28",
+   "gc": [
+    69,
+    61,
+    29,
+    29
+   ]
+  },
+  {
+   "id": 196561,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 16/4",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 353,
+    "against": 224,
+    "abstention": 63,
+    "did_not_vote": 77
+   },
+   "cz": [
+    4,
+    7,
+    6,
+    4
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 16, 4. část",
+   "gc": [
+    66,
+    75,
+    15,
+    28
+   ]
+  },
+  {
+   "id": 174751,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common security and defence policy – annual report 2024",
+   "reference": "A10-0011/2025",
+   "description": "Après le § 57 - Am 101",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 303,
+    "against": 289,
+    "abstention": 62,
+    "did_not_vote": 64
+   },
+   "cz": [
+    8,
+    10,
+    3,
+    0
+   ],
+   "amendment_number": "101",
+   "texts_adopted_reference": "P10_TA(2025)0058",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 57 - PN 101",
+   "gc": [
+    83,
+    73,
+    10,
+    22
+   ]
+  },
+  {
+   "id": 170172,
+   "date": "2024-10-23",
+   "month": "2024-10",
+   "title": "General budget of the European Union for the financial year 2025 – all sections",
+   "reference": "A10-0008/2024",
+   "description": "§ 75/3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 367,
+    "against": 224,
+    "abstention": 54,
+    "did_not_vote": 74
+   },
+   "cz": [
+    3,
+    14,
+    1,
+    3
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 75, 3. část",
+   "gc": [
+    74,
+    85,
+    2,
+    27
+   ]
+  },
+  {
+   "id": 180169,
+   "date": "2025-10-22",
+   "month": "2025-10",
+   "title": "Institutional consequences of the EU enlargement negotiations",
+   "reference": "A10-0177/2025",
+   "description": "Après le § 23 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 263,
+    "against": 349,
+    "abstention": 12,
+    "did_not_vote": 95
+   },
+   "cz": [
+    14,
+    3,
+    3,
+    1
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0247",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 23 - PN 1",
+   "gc": [
+    76,
+    88,
+    6,
+    18
+   ]
+  },
+  {
+   "id": 196642,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Visa 19",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 359,
+    "against": 210,
+    "abstention": 81,
+    "did_not_vote": 67
+   },
+   "cz": [
+    5,
+    2,
+    8,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 19",
+   "gc": [
+    60,
+    70,
+    29,
+    25
+   ]
+  },
+  {
+   "id": 196635,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant AA",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 208,
+    "abstention": 79,
+    "did_not_vote": 68
+   },
+   "cz": [
+    7,
+    3,
+    5,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AA",
+   "gc": [
+    58,
+    68,
+    31,
+    27
+   ]
+  },
+  {
+   "id": 171336,
+   "date": "2024-12-19",
+   "month": "2024-12",
+   "title": "Recommendation to the Council on the EU priorities for the 69th session of the UN Commission on the Status of Women",
+   "reference": "A10-0030/2024",
+   "description": "§ 1, point al/3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 328,
+    "against": 178,
+    "abstention": 38,
+    "did_not_vote": 175
+   },
+   "cz": [
+    11,
+    5,
+    2,
+    3
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2024)0075",
+   "cats": [
+    "soc",
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 1, písm. al, 3. část",
+   "gc": [
+    54,
+    46,
+    26,
+    62
+   ]
+  },
+  {
+   "id": 196636,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Considérant AB",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 354,
+    "against": 205,
+    "abstention": 89,
+    "did_not_vote": 69
+   },
+   "cz": [
+    4,
+    1,
+    10,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění AB",
+   "gc": [
+    57,
+    67,
+    33,
+    27
+   ]
+  },
+  {
+   "id": 172783,
+   "date": "2025-03-12",
+   "month": "2025-03",
+   "title": "White paper on the future of European defence",
+   "reference": "RC-B10-0146/2025/REV1",
+   "description": "Après le § 56 - Am 12",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 209,
+    "against": 283,
+    "abstention": 180,
+    "did_not_vote": 47
+   },
+   "cz": [
+    1,
+    8,
+    11,
+    1
+   ],
+   "amendment_number": "12",
+   "texts_adopted_reference": "P10_TA(2025)0034",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 56 - PN 12",
+   "gc": [
+    11,
+    13,
+    145,
+    19
+   ]
+  },
+  {
+   "id": 193112,
+   "date": "2026-05-21",
+   "month": "2026-05",
+   "title": "Advancing towards a care society: addressing the gender care gap",
+   "reference": "A10-0083/2026",
+   "description": "Considérant R/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 320,
+    "against": 152,
+    "abstention": 34,
+    "did_not_vote": 211
+   },
+   "cz": [
+    10,
+    1,
+    1,
+    9
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0190",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění R, 2. část",
+   "gc": [
+    57,
+    48,
+    15,
+    63
+   ]
+  },
+  {
+   "id": 193103,
+   "date": "2026-05-21",
+   "month": "2026-05",
+   "title": "Advancing towards a care society: addressing the gender care gap",
+   "reference": "A10-0083/2026",
+   "description": "§ 79",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 327,
+    "against": 154,
+    "abstention": 31,
+    "did_not_vote": 205
+   },
+   "cz": [
+    10,
+    1,
+    2,
+    8
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0190",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 79",
+   "gc": [
+    56,
+    47,
+    16,
+    64
+   ]
+  },
+  {
+   "id": 182766,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Considérant S",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 348,
+    "against": 227,
+    "abstention": 61,
+    "did_not_vote": 83
+   },
+   "cz": [
+    5,
+    7,
+    8,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění S",
+   "gc": [
+    68,
+    57,
+    38,
+    25
+   ]
+  },
+  {
+   "id": 182713,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0557/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 241,
+    "against": 356,
+    "abstention": 48,
+    "did_not_vote": 74
+   },
+   "cz": [
+    14,
+    3,
+    3,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    60,
+    72,
+    36,
+    20
+   ]
+  },
+  {
+   "id": 196612,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 63/3",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 351,
+    "against": 272,
+    "abstention": 28,
+    "did_not_vote": 66
+   },
+   "cz": [
+    3,
+    10,
+    2,
+    6
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 63, 3. část",
+   "gc": [
+    67,
+    81,
+    14,
+    22
+   ]
+  },
+  {
+   "id": 174397,
+   "date": "2025-04-02",
+   "month": "2025-04",
+   "title": "Implementation of the common foreign and security policy – annual report 2024",
+   "reference": "A10-0010/2025",
+   "description": "§ 30/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 357,
+    "against": 95,
+    "abstention": 209,
+    "did_not_vote": 57
+   },
+   "cz": [
+    3,
+    14,
+    4,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0057",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 30, 2. část",
+   "gc": [
+    23,
+    28,
+    111,
+    26
+   ]
+  },
+  {
+   "id": 196581,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "§ 41",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 214,
+    "abstention": 75,
+    "did_not_vote": 66
+   },
+   "cz": [
+    7,
+    5,
+    4,
+    5
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 41",
+   "gc": [
+    59,
+    74,
+    26,
+    25
+   ]
+  },
+  {
+   "id": 182764,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Considérant Q",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 349,
+    "against": 225,
+    "abstention": 59,
+    "did_not_vote": 86
+   },
+   "cz": [
+    4,
+    7,
+    9,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění Q",
+   "gc": [
+    68,
+    54,
+    39,
+    27
+   ]
+  },
+  {
+   "id": 190297,
+   "date": "2026-04-28",
+   "month": "2026-04",
+   "title": "Importance of consent-based rape legislation in the EU",
+   "reference": "A10-0047/2026",
+   "description": "§ 4/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 394,
+    "against": 227,
+    "abstention": 27,
+    "did_not_vote": 71
+   },
+   "cz": [
+    6,
+    10,
+    3,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2026)0120",
+   "cats": [
+    "jus",
+    "civ"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 4, 2. část",
+   "gc": [
+    65,
+    83,
+    13,
+    24
+   ]
+  },
+  {
+   "id": 193053,
+   "date": "2026-05-21",
+   "month": "2026-05",
+   "title": "The multiannual plan for the Baltic Sea and ways forward",
+   "reference": "A10-0121/2026",
+   "description": "§ 56 - Am 43",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 162,
+    "against": 384,
+    "abstention": 20,
+    "did_not_vote": 151
+   },
+   "cz": [
+    0,
+    17,
+    0,
+    4
+   ],
+   "amendment_number": "43",
+   "texts_adopted_reference": "P10_TA(2026)0189",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 56 - PN 43",
+   "gc": [
+    53,
+    68,
+    12,
+    50
+   ]
+  },
+  {
+   "id": 196254,
+   "date": "2026-09-15",
+   "month": "2026-09",
+   "title": "Carbon Border Adjustment Mechanism: extension of its scope to downstream goods and anti-circumvention measures",
+   "reference": "A10-0201/2026",
+   "description": "Article 1, alinéa 1, point 17; Règlement (UE) 2023/956 - Article 27 bis - Am 70S",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 362,
+    "against": 272,
+    "abstention": 25,
+    "did_not_vote": 58
+   },
+   "cz": [
+    14,
+    5,
+    0,
+    2
+   ],
+   "amendment_number": "70D",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "eco",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, pododstavec 1, bod 17; nařízení (EU) 2023/956 - článek 27a - PN 70S",
+   "gc": [
+    95,
+    74,
+    2,
+    13
+   ]
+  },
+  {
+   "id": 175822,
+   "date": "2025-05-07",
+   "month": "2025-05",
+   "title": "Discharge 2023: EU general budget – Commission, executive agencies and European Development Funds",
+   "reference": "A10-0074/2025",
+   "description": "§ 131 - Am 24",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 283,
+    "against": 365,
+    "abstention": 14,
+    "did_not_vote": 57
+   },
+   "cz": [
+    16,
+    1,
+    3,
+    1
+   ],
+   "amendment_number": "24",
+   "texts_adopted_reference": "P10_TA(2025)0077",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 131 - PN 24",
+   "gc": [
+    74,
+    95,
+    5,
+    14
+   ]
+  },
+  {
+   "id": 182292,
+   "date": "2025-11-27",
+   "month": "2025-11",
+   "title": "Rule of law and human rights situation in Tunisia, particularly the case of Sonia Dahmani",
+   "reference": "RC-B10-0518/2025",
+   "description": "Après le § 7 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 246,
+    "against": 317,
+    "abstention": 31,
+    "did_not_vote": 125
+   },
+   "cz": [
+    15,
+    1,
+    4,
+    1
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": "P10_TA(2025)0304",
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 7 - PN 1",
+   "gc": [
+    75,
+    58,
+    19,
+    36
+   ]
+  },
+  {
+   "id": 181651,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Institutional aspects of the report on the future of European competitiveness (Draghi Report)",
+   "reference": "A10-0196/2025",
+   "description": "Visa 10",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 340,
+    "against": 269,
+    "abstention": 34,
+    "did_not_vote": 76
+   },
+   "cz": [
+    6,
+    15,
+    0,
+    0
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0285",
+   "cats": [
+    "eco",
+    "ins"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 10",
+   "gc": [
+    88,
+    68,
+    15,
+    17
+   ]
+  },
+  {
+   "id": 180041,
+   "date": "2025-10-22",
+   "month": "2025-10",
+   "title": "General budget of the European Union for the financial year 2026 – all sections",
+   "reference": "A10-0192/2025",
+   "description": "Après le § 36 - Am 3/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 301,
+    "against": 290,
+    "abstention": 48,
+    "did_not_vote": 80
+   },
+   "cz": [
+    15,
+    2,
+    3,
+    1
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0244",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 36 - PN 3, 1. část",
+   "gc": [
+    96,
+    74,
+    3,
+    15
+   ]
+  }
+ ],
+ "splits_list_main": [
+  {
+   "id": 181951,
+   "date": "2025-11-26",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 114(3): amending Delegated Regulation (EU) 2023/2429 as regards origin labelling for fruit and vegetables originating in the non-self-governing territory of Western Sahara",
+   "reference": "B10-0506/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 359,
+    "against": 188,
+    "abstention": 76,
+    "did_not_vote": 96
+   },
+   "cz": [
+    6,
+    13,
+    2,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    65,
+    67,
+    38,
+    18
+   ]
+  },
+  {
+   "id": 182767,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0558/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 358,
+    "against": 202,
+    "abstention": 79,
+    "did_not_vote": 80
+   },
+   "cz": [
+    6,
+    4,
+    9,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0338",
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    71,
+    68,
+    28,
+    21
+   ]
+  },
+  {
+   "id": 196156,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Gender inequalities in health, specifically as regards gender-specific conditions",
+   "reference": "A10-0200/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 390,
+    "against": 218,
+    "abstention": 29,
+    "did_not_vote": 80
+   },
+   "cz": [
+    10,
+    5,
+    1,
+    5
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    69,
+    74,
+    12,
+    29
+   ]
+  },
+  {
+   "id": 181339,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Gender Equality Strategy 2025",
+   "reference": "A10-0210/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 310,
+    "against": 222,
+    "abstention": 68,
+    "did_not_vote": 119
+   },
+   "cz": [
+    3,
+    12,
+    2,
+    4
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0278",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    54,
+    59,
+    48,
+    27
+   ]
+  },
+  {
+   "id": 182713,
+   "date": "2025-12-17",
+   "month": "2025-12",
+   "title": "European Citizens’ Initiative ‘My voice, my choice: for safe and accessible abortion’",
+   "reference": "B10-0557/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 241,
+    "against": 356,
+    "abstention": 48,
+    "did_not_vote": 74
+   },
+   "cz": [
+    14,
+    3,
+    3,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc",
+    "civ"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    60,
+    72,
+    36,
+    20
+   ]
+  },
+  {
+   "id": 179048,
+   "date": "2025-09-11",
+   "month": "2025-09",
+   "title": "Gaza at breaking point: EU action to combat famine and the urgent need to release hostages and move towards a two-state solution",
+   "reference": "RC-B10-0372/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 305,
+    "against": 151,
+    "abstention": 122,
+    "did_not_vote": 141
+   },
+   "cz": [
+    3,
+    11,
+    4,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    82,
+    56,
+    6,
+    44
+   ]
+  },
+  {
+   "id": 169419,
+   "date": "2024-09-18",
+   "month": "2024-09",
+   "title": "Objection pursuant to Rule 115(2) and (3), and Rule 115(4)(c): Maximum residue levels for cyproconazole",
+   "reference": "B10-0021/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 522,
+    "against": 127,
+    "abstention": 28,
+    "did_not_vote": 40
+   },
+   "cz": [
+    15,
+    2,
+    2,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0007",
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    66,
+    103,
+    8,
+    11
+   ]
+  },
+  {
+   "id": 181375,
+   "date": "2025-11-13",
+   "month": "2025-11",
+   "title": "Framework for achieving climate neutrality",
+   "reference": "A10-0223/2025",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 379,
+    "against": 248,
+    "abstention": 10,
+    "did_not_vote": 82
+   },
+   "cz": [
+    6,
+    14,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0262",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    100,
+    61,
+    5,
+    22
+   ]
+  },
+  {
+   "id": 169418,
+   "date": "2024-09-18",
+   "month": "2024-09",
+   "title": "Objection pursuant to Rule 115(2) and (3), and Rule 115(4)(c): Maximum residue levels for carbendazim and thiophanate-methyl",
+   "reference": "B10-0020/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 516,
+    "against": 129,
+    "abstention": 27,
+    "did_not_vote": 45
+   },
+   "cz": [
+    15,
+    2,
+    2,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0006",
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    63,
+    105,
+    7,
+    13
+   ]
+  },
+  {
+   "id": 171793,
+   "date": "2025-02-12",
+   "month": "2025-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP910521",
+   "reference": "B10-0061/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 477,
+    "against": 152,
+    "abstention": 20,
+    "did_not_vote": 70
+   },
+   "cz": [
+    11,
+    7,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0014",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    58,
+    97,
+    11,
+    22
+   ]
+  },
+  {
+   "id": 171790,
+   "date": "2025-02-12",
+   "month": "2025-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 95275",
+   "reference": "B10-0060/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 467,
+    "against": 156,
+    "abstention": 18,
+    "did_not_vote": 78
+   },
+   "cz": [
+    11,
+    7,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0015",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    57,
+    96,
+    11,
+    24
+   ]
+  },
+  {
+   "id": 195340,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87705",
+   "reference": "B10-0244/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 466,
+    "against": 175,
+    "abstention": 16,
+    "did_not_vote": 62
+   },
+   "cz": [
+    3,
+    13,
+    0,
+    5
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    64,
+    109,
+    2,
+    10
+   ]
+  },
+  {
+   "id": 184178,
+   "date": "2026-02-10",
+   "month": "2026-02",
+   "title": "Framework for achieving climate neutrality",
+   "reference": "A10-0223/2025",
+   "description": "Accord provisoire - Am 69",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 413,
+    "against": 226,
+    "abstention": 12,
+    "did_not_vote": 68
+   },
+   "cz": [
+    5,
+    13,
+    0,
+    3
+   ],
+   "amendment_number": "69",
+   "texts_adopted_reference": "P10_TA(2025)0262",
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 69",
+   "gc": [
+    107,
+    62,
+    5,
+    13
+   ]
+  },
+  {
+   "id": 191320,
+   "date": "2026-04-29",
+   "month": "2026-04",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94637",
+   "reference": "B10-0186/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 412,
+    "against": 145,
+    "abstention": 11,
+    "did_not_vote": 151
+   },
+   "cz": [
+    4,
+    14,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0150",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    50,
+    87,
+    4,
+    44
+   ]
+  },
+  {
+   "id": 170631,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216",
+   "reference": "B10-0152/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 165,
+    "abstention": 16,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    58,
+    102,
+    10,
+    18
+   ]
+  },
+  {
+   "id": 184692,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton T304-40",
+   "reference": "B10-0108/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 428,
+    "against": 156,
+    "abstention": 22,
+    "did_not_vote": 113
+   },
+   "cz": [
+    4,
+    13,
+    1,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0044",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    56,
+    100,
+    5,
+    26
+   ]
+  },
+  {
+   "id": 170637,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 94804",
+   "reference": "B10-0153/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 468,
+    "against": 166,
+    "abstention": 14,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0045",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    56,
+    100,
+    8,
+    24
+   ]
+  },
+  {
+   "id": 195543,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603 × T25",
+   "reference": "B10-0335/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 460,
+    "against": 189,
+    "abstention": 14,
+    "did_not_vote": 56
+   },
+   "cz": [
+    3,
+    14,
+    0,
+    4
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    62,
+    112,
+    2,
+    9
+   ]
+  },
+  {
+   "id": 170636,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP23211",
+   "reference": "B10-0150/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 62
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    57,
+    103,
+    10,
+    18
+   ]
+  },
+  {
+   "id": 170624,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × NK603",
+   "reference": "B10-0148/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 474,
+    "against": 171,
+    "abstention": 13,
+    "did_not_vote": 61
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0038",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    57,
+    104,
+    8,
+    19
+   ]
+  },
+  {
+   "id": 170627,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 89034 × 1507 × MON 88017 × 59122 and eight of its sub-combinations",
+   "reference": "B10-0147/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 476,
+    "against": 169,
+    "abstention": 14,
+    "did_not_vote": 60
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0040",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    56,
+    103,
+    10,
+    19
+   ]
+  },
+  {
+   "id": 184691,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton GHB614 × LLCotton25",
+   "reference": "B10-0109/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 463,
+    "against": 164,
+    "abstention": 21,
+    "did_not_vote": 71
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0043",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    57,
+    106,
+    6,
+    18
+   ]
+  },
+  {
+   "id": 170641,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP915635",
+   "reference": "B10-0149/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 478,
+    "against": 166,
+    "abstention": 17,
+    "did_not_vote": 58
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    55,
+    103,
+    12,
+    18
+   ]
+  },
+  {
+   "id": 180195,
+   "date": "2025-10-22",
+   "month": "2025-10",
+   "title": "Institutional consequences of the EU enlargement negotiations",
+   "reference": "A10-0177/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 310,
+    "against": 277,
+    "abstention": 53,
+    "did_not_vote": 79
+   },
+   "cz": [
+    6,
+    13,
+    1,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0247",
+   "cats": [
+    "abr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    102,
+    54,
+    13,
+    19
+   ]
+  },
+  {
+   "id": 179508,
+   "date": "2025-10-08",
+   "month": "2025-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP51291",
+   "reference": "B10-0407/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 433,
+    "against": 166,
+    "abstention": 9,
+    "did_not_vote": 111
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0222",
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    56,
+    106,
+    5,
+    21
+   ]
+  },
+  {
+   "id": 184690,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize T25 (ACS-ZMØØ3-2)",
+   "reference": "B10-0106/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 462,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 66
+   },
+   "cz": [
+    4,
+    14,
+    1,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0042",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    56,
+    109,
+    6,
+    16
+   ]
+  },
+  {
+   "id": 182705,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified sugar beet KWS20-1",
+   "reference": "B10-0559/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 455,
+    "against": 169,
+    "abstention": 8,
+    "did_not_vote": 87
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0328",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    56,
+    109,
+    4,
+    19
+   ]
+  },
+  {
+   "id": 170638,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 810",
+   "reference": "B10-0146/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 464,
+    "against": 163,
+    "abstention": 27,
+    "did_not_vote": 65
+   },
+   "cz": [
+    4,
+    9,
+    7,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    52,
+    102,
+    15,
+    19
+   ]
+  },
+  {
+   "id": 195341,
+   "date": "2026-07-08",
+   "month": "2026-07",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DP202216 x NK603 x DAS-40278-9 and its sub-combinations DP 202216 x NK603, DP202216 x DAS-40278-9",
+   "reference": "B10-0336/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 417,
+    "against": 167,
+    "abstention": 15,
+    "did_not_vote": 120
+   },
+   "cz": [
+    2,
+    12,
+    0,
+    7
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    53,
+    104,
+    2,
+    26
+   ]
+  },
+  {
+   "id": 182703,
+   "date": "2025-12-16",
+   "month": "2025-12",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize NK603",
+   "reference": "B10-0562/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 479,
+    "against": 173,
+    "abstention": 8,
+    "did_not_vote": 59
+   },
+   "cz": [
+    3,
+    17,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0327",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    58,
+    114,
+    4,
+    12
+   ]
+  },
+  {
+   "id": 196483,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87460",
+   "reference": "B10-0381/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 433,
+    "against": 159,
+    "abstention": 10,
+    "did_not_vote": 115
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    48,
+    95,
+    4,
+    37
+   ]
+  },
+  {
+   "id": 181831,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize MON 87427",
+   "reference": "B10-0491/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 426,
+    "against": 157,
+    "abstention": 17,
+    "did_not_vote": 119
+   },
+   "cz": [
+    5,
+    7,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0292",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    53,
+    105,
+    3,
+    27
+   ]
+  },
+  {
+   "id": 170628,
+   "date": "2024-11-26",
+   "month": "2024-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified cotton COT102",
+   "reference": "B10-0145/2024",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 496,
+    "against": 143,
+    "abstention": 18,
+    "did_not_vote": 62
+   },
+   "cz": [
+    4,
+    9,
+    7,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2024)0039",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    54,
+    107,
+    8,
+    19
+   ]
+  },
+  {
+   "id": 184689,
+   "date": "2026-02-11",
+   "month": "2026-02",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean DBN-09004-6",
+   "reference": "B10-0107/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 461,
+    "against": 169,
+    "abstention": 22,
+    "did_not_vote": 67
+   },
+   "cz": [
+    4,
+    15,
+    0,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0041",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    54,
+    111,
+    5,
+    17
+   ]
+  },
+  {
+   "id": 181830,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified oilseed rape MON 88302",
+   "reference": "B10-0490/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 456,
+    "against": 166,
+    "abstention": 21,
+    "did_not_vote": 76
+   },
+   "cz": [
+    4,
+    8,
+    9,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0290",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    53,
+    112,
+    6,
+    17
+   ]
+  },
+  {
+   "id": 170765,
+   "date": "2024-11-28",
+   "month": "2024-11",
+   "title": "Recommendation on smoke- and aerosol-free environments",
+   "reference": "RC-B10-0173/2024",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 152,
+    "against": 378,
+    "abstention": 26,
+    "did_not_vote": 163
+   },
+   "cz": [
+    1,
+    16,
+    3,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    87,
+    41,
+    8,
+    52
+   ]
+  },
+  {
+   "id": 181833,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87708",
+   "reference": "B10-0493/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 179,
+    "abstention": 14,
+    "did_not_vote": 73
+   },
+   "cz": [
+    4,
+    14,
+    3,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0291",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    54,
+    115,
+    4,
+    15
+   ]
+  },
+  {
+   "id": 184187,
+   "date": "2026-02-12",
+   "month": "2026-02",
+   "title": "Addressing subcontracting chains and the role of intermediaries in order to protect workers’ rights",
+   "reference": "A10-0256/2025",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 332,
+    "against": 209,
+    "abstention": 33,
+    "did_not_vote": 145
+   },
+   "cz": [
+    2,
+    11,
+    6,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0050",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    84,
+    39,
+    21,
+    43
+   ]
+  },
+  {
+   "id": 181829,
+   "date": "2025-11-25",
+   "month": "2025-11",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified maize DAS1131",
+   "reference": "B10-0489/2025",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 453,
+    "against": 171,
+    "abstention": 19,
+    "did_not_vote": 76
+   },
+   "cz": [
+    5,
+    8,
+    8,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2025)0288",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    50,
+    115,
+    5,
+    18
+   ]
+  },
+  {
+   "id": 196510,
+   "date": "2026-09-16",
+   "month": "2026-09",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 94313",
+   "reference": "B10-0379/2026",
+   "description": "Proposition de résolution",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 457,
+    "against": 184,
+    "abstention": 10,
+    "did_not_vote": 66
+   },
+   "cz": [
+    3,
+    12,
+    0,
+    6
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení",
+   "gc": [
+    48,
+    112,
+    5,
+    19
+   ]
+  }
+ ]
+}
