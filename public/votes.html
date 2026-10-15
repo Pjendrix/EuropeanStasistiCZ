@@ -128,7 +128,8 @@ setNav("votes-list");
 // Přehled nahoře, tabulka v rozbalení: otevře se, když odkaz nese filtr (?m=, ?f=, ?c=, ?q= …) nebo #all-votes.
 // Děje se hned, nezávisle na načtení dat.
 const det = document.getElementById("all-votes");
-if (location.search.length > 1 || location.hash === "#all-votes") det.open = true;
+const fromLink = location.search.length > 1 || location.hash === "#all-votes";
+if (fromLink) det.open = true;
 window.addEventListener("hashchange", () => { if (location.hash === "#all-votes") det.open = true; });
 (async () => {
   const tbody = document.querySelector("#votes tbody");
@@ -232,6 +233,8 @@ window.addEventListener("hashchange", () => { if (location.hash === "#all-votes"
     mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
     q.addEventListener("input", render);
     render();
+    // Odkaz s filtrem (dlaždice témat, „Seznam závěrečných“ …) má ukázat výsledek, ne hero: po vykreslení seznam odroluje na začátek tabulky.
+    if (fromLink && det.open && location.hash !== "#all-votes") requestAnimationFrame(() => det.scrollIntoView({ block: "start", behavior: REDUCED_MOTION ? "auto" : "smooth" }));
   } catch (e) {
     showError(tbody.closest(".table-wrap"), e);
   }

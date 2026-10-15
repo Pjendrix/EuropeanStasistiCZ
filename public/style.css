@@ -1022,3 +1022,4 @@ main.home-page { max-width: none; padding: 0; }
 @media (max-width: 760px) { .topic-picker { flex-basis: 100%; } .tp-name { font-size: .84rem; } }
 @media (max-width: 380px) { .tp-grid { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .tp-unit { display: none; } .tp-tile { min-height: 52px; padding: .5rem .6rem; gap: .5rem; } .tp-ico { width: 32px; height: 32px; } .tp-n { font-weight: 600; color: #CBD5E1; } }
+.all-votes { scroll-margin-top: 4.5rem; }
