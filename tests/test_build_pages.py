@@ -106,16 +106,29 @@ def test_repo_definitions_in_sync_with_overview(tmp_path):
     assert bp.sync_definitions(tmp_path, root / "data") is False
 
 
-def test_hub_is_gateway_with_three_doors(data_dir):
-    pages = built(data_dir)
-    html = pages["index.html"]
+def test_home_hero_hemicycle_facts_and_paths(data_dir):
+    """Revize úvodu: hemicykl z data/home.json (tečka = poslanec, symbol + barva, odkaz na profil), střed F : A,
+    pruh faktů z JSON, tři cesty, další pohledy bez číslování, sdílení napojené na panel."""
+    import build_home as bh
+    (data_dir / "groups.json").write_text(json.dumps([{"code": "EPP", "ep_code": "PPE", "short_label": "EPP"}]), encoding="utf-8")
+    bw.run(data_dir, "2024-11-01")
+    (data_dir / "splits.json").write_text(json.dumps({"unity": {"considered": 4, "united_final": 1, "considered_final": 2}}), encoding="utf-8")
+    (data_dir / "decisive.json").write_text(json.dumps({"votes": [{"id": 1}]}), encoding="utf-8")
+    (data_dir / "work_hub.json").write_text(json.dumps({"updated": "2024-10-20", "totals": {"meps": 2, "speeches": 5, "questions": 3, "reports_lead": 1}}), encoding="utf-8")
+    home = bh.build(data_dir)
+    (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
+    html = bp.build(data_dir)["index.html"]
     assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
-    assert html.count('class="home-door ') == 3
-    for href in ("poslanci.html", "hlasovani.html", "votes.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
+    first = home["votes"][0]
+    assert html.count('class="hm-seat"') == len(first["ppl"])
+    assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
+    assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js"' in html
+    assert '<dt>4</dt><dd>jmenovitých hlasování od' in html and "1 z 2 jednotně" in html and "1 hlasování" in html
+    assert "Součet za všech 2 poslanců" in html
+    for href in ("poslanci.html", "hlasovani.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
                  "o-projektu.html#metodika"):
         assert f'href="{href}"' in html
-    # úvodka je rozcestník: seznamy hlasování a portréty jsou na stránkách Hlasování a Poslanci
-    assert "hub-vote" not in html and "hub-av" not in html and "Nejnovější zákony" not in html
+    assert "row-no" not in html and "home-door" not in html  # bez číslování a bez starých dveří
 
 
 def test_blocks_for_manual_pages(data_dir, tmp_path):
