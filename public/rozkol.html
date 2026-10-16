@@ -52,12 +52,15 @@
     <div class="card metric" id="decisive"><div class="label">Rozhodly české hlasy</div><div class="value">–</div></div>
   </div>
   <div id="peers" style="margin-bottom:1.5rem"></div>
+  <div class="view-tools">
   <fieldset class="controls fieldset">
     <legend class="small muted">Zobrazit</legend>
     <label><input type="radio" name="view" value="last_session" checked> poslední zasedání</label>
     <label><input type="radio" name="view" value="main"> celé období – závěrečná hlasování</label>
     <label><input type="radio" name="view" value="all"> celé období – všechna hlasování</label>
   </fieldset>
+  <span id="share-slot"></span>
+  </div>
   <p class="muted" id="summary"></p>
   <div id="list" class="loading">Načítám…</div>
   <p class="source" id="source"></p>
@@ -71,6 +74,7 @@
 </div></footer>
 
 <script src="app.js"></script>
+<script src="share.js"></script>
 <script>
 setNav("analyses");
 setNav("splits");
@@ -124,6 +128,27 @@ setNav("splits");
           `${v === "main" ? "závěrečných " : ""}hlasováních (aspoň jeden pro a jeden proti). Níže ${list.length} s největším rozdělením.`;
       }
       document.getElementById("summary").textContent = summary;
+      // Sdílet pohled: karta s prvními řádky aktuálního pohledu, ve stejném pořadí jako na stránce (podle míry rozdělení).
+      const VIEW_NAME = { last_session: "poslední zasedání", main: "celé období, závěrečná hlasování", all: "celé období, všechna hlasování" };
+      const lead = v === "last_session"
+        ? `Zasedání ${fmtDate(d.last_session.from)} – ${fmtDate(d.last_session.to)}: ${fmtNum(d.last_session.votes)} hlasování, Češi se rozdělili v ${fmtNum(d.last_session.split_count)}.`
+        : `Celé období: Češi se rozdělili v ${fmtNum(v === "main" ? d.count_main : d.count)} ${v === "main" ? "závěrečných " : ""}hlasováních.`;
+      const url = siteUrl(`rozkol.html?v=${v}`);
+      window.shareContext = () => ({
+        kind: "split", url, filename: `ep-watch-rozkol-${v}`, subtitle: `Kde se Češi rozdělili · ${VIEW_NAME[v]}`,
+        trust: "Karta ukazuje právě zvolený pohled, jen první řádky seznamu. Datum dat, zdroj a adresa jsou na ní.",
+        text: `Kde se čeští europoslanci rozdělili (${VIEW_NAME[v]}). Zdroj: HowTheyVote.eu, EP Watch CZ`,
+        data: {
+          title: "Kde se Češi rozdělili", lead, total: list.length, order: "podle míry rozdělení", dataDay: overview.sources?.votes?.release || overview.period.to,
+          dateLabel: v === "last_session" ? `${fmtDate(d.last_session.from)} – ${fmtDate(d.last_session.to)}` : `data k ${fmtDate(overview.sources?.votes?.release || overview.period.to)}`,
+          rows: list.map((x) => ({ meta: [fmtDate(x.date), KIND_LABEL[x.vote_kind] || "", RESULT_LABEL[x.result] || ""].filter(Boolean).join(" · "),
+            title: voteTitle(x), score: `${x.cz[0]} : ${x.cz[1]}`, scoreSub: "pro : proti" })),
+          source: `Zdroj: HowTheyVote.eu (ODbL) · strana a frakce k datu hlasování`,
+          urlShort: url.replace(/^https?:\/\//, ""),
+        },
+      });
+      const slot = document.getElementById("share-slot");
+      if (!slot.firstChild && typeof shareButton === "function") slot.outerHTML = shareButton("view", "Sdílet pohled");
       el.className = "";
       shown = PAGE;
       current = list;

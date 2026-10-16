@@ -105,41 +105,141 @@ for (const scheme of ["light", "dark"]) {
   }
   await ctx.close();
 }
-// S3: nabídka Sdílet není nikdy překrytá (sticky lišta, stacking context) a Esc ji zavře i s návratem fokusu.
-// Bez reducedMotion, aby běžela animace .reveal, která chybu původně způsobovala.
-for (const width of [1366, 390]) {
-  const ctx = await browser.newContext({ viewport: { width, height: 800 } });
-  for (const url of [`p/${mepId}.html`, `vote.html?id=${voteId}&m=${month}`, `v/${voteId}.html`]) {
-    const page = await ctx.newPage();
-    await page.goto(base + url, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1200);
-    const where = `${url} [sdílení, ${width}px]`;
-    if (!(await page.$("[data-share]"))) { problems.push(`${where}: chybí tlačítko Sdílet`); await page.close(); continue; }
-    await page.click("[data-share]");
-    const covered = await page.evaluate(() => [...document.querySelectorAll(".share-menu [role=menuitem]")].filter((e) => {
-      const q = e.getBoundingClientRect(); return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2)); }).map((e) => e.textContent.trim()));
-    if (covered.length) problems.push(`${where}: nabídku překrývá jiný prvek: ${covered.join(", ")}`);
-    if (width === 1366 && url.startsWith("v/")) {  // S5: karta hlasování se na statické stránce stáhne jako PNG 1080 × 1350
-      const [dl] = await Promise.all([page.waitForEvent("download"), page.click('.share-menu [data-act="download:post"]')]);
-      const buf = await (await import("node:fs/promises")).readFile(await dl.path());
-      const okPng = buf.slice(1, 4).toString() === "PNG" && buf.readUInt32BE(16) === 1080 && buf.readUInt32BE(20) === 1350;
-      if (!okPng) problems.push(`${where}: stažená karta není PNG 1080 × 1350`);
-      await page.click("[data-share]");
-    }
-    if (width === 1366 && url.startsWith("p/")) {  // S4: základní karta a oba slidy detailu 4 : 5, story 9 : 16 (kreslí se v prohlížeči)
-      const sizes = await page.evaluate(async () => {
-        const out = {};
-        for (const k of ["post", "slide2", "slide3", "story"]) { const b = await createImageBitmap(await renderCardPng(window.shareContext(), k)); out[k] = [b.width, b.height]; }
-        return out;
+// N1/N2 (revize sdílení): jedno „Sdílet“ v hlavičce, panel <dialog> s živým náhledem; nic ho nepřekrývá, Esc zavře a vrátí fokus.
+// Bez reducedMotion, aby běžela animace .reveal (dřív kvůli ní nabídku překrývala sticky lišta).
+const pngSize = (buf) => (buf.slice(1, 4).toString() === "PNG" ? [buf.readUInt32BE(16), buf.readUInt32BE(20)] : null);
+for (const scheme of ["light", "dark"]) {
+  for (const width of [1366, 390, 360]) {
+    if (scheme === "dark" && width !== 1366) continue;
+    const ctx = await browser.newContext({ viewport: { width, height: 800 }, colorScheme: scheme, acceptDownloads: true });
+    await ctx.addInitScript(() => { window.__alerts = 0; window.alert = () => { window.__alerts += 1; }; });
+    for (const url of [`v/${voteId}.html`, `p/${mepId}.html`, `s/${partyId}.html`, "rozkol.html", `vote.html?id=${voteId}&m=${month}`]) {
+      const page = await ctx.newPage();
+      await page.goto(base + url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(900);
+      const where = `${url} [sdílení, ${scheme}, ${width}px]`;
+      const btns = page.locator("[data-share]:visible");
+      if ((await btns.count()) !== 1) { problems.push(`${where}: čekám právě jedno viditelné tlačítko Sdílet, je ${await btns.count()}`); await page.close(); continue; }
+      if (await page.$(".cite-btn")) problems.push(`${where}: na stránce zůstalo ❝ (.cite-btn)`);
+      await btns.first().click();
+      await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push(`${where}: panel neukázal náhled`));
+      // na mobilu panel vyjíždí zespodu (280 ms): měřit až po doběhnutí animace
+      await page.evaluate(() => Promise.all((document.querySelector("dialog[open]")?.getAnimations() || []).map((a) => a.finished)));
+      const st = await page.evaluate(() => {
+        const d = document.querySelector("dialog.share-dlg[open]");
+        const img = d?.querySelector(".sd-preview img");
+        // každý prvek nejdřív posunout doprostřed panelu (na mobilu se panel posouvá pod lepivou hlavičkou a lištou akcí)
+        const covered = d ? [...d.querySelectorAll("button:not([hidden]), a, input")].filter((e) => {
+          e.scrollIntoView({ block: "center", inline: "nearest" });
+          const q = e.getBoundingClientRect();
+          if (!q.width) return false;
+          return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2));
+        }).map((e) => e.textContent.trim() || e.getAttribute("aria-label") || e.id) : [];
+        d?.scrollTo(0, 0);
+        return { open: Boolean(d), focus: document.activeElement?.classList.contains("sd-primary"), nw: img?.naturalWidth, nh: img?.naturalHeight,
+          covered, sw: document.documentElement.scrollWidth, dw: d ? d.scrollWidth - d.clientWidth : 0 };
       });
-      for (const [k, [w, h]] of Object.entries(sizes)) if (w !== 1080 || h !== (k === "story" ? 1920 : 1350)) problems.push(`${where}: karta ${k} má rozměr ${w}×${h}`);
-      if (!(await page.$('.share-menu [data-act="download:detail"]'))) problems.push(`${where}: v nabídce chybí „detail, 3 obrázky“`);
+      if (!st.open) { problems.push(`${where}: klik neotevřel dialog`); await page.close(); continue; }
+      if (!st.focus) problems.push(`${where}: fokus po otevření není na hlavním tlačítku`);
+      if (st.nw !== 1080 || st.nh !== 1350) problems.push(`${where}: náhled má ${st.nw}×${st.nh}, čekám 1080×1350`);
+      if (st.covered.length) problems.push(`${where}: ovládací prvky panelu něco překrývá: ${st.covered.join(", ")}`);
+      if (st.sw > width || st.dw > 0) problems.push(`${where}: panel přetéká do šířky`);
+      if (width === 1366) {
+        await page.addScriptTag({ content: axeSource });
+        const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.share-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+          .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
+        v.forEach((x) => problems.push(`${where}: axe v panelu ${x}`));
+      }
+      if (scheme === "light" && width === 1366 && url.startsWith("v/")) {
+        // Co je v náhledu, to se stáhne: PNG 1080 × 1350; story 1080 × 1920.
+        const [dl] = await Promise.all([page.waitForEvent("download"), page.click(".sd-primary")]);
+        const size = pngSize(await (await import("node:fs/promises")).readFile(await dl.path()));
+        if (!size || size[0] !== 1080 || size[1] !== 1350) problems.push(`${where}: stažená karta není PNG 1080 × 1350 (${size})`);
+        await page.click('[data-fmt="story"]');
+        await page.waitForFunction(() => document.querySelector(".sd-preview img")?.naturalHeight === 1920, null, { timeout: 15000 })
+          .catch(() => problems.push(`${where}: po přepnutí na Story náhled nemá 1080 × 1920`));
+        await page.click('[data-fmt="post"]');   // vrátit uložený formát
+        // Kopírovat obrázek: ClipboardItem s PNG (mock schránky)
+        const copied = await page.evaluate(async () => {
+          let got = null;
+          window.ClipboardItem = window.ClipboardItem || function (o) { this.types = Object.keys(o); };
+          Object.defineProperty(navigator, "clipboard", { configurable: true, value: { write: async (items) => { got = items[0].types; }, writeText: async () => {} } });
+          document.querySelector('[data-act="copyimg"]')?.click();
+          await new Promise((r) => setTimeout(r, 1500));
+          return { got, toast: document.querySelector('.sd-toast[role="status"]')?.textContent || "" };
+        });
+        if (!copied.got || !copied.got.includes("image/png")) problems.push(`${where}: Kopírovat obrázek nezapsal PNG do schránky`);
+        if (!/schránce/.test(copied.toast)) problems.push(`${where}: chybí potvrzení přes role="status"`);
+      }
+      if (scheme === "light" && width === 1366 && url.startsWith("p/")) {
+        await page.click('[data-fmt="detail"]');
+        await page.waitForFunction(() => document.querySelectorAll(".sd-carousel img").length === 3 && [...document.querySelectorAll(".sd-carousel img")].every((i) => i.naturalWidth === 1080 && i.naturalHeight === 1350), null, { timeout: 20000 })
+          .catch(() => problems.push(`${where}: detail nemá 3 obrázky 1080 × 1350 v karuselu`));
+        await page.click('[data-fmt="post"]');
+      }
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(200);
+      const after = await page.evaluate(() => ({ open: Boolean(document.querySelector("dialog.share-dlg")), focus: document.activeElement?.matches("[data-share]"), alerts: window.__alerts }));
+      if (after.open || !after.focus) problems.push(`${where}: Esc nezavřel panel nebo nevrátil fokus na tlačítko`);
+      if (after.alerts) problems.push(`${where}: volání alert()`);
+      await page.close();
     }
-    await page.keyboard.press("Escape");
-    const state = await page.evaluate(() => ({ open: Boolean(document.querySelector(".share-menu")), focus: document.activeElement?.matches("[data-share]") }));
-    if (state.open || !state.focus) problems.push(`${where}: Esc nezavřel nabídku nebo nevrátil fokus`);
-    await page.close();
+    await ctx.close();
   }
+}
+// N2: v ⓘ u čísla je „Sdílet číslo“ a otevře panel s kartou čísla.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
+  const page = await ctx.newPage();
+  await page.goto(base + `p/${mepId}.html`, { waitUntil: "networkidle" });
+  await page.click(".metric .info-wrap.corner .info-btn");
+  const share = page.locator('.info-pop:popover-open [data-share^="metric:"]');
+  if (!(await share.count())) problems.push("profil: v ⓘ u čísla chybí „Sdílet číslo“");
+  else {
+    await share.click();
+    await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push("profil: Sdílet číslo neotevřel panel s náhledem"));
+    const title = await page.textContent("dialog[open] #sd-h").catch(() => "");
+    if (title !== "Sdílet číslo") problems.push(`profil: panel čísla má nadpis „${title}“`);
+  }
+  if (!(await page.locator('.info-pop [data-cite]').count())) problems.push("profil: v ⓘ u čísla chybí „Citovat“");
+  await ctx.close();
+}
+// N3: pravidla nových karet (metric, split, party) s MOCK daty: text se vejde, chybějící hodnota se vynechá,
+// počet řádků napsaný na kartě = počet vykreslených řádků; neutrální avatar nekreslí portrét.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
+  const page = await ctx.newPage();
+  await page.goto(base + `v/${voteId}.html`, { waitUntil: "networkidle" });
+  const r = await page.evaluate(async () => {
+    await document.fonts.ready;
+    const out = [];
+    const fits = (name, ops) => ops.filter((o) => o.k === "text").forEach((o) => {
+      const w = measureText(o.s, o.size, o.weight);
+      const x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
+      if (x0 < 50 || x0 + w > 1030) out.push(`${name}: text „${o.s.slice(0, 40)}“ přetéká (${Math.round(x0)}–${Math.round(x0 + w)})`);
+    });
+    const texts = (ops) => ops.filter((o) => o.k === "text").map((o) => o.s).join(" | ");
+    const base = { dataDay: "2026-10-10", urlShort: "epwatch.cz/p/1#dochazka" };
+    for (const [fk, f] of [["post", SHARE_FORMATS.post], ["story", SHARE_FORMATS.story]]) {
+      const m1 = metricCardOps({ ...base, context: "MOCK Poslanec Dlouhé Jméno · EPP · TOP09/STAN", label: "Účast na hlasování – závěrečná", pair: [588, 615], median: 0.91, medLabel: "medián EP", definition: "MOCK definice. ".repeat(20) }, f);
+      fits(`metric ${fk}`, m1);
+      const m2 = metricCardOps({ ...base, context: "MOCK", label: "Shoda s ostatními Čechy", pair: [10, 20], median: null, medLabel: "" }, f);
+      if (/medián/.test(texts(m2))) out.push(`metric ${fk}: bez mediánu se medián nesmí kreslit`);
+      const rows = Array.from({ length: 12 }, (_, i) => ({ meta: `8. 10. 2026 · pozměňovací návrh · přijato`, title: `MOCK hlasování ${i + 1} s velmi dlouhým názvem, který se musí zalomit a zkrátit, aby se vešel na kartu`, score: "10 : 9", scoreSub: "pro : proti" }));
+      const sp = splitCardOps({ ...base, title: "Kde se Češi rozdělili", lead: "MOCK věta o zasedání.", total: 50, rows }, f);
+      fits(`split ${fk}`, sp);
+      const n = splitRowsFor(f);
+      const drawn = sp.filter((o) => o.k === "text" && o.s === "10 : 9").length;
+      if (drawn !== n || !texts(sp).includes(`prvních ${n} z 50`)) out.push(`split ${fk}: na kartě napsáno jinak než vykresleno (${drawn} řádků, čekám ${n})`);
+      const pc = partyCardOps({ ...base, name: "MOCK strana", sub: "MOCK · 2 poslanci v mandátu", tiles: [{ label: "Účast poslanců na hlasování", pair: [9, 10] }, { label: "Jednotnost", pair: null }, { label: "Soulad s výsledkem", pair: [0, 0] }] }, f);
+      fits(`party ${fk}`, pc);
+      if (/Jednotnost|Soulad/.test(texts(pc))) out.push(`party ${fk}: chybějící hodnota se nevynechala`);
+    }
+    const neutral = mepBasicOps({ ...base, name: "MOCK Poslanec", avatar: "neutral", photo: { width: 10, height: 10 }, chips: [], attendance: [1, 2], attendanceMedian: 0.9 }, SHARE_FORMATS.post);
+    if (neutral.some((o) => o.k === "image" && o.img && o.img.width === 10) || /European Union/.test(texts(neutral))) out.push("mep: avatar neutral kreslí portrét");
+    return out;
+  });
+  r.forEach((x) => problems.push(`karty: ${x}`));
   await ctx.close();
 }
 await browser.close();

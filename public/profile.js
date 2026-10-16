@@ -5,7 +5,8 @@
 setNav("meps");
 const main = document.getElementById("main");
 
-// Metrická karta: hodnota a proužek se srovnáním (benchRow), pod tím počty, definice a zdroj; citace ikonou v rohu.
+// Metrická karta: hodnota a proužek se srovnáním (benchRow), pod tím počty, definice a zdroj; v rohu ⓘ s definicí,
+// „Sdílet číslo“ (opts.share = „metric:klíč“) a „Citovat“.
 // median = podíl nebo null, refLabel = „medián EP“ / „medián frakce“, extra = další řádek (např. druhý medián).
 function metricCard(label, pair, detail, sourceHref, median, refLabel, cite, opts = {}) {
   // Proužek jen tam, kde je s čím srovnat (medián); jinak velké číslo.
@@ -16,7 +17,7 @@ function metricCard(label, pair, detail, sourceHref, median, refLabel, cite, opt
     ${head}
     <div class="detail">${pair && pair[1] ? `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování` : ""}${opts.extra ? ` · ${opts.extra}` : ""}</div>
     <div class="detail">${detail} · <a href="${sourceHref}">zdroj a metodika</a></div>
-    ${cite && pair && pair[1] ? citeButton(cite) : ""}
+    ${cite && pair && pair[1] ? metricActions(`<p><strong>${label}</strong>: ${esc(opts.def || detail)}</p>`, opts.share, cite) : ""}
   </div>`;
 }
 
@@ -297,22 +298,43 @@ function periodText(x) {
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
     const pageUrl = siteUrl(`p/${mep.id}.html`);
-    window.shareContext = () => {
+    const gObj = groups.find((x) => x.ep_code === g?.code);
+    const pObj = p ? parties.find((x) => String(x.id) === String(p.org_id)) : null;
+    const partyLabel = p ? (p.short_label === "Ind." || pObj?.independent ? byGender(mep, "nezávislý", "nezávislá") : p.short_label) : "";
+    const groupLabel = g ? (CZ_GROUP_LABEL[gObj?.code] || gObj?.short_label || g.short_label) : "";
+    const day = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : null);
+    // Karta jednoho čísla (ⓘ → Sdílet číslo): jen čísla z karty na stránce; medián, jen když ho stránka ukazuje.
+    const METRIC = {
+      attendance: () => ["Účast na hlasování", t.attendance, b?.ep?.attendance, "medián EP", "účast na hlasování"],
+      attendance_main: () => ["Účast na hlasování – závěrečná", t.attendance_main, b?.ep?.attendance_main, "medián EP", "účast na hlasování u závěrečných hlasování"],
+      group_loyalty: () => ["Hlasuje s frakcí", t.group_loyalty, isNI ? null : b?.group?.group_loyalty, "medián frakce", "hlasuje s frakcí"],
+      cz_agreement: () => ["Shoda s ostatními Čechy", t.cz_agreement, null, "", "shoda s ostatními českými poslanci"],
+    };
+    const metricContext = (key) => {
+      if (!METRIC[key]) return null;
+      const [label, pair, median, medLabel, what] = METRIC[key]();
+      if (!pair || !pair[1]) return null;
+      const url = siteUrl(`p/${mep.id}.html#dochazka`);
+      return {
+        kind: "metric", url, filename: `ep-watch-${mep.id}-${key}`, subtitle: `${name} · ${label}`, cite: cite(what, pair),
+        text: `${name}: ${label.toLowerCase()} ${fmtPct(pct(pair))} (${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování). Zdroj: HowTheyVote.eu, EP Watch CZ`,
+        data: { context: [name, groupLabel, partyLabel].filter(Boolean).join(" · "), label, pair, median: median ?? null, medLabel,
+          definition: defOf(key), dataDay: day(profile.sources?.votes?.release) || new Date().toISOString().slice(0, 10),
+          urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") },
+      };
+    };
+    window.shareContext = (kind = "") => {
+      if (kind.startsWith("metric:")) return metricContext(kind.slice(7));
       const ro = profile.own_work?.roles, ows = profile.own_work?.summary, pas = profile.own_work?.passed;
-      const gObj = groups.find((x) => x.ep_code === g?.code);
-      const pObj = p ? parties.find((x) => String(x.id) === String(p.org_id)) : null;
-      const partyLabel = p ? (p.short_label === "Ind." || pObj?.independent ? byGender(mep, "nezávislý", "nezávislá") : p.short_label) : "";
-      const groupLabel = g ? (CZ_GROUP_LABEL[gObj?.code] || gObj?.short_label || g.short_label) : "";
-      const day = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : null);
       const today = new Date().toISOString().slice(0, 10);
       const cNow = mep.committees.filter((c) => !c.end || c.end >= today);
       const top = profile.pairwise.filter((x) => x.total >= 100).map((x) => ({ name: displayName(x), party: x.party?.short_label || "", share: x.same / x.total }))
         .sort((a, b) => b.share - a.share).slice(0, 3);
       return {
-        kind: "mep", url: pageUrl, filename: `ep-watch-${mep.id}`,
+        kind: "mep", url: pageUrl, filename: `ep-watch-${mep.id}`, subtitle: `Poslanec · ${name}`, cite: cite("účast na hlasování", t.attendance),
         text: `${name}: ${byGender(mep, "hlasoval", "hlasovala")} v ${fmtPct(pct(t.attendance))} jmenovitých hlasování (medián EP ${b?.ep?.attendance != null ? fmtPct(b.ep.attendance) : "–"}). Zdroj: HowTheyVote.eu, EP Watch CZ`,
         data: {
-          name, female: mep.gender === "FEMALE" ? true : mep.gender === "MALE" ? false : null, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: day(profile.sources?.votes?.release) || today, workDay: day(profile.own_work?.updated) || day(profile.activity?.updated),
+          name, avatar: "photo", female: mep.gender === "FEMALE" ? true : mep.gender === "MALE" ? false : null, photoUrl: mep.photo_url ? photoUrl(mep) : null, dataDay: day(profile.sources?.votes?.release) || today, workDay: day(profile.own_work?.updated) || day(profile.activity?.updated),
           chips: [groupLabel && { label: groupLabel, color: groupColor(gObj) }, partyLabel && { label: partyLabel, color: groupColor(pObj) }].filter(Boolean),
           mandate: active ? `v mandátu od ${since}` : `mandát ${mandateText(mep)}`,
           attendance: t.attendance, attendanceMedian: b?.ep?.attendance ?? null, loyalty: isNI ? null : t.group_loyalty, loyaltyMedian: isNI ? null : (b?.group?.group_loyalty ?? null),
@@ -341,6 +363,7 @@ function periodText(x) {
     const hasOwn = Boolean(ow && ow.items && ow.items.length);
     const here = mepUrl(mep.id);
     const since = fmtDate(mep.mandates[0].start);
+    const defOf = (k) => firstSentence(profile.definitions?.[k]);
     const cite = (what, pair) => pair && pair[1] ? `${name}: ${what} ${fmtPct(pct(pair))} (${fmtNum(pair[0])} z ${fmtNum(pair[1])} jmenovitých hlasování v Evropském parlamentu v době mandátu, od ${since}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.` : "";
 
     const committeesNow = mep.committees.filter((c) => !c.end || c.end >= new Date().toISOString().slice(0, 10));
@@ -356,7 +379,7 @@ function periodText(x) {
       .map((x) => ({ m: x, v: [x.same, x.total] }));
 
     main.innerHTML = `
-      <p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>
+      <div class="back-row"><p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>${shareButton()}</div>
       <div class="profile-head">
         <figure class="portrait">
           ${mep.photo_url ? `<img src="${photoUrl(mep)}" alt="Portrét: ${esc(name)}">` : `<span class="avatar-initials" style="width:160px;height:200px;border-radius:var(--radius);font-size:3rem" aria-hidden="true">${esc([mep.given_name, mep.family_name].filter(Boolean).map((x) => x[0]).join(""))}</span>`}
@@ -375,7 +398,6 @@ function periodText(x) {
           ${mep.name_note ? `<p class="small muted">Podoba jména: ${esc(mep.name_note)}</p>` : ""}
           ${profile.short_mandate ? `<p class="small note">${esc(SHORT_MANDATE_NOTE)} Mandát trval ${fmtNum(profile.mandate_days)} dní.</p>` : ""}
           <p class="small profile-links head-only">${extLinks}</p>
-          <p class="share-row">${shareButton()}</p>
         </div>
       </div>
 
@@ -390,15 +412,15 @@ function periodText(x) {
       <div class="metrics">
         ${metricCard("Účast na hlasování", t.attendance, "všechna jmenovitá hlasování v době mandátu", "o-projektu.html#metodika",
           b?.ep?.attendance, "medián EP", cite("účast na hlasování", t.attendance),
-          { extra: b?.group?.attendance != null ? `medián frakce ${fmtPct(b.group.attendance)}` : "" })}
+          { share: "metric:attendance", def: defOf("attendance"), extra: b?.group?.attendance != null ? `medián frakce ${fmtPct(b.group.attendance)}` : "" })}
         ${metricCard("Účast na hlasování – závěrečná", t.attendance_main, "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise", "o-projektu.html#metodika",
           b?.ep?.attendance_main, "medián EP", cite("účast na hlasování u závěrečných hlasování", t.attendance_main),
-          { extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
+          { share: "metric:attendance_main", def: defOf("attendance_main"), extra: b?.group?.attendance_main != null ? `medián frakce ${fmtPct(b.group.attendance_main)}` : "" })}
         ${presenceCard(profile.presence, mep)}
         ${metricCard("Hlasuje s frakcí", t.group_loyalty, "jen informativní", "o-projektu.html#metodika",
           isNI ? null : b?.group?.group_loyalty, "medián frakce", cite("hlasuje s frakcí", t.group_loyalty),
-          { naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
-        ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, "", cite("shoda s ostatními českými poslanci", t.cz_agreement))}
+          { share: "metric:group_loyalty", def: defOf("group_loyalty"), naText: isNI ? "nezařazení nemají frakci, nepočítá se" : "nepočítá se" })}
+        ${metricCard("Shoda s ostatními Čechy", t.cz_agreement, "jen informativní", "o-projektu.html#metodika", null, "", cite("shoda s ostatními českými poslanci", t.cz_agreement), { share: "metric:cz_agreement", def: defOf("cz_agreement") })}
       </div>
       <div class="source">${byGender(mep, "Hlasoval", "Hlasovala")} pro ${fmtNum(t.positions.FOR)}×, proti ${fmtNum(t.positions.AGAINST)}×,
         ${positionFor("ABSTENTION", mep)} ${fmtNum(t.positions.ABSTENTION)}×, ${positionFor("DID_NOT_VOTE", mep)} ${fmtNum(t.positions.DID_NOT_VOTE)}×.${infoButton(`<p>${sourceLine(stats)}</p>`, "Zdroj")}</div>

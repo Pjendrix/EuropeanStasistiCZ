@@ -110,6 +110,8 @@ async function listPage() {
     <p class="source">${sourceLine(idx)}</p>`;
 }
 
+const meps_count_cs = (n) => `${fmtNum(n)} ${n === 1 ? "poslanec" : n < 5 ? "poslanci" : "poslanců"}`;
+
 async function detailPage(id) {
   const [p, groups, parties] = await Promise.all([
     getJSON(`parties/${id}.json`).catch(() => { throw new Error("Strana nenalezena. Vrať se na seznam stran."); }),
@@ -123,8 +125,23 @@ async function detailPage(id) {
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Poslanci strany</th><th>Výsledek</th></tr></thead>
       <tbody>${list.map((v) => voteRow(v, `<td class="extra">${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
     : '<p class="muted">Žádné takové hlasování.</p>';
+  // Karta strany (sdílení): tři čísla ze „Souhrn za stranu“, bez log a bez srovnání mezi stranami.
+  const nowCount = p.member_list.filter((m) => isActive(m) && m.party_periods.some((x) => !x.end)).length;
+  const url = siteUrl(`s/${p.id}.html`);
+  const name = p.name || p.short_label;
+  window.shareContext = () => ({
+    kind: "party", url, filename: `ep-watch-strana-${p.id}`, subtitle: `Strana · ${p.short_label}`,
+    cite: single ? "" : `${name}: poslanci strany v Evropském parlamentu hlasovali jednotně v ${fmtPct(pct(p.cohesion))} hlasování (${fmtNum(p.cohesion[0])} z ${fmtNum(p.cohesion[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.`,
+    text: `${name} v Evropském parlamentu: účast poslanců na hlasování ${fmtPct(pct(t.attendance))}${single ? "" : `, jednotnost ${fmtPct(pct(p.cohesion))}`}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
+    data: {
+      name, sub: `${name !== p.short_label ? `${p.short_label} · ` : ""}${nowCount ? `${meps_count_cs(nowCount)} v mandátu` : "nikdo v mandátu"}`, dataDay: p.sources?.votes?.release || new Date().toISOString().slice(0, 10),
+      tiles: [{ label: "Účast poslanců na hlasování", pair: t.attendance }, { label: "Jednotnost", pair: single ? null : p.cohesion, note: "všichni hlasující poslanci strany stejně" },
+        { label: "Soulad s výsledkem", pair: t.outcome, note: "jen informativní" }],
+      urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, ""),
+    },
+  });
   main.innerHTML = `
-    <p class="small"><a href="party.html">← Všechny strany</a></p>
+    <div class="back-row"><p class="small"><a href="party.html">← Všechny strany</a></p>${typeof shareButton === "function" ? shareButton() : ""}</div>
     ${p.logo ? `<div class="logo-row">${logoTile(p, 48)}</div>` : ""}
     <h1>${esc(p.name || p.short_label)} ${partyBadge(p.id, p.short_label, parties)}</h1>
 

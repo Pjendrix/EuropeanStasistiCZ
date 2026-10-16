@@ -27,7 +27,25 @@ def test_vote_page_content(data_dir):
     html = built(data_dir)["v/1.html"]
     assert "<h1>MOCK vote</h1>" in html and "přijato" in html
     assert 'href="../p/1.html"' in html and 'data-root="../"' in html
-    assert "https://howtheyvote.eu/votes/1" in html and 'class="cite-btn"' in html
+    assert "https://howtheyvote.eu/votes/1" in html
+
+
+def test_share_button_in_head_row_and_no_corner_cite(data_dir):
+    """Revize sdílení N2: „Sdílet“ v řádku se zpět na v/, p/, s/; ❝ v rohu karet už není (citace je v panelu)."""
+    pages = built(data_dir)
+    for key in ("v/1.html", "p/1.html", "s/20.html"):
+        html = pages[key]
+        assert 'class="cite-btn"' not in html, key
+        assert html.count("data-share") == 1 and f'<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
+        assert "share.js" in html, key
+    assert 'cite: "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
+
+
+def test_share_button_same_in_python_and_js():
+    import re
+    js = (Path(__file__).resolve().parent.parent / "public" / "share.js").read_text(encoding="utf-8")
+    m = re.search(r"const SHARE_BTN_HTML = '([^']+)';", js)
+    assert m and m[1] == bp.SHARE_BUTTON
 
 
 def test_profile_page_has_numbers_with_source(data_dir):

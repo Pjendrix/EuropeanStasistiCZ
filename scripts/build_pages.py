@@ -123,14 +123,15 @@ def split_bar(counts: list[int]) -> str:
     return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
 
 
-CITE_ICON = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 '
-             '9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 '
-             '2.6-4.2L17 6z"/></svg>')
+# Tlačítko „Sdílet“ v hlavičce stránky: stejný kód jako SHARE_BTN_HTML / shareButton() v public/share.js (hlídá test).
+SHARE_BUTTON = ('<button type="button" class="share-btn" data-share aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24'
+                '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8'
+                'l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Sdílet</span></button>')
 
 
-def cite_button(text: str) -> str:
-    return (f'<button type="button" class="cite-btn" data-cite="{esc(text)}" aria-label="Citovat" '
-            f'title="Citovat (zkopíruje větu se zdrojem)">{CITE_ICON}</button>')
+def back_row(href: str, label: str) -> str:
+    """Řádek „← zpět“ s tlačítkem Sdílet vpravo (stejné místo na každé stránce, N2)."""
+    return f'<div class="back-row"><p class="small"><a href="{href}">{esc(label)}</a></p>{SHARE_BUTTON}</div>'
 
 
 OG_DEFAULT = "assets/brand/og-default.png"  # z scripts/build_brand.py, 1200 × 630
@@ -163,12 +164,12 @@ def kind_of(v: dict) -> tuple[str, bool]:
 
 # --- poslanec ------------------------------------------------------------------------
 
-def metric(label: str, pair: list[int] | None, detail: str, bench_line: str = "", cite: str = "") -> str:
+def metric(label: str, pair: list[int] | None, detail: str, bench_line: str = "") -> str:
     if not (pair and pair[1]):
-        bench_line = cite = ""  # srovnání ani citace u nepočítané metriky
+        bench_line = ""  # srovnání u nepočítané metriky
     count = f"{fmt_num(pair[0])} z {fmt_num(pair[1])} hlasování" if pair and pair[1] else "nepočítá se"
     return (f'<div class="card metric"><div class="label">{label}</div><div class="value">{fmt_pct(pair) if pair else "–"}</div>'
-            f'<div class="detail">{count}</div>{bench_line}<div class="detail">{detail}</div>{cite}</div>')
+            f'<div class="detail">{count}</div>{bench_line}<div class="detail">{detail}</div></div>')
 
 
 def presence_card(pr: dict | None) -> str:
@@ -204,9 +205,6 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     att = t["attendance"]
     desc = f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
            f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
-    cite = lambda what, pair: cite_button(
-        f"{name}: {what} {fmt_pct(pair)} ({fmt_num(pair[0])} z {fmt_num(pair[1])} jmenovitých hlasování v Evropském parlamentu "
-        f"v době mandátu, {rng}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if pair and pair[1] else ""
     photo = (f'<figure class="portrait"><img src="assets/photos/{mep["id"]}.jpg" alt="Portrét: {esc(name)}">'
              f'<figcaption>{esc(mep.get("photo_credit") or "© European Union – Source: EP")}</figcaption></figure>'
              if mep.get("photo_url") else "")
@@ -241,7 +239,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
                      f'<p class="source">Počty v době mandátu. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
                      f'Projevy nevypovídají o kvalitě ani vlivu.</p></div>')
     pos = t["positions"]
-    body = f"""<p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>
+    body = f"""{back_row("poslanci.html", "← Všichni poslanci")}
 <div class="profile-head">
   {photo}
   <div>
@@ -258,10 +256,10 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 
 <h2 id="dochazka">Hlasování v číslech</h2>
 <div class="metrics">
-  {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"), cite("účast na hlasování", t["attendance"]))}
-  {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"), cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]))}
+  {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"))}
+  {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"))}
   {presence_card(prof.get("presence"))}
-  {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"), cite("hlasuje s frakcí", t["group_loyalty"]))}
+  {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"))}
   {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
 </div>
 <p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
@@ -294,8 +292,6 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         f' · účast na hlasování {fmt_pct(m["total"]["attendance"])}</div></li>'
         for m in sorted(pp["member_list"], key=lambda m: (-(m["total"]["attendance"][0] / m["total"]["attendance"][1])
                                                           if m["total"]["attendance"][1] else 1, m.get("sort_label") or m["name"])))
-    cite = cite_button(f"{name}: poslanci strany v Evropském parlamentu hlasovali jednotně v {fmt_pct(coh)} hlasování "
-                       f"({fmt_num(coh[0])} z {fmt_num(coh[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ") if coh[1] else ""
     heading = f"<h1>{esc(name)}</h1>"
     if pp.get("logo"):
         a = pp.get("logo_aspect")  # stejná výška jako logoHeight() v app.js
@@ -305,11 +301,11 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
                    f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>')
     splits_value = (f"{fmt_num(pp['splits_count'])} z {fmt_num(coh[1])} ({fmt_pct(pp['splits_count'] / coh[1])})"
                     if coh[1] else "jen 1 poslanec")
-    body = f"""<p class="small"><a href="party.html">← Všechny strany</a></p>
+    body = f"""{back_row("party.html", "← Všechny strany")}
 {heading}
 <p class="muted">{esc(pp['short_label'])} · {meps_count(pp['members'])} v 10. volebním období</p>
 <div class="metrics">
-  {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany", "", cite)}
+  {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany")}
   {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
   <div class="card metric"><div class="label">Hlasování, kde se strana rozdělila</div><div class="value">{splits_value}</div>
     <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp['splits_count_main'])}{
@@ -326,7 +322,7 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
     return path, page(title, body, root="", base="../", path=path, current="parties", description=desc,
                       meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
                       main_attrs=f'data-party="{pp["id"]}"',
-                      scripts='<script src="app.js"></script>\n<script src="party.js"></script>\n')
+                      scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="party.js"></script>\n')
 
 
 # --- hlasování -----------------------------------------------------------------------
@@ -385,9 +381,6 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
         "sentence": sentence, "ep": total, "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
         "dataDay": data_day or v["date"],
     }
-    share_script = ("<script>window.shareContext = () => { const url = location.href.split(\"#\")[0]; return { kind: \"vote\", url, "
-                    f"filename: \"ep-watch-hlasovani-{v['id']}\", text: {json.dumps(f'{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False)}, "
-                    f"data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace('</', '<\\/')}, {{ urlShort: url.replace(/^https?:\\/\\//, \"\") }}) }}; }};</script>\n")
     n_groups = len(v["group_counts"])
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
@@ -397,20 +390,25 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     if proc:
         links.append(f'<a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference={esc(proc)}">'
                      f'Legislativní observatoř ({esc(proc)})</a>')
-    cite = cite_button(f"Evropský parlament {fmt_date(v['date'])}, {title_txt} ({KIND_LABELS.get(kind, kind)}): {result}, "
-                       f"{c['for']} pro, {c['against']} proti, {c['abstention']} se zdrželo. Čeští poslanci v mandátu: "
-                       f"{cz_counts[0]} pro, {cz_counts[1]} proti, {cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo. "
-                       f"Zdroj: HowTheyVote.eu ({src})")
-    body = f"""<p class="small"><a href="{ROOT}votes.html?m={v['date'][:7]}">← Hlasování v měsíci</a></p>
+    # Citace pro panel sdílení („Kopírovat jako citaci“); ❝ v rohu karty už není.
+    cite = (f"Evropský parlament {fmt_date(v['date'])}, {title_txt} ({KIND_LABELS.get(kind, kind)}): {result}, "
+            f"{c['for']} pro, {c['against']} proti, {c['abstention']} se zdrželo. Čeští poslanci v mandátu: "
+            f"{cz_counts[0]} pro, {cz_counts[1]} proti, {cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo. "
+            f"Zdroj: HowTheyVote.eu ({src})")
+    share_script = ("<script>window.shareContext = () => { const url = siteUrl(\"v/" + str(v["id"]) + ".html\"); return { kind: \"vote\", url, "
+                    f"filename: \"ep-watch-hlasovani-{v['id']}\", subtitle: {json.dumps('Hlasování · ' + fmt_date(v['date']), ensure_ascii=False)}, "
+                    f"cite: {json.dumps(cite, ensure_ascii=False).replace('</', '<\\/')}, "
+                    f"text: {json.dumps(f'{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False).replace('</', '<\\/')}, "
+                    f"data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace('</', '<\\/')}, {{ urlShort: url.replace(/^https?:\\/\\//, \"\").replace(/\\.html$/, \"\") }}) }}; }};</script>\n")
+    body = f"""{back_row(f"{ROOT}votes.html?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted" style="margin-bottom:.3rem">{fmt_date(v['date'])} · <span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>
-<p class="share-row"><button type="button" class="more-btn share-btn" data-share aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Sdílet</button></p>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>
-    <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div>{cite}</div>
+    <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div></div>
   <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
     <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
   <div class="card metric"><div class="label">Čeští poslanci</div>{split_bar(cz_counts)}

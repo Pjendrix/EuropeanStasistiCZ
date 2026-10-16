@@ -1,0 +1,561 @@
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sdílení EP Watch CZ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:"PJS";font-style:normal;font-weight:200 700;font-display:swap;src:url(../../public/assets/fonts/plus-jakarta-sans-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"PJS";font-style:normal;font-weight:200 700;font-display:swap;src:url(../../public/assets/fonts/plus-jakarta-sans-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* Layout: ovládací lišta mockupu nad „zarámovaným“ webem; uvnitř rámu stránka a sdílecí panel (dialog na desktopu, spodní panel na telefonu). */
+:root{
+  --k-bg:#E6EBF3; --k-fg:#0F172A; --k-muted:#5B6678; --k-line:rgba(15,23,42,.14); --k-chip:#D9E0EC; --k-on:#0F172A; --k-on-fg:#F8FAFC;
+  --font:"PJS","Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--k-bg:#060A14;--k-fg:#E2E8F0;--k-muted:#94A3B8;--k-line:rgba(148,163,184,.22);--k-chip:#111A2E;--k-on:#E2E8F0;--k-on-fg:#0B1220;color-scheme:dark}}
+:root[data-theme="dark"]{--k-bg:#060A14;--k-fg:#E2E8F0;--k-muted:#94A3B8;--k-line:rgba(148,163,184,.22);--k-chip:#111A2E;--k-on:#E2E8F0;--k-on-fg:#0B1220;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--k-bg);color:var(--k-fg);font:15px/1.5 var(--font);padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit}
+.demo{max-width:1180px;margin:0 auto 16px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-end;justify-content:space-between}
+.demo h1{font-size:1.15rem;font-weight:700;margin:0;letter-spacing:-.01em}
+.demo p{margin:.15rem 0 0;color:var(--k-muted);font-size:.85rem;max-width:42ch}
+.demo-ctl{display:flex;flex-wrap:wrap;gap:12px 20px}
+.demo-grp{display:flex;flex-direction:column;gap:4px}
+.demo-grp>span{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--k-muted)}
+.dseg{display:inline-flex;background:var(--k-chip);border-radius:999px;padding:3px}
+.dseg button{border:0;background:none;padding:.35rem .9rem;border-radius:999px;cursor:pointer;font-size:.85rem;font-weight:500;color:var(--k-muted);min-height:34px}
+.dseg button[aria-pressed="true"]{background:var(--k-on);color:var(--k-on-fg)}
+.dseg button:focus-visible{outline:2px solid #F59E0B;outline-offset:2px}
+
+.frame{--fw:1180px;width:min(100%,var(--fw));height:800px;margin:0 auto;container-type:inline-size;container-name:frame;position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--k-line);box-shadow:0 30px 70px -40px rgba(15,23,42,.55);transition:width .25s ease}
+.frame[data-dev="phone"]{--fw:390px;height:820px}
+@media (prefers-reduced-motion:reduce){.frame{transition:none}}
+
+/* ============ web (tokeny převzaté ze style.css projektu) ============ */
+.site{--navy:#0F172A;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:rgba(15,23,42,.09);--chip:#F1F5F9;--track:#E2E8F0;--accent:#2563EB;--accent-soft:#EFF6FF;--gold:#F59E0B;--bench:#B45309;--link:#1E3A8A;
+  --for:#2BA862;--against:#9F1D2B;--abst:#64748B;--absent:#94A3B8;--for-text:#15803D;--against-text:#9F1D2B;--shadow:0 1px 2px rgba(15,23,42,.04),0 12px 32px -18px rgba(15,23,42,.18);--radius:18px;--radius-sm:12px;
+  --stage:#E8EDF4;--scrim:rgba(15,23,42,.55);
+  height:100%;overflow:auto;position:relative;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5;scrollbar-width:thin}
+.site.dark{--bg:#0B1220;--surface:#111A2E;--text:#E2E8F0;--muted:#94A3B8;--border:rgba(148,163,184,.16);--chip:rgba(30,41,59,.85);--track:rgba(148,163,184,.18);--accent:#93C5FD;--accent-soft:rgba(59,130,246,.14);--shadow:none;--bench:#F59E0B;--link:#BFDBFE;
+  --for:#5BE49B;--against:#E5484D;--abst:#94A3B8;--absent:#64748B;--for-text:#86EFAC;--against-text:#FCA5A5;--stage:#0A101E;--scrim:rgba(3,7,18,.7);color-scheme:dark}
+.site a{color:var(--link)}
+.site svg{flex:none}
+.hdr{background:linear-gradient(100deg,#0A1226,#14224A);color:#F8FAFC;position:sticky;top:0;z-index:3}
+.hdr .in{display:flex;align-items:center;gap:22px;padding:0 28px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;font-size:1.1rem;letter-spacing:-.01em;white-space:nowrap}
+.brand b{font-weight:800}.brand span{font-weight:400}
+.hdr nav{display:flex;gap:4px;flex:1}
+.hdr nav a{color:#F8FAFC;text-decoration:none;padding:.45rem .9rem;border-radius:999px;font-size:.92rem;font-weight:500}
+.hdr nav a.on{background:#F8FAFC;color:#0F172A}
+.theme{margin-left:auto;width:40px;height:40px;border-radius:50%;border:1px solid rgba(248,250,252,.25);background:rgba(248,250,252,.08);color:#F8FAFC;display:grid;place-items:center;cursor:pointer}
+.theme:hover{border-color:var(--gold)}
+@container frame (max-width:700px){.hdr nav{display:none}.hdr .in{padding:0 16px}.hdr .theme{margin-left:auto}}
+main{padding:22px 28px 80px;max-width:1180px;margin:0 auto}
+@container frame (max-width:700px){main{padding:16px 16px 80px}}
+.page[hidden]{display:none}
+
+/* hlavička stránky: vlevo cesta zpět, vpravo vždy „Sdílet“ */
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;min-height:44px}
+.topline a{font-size:.9rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;min-height:42px;padding:0 1.1rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:600;font-size:.92rem;cursor:pointer;white-space:nowrap;transition:box-shadow .15s ease,transform .15s ease}
+.btn:hover{box-shadow:0 0 0 2px var(--gold)}
+.btn:focus-visible,.xb:focus-visible,.seg button:focus-visible,.tgt:focus-visible,.textbtn:focus-visible,.info:focus-visible,.pop button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.solid{background:var(--text);color:var(--surface);border-color:transparent}
+.btn.sm{min-height:36px;padding:0 .9rem;font-size:.85rem}
+.meta{color:var(--muted);margin:0 0 .3rem}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .55rem;border-radius:999px;background:var(--chip);border:1px solid var(--border);color:var(--text)}
+h1{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:300;letter-spacing:-.03em;line-height:1.1;margin:.2rem 0 .6rem;text-wrap:balance}
+h2{font-size:1.35rem;font-weight:500;letter-spacing:-.01em;margin:2rem 0 .8rem}
+.sub{color:var(--muted);margin:0 0 .5rem}
+.small{font-size:.85rem;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:20px}
+.card-w{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px 16px;box-shadow:var(--shadow);position:relative;min-width:0}
+.card-w .label{font-weight:600;font-size:.9rem;color:var(--muted);padding-right:40px}
+.card-w .value{font-size:2.6rem;font-weight:200;letter-spacing:-.03em;line-height:1.1;margin:.3rem 0 .4rem}
+.card-w .value.s{font-size:1.4rem;font-weight:500;letter-spacing:-.01em}
+.card-w .detail{color:var(--muted);font-size:.85rem}
+.pill{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--border);border-radius:999px;padding:.2rem .7rem .2rem .3rem;font-weight:600;font-size:.85rem;background:var(--surface)}
+.pill i{width:20px;height:20px;border-radius:50%;background:var(--text);color:var(--surface);display:grid;place-items:center}
+.bar{display:flex;gap:2px;height:10px;border-radius:5px;overflow:hidden;margin:.5rem 0 .4rem}
+.bar i{display:block;min-width:2px}
+.bar .n{background:repeating-linear-gradient(135deg,var(--absent) 0 2px,transparent 2px 4px)}
+.bench{position:relative;height:10px;margin:.7rem 0 .55rem}
+.bench::before{content:"";position:absolute;left:0;right:0;top:4px;height:3px;border-radius:2px;background:var(--track)}
+.bench .d{position:absolute;top:0;width:11px;height:11px;border-radius:50%;background:var(--text);transform:translateX(-50%)}
+.bench .t{position:absolute;top:-2px;width:3px;height:15px;border-radius:2px;background:var(--bench);transform:translateX(-50%)}
+.medline{color:var(--bench);font-weight:600;font-size:.85rem}
+.info{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;display:grid;place-items:center;font-size:1rem;line-height:1}
+.info:hover,.info[aria-expanded="true"]{color:var(--text);background:var(--chip);border-color:var(--muted)}
+@media (pointer:coarse){.info{width:44px;height:44px;top:6px;right:6px}}
+.pop{position:absolute;z-index:6;top:50px;right:10px;width:min(21rem,calc(100cqw - 32px));background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:0 18px 50px -12px rgba(15,23,42,.35);padding:14px 16px;font-size:.85rem;line-height:1.5}
+.pop[hidden]{display:none}
+.pop h4{margin:0 0 .3rem;font-size:.95rem}
+.pop p{margin:0 0 .55rem;color:var(--text)}
+.pop .src{color:var(--muted)}
+.pop-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:.7rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.site .pop-act button,.site .pop-act a{display:inline-flex;align-items:center;gap:.4rem;min-height:36px;padding:0 .8rem;border-radius:999px;border:1px solid var(--border);background:var(--chip);color:var(--text);font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none}
+.site .pop-act button.main{background:var(--text);color:var(--surface);border-color:transparent}
+.prow{display:grid;grid-template-columns:9rem 8rem 1fr;gap:.3rem 1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.prow:last-child{border:0}
+.prow .pl{font-weight:700;display:flex;align-items:center;gap:.45rem}
+.prow .pl i{width:10px;height:10px;border-radius:50%}
+.prow small{display:block;font-weight:400;color:var(--muted);font-size:.78rem;margin-left:1.05rem;margin-top:-.1rem}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dots svg{width:15px;height:15px}
+.who{font-size:.9rem}.who b{font-weight:700}
+@container frame (max-width:700px){.prow{grid-template-columns:1fr}}
+.profile{display:flex;gap:22px;align-items:flex-start;margin:6px 0 14px}
+.portrait{width:132px;flex:none;border-radius:16px;border:3px solid var(--gold);overflow:hidden;background:var(--chip)}
+.portrait img{display:block;width:100%;height:auto}
+.profile h1{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:.2rem 0 .6rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:999px;padding:.2rem .7rem;background:var(--chip)}
+.chip i{width:8px;height:8px;border-radius:50%}
+@container frame (max-width:700px){.profile{gap:14px}.portrait{width:96px;border-width:2px}}
+.lead{color:var(--muted);font-size:1.05rem;max-width:58ch;margin:.4rem 0 0}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:18px 0 14px}
+.vseg{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;max-width:100%}
+.vseg span{padding:.4rem .95rem;font-size:.85rem;color:var(--muted);background:var(--surface);white-space:nowrap}
+.vseg span.on{background:var(--text);color:var(--surface)}
+.split{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.split h3{font-size:1rem;margin:.35rem 0 .2rem;font-weight:600}
+.split .big{font-size:1.4rem;font-weight:700}
+.split .small{margin:0}
+
+/* ============ sdílecí panel ============ */
+.overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:var(--scrim);backdrop-filter:blur(3px);animation:fade .18s ease}
+.overlay[hidden]{display:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop-in{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes sheet-up{from{transform:translateY(28px);opacity:.6}to{transform:none;opacity:1}}
+.sheet{--pvh:500px;width:min(920px,100%);max-height:100%;overflow:auto;background:var(--surface);color:var(--text);border-radius:26px;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);display:grid;grid-template-columns:minmax(0,1fr) 372px;grid-template-areas:"head head" "stage ctrl";animation:pop-in .22s cubic-bezier(.2,.8,.2,1);scrollbar-width:thin}
+.sheet[data-fmt="story"]{--pvh:540px}
+.grip{display:none}
+.sh-head{grid-area:head;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 26px 14px}
+.sh-head h2{margin:0;font-size:1.45rem;font-weight:700;letter-spacing:-.02em}
+.sh-ctx{margin:.1rem 0 0;color:var(--muted);font-size:.9rem}
+.xb{width:40px;height:40px;border-radius:50%;border:0;background:var(--chip);color:var(--text);cursor:pointer;display:grid;place-items:center;flex:none}
+.xb:hover{background:var(--track)}
+.sh-stage{grid-area:stage;background:var(--stage);margin:0 0 0 14px;border-radius:20px;padding:24px 0 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:calc(var(--pvh) + 78px);min-width:0;align-self:start;margin-bottom:22px}
+.pv-track{display:flex;gap:18px;width:100%;justify-content:center;min-width:0}
+.pv-track.multi{justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding-inline:calc((100% - var(--pvh) * .8) / 2);scrollbar-width:none}
+.pv-track.multi::-webkit-scrollbar{display:none}
+.pv{position:relative;flex:none;height:var(--pvh);aspect-ratio:var(--ar);border-radius:10px;overflow:hidden;box-shadow:0 14px 34px -10px rgba(2,6,23,.55);scroll-snap-align:center;background:#0F172A}
+.pv-in{position:absolute;left:0;top:0;transform-origin:0 0;transition:opacity .25s ease}
+.pv.loading .pv-in{opacity:0}
+.pv.loading::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(148,163,184,.22) 50%,transparent 80%) 0 0/200% 100%,#16213A;animation:shimmer 1s linear infinite}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+.pv-foot{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:.78rem;min-height:26px}
+.dotnav{display:flex;gap:6px}
+.dotnav button{width:8px;height:8px;border-radius:50%;border:0;background:var(--track);cursor:pointer;padding:0;position:relative}
+.dotnav button::after{content:"";position:absolute;inset:-9px}
+.dotnav button[aria-current="true"]{background:var(--text);width:20px;border-radius:4px}
+.sh-ctrl{grid-area:ctrl;padding:0 26px 24px 22px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.lbl{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--chip);padding:4px;border-radius:16px}
+.seg button{border:0;background:none;border-radius:12px;padding:10px 6px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);min-height:68px;justify-content:center}
+.seg button b{font-size:.85rem;font-weight:600;color:inherit;line-height:1.15}
+.seg button small{font-size:.72rem;opacity:.85;line-height:1}
+.seg button[aria-checked="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(15,23,42,.12),0 4px 12px -6px rgba(15,23,42,.25)}
+.seg .rg{display:flex;gap:3px;align-items:center;height:20px}
+.seg .rg i{display:block;border:2px solid currentColor;border-radius:3px}
+.actions{display:flex;flex-direction:column;gap:10px;position:static}
+.primary{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;min-height:54px;border:0;border-radius:999px;background:var(--text);color:var(--surface);font-size:1rem;font-weight:700;cursor:pointer;transition:transform .12s ease,box-shadow .15s ease}
+.primary:hover{box-shadow:0 0 0 3px var(--gold)}
+.primary:active{transform:scale(.985)}
+.primary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.primary.done{background:var(--for-text);color:#fff}
+.site.dark .primary.done{color:#0B1220}
+.secondary{display:flex;gap:8px}
+.secondary button{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:44px;border:1px solid var(--border);background:var(--surface);border-radius:999px;font-size:.88rem;font-weight:600;cursor:pointer;color:var(--text)}
+.secondary button:hover{background:var(--chip)}
+.secondary button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.linkrow{display:flex;gap:8px;align-items:stretch}
+.linkrow input{flex:1;min-width:0;border:1px solid var(--border);background:var(--chip);color:var(--text);border-radius:12px;padding:0 12px;font:inherit;font-size:.88rem;min-height:44px}
+.linkrow input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.linkrow button{display:flex;align-items:center;gap:.4rem;border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:0 14px;min-height:44px;font-size:.88rem;font-weight:600;cursor:pointer;color:var(--text)}
+.linkrow button:hover{background:var(--chip)}
+.linkrow button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.textbtn{display:inline-flex;align-items:center;gap:.4rem;margin-top:8px;border:0;background:none;color:var(--link);font-size:.85rem;font-weight:600;cursor:pointer;padding:6px 0;min-height:32px;border-radius:8px}
+.textbtn:hover{text-decoration:underline}
+.targets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.site .tgt{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;color:var(--text);font-size:.76rem;font-weight:500;cursor:pointer;padding:2px 0;border-radius:12px;text-decoration:none}
+.tgt span{width:48px;height:48px;border-radius:50%;background:var(--chip);border:1px solid var(--border);display:grid;place-items:center;font-weight:800;font-size:1.05rem;transition:background .15s ease,box-shadow .15s ease}
+.tgt:hover span{background:var(--surface);box-shadow:0 0 0 2px var(--gold)}
+.sh-note{display:flex;gap:.55rem;color:var(--muted);font-size:.78rem;line-height:1.45;margin:0;padding-top:14px;border-top:1px solid var(--border)}
+.sh-note svg{margin-top:2px;color:var(--for-text)}
+.toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:var(--text);color:var(--surface);font-size:.88rem;font-weight:600;padding:.65rem 1.1rem;border-radius:999px;box-shadow:0 12px 30px -8px rgba(0,0,0,.5);display:flex;align-items:center;gap:.5rem;pointer-events:none;opacity:0;transition:opacity .2s ease,transform .2s ease;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+/* telefon: spodní panel */
+@container frame (max-width:640px){
+  .overlay{padding:0;place-items:end stretch}
+  .sheet{--pvh:310px;width:100%;max-height:94%;border-radius:26px 26px 0 0;grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "stage" "ctrl";animation:sheet-up .3s cubic-bezier(.2,.8,.2,1)}
+  .sheet[data-fmt="story"]{--pvh:360px}
+  .grip{display:block;width:40px;height:4px;border-radius:99px;background:var(--track);margin:8px auto 0;position:sticky;top:8px}
+  .sh-head{padding:10px 18px 10px;position:sticky;top:0;background:var(--surface);z-index:2}
+  .sh-head h2{font-size:1.25rem}
+  .xb{width:44px;height:44px}
+  .sh-stage{margin:0 12px 14px;min-height:0;padding:16px 0 8px}
+  .sh-ctrl{padding:0 18px calc(18px + env(safe-area-inset-bottom,0px));gap:16px}
+  .actions{position:sticky;bottom:0;background:var(--surface);padding:10px 0 8px;margin:-4px 0;z-index:2;box-shadow:0 -10px 14px -8px var(--surface)}
+  .toast{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+}
+
+/* ============ náhledové karty (kreslí je canvas v share.js; tady HTML podoba stejného vzhledu, 1080 px) ============ */
+.card{--soft:#CBD5E1;--mute:#94A3B8;--gold:#F59E0B;width:1080px;font-family:"PJS",system-ui,sans-serif;color:#F8FAFC;background:linear-gradient(180deg,#0F172A,#0A1226);overflow:hidden;position:relative;line-height:1.2}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:#F59E0B}
+.c-head{position:absolute;left:72px;right:72px;top:60px;display:flex;align-items:center;gap:18px;font-size:38px}
+.c-head svg{width:102px;height:78px}
+.c-head .wm b{font-weight:800}.c-head .wm span{font-weight:400}
+.c-head .r{margin-left:auto;font-size:26px;font-weight:500;color:var(--soft);padding-top:6px}
+.c-body{position:absolute;left:72px;right:72px;top:176px;bottom:150px;display:flex;flex-direction:column;justify-content:center;gap:var(--gap,30px)}
+.c-body.top{justify-content:flex-start;top:180px}
+.c-foot{position:absolute;left:72px;right:72px;bottom:34px;border-top:2px solid #334155;padding-top:26px}
+.c-foot p{margin:0}.c-foot .s{font-size:22px;font-weight:500;color:var(--mute);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-foot .u{font-size:24px;font-weight:700;color:var(--soft)}
+.c-title{font-size:58px;font-weight:700;line-height:68px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+.c-sub{font-size:28px;font-weight:500;color:var(--soft);margin:-12px 0 0}
+.c-res{display:flex;align-items:center;gap:20px}
+.c-pill{display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 16px;border-radius:26px;background:#F8FAFC;color:#0F172A;font-size:26px;font-weight:800;white-space:nowrap}
+.c-pill.no{background:#334155;color:#F8FAFC}
+.c-sent{font-size:30px;font-weight:600}
+.c-ep{font-size:28px;font-weight:500;color:var(--soft)}
+.cbar{display:flex;gap:3px;height:16px;margin-top:14px}.cbar i{display:block;border-radius:4px}
+.c-sec{font-size:22px;font-weight:800;letter-spacing:.02em;color:var(--gold)}
+.c-sum{display:flex;justify-content:space-between;align-items:center;margin-top:-6px}
+.c-sum .k{display:flex;gap:18px;font-size:30px;font-weight:700;align-items:center}
+.c-sum .k span{display:inline-flex;align-items:center;gap:10px}
+.dot{display:block;flex:none}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,auto);grid-auto-flow:column;gap:0 40px;border-top:2px solid #334155}
+.pgrid.one{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+.prw{height:96px;border-bottom:2px solid #1E293B;display:grid;grid-template-columns:1fr auto;align-content:center;gap:8px 8px}
+.prw .n{font-size:30px;font-weight:800;white-space:nowrap}.prw .n small{font-size:20px;font-weight:500;color:var(--mute);margin-left:12px}
+.prw .dd{display:flex;gap:6px;grid-column:1}
+.prw .sm{font-size:24px;font-weight:500;color:var(--soft);align-self:end;grid-column:2;grid-row:1/3;text-align:right;display:flex;align-items:flex-end}
+.c-mep{display:flex;gap:50px;align-items:center}
+.c-port{width:380px;height:475px;border-radius:26px;border:4px solid #F59E0B;overflow:hidden;flex:none;position:relative}
+.c-port img{width:100%;height:100%;object-fit:cover;display:block}
+.c-cred{font-size:20px;font-weight:500;color:var(--mute);margin-top:14px}
+.c-name{font-size:72px;font-weight:800;line-height:80px;margin:0 0 20px}
+.c-chips{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.c-chip{display:inline-flex;align-items:center;gap:14px;height:52px;padding:0 24px 0 20px;border-radius:26px;background:#1E293B;font-size:28px;font-weight:600}
+.c-chip i{width:16px;height:16px;border-radius:50%}
+.c-mand{font-size:28px;font-weight:500;color:var(--soft)}
+.c-two{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.mt .l{font-size:30px;font-weight:600;color:var(--soft)}
+.mt .v{font-size:90px;font-weight:800;line-height:1.1;margin:10px 0 0}
+.mt .tr{position:relative;height:10px;border-radius:5px;background:#334155;margin:14px 0 18px}
+.mt .tr .d{position:absolute;top:-9px;width:28px;height:28px;border-radius:50%;background:#F8FAFC;transform:translateX(-50%)}
+.mt .tr .t{position:absolute;top:-14px;width:6px;height:38px;border-radius:3px;background:#F59E0B;transform:translateX(-50%)}
+.mt .m{font-size:28px;font-weight:700;color:var(--gold)}
+.mt .x{font-size:24px;font-weight:500;color:var(--mute);margin-top:10px}
+.c-note{font-size:26px;font-weight:500;color:var(--soft);margin:0}
+.c-mini{display:flex;align-items:center;gap:22px;margin-bottom:8px}
+.c-mini .p{width:104px;height:104px;border-radius:50%;border:4px solid #F59E0B;overflow:hidden;flex:none}
+.c-mini .p img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.c-mini .nm{font-size:52px;font-weight:800;line-height:58px}
+.c-mini .ch{font-size:28px;font-weight:500;color:var(--soft)}
+.c-mini .pg{margin-left:auto;font-size:30px;font-weight:500;color:var(--mute)}
+.c-legend{display:flex;gap:30px;font-size:30px;font-weight:600;margin-top:20px}
+.c-legend span{display:inline-flex;align-items:center;gap:10px}
+.tiles{display:grid;gap:24px;margin-top:20px}
+.tile{background:#16213A;border-radius:28px;padding:28px 28px 26px;min-height:200px}
+.tile .l{font-size:26px;font-weight:600;color:var(--soft)}
+.tile .v{font-size:68px;font-weight:800;margin-top:12px;line-height:1.1}
+.tile .s{font-size:22px;font-weight:500;color:var(--mute);margin-top:12px}
+.pw{display:flex;justify-content:space-between;font-size:32px;font-weight:600;padding:16px 0;border-bottom:2px solid #334155}
+.pw b{font-weight:700}
+.c-big{font-size:230px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.c-lab{font-size:44px;font-weight:600;color:var(--soft)}
+.c-who{font-size:28px;font-weight:600;color:var(--gold);letter-spacing:.02em}
+.mt.xl .tr{height:14px;border-radius:7px;margin:26px 0 30px}
+.mt.xl .tr .d{width:40px;height:40px;top:-13px}
+.mt.xl .tr .t{height:54px;top:-20px;width:8px}
+.mt.xl .m{font-size:40px}.mt.xl .x{font-size:30px}
+.c-def{font-size:26px;font-weight:500;color:var(--mute);line-height:1.4;margin:0}
+.rows .r{display:grid;grid-template-columns:1fr auto;gap:0 28px;padding:20px 0;border-bottom:2px solid #1E293B;align-items:center}
+.rows .r:first-child{border-top:2px solid #334155}
+.rows .d{font-size:22px;font-weight:600;color:var(--mute)}
+.rows .t{font-size:30px;font-weight:600;line-height:38px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
+.rows .sc{text-align:right}.rows .sc b{font-size:54px;font-weight:800;line-height:1}.rows .sc small{display:block;font-size:20px;font-weight:500;color:var(--mute);margin-top:4px}
+.c-lead{font-size:30px;font-weight:500;color:var(--soft);margin:0}
+.c-h1{font-size:72px;font-weight:700;line-height:80px;margin:0}
+.story .c-body{--gap:44px}
+</style>
+
+<div class="demo">
+  <div>
+    <h1>Nové sdílení</h1>
+    <p>Klikněte na Sdílet. Panel vždy ukazuje přesně ten obrázek, který se stáhne nebo odešle.</p>
+  </div>
+  <div class="demo-ctl">
+    <div class="demo-grp"><span>Stránka</span>
+      <div class="dseg" id="d-page"><button aria-pressed="true" data-v="vote">Hlasování</button><button aria-pressed="false" data-v="mep">Poslanec</button><button aria-pressed="false" data-v="split">Přehled</button></div></div>
+    <div class="demo-grp"><span>Zařízení</span>
+      <div class="dseg" id="d-dev"><button aria-pressed="true" data-v="desktop">Počítač</button><button aria-pressed="false" data-v="phone">Telefon</button></div></div>
+  </div>
+</div>
+
+<div class="frame" id="frame" data-dev="desktop">
+<div class="site" id="site">
+  <header class="hdr"><div class="in">
+    <div class="brand"><svg width="40" height="31" viewBox="-158 -100 262 200" aria-hidden="true"><path d="M-137,0 C-110,-70 20,-70 47,0 C20,70 -110,70 -137,0 Z" fill="none" stroke="#FFFFFF" stroke-width="15"/><circle cx="-45" cy="2" r="40" fill="#FFFFFF"/><circle cx="-60" cy="-13" r="12" fill="#0F172A"/><path d="M-40.00,-82.28 L-36.56,-74.01 L-27.64,-73.30 L-34.44,-67.47 L-32.36,-58.76 L-40.00,-63.43 L-47.64,-58.76 L-45.56,-67.47 L-52.36,-73.30 L-43.44,-74.01 Z M0.00,-93.00 L3.44,-84.73 L12.36,-84.02 L5.56,-78.19 L7.64,-69.48 L0.00,-74.15 L-7.64,-69.48 L-5.56,-78.19 L-12.36,-84.02 L-3.44,-84.73 Z M40.00,-82.28 L43.44,-74.01 L52.36,-73.30 L45.56,-67.47 L47.64,-58.76 L40.00,-63.43 L32.36,-58.76 L34.44,-67.47 L27.64,-73.30 L36.56,-74.01 Z M69.28,-53.00 L72.72,-44.73 L81.65,-44.02 L74.85,-38.19 L76.92,-29.48 L69.28,-34.15 L61.64,-29.48 L63.72,-38.19 L56.92,-44.02 L65.84,-44.73 Z M80.00,-13.00 L83.44,-4.73 L92.36,-4.02 L85.56,1.81 L87.64,10.52 L80.00,5.85 L72.36,10.52 L74.44,1.81 L67.64,-4.02 L76.56,-4.73 Z M69.28,27.00 L72.72,35.27 L81.65,35.98 L74.85,41.81 L76.92,50.52 L69.28,45.85 L61.64,50.52 L63.72,41.81 L56.92,35.98 L65.84,35.27 Z M40.00,56.28 L43.44,64.55 L52.36,65.26 L45.56,71.09 L47.64,79.80 L40.00,75.13 L32.36,79.80 L34.44,71.09 L27.64,65.26 L36.56,64.55 Z M0.00,67.00 L3.44,75.27 L12.36,75.98 L5.56,81.81 L7.64,90.52 L0.00,85.85 L-7.64,90.52 L-5.56,81.81 L-12.36,75.98 L-3.44,75.27 Z M-40.00,56.28 L-36.56,64.55 L-27.64,65.26 L-34.44,71.09 L-32.36,79.80 L-40.00,75.13 L-47.64,79.80 L-45.56,71.09 L-52.36,65.26 L-43.44,64.55 Z" fill="#FFFFFF"/></svg><span><b>EP</b> Watch <b>CZ</b></span></div>
+    <nav aria-label="Hlavní navigace"><a href="#">Poslanci</a><a href="#">Strany</a><a href="#" class="on" id="nav-on">Hlasování</a><a href="#">Práce poslanců</a><a href="#">Analýzy</a><a href="#">O projektu</a></nav>
+    <button class="theme" id="theme" type="button" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+  </div></header>
+
+  <main id="main">
+  <!-- ===== Detail hlasování ===== -->
+  <section class="page" id="pg-vote">
+    <div class="topline"><a href="#">← Hlasování v měsíci</a>
+      <button class="btn solid" type="button" data-share="vote" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 003 3h8a3 3 0 003-3v-6"/></svg> Sdílet</button></div>
+    <p class="meta">17. 7. 2024 · <span class="tag">závěrečné hlasování</span></p>
+    <h1>The need for the EU's continuous support for Ukraine</h1>
+    <p class="sub">Návrh usnesení (celý text) · B10-0007/2024</p>
+    <p class="small">▸ zdroje a odkazy</p>
+    <div class="cards">
+      <div class="card-w"><div class="label">Výsledek</div><div class="value s">Parlament text přijal</div><span class="pill"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Přijato</span></div>
+      <div class="card-w"><div class="label">Celý parlament</div><div class="bar" id="b-ep"></div><div class="detail"><b style="color:var(--for-text)">pro 495</b> · <b style="color:var(--against-text)">proti 137</b> · zdrželo se 47 · nehlasovalo 40</div></div>
+      <div class="card-w"><div class="label">Čeští poslanci</div><div class="bar" id="b-cz"></div><div class="detail"><b style="color:var(--for-text)">pro 9</b> · <b style="color:var(--against-text)">proti 4</b> · zdrželo se 6 · nehlasovalo 2</div></div>
+    </div>
+    <h2>Jak hlasovali Češi</h2>
+    <div id="prows"></div>
+  </section>
+
+  <!-- ===== Profil poslance ===== -->
+  <section class="page" id="pg-mep" hidden>
+    <div class="topline"><a href="#">← Všichni poslanci</a>
+      <button class="btn solid" type="button" data-share="mep" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 003 3h8a3 3 0 003-3v-6"/></svg> Sdílet</button></div>
+    <div class="profile">
+      <figure class="portrait" style="margin:0"><img src="../../public/assets/photos/thumbs/118949.webp" alt="Portrét: Ondřej Kovařík"></figure>
+      <div>
+        <h1>Ondřej Kovařík</h1>
+        <div class="chips"><span class="chip"><i style="background:#A855F7"></i>PfE</span><span class="chip"><i style="background:#0891B2"></i>ANO 2011</span><span class="chip" style="background:transparent;color:var(--muted)">bývalý poslanec</span></div>
+        <p class="sub" style="margin:0">Mandát: 16. 7. 2024 – 30. 7. 2025</p>
+      </div>
+    </div>
+    <p class="lead">Hlasoval v 56,6 % jmenovitých hlasování ze svého mandátu a v 72,6 % hlasoval stejně jako většina jeho frakce.</p>
+    <h2>Hlasování v číslech</h2>
+    <div class="cards" style="margin-top:0">
+      <div class="card-w"><div class="label">Účast na hlasování</div>
+        <button class="info" type="button" aria-label="Co to znamená, zdroj a sdílení" aria-expanded="false" aria-controls="pop1">ⓘ</button>
+        <div class="value">56,6 %</div><div class="bench"><i class="d" style="left:0"></i><i class="t" style="left:79%"></i></div><div class="medline">medián EP 91,6 %</div>
+        <div class="pop" id="pop1" role="dialog" aria-label="Účast na hlasování" hidden>
+          <h4>Účast na hlasování</h4>
+          <p>V kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku.</p>
+          <p class="src">1 185 z 2 094 hlasování · o 35,0 p. b. méně než medián EP (91,6 %)<br>Zdroj: HowTheyVote.eu · data k 10. 10. 2026 · <a href="#">Metodika</a></p>
+          <div class="pop-act"><button class="main" type="button" data-share="metric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 003 3h8a3 3 0 003-3v-6"/></svg> Sdílet číslo</button><button type="button" data-cite><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg> Citovat</button></div>
+        </div></div>
+      <div class="card-w"><div class="label">Hlasuje s frakcí</div>
+        <button class="info" type="button" aria-label="Co to znamená, zdroj a sdílení" disabled style="opacity:.55;cursor:default">ⓘ</button>
+        <div class="value">72,6 %</div><div class="bench"><i class="d" style="left:31.5%"></i><i class="t" style="left:50%"></i></div><div class="medline">medián frakce 80,0 %</div></div>
+      <div class="card-w"><div class="label">Shoda s ostatními Čechy</div>
+        <button class="info" type="button" aria-label="Co to znamená, zdroj a sdílení" disabled style="opacity:.55;cursor:default">ⓘ</button>
+        <div class="value">88,7 %</div><div class="detail">1 013 z 1 142 hlasování</div></div>
+    </div>
+  </section>
+
+  <!-- ===== Přehled (Kde se Češi rozdělili) ===== -->
+  <section class="page" id="pg-split" hidden>
+    <h1 style="margin-top:0">Kde se Češi rozdělili</h1>
+    <p class="lead" style="margin-top:0">Hlasování, ve kterých čeští poslanci hlasovali nejvíc rozdílně.</p>
+    <div class="toolbar">
+      <div class="vseg" role="group" aria-label="Zobrazit"><span class="on">poslední zasedání</span><span>celé období – závěrečná</span></div>
+      <button class="btn sm" type="button" data-share="split" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 003 3h8a3 3 0 003-3v-6"/></svg> Sdílet pohled</button>
+    </div>
+    <p class="small" style="margin:0 0 12px">Zasedání 5. 10. 2026 – 8. 10. 2026: 227 hlasování, Češi se rozdělili v 219 z nich (níže 5 z 50 s největším rozdělením).</p>
+    <div class="split"><div class="small">8. 10. 2026 · pozměňovací návrh · <span class="pill" style="padding-left:.3rem"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Přijato</span></div><h3>The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network</h3><p class="small"><span class="big" style="color:var(--text)">8 : 8</span> Češi pro : proti, 2 se zdrželo</p></div>
+    <div class="split"><div class="small">6. 10. 2026 · závěrečné hlasování · <span class="pill" style="padding-left:.3rem"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Přijato</span></div><h3>Simplification of certain requirements for spatial information infrastructure in the Union (INSPIRE)</h3><p class="small"><span class="big" style="color:var(--text)">10 : 9</span> Češi pro : proti, 1 se zdrželo</p></div>
+  </section>
+  </main>
+
+  <!-- ===== sdílecí panel (v ostré verzi <dialog> + showModal) ===== -->
+  <div class="overlay" id="overlay" hidden>
+    <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-title" data-fmt="post">
+      <div class="grip" aria-hidden="true"></div>
+      <header class="sh-head"><div><h2 id="sh-title">Sdílet</h2><p class="sh-ctx" id="sh-ctx"></p></div>
+        <button class="xb" id="sh-x" type="button" aria-label="Zavřít"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+      <div class="sh-stage" id="stage">
+        <div class="pv-track" id="track"></div>
+        <div class="pv-foot"><span id="pv-meta"></span><div class="dotnav" id="dotnav" hidden></div></div>
+      </div>
+      <div class="sh-ctrl">
+        <div><p class="lbl" id="lbl-fmt">Formát</p><div class="seg" id="seg" role="radiogroup" aria-labelledby="lbl-fmt"></div></div>
+        <div class="actions"><button class="primary" id="primary" type="button"></button><div class="secondary" id="secondary"></div></div>
+        <div><p class="lbl">Odkaz</p>
+          <div class="linkrow"><input id="link" readonly aria-label="Odkaz na stránku" value=""><button id="copy-link" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 012-2h9"/></svg> Kopírovat</button></div>
+          <button class="textbtn" id="copy-cite" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg> Kopírovat jako citaci</button></div>
+        <div><p class="lbl">Sdílet na</p>
+          <div class="targets">
+            <a class="tgt" href="#" data-t="WhatsApp"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 01-13.3 7.9L3 21l1.2-4.5A9 9 0 1121 12z"/></svg></span>WhatsApp</a>
+            <a class="tgt" href="#" data-t="X"><span>X</span>X</a>
+            <a class="tgt" href="#" data-t="Facebook"><span>f</span>Facebook</a>
+            <a class="tgt" href="#" data-t="E-mail"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span>E-mail</a>
+          </div></div>
+        <p class="sh-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.500-7-10V6z"/><path d="M9 12l2.200 2.200L15 10"/></svg><span id="sh-note"></span></p>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const site=$("#site"), frame=$("#frame"), overlay=$("#overlay"), sheet=$("#sheet");
+
+/* ---------- barvy a tečky hlasů (stejné jako SC v share.js) ---------- */
+const COL={F:"#5BE49B",A:"#E5484D",B:"#94A3B8",N:"#475569"};
+const SYM={F:"M-5.5 1 L-1.8 4.8 L5.8 -4.2",A:"M-4.6 -4.6 L4.6 4.6 M4.6 -4.6 L-4.6 4.6",B:"M-5.2 0 L5.2 0"};
+const dot=(p,d)=>p==="N"?`<svg class="dot" width="${d}" height="${d}" viewBox="-13 -13 26 26"><circle r="11" fill="none" stroke="${COL.N}" stroke-width="3"/></svg>`
+  :`<svg class="dot" width="${d}" height="${d}" viewBox="-13 -13 26 26"><circle r="13" fill="${COL[p]}"/><path d="${SYM[p]}" fill="none" stroke="#0A1226" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const webdot=(p)=>p==="N"?`<svg viewBox="-13 -13 26 26"><circle r="10.5" fill="none" stroke="var(--absent)" stroke-width="3"/></svg>`
+  :`<svg viewBox="-13 -13 26 26"><circle r="13" fill="${p==="F"?"var(--for)":p==="A"?"var(--against)":"var(--abst)"}"/><path d="${SYM[p]}" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const bars=(n)=>n.map((v,i)=>v?`<i style="flex:${v};background:${["F","A","B","N"][i]==="F"?"var(--for)":["F","A","B","N"][i]==="A"?"var(--against)":["F","A","B","N"][i]==="B"?"var(--abst)":""}" ${i===3?'class="n"':""}></i>`:"").join("");
+$("#b-ep").innerHTML=bars([495,137,47,40]); $("#b-cz").innerHTML=bars([9,4,6,2]);
+const cbar=(n)=>`<div class="cbar">${n.map((v,i)=>v?`<i style="flex:${v};background:${COL["FABN"[i]]}"></i>`:"").join("")}</div>`;
+
+/* ---------- data (skutečná data webu k 10. 10. 2026) ---------- */
+const PARTIES=[["ANO 2011","PfE","BBBBBN"],["ODS","ECR","FFF"],["Ind.","PfE · nezařazení","AN"],["STAN","EPP","FF"],["TOP09/STAN","EPP","FF"],["AUTO","PfE","A"],["KDU-ČSL","EPP","F"],["KSČM","nezařazení","A"],["PIR","Greens/EFA","F"],["PSH","PfE","B"],["SPD","ESN","A"]];
+const PCOL={"ANO 2011":"#0891B2","ODS":"#004494","Ind.":"#94A3B8","STAN":"#16A34A","TOP09/STAN":"#7C3AED","AUTO":"#4D7C0F","KDU-ČSL":"#CA8A04","KSČM":"#B91C1C","PIR":"#111827","PSH":"#DB2777","SPD":"#9A3412"};
+const WHO={"ANO 2011":"<b style='color:var(--abst)'>zdrželi se</b> Jaroslav Bžoch, Klára Dostálová, Ondřej Knotek, Jana Nagyová, Jaroslava Pokorná Jermanová · <b>nehlasoval</b> Ondřej Kovařík","ODS":"<b style='color:var(--for-text)'>pro</b> Ondřej Krutílek, Alexandr Vondra, Veronika Vrecionová","Ind.":"<b style='color:var(--against-text)'>proti</b> Ondřej Dostál · <b>nehlasoval</b> Martin Hlaváček","STAN":"<b style='color:var(--for-text)'>pro</b> Jan Farský, Danuše Nerudová","TOP09/STAN":"<b style='color:var(--for-text)'>pro</b> Ondřej Kolář, Luděk Niedermayer","AUTO":"<b style='color:var(--against-text)'>proti</b> Filip Turek","KDU-ČSL":"<b style='color:var(--for-text)'>pro</b> Tomáš Zdechovský"};
+$("#prows").innerHTML=PARTIES.slice(0,6).map(([n,g,p])=>`<div class="prow"><div class="pl"><i style="background:${PCOL[n]}"></i><span>${n}<small>${g}</small></span></div><div class="dots">${[...p].map(webdot).join("")}</div><div class="who">${WHO[n]}</div></div>`).join("");
+const sumTxt=(p)=>[["F","pro"],["A","proti"],["B","zdrž."],["N","nehl."]].map(([k,l])=>[[...p].filter(x=>x===k).length,l]).filter(x=>x[0]).map(x=>x.join(" ")).join(" · ");
+
+/* ---------- karty ---------- */
+const SYMBOL=`<svg viewBox="-158 -100 262 200" aria-hidden="true"><path d="M-137,0 C-110,-70 20,-70 47,0 C20,70 -110,70 -137,0 Z" fill="none" stroke="#FFFFFF" stroke-width="15"/><circle cx="-45" cy="2" r="40" fill="#FFFFFF"/><circle cx="-60" cy="-13" r="12" fill="#0F172A"/><path d="M-40.00,-82.28 L-36.56,-74.01 L-27.64,-73.30 L-34.44,-67.47 L-32.36,-58.76 L-40.00,-63.43 L-47.64,-58.76 L-45.56,-67.47 L-52.36,-73.30 L-43.44,-74.01 Z M0.00,-93.00 L3.44,-84.73 L12.36,-84.02 L5.56,-78.19 L7.64,-69.48 L0.00,-74.15 L-7.64,-69.48 L-5.56,-78.19 L-12.36,-84.02 L-3.44,-84.73 Z M40.00,-82.28 L43.44,-74.01 L52.36,-73.30 L45.56,-67.47 L47.64,-58.76 L40.00,-63.43 L32.36,-58.76 L34.44,-67.47 L27.64,-73.30 L36.56,-74.01 Z M69.28,-53.00 L72.72,-44.73 L81.65,-44.02 L74.85,-38.19 L76.92,-29.48 L69.28,-34.15 L61.64,-29.48 L63.72,-38.19 L56.92,-44.02 L65.84,-44.73 Z M80.00,-13.00 L83.44,-4.73 L92.36,-4.02 L85.56,1.81 L87.64,10.52 L80.00,5.85 L72.36,10.52 L74.44,1.81 L67.64,-4.02 L76.56,-4.73 Z M69.28,27.00 L72.72,35.27 L81.65,35.98 L74.85,41.81 L76.92,50.52 L69.28,45.85 L61.64,50.52 L63.72,41.81 L56.92,35.98 L65.84,35.27 Z M40.00,56.28 L43.44,64.55 L52.36,65.26 L45.56,71.09 L47.64,79.80 L40.00,75.13 L32.36,79.80 L34.44,71.09 L27.64,65.26 L36.56,64.55 Z M0.00,67.00 L3.44,75.27 L12.36,75.98 L5.56,81.81 L7.64,90.52 L0.00,85.85 L-7.64,90.52 L-5.56,81.81 L-12.36,75.98 L-3.44,75.27 Z M-40.00,56.28 L-36.56,64.55 L-27.64,65.26 L-34.44,71.09 L-32.36,79.80 L-40.00,75.13 L-47.64,79.80 L-45.56,71.09 L-52.36,65.26 L-43.44,64.55 Z" fill="#FFFFFF"/></svg>`;
+const head=(r)=>`<div class="c-head">${SYMBOL}<span class="wm"><b>EP</b><span> Watch </span><b>CZ</b></span><span class="r">${r}</span></div>`;
+const foot=(s,u)=>`<div class="c-foot"><p class="s">${s}</p><p class="u">${u}</p></div>`;
+const pct=(x)=>x;
+const metric=(l,v,pos,med,medL,x,cls="")=>`<div class="mt ${cls}"><div class="l">${l}</div><div class="v">${v}</div><div class="tr"><i class="d" style="left:${pos}%"></i><i class="t" style="left:${med}%"></i></div><div class="m">${medL}</div><div class="x">${x}</div></div>`;
+const CHIPS=`<div class="c-chips"><span class="c-chip"><i style="background:#A855F7"></i>PfE</span><span class="c-chip"><i style="background:#0891B2"></i>ANO 2011</span></div>`;
+const MEPSRC="Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ";
+
+const CARDS={
+  vote:{post(H){const rows=PARTIES.map(([n,g,p])=>`<div class="prw"><div class="n">${n}<small>${g}</small></div><div class="sm">${sumTxt(p)}</div><div class="dd">${[...p].map(x=>dot(x,26)).join("")}</div></div>`).join("");
+    return card(H,head("17. 7. 2024 · závěrečné hlasování")+`<div class="c-body" style="--gap:26px">
+      <h3 class="c-title">The need for the EU's continuous support for Ukraine</h3><p class="c-sub">Návrh usnesení (celý text) · B10-0007/2024</p>
+      <div class="c-res"><span class="c-pill">${dotCheck()} PŘIJATO</span><span class="c-sent">Parlament text přijal.</span></div>
+      <div><div class="c-ep">Celý EP: 495 pro · 137 proti · 47 zdržel se · 40 nehlasovalo</div>${cbar([495,137,47,40])}</div>
+      <div class="c-sum"><span class="c-sec">JAK HLASOVALI ČEŠI</span><span class="k"><span style="color:${COL.F}">${dot("F",26)}9 pro</span><span style="color:${COL.A}">${dot("A",26)}4 proti</span><span style="color:${COL.B}">${dot("B",26)}6 zdrž.</span><span style="color:#CBD5E1">${dot("N",26)}2 nehl.</span></span></div>
+      <div class="pgrid">${rows}</div></div>`+foot("Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k 10. 10. 2026","epwatch.cz/v/169362"));},
+    story(H){const rows=PARTIES.map(([n,g,p])=>`<div class="prw" style="height:104px"><div class="n">${n}<small>${g}</small></div><div class="sm">${sumTxt(p)}</div><div class="dd">${[...p].map(x=>dot(x,26)).join("")}</div></div>`).join("");
+    return card(H,head("17. 7. 2024 · závěrečné hlasování")+`<div class="c-body" style="--gap:34px"><h3 class="c-title">The need for the EU's continuous support for Ukraine</h3><p class="c-sub">Návrh usnesení (celý text) · B10-0007/2024</p>
+      <div class="c-res"><span class="c-pill">${dotCheck()} PŘIJATO</span><span class="c-sent">Parlament text přijal.</span></div>
+      <div><div class="c-ep">Celý EP: 495 pro · 137 proti · 47 zdržel se · 40 nehlasovalo</div>${cbar([495,137,47,40])}</div>
+      <div class="c-sum"><span class="c-sec">JAK HLASOVALI ČEŠI</span><span class="k"><span style="color:${COL.F}">${dot("F",26)}9 pro</span><span style="color:${COL.A}">${dot("A",26)}4 proti</span><span style="color:${COL.B}">${dot("B",26)}6 zdrž.</span><span style="color:#CBD5E1">${dot("N",26)}2 nehl.</span></span></div>
+      <div class="pgrid one">${rows}</div></div>`+foot("Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k 10. 10. 2026","epwatch.cz/v/169362"));}},
+  mep:{post(H){return card(H,head("data k 10. 10. 2026")+`<div class="c-body" style="--gap:56px">
+      <div class="c-mep"><div><div class="c-port"><img src="../../public/assets/photos/thumbs/118949.webp" alt=""></div><div class="c-cred">© European Union – Source: EP</div></div>
+        <div><h3 class="c-name">Ondřej<br>Kovařík</h3>${CHIPS}<div class="c-mand">mandát 16. 7. 2024 – 30. 7. 2025</div></div></div>
+      <div class="c-two">${metric("Účast na hlasování","56,6 %",0,79,"medián EP 91,6 %","1 185 z 2 094 hlasování")}${metric("Hlasuje s frakcí","72,6 %",31.5,50,"medián frakce 80,0 %","859 z 1 184 hlasování")}</div>
+      <p class="c-note">Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.</p></div>`+foot(MEPSRC,"epwatch.cz/p/118949"));},
+    story(H){return card(H,head("data k 10. 10. 2026")+`<div class="c-body" style="--gap:90px">
+      <div class="c-mep"><div><div class="c-port"><img src="../../public/assets/photos/thumbs/118949.webp" alt=""></div><div class="c-cred">© European Union – Source: EP</div></div>
+        <div><h3 class="c-name">Ondřej<br>Kovařík</h3>${CHIPS}<div class="c-mand">mandát 16. 7. 2024 – 30. 7. 2025</div></div></div>
+      <div class="c-two">${metric("Účast na hlasování","56,6 %",0,79,"medián EP 91,6 %","1 185 z 2 094 hlasování")}${metric("Hlasuje s frakcí","72,6 %",31.5,50,"medián frakce 80,0 %","859 z 1 184 hlasování")}</div>
+      <p class="c-note">Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.</p></div>`+foot(MEPSRC,"epwatch.cz/p/118949"));},
+    detail:[
+      (H)=>CARDS.mep.post(H),
+      (H)=>card(H,head("data k 10. 10. 2026")+`<div class="c-body top" style="--gap:0">${mini(2)}
+        <div class="c-sec" style="margin-top:36px">JAK HLASOVAL · 2 094 HLASOVÁNÍ</div>${cbar([642,362,181,909])}
+        <div class="c-legend"><span>${dot("F",24)}pro 642</span><span>${dot("A",24)}proti 362</span><span>${dot("B",24)}zdržel se 181</span><span>${dot("N",24)}nehlasoval 909</span></div>
+        <div class="c-sec" style="margin-top:44px">SROVNÁNÍ</div>
+        <div class="tiles" style="grid-template-columns:1fr 1fr;margin-top:18px"><div class="tile"><div class="l">Hlasoval jako většina EP</div><div class="v">46,9 %</div><div class="s">470 z 1 003 · průměr frakce 37,1 %</div></div><div class="tile"><div class="l">Účast u závěrečných hlasování</div><div class="v">55,8 %</div><div class="s">120 z 215 · medián EP 92,1 %</div></div></div>
+        <div class="c-sec" style="margin-top:44px">NEJČASTĚJI HLASUJE STEJNĚ JAKO</div>
+        <div style="margin-top:6px"><div class="pw"><span>Tomáš Kubín · ANO 2011</span><b>97,2 %</b></div><div class="pw"><span>Klára Dostálová · ANO 2011</span><b>96,7 %</b></div><div class="pw"><span>Jaroslava Pokorná Jermanová · ANO 2011</span><b>96,7 %</b></div></div></div>`+foot("Zdroj: HowTheyVote.eu (ODbL) · výpočet EP Watch CZ · bez pořadí a hodnocení","epwatch.cz/p/118949")),
+      (H)=>card(H,head("data k 16. 10. 2026")+`<div class="c-body top" style="--gap:0">${mini(3)}
+        <div class="c-sec" style="margin-top:36px">PRÁCE NA TEXTECH</div>
+        <div class="tiles" style="grid-template-columns:repeat(3,1fr);margin-top:18px"><div class="tile"><div class="l">Vedl zprávy</div><div class="v">0</div></div><div class="tile"><div class="l">Stanoviska výborů</div><div class="v">0</div><div class="s">jako zpravodaj</div></div><div class="tile"><div class="l">Stínové zprávy</div><div class="v">2</div><div class="s">vyjednával za frakci</div></div></div>
+        <div class="c-sec" style="margin-top:44px">V PLÉNU</div>
+        <div class="tiles" style="grid-template-columns:repeat(3,1fr);margin-top:18px"><div class="tile"><div class="l">Projevy</div><div class="v">0</div><div class="s">celkem 0 min</div></div><div class="tile"><div class="l">Otázky Komisi</div><div class="v">10</div><div class="s">zodpovězeno 9</div></div><div class="tile"><div class="l">Prezence</div><div class="v">55,2 %</div><div class="s">32 z 58 dnů (EP)</div></div></div></div>`+foot("Zdroj: EP Open Data (CC BY 4.0) · počty, ne hodnocení kvality práce","epwatch.cz/p/118949"))]},
+  metric:{post(H){return card(H,head("data k 10. 10. 2026")+`<div class="c-body" style="--gap:34px"><div class="c-who">ONDŘEJ KOVAŘÍK · PfE · ANO 2011</div><div class="c-lab">Účast na hlasování</div><div class="c-big">56,6 %</div>
+      ${metric("","",0,79,"medián EP 91,6 %","1 185 z 2 094 hlasování v době mandátu","xl").replace('<div class="l"></div><div class="v"></div>',"")}
+      <p class="c-def">V kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku.</p></div>`+foot("Zdroj: HowTheyVote.eu (ODbL) · výpočet EP Watch CZ · bez pořadí a hodnocení","epwatch.cz/p/118949#dochazka"));},
+    story(H){return CARDS.metric.post(H).replace('--gap:34px','--gap:60px');}},
+  split:{post(H){return rowsCard(H,5);},story(H){return rowsCard(H,7);}}
+};
+const SPLITS=[["8. 10. 2026 · pozměňovací návrh · přijato","The need for an EU strategy to counter Islamist entryism and the influence of the Muslim Brotherhood network","8 : 8"],["6. 10. 2026 · závěrečné hlasování · přijato","Simplification of certain requirements for spatial information infrastructure in the Union (INSPIRE)","10 : 9"],["8. 10. 2026 · pozměňovací návrh · zamítnuto","Pilot project on European Schools Alliances and its contribution to citizenship education","8 : 9"],["6. 10. 2026 · dílčí hlasování · přijato","Psychosocial risks, stress and mental health at work","7 : 8"],["8. 10. 2026 · pozměňovací návrh · zamítnuto","The upcoming EU anti-corruption strategy","7 : 8"],["7. 10. 2026 · pozměňovací návrh · zamítnuto","Recommendation on EU-China political relations","11 : 9"],["7. 10. 2026 · pozměňovací návrh · zamítnuto","Recommendation on EU-China political relations","11 : 9"]];
+function rowsCard(H,n){return card(H,head("5.–8. 10. 2026")+`<div class="c-body" style="--gap:28px"><h3 class="c-h1">Kde se Češi rozdělili</h3><p class="c-lead">Zasedání 5.–8. 10. 2026: 227 hlasování, Češi se rozdělili v 219. Zde ${n} s největším rozdělením.</p>
+  <div class="rows">${SPLITS.slice(0,n).map(([d,t,s])=>`<div class="r"><div><div class="d">${d}</div><div class="t">${t}</div></div><div class="sc"><b>${s}</b><small>pro : proti</small></div></div>`).join("")}</div></div>`+foot("Zdroj: HowTheyVote.eu (ODbL) · strana a frakce k datu hlasování · data k 10. 10. 2026","epwatch.cz/rozkol.html"));}
+function dotCheck(){return `<svg width="30" height="30" viewBox="-13 -13 26 26"><circle r="13" fill="#0F172A"/><path d="${SYM.F}" fill="none" stroke="#F8FAFC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+function mini(n){return `<div class="c-mini"><div class="p"><img src="../../public/assets/photos/thumbs/118949.webp" alt=""></div><div><div class="nm">Ondřej Kovařík</div><div class="ch">PfE · ANO 2011</div></div><div class="pg">${n} / 3</div></div>`;}
+function card(H,inner,extra){return `<div class="card ${H>1500?"story":""}" style="height:${H}px">${inner}</div>`;}
+
+/* ---------- scénáře ---------- */
+const F45={id:"post",label:"Příspěvek",sub:"4 : 5",ar:"4/5",h:1350,glyph:"p"}, F916={id:"story",label:"Story",sub:"9 : 16",ar:"9/16",h:1920,glyph:"s"};
+const SC={
+ vote:{title:"Sdílet",ctx:"Hlasování · 17. 7. 2024",link:"epwatch.cz/v/169362",formats:[F45,F916],note:"Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.",cite:"Hlasování o textu „The need for the EU's continuous support for Ukraine“ (17. 7. 2024): přijato. Čeští poslanci: 9 pro, 4 proti, 6 se zdrželo, 2 nehlasovali. Data: HowTheyVote 2026-10-10. EP Watch CZ, epwatch.cz/v/169362.",kind:"vote"},
+ mep:{title:"Sdílet",ctx:"Poslanec · Ondřej Kovařík",link:"epwatch.cz/p/118949",formats:[{...F45,label:"Základní"},{id:"detail",label:"Detail",sub:"3 × 4 : 5",ar:"4/5",h:1350,glyph:"d"},F916],note:"Karta má datum dat, zdroj a adresu stránky. Portrét © European Union – Source: EP. Bez pořadí a hodnocení.",cite:"Ondřej Kovařík: hlasoval v 56,6 % jmenovitých hlasování (medián EP 91,6 %). Data: HowTheyVote 2026-10-10. EP Watch CZ, epwatch.cz/p/118949.",kind:"mep"},
+ metric:{title:"Sdílet číslo",ctx:"Účast na hlasování · Ondřej Kovařík",link:"epwatch.cz/p/118949#dochazka",formats:[F45,F916],note:"Karta má datum dat, zdroj a adresu stránky. Číslo je vždy s mediánem.",cite:"Ondřej Kovařík: účast na hlasování 56,6 % (1 185 z 2 094; medián EP 91,6 %). Data: HowTheyVote 2026-10-10. EP Watch CZ, epwatch.cz/p/118949#dochazka.",kind:"metric"},
+ split:{title:"Sdílet pohled",ctx:"Kde se Češi rozdělili · poslední zasedání",link:"epwatch.cz/rozkol.html#posledni-zasedani",formats:[F45,F916],note:"Karta ukazuje právě zvolený pohled, jen první řádky seznamu. Datum dat, zdroj a adresa jsou na ní.",cite:"Zasedání 5.–8. 10. 2026: Češi se rozdělili v 219 z 227 hlasování. Data: HowTheyVote 2026-10-10. EP Watch CZ, epwatch.cz/rozkol.html.",kind:"split"}
+};
+const ICON={share:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v6a3 3 0 003 3h8a3 3 0 003-3v-6"/></svg>`,dl:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 20h14"/></svg>`,copy:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>`,check:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`};
+const glyph=(g)=>g==="p"?'<span class="rg"><i style="width:14px;height:17px"></i></span>':g==="s"?'<span class="rg"><i style="width:11px;height:19px"></i></span>':'<span class="rg" style="width:26px;position:relative"><i style="position:absolute;left:0;top:3px;width:12px;height:15px;opacity:.45"></i><i style="position:absolute;left:6px;top:1.5px;width:12px;height:15px;opacity:.7;background:var(--chip)"></i><i style="position:absolute;left:12px;top:0;width:12px;height:15px;background:var(--surface)"></i></span>';
+
+let cur=null, fmtI=0, opener=null, tTimer=null;
+const isPhone=()=>frame.clientWidth<=640;
+function toast(t){const el=$("#toast");el.innerHTML=ICON.check+" "+t;el.classList.add("on");clearTimeout(tTimer);tTimer=setTimeout(()=>el.classList.remove("on"),2200);}
+function build(){
+  const s=SC[cur], f=s.formats[fmtI];
+  sheet.dataset.fmt=f.id==="story"?"story":"post";
+  $("#sh-title").textContent=s.title; $("#sh-ctx").textContent=s.ctx; $("#link").value=s.link; $("#sh-note").textContent=s.note;
+  $("#seg").innerHTML=s.formats.map((x,i)=>`<button type="button" role="radio" aria-checked="${i===fmtI}" tabindex="${i===fmtI?0:-1}" data-i="${i}">${glyph(x.glyph)}<b>${x.label}</b><small>${x.sub}</small></button>`).join("");
+  // předvolba tlačítek podle zařízení
+  const many=f.id==="detail";
+  if(isPhone()){ $("#primary").innerHTML=`${ICON.share} ${many?"Sdílet 3 obrázky…":"Sdílet obrázek…"}`; $("#secondary").innerHTML=`<button type="button" data-a="dl">${ICON.dl} Stáhnout</button>`; }
+  else { $("#primary").innerHTML=`${ICON.dl} ${many?"Stáhnout 3 obrázky":"Stáhnout obrázek"}`; $("#secondary").innerHTML=many?"":`<button type="button" data-a="copyimg">${ICON.copy} Kopírovat obrázek</button>`; }
+  $("#primary").classList.remove("done");
+  // náhled
+  const track=$("#track"); track.classList.toggle("multi",many);
+  const fns=many?CARDS[s.kind].detail:[CARDS[s.kind][f.id==="story"?"story":"post"]];
+  const H=f.h;
+  track.innerHTML=fns.map(fn=>`<div class="pv loading" style="--ar:${f.ar}"><div class="pv-in" style="width:1080px;height:${H}px">${fn(H)}</div></div>`).join("");
+  $("#pv-meta").textContent=`PNG · 1080 × ${H} px${many?" · 3 obrázky":""}`;
+  const nav=$("#dotnav"); nav.hidden=!many;
+  nav.innerHTML=many?fns.map((_,i)=>`<button type="button" aria-label="Obrázek ${i+1} z 3" ${i===0?'aria-current="true"':""} data-d="${i}"></button>`).join(""):"";
+  scale(); track.scrollLeft=0;
+  setTimeout(()=>$$(".pv",track).forEach(p=>p.classList.remove("loading")),420);
+}
+function scale(){$$(".pv").forEach(p=>{const inn=p.firstElementChild,h=parseFloat(inn.style.height);inn.style.transform=`scale(${p.clientHeight/h})`;});}
+function open(kind,el){
+  cur=kind; fmtI=0; opener=el; overlay.hidden=false; build(); $("#primary").focus({preventScroll:true});
+}
+function close(){overlay.hidden=true; if(opener){opener.focus({preventScroll:true});}}
+$$("[data-share]").forEach(b=>b.addEventListener("click",()=>{ $$(".pop").forEach(p=>p.hidden=true); open(b.dataset.share,b); }));
+$("#sh-x").addEventListener("click",close);
+overlay.addEventListener("mousedown",e=>{ if(e.target===overlay) close(); });
+document.addEventListener("keydown",e=>{
+  if(overlay.hidden){ if(e.key==="Escape"){const p=$$(".pop").find(x=>!x.hidden); if(p){p.hidden=true; $(`[aria-controls="${p.id}"]`).setAttribute("aria-expanded","false");$(`[aria-controls="${p.id}"]`).focus();}} return; }
+  if(e.key==="Escape"){e.preventDefault();close();}
+  if(e.key==="Tab"){const f=$$("button:not([disabled]),input,a[href]",sheet).filter(x=>x.offsetParent!==null); if(!f.length)return; const a=f[0],z=f[f.length-1]; if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();} else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}}
+});
+$("#seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;fmtI=+b.dataset.i;build();$("#seg [aria-checked=true]").focus();});
+$("#seg").addEventListener("keydown",e=>{const n=SC[cur].formats.length;if(!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key))return;e.preventDefault();fmtI=(fmtI+(["ArrowRight","ArrowDown"].includes(e.key)?1:n-1))%n;build();$("#seg [aria-checked=true]").focus();});
+$("#track").addEventListener("scroll",()=>{const t=$("#track");const w=t.firstElementChild?.getBoundingClientRect().width+18||1;const i=Math.round(t.scrollLeft/w);$$("#dotnav button").forEach((b,k)=>b.toggleAttribute("aria-current",k===i)); $$("#dotnav button").forEach((b,k)=>{if(k===i)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current");});});
+$("#dotnav").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const t=$("#track");const w=t.firstElementChild.getBoundingClientRect().width+18;t.scrollTo({left:w*b.dataset.d,behavior:"smooth"});});
+async function copy(text){try{await navigator.clipboard.writeText(text);return true;}catch(e){return false;}}
+$("#primary").addEventListener("click",()=>{const p=$("#primary");const many=SC[cur].formats[fmtI].id==="detail";const old=p.innerHTML;p.classList.add("done");p.innerHTML=`${ICON.check} ${isPhone()?"Otevírám sdílení…":(many?"Staženo 3 obrázky":"Staženo")}`;setTimeout(()=>{p.classList.remove("done");p.innerHTML=old;},1800);});
+$("#secondary").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;toast(b.dataset.a==="dl"?"Obrázek se stahuje":"Obrázek zkopírován do schránky");});
+$("#copy-link").addEventListener("click",async()=>{await copy("https://"+SC[cur].link);toast("Odkaz zkopírován");});
+$("#copy-cite").addEventListener("click",async()=>{await copy(SC[cur].cite);toast("Citace zkopírována");});
+$$(".tgt").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();toast(`Otevře se sdílení: ${a.dataset.t}`);}));
+new ResizeObserver(()=>{ if(!overlay.hidden){build();} }).observe(frame);
+
+/* ---------- ⓘ popover u čísla ---------- */
+$$(".info:not([disabled])").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const p=$("#"+b.getAttribute("aria-controls"));const o=p.hidden;$$(".pop").forEach(x=>x.hidden=true);$$(".info").forEach(x=>x.setAttribute("aria-expanded","false"));p.hidden=!o;b.setAttribute("aria-expanded",String(o));}));
+document.addEventListener("click",e=>{if(!e.target.closest(".pop")&&!e.target.closest(".info")){$$(".pop").forEach(p=>p.hidden=true);$$(".info").forEach(x=>x.setAttribute("aria-expanded","false"));}});
+$$("[data-cite]").forEach(b=>b.addEventListener("click",async()=>{await copy(SC.metric.cite);b.innerHTML=`${ICON.check} Zkopírováno`;setTimeout(()=>b.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg> Citovat`,1500);}));
+
+/* ---------- ovládání mockupu ---------- */
+function seg(id,fn){const g=$(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$("button",g).forEach(x=>x.setAttribute("aria-pressed",String(x===b)));fn(b.dataset.v);});}
+seg("#d-page",v=>{["vote","mep","split"].forEach(k=>$("#pg-"+k).hidden=k!==v);overlay.hidden=true;$("#nav-on").textContent=v==="mep"?"Poslanci":v==="vote"?"Hlasování":"Analýzy";site.scrollTop=0;});
+seg("#d-dev",v=>{frame.dataset.dev=v;overlay.hidden=true;});
+$("#theme").addEventListener("click",()=>site.classList.toggle("dark"));
+const mq=matchMedia("(prefers-color-scheme: dark)");site.classList.toggle("dark",mq.matches);
+})();
+</script>
+
+</html>
