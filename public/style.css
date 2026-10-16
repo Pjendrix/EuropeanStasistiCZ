@@ -770,8 +770,8 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .sd-lab label { cursor: default; }
 .sd-formats { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; background: var(--chip); border-radius: 18px; }
 .sd-formats button { display: flex; flex-direction: column; align-items: center; gap: .15rem; min-height: 72px; padding: .5rem .3rem; border: 0; border-radius: 14px;
-  background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
-.sd-formats button[aria-checked="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(15, 23, 42, .1), 0 6px 16px -10px rgba(15, 23, 42, .4); }
+  background: transparent; color: var(--text); opacity: .72; font: inherit; cursor: pointer; }
+.sd-formats button[aria-checked="true"] { opacity: 1; background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(15, 23, 42, .1), 0 6px 16px -10px rgba(15, 23, 42, .4); }
 .sd-fn { font-weight: 700; font-size: .92rem; }
 .sd-fr { font-size: .75rem; }
 .sd-actions { display: grid; gap: .6rem; margin-top: 1.1rem; }
