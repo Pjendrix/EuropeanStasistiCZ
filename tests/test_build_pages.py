@@ -296,3 +296,30 @@ def test_next_session_block():
     full = hub.next_session_html(agenda, full=True)
     assert "MOCK jiný" in full
     assert hub.next_session_html(None) == ""
+
+
+def test_radar_page_html():
+    import hub
+    steps = [{"key": k, "label": k, "date": d} for k, d in
+             (("committee", "2025-02-01"), ("report", "2025-06-01"), ("trilogue", None), ("plenary", None), ("closed", None))]
+    cz = [{"mep_id": 1, "name": "MOCK Jedna", "role": "shadow", "role_cs": "stínový/á zpravodaj/ka"}]
+    row = {"procedure": "2025-0001", "label": "2025/0001(COD)", "type": "COD", "title_cs": "MOCK zákon", "title_en": None,
+           "url": "https://example.org/oeil", "committee": {"code": "ENVI", "name": "MOCK výbor", "category": "env"},
+           "cz": cz, "steps": steps, "reached": "report", "last_event": {"date": "2025-06-01", "type": "X", "label": "výbor přijal zprávu"},
+           "next_vote": None}
+    radar = {"categories": ["env", "fin"], "without_events": 3,
+             "session": {"from": "2026-10-19", "to": "2026-10-22", "fetched": "2026-10-16", "items": [
+                 {"id": "MOCK-1", "date": "2026-10-20", "order": 1, "title_cs": "MOCK bod", "title_en": None, "docs": ["A-10-2026-0001"],
+                  "legislative": True, "stage": "RDG1", "stage_cs": "první čtení", "procedure": None,
+                  "committee": {"code": "BUDG", "name": "Rozpočty", "category": "fin"}, "cz": []}]},
+             "active": [row], "done": [{**row, "procedure": "2025-0002", "reached": "plenary", "plenary_date": "2026-09-15",
+                                        "vote": {"vote_id": 99, "vote_date": "2026-09-15", "status": "ADOPTED"}}]}
+    html = hub.radar_html(radar)
+    assert 'id="rd-cat"' in html and '<option value="env">' in html
+    assert 'data-cat="fin" data-leg="1" data-cz="0"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html
+    assert html.count('aria-current="step"') == 2 and "Datum hlasování v plénu zatím nezveřejněno" in html
+    assert 'href="v/99.html"' in html and 'class="cz-badge"' in html and "U 3 procedur" in html
+    assert 'data-from="2026-10-19"' in html and "o-projektu.html#radar" in html
+    assert "zatím nejsou" in hub.radar_html(None)
+    empty = hub.radar_html({"categories": [], "session": None, "active": [], "done": [], "without_events": 0})
+    assert "Program zatím není zveřejněný" in empty and "Žádné takové procedury" in empty

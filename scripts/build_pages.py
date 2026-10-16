@@ -549,7 +549,7 @@ def build(data_dir: Path) -> dict[str, str]:
     return out
 
 
-STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
+STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "radar.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
 
 
 def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = None, default_day: str | None = None) -> dict[str, str]:
@@ -672,7 +672,7 @@ def follow_html() -> str:
 
 def sync_blocks(public: Path, data_dir: Path) -> int:
     """Portréty na poslanci.html a přehled na hlasovani.html se generují z dat při každém buildu (týdenní aktualizace)."""
-    from hub import heads_html, next_session_html, votes_hero_html, votes_overview_html
+    from hub import heads_html, next_session_html, radar_html, votes_hero_html, votes_overview_html
     changed = 0
     if (public / "o-projektu.html").exists() and "<!--sync:corrections-->" in (public / "o-projektu.html").read_text(encoding="utf-8"):
         changed += sync_block(public / "o-projektu.html", "corrections", corrections_html(data_dir))
@@ -684,7 +684,9 @@ def sync_blocks(public: Path, data_dir: Path) -> int:
     hlas = public / "hlasovani.html"
     if hlas.exists() and "<!--sync:agenda-->" in hlas.read_text(encoding="utf-8"):
         home = read(data_dir / "home.json") if (data_dir / "home.json").exists() else {}
-        changed += sync_block(hlas, "agenda", next_session_html(home.get("agenda"), full=True))
+        changed += sync_block(hlas, "agenda", next_session_html(home.get("agenda")))
+    if (public / "radar.html").exists() and (data_dir / "radar.json").exists():
+        changed += sync_block(public / "radar.html", "radar", radar_html(read(data_dir / "radar.json")))
     if (data_dir / "category_stats.json").exists() and (data_dir / "session.json").exists() and (public / "hlasovani.html").exists():
         changed += sync_block(public / "hlasovani.html", "hero", votes_hero_html(data_dir))
     return changed

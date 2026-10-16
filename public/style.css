@@ -1377,16 +1377,44 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
 .ns-when strong { color: var(--text); }
 .ns-list { list-style: none; margin: .9rem 0 0; padding: 0; border-top: 1px solid var(--border); }
 .ns-item { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: .15rem .9rem; padding: .7rem 0; border-bottom: 1px solid var(--border); }
-.ns-day { grid-row: 1 / span 3; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; padding-top: .1rem; }
+.ns-day { grid-row: 1 / span 4; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; padding-top: .1rem; }
 .ns-title { font-weight: 600; line-height: 1.35; }
 .ns-cz { font-size: .88rem; }
 .ns-docs a { color: inherit; }
+.ns-item > :not(.ns-day) { grid-column: 2; }
 .ns-all { display: inline-flex; align-items: center; gap: .4rem; margin-top: .8rem; font-weight: 700; color: var(--link); text-decoration: none; min-height: 44px; }
 .cz-badge { display: inline-flex; align-items: center; padding: .05rem .55rem; border-radius: 999px; font-size: .75rem; font-weight: 700;
   background: var(--accent-soft); color: var(--link); border: 1px solid var(--border); white-space: nowrap; }
-@media (max-width: 560px) { .ns-item { grid-template-columns: minmax(0, 1fr); } .ns-day { grid-row: auto; } }
+@media (max-width: 560px) { .ns-item { grid-template-columns: minmax(0, 1fr); } .ns-day { grid-row: auto; } .ns-item > :not(.ns-day) { grid-column: 1; } }
 .ns-rest summary { cursor: pointer; font-weight: 700; color: var(--link); padding: .7rem 0; min-height: 44px; }
 
 /* Pruh o starých datech (app.js staleNotice) */
 .stale-note { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--gold); background: var(--surface);
   border-radius: 6px; font-size: .9rem; color: var(--text); }
+
+/* Radar „Co se chystá“ (radar.html, hub.radar_html) */
+.rd-filters { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 0 0 16px; }
+.rd-filters label { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.rd-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--muted); }
+.rd-meta .topic-chips { margin: 0; }
+.rd-block { margin-top: 28px; }
+.rd-procs { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.rd-proc { padding: 16px 18px; }
+.rd-title { font-size: 1.05rem; margin: 0 0 4px; line-height: 1.35; }
+.rd-next { margin: 8px 0 0; }
+.rd-steps { list-style: none; padding: 0; margin: 12px 0 4px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.rd-step { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-size: .8rem; color: var(--muted); padding-top: 14px; }
+.rd-step::before { content: ""; position: absolute; top: 4px; left: 0; right: 0; height: 3px; border-radius: 2px; background: var(--track); }
+.rd-step.done::before, .rd-step.current::before { background: var(--accent); }
+.rd-dot { position: absolute; top: 0; left: 0; width: 11px; height: 11px; border-radius: 50%; background: var(--surface); border: 2px solid var(--track); }
+.rd-step.done .rd-dot { background: var(--accent); border-color: var(--accent); }
+.rd-step.current .rd-dot { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.rd-step.current .rd-lbl { color: var(--text); font-weight: 700; }
+.rd-when { font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) {
+  .rd-steps { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .rd-step { flex-direction: row; gap: 8px; padding: 0 0 0 20px; }
+  .rd-step::before { top: 0; bottom: -6px; left: 4px; right: auto; width: 3px; height: auto; }
+  .rd-step:last-child::before { display: none; }
+  .rd-dot { top: 2px; }
+}

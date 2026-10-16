@@ -20,14 +20,14 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC_SCRIPTS = [
     "activity.py", "agenda.py", "attendance.py", "benchmarks.py", "build_home.py", "build_web.py", "categories.py", "category_stats.py", "check_data.py",
     "compute_stats.py", "delegations.py", "fetch_agenda.py", "fetch_attendance.py", "fetch_group_web.py", "fetch_meps.py", "fetch_proposals.py",
-    "fetch_speeches.py", "fetch_votes.py", "group_stats.py", "key_votes.py", "labels_cs.py", "overrides.py", "own_work.py",
+    "fetch_speeches.py", "fetch_votes.py", "group_stats.py", "key_votes.py", "labels_cs.py", "overrides.py", "own_work.py", "radar.py",
     "vote_kinds.py", "vote_parties.py", "work_hub.py",
 ]
 PUBLIC_TESTS = [
     "test_activity.py", "test_agenda.py", "test_attendance.py", "test_benchmarks.py", "test_build_home.py", "test_build_web.py", "test_categories.py",
     "test_category_stats.py", "test_check_data.py", "test_compute_stats.py", "test_delegations.py", "test_fetch_group_web.py",
     "test_fetch_meps.py", "test_fetch_proposals.py", "test_fetch_votes.py", "test_group_stats.py", "test_key_votes.py",
-    "test_labels_cs.py", "test_overrides.py", "test_own_work.py", "test_vote_kinds.py", "test_work_hub.py",
+    "test_labels_cs.py", "test_overrides.py", "test_own_work.py", "test_radar.py", "test_vote_kinds.py", "test_work_hub.py",
 ]
 PUBLIC_MANUAL = ["colors.json", "overrides.json", "topics_cs.json"]
 REQUIREMENTS = "pandas>=2.2\nrequests>=2.31\npytest>=8\n"
