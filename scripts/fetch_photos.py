@@ -1,5 +1,6 @@
 """Stáhne oficiální portréty poslanců z data/meps.json do public/assets/photos/{id}.jpg
 a vytvoří náhledy public/assets/photos/thumbs/{id}.webp (šířka 160 px) pro karty a tabulky.
+Portréty větší než 600 px se při uložení zmenší (shrink), ať repo zbytečně nenarůstá.
 
 Zdroj: URL portrétu z EP Open Data API (pole photo_url), © European Union – Source: EP.
 Portréty se ukládají do repa, web je nehotlinkuje. Soubor se přepíše, jen když se změnil.
@@ -22,6 +23,7 @@ from PIL import Image
 ALLOWED_PREFIX = "https://www.europarl.europa.eu/mepphoto/"
 MIN_INTERVAL = 0.7
 THUMB_WIDTH = 160
+MAX_SIDE = 600  # větší portréty se zmenší (web je ukazuje nejvýš ~400 px, karta ke sdílení 380 × 475)
 
 
 class FormatError(RuntimeError):
@@ -31,6 +33,25 @@ class FormatError(RuntimeError):
 def blocked(r) -> bool:
     """Ochrana webu EP proti botům (AWS WAF) vrací místo obrázku prázdnou odpověď 202 nebo HTML výzvu."""
     return r.status_code == 202 or "x-amzn-waf-action" in {k.lower() for k in r.headers}
+
+
+def shrink(content: bytes, max_side: int = MAX_SIDE) -> bytes:
+    """Portrét větší než max_side se zmenší (JPEG, kvalita 85). Ze stejného vstupu vždy stejný výstup,
+    takže se nezměněný portrét při dalším stažení nepřepíše."""
+    import io
+    from PIL import UnidentifiedImageError
+    try:
+        im = Image.open(io.BytesIO(content))
+    except UnidentifiedImageError as e:
+        raise FormatError("portrét není čitelný obrázek") from e
+    with im:
+        if max(im.size) <= max_side:
+            return content
+        im = im.convert("RGB")
+        k = max_side / max(im.size)
+        out = io.BytesIO()
+        im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS).save(out, "JPEG", quality=85, optimize=True)
+        return out.getvalue()
 
 
 def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float = MIN_INTERVAL) -> dict[str, int]:
@@ -59,10 +80,11 @@ def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float =
         if not ctype.startswith("image/jpeg"):
             raise FormatError(f"poslanec {m['id']}: portrét není JPEG ({ctype})")
         path = out_dir / f"{m['id']}.jpg"
-        if path.exists() and path.read_bytes() == r.content:
+        content = shrink(r.content)
+        if path.exists() and path.read_bytes() == content:
             result["unchanged"] += 1
         else:
-            path.write_bytes(r.content)
+            path.write_bytes(content)
             result["saved"] += 1
         time.sleep(min_interval)
     return result
