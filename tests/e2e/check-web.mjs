@@ -123,6 +123,8 @@ for (const scheme of ["light", "dark"]) {
       if (await page.$(".cite-btn")) problems.push(`${where}: na stránce zůstalo ❝ (.cite-btn)`);
       await btns.first().click();
       await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push(`${where}: panel neukázal náhled`));
+      // na mobilu panel vyjíždí zespodu (280 ms): měřit až po doběhnutí animace
+      await page.evaluate(() => Promise.all((document.querySelector("dialog[open]")?.getAnimations() || []).map((a) => a.finished)));
       const st = await page.evaluate(() => {
         const d = document.querySelector("dialog.share-dlg[open]");
         const img = d?.querySelector(".sd-preview img");
