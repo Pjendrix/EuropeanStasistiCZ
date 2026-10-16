@@ -111,6 +111,12 @@ function voteCardOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   let y = 0;
+  // Téma (stejná data jako čip v seznamu hlasování): jeden čip nad názvem, další jen jako „+N“; bez tématu se řádek vynechá.
+  if (d.topic) {
+    const t = fitText(d.topic, 26, 700, 900), tw = measureText(t, 26, 700);
+    ops.push(RECT(72, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(92, y + 32, t, 26, 700, SC.white));
+    y += 66;
+  }
   const title = wrapText(d.title, 58, 700, 936, 3);
   title.forEach((l, i) => ops.push(T(72, y + 58 + i * 68, l, 58, 700, SC.white)));
   y += title.length * 68 + 14;

@@ -109,20 +109,24 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const pageUrl = siteUrl(final ? `v/${v.id}.html` : `vote.html?id=${v.id}&m=${foundMonth}`);
     const dataDay = (await getJSON("overview.json").catch(() => null))?.sources?.votes?.release || v.date;
     const cardParties = shareCardParties(czPartyRows(cz, meps, parties, groups));
-    const citeSentence = `Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]})` : ""}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`;
+    // Téma: stejná data jako čip v seznamu hlasování (data/vote_cats.json z categories_for).
+    await loadCategories();
+    const cats = ((await getJSON("vote_cats.json").catch(() => null))?.votes || {})[String(v.id)] || [];
+    const topic = topicText(cats);
+    const citeSentence = `Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]}${topic ? `, téma ${topic}` : ""})` : (topic ? ` (téma ${topic})` : "")}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`;
     window.shareContext = () => ({
-      kind: "vote", url: pageUrl, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}`, cite: citeSentence,
+      kind: "vote", url: pageUrl, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}${topic ? ` · ${topic}` : ""}`, cite: citeSentence,
       text: `${voteTitle(v)} (${fmtDate(v.date)}): ${resultSentence(kind || (final ? "final" : ""), v.result)}. Češi: ${czCountsText(czCounts)}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
       data: {
         title: heading, subtitle: [final ? desc : voteTitle(v), v.reference].filter(Boolean).join(" · "), date: v.date, kindLabel: kind ? KIND_LABEL[kind] : "hlasování",
         result: v.result, resultLabel: RESULT_LABEL[v.result] || "neuveden", sentence: resultSentence(kind || (final ? "final" : ""), v.result),
         ep: [c.for, c.against, c.abstention, c.did_not_vote], parties: cardParties, dataDay,
-        urlShort: pageUrl.replace(/^https?:\/\//, "").replace(/\.html$/, ""),
+        urlShort: pageUrl.replace(/^https?:\/\//, "").replace(/\.html$/, ""), topic: topic || null,
       },
     });
     main.innerHTML = `
       <div class="back-row"><p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
-      <p class="muted" style="margin-bottom:.3rem">${fmtDate(v.date)} · ${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "dílčí hlasování")}</p>
+      <p class="muted vote-meta" style="margin-bottom:.3rem"><span>${fmtDate(v.date)}</span>${topicChips(cats, { max: 4, link: true, id: String(v.id), info: true })}${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "<span>dílčí hlasování</span>")}</p>
       <h1>${esc(heading)}</h1>
       ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
         `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}

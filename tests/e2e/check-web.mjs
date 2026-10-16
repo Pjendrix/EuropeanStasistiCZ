@@ -241,6 +241,57 @@ for (const width of [1440, 400]) {
   await Promise.all([page.waitForURL((u) => target && u.pathname.endsWith(target.replace(/^\.\//, "")), { timeout: 10000 }).catch(() => problems.push(`${where}: Enter neotevřel ${target}`)), page.keyboard.press("Enter")]);
   await ctx.close();
 }
+// Téma hlasování: čip na detailu (statickém = JS šablona) i v heru, odkaz na filtr, „+N“ klávesou a Esc, výměna s přepínačem.
+{
+  const voteCats = read("data/vote_cats.json").votes;
+  const multi = Object.keys(voteCats).find((id) => voteCats[id].length >= 2 && existsSync(join(root, "public", "v", `${id}.html`)));
+  for (const width of [1366, 390]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    await page.goto(base + `v/${multi}.html`, { waitUntil: "networkidle" });
+    const where = `v/${multi}.html [téma, ${width}px]`;
+    const same = await page.evaluate(async (id) => {
+      await loadCategories();
+      const cats = (await getJSON("vote_cats.json")).votes[id];
+      // app.js po načtení přesouvá popovery do <body>: porovnat čipy bez popoverů a popovery podle id zvlášť
+      const fresh = new DOMParser().parseFromString(topicChips(cats, { max: 4, link: true, id, root: "../", info: true }), "text/html").body.firstChild;
+      const pops = [...fresh.querySelectorAll("[popover]")];
+      const popsOk = pops.every((x) => document.getElementById(x.id)?.outerHTML === x.outerHTML);
+      pops.forEach((x) => x.remove());
+      const live = document.querySelector(".vote-meta .topic-chips")?.cloneNode(true);
+      live?.querySelectorAll("[popover]").forEach((x) => x.remove());
+      return popsOk && live?.outerHTML === fresh.outerHTML;
+    }, multi);
+    if (!same) problems.push(`${where}: čipy statické stránky se liší od topicChips() v JS`);
+    // „+N“ (tady vynucené max 1) se otevře klávesou a zavře Esc
+    await page.evaluate(async (id) => { const cats = (await getJSON("vote_cats.json")).votes[id]; const el = document.createElement("div"); el.id = "tc-test"; el.innerHTML = topicChips(cats, { max: 1, id: "e2e" }); document.querySelector("main").prepend(el); }, multi);
+    await page.focus("#tc-test .tc-more");
+    await page.keyboard.press("Enter");
+    const open = await page.evaluate(() => Boolean(document.querySelector("#tc-e2e:popover-open")));
+    await page.keyboard.press("Escape");
+    const closed = await page.evaluate(() => !document.querySelector("#tc-e2e:popover-open"));
+    if (!open || !closed) problems.push(`${where}: „+N“ se neotevřel klávesou nebo nezavřel Esc`);
+    // čip vede na filtr a filtr se použije
+    const href = await page.getAttribute(".vote-meta .topic-chip", "href");
+    await Promise.all([page.waitForURL(/votes\.html\?c=/), page.click(".vote-meta a.topic-chip")]);
+    await page.waitForSelector("#list tr, #list .card, tbody tr", { timeout: 15000 }).catch(() => {});
+    const c = new URL(page.url()).searchParams.get("c");
+    const applied = await page.evaluate((c) => [...document.querySelectorAll("select")].some((sel) => sel.value === c), c);
+    if (!href?.includes(`c=${c}`) || !applied) problems.push(`${where}: čip nevede na použitý filtr (${href})`);
+    await ctx.close();
+  }
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto(base + "index.html", { waitUntil: "networkidle" });
+  const home = read("data/home.json");
+  for (let i = 0; i < home.votes.length; i++) {
+    const got = await page.evaluate(() => [...document.querySelectorAll("#hm-cap .hm-topic .topic-chips > .topic-chip")].map((a) => a.getAttribute("href")));
+    const exp = home.votes[i].topics.slice(0, 1).map((t) => `votes.html?c=${t.slug}`);
+    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`index.html: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
+    if (i < home.votes.length - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
+  }
+  await ctx.close();
+}
 // N3: pravidla nových karet (metric, split, party) s MOCK daty: text se vejde, chybějící hodnota se vynechá,
 // počet řádků napsaný na kartě = počet vykreslených řádků; neutrální avatar nekreslí portrét.
 {
@@ -271,6 +322,15 @@ for (const width of [1440, 400]) {
       const pc = partyCardOps({ ...base, name: "MOCK strana", sub: "MOCK · 2 poslanci v mandátu", tiles: [{ label: "Účast poslanců na hlasování", pair: [9, 10] }, { label: "Jednotnost", pair: null }, { label: "Soulad s výsledkem", pair: [0, 0] }] }, f);
       fits(`party ${fk}`, pc);
       if (/Jednotnost|Soulad/.test(texts(pc))) out.push(`party ${fk}: chybějící hodnota se nevynechala`);
+    }
+    // karta hlasování s tématem a bez něj (MOCK): text se vejde, bez tématu žádný řádek tématu
+    const vbase = { ...base, title: "MOCK hlasování s dlouhým názvem, který se musí zalomit a zkrátit na kartě", subtitle: "MOCK", date: "2026-10-08", kindLabel: "závěrečné hlasování",
+      result: "ADOPTED", resultLabel: "přijato", sentence: "Parlament text přijal", ep: [400, 200, 30, 50], parties: [{ label: "MOCK", groups: ["EPP"], positions: ["FOR", "AGAINST"] }] };
+    for (const f of [SHARE_FORMATS.post, SHARE_FORMATS.story]) {
+      const withT = voteCardOps({ ...vbase, topic: "Klima, příroda a energie (+2) a ještě mnohem delší text, který se nevejde" }, f);
+      fits("vote s tématem", withT);
+      if (!/Klima, příroda a energie/.test(texts(withT))) out.push("vote: chybí téma na kartě");
+      if (/Klima/.test(texts(voteCardOps({ ...vbase, topic: null }, f)))) out.push("vote: bez tématu se řádek tématu vypsal");
     }
     const neutral = mepBasicOps({ ...base, name: "MOCK Poslanec", avatar: "neutral", photo: { width: 10, height: 10 }, chips: [], attendance: [1, 2], attendanceMedian: 0.9 }, SHARE_FORMATS.post);
     if (neutral.some((o) => o.k === "image" && o.img && o.img.width === 10) || /European Union/.test(texts(neutral))) out.push("mep: avatar neutral kreslí portrét");

@@ -90,6 +90,10 @@
         znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také
         pevnými pravidly (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
         co pravidla neznají, zůstává v originále.</li>
+      <li id="tema-hlasovani"><strong>Téma hlasování</strong> (čip u hlasování v seznamu, na detailu, na úvodu a na kartě ke sdílení) určuje pevná tabulka
+        pravidel nad kódy témat Legislativní observatoře EP (OEIL), které u hlasování uvádí HowTheyVote
+        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/categories.py">categories.py</a>): 12 témat, hlavní je první podle
+        priority (obrana, klima a energie, doprava … instituce), další jsou „+N“. Téma nevybíráme my ani AI; hlasování bez kódu OEIL téma nemá.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>

@@ -1340,3 +1340,23 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
   .hub-cards > p { flex: 0 0 100%; }
   .hub-lists { gap: 1.6rem; }
 }
+
+/* Téma hlasování (topicChips / topic_chips): čip = ikona + text, odkaz na filtr votes.html?c=…; „+N“ otevře popover. */
+.vote-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .6rem; }
+.topic-chips { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+.topic-chip { display: inline-flex; align-items: center; gap: .4rem; min-height: 30px; padding: .15rem .65rem .15rem .25rem; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; font-size: .8rem; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; }
+.topic-chip:hover { border-color: var(--gold); }
+.topic-chip:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.topic-chip .cat-ico.sm { width: 22px; height: 22px; }
+.tc-more { padding: .15rem .6rem; color: var(--muted); }
+.tc-list { display: flex; flex-wrap: wrap; gap: .35rem; }
+.topic-chips .info-btn { width: 28px; height: 28px; font-size: .9rem; }
+@media (pointer: coarse) { .topic-chip { min-height: 44px; } .topic-chips .info-btn { width: 44px; height: 44px; } }
+@media (max-width: 640px) { .vote-meta .topic-chips { order: 3; flex-basis: 100%; } }
+/* na tmavém podkladu (hero úvodu) */
+.hm-hero .topic-chip { background: rgba(248, 250, 252, .08); border-color: rgba(248, 250, 252, .22); color: #F1F5F9; }
+.hm-hero .topic-chip:hover { border-color: var(--gold); }
+.hm-hero .topic-chip .cat-ico { background: rgba(248, 250, 252, .12); color: #F8FAFC; }
+.hm-hero .tc-more { color: #CBD5E1; }
+.hm-topic { margin: 10px 0 0; min-height: 30px; }

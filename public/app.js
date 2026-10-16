@@ -271,6 +271,33 @@ function catChip(v) {
   return `<div class="cat-inline"><span class="cat-ico sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${c.icon}</svg></span>${esc(c.label)}${more}</div>`;
 }
 
+// Čipy tématu hlasování (stejná data i ikony jako catChip; dvojče topic_chips() v scripts/build_pages.py, shodu hlídá test).
+// cats = klíče kategorií podle priority (první = hlavní). opts: max = kolik čipů ukázat (zbytek „+N“ v popoveru),
+// link = čip vede na filtr votes.html?c=…, id = jedinečná část id popoveru, root = cesta ke kořeni webu, info = ⓘ s odkazem na metodiku.
+const TOPIC_ICON_SVG = (inner) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+const TOPIC_NOTE = "Téma určuje pevná tabulka pravidel nad kódy témat Legislativní observatoře EP, které uvádí zdroj dat. Nevybíráme ho my ani AI.";
+function topicChips(cats, opts = {}) {
+  const { max = 4, link = true, id = "x", root = "", info = false } = opts;
+  const known = (cats || []).filter((k) => CATEGORY_META[k]);
+  if (!known.length) return "";
+  const chip = (k) => {
+    const inner = `<span class="cat-ico sm">${TOPIC_ICON_SVG(CATEGORY_META[k].icon)}</span>${esc(CATEGORY_META[k].label)}`;
+    return link ? `<a class="topic-chip" href="${root}votes.html?c=${k}">${inner}</a>` : `<span class="topic-chip">${inner}</span>`;
+  };
+  const shown = known.slice(0, max), rest = known.slice(max);
+  const method = `<a href="${root}o-projektu.html#tema-hlasovani">Jak určujeme téma</a>`;
+  const more = rest.length ? `<span class="info-wrap"><button type="button" class="topic-chip tc-more" popovertarget="tc-${id}" aria-expanded="false" aria-label="${esc(`Další témata: ${rest.map((k) => CATEGORY_META[k].label).join(", ")}`)}">+${rest.length}</button>`
+    + `<div popover id="tc-${id}" class="info-pop tc-pop" role="note"><p class="tc-list">${rest.map(chip).join("")}</p><p class="small">${method}</p></div></span>` : "";
+  const tip = info ? `<span class="info-wrap"><button type="button" class="info-btn" popovertarget="ti-${id}" aria-label="Jak určujeme téma" aria-expanded="false">ⓘ</button>`
+    + `<div popover id="ti-${id}" class="info-pop" role="note"><p>${TOPIC_NOTE} ${method}.</p></div></span>` : "";
+  return `<span class="topic-chips">${shown.map(chip).join("")}${more}${tip}</span>`;
+}
+// Text tématu do citace a alt textu: „Klima, příroda a energie (+2)“; bez tématu prázdný řetězec.
+function topicText(cats) {
+  const known = (cats || []).filter((k) => CATEGORY_META[k]);
+  return known.length ? `${CATEGORY_META[known[0]].label}${known.length > 1 ? ` (+${known.length - 1})` : ""}` : "";
+}
+
 function voteTitle(v) {
   let t = v.title || v.procedure?.title || v.reference || `Hlasování ${v.id}`;
   return t;
@@ -868,7 +895,7 @@ document.addEventListener("beforetoggle", (ev) => {
 }, true);
 document.addEventListener("click", (ev) => {
   if (HAS_POPOVER) return;
-  const btn = ev.target.closest(".info-btn");
+  const btn = ev.target.closest(".info-btn, .tc-more");
   document.querySelectorAll(".info-pop.open").forEach((p) => { if (!btn || p !== infoPopFor(btn)) { p.classList.remove("open"); document.querySelector(`[popovertarget="${p.id}"]`)?.setAttribute("aria-expanded", "false"); } });
   if (btn) {
     const p = infoPopFor(btn);
