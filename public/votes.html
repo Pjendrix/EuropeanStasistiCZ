@@ -61,6 +61,7 @@
     <label>Téma <select id="cat"><option value="">všechna témata</option></select></label>
     <label>Podtéma <select id="topic"><option value="">všechna podtémata</option></select></label>
     <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
+    <label><input type="checkbox" id="stopa"> jen s českou stopou</label>
     <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
   </div>
@@ -95,7 +96,11 @@ setNav("votes-list");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, all, overview] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json")]);
+    const [index, all, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json"), getJSON("vote_roles.json").catch(() => null)]);
+    // Česká stopa: český poslanec byl zpravodajem nebo stínovým zpravodajem zprávy, o které se hlasovalo (vote_roles.json z own_work).
+    const trace = new Set(Object.keys(roles?.votes || {}).map(Number));
+    const stopa = document.getElementById("stopa");
+    stopa.closest("label").hidden = !trace.size;
     all.reverse(); // nejnovější nahoře
     await loadCategories();
     const doc = await getJSON("votes/search.json");
@@ -136,6 +141,7 @@ setNav("votes-list");
     kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
     if (params.get("t")) topicSel.value = params.get("t");
     if (params.get("c")) catSel.value = params.get("c");
+    if (params.get("stopa") === "1") stopa.checked = true;
     let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
@@ -149,11 +155,12 @@ setNav("votes-list");
       const needle = q.value.trim().toLowerCase();
       const topic = topicSel.value, cat = catSel.value;
       // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
-      const wide = Boolean(needle || topic || cat || mepVotes);
+      const onlyTrace = stopa.checked;
+      const wide = Boolean(needle || topic || cat || mepVotes || onlyTrace);
       monthSel.disabled = wide;
       const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
       const matches = pool.filter((v) => kindOk(v) &&
-        (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) &&
+        (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) && (!onlyTrace || trace.has(v.id)) &&
         (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
       current = matches;
@@ -165,6 +172,7 @@ setNav("votes-list");
       if (cat) qs.set("c", cat);
       if (needle) qs.set("q", q.value.trim());
       if (mepVotes) qs.set("mep", mepSel.value);
+      if (onlyTrace) qs.set("stopa", "1");
       document.getElementById("cz-head").textContent = mepVotes ? displayName(overview.meps.find((m) => String(m.id) === mepSel.value)) : "Češi";
       if (since && !wide) qs.set("od", since);
       history.replaceState(null, "", `?${qs}`);
@@ -173,7 +181,7 @@ setNav("votes-list");
         return `<tr>
           <td class="num date">${fmtDate(v.date)}</td>
           <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
-            <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
+            <div class="small muted">${trace.has(v.id) ? '<span class="cz-badge" title="Český poslanec byl zpravodajem nebo stínovým zpravodajem">česká stopa</span> ' : ""}${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
           <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
           ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)]; const mp = overview.meps.find((m) => String(m.id) === mepSel.value);
             return `<td class="extra pos pos-${pos}">${positionFor(pos, mp)}</td>`; })()
@@ -190,6 +198,7 @@ setNav("votes-list");
     kindSel.addEventListener("change", render);
     topicSel.addEventListener("change", render);
     catSel.addEventListener("change", render);
+    stopa.addEventListener("change", render);
     mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
     q.addEventListener("input", render);
     render();

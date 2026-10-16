@@ -58,7 +58,9 @@
       frakce a strana k datu hlasování. Datový export z <a href="https://github.com/HowTheyVote/data">GitHubu</a>, licence ODbL.</li>
     <li><a href="https://data.europarl.europa.eu">EP Open Data API</a> – seznam poslanců, mandáty, frakce, strany, výbory a portréty. Licence CC BY 4.0.</li>
     <li>Portréty: © European Union – Source: EP.</li>
-    <li>Data se aktualizují automaticky každé pondělí ráno.</li>
+    <li>Data se aktualizují automaticky: každý den se kontroluje, jestli HowTheyVote.eu zveřejnil nový export, a když ano,
+      web se hned přepočítá; každé pondělí ráno proběhne aktualizace vždy. Program příštího zasedání se stahuje denně.
+      Když je poslední export starší než 14 dní a Evropský parlament mezitím zasedal, web to oznámí pruhem nahoře.</li>
   </ul>
   <p class="source" id="release"></p></div>
 
@@ -97,6 +99,12 @@
         pravidel nad kódy témat Legislativní observatoře EP (OEIL), které u hlasování uvádí HowTheyVote
         (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/categories.py">categories.py</a>): 12 témat, hlavní je první podle
         priority (obrana, klima a energie, doprava … instituce), další jsou „+N“. Téma nevybíráme my ani AI; hlasování bez kódu OEIL téma nemá.</li>
+      <li id="program-ep"><strong>Další zasedání a program</strong>: kalendář plenárních dnů a návrh programu hlasování bere web každý den
+        z EP Open Data API (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/fetch_agenda.py">fetch_agenda.py</a>).
+        Program je návrh EP a může se změnit. Na úvodní stránce jsou nejvýš 3 body vybrané pravidlem: nejdřív body s českou stopou,
+        pak body s legislativním návrhem (dokument C), pak podle pořadí v programu. Celý program je na stránce Hlasování.
+        <strong>Česká stopa</strong> = český poslanec je zpravodajem, spoluzpravodajem nebo stínovým zpravodajem zprávy, ke které se bod
+        nebo hlasování váže (podle EP Open Data). Stanoviska výborů se nepárují, protože program na ně neodkazuje.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>

@@ -360,6 +360,16 @@ def topic_chips(cats: list[str] | None, max_: int = 4, link: bool = True, id_: s
     return f'<span class="topic-chips">{"".join(chip(k) for k in shown)}{more}{tip}</span>'
 
 
+CZ_GEO_TITLE = "Zdroj (HowTheyVote.eu) uvádí u hlasování geografické téma Česko"
+
+
+def cz_geo_tag(v: dict) -> str:
+    """Štítek „Týká se Česka“, jen když to uvádí zdroj (topics.geo s kódem CZE). Dvojče czGeoTag v app.js."""
+    geo = ((v.get("topics") or {}).get("geo")) or []
+    return (f'<span class="tag cz-geo" title="{CZ_GEO_TITLE}">Týká se Česka</span>'
+            if any(g.get("code") == "CZE" for g in geo) else "")
+
+
 def topic_text(cats: list[str] | None) -> str:
     """Téma do citace, alt textu a popisu: „Klima, příroda a energie (+2)“; bez tématu prázdné."""
     known = [k for k in (cats or []) if k in CAT_LABEL]
@@ -367,7 +377,7 @@ def topic_text(cats: list[str] | None) -> str:
 
 
 def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list[dict] | None, data_day: str | None,
-                    rows: list[dict] | None = None) -> dict:
+                    rows: list[dict] | None = None, trace: bool = False) -> dict:
     """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce."""
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
@@ -382,6 +392,8 @@ def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list
         "ep": [c["for"], c["against"], c["abstention"], c["did_not_vote"]],
         "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
         "topic": topic_text(categories_for(v)) or None,
+        # Štítek „česká stopa“ (zpravodaj nebo stínový zpravodaj z ČR, vote_roles.json); bez záznamu se vynechá.
+        **({"trace": True} if trace else {}),
         # Datum exportu dat jen když ho volající chce; statické stránky ho nemají (doplní ho share.js za běhu
         # z overview.json), aby se stránky a karty nepřepisovaly při každém novém exportu (revize, blok A).
         **({"dataDay": data_day} if data_day else {}),
@@ -432,7 +444,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     rows = party_rows(cz, meps_by_id, parties or [], groups)
     party_html = party_rows_html(rows, ROOT)
     sentence = result_sentence(kind, v.get("result"))
-    share_data = vote_share_data(v, meps_by_id, groups, parties, None, rows)
+    share_data = vote_share_data(v, meps_by_id, groups, parties, None, rows, bool(roles))
     n_groups = len(v["group_counts"])
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
@@ -453,7 +465,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
                     f"text: {json.dumps(f'{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False).replace('</', '<\\/')}, "
                     f"data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace('</', '<\\/')}, {{ urlShort: url.replace(/^https?:\\/\\//, \"\").replace(/\\.html$/, \"\") }}) }}; }};</script>\n")
     body = f"""{back_row(f"{ROOT}votes.html?m={v['date'][:7]}", "← Hlasování v měsíci")}
-<p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
+<p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>
@@ -660,7 +672,7 @@ def follow_html() -> str:
 
 def sync_blocks(public: Path, data_dir: Path) -> int:
     """Portréty na poslanci.html a přehled na hlasovani.html se generují z dat při každém buildu (týdenní aktualizace)."""
-    from hub import heads_html, votes_hero_html, votes_overview_html
+    from hub import heads_html, next_session_html, votes_hero_html, votes_overview_html
     changed = 0
     if (public / "o-projektu.html").exists() and "<!--sync:corrections-->" in (public / "o-projektu.html").read_text(encoding="utf-8"):
         changed += sync_block(public / "o-projektu.html", "corrections", corrections_html(data_dir))
@@ -669,6 +681,10 @@ def sync_blocks(public: Path, data_dir: Path) -> int:
         changed += sync_block(public / "poslanci.html", "heads", heads_html(data_dir))
     if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists() and (public / "hlasovani.html").exists():
         changed += sync_block(public / "hlasovani.html", "overview", votes_overview_html(data_dir))
+    hlas = public / "hlasovani.html"
+    if hlas.exists() and "<!--sync:agenda-->" in hlas.read_text(encoding="utf-8"):
+        home = read(data_dir / "home.json") if (data_dir / "home.json").exists() else {}
+        changed += sync_block(hlas, "agenda", next_session_html(home.get("agenda"), full=True))
     if (data_dir / "category_stats.json").exists() and (data_dir / "session.json").exists() and (public / "hlasovani.html").exists():
         changed += sync_block(public / "hlasovani.html", "hero", votes_hero_html(data_dir))
     return changed

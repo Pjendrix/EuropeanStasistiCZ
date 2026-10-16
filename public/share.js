@@ -112,9 +112,18 @@ function voteCardOps(d, f) {
   const ops = [];
   let y = 0;
   // Téma (stejná data jako čip v seznamu hlasování): jeden čip nad názvem, další jen jako „+N“; bez tématu se řádek vynechá.
-  if (d.topic) {
-    const t = fitText(d.topic, 26, 700, 900), tw = measureText(t, 26, 700);
-    ops.push(RECT(72, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(92, y + 32, t, 26, 700, SC.white));
+  // Vedle tématu štítek „česká stopa“ (d.trace: zpravodaj nebo stínový zpravodaj z ČR), jen když záznam existuje.
+  if (d.topic || d.trace) {
+    let x = 72;
+    if (d.topic) {
+      const t = fitText(d.topic, 26, 700, d.trace ? 660 : 900), tw = measureText(t, 26, 700);
+      ops.push(RECT(x, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(x + 20, y + 32, t, 26, 700, SC.white));
+      x += tw + 56;
+    }
+    if (d.trace) {
+      const t = "ČESKÁ STOPA", tw = measureText(t, 24, 800);
+      ops.push(RECT(x, y, tw + 40, 46, 23, SC.white), T(x + 20, y + 32, t, 24, 800, SC.navy));
+    }
     y += 66;
   }
   const title = wrapText(d.title, 58, 700, 936, 3);

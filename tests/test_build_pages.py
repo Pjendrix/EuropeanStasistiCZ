@@ -136,13 +136,15 @@ def test_blocks_for_manual_pages(data_dir, tmp_path):
     root = Path(__file__).resolve().parent.parent
     for name in ("poslanci.html", "hlasovani.html"):
         (tmp_path / name).write_text((root / "public" / name).read_text(encoding="utf-8"), encoding="utf-8")
-    assert bp.sync_blocks(tmp_path, data_dir) == 3
+    # 3 bloky + program zasedání (MOCK data program nemají, blok se vyprázdní)
+    assert bp.sync_blocks(tmp_path, data_dir) == 4
     assert bp.sync_blocks(tmp_path, data_dir) == 0  # podruhé beze změny
     mep = (tmp_path / "poslanci.html").read_text(encoding="utf-8")
     assert "Kdo jsou čeští poslanci" in mep and 'class="hub-strip heads-strip"' in mep
     votes = (tmp_path / "hlasovani.html").read_text(encoding="utf-8")
     assert "Co se naposledy odhlasovalo" in votes and "Nejnovější zákony" in votes and "Češi proti výsledku" in votes
     assert "<h1>Jmenovitá hlasování</h1>" in votes and 'href="votes.html"' in votes
+    assert "<!--sync:agenda-->\n\n<!--/sync:agenda-->" in votes  # bez programu žádný prázdný blok
 
 
 def test_group_majority_and_party_votes_text():
@@ -255,3 +257,42 @@ def test_corrections_block(tmp_path):
     import pytest
     with pytest.raises(bp.FormatError):
         bp.corrections_html(data)
+
+
+def test_cz_geo_tag_only_from_source():
+    """„Týká se Česka“ jen když zdroj uvádí geografické téma CZE; jinak žádná značka. Stejný text jako czGeoTag v app.js."""
+    assert bp.cz_geo_tag({"topics": {"geo": [{"code": "UKR"}]}}) == ""
+    assert bp.cz_geo_tag({"topics": {}}) == "" and bp.cz_geo_tag({}) == ""
+    tag = bp.cz_geo_tag({"topics": {"geo": [{"code": "CZE", "label": "Czechia"}]}})
+    assert ">Týká se Česka<" in tag
+    app = (Path(__file__).resolve().parent.parent / "public" / "app.js").read_text(encoding="utf-8")
+    assert tag in app.replace("'", '"').replace('"<span', "<span").replace('</span>"', "</span>")
+
+
+def test_share_data_trace_only_with_record(data_dir):
+    built(data_dir)
+    month = json.loads((data_dir / "votes" / "2024-10.json").read_text(encoding="utf-8"))["votes"]
+    meps_by_id = {m["id"]: m for m in json.loads((data_dir / "meps.json").read_text(encoding="utf-8"))["meps"]}
+    v = month[0]
+    assert "trace" not in bp.vote_share_data(v, meps_by_id, [], [], None)
+    assert bp.vote_share_data(v, meps_by_id, [], [], None, trace=True)["trace"] is True
+
+
+def test_next_session_block():
+    import hub
+    agenda = {"from": "2026-10-19", "to": "2026-10-22", "days": ["2026-10-19"], "votes": 2, "fetched": "2026-10-16",
+              "source": {"name": "EP Open Data API v2", "url": "https://data.europarl.europa.eu/api/v2/meetings"},
+              "picks": ["MOCK-1"],
+              "items": [{"id": "MOCK-1", "date": "2026-10-20", "order": 1, "title_cs": "MOCK DPH", "title_en": None,
+                         "docs": ["A-10-2026-0213"], "legislative": False,
+                         "cz": [{"mep_id": 1, "name": "MOCK Jedna", "role": "rapporteur"}]},
+                        {"id": "MOCK-2", "date": "2026-10-21", "order": 2, "title_cs": "MOCK jiný", "title_en": None,
+                         "docs": [], "legislative": False, "cz": []}]}
+    html = hub.next_session_html(agenda)
+    assert 'data-from="2026-10-19"' in html and 'data-to="2026-10-22"' in html
+    assert "MOCK DPH" in html and "MOCK jiný" not in html  # na úvodu jen výběr
+    assert html.count('class="cz-badge"') == 1 and 'href="p/1.html"' in html
+    assert "data.europarl.europa.eu" in html  # zdroj
+    full = hub.next_session_html(agenda, full=True)
+    assert "MOCK jiný" in full
+    assert hub.next_session_html(None) == ""

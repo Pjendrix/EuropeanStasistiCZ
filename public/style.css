@@ -1366,3 +1366,27 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
 .hm-hero .topic-chip .cat-ico { background: rgba(248, 250, 252, .12); color: #F8FAFC; }
 .hm-hero .tc-more { color: #CBD5E1; }
 .hm-topic { margin: 10px 0 0; min-height: 30px; }
+
+/* Další zasedání (program EP, hub.py next_session_html): datum, odpočet, body programu, česká stopa */
+.next-session { margin: 0 0 1.5rem; }
+.hm-next { padding-top: 40px; }
+.hm-next .next-session { margin: 0; }
+.ns-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; }
+.ns-head h2 { margin: 0; font-size: 1.35rem; }
+.ns-when { margin: 0; color: var(--muted); }
+.ns-when strong { color: var(--text); }
+.ns-list { list-style: none; margin: .9rem 0 0; padding: 0; border-top: 1px solid var(--border); }
+.ns-item { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: .15rem .9rem; padding: .7rem 0; border-bottom: 1px solid var(--border); }
+.ns-day { grid-row: 1 / span 3; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; padding-top: .1rem; }
+.ns-title { font-weight: 600; line-height: 1.35; }
+.ns-cz { font-size: .88rem; }
+.ns-docs a { color: inherit; }
+.ns-all { display: inline-flex; align-items: center; gap: .4rem; margin-top: .8rem; font-weight: 700; color: var(--link); text-decoration: none; min-height: 44px; }
+.cz-badge { display: inline-flex; align-items: center; padding: .05rem .55rem; border-radius: 999px; font-size: .75rem; font-weight: 700;
+  background: var(--accent-soft); color: var(--link); border: 1px solid var(--border); white-space: nowrap; }
+@media (max-width: 560px) { .ns-item { grid-template-columns: minmax(0, 1fr); } .ns-day { grid-row: auto; } }
+.ns-rest summary { cursor: pointer; font-weight: 700; color: var(--link); padding: .7rem 0; min-height: 44px; }
+
+/* Pruh o starých datech (app.js staleNotice) */
+.stale-note { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--gold); background: var(--surface);
+  border-radius: 6px; font-size: .9rem; color: var(--text); }

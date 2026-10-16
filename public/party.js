@@ -167,6 +167,7 @@ async function detailPage(id) {
         <div class="detail">${pairText(t.outcome, "hlasů pro/proti")} · jen informativní</div></div>
     </div>
     <p class="source">${sourceLine(p)}</p>
+    ${reportsHtml(p.reports, meps)}
 
     ${single ? "" : `<h2>Kde se strana rozdělila</h2>
       <p class="muted">Hlasování, kde poslanci strany hlasovali pro i proti. Celkem ${fmtNum(p.splits_count)} z ${fmtNum(p.cohesion[1])} hlasování (${fmtPct(p.splits_count / p.cohesion[1])}), z toho v závěrečných ${fmtNum(p.splits_count_main)} z ${fmtNum(p.cohesion_main[1])}.</p>
@@ -177,6 +178,24 @@ async function detailPage(id) {
     collapseTables(document.getElementById("splits"));
   });
   if (!single) collapseTables(document.getElementById("splits"));
+}
+
+// Zprávy, které vedli poslanci strany (D6, data/parties/{id}.json → reports z own_work.json): výčet, bez pořadí a hodnocení.
+function reportsHtml(r, meps) {
+  if (!r) return "";
+  const STATUS = { ADOPTED: "přijato", REJECTED: "zamítnuto", no_vote: "zatím bez hlasování v plénu" };
+  const ROLE = { rapporteur: "zpravodaj/ka", co: "spoluzpravodaj/ka" };
+  const items = r.items.map((x) => {
+    const m = meps[x.mep_id];
+    const title = x.title_cs || x.label || "zpráva";
+    return `<li><a href="${esc(x.url)}">${esc(title.length > 160 ? `${title.slice(0, 157)}…` : title)}</a>
+      <div class="small muted">${esc(x.label || "")} · ${fmtDate(x.date)} · ${m ? `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>` : ""} (${ROLE[x.role]})
+      · ${x.vote_id ? `<a href="v/${x.vote_id}.html">${STATUS[x.status] || "hlasování"}</a>` : STATUS[x.status] || "stav neuveden"}</div></li>`;
+  }).join("");
+  return `<h2>Zprávy, které vedli poslanci strany</h2>
+    <p class="muted">${r.items.length ? `${fmtNum(r.items.length)} ${r.items.length === 1 ? "zpráva" : r.items.length < 5 ? "zprávy" : "zpráv"}, u kterých byl poslanec strany zpravodajem nebo spoluzpravodajem` : "Poslanci strany zatím nevedli žádnou zprávu jako zpravodajové"}${r.shadow_count ? `; stínovým zpravodajem byl poslanec strany u ${fmtNum(r.shadow_count)} ${r.shadow_count === 1 ? "zprávy" : "zpráv"}` : ""}. Strana k datu zprávy.</p>
+    ${items ? `<div class="card"><ul class="plain">${items}</ul></div>` : ""}
+    <p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0)${r.updated ? `, stav k ${fmtDate(r.updated.slice(0, 10))}` : ""} · <a href="prace.html">Práce poslanců</a></p>`;
 }
 
 (async () => {
