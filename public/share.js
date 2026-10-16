@@ -442,8 +442,10 @@ function partyCardOps(d, f) {
 // Neutrální silueta (stejná pro všechny) místo portrétu: jen balíček pro Instagram (avatar: "neutral").
 function neutralAvatarOps(x, y, w, h, r) {
   const cx = x + w / 2;
-  return [RECT(x, y, w, h, r, "#1E293B"), CIRC(cx, y + h * 0.38, w * 0.2, "#475569"),
-    RECT(cx - w * 0.34, y + h * 0.64, w * 0.68, h * 0.5, w * 0.3, "#475569"), RECT(x, y + h - 2, w, 2, 0, "#1E293B")];
+  // hlava a ramena celé uvnitř dlaždice (i kulaté): nic nepřesahuje okraj
+  const head = Math.min(w, h) * 0.19;
+  return [RECT(x, y, w, h, r, "#1E293B"), CIRC(cx, y + h * 0.4, head, "#475569"),
+    RECT(cx - w * 0.28, y + h * 0.62, w * 0.56, h * 0.26, Math.min(w * 0.28, h * 0.13), "#475569")];
 }
 
 // --- kreslení na canvas → PNG ---------------------------------------------------------

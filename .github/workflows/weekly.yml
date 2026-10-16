@@ -91,3 +91,60 @@ jobs:
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')
         uses: ./.github/actions/failure-issue
+
+  instagram:
+    # Balíček pro Instagram (blok F): z dat, která právě přišla do main. Publikace zůstává ruční:
+    # ZIP je artifact běhu (90 dní) a issue „Balíček pro Instagram je připravený“ na něj odkazuje i s popisky.
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main   # včetně commitu dat z předchozího jobu
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalace závislostí a Chromia (jen pro kreslení karet)
+        run: |
+          pip install -r requirements.txt playwright==1.49.1
+          python -m playwright install --with-deps chromium
+
+      - name: Balíček (jen pro nový export dat)
+        id: ig
+        run: python scripts/build_instagram.py --only-new >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        if: steps.ig.outputs.built == 'true'
+        with:
+          name: instagram-${{ github.run_id }}
+          path: out/instagram
+          retention-days: 90
+
+      - name: Issue s odkazem ke stažení
+        if: steps.ig.outputs.built == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs"), path = require("path");
+            const root = "out/instagram", day = fs.readdirSync(root).sort().pop();
+            const read = (p) => fs.existsSync(path.join(root, day, p)) ? fs.readFileSync(path.join(root, day, p), "utf8").trim() : null;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const block = (title, dir) => read(`${dir}/popisek.txt`) ? `### ${title}\n\n**Popisek**\n\n\`\`\`\n${read(`${dir}/popisek.txt`)}\n\`\`\`\n\n` +
+              `**Alt texty**\n\n\`\`\`\n${read(`${dir}/alt.txt`)}\n\`\`\`\n` : "";
+            const body = `Balíček z dat k ${day}. **Stáhnout ZIP:** ${run} (sekce Artifacts, dole na stránce běhu; platí 90 dní).\n\n` +
+              `Postup: rozbalit, v telefonu nahrát obrázky ze složky (karusel = slide-1, slide-2, …; story.png zvlášť), vložit popisek a alt texty. ` +
+              `Čísla jsou z dat, nic neupravuj ručně.\n\n` + block("Hlasování ze zasedání", "hlasovani") + "\n" + block("Poslanec v kostce", "poslanec");
+            await github.rest.issues.create({ ...context.repo, title: `Balíček pro Instagram je připravený (${day})`, body });
+
+      - name: Uložení rotace poslanců
+        if: steps.ig.outputs.built == 'true'
+        run: |
+          scripts/commit_data.sh "data: rotace balíčku pro Instagram $(date -u +%Y-%m-%d)" data/instagram_state.json
+
+      - name: Issue při selhání
+        if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')
+        uses: ./.github/actions/failure-issue
