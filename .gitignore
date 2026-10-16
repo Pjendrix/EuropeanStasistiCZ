@@ -9,3 +9,6 @@ public/data/
 .env.*
 *.pem
 *.key
+
+# balíček pro Instagram (scripts/build_instagram.py), jen artifact v GitHub Actions
+out/
