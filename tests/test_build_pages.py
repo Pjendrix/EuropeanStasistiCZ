@@ -323,3 +323,10 @@ def test_radar_page_html():
     assert "zatím nejsou" in hub.radar_html(None)
     empty = hub.radar_html({"categories": [], "session": None, "active": [], "done": [], "without_events": 0})
     assert "Program zatím není zveřejněný" in empty and "Žádné takové procedury" in empty
+
+
+def test_czech_title_preferred_and_original_kept():
+    v = {"id": 1, "title": "MOCK English", "title_cs": "MOCK česky", "procedure": {"reference": "2023/0436(COD)"}}
+    assert bw.vote_title(v) == "MOCK česky" and bw.vote_title({"id": 2, "title": "MOCK English"}) == "MOCK English"
+    assert "MOCK English" in bp.original_title_html(v) and "EP Open Data" in bp.original_title_html(v)
+    assert bp.original_title_html({"id": 2, "title": "MOCK English"}) == ""

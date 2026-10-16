@@ -376,6 +376,14 @@ def topic_text(cats: list[str] | None) -> str:
     return f"{CAT_LABEL[known[0]]}{f' (+{len(known) - 1})' if len(known) > 1 else ''}" if known else ""
 
 
+def original_title_html(v: dict) -> str:
+    """Původní anglický název z HowTheyVote, když web ukazuje oficiální český název procedury z EP Open Data."""
+    if not v.get("title_cs") or not v.get("title") or v["title"] == v["title_cs"]:
+        return ""
+    return (f'<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování '
+            f'(HowTheyVote.eu): {esc(v["title"])}</p>')
+
+
 def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list[dict] | None, data_day: str | None,
                     rows: list[dict] | None = None, trace: bool = False) -> dict:
     """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce."""
@@ -468,7 +476,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
-<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>
+<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>

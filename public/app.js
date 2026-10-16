@@ -298,8 +298,9 @@ function topicText(cats) {
   return known.length ? `${CATEGORY_META[known[0]].label}${known.length > 1 ? ` (+${known.length - 1})` : ""}` : "";
 }
 
+// Oficiální český název procedury (title_cs z EP Open Data, build_web.vote_title), jinak anglický z HowTheyVote.
 function voteTitle(v) {
-  let t = v.title || v.procedure?.title || v.reference || `Hlasování ${v.id}`;
+  let t = v.title_cs || v.title || v.procedure?.title || v.reference || `Hlasování ${v.id}`;
   return t;
 }
 
