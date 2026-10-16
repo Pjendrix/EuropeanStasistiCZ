@@ -664,11 +664,10 @@ document.addEventListener("click", (ev) => {
   }
 });
 
-// Tlačítko „Citovat“: věta s číslem; při kopírování se doplní verze dat a adresa stránky.
-function citeButton(text) {
-  return `<button type="button" class="cite-btn" data-cite="${esc(text)}" aria-label="Citovat" title="Citovat (zkopíruje větu se zdrojem)">${CITE_ICON}</button>`;
-}
+// Citace: věta s číslem; při kopírování se doplní verze dat a adresa stránky. Tlačítko „Citovat“ je v ⓘ u čísla
+// (citeAction) a v panelu sdílení („Kopírovat jako citaci“); ❝ v rohu karet už není (revize sdílení N2).
 const CITE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg>';
+const SHARE_SMALL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
 
 async function citeText(text) {
   let release = "";
@@ -677,18 +676,36 @@ async function citeText(text) {
   return `${text}${release ? ` Data: export HowTheyVote ${release}.` : ""} EP Watch CZ, ${siteUrl(location.pathname + location.search)} (citováno ${today}).`;
 }
 
+// První věta definice metriky bez úvodního „Název: “ (karta čísla a ⓘ u čísla).
+function firstSentence(def) {
+  let t = String(def || "").trim();
+  const colon = t.indexOf(": ");
+  if (colon > 0 && colon < 60) t = t.slice(colon + 2);
+  const end = t.search(/\.(\s|$)/);
+  t = end > 0 ? t.slice(0, end + 1) : t;
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+// ⓘ v rohu karty s číslem: definice a dvě akce vedle sebe – Sdílet číslo (panel s kartou metric) a Citovat.
+function metricActions(html, shareKey, cite) {
+  const acts = `<div class="pop-acts">${shareKey ? `<button type="button" class="pop-act" data-share="${esc(shareKey)}" aria-haspopup="dialog">${SHARE_SMALL_ICON}<span>Sdílet číslo</span></button>` : ""}`
+    + `${cite ? `<button type="button" class="pop-act" data-cite="${esc(cite)}">${CITE_ICON}<span>Citovat</span></button>` : ""}</div>`;
+  return infoButton(`${html}${acts}`, "Definice, sdílení a citace").replace('class="info-wrap"', 'class="info-wrap corner"');
+}
+
 document.addEventListener("click", async (ev) => {
-  const btn = ev.target.closest(".cite-btn");
+  const btn = ev.target.closest("[data-cite]");
   if (!btn) return;
   const text = await citeText(btn.dataset.cite);
+  const label = btn.querySelector("span");
   try {
     await navigator.clipboard.writeText(text);
     btn.classList.add("done");
-    btn.setAttribute("aria-label", "Citace zkopírována");
+    if (label) label.textContent = "Zkopírováno";
   } catch (e) {
     window.prompt("Zkopírujte citaci:", text);
   }
-  setTimeout(() => { btn.classList.remove("done"); btn.setAttribute("aria-label", "Citovat"); }, 2000);
+  setTimeout(() => { btn.classList.remove("done"); if (label) label.textContent = "Citovat"; }, 2000);
 });
 
 // Tlačítko „Stáhnout CSV“; rows = pole polí (první řádek = záhlaví). Oddělovač středník kvůli českému Excelu.

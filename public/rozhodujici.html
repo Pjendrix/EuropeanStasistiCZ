@@ -48,7 +48,7 @@
     <p>Těsná hlasování (rozdíl mezi pro a proti nejvýš 21 hlasů), která by po odečtení českých hlasů pro a proti dopadla opačně. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon: u každého je uvedeno, o co se hlasovalo. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>
   </div></span></div>
   <p class="lead strong-line" id="headline"></p>
-  <p class="muted" id="summary"></p>
+  <div class="view-tools"><p class="muted" id="summary"></p><span id="share-slot"></span></div>
   <div id="peers"></div>
   <div id="list" class="loading">Načítám…</div>
   <p class="source" id="source"></p>
@@ -62,6 +62,7 @@
 </div></footer>
 
 <script src="app.js"></script>
+<script src="share.js"></script>
 <script>
 setNav("analyses");
 setNav("decisive");
@@ -86,6 +87,22 @@ setNav("decisive");
         ])}<p class="small muted">${esc(dl.definition)}</p></details></div>`;
     }
     document.getElementById("source").innerHTML = sourceLine(d);
+    // Sdílet pohled: prvních pár hlasování ve stejném pořadí jako na stránce.
+    const day = overview.sources?.votes?.release || overview.period.to;
+    const url = siteUrl("rozhodujici.html");
+    window.shareContext = () => ({
+      kind: "split", url, filename: "ep-watch-rozhodujici", subtitle: "Kde rozhodly české hlasy",
+      trust: "Karta ukazuje jen první řádky seznamu. Datum dat, zdroj a adresa jsou na ní.",
+      text: "Těsná hlasování v Evropském parlamentu, která by bez českých hlasů dopadla opačně. Zdroj: HowTheyVote.eu, EP Watch CZ",
+      data: {
+        title: "Kde rozhodly české hlasy", total: d.votes.length, dataDay: day,
+        lead: `Těsná hlasování, která by bez českých hlasů pro a proti dopadla opačně: ${fmtNum(d.votes.length)}, z toho závěrečných ${fmtNum(d.decisive_final ?? d.votes.filter(isFinal).length)}.`,
+        rows: d.votes.map((v) => ({ meta: [fmtDate(v.date), KIND_LABEL[v.vote_kind] || "", RESULT_LABEL[v.result] || ""].filter(Boolean).join(" · "),
+          title: voteTitle(v), score: `${v.counts.for} : ${v.counts.against}`, scoreSub: `celý EP · Češi ${v.cz[0]} : ${v.cz[1]}` })),
+        urlShort: url.replace(/^https?:\/\//, ""),
+      },
+    });
+    if (d.votes.length && typeof shareButton === "function") document.getElementById("share-slot").outerHTML = shareButton("view", "Sdílet pohled");
     el.className = "";
     const PAGE = 10;
     let shown = PAGE;

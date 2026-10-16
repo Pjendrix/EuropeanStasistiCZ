@@ -203,9 +203,11 @@ function mepBasicOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   const pw = 380, ph = 475, y0 = 0;
-  if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: y0, w: pw, h: ph, r: 26 }, RECT(70, y0 - 2, pw + 4, ph + 4, 28, null, SC.gold, 4),
+  const neutral = d.avatar === "neutral";
+  if (neutral) ops.push(...neutralAvatarOps(72, y0, pw, ph, 26));
+  else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: y0, w: pw, h: ph, r: 26 }, RECT(70, y0 - 2, pw + 4, ph + 4, 28, null, SC.gold, 4),
     T(72, y0 + ph + 32, "© European Union – Source: EP", 20, 500, SC.muted));
-  const nx = d.photo ? 72 + pw + 50 : 72, nw = 1008 - nx;
+  const nx = d.photo || neutral ? 72 + pw + 50 : 72, nw = 1008 - nx;
   const nameLines = wrapText(d.name, 72, 800, nw, 3);
   let chips = [], cx = nx, cy = 0;
   const chipRows = [];
@@ -237,8 +239,10 @@ function mepBasicOps(d, f) {
 // Mini hlavička 2. a 3. obrázku: kulatý portrét, jméno, frakce · strana, „2 / 3“.
 function mepMiniHead(d, n) {
   const ops = [];
-  if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 54, null, SC.gold, 4));
-  const nx = d.photo ? 200 : 72;
+  const neutral = d.avatar === "neutral";
+  if (neutral) ops.push(...neutralAvatarOps(72, 190, 104, 104, 52));
+  else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 54, null, SC.gold, 4));
+  const nx = d.photo || neutral ? 200 : 72;
   ops.push(T(nx, 238, fitText(d.name, 52, 800, 700), 52, 800, SC.white),
     T(nx, 280, fitText((d.chips || []).map((c) => c.label).join(" · "), 28, 500, 700), 28, 500, SC.soft), T(1008, 252, `${n} / 3`, 30, 500, SC.muted, "right"));
   return ops;
@@ -326,6 +330,107 @@ function mepWorkOps(d, f) {
   return [...shareHeader(`data k ${fmtDate(d.workDay || d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[3], d.urlShort)];
 }
 
+// --- karta čísla (metric), přehledu (split) a strany (party) ---------------------------------------
+// Jen čísla, která už ukazuje stránka; chybějící hodnota (null, NI bez frakce) se vynechá, nic se nedopočítává.
+
+// Obsah vystředěný mezi hlavičkou a patičkou (stejně jako u karty hlasování).
+function centered(ops, y, H, top = 172) {
+  const bottom = H - 150;
+  return shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0)));
+}
+
+// Karta jednoho čísla: kontext (jméno · frakce · strana), název, hodnota, osa s mediánem, „x z y“, jedna věta definice.
+function metricCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  wrapText(d.context || "", 30, 700, 936, 2).forEach((l, i) => ops.push(T(72, y + 30 + i * 40, l, 30, 700, SC.gold)));
+  y += d.context ? Math.min(2, wrapText(d.context, 30, 700, 936, 2).length) * 40 + 30 : 0;
+  const lab = wrapText(d.label, 50, 800, 936, 2);
+  lab.forEach((l, i) => ops.push(T(72, y + 50 + i * 60, l, 50, 800, SC.white)));
+  y += lab.length * 60 + 20;
+  const share = d.pair && d.pair[1] ? d.pair[0] / d.pair[1] : null;
+  ops.push(T(60, y + 220, share === null ? "–" : fmtPct(share), 230, 800, SC.white));
+  y += 270;
+  if (d.median != null && share !== null) {
+    const lo = 0.6, w = 936, pos = (v) => 72 + w * Math.min(Math.max((v - lo) / (1 - lo), 0), 1);
+    ops.push(RECT(72, y + 14, w, 12, 6, SC.track), CIRC(pos(share), y + 20, 18, SC.white),
+      LINE(pos(d.median), y - 4, pos(d.median), y + 44, SC.gold, 7),
+      T(72, y + 92, `${d.medLabel} ${fmtPct(d.median)}`, 32, 700, SC.gold), T(1008, y + 92, "osa 60–100 %", 22, 500, SC.muted, "right"));
+    y += 110;
+  }
+  if (d.pair && d.pair[1]) { ops.push(T(72, y + 40, `${fmtNum(d.pair[0])} z ${fmtNum(d.pair[1])} ${d.unit || "hlasování v době mandátu"}`, 32, 600, SC.soft)); y += 64; }
+  if (d.definition) {
+    y += 20;
+    const def = wrapText(d.definition, 28, 500, 936, story ? 6 : 4);
+    def.forEach((l, i) => ops.push(T(72, y + 30 + i * 40, l, 28, 500, SC.muted)));
+    y += def.length * 40 + 10;
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, d.source || "Zdroj: HowTheyVote.eu (ODbL) · výpočet EP Watch CZ · bez pořadí a hodnocení", d.urlShort)];
+}
+
+// Počet řádků přehledu na kartě: příspěvek 5, story 7 (vždy výslovně napsaný na kartě).
+const splitRowsFor = (f) => (f.h > 1500 ? 7 : 5);
+
+// Karta přehledu: titulek, věta o výběru, prvních N řádků ve stejném pořadí jako na stránce.
+function splitCardOps(d, f) {
+  const H = f.h, n = Math.min(splitRowsFor(f), d.rows.length);
+  const ops = [];
+  let y = 0;
+  const tl = wrapText(d.title, 64, 800, 936, 2);
+  tl.forEach((l, i) => ops.push(T(72, y + 64 + i * 74, l, 64, 800, SC.white)));
+  y += tl.length * 74 + 24;
+  const lead = wrapText(`${d.lead ? `${d.lead} ` : ""}Na kartě ${n === d.rows.length && n === d.total ? `všech ${n}` : `prvních ${n} z ${fmtNum(d.total ?? d.rows.length)}`}, pořadí jako na webu${d.order ? ` (${d.order})` : ""}.`, 28, 500, 936, 4);
+  lead.forEach((l, i) => ops.push(T(72, y + 28 + i * 38, l, 28, 500, SC.soft)));
+  y += lead.length * 38 + 26;
+  ops.push(LINE(72, y, 1008, y, SC.track, 2));
+  d.rows.slice(0, n).forEach((r) => {
+    const sw = Math.max(measureText(r.score, 56, 800), measureText(r.scoreSub || "", 18, 500)) + 24;
+    ops.push(T(72, y + 40, fitText(r.meta, 20, 600, 936 - sw), 20, 600, SC.muted));
+    const tt = wrapText(r.title, 28, 700, 936 - sw, 2);
+    tt.forEach((l, i) => ops.push(T(72, y + 76 + i * 36, l, 28, 700, SC.white)));
+    ops.push(T(1008, y + 82, r.score, 56, 800, SC.white, "right"));
+    if (r.scoreSub) ops.push(T(1008, y + 108, r.scoreSub, 18, 500, SC.muted, "right"));
+    const rh = Math.max(76 + (tt.length - 1) * 36 + 30, 124);
+    y += rh;
+    ops.push(LINE(72, y, 1008, y, "#1E293B", 2));
+  });
+  const rest = (d.total ?? d.rows.length) - n;
+  if (rest > 0) { ops.push(T(72, y + 44, `… a dalších ${fmtNum(rest)} na webu`, 26, 600, SC.soft)); y += 64; }
+  return [...shareHeader(d.dateLabel || `data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, d.source || `Zdroj: HowTheyVote.eu (ODbL) · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
+}
+
+// Karta strany: název, zkratka a počet poslanců, tři dlaždice „Souhrn za stranu“ (bez log, bez srovnání mezi stranami).
+function partyCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  const nm = wrapText(d.name, 66, 800, 936, 3);
+  nm.forEach((l, i) => ops.push(T(72, y + 66 + i * 76, l, 66, 800, SC.white)));
+  y += nm.length * 76 + 24;
+  ops.push(T(72, y + 32, fitText(d.sub, 32, 600, 936), 32, 600, SC.soft));
+  y += 80;
+  const tiles = (d.tiles || []).filter((t) => t.pair && t.pair[1]);
+  tiles.forEach((t, i) => {
+    const h = story ? 250 : 220, ty = y + i * (h + 24);
+    ops.push(RECT(72, ty, 936, h, 28, "#16213A"), T(108, ty + 62, fitText(t.label, 32, 700, 520), 32, 700, SC.soft),
+      T(1008 - 36, ty + h / 2 + 36, fmtPct(t.pair[0] / t.pair[1]), 104, 800, SC.white, "right"),
+      T(108, ty + 112, `${fmtNum(t.pair[0])} z ${fmtNum(t.pair[1])}`, 28, 500, SC.muted));
+    if (t.note) ops.push(T(108, ty + 158, fitText(t.note, 24, 500, 520), 24, 500, SC.muted));
+  });
+  y += tiles.length * ((story ? 250 : 220) + 24) + 10;
+  ops.push(T(72, y + 30, "Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.", 24, 500, SC.soft));
+  y += 50;
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strana k datu hlasování", d.urlShort)];
+}
+
+// Neutrální silueta (stejná pro všechny) místo portrétu: jen balíček pro Instagram (avatar: "neutral").
+function neutralAvatarOps(x, y, w, h, r) {
+  const cx = x + w / 2;
+  return [RECT(x, y, w, h, r, "#1E293B"), CIRC(cx, y + h * 0.38, w * 0.2, "#475569"),
+    RECT(cx - w * 0.34, y + h * 0.64, w * 0.68, h * 0.5, w * 0.3, "#475569"), RECT(x, y + h - 2, w, 2, 0, "#1E293B")];
+}
+
 // --- kreslení na canvas → PNG ---------------------------------------------------------
 
 function roundRectPath(c, x, y, w, h, r) {
@@ -356,8 +461,10 @@ async function renderCardPng(ctx, formatKey) {
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
-  if (ctx.kind === "mep") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
-  const ops = ctx.kind === "vote" ? voteCardOps(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
+  // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
+  if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps }[ctx.kind];
+  const ops = draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
   const canvas = document.createElement("canvas");
   canvas.width = f.w;
   canvas.height = f.h;
@@ -405,135 +512,270 @@ async function renderCardPng(ctx, formatKey) {
   return new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Obrázek se nepodařilo vytvořit."))), "image/png"));
 }
 
-// --- tlačítko a nabídka ---------------------------------------------------------------
 
-const SHARE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+// --- tlačítko a panel sdílení (N1) -------------------------------------------------------
+// Jedno tlačítko „Sdílet“ otevře <dialog> s živým náhledem PNG. Co je v náhledu, to se stáhne nebo odešle (stejný blob).
+// Stránka nastaví window.shareContext(kind) → { kind, url, text, filename, data, title?, subtitle?, cite?, trust? } (i jako Promise);
+// kind je hodnota atributu data-share („“ = karta stránky, „metric:attendance“, „view“ …).
 
-function shareButton() {
-  return `<button type="button" class="more-btn share-btn" data-share aria-haspopup="menu" aria-expanded="false">${SHARE_ICON} Sdílet</button>`;
+const SHARE_BTN_HTML = '<button type="button" class="share-btn" data-share aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Sdílet</span></button>';
+
+// Tlačítko do hlavičky stránky (stejný kód jako share_button() v build_pages.py, hlídá test).
+// Varianta „view“: obrys, „Sdílet pohled“ (přehledy), kind se předá do shareContext.
+function shareButton(kind = "", label = "") {
+  if (!kind && !label) return SHARE_BTN_HTML;
+  return SHARE_BTN_HTML.replace('class="share-btn"', `class="share-btn${kind === "view" ? " outline" : ""}"`)
+    .replace("data-share", `data-share="${esc(kind)}"`).replace("<span>Sdílet</span>", `<span>${esc(label || "Sdílet")}</span>`);
 }
 
-let shareTrigger = null;
-let shareClosedAt = 0;
+const SD_ICON = {
+  x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  down: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  share: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
+  copy: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>',
+  quote: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg>',
+  shield: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>',
+  wa: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>',
+  xnet: '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>',
+  fb: '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V6.8c0-.8.5-1 1-1h2.3V2.2L14.2 2C10.9 2 10 4.4 10 6v2.5H7.5V12H10v10h4V12h2.9l.4-3.5H14z"/></svg>',
+  mail: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+  ratio: (w, h) => `<svg width="18" height="22" viewBox="0 0 18 22" aria-hidden="true"><rect x="${(18 - w) / 2}" y="${(22 - h) / 2}" width="${w}" height="${h}" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
+};
 
-function closeShareMenu(restoreFocus = false) {
-  document.querySelectorAll(".share-menu").forEach((m) => m.remove());
-  if (shareTrigger) {
-    shareTrigger.setAttribute("aria-expanded", "false");
-    if (restoreFocus) shareTrigger.focus();
-  }
-  shareClosedAt = Date.now();
+// Formáty podle typu karty; slides = obrázky, které formát vyrobí (detail poslance = 3 obrázky 4 : 5).
+function shareFormats(kind) {
+  const post = { key: "post", label: "Příspěvek", ratio: "4 : 5", slides: ["post"], icon: SD_ICON.ratio(12, 15) };
+  const story = { key: "story", label: "Story", ratio: "9 : 16", slides: ["story"], icon: SD_ICON.ratio(10, 18) };
+  if (kind === "mep") return [{ ...post, label: "Základní" }, { key: "detail", label: "Detail", ratio: "3 × 4 : 5", slides: ["post", "slide2", "slide3"], icon: SD_ICON.ratio(12, 15) }, story];
+  return [post, story];
 }
 
-// Nabídka žije v top layer (Popover API), případně jako position: fixed přímo v <body>:
-// nikdy ji tak nezakryje sticky lišta ani jiný stacking context (S3).
-function placeShareMenu(menu, trigger) {
-  const r = trigger.getBoundingClientRect();
-  const w = Math.min(menu.offsetWidth || 272, window.innerWidth - 16);
-  menu.style.top = menu.style.left = menu.style.right = menu.style.bottom = "";
-  if (window.innerWidth < 640) {
-    menu.classList.add("sheet");
-    return;
-  }
-  menu.classList.remove("sheet");
-  const below = r.bottom + 6;
-  const fitsBelow = below + menu.offsetHeight <= window.innerHeight - 8;
-  menu.style.top = `${Math.max(8, fitsBelow ? below : r.top - 6 - menu.offsetHeight)}px`;
-  menu.style.left = `${Math.min(Math.max(8, r.right - w), window.innerWidth - w - 8)}px`;
-}
+const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled" };
+const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
+const SD_FMT_KEY = "epw-share-format";
 
-async function cardFile(ctx, formatKey) {
-  const blob = await renderCardPng(ctx, formatKey);
-  return new File([blob], `${ctx.filename}-${formatKey}.png`, { type: "image/png" });
-}
+const canShareFiles = (n) => {
+  try {
+    return Boolean(navigator.canShare && navigator.canShare({ files: Array.from({ length: n }, (_, i) => new File([new Blob()], `x${i}.png`, { type: "image/png" })) }));
+  } catch (e) { return false; }
+};
+const canCopyImage = () => Boolean(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write);
 
-function downloadFile(file) {
+function downloadBlob(blob, name) {
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(file);
-  a.download = file.name;
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.append(a);
   a.click();
+  a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
-// kind: native | download; formatKey: post | story | detail (= tři obrázky 4 : 5: základní karta + dva slidy detailu)
-async function shareAction(kind, ctx, formatKey, btn) {
-  const old = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = "Vytvářím…";
-  try {
-    const keys = formatKey === "detail" ? ["post", "slide2", "slide3"] : [formatKey];
-    const files = [];
-    for (const k of keys) files.push(await cardFile(ctx, k));
-    if (kind === "native") await navigator.share({ files, text: ctx.text, url: ctx.url });
-    else files.forEach(downloadFile);
-  } catch (e) {
-    if (e?.name !== "AbortError") alert(e?.message || "Sdílení se nepodařilo.");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = old;
-  }
+let shareDlg = null;
+
+function closeSharePanel() {
+  if (shareDlg?.open && typeof shareDlg.close === "function") shareDlg.close();
+  else if (shareDlg) shareDlg.dispatchEvent(new Event("close"));
 }
 
-function openShareMenu(trigger) {
-  const ctx = window.shareContext?.();
+async function openSharePanel(trigger) {
+  if (shareDlg) return;
+  const kindArg = trigger.dataset.share || "";
+  let ctx;
+  try { ctx = await window.shareContext?.(kindArg); } catch (e) { ctx = null; }
   if (!ctx) return;
-  closeShareMenu();
-  shareTrigger = trigger;
   const enc = encodeURIComponent;
-  const canNative = Boolean(navigator.canShare && navigator.canShare({ files: [new File([new Blob()], "x.png", { type: "image/png" })] }));
-  const menu = document.createElement("div");
-  menu.className = "share-menu card";
-  menu.setAttribute("role", "menu");
-  const isMep = ctx.kind === "mep";
-  const manyFiles = () => navigator.canShare && navigator.canShare({ files: [1, 2, 3].map((i) => new File([new Blob()], `x${i}.png`, { type: "image/png" })) });
-  const items = isMep
-    ? `${canNative ? '<button type="button" role="menuitem" data-act="native:post">Sdílet obrázek…</button>' : ""}
-    ${canNative && manyFiles() ? '<button type="button" role="menuitem" data-act="native:detail">Sdílet detail (3 obrázky)…</button>' : ""}
-    <button type="button" role="menuitem" data-act="download:post">Stáhnout – základní karta (4 : 5)</button>
-    <button type="button" role="menuitem" data-act="download:detail">Stáhnout – detail, 3 obrázky (4 : 5)</button>
-    <button type="button" role="menuitem" data-act="download:story">Stáhnout – story (9 : 16)</button>`
-    : `${canNative ? '<button type="button" role="menuitem" data-act="native:post">Sdílet obrázek…</button>' : ""}
-    <button type="button" role="menuitem" data-act="download:post">Stáhnout obrázek – ${SHARE_FORMATS.post.label}</button>
-    <button type="button" role="menuitem" data-act="download:story">Stáhnout obrázek – ${SHARE_FORMATS.story.label}</button>`;
-  menu.innerHTML = `
-    ${items}
-    <hr class="share-sep">
-    <button type="button" role="menuitem" data-act="link">Kopírovat odkaz</button>
-    <a role="menuitem" href="https://twitter.com/intent/tweet?text=${enc(ctx.text)}&url=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer">Sdílet na X</a>
-    <a role="menuitem" href="https://www.facebook.com/sharer/sharer.php?u=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer">Sdílet na Facebooku</a>
-    <a role="menuitem" href="https://wa.me/?text=${enc(`${ctx.text} ${ctx.url}`)}" target="_blank" rel="noopener noreferrer">Sdílet na WhatsAppu</a>
-    <p class="small muted">Obrázek má datum, zdroj a adresu stránky. Žádná loga stran, žádné pořadí.</p>`;
-  document.body.append(menu);
-  if (typeof menu.showPopover === "function") {
-    menu.setAttribute("popover", "auto");
-    menu.showPopover();
-    menu.addEventListener("toggle", (ev) => { if (ev.newState === "closed" && menu.isConnected) closeShareMenu(true); });
-  }
-  trigger.setAttribute("aria-expanded", "true");
-  placeShareMenu(menu, trigger);
-  menu.querySelector("button, a")?.focus();
-  menu.addEventListener("click", async (ev) => {
-    const el = ev.target.closest("[data-act]");
-    if (!el) return;
-    const [act, fmt] = el.dataset.act.split(":");
-    if (act === "link") {
-      try { await navigator.clipboard.writeText(ctx.url); el.textContent = "Odkaz zkopírován"; } catch (e) { el.textContent = ctx.url; }
-    } else {
-      await shareAction(act, ctx, fmt, el);
+  const formats = ctx.formats || shareFormats(ctx.kind);
+  let saved = null;
+  try { saved = localStorage.getItem(SD_FMT_KEY); } catch (e) { /* bez úložiště */ }
+  let fmt = formats.find((x) => x.key === saved) || formats[0];
+  const urlShort = ctx.data?.urlShort || ctx.url.replace(/^https?:\/\//, "");
+  const cache = new Map();   // slide → Promise<Blob>; stejný blob pro náhled, stažení i sdílení
+  const objUrls = [];
+  const blobFor = (slide) => {
+    if (!cache.has(slide)) cache.set(slide, renderCardPng(ctx, slide));
+    return cache.get(slide);
+  };
+
+  const dlg = document.createElement("dialog");
+  shareDlg = dlg;
+  dlg.className = "share-dlg";
+  dlg.setAttribute("aria-labelledby", "sd-h");
+  dlg.innerHTML = `
+    <div class="sd-grip" aria-hidden="true"></div>
+    <div class="sd-head"><div><h2 id="sd-h">${esc(ctx.title || SD_TITLE[ctx.kind] || "Sdílet")}</h2>${ctx.subtitle ? `<p class="sd-sub">${esc(ctx.subtitle)}</p>` : ""}</div>
+      <button type="button" class="sd-x" aria-label="Zavřít">${SD_ICON.x}</button></div>
+    <div class="sd-body">
+      <div class="sd-stage"><div class="sd-preview"></div><p class="sd-meta"></p></div>
+      <div class="sd-ctl">
+        <p class="sd-lab" id="sd-fl">Formát</p>
+        <div class="sd-formats" role="radiogroup" aria-labelledby="sd-fl">${formats.map((x) => `<button type="button" role="radio" data-fmt="${x.key}">${x.icon}<span class="sd-fn">${esc(x.label)}</span><span class="sd-fr">${esc(x.ratio)}</span></button>`).join("")}</div>
+        <div class="sd-actions"><button type="button" class="sd-primary"></button><button type="button" class="sd-secondary"></button></div>
+        <p class="sd-lab"><label for="sd-url">Odkaz</label></p>
+        <div class="sd-link"><input id="sd-url" type="text" readonly value="${esc(urlShort)}"><button type="button" class="sd-btn" data-act="link">${SD_ICON.copy}<span>Kopírovat</span></button></div>
+        ${ctx.cite ? `<button type="button" class="sd-textbtn" data-act="cite">${SD_ICON.quote}<span>Kopírovat jako citaci</span></button>` : ""}
+        <p class="sd-lab">Sdílet na</p>
+        <div class="sd-nets">
+          <a href="https://wa.me/?text=${enc(`${ctx.text} ${ctx.url}`)}" target="_blank" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.wa}</span>WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?text=${enc(ctx.text)}&amp;url=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.xnet}</span>X</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.fb}</span>Facebook</a>
+          <a href="mailto:?subject=${enc(ctx.data?.title || ctx.data?.name || "EP Watch CZ")}&amp;body=${enc(`${ctx.text}\n\n${ctx.url}`)}" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.mail}</span>E-mail</a>
+        </div>
+        <p class="sd-trust">${SD_ICON.shield}<span>${esc(ctx.trust || SD_TRUST)}${ctx.kind === "mep" && ctx.data?.avatar !== "neutral" && ctx.data?.photoUrl ? " Portrét © European Union – Source: EP." : ""}</span></p>
+      </div>
+    </div>
+    <div class="sd-toast" role="status" aria-live="polite"></div>`;
+  document.body.append(dlg);
+
+  const $ = (sel) => dlg.querySelector(sel);
+  const preview = $(".sd-preview"), primary = $(".sd-primary"), secondary = $(".sd-secondary"), toastEl = $(".sd-toast");
+  let toastTimer = 0, okTimer = 0, renderSeq = 0;
+  const toast = (msg, bad = false) => {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("bad", bad);
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+  };
+  const files = async () => (await Promise.all(fmt.slides.map(blobFor)))
+    .map((b, i) => new File([b], `${ctx.filename}-${fmt.slides.length > 1 ? `${i + 1}-z-${fmt.slides.length}` : fmt.key}.png`, { type: "image/png" }));
+
+  const setActions = () => {
+    const many = fmt.slides.length > 1;
+    const native = canShareFiles(fmt.slides.length);
+    primary.dataset.act = native ? "native" : "download";
+    primary.innerHTML = native ? `${SD_ICON.share}<span>${many ? "Sdílet 3 obrázky…" : "Sdílet obrázek…"}</span>` : `${SD_ICON.down}<span>${many ? "Stáhnout 3 obrázky" : "Stáhnout obrázek"}</span>`;
+    if (native) { secondary.dataset.act = "download"; secondary.innerHTML = `${SD_ICON.down}<span>Stáhnout</span>`; secondary.hidden = false; }
+    else { secondary.dataset.act = "copyimg"; secondary.innerHTML = `${SD_ICON.copy}<span>Kopírovat obrázek</span>`; secondary.hidden = many || !canCopyImage(); }
+  };
+
+  const showPreview = async () => {
+    const seq = ++renderSeq;
+    const f = SHARE_FORMATS[fmt.slides[0]];
+    $(".sd-meta").textContent = `PNG · ${f.w} × ${f.h} px${fmt.slides.length > 1 ? ` · ${fmt.slides.length} obrázky` : ""}`;
+    preview.className = `sd-preview${f.h > 1500 ? " tall" : ""}`;
+    const slow = setTimeout(() => { if (seq === renderSeq) preview.classList.add("loading"); }, 150);
+    preview.setAttribute("aria-busy", "true");
+    try {
+      const blobs = await Promise.all(fmt.slides.map(blobFor));
+      if (seq !== renderSeq) return;
+      const srcs = blobs.map((b) => { const u = URL.createObjectURL(b); objUrls.push(u); return u; });
+      const alt = (i) => `Náhled karty: ${ctx.subtitle || ctx.text}${srcs.length > 1 ? ` (obrázek ${i + 1} z ${srcs.length})` : ""}`;
+      preview.innerHTML = srcs.length > 1
+        ? `<div class="sd-carousel" tabindex="0" aria-label="Náhled, 3 obrázky (šipky přepínají)">${srcs.map((u, i) => `<img src="${u}" alt="${esc(alt(i))}" width="1080" height="1350">`).join("")}</div>
+           <div class="sd-dots" aria-label="Obrázek 1 z ${srcs.length}">${srcs.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>`
+        : `<img src="${srcs[0]}" alt="${esc(alt(0))}" width="${f.w}" height="${f.h}">`;
+      const car = preview.querySelector(".sd-carousel");
+      if (car) {
+        const dots = [...preview.querySelectorAll(".sd-dots i")];
+        car.addEventListener("scroll", () => {
+          const i = Math.round(car.scrollLeft / Math.max(car.firstElementChild.offsetWidth, 1));
+          dots.forEach((d, j) => d.classList.toggle("on", j === i));
+          preview.querySelector(".sd-dots").setAttribute("aria-label", `Obrázek ${i + 1} z ${dots.length}`);
+        }, { passive: true });
+        car.addEventListener("keydown", (ev) => {
+          if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+          ev.preventDefault();
+          car.scrollBy({ left: (ev.key === "ArrowRight" ? 1 : -1) * car.firstElementChild.offsetWidth, behavior: "smooth" });
+        });
+      }
+    } catch (e) {
+      if (seq === renderSeq) { preview.innerHTML = '<p class="muted small">Náhled se nepodařilo vytvořit.</p>'; toast(e?.message || "Obrázek se nepodařilo vytvořit.", true); }
+    } finally {
+      clearTimeout(slow);
+      if (seq === renderSeq) { preview.classList.remove("loading"); preview.removeAttribute("aria-busy"); }
     }
+  };
+
+  const selectFormat = (key, focus = false) => {
+    fmt = formats.find((x) => x.key === key) || formats[0];
+    dlg.querySelectorAll("[data-fmt]").forEach((b) => {
+      const on = b.dataset.fmt === fmt.key;
+      b.setAttribute("aria-checked", String(on));
+      b.tabIndex = on ? 0 : -1;
+      if (on && focus) b.focus();
+    });
+    if (fmt.key === "post" || fmt.key === "story") { try { localStorage.setItem(SD_FMT_KEY, fmt.key); } catch (e) { /* bez úložiště */ } }
+    setActions();
+    showPreview();
+  };
+
+  const flash = (btn, text) => {
+    const old = btn.innerHTML;
+    btn.classList.add("ok");
+    btn.innerHTML = `<span>✓ ${esc(text)}</span>`;
+    clearTimeout(okTimer);
+    okTimer = setTimeout(() => { btn.classList.remove("ok"); btn.innerHTML = old; }, 1800);
+  };
+
+  const act = async (btn) => {
+    const a = btn.dataset.act;
+    try {
+      if (a === "native") {
+        const fs = await files();
+        flash(btn, "Otevírám sdílení…");
+        await navigator.share({ files: fs, text: ctx.text, url: ctx.url });
+      } else if (a === "download") {
+        (await files()).forEach((f) => downloadBlob(f, f.name));
+        if (btn === primary) flash(btn, "Staženo"); else toast("Staženo");
+      } else if (a === "copyimg") {
+        const blob = await blobFor(fmt.slides[0]);
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        toast("Obrázek je ve schránce");
+      } else if (a === "link") {
+        await navigator.clipboard.writeText(ctx.url);
+        toast("Odkaz zkopírován");
+      } else if (a === "cite") {
+        await navigator.clipboard.writeText(await citeText(ctx.cite));
+        toast("Citace zkopírována");
+      }
+    } catch (e) {
+      if (e?.name === "AbortError") return;   // uživatel zavřel systémové sdílení
+      if (a === "link") { $("#sd-url").select(); toast("Odkaz nejde zkopírovat, je označený v poli.", true); return; }
+      toast(e?.message ? `Nepodařilo se: ${e.message}` : "Nepodařilo se.", true);
+    }
+  };
+
+  dlg.addEventListener("click", (ev) => {
+    if (ev.target === dlg) { closeSharePanel(); return; }   // klik na pozadí (::backdrop)
+    const b = ev.target.closest("button");
+    if (!b) return;
+    if (b.classList.contains("sd-x")) closeSharePanel();
+    else if (b.dataset.fmt) selectFormat(b.dataset.fmt);
+    else if (b.dataset.act) act(b);
   });
+  $(".sd-formats").addEventListener("keydown", (ev) => {
+    const i = formats.indexOf(fmt), d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+    if (!d) return;
+    ev.preventDefault();
+    selectFormat(formats[(i + d + formats.length) % formats.length].key, true);
+  });
+  $("#sd-url").addEventListener("focus", (ev) => ev.target.select());
+  dlg.addEventListener("close", () => {
+    objUrls.forEach((u) => URL.revokeObjectURL(u));
+    dlg.remove();
+    shareDlg = null;
+    trigger.setAttribute("aria-expanded", "false");
+    if (trigger.isConnected) trigger.focus();
+  });
+
+  selectFormat(fmt.key);
+  trigger.setAttribute("aria-expanded", "true");
+  if (typeof dlg.showModal === "function") dlg.showModal();
+  else {   // bez <dialog>: pevně umístěný panel v <body>
+    dlg.setAttribute("open", "");
+    dlg.setAttribute("role", "dialog");
+    dlg.setAttribute("aria-modal", "true");
+    dlg.classList.add("sd-fallback");
+    document.addEventListener("keydown", function esc(ev) { if (ev.key === "Escape") { document.removeEventListener("keydown", esc); closeSharePanel(); } });
+  }
+  primary.focus();
 }
 
 document.addEventListener("click", (ev) => {
   const btn = ev.target.closest("[data-share]");
-  if (btn) {
-    ev.preventDefault();
-    // Popover se při kliknutí mimo zavře sám; klik na tlačítko hned po tom nesmí nabídku znovu otevřít.
-    if (btn.getAttribute("aria-expanded") === "true") closeShareMenu(true);
-    else if (Date.now() - shareClosedAt > 250 || btn !== shareTrigger) openShareMenu(btn);
-  } else if (!ev.target.closest(".share-menu")) {
-    closeShareMenu();
-  }
+  if (!btn) return;
+  ev.preventDefault();
+  btn.closest("[popover]")?.hidePopover?.();
+  openSharePanel(btn);
 });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && document.querySelector(".share-menu")) closeShareMenu(true); });
-window.addEventListener("resize", () => { const m = document.querySelector(".share-menu"); if (m && shareTrigger) placeShareMenu(m, shareTrigger); });

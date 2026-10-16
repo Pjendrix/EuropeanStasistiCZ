@@ -27,6 +27,7 @@
   --surface: #FFFFFF;
   --glass: rgba(255, 255, 255, .82);
   --chip: #F1F5F9;
+  --stage: #E8EDF4;   /* podklad náhledu karty v panelu sdílení */
   --text: #0F172A;
   --muted: #64748B;
   --border: rgba(15, 23, 42, .09);
@@ -51,6 +52,9 @@
   --for-text: #15803D;
   --against-text: #9F1D2B;
   --glyph: #FFFFFF;
+  /* stav akce (panel sdílení): hotovo / chyba; nesouvisí s hlasy */
+  --ok: #15803D;
+  --danger: #B91C1C;
 
   --radius: 18px;
   --radius-sm: 12px;
@@ -63,6 +67,7 @@
     --surface: #111A2E;
     --glass: rgba(30, 41, 59, .55);
     --chip: rgba(30, 41, 59, .85);
+    --stage: #0A101E;
     --text: #E2E8F0;
     --muted: #94A3B8;
     --border: rgba(148, 163, 184, .16);
@@ -89,6 +94,7 @@
   --surface: #111A2E;
   --glass: rgba(30, 41, 59, .55);
   --chip: rgba(30, 41, 59, .85);
+  --stage: #0A101E;
   --text: #E2E8F0;
   --muted: #94A3B8;
   --border: rgba(148, 163, 184, .16);
@@ -397,11 +403,6 @@ table.compact thead tr:last-child th.num { text-align: right; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-send { background: var(--accent); color: var(--navy); } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .card { position: relative; }
-.cite-btn { position: absolute; top: .6rem; right: .6rem; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 50%; border: 1px solid transparent; background: transparent; color: var(--muted); cursor: pointer; padding: 0; }
-.cite-btn:hover, .cite-btn:focus-visible { color: var(--text); border-color: var(--gold); }
-.cite-btn.done { color: var(--text); background: var(--chip); }
-.cite-btn.done::after { content: "Zkopírováno"; position: absolute; right: 110%; white-space: nowrap; font-size: .75rem; background: var(--navy); color: #F8FAFC; padding: .15rem .5rem; border-radius: 6px; }
 .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--link); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
 .csv-btn:hover { border-color: var(--gold); }
 .csv-btn { margin: 0 0 .6rem; }
@@ -553,7 +554,7 @@ table.matrix tbody tr:hover { background: none; }
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #333; --border: #bbb; --shadow: none; }
   body { background: #fff; color: #000; font-size: 11pt; }
-  .site-header nav, .theme-toggle, .skip-link, .subnav, .controls, .more-btn, .cite-btn, .csv-btn, .hero-stars, .hero-emblem { display: none !important; }
+  .site-header nav, .theme-toggle, .skip-link, .subnav, .controls, .more-btn, .csv-btn, .share-btn, .info-wrap, .hero-stars, .hero-emblem { display: none !important; }
   .site-header, .hero { background: none !important; color: #000 !important; }
   .site-header .brand, .hero h1, .hero p.lead, .kpi, .kpi .k-label, .kpi .k-note, .entry, .entry span { color: #000 !important; background: none !important; }
   .card, .table-wrap, .mep-card { box-shadow: none; break-inside: avoid; backdrop-filter: none; }
@@ -573,7 +574,6 @@ table.matrix tbody tr:hover { background: none; }
   .controls label { min-height: 44px; padding-block: .5rem; }
   .controls input[type="checkbox"], .controls input[type="radio"] { width: 1.25rem; height: 1.25rem; }
   .hemi .seat { pointer-events: none; }  /* na dotyku jsou sedadla malá; poslance otevřou štítky pod půlkruhem */
-  .cite-btn { width: 44px; height: 44px; top: .3rem; right: .3rem; }
   .csv-btn { padding: 0 1rem; }
 }
 
@@ -717,15 +717,103 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .own-row td { font-weight: 600; background: var(--accent-soft); }
 .strong-line { font-weight: 600; color: var(--text); max-width: 46rem; }
 
-/* Sdílení (share.js) */
-.share-row { margin: .6rem 0; position: relative; }
-.share-btn { display: inline-flex; align-items: center; gap: .4rem; }
-.share-menu { position: fixed; z-index: 1000; inset: auto; margin: 0; padding: .5rem; color: var(--text); display: grid; gap: .15rem; min-width: 17rem; max-width: calc(100vw - 2rem); }
-.share-menu button, .share-menu a { text-align: left; padding: .6rem .75rem; border: 0; border-radius: var(--radius-sm); background: none; color: var(--text); font: inherit; text-decoration: none; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
-.share-menu button:hover, .share-menu a:hover, .share-menu button:focus-visible, .share-menu a:focus-visible { background: var(--chip); }
-.share-menu p { margin: .3rem .75rem .4rem; }
-.share-menu.sheet { left: 0; right: 0; bottom: 0; top: auto; width: 100%; max-width: none; border-radius: var(--radius) var(--radius) 0 0; padding-bottom: calc(.5rem + env(safe-area-inset-bottom)); }
-@media print { .share-row { display: none !important; } }
+/* Sdílení (share.js, N1–N2): tlačítko v hlavičce stránky a panel s náhledem karty */
+.back-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .9rem; min-height: 44px; }
+.back-row > p { margin: 0; }
+.back-row .share-btn { margin-left: auto; }
+.share-btn { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 1.15rem; border-radius: 999px; border: 1px solid var(--text);
+  background: var(--text); color: var(--surface); font: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; flex: none; }
+.share-btn:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 55%, transparent); }
+.share-btn.outline { min-height: 36px; padding: 0 .9rem; background: var(--surface); color: var(--text); border-color: var(--border); font-size: .875rem; font-weight: 600; }
+@media (pointer: coarse) { .share-btn.outline { min-height: 44px; } }
+.view-tools { display: flex; align-items: flex-end; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.view-tools > .controls { flex: 1 1 auto; margin-bottom: 0; }
+.view-tools > .share-btn { margin-bottom: .2rem; }
+/* akce v ⓘ popoveru u čísla: Sdílet číslo a Citovat */
+.metric > .info-wrap.corner { position: absolute; top: .55rem; right: .55rem; }
+.metric:has(> .info-wrap.corner) > .label, .metric:has(> .info-wrap.corner) .bench-top { padding-right: 2.6rem; }
+@media (pointer: coarse) { .metric:has(> .info-wrap.corner) > .label, .metric:has(> .info-wrap.corner) .bench-top { padding-right: 3.2rem; } }
+.pop-acts { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .7rem; }
+.pop-act { display: inline-flex; align-items: center; gap: .35rem; min-height: 40px; padding: 0 .9rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--chip); color: var(--text); font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+.pop-act:hover, .pop-act:focus-visible { border-color: var(--gold); }
+.pop-act.done { background: var(--text); color: var(--surface); }
+@media (pointer: coarse) { .pop-act { min-height: 44px; } }
+
+.share-dlg { width: min(920px, calc(100vw - 2rem)); max-width: none; max-height: calc(100dvh - 2rem); padding: 0; border: 0; border-radius: 26px;
+  background: var(--surface); color: var(--text); box-shadow: 0 30px 80px -20px rgba(2, 6, 23, .55); overflow: auto; overscroll-behavior: contain; }
+.share-dlg::backdrop { background: rgba(2, 6, 23, .55); backdrop-filter: blur(3px); }
+.share-dlg.sd-fallback { position: fixed; z-index: 2000; inset: 1rem; margin: auto; height: fit-content; }
+.sd-grip { display: none; }
+.sd-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.4rem 1.6rem .4rem; }
+.sd-head h2 { margin: 0; font-size: 1.5rem; }
+.sd-sub { margin: .2rem 0 0; color: var(--muted); font-size: .95rem; }
+.sd-x { width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; background: var(--chip); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.sd-body { display: grid; grid-template-columns: minmax(0, 1fr) 372px; gap: 1.4rem; padding: .6rem 1.6rem 1.6rem; }
+.sd-stage { background: var(--stage); border-radius: 22px; padding: 1.4rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
+.sd-preview { height: 500px; width: 100%; display: flex; align-items: center; justify-content: center; min-width: 0; border-radius: 10px; }
+.sd-preview.tall { height: 540px; }
+.sd-preview > img { height: 100%; width: auto; max-width: 100%; object-fit: contain; border-radius: 10px; box-shadow: 0 18px 40px -16px rgba(2, 6, 23, .6); }
+.sd-preview.loading { background: linear-gradient(90deg, var(--track) 25%, var(--surface) 50%, var(--track) 75%); background-size: 200% 100%; animation: sk 1.2s infinite; }
+.sd-preview.loading > * { opacity: .25; }
+.sd-preview:has(.sd-carousel) { flex-direction: column; gap: .6rem; }
+.sd-carousel { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: calc(100% - 22px); padding: 0 12%; scrollbar-width: none; border-radius: 10px; }
+.sd-carousel::-webkit-scrollbar { display: none; }
+.sd-carousel img { height: 100%; width: auto; flex: none; scroll-snap-align: center; border-radius: 10px; box-shadow: 0 18px 40px -16px rgba(2, 6, 23, .6); }
+.sd-dots { display: flex; gap: 6px; justify-content: center; }
+.sd-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: .4; }
+.sd-dots i.on { opacity: 1; background: var(--text); }
+.sd-meta { margin: .8rem 0 0; font-size: .85rem; color: var(--muted); }
+.sd-ctl { display: flex; flex-direction: column; min-width: 0; }
+.sd-lab { margin: 1.1rem 0 .5rem; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.sd-lab:first-child { margin-top: .2rem; }
+.sd-lab label { cursor: default; }
+.sd-formats { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; background: var(--chip); border-radius: 18px; }
+.sd-formats button { display: flex; flex-direction: column; align-items: center; gap: .15rem; min-height: 72px; padding: .5rem .3rem; border: 0; border-radius: 14px;
+  background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
+.sd-formats button[aria-checked="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(15, 23, 42, .1), 0 6px 16px -10px rgba(15, 23, 42, .4); }
+.sd-fn { font-weight: 700; font-size: .92rem; }
+.sd-fr { font-size: .75rem; }
+.sd-actions { display: grid; gap: .6rem; margin-top: 1.1rem; }
+.sd-primary, .sd-secondary { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer;
+  transition: background .2s ease, color .2s ease; }
+.sd-primary { min-height: 54px; border: 0; background: var(--text); color: var(--surface); font-size: 1.05rem; }
+.sd-primary.ok, .sd-secondary.ok { background: var(--ok); color: #fff; }
+.sd-secondary { min-height: 46px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: .95rem; }
+.sd-secondary[hidden] { display: none; }
+.sd-link { display: flex; gap: .5rem; }
+.sd-link input { flex: 1; min-width: 0; min-height: 46px; padding: 0 .9rem; border: 1px solid var(--border); border-radius: 14px; background: var(--chip); color: var(--text); font: inherit; font-size: .95rem; }
+.sd-btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 46px; padding: 0 1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; flex: none; }
+.sd-textbtn { align-self: flex-start; display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; margin-top: .3rem; padding: 0 .1rem; border: 0; background: none; color: var(--link, var(--accent)); font: inherit; font-weight: 700; cursor: pointer; }
+.sd-nets { display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem; }
+.sd-nets a { display: flex; flex-direction: column; align-items: center; gap: .35rem; min-height: 44px; padding: .2rem 0; color: var(--text); text-decoration: none; font-size: .82rem; }
+.sd-ni { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border); background: var(--chip); display: inline-flex; align-items: center; justify-content: center; }
+.sd-nets a:hover .sd-ni, .sd-nets a:focus-visible .sd-ni { border-color: var(--gold); }
+.sd-trust { display: flex; gap: .55rem; align-items: flex-start; margin: 1.1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); }
+.sd-trust svg { flex: none; color: var(--for-text); margin-top: .1rem; }
+.sd-toast { position: fixed; left: 50%; bottom: 1.5rem; z-index: 3; max-width: calc(100vw - 2rem); padding: .65rem 1.1rem; border-radius: 999px; background: var(--text); color: var(--surface);
+  font-size: .9rem; font-weight: 600; opacity: 0; transform: translate(-50%, 8px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.sd-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.sd-toast.bad { background: var(--danger); color: #fff; }
+.share-dlg :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .share-dlg { width: 100%; max-width: 100%; max-height: 94dvh; margin: auto 0 0; border-radius: 26px 26px 0 0; animation: sd-up .28s cubic-bezier(.2, .8, .2, 1); }
+  .sd-grip { display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--track); margin: .55rem auto 0; }
+  .sd-head { position: sticky; top: 0; z-index: 2; background: var(--surface); padding: .6rem 1rem .5rem; }
+  .sd-head h2 { font-size: 1.3rem; }
+  .sd-body { grid-template-columns: 1fr; gap: .2rem; padding: .2rem 1rem 0; }
+  .sd-stage { padding: .9rem; border-radius: 18px; }
+  .sd-preview { height: 310px; }
+  .sd-preview.tall { height: 360px; }
+  .sd-actions { position: sticky; bottom: 0; z-index: 2; margin: .9rem -1rem 0; padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom)); background: var(--surface);
+    border-top: 1px solid var(--border); order: 9; }
+  .sd-ctl { padding-bottom: 0; }
+  .sd-trust { margin-bottom: .6rem; }
+  .sd-toast { bottom: calc(6rem + env(safe-area-inset-bottom)); }
+}
+@keyframes sd-up { from { transform: translateY(100%); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .share-dlg { animation: none; } .sd-preview.loading { animation: none; } .sd-toast { transition: none; } }
+@media print { .share-btn, .share-dlg, .back-row .share-btn { display: none !important; } }
 
 /* Úvod jako rozcestník (scripts/hub.py, hub.js) */
 .hub-hero { padding: 2.2rem 0 1.2rem; }
