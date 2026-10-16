@@ -263,6 +263,37 @@
    }
   }
  ],
+ "reports": {
+  "items": [
+   {
+    "mep_id": 256847,
+    "role": "rapporteur",
+    "label": "A10-0098/2026",
+    "title_cs": "ZPRÁVA o návrhu rozhodnutí Evropského parlamentu a Rady, kterým se mění rozhodnutí (EU) 2015/1814, pokud jde o rezervu tržní stability pro budovy, silniční dopravu a další odvětví",
+    "url": "https://www.europarl.europa.eu/doceo/document/A-10-2026-0098_EN.html",
+    "date": "2026-04-17",
+    "status": "ADOPTED",
+    "vote_id": 196227
+   },
+   {
+    "mep_id": 256847,
+    "role": "co",
+    "label": "2025/0574(CNS)",
+    "title_cs": "Systém vlastních zdrojů Evropské unie a zrušení rozhodnutí (EU, Euratom) 2020/2053",
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0574(CNS)",
+    "date": "2024-10-28",
+    "status": "no_vote",
+    "vote_id": null
+   }
+  ],
+  "shadow_count": 3,
+  "source": {
+   "name": "EP Open Data API v2",
+   "url": "https://data.europarl.europa.eu/api/v2",
+   "license": "CC BY 4.0"
+  },
+  "updated": "2026-10-16"
+ },
  "splits": [
   {
    "id": 197093,

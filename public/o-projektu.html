@@ -10,6 +10,8 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0F172A">
+<meta property="og:site_name" content="EP Watch CZ">
+<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
@@ -32,10 +34,11 @@
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
+  <a class="ig-link" href="https://www.instagram.com/epwatch.cz/" rel="me noopener" target="_blank" aria-label="EP Watch CZ na Instagramu (otevře se v nové záložce)" title="Instagram @epwatch.cz"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 <nav class="tabbar" aria-label="Hlavní navigace (mobil)"><a href="poslanci.html" data-page="meps"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/></svg><span>Poslanci</span></a><a href="party.html" data-page="parties"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/></svg><span>Strany</span></a><a href="hlasovani.html" data-page="votes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span>Hlasování</span></a><a href="prace.html" data-page="work"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/></svg><span>Práce</span></a><button type="button" class="tab-more" popovertarget="more-sheet" data-pages="analyses about"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Více</span></button></nav>
-<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
+<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li><li><a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram @epwatch.cz</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
 
 <main id="main">
   <h1>O projektu</h1>
@@ -55,7 +58,9 @@
       frakce a strana k datu hlasování. Datový export z <a href="https://github.com/HowTheyVote/data">GitHubu</a>, licence ODbL.</li>
     <li><a href="https://data.europarl.europa.eu">EP Open Data API</a> – seznam poslanců, mandáty, frakce, strany, výbory a portréty. Licence CC BY 4.0.</li>
     <li>Portréty: © European Union – Source: EP.</li>
-    <li>Data se aktualizují automaticky každé pondělí ráno.</li>
+    <li>Data se aktualizují automaticky: každý den se kontroluje, jestli HowTheyVote.eu zveřejnil nový export, a když ano,
+      web se hned přepočítá; každé pondělí ráno proběhne aktualizace vždy. Program příštího zasedání se stahuje denně.
+      Když je poslední export starší než 14 dní a Evropský parlament mezitím zasedal, web to oznámí pruhem nahoře.</li>
   </ul>
   <p class="source" id="release"></p></div>
 
@@ -94,6 +99,12 @@
         pravidel nad kódy témat Legislativní observatoře EP (OEIL), které u hlasování uvádí HowTheyVote
         (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/categories.py">categories.py</a>): 12 témat, hlavní je první podle
         priority (obrana, klima a energie, doprava … instituce), další jsou „+N“. Téma nevybíráme my ani AI; hlasování bez kódu OEIL téma nemá.</li>
+      <li id="program-ep"><strong>Další zasedání a program</strong>: kalendář plenárních dnů a návrh programu hlasování bere web každý den
+        z EP Open Data API (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/fetch_agenda.py">fetch_agenda.py</a>).
+        Program je návrh EP a může se změnit. Na úvodní stránce jsou nejvýš 3 body vybrané pravidlem: nejdřív body s českou stopou,
+        pak body s legislativním návrhem (dokument C), pak podle pořadí v programu. Celý program je na stránce Hlasování.
+        <strong>Česká stopa</strong> = český poslanec je zpravodajem, spoluzpravodajem nebo stínovým zpravodajem zprávy, ke které se bod
+        nebo hlasování váže (podle EP Open Data). Stanoviska výborů se nepárují, protože program na ně neodkazuje.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
@@ -119,7 +130,13 @@
     <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
   </ul></div>
 
-    <h2 id="opravy">Opravy a změny metodiky</h2>
+    <h2 id="opravy">Opravy</h2>
+  <p class="small muted">Chyby v datech nebo ve výpočtu, které jsme našli sami nebo nám je někdo nahlásil, a co je správně. Highlight „Opravy“ na Instagramu odkazuje sem.</p>
+  <div class="card" id="corrections"><!--sync:corrections-->
+<p class="muted">Zatím žádné opravy.</p>
+<!--/sync:corrections--></div>
+
+    <h2 id="zmeny">Změny metodiky a webu</h2>
   <div class="card"><ul class="plain">
     <li><strong>15. 10. 2026</strong> – Nová stránka <strong>Strany → Evropské frakce</strong>: souhrn hlasování celých politických skupin EP (všichni členové, ne jen čeští).
       <em>Účast skupiny</em> = podíl hlasů pro, proti nebo zdržel se ze všech hlasů členů, <em>soudržnost</em> = podíl hlasů pro a proti odpovídajících většině skupiny
@@ -133,6 +150,11 @@
       Každý text se v součtech počítá jednou, i když na něm pracovali dva Češi. Frakce jsou řazené podle počtu poslanců, ne podle výkonu, a u každé je i průměr
       na poslance, protože zprávy se mezi frakce dělí podle jejich velikosti. Tabulka po poslancích s třetinami je na samostatné záložce.</li>
 </ul></div>
+
+  <h2 id="sledujte">Sledujte nás</h2>
+  <div class="card"><!--sync:follow-->
+<p>Nová hlasování a souhrny zasedání sdílíme na Instagramu <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">@epwatch.cz</a>. Stejná čísla jako na webu, vždy se zdrojem. Přehled změn odebírejte i přes <a href="feed.xml">RSS / Atom</a>.</p>
+<!--/sync:follow--></div>
 
   <h2 id="kontakt">Kontakt a nahlášení chyby</h2>
   <div class="card">
@@ -162,7 +184,7 @@
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
-  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a> · <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram</a>.
 </div></footer>
 
 <script src="app.js"></script>

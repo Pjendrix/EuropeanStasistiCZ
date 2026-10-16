@@ -331,12 +331,39 @@ for (const width of [1440, 400]) {
       fits("vote s tématem", withT);
       if (!/Klima, příroda a energie/.test(texts(withT))) out.push("vote: chybí téma na kartě");
       if (/Klima/.test(texts(voteCardOps({ ...vbase, topic: null }, f)))) out.push("vote: bez tématu se řádek tématu vypsal");
+      const tr = voteCardOps({ ...vbase, topic: "Klima, příroda a energie (+2) a ještě mnohem delší text, který se nevejde", trace: true }, f);
+      fits("vote s tématem a českou stopou", tr);
+      if (!/ČESKÁ STOPA/.test(texts(tr))) out.push("vote: chybí štítek česká stopa");
+      if (/ČESKÁ STOPA/.test(texts(withT))) out.push("vote: štítek česká stopa bez záznamu");
     }
+    // odpočet a pruh o starých datech (čisté funkce v app.js)
+    const cd = [["2026-10-19", "2026-10-22", "2026-10-18", "zítra"], ["2026-10-19", "2026-10-22", "2026-10-16", "za 3 dny"],
+      ["2026-10-19", "2026-10-22", "2026-10-12", "za 7 dní"], ["2026-10-19", "2026-10-22", "2026-10-20", "právě probíhá"]];
+    cd.forEach(([a, b, t, want]) => { if (sessionCountdown(a, b, t) !== want) out.push(`odpočet ${t}: „${sessionCountdown(a, b, t)}“, čekám „${want}“`); });
+    const fr = { release: "2026-10-10", stale_days: 14, sittings_after: ["2026-10-19"] };
+    if (isStale(fr, "2026-10-20")) out.push("pruh: data mladší než 14 dní");
+    if (!isStale(fr, "2026-10-25")) out.push("pruh: chybí po 14 dnech a zasedání");
+    if (isStale({ ...fr, sittings_after: [] }, "2026-11-30")) out.push("pruh: bez zasedání od data dat se nemá ukázat");
+    if (isStale({ ...fr, sittings_after: ["2026-12-01"] }, "2026-11-30")) out.push("pruh: zasedání ještě neproběhlo");
     const neutral = mepBasicOps({ ...base, name: "MOCK Poslanec", avatar: "neutral", photo: { width: 10, height: 10 }, chips: [], attendance: [1, 2], attendanceMedian: 0.9 }, SHARE_FORMATS.post);
     if (neutral.some((o) => o.k === "image" && o.img && o.img.width === 10) || /European Union/.test(texts(neutral))) out.push("mep: avatar neutral kreslí portrét");
     return out;
   });
   r.forEach((x) => problems.push(`karty: ${x}`));
+  await ctx.close();
+}
+// Pruh o starých datech (E3): s MOCK freshness.json se ukáže a projde axe ve světlém i tmavém režimu.
+for (const scheme of ["light", "dark"]) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 900 }, colorScheme: scheme, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.route("**/data/freshness.json", (r) => r.fulfill({ contentType: "application/json",
+    body: JSON.stringify({ release: "2000-01-01", stale_days: 14, sittings_after: ["2000-01-10"] }) }));
+  await page.goto(base + "votes.html", { waitUntil: "networkidle" });
+  if (!(await page.locator(".stale-note").isVisible())) problems.push(`pruh o starých datech [${scheme}]: chybí`);
+  await page.addScriptTag({ content: axeSource });
+  const v = await page.evaluate(async () => (await axe.run(document.querySelector(".stale-note"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+    .map((x) => `${x.id}: ${x.nodes.length}×`));
+  v.forEach((x) => problems.push(`pruh o starých datech [${scheme}]: axe ${x}`));
   await ctx.close();
 }
 await browser.close();

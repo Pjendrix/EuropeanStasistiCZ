@@ -146,6 +146,60 @@ def votes_overview_html(data_dir: Path) -> str:
 </section>"""
 
 
+# --- příští zasedání (program EP, fetch_agenda.py + agenda.py) ----------------------------------------
+
+DOC_URL = "https://www.europarl.europa.eu/doceo/document/{}_CS.html"
+FULL_VISIBLE = 6  # na stránce Hlasování prvních 6 bodů, zbytek pod „Zobrazit dalších“
+_ROLE_CS = {"rapporteur": "zpravodaj/ka", "co": "spoluzpravodaj/ka", "shadow": "stínový/á zpravodaj/ka"}
+
+
+def _range(a: str, b: str) -> str:
+    """„19.–22. 10. 2026“, přes měsíc „30. 9. – 2. 10. 2026“."""
+    if a == b:
+        return fmt_date(a)
+    if a[:7] == b[:7]:
+        return f"{int(a[8:])}.–{fmt_date(b)}"
+    return f"{fmt_date(a)[:-5]} – {fmt_date(b)}"
+
+
+def agenda_item_html(it: dict, root: str = "") -> str:
+    """Jeden hlasovací bod: český název (jinak anglický originál), den, dokumenty s odkazem na EP a česká stopa."""
+    title = it.get("title_cs") or it.get("title_en") or it["id"]
+    docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
+    cz = ", ".join(f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or [])
+    return (f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+            + (f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {cz}</span>' if cz else "")
+            + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "") + "</li>")
+
+
+def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -> str:
+    """Blok „Další zasedání“: datum, odpočet (počítá prohlížeč z data-from/data-to, bez JS jen datum), počet hlasování
+    a body programu (na úvodu výběr podle pravidla, na stránce Hlasování všechny). Bez programu prázdný řetězec."""
+    if not agenda:
+        return ""
+    picks = [i for i in agenda["items"] if i["id"] in agenda["picks"]]
+    items = agenda["items"] if full else sorted(picks, key=lambda i: agenda["picks"].index(i["id"]))
+    n = agenda["votes"]
+    count = f"{fmt_num(n)} hlasování v programu" if n else "program zatím nezveřejněn"
+    # pravidlo výběru a definice české stopy jsou celé v metodice (o-projektu.html#program-ep), tady jen odkaz
+    rule = "Výběr pravidlem, ne redakcí. " if not full else ""
+    head, tail = (items[:FULL_VISIBLE], items[FULL_VISIBLE:]) if full else (items, [])
+    lst = f'<ol class="ns-list">{"".join(agenda_item_html(i, root) for i in head)}</ol>' if head else ""
+    if tail:
+        lst += (f'<details class="ns-rest"><summary>Zobrazit dalších {fmt_num(len(tail))}</summary>'
+                f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root) for i in tail)}</ol></details>')
+    as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
+    more = (f'<a class="ns-all" href="{root}hlasovani.html#program">Celý program ({fmt_num(n)}) {_ARROW}</a>' if not full and n > len(items) else "")
+    return (f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
+            f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
+            f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"><strong>{_range(agenda["from"], agenda["to"])}</strong>'
+            f'<span class="ns-count" aria-live="polite"></span> · {count}</p></div>'
+            f'{lst}{more}'
+            f'<p class="source">Návrh programu EP{as_of}, může se změnit. {rule}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
+            f'(CC BY 4.0) · <a href="{root}o-projektu.html#program-ep">výběr a česká stopa</a></p>'
+            '</section>')
+
+
 def votes_hero_html(data_dir: Path) -> str:
     """Hero stránky Hlasování: stejná kostra jako na Poslancích (nadpis, hledání, dvě čísla, témata, vlajka v hvězdách)."""
     overview = _read(data_dir / "overview.json")
@@ -268,9 +322,12 @@ def caption_html(vote: dict) -> str:
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) na vlastním řádku nad nadpisem; bez tématu nic."""
+    """Jeden čip tématu (+N) a štítek české stopy na vlastním řádku nad nadpisem; bez obojího nic."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
-    return f'<div class="hm-topic">{chips}</div>' if chips else ""
+    trace = vote.get("trace") or []
+    badge = (f'<span class="cz-badge" title="{esc(", ".join(f"{t["name"]} ({_ROLE_CS[t["role"]]})" for t in trace))}">česká stopa</span>'
+             if trace else "")
+    return f'<div class="hm-topic">{chips}{badge}</div>' if chips or badge else ""
 
 
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -299,7 +356,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
             month_cache[x["month"]] = (_read(data_dir / "votes" / f"{x['month']}.json") or {"votes": []})["votes"]
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
-            share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, f["data_day"])
+            share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))
     payload = {"votes": [{"id": x["id"], "date": x["date"], "title": x["title"], "kind_label": x["kind_label"], "result": x["result"],
                           "counts": x["counts"], "topic_html": hero_topic(x), "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                           "party": {str(p["id"]): party_text(p) for p in x["ppl"]}} for x in votes],
@@ -407,10 +464,16 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   </div>
 </section>"""
 
-    body = hero + bento + more + band
+    nxt = next_session_html(home.get("agenda"))
+    body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
     title = "EP Watch CZ – jak hlasují čeští europoslanci"
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
     meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
+    from layout import INSTAGRAM, REPO
+    org = {"@context": "https://schema.org", "@type": "Organization", "name": "EP Watch CZ",
+           **({"url": base_url.rstrip("/") + "/", "logo": base_url.rstrip("/") + "/assets/brand/apple-touch-icon.png"} if base_url else {}),
+           "sameAs": [INSTAGRAM, REPO]}
+    meta += f'<script type="application/ld+json">{json.dumps(org, ensure_ascii=False)}</script>\n'
     html = page(title, body, root="", current=None, description=desc, meta=meta, main_attrs='class="home-page"',
                 scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="hub.js"></script>\n')
     return "index.html", html

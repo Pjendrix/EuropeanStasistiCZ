@@ -10,6 +10,8 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0F172A">
+<meta property="og:site_name" content="EP Watch CZ">
+<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
@@ -32,10 +34,11 @@
     <a href="rozkol.html" data-page="analyses">Analýzy</a>
     <a href="o-projektu.html" data-page="about">O projektu</a>
   </nav>
+  <a class="ig-link" href="https://www.instagram.com/epwatch.cz/" rel="me noopener" target="_blank" aria-label="EP Watch CZ na Instagramu (otevře se v nové záložce)" title="Instagram @epwatch.cz"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a>
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 <nav class="tabbar" aria-label="Hlavní navigace (mobil)"><a href="poslanci.html" data-page="meps"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/></svg><span>Poslanci</span></a><a href="party.html" data-page="parties"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/></svg><span>Strany</span></a><a href="hlasovani.html" data-page="votes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span>Hlasování</span></a><a href="prace.html" data-page="work"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/></svg><span>Práce</span></a><button type="button" class="tab-more" popovertarget="more-sheet" data-pages="analyses about"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Více</span></button></nav>
-<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
+<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li><li><a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram @epwatch.cz</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
 
 <main id="main">
   <nav class="subnav" aria-label="Hlasování">
@@ -58,6 +61,7 @@
     <label>Téma <select id="cat"><option value="">všechna témata</option></select></label>
     <label>Podtéma <select id="topic"><option value="">všechna podtémata</option></select></label>
     <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
+    <label><input type="checkbox" id="stopa"> jen s českou stopou</label>
     <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
     <span class="small muted" id="count"></span>
   </div>
@@ -81,7 +85,7 @@
   Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
-  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a>.
+  <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a> · <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram</a>.
 </div></footer>
 
 
@@ -92,7 +96,11 @@ setNav("votes-list");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, all, overview] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json")]);
+    const [index, all, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json"), getJSON("vote_roles.json").catch(() => null)]);
+    // Česká stopa: český poslanec byl zpravodajem nebo stínovým zpravodajem zprávy, o které se hlasovalo (vote_roles.json z own_work).
+    const trace = new Set(Object.keys(roles?.votes || {}).map(Number));
+    const stopa = document.getElementById("stopa");
+    stopa.closest("label").hidden = !trace.size;
     all.reverse(); // nejnovější nahoře
     await loadCategories();
     const doc = await getJSON("votes/search.json");
@@ -133,6 +141,7 @@ setNav("votes-list");
     kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
     if (params.get("t")) topicSel.value = params.get("t");
     if (params.get("c")) catSel.value = params.get("c");
+    if (params.get("stopa") === "1") stopa.checked = true;
     let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
@@ -146,11 +155,12 @@ setNav("votes-list");
       const needle = q.value.trim().toLowerCase();
       const topic = topicSel.value, cat = catSel.value;
       // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
-      const wide = Boolean(needle || topic || cat || mepVotes);
+      const onlyTrace = stopa.checked;
+      const wide = Boolean(needle || topic || cat || mepVotes || onlyTrace);
       monthSel.disabled = wide;
       const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
       const matches = pool.filter((v) => kindOk(v) &&
-        (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) &&
+        (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) && (!onlyTrace || trace.has(v.id)) &&
         (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
       const list = matches.slice(0, LIMIT);
       current = matches;
@@ -162,6 +172,7 @@ setNav("votes-list");
       if (cat) qs.set("c", cat);
       if (needle) qs.set("q", q.value.trim());
       if (mepVotes) qs.set("mep", mepSel.value);
+      if (onlyTrace) qs.set("stopa", "1");
       document.getElementById("cz-head").textContent = mepVotes ? displayName(overview.meps.find((m) => String(m.id) === mepSel.value)) : "Češi";
       if (since && !wide) qs.set("od", since);
       history.replaceState(null, "", `?${qs}`);
@@ -170,7 +181,7 @@ setNav("votes-list");
         return `<tr>
           <td class="num date">${fmtDate(v.date)}</td>
           <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
-            <div class="small muted">${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
+            <div class="small muted">${trace.has(v.id) ? '<span class="cz-badge" title="Český poslanec byl zpravodajem nebo stínovým zpravodajem">česká stopa</span> ' : ""}${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
           <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
           ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)]; const mp = overview.meps.find((m) => String(m.id) === mepSel.value);
             return `<td class="extra pos pos-${pos}">${positionFor(pos, mp)}</td>`; })()
@@ -187,6 +198,7 @@ setNav("votes-list");
     kindSel.addEventListener("change", render);
     topicSel.addEventListener("change", render);
     catSel.addEventListener("change", render);
+    stopa.addEventListener("change", render);
     mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
     q.addEventListener("input", render);
     render();

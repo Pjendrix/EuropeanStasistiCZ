@@ -910,7 +910,52 @@ document.addEventListener("keydown", (ev) => {
   if (p) { p.classList.remove("open"); const b = document.querySelector(`[popovertarget="${p.id}"]`); b?.setAttribute("aria-expanded", "false"); b?.focus(); }
 });
 
+// Štítek „Týká se Česka“, jen když to uvádí zdroj (topics.geo s kódem CZE). Dvojče cz_geo_tag v build_pages.py.
+function czGeoTag(v) {
+  return (v?.topics?.geo || []).some((g) => g.code === "CZE")
+    ? '<span class="tag cz-geo" title="Zdroj (HowTheyVote.eu) uvádí u hlasování geografické téma Česko">Týká se Česka</span>' : "";
+}
+
+// Odpočet do příštího zasedání (blok „Další zasedání“): počítá prohlížeč z data, web se kvůli tomu nepřestavuje.
+function sessionCountdown(from, to, today = new Date().toISOString().slice(0, 10)) {
+  const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+  if (today > to) return "zasedání skončilo, výsledky budou po zveřejnění dat";
+  if (today >= from) return "právě probíhá";
+  const n = days(today, from);
+  return n === 1 ? "zítra" : `za ${n} ${n < 5 ? "dny" : "dní"}`;
+}
+function fillCountdowns(root = document) {
+  root.querySelectorAll(".ns-when[data-from]").forEach((el) => {
+    const out = el.querySelector(".ns-count");
+    if (out) out.textContent = ` · ${sessionCountdown(el.dataset.from, el.dataset.to)}`;
+  });
+}
+
+// Pruh „data mohou být neaktuální“ (data/freshness.json z build_web.py): export starší než stale_days dní
+// a od té doby už proběhlo zasedání EP (jinak nová hlasování být nemohou). Počítá prohlížeč, web se nepřestavuje.
+function isStale(fresh, today = new Date().toISOString().slice(0, 10)) {
+  if (!fresh?.release) return false;
+  const age = Math.round((Date.parse(today) - Date.parse(fresh.release)) / 864e5);
+  return age >= (fresh.stale_days ?? 14) && (fresh.sittings_after || []).some((d) => d < today);
+}
+async function staleNotice() {
+  const main = document.getElementById("main");
+  if (!main) return;
+  let fresh;
+  try { fresh = await getJSON("freshness.json"); } catch (e) { return; }
+  if (!isStale(fresh)) return;
+  const p = document.createElement("p");
+  p.className = "stale-note";
+  p.setAttribute("role", "status");
+  p.innerHTML = `Data mohou být neaktuální: poslední export hlasování je z ${fmtDate(fresh.release)} a od té doby už zasedal
+    Evropský parlament. Nová data přibudou po zveřejnění na <a href="${HTV_SOURCE}">HowTheyVote.eu</a>
+    (<a href="${ROOT}o-projektu.html#zdroje">jak to funguje</a>).`;
+  main.prepend(p);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  fillCountdowns();
+  staleNotice();
   setupThemeToggle();
   motion.scan(document);
   new MutationObserver((muts) => {

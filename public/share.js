@@ -112,9 +112,18 @@ function voteCardOps(d, f) {
   const ops = [];
   let y = 0;
   // Téma (stejná data jako čip v seznamu hlasování): jeden čip nad názvem, další jen jako „+N“; bez tématu se řádek vynechá.
-  if (d.topic) {
-    const t = fitText(d.topic, 26, 700, 900), tw = measureText(t, 26, 700);
-    ops.push(RECT(72, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(92, y + 32, t, 26, 700, SC.white));
+  // Vedle tématu štítek „česká stopa“ (d.trace: zpravodaj nebo stínový zpravodaj z ČR), jen když záznam existuje.
+  if (d.topic || d.trace) {
+    let x = 72;
+    if (d.topic) {
+      const t = fitText(d.topic, 26, 700, d.trace ? 660 : 900), tw = measureText(t, 26, 700);
+      ops.push(RECT(x, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(x + 20, y + 32, t, 26, 700, SC.white));
+      x += tw + 56;
+    }
+    if (d.trace) {
+      const t = "ČESKÁ STOPA", tw = measureText(t, 24, 800);
+      ops.push(RECT(x, y, tw + 40, 46, 23, SC.white), T(x + 20, y + 32, t, 24, 800, SC.navy));
+    }
     y += 66;
   }
   const title = wrapText(d.title, 58, 700, 936, 3);
@@ -466,6 +475,10 @@ async function renderCardPng(ctx, formatKey) {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
+  // Datum dat (export HowTheyVote) se do statických stránek nepíše, doplní se tady z overview.json.
+  if (!data.dataDay) {
+    try { const ov = await getJSON("overview.json"); data.dataDay = ov.sources?.votes?.release || ov.period?.to || data.date; } catch (e) { data.dataDay = data.date; }
+  }
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));

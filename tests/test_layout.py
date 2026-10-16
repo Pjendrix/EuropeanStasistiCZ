@@ -22,3 +22,14 @@ def test_sync_rejects_page_without_header():
     import pytest
     with pytest.raises(ValueError):
         layout.sync_text("<html><body>bez hlavičky</body></html>")
+
+
+def test_instagram_in_header_sheet_footer_and_head():
+    """Blok B: odkaz na Instagram v hlavičce (desktop), v panelu Více a v patičce; og:site_name a feed v <head>."""
+    from layout import INSTAGRAM, footer, head_assets, header
+    h, f, a = header(), footer(), head_assets()
+    assert INSTAGRAM == "https://www.instagram.com/epwatch.cz/"
+    assert f'class="ig-link" href="{INSTAGRAM}" rel="me noopener"' in h  # hlavička
+    assert f'<li><a href="{INSTAGRAM}" rel="me noopener">Instagram @epwatch.cz</a></li>' in h  # panel Více
+    assert f'<a href="{INSTAGRAM}" rel="me noopener">Instagram</a>' in f
+    assert '<meta property="og:site_name" content="EP Watch CZ">' in a and 'type="application/atom+xml"' in a

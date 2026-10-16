@@ -172,6 +172,12 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
   display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .theme-toggle:hover { border-color: var(--gold); }
+/* Instagram vedle přepínače režimu (jen desktop; na mobilu v panelu Více a v patičce) */
+.ig-link { width: 40px; height: 40px; border-radius: 999px; flex: none; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(248, 250, 252, .25); background: rgba(248, 250, 252, .06); color: #F8FAFC; }
+.ig-link:hover { border-color: var(--gold); }
+.ig-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (max-width: 760px) { .ig-link { display: none; } }
 @media (max-width: 640px) {
   .site-header nav { order: 3; flex-basis: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: .2rem; scrollbar-width: none; }
   .site-header nav { gap: 0; }
@@ -554,7 +560,7 @@ table.matrix tbody tr:hover { background: none; }
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #333; --border: #bbb; --shadow: none; }
   body { background: #fff; color: #000; font-size: 11pt; }
-  .site-header nav, .theme-toggle, .skip-link, .subnav, .controls, .more-btn, .csv-btn, .share-btn, .info-wrap, .hero-stars, .hero-emblem { display: none !important; }
+  .site-header nav, .theme-toggle, .ig-link, .skip-link, .subnav, .controls, .more-btn, .csv-btn, .share-btn, .info-wrap, .hero-stars, .hero-emblem { display: none !important; }
   .site-header, .hero { background: none !important; color: #000 !important; }
   .site-header .brand, .hero h1, .hero p.lead, .kpi, .kpi .k-label, .kpi .k-note, .entry, .entry span { color: #000 !important; background: none !important; }
   .card, .table-wrap, .mep-card { box-shadow: none; break-inside: avoid; backdrop-filter: none; }
@@ -1360,3 +1366,27 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
 .hm-hero .topic-chip .cat-ico { background: rgba(248, 250, 252, .12); color: #F8FAFC; }
 .hm-hero .tc-more { color: #CBD5E1; }
 .hm-topic { margin: 10px 0 0; min-height: 30px; }
+
+/* Další zasedání (program EP, hub.py next_session_html): datum, odpočet, body programu, česká stopa */
+.next-session { margin: 0 0 1.5rem; }
+.hm-next { padding-top: 40px; }
+.hm-next .next-session { margin: 0; }
+.ns-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; }
+.ns-head h2 { margin: 0; font-size: 1.35rem; }
+.ns-when { margin: 0; color: var(--muted); }
+.ns-when strong { color: var(--text); }
+.ns-list { list-style: none; margin: .9rem 0 0; padding: 0; border-top: 1px solid var(--border); }
+.ns-item { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: .15rem .9rem; padding: .7rem 0; border-bottom: 1px solid var(--border); }
+.ns-day { grid-row: 1 / span 3; font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; padding-top: .1rem; }
+.ns-title { font-weight: 600; line-height: 1.35; }
+.ns-cz { font-size: .88rem; }
+.ns-docs a { color: inherit; }
+.ns-all { display: inline-flex; align-items: center; gap: .4rem; margin-top: .8rem; font-weight: 700; color: var(--link); text-decoration: none; min-height: 44px; }
+.cz-badge { display: inline-flex; align-items: center; padding: .05rem .55rem; border-radius: 999px; font-size: .75rem; font-weight: 700;
+  background: var(--accent-soft); color: var(--link); border: 1px solid var(--border); white-space: nowrap; }
+@media (max-width: 560px) { .ns-item { grid-template-columns: minmax(0, 1fr); } .ns-day { grid-row: auto; } }
+.ns-rest summary { cursor: pointer; font-weight: 700; color: var(--link); padding: .7rem 0; min-height: 44px; }
+
+/* Pruh o starých datech (app.js staleNotice) */
+.stale-note { margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--gold); background: var(--surface);
+  border-radius: 6px; font-size: .9rem; color: var(--text); }
