@@ -240,6 +240,7 @@ function groupedCards(list, groups, parties, bench) {
     const rows = ov.meps.map((m) => ({ m, s: m.total, g: m.group, p: m.party, active: isActive(m) }));
     const former = document.getElementById("former");
     const q = document.getElementById("q");
+    if (param("q")) q.value = param("q");   // hledání z úvodní stránky bez JavaScriptu (form action=poslanci.html)
     const asTable = document.getElementById("as-table");
     const tableWrap = document.getElementById("table-wrap");
     const tbody = document.querySelector("#meps tbody");

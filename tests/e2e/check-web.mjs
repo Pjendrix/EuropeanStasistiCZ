@@ -204,6 +204,43 @@ for (const scheme of ["light", "dark"]) {
   if (!(await page.locator('.info-pop [data-cite]').count())) problems.push("profil: v ⓘ u čísla chybí „Citovat“");
   await ctx.close();
 }
+// Revize úvodu: hemicykl a přepínač 1/5 → 5/5, střed F : A = počet teček, „/“ zaměří hledání, šipky + Enter otevřou položku, Esc smaže.
+for (const width of [1440, 400]) {
+  const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto(base + "index.html", { waitUntil: "networkidle" });
+  const where = `index.html [úvod, ${width}px]`;
+  const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+  if (sw > width) problems.push(`${where}: přetéká (${sw})`);
+  const n = await page.evaluate(() => JSON.parse(document.getElementById("home-data").textContent).votes.length);
+  for (let i = 0; i < n; i++) {
+    const st = await page.evaluate(() => {
+      const seats = [...document.querySelectorAll(".hm-seat")];
+      const big = document.getElementById("hm-big").textContent.split(":").map(Number);
+      return { idx: document.getElementById("hm-idx").textContent, big, f: seats.filter((x) => x.dataset.pos === "F").length, a: seats.filter((x) => x.dataset.pos === "A").length,
+        prev: document.getElementById("hm-prev").disabled, next: document.getElementById("hm-next").disabled, seats: seats.length };
+    });
+    if (st.idx !== `${i + 1} / ${n}`) problems.push(`${where}: přepínač ukazuje ${st.idx}, čekám ${i + 1} / ${n}`);
+    if (st.big[0] !== st.f || st.big[1] !== st.a) problems.push(`${where}: střed ${st.big.join(":")} nesedí s tečkami ${st.f}:${st.a}`);
+    if (st.prev !== (i === 0) || st.next !== (i === n - 1)) problems.push(`${where}: tlačítka přepínače na kraji nejsou vypnutá (${i + 1}/${n})`);
+    if (i < n - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
+  }
+  await page.mouse.click(2, 300);
+  await page.keyboard.press("/");
+  if (!(await page.evaluate(() => document.activeElement?.id === "hub-q"))) problems.push(`${where}: „/“ nezaměřil hledání`);
+  await page.keyboard.type("ondrej");
+  await page.waitForSelector("#hub-results:not([hidden]) [role=option]", { timeout: 10000 }).catch(() => problems.push(`${where}: hledání neukázalo výsledky`));
+  const groupsOk = await page.evaluate(() => [...document.querySelectorAll("#hub-results .hm-g")].map((g) => g.textContent));
+  if (!groupsOk.includes("Poslanci")) problems.push(`${where}: výsledky nejsou seskupené (${groupsOk})`);
+  await page.keyboard.press("Escape");
+  if (await page.evaluate(() => document.getElementById("hub-q").value || !document.getElementById("hub-results").hidden)) problems.push(`${where}: Esc nesmazal hledání`);
+  await page.keyboard.type("ondrej");
+  await page.waitForSelector("#hub-results:not([hidden]) [role=option]", { timeout: 10000 }).catch(() => {});
+  await page.keyboard.press("ArrowDown");
+  const target = await page.evaluate(() => document.querySelector('#hub-results [aria-selected="true"] a')?.getAttribute("href"));
+  await Promise.all([page.waitForURL((u) => target && u.pathname.endsWith(target.replace(/^\.\//, "")), { timeout: 10000 }).catch(() => problems.push(`${where}: Enter neotevřel ${target}`)), page.keyboard.press("Enter")]);
+  await ctx.close();
+}
 // N3: pravidla nových karet (metric, split, party) s MOCK daty: text se vejde, chybějící hodnota se vynechá,
 // počet řádků napsaný na kartě = počet vykreslených řádků; neutrální avatar nekreslí portrét.
 {

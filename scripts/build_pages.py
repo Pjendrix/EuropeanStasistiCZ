@@ -333,6 +333,25 @@ def adopted_text_url(ref: str | None) -> str | None:
     return f"https://data.europarl.europa.eu/distribution/doc/TA-{m[1]}-{m[2]}-{m[3]}_cs.pdf" if m else None
 
 
+def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list[dict] | None, data_day: str | None,
+                    rows: list[dict] | None = None) -> dict:
+    """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce."""
+    kind, _ = kind_of(v)
+    title_txt = vote_title(v)
+    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    c = v["counts"]
+    if rows is None:
+        rows = party_rows(active_positions(v, meps_by_id), meps_by_id, parties or [], groups)
+    return {
+        "title": title_txt, "subtitle": " · ".join(x for x in (desc_cs or v.get("description"), v.get("reference")) if x),
+        "date": v["date"], "kindLabel": KIND_LABELS.get(kind, "hlasování"), "result": v.get("result"),
+        "resultLabel": RESULT_LABEL.get(v.get("result"), "neuveden"), "sentence": result_sentence(kind, v.get("result")),
+        "ep": [c["for"], c["against"], c["abstention"], c["did_not_vote"]],
+        "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
+        "dataDay": data_day or v["date"],
+    }
+
+
 def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, has_card: bool = False,
               roles: list[dict] | None = None, parties: list[dict] | None = None,
               data_day: str | None = None) -> tuple[str, str]:
@@ -375,12 +394,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     rows = party_rows(cz, meps_by_id, parties or [], groups)
     party_html = party_rows_html(rows, ROOT)
     sentence = result_sentence(kind, v.get("result"))
-    share_data = {
-        "title": title_txt, "subtitle": " · ".join(x for x in (desc_cs or v.get("description"), v.get("reference")) if x),
-        "date": v["date"], "kindLabel": KIND_LABELS.get(kind, "hlasování"), "result": v.get("result"), "resultLabel": result,
-        "sentence": sentence, "ep": total, "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
-        "dataDay": data_day or v["date"],
-    }
+    share_data = vote_share_data(v, meps_by_id, groups, parties, data_day, rows)
     n_groups = len(v["group_counts"])
     links = [f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
              f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>']
@@ -475,7 +489,7 @@ def build(data_dir: Path) -> dict[str, str]:
             path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day)
             out[path] = html
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
-    if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists():
+    if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
         path, html = hub_page(data_dir, base_url)
         out[path] = html
     if base_url:
