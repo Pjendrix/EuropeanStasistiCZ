@@ -189,7 +189,7 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -
         lst += (f'<details class="ns-rest"><summary>Zobrazit dalších {fmt_num(len(tail))}</summary>'
                 f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root) for i in tail)}</ol></details>')
     as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
-    more = (f'<a class="ns-all" href="{root}hlasovani.html#program">Celý program ({fmt_num(n)}) {_ARROW}</a>' if not full and n > len(items) else "")
+    more = (f'<a class="ns-all" href="{root}radar.html#zasedani">Celý program ({fmt_num(n)}) a co se chystá {_ARROW}</a>' if not full else "")
     return (f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
             f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
             f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"><strong>{_range(agenda["from"], agenda["to"])}</strong>'
@@ -198,6 +198,126 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -
             f'<p class="source">Návrh programu EP{as_of}, může se změnit. {rule}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
             f'(CC BY 4.0) · <a href="{root}o-projektu.html#program-ep">výběr a česká stopa</a></p>'
             '</section>')
+
+
+# --- radar „Co se chystá“ (radar.py → data/radar.json) ---------------------------------------------------
+
+_CZ_ROLE_SHORT = {"rapporteur": "zpravodaj/ka", "co": "spoluzpravodaj/ka", "shadow": "stínový/á zpravodaj/ka",
+                  "opinion": "zpravodaj/ka stanoviska", "shadow_opinion": "stínový/á zpravodaj/ka stanoviska"}
+
+
+def _cz_html(cz: list[dict], root: str) -> str:
+    if not cz:
+        return ""
+    people = ", ".join(f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_CZ_ROLE_SHORT[c["role"]]})'
+                       for c in cz)
+    return f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {people}</span>'
+
+
+def _committee_html(c: dict | None, root: str) -> tuple[str, str]:
+    """(text výboru, čip kategorie). Bez výboru prázdné."""
+    if not c:
+        return "", ""
+    text = f'výbor {esc(c["code"])}' + (f' ({esc(c["name"])})' if c.get("name") else "")
+    chip = topic_chips([c["category"]], 1, True, "x", root) if c.get("category") else ""
+    return text, chip
+
+
+def _filter_attrs(cat: str | None, legislative: bool, cz: bool) -> str:
+    return f' data-cat="{cat or ""}" data-leg="{1 if legislative else 0}" data-cz="{1 if cz else 0}"'
+
+
+def radar_session_item(it: dict, root: str) -> str:
+    title = it.get("title_cs") or it.get("title_en") or it["id"]
+    proc = it.get("procedure") or {}
+    comm, chip = _committee_html(it.get("committee"), root)
+    legislative = bool(it.get("legislative") or proc.get("type") in ("COD", "CNS", "APP"))
+    meta = [x for x in (
+        "zákon" if legislative else None, it.get("stage_cs"),
+        (f'<a href="{esc(proc["url"])}">{esc(proc["label"])}</a>' if proc.get("url") else None), comm or None) if x]
+    docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
+    cat = (it.get("committee") or {}).get("category")
+    return (f'<li class="ns-item rd-item"{_filter_attrs(cat, legislative, bool(it.get("cz")))}>'
+            f'<span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+            + (f'<span class="rd-meta small">{chip}{" · ".join(meta)}</span>' if meta or chip else "")
+            + _cz_html(it.get("cz") or [], root)
+            + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "") + "</li>")
+
+
+def radar_steps(steps: list[dict], reached: str | None) -> str:
+    """Časová osa kroků procedury: hotové kroky s datem, aktuální zvýrazněný, budoucí šedě."""
+    keys = [s["key"] for s in steps]
+    cur = keys.index(reached) if reached in keys else -1
+    finished = cur == len(keys) - 1  # podpis a vyhlášení: všechny kroky hotové
+    lis = []
+    for i, s in enumerate(steps):
+        state = "done" if i < cur or finished else "current" if i == cur else "todo"
+        when = f'<span class="rd-when">{fmt_date(s["date"])}</span>' if s.get("date") else ""
+        attr = ' aria-current="step"' if state == "current" else ""
+        lis.append(f'<li class="rd-step {state}"{attr}>'
+                   f'<span class="rd-dot" aria-hidden="true"></span><span class="rd-lbl">{esc(s["label"])}</span>{when}</li>')
+    return f'<ol class="rd-steps" aria-label="Průběh procedury">{"".join(lis)}</ol>'
+
+
+def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
+    title = r.get("title_cs") or r.get("title_en") or r["label"] or r["procedure"]
+    comm, chip = _committee_html(r.get("committee"), root)
+    label = f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or "")
+    head = " · ".join(x for x in (label, comm) if x)
+    if done:
+        v = r.get("vote") or {}
+        tail = (f'<p class="rd-next">Plénum hlasovalo {fmt_date(r["plenary_date"])} · '
+                + (f'<a href="{root}v/{v["vote_id"]}.html">jak hlasovali Češi {_ARROW}</a>' if v.get("vote_id")
+                   else '<span class="muted">jmenovité hlasování k ní v datech HowTheyVote není</span>') + "</p>")
+    else:
+        last = r.get("last_event")
+        nxt = (f'<strong>Na programu pléna {fmt_date(r["next_vote"])}</strong>' if r.get("next_vote")
+               else "Datum hlasování v plénu zatím nezveřejněno")
+        tail = ((f'<p class="small muted">Poslední krok: {esc(last["label"])} ({fmt_date(last["date"])})</p>' if last else "")
+                + f'<p class="rd-next">{nxt}</p>')
+    cat = (r.get("committee") or {}).get("category")
+    return (f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
+            f'<h3 class="rd-title">{esc(title)}</h3><p class="rd-meta small">{chip}{head}</p>'
+            f'{_cz_html(r["cz"], root)}{radar_steps(r["steps"], r["reached"])}{tail}</li>')
+
+
+def radar_html(radar: dict | None, root: str = "") -> str:
+    """Obsah stránky „Co se chystá“ (radar.html): nejbližší zasedání, rozpracované a odhlasované zákony s českou stopou."""
+    if not radar:
+        return '<p class="muted">Data radaru zatím nejsou k dispozici.</p>'
+    s = radar.get("session")
+    filters = ('<div class="controls rd-filters" role="group" aria-label="Filtry">'
+               '<label>Téma <select id="rd-cat"><option value="">všechna</option>'
+               + "".join(f'<option value="{k}">{esc(LABEL[k])}</option>' for k in radar.get("categories", []) if k in LABEL)
+               + '</select></label><label><input type="checkbox" id="rd-leg"> jen zákony</label>'
+               '<label><input type="checkbox" id="rd-cz"> jen s českou stopou</label></div>')
+    if s:
+        items = "".join(radar_session_item(i, root) for i in s["items"])
+        as_of = f" k {fmt_date(s['fetched'])}" if s.get("fetched") else ""
+        sess = (f'<section class="card next-session" id="zasedani" aria-labelledby="rd-h1">'
+                f'<div class="ns-head"><h2 id="rd-h1">Nejbližší zasedání</h2>'
+                f'<p class="ns-when" data-from="{s["from"]}" data-to="{s["to"]}"><strong>{_range(s["from"], s["to"])}</strong>'
+                f'<span class="ns-count" aria-live="polite"></span> · {fmt_num(len(s["items"]))} hlasování v programu</p></div>'
+                f'<ol class="ns-list rd-list">{items}</ol><p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>'
+                f'<p class="source">Návrh programu EP{as_of}, může se změnit. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).</p>'
+                '</section>')
+    else:
+        sess = '<section class="card" id="zasedani"><h2>Nejbližší zasedání</h2><p class="muted">Program zatím není zveřejněný.</p></section>'
+    active = "".join(radar_proc_card(r, root) for r in radar.get("active", []))
+    done = "".join(radar_proc_card(r, root, True) for r in radar.get("done", []))
+    pending = (f'<p class="small muted">U {fmt_num(radar["without_events"])} procedur se průběh ještě stahuje, doplní se při další aktualizaci.</p>'
+               if radar.get("without_events") else "")
+    return (f'{filters}{sess}'
+            f'<section class="rd-block" id="rozpracovane" aria-labelledby="rd-h2"><h2 id="rd-h2">Rozpracované zákony s českou stopou</h2>'
+            f'<p class="muted">Legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem a o kterých plénum ještě '
+            f'nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}'
+            + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
+            + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
+            f'<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
+            + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
+            + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
+            '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
+            f'<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) · <a href="{root}o-projektu.html#radar">jak radar funguje</a></p>')
 
 
 def votes_hero_html(data_dir: Path) -> str:

@@ -105,6 +105,16 @@
         pak body s legislativním návrhem (dokument C), pak podle pořadí v programu. Celý program je na stránce Hlasování.
         <strong>Česká stopa</strong> = český poslanec je zpravodajem, spoluzpravodajem nebo stínovým zpravodajem zprávy, ke které se bod
         nebo hlasování váže (podle EP Open Data). Stanoviska výborů se nepárují, protože program na ně neodkazuje.</li>
+      <li id="radar"><strong>Co se chystá</strong> (<a href="radar.html">radar</a>): program nejbližšího zasedání a legislativní procedury
+        (řádný legislativní postup COD, zvláštní postupy CNS a APP), ve kterých je český poslanec zpravodajem, spoluzpravodajem, stínovým
+        zpravodajem nebo zpravodajem stanoviska. Vše z EP Open Data API
+        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/radar.py">radar.py</a>), nic se neodhaduje.
+        <strong>Průběh procedury</strong> určuje pevná tabulka událostí, které EP u procedury zveřejňuje: výbor (přidělení, návrh zprávy,
+        pozměňovací návrhy), zpráva výboru (přijetí ve výboru, předložení plénu), jednání s Radou (mandát, trialog, schválení dohody ve výboru),
+        hlasování v plénu a podpis s vyhlášením v Úředním věstníku. Pole „fáze“ z API nepoužíváme, protože u uzavřených procedur zůstává „první čtení“.
+        <strong>Datum hlasování v plénu</strong> je známé jen z programu zasedání (asi 1–2 týdny dopředu); jinde píšeme „zatím nezveřejněno“.
+        <strong>Téma</strong> se odvozuje z odpovědného výboru (např. ENVI → Klima, příroda a energie; ITRE → Průmysl a vnitřní trh;
+        CULT téma nemá). Řazení rozpracovaných: nejdřív ty nejblíž hlasování, pak podle poslední události. Nejde o hodnocení důležitosti.</li>
       <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
       <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
         ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>

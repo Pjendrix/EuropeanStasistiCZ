@@ -35,7 +35,7 @@ const voteId = kv.lists.all.laws.items[0].id;
 const month = kv.votes[String(voteId)].month;
 const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
-const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
+const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
   "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
 
 const problems = [];
@@ -352,6 +352,35 @@ for (const width of [1440, 400]) {
   r.forEach((x) => problems.push(`karty: ${x}`));
   await ctx.close();
 }
+// Radar „Co se chystá“: filtry skrývají položky podle tématu, zákonů a české stopy a zapíšou se do adresy.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "radar.html", { waitUntil: "networkidle" });
+  const r = await page.evaluate(() => {
+    const items = () => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")];
+    const out = [];
+    const total = items().length;
+    const sel = document.getElementById("rd-cat");
+    if (!sel) return ["chybí filtr tématu"];
+    const cat = [...sel.options].map((o) => o.value).find((v) => v && items().some((li) => li.dataset.cat === v));
+    if (cat) {
+      sel.value = cat; sel.dispatchEvent(new Event("change"));
+      if (items().some((li) => !li.hidden && li.dataset.cat !== cat)) out.push("filtr tématu nechal jiné téma");
+      if (!location.search.includes(`c=${cat}`)) out.push("filtr tématu není v adrese");
+      sel.value = ""; sel.dispatchEvent(new Event("change"));
+    }
+    const cz = document.getElementById("rd-cz");
+    cz.checked = true; cz.dispatchEvent(new Event("change"));
+    if (items().some((li) => !li.hidden && li.dataset.cz !== "1")) out.push("filtr české stopy nechal položku bez stopy");
+    cz.checked = false; cz.dispatchEvent(new Event("change"));
+    if (items().filter((li) => !li.hidden).length !== total) out.push("po vypnutí filtrů nejsou vidět všechny položky");
+    return out;
+  });
+  r.forEach((x) => problems.push(`radar: ${x}`));
+  await ctx.close();
+}
+
 // Pruh o starých datech (E3): s MOCK freshness.json se ukáže a projde axe ve světlém i tmavém režimu.
 for (const scheme of ["light", "dark"]) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 900 }, colorScheme: scheme, reducedMotion: "reduce" });
