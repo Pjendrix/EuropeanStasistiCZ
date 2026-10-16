@@ -299,7 +299,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
             month_cache[x["month"]] = (_read(data_dir / "votes" / f"{x['month']}.json") or {"votes": []})["votes"]
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
-            share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, f["data_day"])
+            share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None)
     payload = {"votes": [{"id": x["id"], "date": x["date"], "title": x["title"], "kind_label": x["kind_label"], "result": x["result"],
                           "counts": x["counts"], "topic_html": hero_topic(x), "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                           "party": {str(p["id"]): party_text(p) for p in x["ppl"]}} for x in votes],
@@ -411,6 +411,11 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     title = "EP Watch CZ – jak hlasují čeští europoslanci"
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
     meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
+    from layout import INSTAGRAM, REPO
+    org = {"@context": "https://schema.org", "@type": "Organization", "name": "EP Watch CZ",
+           **({"url": base_url.rstrip("/") + "/", "logo": base_url.rstrip("/") + "/assets/brand/apple-touch-icon.png"} if base_url else {}),
+           "sameAs": [INSTAGRAM, REPO]}
+    meta += f'<script type="application/ld+json">{json.dumps(org, ensure_ascii=False)}</script>\n'
     html = page(title, body, root="", current=None, description=desc, meta=meta, main_attrs='class="home-page"',
                 scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="hub.js"></script>\n')
     return "index.html", html

@@ -207,3 +207,51 @@ def test_topic_same_everywhere_on_real_data():
             assert bp.topic_chips(expect, 4, True, str(x["id"]), "../", True) in page_
         else:
             assert 'class="topic-chips"' not in page_
+
+
+def test_static_pages_do_not_change_with_new_data_export(data_dir):
+    """Blok A: nový export dat (jiné datum v overview.json) bez nových hlasování nezmění stránky v/ ani kartu hlasování,
+    aby repo nerostlo při každé aktualizaci."""
+    import build_cards as bc
+    first = built(data_dir)
+    ov_path = data_dir / "overview.json"
+    ov = json.loads(ov_path.read_text(encoding="utf-8"))
+    ov["sources"]["votes"]["release"] = "2099-01-01"
+    ov_path.write_text(json.dumps(ov), encoding="utf-8")
+    second = bp.build(data_dir)
+    for key in (k for k in first if k.startswith("v/")):
+        assert first[key] == second[key], key
+        assert "dataDay" not in first[key] and "2099" not in second[key]
+    votes = json.loads((data_dir / "votes" / "2024-09.json").read_text(encoding="utf-8"))["votes"]
+    meps = {m["id"]: m for m in json.loads((data_dir / "meps.json").read_text(encoding="utf-8"))["meps"]}
+    # karta hlasování nezávisí na datu exportu (v patičce je datum hlasování)
+    assert "data_day" not in bc.vote_card.__code__.co_varnames
+
+
+def test_feed_and_sitemap_lastmod(data_dir):
+    """Blok G: Atom feed se závěrečnými hlasováními (bez data generování) a lastmod v sitemap."""
+    built(data_dir)
+    (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
+    pages = bp.build(data_dir)
+    feed = pages["feed.xml"]
+    assert feed.startswith('<?xml') and 'xmlns="http://www.w3.org/2005/Atom"' in feed
+    assert feed.count("<entry>") == 2 and "<id>https://example.test/v/3.html</id>" in feed  # závěrečná 1 a 3, nejnovější první
+    assert feed.index("v/3.html") < feed.index("v/1.html") and "<updated>2024-10-16T12:00:00Z</updated>" in feed
+    assert "Zdroj: HowTheyVote.eu" in feed
+    assert "<loc>https://example.test/v/1.html</loc><lastmod>2024-09-16</lastmod>" in pages["sitemap.xml"]
+    assert bp.build(data_dir)["feed.xml"] == feed  # deterministický
+
+
+def test_corrections_block(tmp_path):
+    data = tmp_path / "data"
+    (data / "manual").mkdir(parents=True)
+    assert "Zatím žádné opravy" in bp.corrections_html(data)
+    (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [
+        {"date": "2026-10-01", "wrong": "MOCK špatně", "right": "MOCK správně", "link": "https://example.test/x"},
+        {"date": "2026-10-05", "wrong": "MOCK B", "right": "MOCK B2"}]}), encoding="utf-8")
+    html = bp.corrections_html(data)
+    assert html.index("5. 10. 2026") < html.index("1. 10. 2026") and 'href="https://example.test/x"' in html
+    (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [{"date": "2026-10-01"}]}), encoding="utf-8")
+    import pytest
+    with pytest.raises(bp.FormatError):
+        bp.corrections_html(data)

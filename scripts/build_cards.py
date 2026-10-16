@@ -200,8 +200,7 @@ def to_png(img) -> bytes:
 
 # --- karty ----------------------------------------------------------------------------
 
-def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, parties: list[dict] | None = None,
-              data_day: str | None = None) -> bytes:
+def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, parties: list[dict] | None = None) -> bytes:
     """OG náhled 1200 × 630 (S5): název, výsledek větou, celý EP, souhrn Čechů a jeden řádek stran (zkrácený „…“)."""
     kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
     img, d = new_card()
@@ -253,7 +252,8 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
                         for r in rows)
     d.text((56, 504), fit(d, line, font(21, 500), W - 112), font=font(21, 500), fill=SOFT)
     url = f"{base_url.rstrip('/').split('://', 1)[-1]}/v/{v['id']}" if base_url else None
-    footer(d, f"Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k {fmt_date(data_day or v['date'])}", url)
+    # Bez data exportu: výsledek hlasování se po zveřejnění nemění, karta se tak při novém exportu nepřepisuje.
+    footer(d, f"Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · hlasování {fmt_date(v['date'])}", url)
     return to_png(img)
 
 
@@ -375,7 +375,7 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
     wanted = card_vote_ids(votes)
     for v in votes:
         if v["id"] in wanted:
-            put(f"v/{v['id']}.png", vote_card(v, meps_by_id, groups, base_url, parties, data_day))
+            put(f"v/{v['id']}.png", vote_card(v, meps_by_id, groups, base_url, parties))
     d = public / "og" / "v"
     for f in d.glob("*.png"):
         if int(f.stem) not in wanted:

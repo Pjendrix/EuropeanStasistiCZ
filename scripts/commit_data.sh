@@ -33,7 +33,9 @@ for attempt in 1 2 3; do
   python scripts/build_web.py
   python scripts/build_pages.py
   python scripts/build_cards.py
-  git add data public/assets/photos public/p public/s public/v public/og public/sitemap.xml public/robots.txt
+  # celý public/: kromě p/, s/, v/, og/ se z dat generují i bloky v ručních stránkách (index.html, poslanci.html,
+  # hlasovani.html, o-projektu.html), feed.xml a sitemap; ručně se v CI nic jiného nemění
+  git add data public
   if git diff --cached --quiet; then
     echo "Žádná nová data."
     exit 0

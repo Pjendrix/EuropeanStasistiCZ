@@ -466,6 +466,10 @@ async function renderCardPng(ctx, formatKey) {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
+  // Datum dat (export HowTheyVote) se do statických stránek nepíše, doplní se tady z overview.json.
+  if (!data.dataDay) {
+    try { const ov = await getJSON("overview.json"); data.dataDay = ov.sources?.votes?.release || ov.period?.to || data.date; } catch (e) { data.dataDay = data.date; }
+  }
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));

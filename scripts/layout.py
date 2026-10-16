@@ -18,6 +18,7 @@ from html import escape
 from pathlib import Path
 
 REPO = "https://github.com/Pjendrix/ep-watch-cz-open"
+INSTAGRAM = "https://www.instagram.com/epwatch.cz/"  # jediné místo s adresou profilu (hlavička, panel Více, patička, JSON-LD)
 
 ICON = ('<link rel="icon" href="{root}favicon.ico" sizes="32x32">\n'
         '<link rel="icon" href="{root}assets/brand/favicon-simple.svg" type="image/svg+xml">\n'
@@ -51,6 +52,13 @@ BRAND_MARK = (
 NAV = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany"), ("hlasovani.html", "votes", "Hlasování"),
        ("prace.html", "work", "Práce poslanců"), ("rozkol.html", "analyses", "Analýzy"), ("o-projektu.html", "about", "O projektu")]
 
+INSTAGRAM_ICON = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+                  'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/>'
+                  '<circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>')
+# Odkaz na Instagram v hlavičce (desktop; na mobilu je v panelu Více a v patičce). Žádné skripty ani vložený feed.
+INSTAGRAM_LINK = (f'<a class="ig-link" href="{INSTAGRAM}" rel="me noopener" target="_blank" '
+                  f'aria-label="EP Watch CZ na Instagramu (otevře se v nové záložce)" title="Instagram @epwatch.cz">{INSTAGRAM_ICON}</a>')
+
 THEME_BUTTON = (
     '<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim">'
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
@@ -74,7 +82,8 @@ SHEET = [
     ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")]),
     ("Hlasování a strany", [("votes.html", "Všechna hlasování"), ("temata.html", "Hlasování podle témat"), ("party.html?v=eu", "Evropské frakce"),
                             ("prace-poslanci.html", "Práce po poslancích")]),
-    ("Projekt", [("o-projektu.html", "O projektu a metodika"), ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby")]),
+    ("Projekt", [("o-projektu.html", "O projektu a metodika"), ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby"),
+                 (INSTAGRAM, "Instagram @epwatch.cz")]),
 ]
 
 
@@ -83,7 +92,7 @@ def tabbar(root: str = "", current: str | None = None) -> str:
     tabs = "".join(f'<a href="{root}{href}" data-page="{page}"{cur(page)}>{TAB_ICONS[page]}<span>{label}</span></a>'
                    for href, page, label in TABS)
     more_cur = ' aria-current="page"' if current in MORE_PAGES else ""
-    groups = "".join(f'<p class="sheet-h">{esc_(title)}</p><ul>' + "".join(f'<li><a href="{root}{h}">{esc_(t)}</a></li>' for h, t in links) + "</ul>"
+    groups = "".join(f'<p class="sheet-h">{esc_(title)}</p><ul>' + "".join(f'<li><a href="{h}" rel="me noopener">{esc_(t)}</a></li>' if h.startswith("https://") else f'<li><a href="{root}{h}">{esc_(t)}</a></li>' for h, t in links) + "</ul>"
                      for title, links in SHEET)
     return (f'<nav class="tabbar" aria-label="Hlavní navigace (mobil)">{tabs}'
             f'<button type="button" class="tab-more" popovertarget="more-sheet" data-pages="{" ".join(MORE_PAGES)}"{more_cur}>{TAB_ICONS["more"]}<span>Více</span></button></nav>\n'
@@ -99,6 +108,8 @@ def head_assets(root: str = "") -> str:
     """Část <head> od ikony po styly (titulek a popis si stránka píše sama)."""
     return "\n".join([
         ICON.format(root=root),
+        '<meta property="og:site_name" content="EP Watch CZ">',
+        f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="{root}feed.xml">',
         f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
         THEME_SCRIPT,
         f'<link rel="stylesheet" href="{root}style.css">',
@@ -113,6 +124,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
             f'<header class="site-header"><div class="inner">\n'
             f'  <a class="brand" href="{root}index.html">{BRAND_MARK}{BRAND_TEXT}</a>\n'
             f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
+            f'  {INSTAGRAM_LINK}\n'
             f'  {THEME_BUTTON}\n'
             f'</div></header>\n'
             f'{tabbar(root, current)}')
@@ -125,7 +137,7 @@ def footer(root: str = "") -> str:
             f'  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.\n'
             f'  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.\n'
             f'  <a href="{root}o-projektu.html">O projektu</a> · <a href="{root}o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · '
-            f'<a href="{REPO}">výpočty na GitHubu</a>.\n'
+            f'<a href="{REPO}">výpočty na GitHubu</a> · <a href="{INSTAGRAM}" rel="me noopener">Instagram</a>.\n'
             f'</div></footer>')
 
 

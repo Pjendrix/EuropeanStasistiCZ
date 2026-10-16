@@ -172,6 +172,12 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
   display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .theme-toggle:hover { border-color: var(--gold); }
+/* Instagram vedle přepínače režimu (jen desktop; na mobilu v panelu Více a v patičce) */
+.ig-link { width: 40px; height: 40px; border-radius: 999px; flex: none; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(248, 250, 252, .25); background: rgba(248, 250, 252, .06); color: #F8FAFC; }
+.ig-link:hover { border-color: var(--gold); }
+.ig-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (max-width: 760px) { .ig-link { display: none; } }
 @media (max-width: 640px) {
   .site-header nav { order: 3; flex-basis: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: .2rem; scrollbar-width: none; }
   .site-header nav { gap: 0; }
@@ -554,7 +560,7 @@ table.matrix tbody tr:hover { background: none; }
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #333; --border: #bbb; --shadow: none; }
   body { background: #fff; color: #000; font-size: 11pt; }
-  .site-header nav, .theme-toggle, .skip-link, .subnav, .controls, .more-btn, .csv-btn, .share-btn, .info-wrap, .hero-stars, .hero-emblem { display: none !important; }
+  .site-header nav, .theme-toggle, .ig-link, .skip-link, .subnav, .controls, .more-btn, .csv-btn, .share-btn, .info-wrap, .hero-stars, .hero-emblem { display: none !important; }
   .site-header, .hero { background: none !important; color: #000 !important; }
   .site-header .brand, .hero h1, .hero p.lead, .kpi, .kpi .k-label, .kpi .k-note, .entry, .entry span { color: #000 !important; background: none !important; }
   .card, .table-wrap, .mep-card { box-shadow: none; break-inside: avoid; backdrop-filter: none; }
