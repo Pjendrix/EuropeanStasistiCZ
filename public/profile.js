@@ -296,7 +296,7 @@ function periodText(x) {
     const g = currentOf(mep.groups);
     const p = currentOf(mep.parties);
     const htvMember = `https://howtheyvote.eu/members/${mep.id}`;
-    const pageUrl = new URL(`p/${mep.id}.html`, document.baseURI).href;
+    const pageUrl = siteUrl(`p/${mep.id}.html`);
     window.shareContext = () => {
       const ro = profile.own_work?.roles, ows = profile.own_work?.summary, pas = profile.own_work?.passed;
       const gObj = groups.find((x) => x.ep_code === g?.code);
@@ -324,7 +324,7 @@ function periodText(x) {
           presence: profile.presence && profile.presence.days ? { present: profile.presence.present, days: profile.presence.days } : null,
           committees: { members: cNow.filter((c) => c.role !== "MEMBER_SUBSTITUTE").map((c) => ({ code: c.code, name: c.name_cs || c.name_en || "" })),
             substitutes: cNow.filter((c) => c.role === "MEMBER_SUBSTITUTE").map((c) => c.code) },
-          urlShort: pageUrl.replace(/^https?:\/\//, ""),
+          urlShort: pageUrl.replace(/^https?:\/\//, "").replace(/\.html$/, ""),
         },
       };
     };

@@ -563,6 +563,37 @@ def sync_blocks(public: Path, data_dir: Path) -> int:
     return changed
 
 
+# Ruční stránky s jednou adresou: kanonický odkaz a absolutní adresy v Open Graph podle site.json.
+# party.html chybí záměrně (?c=, ?v=eu jsou samostatné pohledy, kanonický odkaz na seznam by je schoval).
+CANONICAL_PAGES = [p for p in STATIC_PAGES if p not in ("index.html", "party.html")]
+_ABS_META_RE = re.compile(r'(<meta (?:property="og:(?:url|image)"|name="twitter:image") content=")https?://[^/"]+/')
+
+
+def sync_head(page: Path, rel: str, base_url: str) -> bool:
+    """Nastaví <link rel="canonical"> (vloží za <title>, když chybí) a doménu v og:url / og:image / twitter:image."""
+    base = base_url.rstrip("/") + "/"
+    canon = f'<link rel="canonical" href="{esc(base + rel)}">'
+    old = page.read_text(encoding="utf-8")
+    if '<link rel="canonical"' in old:
+        new = re.sub(r'<link rel="canonical" href="[^"]*">', canon, old)
+    elif "</title>\n" in old:
+        new = old.replace("</title>\n", f"</title>\n{canon}\n", 1)
+    else:
+        raise FormatError(f"{rel} nemá <title> pro vložení kanonického odkazu")
+    new = _ABS_META_RE.sub(lambda m: m[1] + base, new)
+    if new != old:
+        page.write_text(new, encoding="utf-8")
+    return new != old
+
+
+def sync_heads(public: Path, data_dir: Path) -> int:
+    site = data_dir / "manual" / "site.json"
+    base_url = read(site).get("base_url") if site.exists() else None
+    if not base_url:
+        return 0
+    return sum(sync_head(public / rel, rel, base_url) for rel in CANONICAL_PAGES if (public / rel).exists())
+
+
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
     """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
@@ -591,6 +622,7 @@ def main(argv=None) -> int:
         res = write(build(args.data_dir), args.public)
         res["definitions_changed"] = int(sync_definitions(args.public, args.data_dir))
         res["blocks_changed"] = sync_blocks(args.public, args.data_dir)
+        res["heads_changed"] = sync_heads(args.public, args.data_dir)
     except FormatError as e:
         print(f"CHYBA FORMÁTU: {e}", file=sys.stderr)
         return 2

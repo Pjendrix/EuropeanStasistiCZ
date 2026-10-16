@@ -54,6 +54,9 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      // I1: kanonická adresa (kde je) vždy na veřejné doméně
+      const canon = await page.evaluate(() => document.querySelector('link[rel="canonical"]')?.href || null);
+      if (canon && !canon.startsWith("https://epwatch.cz/")) problems.push(`${where}: canonical mimo epwatch.cz: ${canon}`);
       if (!url.startsWith("o-projektu")) {
         // S1: textový rozpočet. Úvodní věta ≤ 160 znaků, žádný viditelný odstavec > 220 znaků mimo details a popover.
         const text = await page.evaluate(() => {

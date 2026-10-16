@@ -1,4 +1,4 @@
 {
- "note": "Veřejná adresa webu pro kanonické odkazy, Open Graph a sitemap.xml (scripts/build_pages.py).",
- "base_url": "https://european-stasisticz.vercel.app"
+ "note": "Veřejná adresa webu (jediný zdroj pro Python): kanonické odkazy, Open Graph, sitemap.xml, karty. V JS je stejná hodnota v BASE_URL (public/app.js), test hlídá shodu.",
+ "base_url": "https://epwatch.cz"
 }
