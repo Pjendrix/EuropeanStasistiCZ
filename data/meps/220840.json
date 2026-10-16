@@ -93,7 +93,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 822,
+ "mandate_days": 823,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4499,7 +4499,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4519,10 +4519,10 @@
     "other": 0
    },
    "shadow_report": {
-    "count": 9,
+    "count": 10,
     "voted": 4,
     "adopted": 4,
-    "no_vote": 5,
+    "no_vote": 6,
     "other": 0
    },
    "opinion": {
@@ -4557,13 +4557,13 @@
    "lead_pending": 1,
    "shadow_adopted": 4,
    "shadow_adopted_legislative": 1,
-   "shadow_pending": 5,
+   "shadow_pending": 6,
    "resolutions_adopted": 0
   },
   "roles": {
    "lead_reports": 7,
    "lead_opinions": 1,
-   "shadow_reports": 9,
+   "shadow_reports": 10,
    "shadow_opinions": 2,
    "motions_signed": 21,
    "delegation": {
@@ -4756,6 +4756,26 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 8
+   },
+   {
+    "id": "proc-2026-2069",
+    "label": "2026/2069(INI)",
+    "date": "2026-06-30",
+    "title": {
+     "cs": "Kompas pro strategii Global Gateway ve světě krizí – další doporučení k základním nástrojům, stěžejním projektům a přístupu Tým Evropa",
+     "en": "A compass for Global Gateway in a world of crises - further guidance for core instruments, flagship projects and the Team Europe approach"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2069(INI)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "INI",
+    "legislative": false
    },
    {
     "id": "B-10-2026-0261",

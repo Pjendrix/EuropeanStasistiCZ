@@ -123,7 +123,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 806,
+ "mandate_days": 807,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4487,7 +4487,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4558,7 +4558,7 @@
     "tiers": {
      "lead_reports": "mid",
      "lead_opinions": null,
-     "shadow_reports": "top",
+     "shadow_reports": "mid",
      "shadow_opinions": "mid"
     },
     "of": 21,

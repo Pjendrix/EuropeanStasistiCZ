@@ -91,7 +91,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 377,
+ "mandate_days": 378,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -3259,7 +3259,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -3307,7 +3307,7 @@
     "other": 0
    },
    "question": {
-    "count": 31,
+    "count": 32,
     "answered": 26
    }
   },
@@ -3374,6 +3374,22 @@
     "status": "unanswered",
     "answer_date": null,
     "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-004056",
+    "label": "E-004056/2026",
+    "date": "2026-10-07",
+    "title": {
+     "cs": "Čištění a údržba vodních toků nebo vodních děl: vyjasněme a zjednodušme pravidla!",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004056_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 6
    },
    {
     "id": "B-10-2026-0432",

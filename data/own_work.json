@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-10-15",
+ "updated": "2026-10-16",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -1257,7 +1257,7 @@
     },
     "question": {
      "count": 8,
-     "answered": 6
+     "answered": 7
     }
    },
    "passed": {
@@ -1421,8 +1421,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-10-15",
      "authors_total": 1
     },
     {
@@ -14319,7 +14319,7 @@
      "count": 0
     },
     "shadow_opinion": {
-     "count": 5
+     "count": 6
     },
     "motion": {
      "count": 36,
@@ -14354,14 +14354,14 @@
     "lead_reports": 2,
     "lead_opinions": 0,
     "shadow_reports": 18,
-    "shadow_opinions": 5,
+    "shadow_opinions": 6,
     "motions_signed": 52,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
       "lead_opinions": null,
       "shadow_reports": "top",
-      "shadow_opinions": "mid"
+      "shadow_opinions": "top"
      },
      "of": 21,
      "tiers_skipped": false,
@@ -14710,6 +14710,26 @@
      "joint_motion": "RC-10-2026-0158",
      "joint_result": "ADOPTED",
      "joint_vote_id": 189151
+    },
+    {
+     "id": "proc-2026-0013",
+     "label": "2026/0013(COD)",
+     "date": "2026-03-03",
+     "title": {
+      "cs": "Digitální sítě, změna nařízení (EU) 2015/2120, směrnice 2002/58/ES a rozhodnutí č. 676/2002/ES a zrušují nařízení (EU) 2018/1971, směrnice (EU) 2018/1972 a rozhodnutí č. 243/2012/EU (akt o digitálních sítích)",
+      "en": "Digital networks, amending Regulation (EU) 2015/2120, Directive 2002/58/EC and Decision No 676/2002/EC and repealing Regulation (EU) 2018/1971, Directive (EU) 2018/1972 and Decision No 243/2012/EU (Digital Networks Act)"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0013(COD)",
+     "type": "shadow_opinion",
+     "role": "RAPPORTEUR_SHADOW_OPINION",
+     "group": "VERTS-ALE",
+     "committee": null,
+     "status": null,
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
     },
     {
      "id": "proc-2026-0012",
@@ -20841,10 +20861,10 @@
      "other": 0
     },
     "shadow_report": {
-     "count": 9,
+     "count": 10,
      "voted": 4,
      "adopted": 4,
-     "no_vote": 5,
+     "no_vote": 6,
      "other": 0
     },
     "opinion": {
@@ -20879,13 +20899,13 @@
     "lead_pending": 1,
     "shadow_adopted": 4,
     "shadow_adopted_legislative": 1,
-    "shadow_pending": 5,
+    "shadow_pending": 6,
     "resolutions_adopted": 0
    },
    "roles": {
     "lead_reports": 7,
     "lead_opinions": 1,
-    "shadow_reports": 9,
+    "shadow_reports": 10,
     "shadow_opinions": 2,
     "motions_signed": 21,
     "delegation": {
@@ -21078,6 +21098,26 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 8
+    },
+    {
+     "id": "proc-2026-2069",
+     "label": "2026/2069(INI)",
+     "date": "2026-06-30",
+     "title": {
+      "cs": "Kompas pro strategii Global Gateway ve světě krizí – další doporučení k základním nástrojům, stěžejním projektům a přístupu Tým Evropa",
+      "en": "A compass for Global Gateway in a world of crises - further guidance for core instruments, flagship projects and the Team Europe approach"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2069(INI)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PFE",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "INI",
+     "legislative": false
     },
     {
      "id": "B-10-2026-0261",
@@ -41597,7 +41637,7 @@
      "tiers": {
       "lead_reports": "mid",
       "lead_opinions": null,
-      "shadow_reports": "top",
+      "shadow_reports": "mid",
       "shadow_opinions": "mid"
      },
      "of": 21,
@@ -43170,7 +43210,7 @@
      "other": 0
     },
     "question": {
-     "count": 31,
+     "count": 32,
      "answered": 26
     }
    },
@@ -43237,6 +43277,22 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 1
+    },
+    {
+     "id": "E-10-2026-004056",
+     "label": "E-004056/2026",
+     "date": "2026-10-07",
+     "title": {
+      "cs": "Čištění a údržba vodních toků nebo vodních děl: vyjasněme a zjednodušme pravidla!",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004056_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 6
     },
     {
      "id": "B-10-2026-0432",
