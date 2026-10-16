@@ -763,7 +763,7 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .sd-dots { display: flex; gap: 6px; justify-content: center; }
 .sd-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: .4; }
 .sd-dots i.on { opacity: 1; background: var(--text); }
-.sd-meta { margin: .8rem 0 0; font-size: .85rem; color: var(--muted); }
+.sd-meta { margin: .8rem 0 0; font-size: .85rem; color: var(--text); opacity: .8; }
 .sd-ctl { display: flex; flex-direction: column; min-width: 0; }
 .sd-lab { margin: 1.1rem 0 .5rem; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .sd-lab:first-child { margin-top: .2rem; }

@@ -126,11 +126,14 @@ for (const scheme of ["light", "dark"]) {
       const st = await page.evaluate(() => {
         const d = document.querySelector("dialog.share-dlg[open]");
         const img = d?.querySelector(".sd-preview img");
+        // každý prvek nejdřív posunout doprostřed panelu (na mobilu se panel posouvá pod lepivou hlavičkou a lištou akcí)
         const covered = d ? [...d.querySelectorAll("button:not([hidden]), a, input")].filter((e) => {
+          e.scrollIntoView({ block: "center", inline: "nearest" });
           const q = e.getBoundingClientRect();
-          if (!q.width || q.bottom < 0 || q.top > innerHeight) return false;   // mimo výřez (panel se posouvá)
+          if (!q.width) return false;
           return !e.contains(document.elementFromPoint(q.x + q.width / 2, q.y + q.height / 2));
-        }).map((e) => e.textContent.trim() || e.getAttribute("aria-label")) : [];
+        }).map((e) => e.textContent.trim() || e.getAttribute("aria-label") || e.id) : [];
+        d?.scrollTo(0, 0);
         return { open: Boolean(d), focus: document.activeElement?.classList.contains("sd-primary"), nw: img?.naturalWidth, nh: img?.naturalHeight,
           covered, sw: document.documentElement.scrollWidth, dw: d ? d.scrollWidth - d.clientWidth : 0 };
       });
