@@ -193,3 +193,18 @@ Až A zastaví růst, je potřeba rozhodnout, jestli stačí. Pokud ne:
 1. **C5:** Pravidlo výběru bodů na úvod (česká stopa → legislativní → pořadí, max. 3)? Nebo jen počet a odkaz na seznam?
 2. **F2:** Upozornění na hotový balíček jako issue v GitHubu, nebo stačí artifact bez upozornění?
 3. **H:** Stačí po bloku A zastavit růst, nebo chceš i přesun buildu mimo git a pročištění historie?
+
+---
+
+## Rozhodnutí autora (16. 10. 2026)
+
+| Otázka | Rozhodnutí |
+|---|---|
+| Program na úvodu (C5) | Odpočet + nejvýš 3 body: česká stopa → legislativní → pořadí v programu. Celý seznam na stránce Hlasování. |
+| Balíček pro Instagram (F2) | Issue v GitHubu s odkazem na ZIP (artifact). |
+| Velikost repa | Teď blok A (zastavit růst). Přesun buildu mimo git a pročištění historie (H) až později podle velikosti. |
+| Instagram v hlavičce (B1) | Ikona vedle přepínače režimu; na mobilu v panelu Více a v patičce. |
+| Aktualizace dat (E1) | Denně kontrolovat nový export HowTheyVote, pondělí jako pojistka. |
+| Stará data na webu (E3) | Upozornění od 14 dnů. Nezobrazí se, pokud od data dat neproběhlo žádné plenární zasedání (letní a vánoční pauza). |
+| Opravy (B3) | Prázdná tabulka „Zatím žádné opravy“, záznamy v `data/manual/corrections.json`. Stávající „Opravy a změny metodiky“ zůstávají jako changelog. |
+| Pull requesty | Tři PR: **1)** A + B + G, **2)** E + C + D, **3)** F. |
