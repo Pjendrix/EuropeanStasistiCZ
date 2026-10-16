@@ -365,6 +365,10 @@ def main(argv=None) -> int:
     cz_ids = {m["id"] for m in meps}
     state_path, items_path = args.data_dir / "proposals_state.json", args.data_dir / "proposals.json"
     state = load(state_path, {"documents": {}, "procedures": {}, "questions": {}})
+    # Jednorázově stažené české názvy (data/procedure_titles_cs.json): procedury s názvem se znovu nestahují kvůli názvu.
+    for pid, meta in load(args.data_dir / "procedure_titles_cs.json", {"titles": {}})["titles"].items():
+        if pid in state["procedures"] and not state["procedures"][pid].get("title_cs") and meta.get("title_cs"):
+            state["procedures"][pid]["title_cs"] = meta["title_cs"]
     items = {i["id"]: i for i in load(items_path, {"items": []})["items"]}
 
     def save():

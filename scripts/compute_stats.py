@@ -610,6 +610,9 @@ def build_parties(meps: list[dict], assets: Path, manual: dict | None = None, lo
     return [parties[k] for k in sorted(parties, key=int)]
 
 
+SEED_TITLES = "procedure_titles_cs.json"
+
+
 def procedure_titles(data_dir: Path) -> dict[str, str]:
     """{číslo procedury (2023/0436(COD)): oficiální český název} z EP Open Data API, jak je stáhl fetch_proposals.py
     (proposals_state.json u všech procedur, proposals.json u procedur s českou účastí). Bez souborů prázdný slovník."""
@@ -620,6 +623,11 @@ def procedure_titles(data_dir: Path) -> dict[str, str]:
             cs = (i.get("title") or {}).get("cs")
             if i.get("kind") == "procedure" and i.get("label") and cs:
                 out[i["label"]] = cs
+    seed_path = data_dir / SEED_TITLES
+    if seed_path.exists():  # jednorázově stažené názvy (stejný dotaz jako fetch_proposals), než je doplní denní běh
+        for meta in json.loads(seed_path.read_text(encoding="utf-8")).get("titles", {}).values():
+            if meta.get("label") and meta.get("title_cs"):
+                out[meta["label"]] = meta["title_cs"]
     if state_path.exists():
         for meta in json.loads(state_path.read_text(encoding="utf-8")).get("procedures", {}).values():
             labels = meta.get("label")

@@ -386,3 +386,15 @@ def test_czech_titles_from_ep_open_data(tmp_path):
     cs.apply_titles(votes, titles)
     assert votes[0]["title_cs"] == "MOCK Práva cestujících" and "title_cs" not in votes[1] and "title_cs" not in votes[2]
     assert cs.procedure_titles(tmp_path / "nic") == {}
+
+
+def test_czech_titles_seed_file(tmp_path):
+    """Jednorázově stažené názvy (procedure_titles_cs.json) platí, než je doplní denní běh; stav má přednost."""
+    import json as _json
+    (tmp_path / "procedure_titles_cs.json").write_text(_json.dumps({"titles": {
+        "2023-0436": {"label": "2023/0436(COD)", "title_cs": "MOCK ze seznamu"},
+        "2024-0009": {"label": "2024/0009(COD)", "title_cs": "MOCK jen seznam"}}}), encoding="utf-8")
+    (tmp_path / "proposals_state.json").write_text(_json.dumps({"procedures": {
+        "2023-0436": {"label": "2023/0436(COD)", "title_cs": "MOCK ze stavu"}}}), encoding="utf-8")
+    titles = cs.procedure_titles(tmp_path)
+    assert titles == {"2023/0436(COD)": "MOCK ze stavu", "2024/0009(COD)": "MOCK jen seznam"}
