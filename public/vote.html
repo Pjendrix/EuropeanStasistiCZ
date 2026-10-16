@@ -71,6 +71,9 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       if (v) { foundMonth = m; break; }
     }
     if (!v) throw new Error("Hlasování nenalezeno.");
+    // Český název procedury (data/titles_cs.json z build_web.py); bez něj zůstane anglický název z HowTheyVote.
+    const titlesCs = (await getJSON("titles_cs.json").catch(() => null))?.titles || {};
+    if (titlesCs[v.procedure?.reference]) v.title_cs = titlesCs[v.procedure.reference];
     document.title = `${voteTitle(v)} – EP Watch CZ`; // nadpis stránky se upřesní níže
     const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
     const cz = v.cz_positions.filter((p) => {
@@ -133,7 +136,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <h1>${esc(heading)}</h1>
       ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
         `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
-      ${v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
+      ${v.title_cs ? "" : v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
@@ -144,6 +147,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
       </p>
+      ${v.title_cs && v.title && v.title !== v.title_cs ? `<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování (HowTheyVote.eu): ${esc(v.title)}</p>` : ""}
 
       ${trace}
       ${askAiBox({ v, kind, final, desc, adopted, c })}

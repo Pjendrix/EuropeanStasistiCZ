@@ -19,6 +19,7 @@ from build_pages import (POSITIONS, RESULT_LABEL, esc, topic_chips, fmt_date, fm
                          og_meta, split_bar)
 from categories import ICON, LABEL, icon_svg
 from hero_art import STARS
+from compute_stats import apply_titles, procedure_titles
 from vote_kinds import KIND_LABELS
 
 LIST_TITLES = {
@@ -470,10 +471,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
     month_cache: dict[str, list[dict]] = {}
+    titles = procedure_titles(data_dir)  # české názvy procedur jako jinde na webu
     share = {}
     for x in votes:
         if x["month"] not in month_cache:
             month_cache[x["month"]] = (_read(data_dir / "votes" / f"{x['month']}.json") or {"votes": []})["votes"]
+            apply_titles(month_cache[x["month"]], titles)
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))
