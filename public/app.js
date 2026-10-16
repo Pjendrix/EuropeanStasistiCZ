@@ -4,6 +4,10 @@
 // Statické stránky v podadresářích (p/, s/, v/) mají <html data-root="../">.
 const ROOT = document.documentElement.dataset.root || "";
 const DATA = ROOT + "data/";
+// Veřejná adresa webu pro sdílení a citace (stejná jako data/manual/site.json, hlídá test).
+const BASE_URL = "https://epwatch.cz/";
+// Absolutní adresa stránky na veřejné doméně (i když běží náhled nebo lokální server).
+function siteUrl(path) { return BASE_URL + String(path).replace(/^\/+/, ""); }
 const HTV_SOURCE = "https://howtheyvote.eu";
 const EP_SOURCE = "https://data.europarl.europa.eu";
 
@@ -670,7 +674,7 @@ async function citeText(text) {
   let release = "";
   try { release = (await getJSON("overview.json")).sources?.votes?.release || ""; } catch (e) { /* bez verze */ }
   const today = fmtDate(new Date().toISOString().slice(0, 10));
-  return `${text}${release ? ` Data: export HowTheyVote ${release}.` : ""} EP Watch CZ, ${location.href} (citováno ${today}).`;
+  return `${text}${release ? ` Data: export HowTheyVote ${release}.` : ""} EP Watch CZ, ${siteUrl(location.pathname + location.search)} (citováno ${today}).`;
 }
 
 document.addEventListener("click", async (ev) => {
