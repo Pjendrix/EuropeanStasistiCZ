@@ -25,6 +25,7 @@ from pathlib import Path
 
 from build_cards import card_vote_ids, result_sentence
 from build_web import vote_title
+from categories import ICON as CAT_ICON, LABEL as CAT_LABEL, categories_for
 from vote_parties import (POSITION_LABEL, POSITIONS, by_gender, card_parties, group_label, party_rows,  # noqa: F401
                           position_for, position_phrase)
 from compute_stats import FormatError, active_positions, load_votes, require
@@ -333,6 +334,38 @@ def adopted_text_url(ref: str | None) -> str | None:
     return f"https://data.europarl.europa.eu/distribution/doc/TA-{m[1]}-{m[2]}-{m[3]}_cs.pdf" if m else None
 
 
+# Čipy tématu hlasování: dvojče topicChips() v public/app.js (stejné značky, třídy a ikony, hlídá test).
+# Téma = kategorie z pevné tabulky pravidel nad kódy OEIL (categories.py), stejně jako čip v seznamu hlasování.
+TOPIC_NOTE = "Téma určuje pevná tabulka pravidel nad kódy témat Legislativní observatoře EP, které uvádí zdroj dat. Nevybíráme ho my ani AI."
+
+
+def topic_chips(cats: list[str] | None, max_: int = 4, link: bool = True, id_: str = "x", root: str = "", info: bool = False) -> str:
+    known = [k for k in (cats or []) if k in CAT_LABEL]
+    if not known:
+        return ""
+    svg = lambda k: (f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" '
+                     f'stroke-linejoin="round" aria-hidden="true">{CAT_ICON[k]}</svg>')
+
+    def chip(k: str) -> str:
+        inner = f'<span class="cat-ico sm">{svg(k)}</span>{esc(CAT_LABEL[k])}'
+        return f'<a class="topic-chip" href="{root}votes.html?c={k}">{inner}</a>' if link else f'<span class="topic-chip">{inner}</span>'
+    shown, rest = known[:max_], known[max_:]
+    method = f'<a href="{root}o-projektu.html#tema-hlasovani">Jak určujeme téma</a>'
+    more = (f'<span class="info-wrap"><button type="button" class="topic-chip tc-more" popovertarget="tc-{id_}" aria-expanded="false" '
+            f'aria-label="{esc("Další témata: " + ", ".join(CAT_LABEL[k] for k in rest))}">+{len(rest)}</button>'
+            f'<div popover id="tc-{id_}" class="info-pop tc-pop" role="note"><p class="tc-list">{"".join(chip(k) for k in rest)}</p>'
+            f'<p class="small">{method}</p></div></span>') if rest else ""
+    tip = (f'<span class="info-wrap"><button type="button" class="info-btn" popovertarget="ti-{id_}" aria-label="Jak určujeme téma" aria-expanded="false">ⓘ</button>'
+           f'<div popover id="ti-{id_}" class="info-pop" role="note"><p>{TOPIC_NOTE} {method}.</p></div></span>') if info else ""
+    return f'<span class="topic-chips">{"".join(chip(k) for k in shown)}{more}{tip}</span>'
+
+
+def topic_text(cats: list[str] | None) -> str:
+    """Téma do citace, alt textu a popisu: „Klima, příroda a energie (+2)“; bez tématu prázdné."""
+    known = [k for k in (cats or []) if k in CAT_LABEL]
+    return f"{CAT_LABEL[known[0]]}{f' (+{len(known) - 1})' if len(known) > 1 else ''}" if known else ""
+
+
 def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list[dict] | None, data_day: str | None,
                     rows: list[dict] | None = None) -> dict:
     """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce."""
@@ -348,7 +381,7 @@ def vote_share_data(v: dict, meps_by_id: dict, groups: list[dict], parties: list
         "resultLabel": RESULT_LABEL.get(v.get("result"), "neuveden"), "sentence": result_sentence(kind, v.get("result")),
         "ep": [c["for"], c["against"], c["abstention"], c["did_not_vote"]],
         "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
-        "dataDay": data_day or v["date"],
+        "dataDay": data_day or v["date"], "topic": topic_text(categories_for(v)) or None,
     }
 
 
@@ -365,7 +398,9 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     result = RESULT_LABEL.get(v.get("result"), "neuveden")
     src = v.get("source_url") or f"{HTV}/votes/{v['id']}"
     adopted = adopted_text_url(v.get("texts_adopted_reference"))
-    desc = f"Hlasování Evropského parlamentu {fmt_date(v['date'])}: {title_txt}. Výsledek: {result} " \
+    cats = categories_for(v)
+    topic = topic_text(cats)
+    desc = f"Hlasování Evropského parlamentu {fmt_date(v['date'])}{' · ' + topic if topic else ''}: {title_txt}. Výsledek: {result} " \
            f"({c['for']} pro, {c['against']} proti). Čeští poslanci: {cz_counts[0]} pro, {cz_counts[1]} proti, " \
            f"{cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo."
     lists, nobody = [], []
@@ -405,17 +440,17 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
         links.append(f'<a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference={esc(proc)}">'
                      f'Legislativní observatoř ({esc(proc)})</a>')
     # Citace pro panel sdílení („Kopírovat jako citaci“); ❝ v rohu karty už není.
-    cite = (f"Evropský parlament {fmt_date(v['date'])}, {title_txt} ({KIND_LABELS.get(kind, kind)}): {result}, "
+    cite = (f"Evropský parlament {fmt_date(v['date'])}, {title_txt} ({KIND_LABELS.get(kind, kind)}{', téma ' + topic if topic else ''}): {result}, "
             f"{c['for']} pro, {c['against']} proti, {c['abstention']} se zdrželo. Čeští poslanci v mandátu: "
             f"{cz_counts[0]} pro, {cz_counts[1]} proti, {cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo. "
             f"Zdroj: HowTheyVote.eu ({src})")
     share_script = ("<script>window.shareContext = () => { const url = siteUrl(\"v/" + str(v["id"]) + ".html\"); return { kind: \"vote\", url, "
-                    f"filename: \"ep-watch-hlasovani-{v['id']}\", subtitle: {json.dumps('Hlasování · ' + fmt_date(v['date']), ensure_ascii=False)}, "
+                    f"filename: \"ep-watch-hlasovani-{v['id']}\", subtitle: {json.dumps('Hlasování · ' + fmt_date(v['date']) + (' · ' + topic if topic else ''), ensure_ascii=False)}, "
                     f"cite: {json.dumps(cite, ensure_ascii=False).replace('</', '<\\/')}, "
                     f"text: {json.dumps(f'{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False).replace('</', '<\\/')}, "
                     f"data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace('</', '<\\/')}, {{ urlShort: url.replace(/^https?:\\/\\//, \"\").replace(/\\.html$/, \"\") }}) }}; }};</script>\n")
     body = f"""{back_row(f"{ROOT}votes.html?m={v['date'][:7]}", "← Hlasování v měsíci")}
-<p class="muted" style="margin-bottom:.3rem">{fmt_date(v['date'])} · <span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
+<p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p></details>

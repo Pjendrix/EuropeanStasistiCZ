@@ -15,7 +15,7 @@ import math
 import re
 from pathlib import Path
 
-from build_pages import (POSITIONS, RESULT_LABEL, esc, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
+from build_pages import (POSITIONS, RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
                          og_meta, split_bar)
 from categories import ICON, LABEL, icon_svg
 from hero_art import STARS
@@ -264,7 +264,13 @@ def caption_html(vote: dict) -> str:
     if vote["counts"].get("X"):
         legend += f'<li><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-x"/></svg><span><b>{vote["counts"]["X"]}</b> mimo mandát</span></li>'
     return (f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-            f'<p class="hm-cap-title">{esc(vote["title"])}</p><ul class="hm-legend">{legend}</ul>')
+            f'{hero_topic(vote)}<p class="hm-cap-title">{esc(vote["title"])}</p><ul class="hm-legend">{legend}</ul>')
+
+
+def hero_topic(vote: dict) -> str:
+    """Jeden čip tématu (+N) na vlastním řádku nad nadpisem; bez tématu nic."""
+    chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
+    return f'<div class="hm-topic">{chips}</div>' if chips else ""
 
 
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -295,7 +301,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, f["data_day"])
     payload = {"votes": [{"id": x["id"], "date": x["date"], "title": x["title"], "kind_label": x["kind_label"], "result": x["result"],
-                          "counts": x["counts"], "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
+                          "counts": x["counts"], "topic_html": hero_topic(x), "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                           "party": {str(p["id"]): party_text(p) for p in x["ppl"]}} for x in votes],
                "names": {str(p["id"]): p["name"] for p in first["ppl"]}, "pos_txt": POS_TXT, "share": share}
     data_json = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")

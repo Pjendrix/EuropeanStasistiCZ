@@ -20,8 +20,9 @@ function captionHtml(v) {
   const res = ok ? "✓ Přijato" : v.result === "REJECTED" ? "✕ Zamítnuto" : esc(RESULT_LABEL[v.result] || "výsledek neuveden");
   const legend = LEGEND.filter(([k]) => v.counts[k]).map(([k, l]) => `<li>${dotSvg(k)}<span><b>${v.counts[k]}</b> ${l}</span></li>`).join("")
     + (v.counts.X ? `<li>${dotSvg("X")}<span><b>${v.counts.X}</b> mimo mandát</span></li>` : "");
+  // čip tématu: hotové HTML ze stejné šablony jako statická stránka (topic_chips v build_pages.py)
   return `<div class="hm-cap-meta"><span>${fmtDate(v.date)}</span><span class="hm-tag">${esc(v.kind_label)}</span><span class="hm-res${ok ? "" : " no"}">${res}</span></div>
-    <p class="hm-cap-title">${esc(v.title)}</p><ul class="hm-legend">${legend}</ul>`;
+    ${v.topic_html || ""}<p class="hm-cap-title">${esc(v.title)}</p><ul class="hm-legend">${legend}</ul>`;
 }
 
 let vi = 0;
@@ -84,9 +85,9 @@ window.shareContext = (kind) => {
   if (!d) return null;
   const url = siteUrl(`v/${v.id}.html`);
   return {
-    kind: "vote", url, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}`,
+    kind: "vote", url, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}${d.topic ? ` · ${d.topic}` : ""}`,
     text: `${d.title} (${fmtDate(v.date)}): ${d.sentence}. Češi: ${v.counts.F} pro, ${v.counts.A} proti. Zdroj: HowTheyVote.eu, EP Watch CZ`,
-    cite: `Evropský parlament ${fmtDate(v.date)}, ${d.title} (${d.kindLabel}): ${d.resultLabel}, ${d.ep[0]} pro, ${d.ep[1]} proti, ${d.ep[2]} se zdrželo. Čeští poslanci v mandátu: ${v.counts.F} pro, ${v.counts.A} proti, ${v.counts.B} se zdrželo, ${v.counts.N} nehlasovalo. Zdroj: HowTheyVote.eu (${HTV_SOURCE}/votes/${v.id}).`,
+    cite: `Evropský parlament ${fmtDate(v.date)}, ${d.title} (${d.kindLabel}${d.topic ? `, téma ${d.topic}` : ""}): ${d.resultLabel}, ${d.ep[0]} pro, ${d.ep[1]} proti, ${d.ep[2]} se zdrželo. Čeští poslanci v mandátu: ${v.counts.F} pro, ${v.counts.A} proti, ${v.counts.B} se zdrželo, ${v.counts.N} nehlasovalo. Zdroj: HowTheyVote.eu (${HTV_SOURCE}/votes/${v.id}).`,
     data: { ...d, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, "") },
   };
 };

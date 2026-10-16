@@ -174,3 +174,36 @@ def test_party_rows_order_dots_and_verbs():
     assert bp.position_phrase("DID_NOT_VOTE", [meps[4]]) == "nehlasoval"
     assert bp.position_phrase("ABSTENTION", [meps[1], meps[2]]) == "zdrželi se"
     assert not bp.party_rows([], meps, parties, groups)              # prázdná strana se nevypíše
+
+
+def test_topic_chips_markup_and_empty():
+    """Téma: čip = ikona + text, odkaz na filtr; „+N“ v popoveru s odkazem na metodiku; bez tématu nic (žádná prázdná značka)."""
+    assert bp.topic_chips([]) == "" and bp.topic_chips(None) == "" and bp.topic_chips(["neznámé"]) == ""
+    html = bp.topic_chips(["env", "tra", "fin"], 1, True, "7", "../")
+    assert html.count('class="topic-chip"') == 3  # 1 viditelný + 2 v popoveru
+    assert 'href="../votes.html?c=env"' in html and 'popovertarget="tc-7"' in html and ">+2<" in html
+    assert 'href="../o-projektu.html#tema-hlasovani"' in html and "<svg" in html
+    assert 'class="info-btn"' not in html and 'class="info-btn"' in bp.topic_chips(["env"], info=True)
+    assert bp.topic_text(["env", "tra"]) == "Klima, příroda a energie (+1)" and bp.topic_text([]) == ""
+
+
+def test_topic_same_everywhere_on_real_data():
+    """Pro každé hlasování z home.json je téma stejné jako z votes/*.json (categories_for), ve vote_cats.json i na stránce v/{id}.html."""
+    import categories
+    root = Path(__file__).resolve().parent.parent
+    home_p, cats_p = root / "data" / "home.json", root / "data" / "vote_cats.json"
+    if not home_p.exists() or not cats_p.exists():
+        return
+    home = json.loads(home_p.read_text(encoding="utf-8"))
+    vote_cats = json.loads(cats_p.read_text(encoding="utf-8"))["votes"]
+    for x in home["votes"]:
+        month = json.loads((root / "data" / "votes" / f"{x['month']}.json").read_text(encoding="utf-8"))
+        src = next(v for v in month["votes"] if v["id"] == x["id"])
+        expect = categories.categories_for(src)
+        assert [t["slug"] for t in x["topics"]] == expect
+        assert vote_cats.get(str(x["id"]), []) == expect
+        page_ = (root / "public" / "v" / f"{x['id']}.html").read_text(encoding="utf-8")
+        if expect:
+            assert bp.topic_chips(expect, 4, True, str(x["id"]), "../", True) in page_
+        else:
+            assert 'class="topic-chips"' not in page_

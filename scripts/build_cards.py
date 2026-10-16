@@ -27,6 +27,7 @@ from collections import Counter
 from pathlib import Path
 
 from build_web import vote_title
+from categories import LABEL as CAT_LABEL, categories_for
 from compute_stats import FormatError, active_positions, load_votes, require
 from vote_parties import SHORT_LABEL, card_parties, group_label, party_rows  # noqa: F401
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -205,12 +206,22 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
     img, d = new_card()
     header(img, d, f"{fmt_date(v['date'])} · {KIND_LABELS.get(kind, 'hlasování')}")
+    # Téma (stejná funkce jako čip v seznamu hlasování): jeden čip nad názvem, další jen jako „+N“; bez tématu se řádek vynechá.
+    cats = categories_for(v)
+    top = 100
+    if cats:
+        label = CAT_LABEL[cats[0]] + (f"  +{len(cats) - 1}" if len(cats) > 1 else "")
+        label = fit(d, label, font(20, 700), W - 112 - 32)
+        tw = int(text_w(d, label, font(20, 700)))
+        d.rounded_rectangle([56, 88, 56 + tw + 32, 120], radius=16, fill=(30, 41, 59), outline=(71, 85, 105), width=2)
+        d.text((56 + 16, 104), label, font=font(20, 700), fill=WHITE, anchor="lm")
+        top = 140
     title = wrap(d, vote_title(v), font(50, 700), W - 112, 2)
     for i, line in enumerate(title):
-        d.text((56, 100 + i * 62), line, font=font(50, 700), fill=WHITE)
-    y = 100 + len(title) * 62
+        d.text((56, top + i * 62), line, font=font(50, 700), fill=WHITE)
+    y = top + len(title) * 62
     sub = " · ".join(x for x in (v.get("description_cs") or v.get("description"), v.get("reference")) if x)
-    if sub:
+    if sub and y + 32 <= 296:  # podtitul jen když se vejde nad výsledek (s tématem a dvouřádkovým názvem se vynechá)
         d.text((56, y + 4), fit(d, sub, font(24, 500), W - 112), font=font(24, 500), fill=SOFT)
     c = v["counts"]
     y = 300
