@@ -35,7 +35,7 @@ jobs:
         run: |
           if [ -z "$TOKEN" ]; then echo "Chybí tajný klíč OPEN_REPO_TOKEN (viz docs/OPEN_REPO.md), synchronizace se přeskočí."; exit 1; fi
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
