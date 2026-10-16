@@ -253,7 +253,7 @@ def hemi_html(vote: dict) -> str:
     return (f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
             f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu">{seats}</svg>'
             f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
-            '<div class="hm-tip" id="hm-tip" role="tooltip"></div>')
+            '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>')
 
 
 def caption_html(vote: dict) -> str:
