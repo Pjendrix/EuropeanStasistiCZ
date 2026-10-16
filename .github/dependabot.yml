@@ -1,4 +1,5 @@
 # Jen verze GitHub Actions (zdarma); Python závislosti se aktualizují ručně, aby se nezměnily výpočty bez kontroly.
+# Všechny aktualizace Actions chodí jednou měsíčně jako jeden společný PR (žádné konflikty mezi PR).
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -7,3 +8,6 @@ updates:
       interval: monthly
     commit-message:
       prefix: "ci"
+    groups:
+      github-actions:
+        patterns: ["*"]
