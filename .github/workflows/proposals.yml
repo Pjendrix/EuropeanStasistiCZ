@@ -2,6 +2,8 @@
 # EP API neumí filtrovat podle poslance a odpovídá pomalu, proto se stahuje po částech:
 # každý běh pracuje nejvýš ~5 hodin, uloží stav (data/proposals_state.json) a commitne;
 # další běh naváže. Po dokončení prvního stažení stahuje jen nové položky (minuty).
+# Stejný denní běh stáhne program příštího zasedání (data/agenda.json) a zkontroluje, jestli HowTheyVote nevydal
+# nový export; když ano, spustí týdenní aktualizaci hned (pondělní běh zůstává jako pojistka).
 name: Vlastní práce poslanců
 
 on:
@@ -12,12 +14,47 @@ on:
 
 permissions:
   contents: write
+  actions: write   # spuštění týdenní aktualizace při novém exportu HowTheyVote
+  issues: write    # issue při selhání naplánovaného běhu
 
 concurrency:
   group: weekly-data  # stejná skupina jako týdenní aktualizace: commity do main se nepřekrývají
   cancel-in-progress: false
 
 jobs:
+  release:
+    # Krátký samostatný job: neběží 5 hodin s fetch_proposals, takže týdenní aktualizace se spustí hned ráno
+    # (počká jen na skupinu weekly-data, když zrovna commitují vlastní práce).
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalace závislostí
+        run: pip install -r requirements.txt
+
+      - name: Nový export HowTheyVote?
+        id: htv
+        run: python scripts/fetch_votes.py --check-release >> "$GITHUB_OUTPUT"
+
+      - name: Spustit týdenní aktualizaci
+        # v pondělí ne: týdenní aktualizace běží v 4:23 UTC sama
+        if: steps.htv.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$(date -u +%u)" = "1" ]; then echo "Pondělí: týdenní aktualizace poběží podle plánu."; exit 0; fi
+          gh workflow run weekly.yml --ref main
+
+      - name: Issue při selhání
+        if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')
+        uses: ./.github/actions/failure-issue
+
   proposals:
     runs-on: ubuntu-latest
     timeout-minutes: 330
@@ -35,6 +72,11 @@ jobs:
       - name: Stažení (nejvýš 300 minut, pak pokračuje příští běh)
         run: python scripts/fetch_proposals.py --max-minutes 300
 
+      - name: Program příštího zasedání (EP Open Data API)
+        # Program je doplněk: při výpadku API zůstane předchozí soubor a vlastní práce se commitnou.
+        continue-on-error: true
+        run: python scripts/fetch_agenda.py
+
       - name: Statistiky a soubory pro web
         run: |
           python scripts/compute_stats.py
@@ -45,4 +87,8 @@ jobs:
         # Odloží stažené soubory, srovná se s aktuálním main, přepočítá odvozené a commitne.
         run: |
           scripts/commit_data.sh "data: vlastní práce poslanců $(date -u +%Y-%m-%d)" \
-            data/proposals.json data/proposals_state.json
+            data/proposals.json data/proposals_state.json data/agenda.json
+
+      - name: Issue při selhání
+        if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')
+        uses: ./.github/actions/failure-issue

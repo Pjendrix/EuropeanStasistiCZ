@@ -1,6 +1,8 @@
 # Týdenní aktualizace dat: stáhne poslance (EP API), hlasování (HowTheyVote),
 # spočítá statistiky, stáhne portréty a commitne změny do main. Vercel pak web
-# nasadí sám. Při změně formátu dat skripty skončí chybou a GitHub pošle e-mail.
+# nasadí sám. Při změně formátu dat skripty skončí chybou, data se necommitnou a založí se issue.
+# Spouští ji i denní kontrola nového exportu HowTheyVote (proposals.yml); pondělí je pojistka.
+# Před commitem projde kontrola webu v prohlížeči (Playwright + axe): push přes GITHUB_TOKEN web-check nespustí.
 name: Týdenní aktualizace dat
 
 on:
@@ -11,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # issue při selhání
 
 concurrency:
   group: weekly-data
@@ -19,7 +22,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
 
@@ -67,9 +70,24 @@ jobs:
       - name: Kontrola rozumnosti dat
         run: python scripts/check_data.py --prev "$RUNNER_TEMP/data-prev"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Kontrola webu (Playwright + axe); při chybě se data necommitnou
+        run: |
+          python scripts/layout.py --check
+          mkdir "$RUNNER_TEMP/e2e" && (cd "$RUNNER_TEMP/e2e" && npm init -y >/dev/null \
+            && npm install playwright@1.49.1 axe-core@4.10.2 && npx playwright install --with-deps chromium)
+          NODE_PATH="$RUNNER_TEMP/e2e/node_modules" node tests/e2e/check-web.mjs
+
       - name: Commit nových dat
         # Odloží stažené soubory, srovná se s aktuálním main, přepočítá odvozené a commitne.
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
             data/meps.json data/votes data/benchmarks.json data/delegations.json data/speeches.json data/attendance.json data/group_web.json public/assets/photos
+
+      - name: Issue při selhání
+        if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')
+        uses: ./.github/actions/failure-issue

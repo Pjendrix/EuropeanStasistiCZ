@@ -1,0 +1,9 @@
+# Jen verze GitHub Actions (zdarma); Python závislosti se aktualizují ručně, aby se nezměnily výpočty bez kontroly.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "ci"
