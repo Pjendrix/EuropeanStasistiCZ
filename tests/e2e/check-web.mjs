@@ -3,7 +3,7 @@
 //   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
 import { createRequire } from "node:module";
-import { cpSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join, extname, normalize } from "node:path";
@@ -35,8 +35,10 @@ const voteId = kv.lists.all.laws.items[0].id;
 const month = kv.votes[String(voteId)].month;
 const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
-const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
-  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
+// Příběh zákona (z/): první stránka procedury podle čísla.
+const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0]}`;
+const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html",
+  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`, procPage];
 
 const problems = [];
 const browser = await chromium.launch();
@@ -352,6 +354,63 @@ for (const width of [1440, 400]) {
   r.forEach((x) => problems.push(`karty: ${x}`));
   await ctx.close();
 }
+// Audit B1: parametry m (vote.html) a od (votes.html) nesmí dostat HTML do stránky.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  const evil = encodeURIComponent(`${month}.json?x="><img src=x onerror="window.__xss=1">`);
+  for (const url of [`vote.html?id=${voteId}&m=${evil}`, `votes.html?m=${evil}&od=${encodeURIComponent('"><img src=x onerror="window.__xss=1">')}`]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const hit = await page.evaluate(() => Boolean(window.__xss) || Boolean(document.querySelector('img[src="x"]')));
+    if (hit) problems.push(`XSS přes parametr URL: ${url}`);
+  }
+  await ctx.close();
+}
+
+// Audit UI1/UI2: hledání bez diakritiky a koncovek, zvýraznění shod, čipy aktivních filtrů a prázdný stav s akcí.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "votes.html?q=zemedelstvi", { waitUntil: "networkidle" });
+  const r = await page.evaluate(() => ({
+    rows: document.querySelectorAll("#votes tbody a.vote-title").length,
+    marks: document.querySelectorAll("#votes tbody mark").length,
+    chips: document.querySelectorAll("#chips .chip-x").length,
+    live: document.getElementById("count").getAttribute("aria-live"),
+  }));
+  if (!r.rows) problems.push("votes.html: „zemedelstvi“ bez diakritiky nic nenašlo");
+  if (!r.marks) problems.push("votes.html: shody hledání nejsou zvýrazněné");
+  if (r.chips !== 1) problems.push(`votes.html: čekán 1 čip aktivního filtru, je ${r.chips}`);
+  if (r.live !== "polite") problems.push("votes.html: #count nemá aria-live");
+  await page.goto(base + "votes.html?q=xqzxqzxqz", { waitUntil: "networkidle" });
+  await page.click("#votes tbody [data-act=clear]");
+  const after = await page.evaluate(() => ({ q: document.getElementById("q").value, rows: document.querySelectorAll("#votes tbody a.vote-title").length }));
+  if (after.q || !after.rows) problems.push("votes.html: „Zrušit všechny filtry“ v prázdném stavu nefunguje");
+  await ctx.close();
+}
+
+// N5 Moje shoda: po 3 odpovědích jde vyhodnotit, výsledek je seřazený podle shody a u otázek se ukáže skutečný výsledek.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "moje-shoda.html", { waitUntil: "networkidle" });
+  const n = await page.locator(".quiz-q").count();
+  if (n < 3) problems.push(`moje-shoda.html: jen ${n} otázek`);
+  else {
+    if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda.html: vyhodnocení jde bez odpovědí");
+    for (let i = 0; i < 3; i++) await page.locator(`.quiz-q[data-i="${i}"] .quiz-opt`).first().click();
+    await page.click("#quiz-go");
+    const r = await page.evaluate(() => ({
+      rows: [...document.querySelectorAll(".quiz-row .quiz-pct strong")].map((e) => parseFloat(e.textContent.replace(",", "."))),
+      reveal: document.querySelectorAll(".quiz-reveal:not([hidden])").length,
+    }));
+    if (!r.rows.length) problems.push("moje-shoda.html: žádný poslanec ve výsledku");
+    if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda.html: výsledek není seřazený podle shody");
+    if (r.reveal !== n) problems.push("moje-shoda.html: po vyhodnocení chybí skutečné výsledky u otázek");
+  }
+  await ctx.close();
+}
+
 // Radar „Co se chystá“: filtry skrývají položky podle tématu, zákonů a české stopy a zapíšou se do adresy.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

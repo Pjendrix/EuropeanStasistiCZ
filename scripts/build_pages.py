@@ -4,6 +4,7 @@ Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
   public/p/{id}.html   poslanec (souhrn, čísla se zdrojem, poslední závěrečná hlasování)
   public/s/{id}.html   strana
   public/v/{id}.html   závěrečné hlasování (o celém textu nebo o prozatímní dohodě)
+  public/z/{rok}-{číslo}-{typ}.html   příběh zákona: průběh procedury a všechna hlasování k ní (procedure_pages.py)
   public/sitemap.xml, public/robots.txt   jen když je v data/manual/site.json adresa webu
 
 Profil poslance má jen tuto adresu (mep.html přesměrovává): statický obsah + profile.js s interakcemi.
@@ -119,9 +120,19 @@ def current(items: list[dict]) -> dict | None:
 
 def split_bar(counts: list[int]) -> str:
     total = sum(counts) or 1
-    title = ", ".join(f"{POSITION_LABEL[k]}: {n}" for k, n in zip(POSITIONS, counts))
-    spans = "".join(f'<span class="s-{k}" style="width:{n / total * 100:.2f}%"></span>' for k, n in zip(POSITIONS, counts))
+    title = ", ".join(f"{POSITION_LABEL[k]}: {n}" for k, n in zip(POSITIONS, counts, strict=False))
+    spans = "".join(f'<span class="s-{k}" style="width:{n / total * 100:.2f}%"></span>' for k, n in zip(POSITIONS, counts, strict=False))
     return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
+
+
+def compare_card(total: list[int], cz_counts: list[int], src: str) -> str:
+    """Celý parlament a Češi v jedné kartě, proužky pod sebou na stejné ose 0–100 % (stejné jako compareCard() v public/app.js)."""
+    def row(label: str, n: list[int]) -> str:
+        return (f'<div class="cmp-row"><div class="cmp-label">{label}</div>{split_bar(n)}'
+                f'<div class="detail"><span class="pos pos-FOR">pro {n[0]}</span> · <span class="pos pos-AGAINST">proti {n[1]}</span> · '
+                f'zdrželo se {n[2]} · nehlasovalo {n[3]}</div></div>')
+    return (f'<div class="card metric compare"><div class="label">Parlament a Češi</div>{row("Celý parlament", total)}'
+            f'{row("Čeští poslanci", cz_counts)}<div class="detail"><a href="{esc(src)}">zdroj</a></div></div>')
 
 
 # Tlačítko „Sdílet“ v hlavičce stránky: stejný kód jako SHARE_BTN_HTML / shareButton() v public/share.js (hlídá test).
@@ -142,7 +153,7 @@ def og_meta(title: str, description: str, path: str, base_url: str | None, image
             image_alt: str | None = None, card: bool = False) -> str:
     """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json).
     card = image je karta ke sdílení 1200 × 630 (scripts/build_cards.py): přidá rozměry, alt a velký náhled pro X."""
-    lines = [f'<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
+    lines = ['<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
              f'<meta property="og:description" content="{esc(description)}">', '<meta property="og:locale" content="cs_CZ">']
     if base_url:
         url = base_url.rstrip("/") + "/" + path
@@ -202,7 +213,6 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     mandate = ", ".join(f"{fmt_date(m['start'])} – {fmt_date(m['end']) if m.get('end') else 'dosud'}" for m in mep["mandates"])
     htv = f"{HTV}/members/{mep['id']}"
     b = prof.get("benchmarks")
-    rng = f"od {fmt_date(mep['mandates'][0]['start'])}"
     att = t["attendance"]
     desc = f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
            f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
@@ -250,7 +260,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
       <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
     <p class="muted">Mandát: {mandate}</p>
     {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
-    {f'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
+    {'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
     <p class="small"><a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
   </div>
 </div>
@@ -459,6 +469,11 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     if adopted:
         links.append(f'<a href="{esc(adopted)}">Přijatý text (PDF, EP)</a>')
     proc = (v.get("procedure") or {}).get("reference")
+    story = ""
+    if proc and re.match(r"^\d{4}/\d{4}\([A-Z]{3}\)$", proc):
+        slug = proc.replace("/", "-").replace("(", "-").rstrip(")")
+        story = (f'<p class="small story-link"><a href="{ROOT}z/{slug}.html">Příběh zákona: celý průběh a všechna hlasování k {esc(proc)} '
+                 '<span aria-hidden="true">→</span></a></p>')
     if proc:
         links.append(f'<a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference={esc(proc)}">'
                      f'Legislativní observatoř ({esc(proc)})</a>')
@@ -476,15 +491,12 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
-<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
+{story}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>
     <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div></div>
-  <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
-    <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
-  <div class="card metric"><div class="label">Čeští poslanci</div>{split_bar(cz_counts)}
-    <div class="detail"><span class="pos pos-FOR">pro {cz_counts[0]}</span> · <span class="pos pos-AGAINST">proti {cz_counts[1]}</span> · zdrželo se {cz_counts[2]} · nehlasovalo {cz_counts[3]}</div></div>
+  {compare_card(total, cz_counts, src)}
 </div>
 {trace}<h2>Jak hlasovali Češi</h2>
 <div class="cz-views" data-view="party">
@@ -546,6 +558,8 @@ def build(data_dir: Path) -> dict[str, str]:
         if is_final(v):
             path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day)
             out[path] = html
+    from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
+    out.update(procedure_pages(data_dir, votes, meps_by_id, base_url))
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
     if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
         path, html = hub_page(data_dir, base_url)
@@ -557,7 +571,7 @@ def build(data_dir: Path) -> dict[str, str]:
     return out
 
 
-STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "radar.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
+STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "radar.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
 
 
 def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = None, default_day: str | None = None) -> dict[str, str]:
@@ -566,7 +580,8 @@ def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = No
     lastmod = lastmod or {}
     def url(p: str) -> str:
         day = lastmod.get(p) or default_day
-        return f"  <url><loc>{esc(base + p)}</loc>{f'<lastmod>{day}</lastmod>' if day else ''}</url>\n"
+        loc = base if p == "index.html" else base + p  # úvod jako kanonické „/“, ne /index.html
+        return f"  <url><loc>{esc(loc)}</loc>{f'<lastmod>{day}</lastmod>' if day else ''}</url>\n"
     urls = "".join(url(p) for p in STATIC_PAGES + paths)
     return {
         "sitemap.xml": f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
@@ -732,9 +747,9 @@ def sync_heads(public: Path, data_dir: Path) -> int:
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
-    """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    """Zapíše stránky; soubory v p/, s/, v/, z/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
-    for sub in ("p", "s", "v"):
+    for sub in ("p", "s", "v", "z"):
         d = public / sub
         d.mkdir(parents=True, exist_ok=True)
         for f in d.glob("*.html"):

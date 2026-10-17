@@ -37,7 +37,7 @@
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
 <nav class="tabbar" aria-label="Hlavní navigace (mobil)"><a href="poslanci.html" data-page="meps"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/></svg><span>Poslanci</span></a><a href="party.html" data-page="parties"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/></svg><span>Strany</span></a><a href="hlasovani.html" data-page="votes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span>Hlasování</span></a><a href="prace.html" data-page="work"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/></svg><span>Práce</span></a><button type="button" class="tab-more" popovertarget="more-sheet" data-pages="analyses about"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Více</span></button></nav>
-<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li><li><a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram @epwatch.cz</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
+<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol.html">Kde se Češi rozdělili</a></li><li><a href="rozhodujici.html">Kde rozhodly české hlasy</a></li><li><a href="shoda.html">Shoda mezi Čechy</a></li><li><a href="moje-shoda.html">Moje shoda s poslanci</a></li></ul><p class="sheet-h">Hlasování a strany</p><ul><li><a href="votes.html">Všechna hlasování</a></li><li><a href="temata.html">Hlasování podle témat</a></li><li><a href="party.html?v=eu">Evropské frakce</a></li><li><a href="prace-poslanci.html">Práce po poslancích</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu.html">O projektu a metodika</a></li><li><a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a></li><li><a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram @epwatch.cz</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
 
 <main id="main"><p class="loading">Načítám…</p></main>
 
@@ -57,8 +57,10 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 
 (async () => {
   try {
+    // Parametry z URL jen v očekávaném tvaru (audit B1: m se jinak dostal do cesty k souboru i do HTML).
+    if (!/^\d+$/.test(param("id") || "")) throw new Error("Hlasování nenalezeno.");
     const id = Number(param("id"));
-    const month = param("m");
+    const month = MONTH_RE.test(param("m") || "") ? param("m") : null;
     const [index, mepsDoc, groups, parties] = await Promise.all([
       getJSON("votes/index.json"), getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
@@ -72,7 +74,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     }
     if (!v) throw new Error("Hlasování nenalezeno.");
     // Český název procedury (data/titles_cs.json z build_web.py); bez něj zůstane anglický název z HowTheyVote.
-    const titlesCs = (await getJSON("titles_cs.json").catch(() => null))?.titles || {};
+    const titlesCs = (await getJSON("titles_cs.json").catch(soft(null)))?.titles || {};
     if (titlesCs[v.procedure?.reference]) v.title_cs = titlesCs[v.procedure.reference];
     document.title = `${voteTitle(v)} – EP Watch CZ`; // nadpis stránky se upřesní níže
     const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
@@ -89,7 +91,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     // Typ hlasování: z dat (nové soubory), jinak ze search.json; starší data ukážou jen hlavní / dílčí.
     // Velký index (1,5 MB) jen když je potřeba: starší data bez typu nebo dílčí hlasování (odkaz na závěrečné).
     const needSearch = !v.vote_kind || (!isFinal(v) && v.reference);
-    const search = needSearch ? await loadSearch().catch(() => []) : [];
+    const search = needSearch ? await loadSearch().catch(soft([])) : [];
     const row = search.find((x) => x.id === id) || {};
     const kind = v.vote_kind || row.vote_kind;
     const inverted = v.inverted ?? kind === "rejection";
@@ -103,7 +105,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const finalVote = finalVotes[finalVotes.length - 1];
     const adopted = adoptedTextUrl(v.texts_adopted_reference);
     // Česká stopa: kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy (data/vote_roles.json z own_work.json).
-    const roles = ((await getJSON("vote_roles.json").catch(() => null))?.votes || {})[String(v.id)] || [];
+    const roles = ((await getJSON("vote_roles.json").catch(soft(null)))?.votes || {})[String(v.id)] || [];
     const roleLinks = (kinds) => roles.filter((r) => kinds.includes(r.role)).map((r) => meps[r.mep_id])
       .filter(Boolean).map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ");
     const trace = roles.length ? `<p class="small" id="ceska-stopa"><strong>Česká stopa:</strong>
@@ -113,11 +115,11 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 
     // Kontext pro tlačítko „Sdílet“ (share.js): stejná čísla jako na stránce, nic nového.
     const pageUrl = siteUrl(final ? `v/${v.id}.html` : `vote.html?id=${v.id}&m=${foundMonth}`);
-    const dataDay = (await getJSON("overview.json").catch(() => null))?.sources?.votes?.release || v.date;
+    const dataDay = (await getJSON("overview.json").catch(soft(null)))?.sources?.votes?.release || v.date;
     const cardParties = shareCardParties(czPartyRows(cz, meps, parties, groups));
     // Téma: stejná data jako čip v seznamu hlasování (data/vote_cats.json z categories_for).
     await loadCategories();
-    const cats = ((await getJSON("vote_cats.json").catch(() => null))?.votes || {})[String(v.id)] || [];
+    const cats = ((await getJSON("vote_cats.json").catch(soft(null)))?.votes || {})[String(v.id)] || [];
     const topic = topicText(cats);
     const citeSentence = `Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]}${topic ? `, téma ${topic}` : ""})` : (topic ? ` (téma ${topic})` : "")}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`;
     window.shareContext = () => ({
@@ -131,12 +133,13 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       },
     });
     main.innerHTML = `
-      <div class="back-row"><p class="small"><a href="votes.html?m=${foundMonth}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
+      <div class="back-row"><p class="small"><a href="votes.html?m=${encodeURIComponent(foundMonth)}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
       <p class="muted vote-meta" style="margin-bottom:.3rem"><span>${fmtDate(v.date)}</span>${topicChips(cats, { max: 4, link: true, id: String(v.id), info: true })}${czGeoTag(v)}${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "<span>dílčí hlasování</span>")}</p>
       <h1>${esc(heading)}</h1>
       ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
         `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.title_cs ? "" : v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
+      ${procedureUrl(v.procedure?.reference) ? `<p class="small story-link"><a href="${procedureUrl(v.procedure.reference)}">Příběh zákona: celý průběh a všechna hlasování k ${esc(v.procedure.reference)} <span aria-hidden="true">→</span></a></p>` : ""}
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
@@ -159,14 +162,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div>
 </div>
-        <div class="card metric"><div class="label">Celý parlament</div>
-          ${splitBar(total)}
-          <div class="detail"><span class="pos pos-FOR">pro ${c.for}</span> · <span class="pos pos-AGAINST">proti ${c.against}</span> · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
-          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
-        <div class="card metric"><div class="label">Čeští poslanci</div>
-          ${splitBar(czCounts)}
-          <div class="detail"><span class="pos pos-FOR">pro ${czCounts[0]}</span> · <span class="pos pos-AGAINST">proti ${czCounts[1]}</span> · zdrželo se ${czCounts[2]} · nehlasovalo ${czCounts[3]}</div>
-          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
+        ${compareCard(total, czCounts, v.source_url)}
       </div>
 
       <h2>Jak hlasovali Češi</h2>

@@ -1,0 +1,12 @@
+# Lint v CI (audit A9): jen chyby a podezřelé vzory, ne formátování.
+line-length = 140
+target-version = "py312"
+# jednorázové pomocné skripty pro šablony Instagramu
+extend-exclude = ["scripts/instagram"]
+
+[lint]
+select = ["E9", "F", "B"]
+
+[lint.per-file-ignores]
+# pytest fixtures importované do testů (data_dir) ruff hlásí jako přepsané jméno
+"tests/*" = ["F811"]

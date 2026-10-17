@@ -183,7 +183,7 @@ def footer(d, left: str, url: str | None) -> None:
 def stacked_bar(d, x: int, y: int, w: int, h: int, counts: list[int]) -> None:
     total = sum(counts) or 1
     cx = x
-    for pos, n in zip(POSITIONS, counts):
+    for pos, n in zip(POSITIONS, counts, strict=False):
         seg = round(w * n / total)
         if n and seg:
             d.rounded_rectangle([cx, y, cx + max(seg - 2, 1), y + h], radius=3, fill=POS_COLOR[pos])

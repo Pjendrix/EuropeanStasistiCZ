@@ -12,13 +12,13 @@ from __future__ import annotations
 
 import json
 import math
-import re
 from pathlib import Path
 
-from build_pages import (POSITIONS, RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
+from build_pages import (RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, page,
                          og_meta, split_bar)
-from categories import ICON, LABEL, icon_svg
+from categories import LABEL, icon_svg
 from hero_art import STARS
+from procedure_pages import procedure_url
 from compute_stats import apply_titles, procedure_titles
 from vote_kinds import KIND_LABELS
 
@@ -45,7 +45,7 @@ def vote_link(v: dict) -> str:
 
 def _dots(cz: list[int]) -> str:
     cls = ("f", "a", "s", "n")
-    return "".join(f'<i class="vd {c}"></i>' for c, n in zip(cls, cz) for _ in range(n))
+    return "".join(f'<i class="vd {c}"></i>' for c, n in zip(cls, cz, strict=False) for _ in range(n))
 
 
 def _legend(cz: list[int]) -> str:
@@ -263,7 +263,10 @@ def radar_steps(steps: list[dict], reached: str | None) -> str:
 def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     title = r.get("title_cs") or r.get("title_en") or r["label"] or r["procedure"]
     comm, chip = _committee_html(r.get("committee"), root)
-    label = f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or "")
+    # číslo procedury vede na stránku Příběh zákona (z/, procedure_pages.py), ta odkazuje dál na Legislativní observatoř
+    story = procedure_url(r.get("label"), root)
+    label = (f'<a href="{story}">{esc(r["label"])}</a>' if story
+             else f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or ""))
     head = " · ".join(x for x in (label, comm) if x)
     if done:
         v = r.get("vote") or {}
@@ -314,7 +317,7 @@ def radar_html(radar: dict | None, root: str = "") -> str:
             f'nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}'
             + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
             + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
-            f'<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
+            '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
             + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
             + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
             '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
@@ -420,13 +423,14 @@ def hemi_html(vote: dict) -> str:
         for k in range(7))
     seats = "".join(
         f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}.html" data-i="{i}" data-id="{p["id"]}" '
-        f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" aria-label="{esc(p["name"])}, {esc(party_text(p))}">'
+        f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" tabindex="{0 if i == 0 else -1}" '
+        f'aria-label="{esc(p["name"])}, {esc(party_text(p))}: {esc(POS_TXT.get(p["pos"], ""))}">'
         f'<circle class="hm-ring" r="15.5"/><g transform="scale(.86)"><circle class="hm-f" r="13"/>'
         + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items()) + "</g></a></g>"
-        for i, (p, (x, y)) in enumerate(zip(ppl, slots)))
+        for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False)))
     c = vote["counts"]
     return (f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
-            f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu">{seats}</svg>'
+            f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu; mezi poslanci se přechází šipkami">{seats}</svg>'
             f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
             '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>')
 

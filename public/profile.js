@@ -33,7 +33,7 @@ function textOn(hex) {
 
 // Časová osa frakcí a stran (od začátku mandátu do dneška nebo konce mandátu).
 function timeline(mep, groups, parties) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayCZ();
   const start = mep.mandates[0].start;
   const lastEnd = mep.mandates[mep.mandates.length - 1].end;
   const end = lastEnd && lastEnd < today ? lastEnd : today;
@@ -319,14 +319,14 @@ function periodText(x) {
         kind: "metric", url, filename: `ep-watch-${mep.id}-${key}`, subtitle: `${name} · ${label}`, cite: cite(what, pair),
         text: `${name}: ${label.toLowerCase()} ${fmtPct(pct(pair))} (${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování). Zdroj: HowTheyVote.eu, EP Watch CZ`,
         data: { context: [name, groupLabel, partyLabel].filter(Boolean).join(" · "), label, pair, median: median ?? null, medLabel,
-          definition: defOf(key), dataDay: day(profile.sources?.votes?.release) || new Date().toISOString().slice(0, 10),
+          definition: defOf(key), dataDay: day(profile.sources?.votes?.release) || todayCZ(),
           urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") },
       };
     };
     window.shareContext = (kind = "") => {
       if (kind.startsWith("metric:")) return metricContext(kind.slice(7));
       const ro = profile.own_work?.roles, ows = profile.own_work?.summary, pas = profile.own_work?.passed;
-      const today = new Date().toISOString().slice(0, 10);
+      const today = todayCZ();
       const cNow = mep.committees.filter((c) => !c.end || c.end >= today);
       const top = profile.pairwise.filter((x) => x.total >= 100).map((x) => ({ name: displayName(x), party: x.party?.short_label || "", share: x.same / x.total }))
         .sort((a, b) => b.share - a.share).slice(0, 3);
@@ -366,7 +366,7 @@ function periodText(x) {
     const defOf = (k) => firstSentence(profile.definitions?.[k]);
     const cite = (what, pair) => pair && pair[1] ? `${name}: ${what} ${fmtPct(pct(pair))} (${fmtNum(pair[0])} z ${fmtNum(pair[1])} jmenovitých hlasování v Evropském parlamentu v době mandátu, od ${since}). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.` : "";
 
-    const committeesNow = mep.committees.filter((c) => !c.end || c.end >= new Date().toISOString().slice(0, 10));
+    const committeesNow = mep.committees.filter((c) => !c.end || c.end >= todayCZ());
     const committeesPast = mep.committees.filter((c) => !committeesNow.includes(c));
     const committeeLi = (c) => `<li><strong>${esc(c.code)}</strong> – ${esc(c.name_cs || c.name_en || "")}
       <div class="small muted">${ROLE_LABEL[c.role] || esc(c.role)} · ${COMMITTEE_TYPE[c.type] || esc(c.type)} · ${periodText(c)}</div></li>`;

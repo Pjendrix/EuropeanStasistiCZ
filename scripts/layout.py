@@ -79,7 +79,8 @@ TABS = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany
         ("prace.html", "work", "Práce")]
 MORE_PAGES = ("analyses", "about")
 SHEET = [
-    ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")]),
+    ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy"),
+                 ("moje-shoda.html", "Moje shoda s poslanci")]),
     ("Hlasování a strany", [("votes.html", "Všechna hlasování"), ("temata.html", "Hlasování podle témat"), ("party.html?v=eu", "Evropské frakce"),
                             ("prace-poslanci.html", "Práce po poslancích")]),
     ("Projekt", [("o-projektu.html", "O projektu a metodika"), ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby"),
@@ -168,7 +169,7 @@ def sync_text(text: str) -> str:
     for rx, new in [(_HEAD_RE, head_assets()), (_HEADER_RE, header()), (_FOOTER_RE, footer())]:
         if len(rx.findall(text)) != 1:
             raise ValueError(f"stránka nemá právě jednu část odpovídající {rx.pattern[:30]}…")
-        text = rx.sub(lambda _: new, text)
+        text = rx.sub(lambda _: new, text)  # noqa: B023 (sub volá funkci hned)
     return text
 
 

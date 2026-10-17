@@ -164,7 +164,7 @@ def mep_texts(m: dict, data: dict, data_day: str) -> dict:
            f"slide-2.png: {name}, jak hlasuje: podíl hlasů pro, proti a zdržení, shoda s frakcí a s výsledkem, s mediány EP.",
            f"slide-3.png: {name}, práce mimo hlasování: zprávy, stanoviska, projevy v plénu, otázky a výbory podle EP Open Data.",
            "story.png: Základní karta ve formátu story (9 : 16)."]
-    sources = [f"Profil na webu: {url}", f"Hlasování: https://howtheyvote.eu (ODbL)",
+    sources = [f"Profil na webu: {url}", "Hlasování: https://howtheyvote.eu (ODbL)",
                "Poslanci, výbory, zprávy a projevy: https://data.europarl.europa.eu (CC BY 4.0)", f"Data k {fmt_date(data_day)}."]
     return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(sources) + "\n"}
 

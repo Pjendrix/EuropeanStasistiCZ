@@ -33,7 +33,11 @@ function renderVote(i) {
   if (!HOME) return;
   vi = i;
   const v = HOME.votes[i];
-  seats.forEach((a) => { a.dataset.pos = v.pos[a.dataset.id] || "X"; a.dataset.party = v.party[a.dataset.id] || ""; });
+  seats.forEach((a) => {
+    a.dataset.pos = v.pos[a.dataset.id] || "X";
+    a.dataset.party = v.party[a.dataset.id] || "";
+    a.setAttribute("aria-label", `${HOME.names[a.dataset.id] || ""}, ${a.dataset.party}: ${HOME.pos_txt[a.dataset.pos] || ""}`);
+  });
   document.getElementById("hm-big").innerHTML = `${v.counts.F}<em>:</em>${v.counts.A}`;
   const cap = document.getElementById("hm-cap");
   const upd = () => {
@@ -69,6 +73,17 @@ if (HOME && hemi) {
     seats.forEach((s) => s.classList.toggle("mate", s.dataset.party === a.dataset.party));
   };
   const hide = () => { tip.classList.remove("on"); hemi.classList.remove("dim"); };
+  // Roving tabindex: půlkruh je jedna zastávka tabulátoru, mezi sedadly šipky, Home/End na kraj.
+  hemi.addEventListener("keydown", (ev) => {
+    const cur = seats.indexOf(ev.target.closest(".hm-seat"));
+    if (cur < 0) return;
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+    const next = ev.key === "Home" ? 0 : ev.key === "End" ? seats.length - 1 : step ? Math.min(seats.length - 1, Math.max(0, cur + step)) : -1;
+    if (next < 0) return;
+    ev.preventDefault();
+    seats.forEach((s, k) => s.setAttribute("tabindex", k === next ? "0" : "-1"));
+    seats[next].focus();
+  });
   seats.forEach((a) => {
     a.addEventListener("pointerenter", () => show(a));
     a.addEventListener("pointerleave", hide);
@@ -106,13 +121,12 @@ if (mosaic) {
 // --- hledání: poslanci, strany, hlasování; seskupené, max. 4 ve skupině, bez řazení podle „relevance“ -----
 const q = document.getElementById("hub-q");
 const list = document.getElementById("hub-results");
-const norm = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 let index = null; // načte se při prvním psaní
 let items = [], sel = -1;
 
 async function loadIndex() {
   if (index) return index;
-  const [ov, parties, votes, groups] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(), getJSON("groups.json").catch(() => [])]);
+  const [ov, parties, votes, groups] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(), getJSON("groups.json").catch(soft([]))]);
   const gLabel = (g) => { const x = g && groups.find((y) => y.ep_code === g.code || y.code === g.code); return x ? (CZ_GROUP_LABEL[x.code] || x.short_label) : g?.short_label; };
   const sortCs = (a, b) => a.sort.localeCompare(b.sort, "cs");
   index = {
