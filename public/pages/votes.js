@@ -99,7 +99,7 @@ setNav("votes-list");
         const counts = v.cz;
         return `<tr>
           <td class="num date">${fmtDate(v.date)}</td>
-          <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${highlight(voteTitle(v), terms)}</a>
+          <td class="title">${catChip(v)}<a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${highlight(voteTitle(v), terms)}</a>
             <div class="small muted">${trace.has(v.id) ? '<span class="cz-badge" title="Český poslanec byl zpravodajem nebo stínovým zpravodajem">česká stopa</span> ' : ""}${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
           <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
           ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)];

@@ -218,17 +218,28 @@ def result_text(v: dict) -> str:
     return base
 
 
+def page_path(path: str) -> str:
+    """Veřejná adresa stránky bez koncovky .html (vercel.json cleanUrls): p/1.html → p/1, votes.html?c=x → votes?c=x,
+    index.html → "" (kořen webu). Kotvy a parametry zůstávají. Stejná funkce je pagePath v public/lib/format.js."""
+    return re.sub(r"\.html(?=[?#]|$)", "", re.sub(r"(^|/)index\.html(?=[?#]|$)", r"\1", path))
+
+
+def page_url(base_url: str, path: str) -> str:
+    """Absolutní kanonická adresa stránky: page_url("https://epwatch.cz", "p/1.html") → https://epwatch.cz/p/1."""
+    return base_url.rstrip("/") + "/" + page_path(path)
+
+
 def vote_url(v: dict) -> str:
-    """Závěrečná hlasování mají statickou stránku v/{id}.html, ostatní interaktivní detail vote.html."""
-    return f"v/{v['id']}.html" if v.get("is_final") else f"vote.html?id={v['id']}&amp;m={v.get('month')}"
+    """Závěrečná hlasování mají statickou stránku v/{id}, ostatní interaktivní detail vote."""
+    return f"v/{v['id']}" if v.get("is_final") else f"vote?id={v['id']}&amp;m={v.get('month')}"
 
 
 def mep_url(mep_id) -> str:
-    return f"p/{mep_id}.html"
+    return f"p/{mep_id}"
 
 
 def party_url(party_id) -> str:
-    return f"s/{party_id}.html"
+    return f"s/{party_id}"
 
 
 def photo_url(mep: dict, thumb: bool = False) -> str:
@@ -415,6 +426,6 @@ class Ui:
         return f'Zdroj: <a href="{HTV_SOURCE}">HowTheyVote.eu</a> · <a href="{EP_SOURCE}">EP Open Data</a>{date}' + self.info_button(
             f'<p><a href="{HTV_SOURCE}">HowTheyVote.eu</a> (export {esc(release or "")}, licence ODbL) a <a href="{EP_SOURCE}">EP Open Data</a> (CC BY 4.0).\n'
             f'      Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.\n'
-            f'      <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>',
+            f'      <a href="o-projektu#metodika">Jak počítáme</a>.</p>',
             "Zdroj a metodika",
         )

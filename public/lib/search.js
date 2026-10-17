@@ -19,7 +19,7 @@ export async function loadSearchIndex() {
     parties: parties.parties.map((p) => ({ href: ROOT + partyUrl(p.id), label: p.name || p.short_label, sort: p.name || p.short_label, sub: `strana · ${p.short_label}`, mark: "S",
       key: norm(`${p.name || ""} ${p.short_label}`) })).sort(sortCs),
     votes: votes.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.id - a.id)
-      .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}.html` : `vote.html?id=${v.id}`), label: voteTitle(v), mark: "H",
+      .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}`), label: voteTitle(v), mark: "H",
         sub: `${fmtDate(v.date)}${v.vote_kind ? ` · ${KIND_LABEL[v.vote_kind] || ""}` : ""}`,
         key: norm(`${voteTitle(v)} ${v.reference || ""} ${v.description_cs || ""}`) })),
   };

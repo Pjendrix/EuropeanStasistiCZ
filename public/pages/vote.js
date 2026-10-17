@@ -49,7 +49,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <span class="muted">(zpráva ${esc([...new Set(roles.map((r) => r.report).filter(Boolean))].join(", "))}; zdroj EP Open Data)</span></p>` : "";
 
     // Kontext pro tlačítko „Sdílet“ (share.js): stejná čísla jako na stránce, nic nového.
-    const pageUrl = siteUrl(final ? `v/${v.id}.html` : `vote.html?id=${v.id}&m=${foundMonth}`);
+    const pageUrl = siteUrl(final ? `v/${v.id}` : `vote?id=${v.id}&m=${foundMonth}`);
     const dataDay = (await getJSON("overview.json").catch(soft(null)))?.sources?.votes?.release || v.date;
     const cardParties = shareCardParties(czPartyRows(cz, meps, parties, groups));
     // Téma: stejná data jako čip v seznamu hlasování (data/vote_cats.json z categories_for).
@@ -64,11 +64,11 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         title: heading, subtitle: [final ? desc : voteTitle(v), v.reference].filter(Boolean).join(" · "), date: v.date, kindLabel: kind ? KIND_LABEL[kind] : "hlasování",
         result: v.result, resultLabel: RESULT_LABEL[v.result] || "neuveden", sentence: resultSentence(kind || (final ? "final" : ""), v.result),
         ep: [c.for, c.against, c.abstention, c.did_not_vote], parties: cardParties, dataDay,
-        urlShort: pageUrl.replace(/^https?:\/\//, "").replace(/\.html$/, ""), topic: topic || null, ...(roles.length ? { trace: true } : {}),
+        urlShort: pageUrl.replace(/^https?:\/\//, ""), topic: topic || null, ...(roles.length ? { trace: true } : {}),
       },
     });
     main.innerHTML = `
-      <div class="back-row"><p class="small"><a href="votes.html?m=${encodeURIComponent(foundMonth)}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
+      <div class="back-row"><p class="small"><a href="votes?m=${encodeURIComponent(foundMonth)}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
       <p class="muted vote-meta" style="margin-bottom:.3rem"><span>${fmtDate(v.date)}</span>${topicChips(cats, { max: 4, link: true, id: String(v.id), info: true })}${czGeoTag(v)}${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "<span>dílčí hlasování</span>")}</p>
       <h1>${esc(heading)}</h1>
       ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
@@ -78,9 +78,9 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
-        <a href="v/${finalVote.id}.html">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
+        <a href="v/${finalVote.id}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">
-        ${final ? `<a href="v/${v.id}.html">Trvalý odkaz</a> · ` : ""}
+        ${final ? `<a href="v/${v.id}">Trvalý odkaz</a> · ` : ""}
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
         ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}

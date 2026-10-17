@@ -38,6 +38,7 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
+from web_ui import page_url
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -96,7 +97,7 @@ def party_rows_html(rows: list[dict], root: str) -> str:
         )
         names = " · ".join(
             f'<span class="pr-group"><b class="pos pos-{k}">{esc(position_phrase(k, r["members"][k]))}</b> '
-            + ", ".join(f'<a href="{root}p/{m["id"]}.html">{esc(display_name(m))}</a>' for m in r["members"][k])
+            + ", ".join(f'<a href="{root}p/{m["id"]}">{esc(display_name(m))}</a>' for m in r["members"][k])
             + "</span>"
             for k in POSITIONS
             if r["members"][k]
@@ -185,7 +186,7 @@ def og_meta(
         '<meta property="og:locale" content="cs_CZ">',
     ]
     if base_url:
-        url = base_url.rstrip("/") + "/" + path
+        url = page_url(base_url, path)
         lines += [f'<link rel="canonical" href="{esc(url)}">', f'<meta property="og:url" content="{esc(url)}">']
         image = image or OG_DEFAULT  # bez vlastní karty výchozí náhled s logem (scripts/build_brand.py)
         card = card or image == OG_DEFAULT
@@ -302,10 +303,10 @@ def topic_chips(cats: list[str] | None, max_: int = 4, link: bool = True, id_: s
 
     def chip(k: str) -> str:
         inner = f'<span class="cat-ico sm">{svg(k)}</span>{esc(CAT_LABEL[k])}'
-        return f'<a class="topic-chip" href="{root}votes.html?c={k}">{inner}</a>' if link else f'<span class="topic-chip">{inner}</span>'
+        return f'<a class="topic-chip" href="{root}votes?c={k}">{inner}</a>' if link else f'<span class="topic-chip">{inner}</span>'
 
     shown, rest = known[:max_], known[max_:]
-    method = f'<a href="{root}o-projektu.html#tema-hlasovani">Jak určujeme téma</a>'
+    method = f'<a href="{root}o-projektu#tema-hlasovani">Jak určujeme téma</a>'
     more = (
         (
             f'<span class="info-wrap"><button type="button" class="topic-chip tc-more" popovertarget="tc-{id_}" aria-expanded="false" '
@@ -420,17 +421,15 @@ def vote_page(
         if not names:  # prázdné skupiny se sbalí do jedné věty pod seznamy (jako na interaktivní stránce)
             nobody.append(POSITION_LABEL[k])
             continue
-        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}.html">{esc(display_name(m))}</a></li>' for m in names)
+        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}">{esc(display_name(m))}</a></li>' for m in names)
         lists.append(
             f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>'
         )
     cz_groups = {p["group_code"] for p in cz}
     trace = ""
     if roles:
-        link = (
-            lambda r: f'<a href="{ROOT}p/{r["mep_id"]}.html">{esc(display_name(meps_by_id[r["mep_id"]]))}</a>'
-            if r["mep_id"] in meps_by_id
-            else ""
+        link = lambda r: (
+            f'<a href="{ROOT}p/{r["mep_id"]}">{esc(display_name(meps_by_id[r["mep_id"]]))}</a>' if r["mep_id"] in meps_by_id else ""
         )
         lead = ", ".join(x for x in (link(r) for r in roles if r["role"] != "shadow") if x)
         shadow = ", ".join(x for x in (link(r) for r in roles if r["role"] == "shadow") if x)
@@ -454,7 +453,7 @@ def vote_page(
     n_groups = len(v["group_counts"])
     links = [
         f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
-        f'<a href="{ROOT}vote.html?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>',
+        f'<a href="{ROOT}vote?id={v["id"]}&amp;m={v["date"][:7]}">Interaktivní detail</a>',
     ]
     if adopted:
         links.append(f'<a href="{esc(adopted)}">Přijatý text (PDF, EP)</a>')
@@ -463,7 +462,7 @@ def vote_page(
     if proc and re.match(r"^\d{4}/\d{4}\([A-Z]{3}\)$", proc):
         slug = proc.replace("/", "-").replace("(", "-").rstrip(")")
         story = (
-            f'<p class="small story-link"><a href="{ROOT}z/{slug}.html">Příběh zákona: celý průběh a všechna hlasování k {esc(proc)} '
+            f'<p class="small story-link"><a href="{ROOT}z/{slug}">Příběh zákona: celý průběh a všechna hlasování k {esc(proc)} '
             '<span aria-hidden="true">→</span></a></p>'
         )
     if proc:
@@ -480,7 +479,7 @@ def vote_page(
     )
     share_ctx = {
         "kind": "vote",
-        "path": f"v/{v['id']}.html",
+        "path": f"v/{v['id']}",
         "filename": f"ep-watch-hlasovani-{v['id']}",
         "subtitle": "Hlasování · " + fmt_date(v["date"]) + (" · " + topic if topic else ""),
         "cite": cite,
@@ -489,7 +488,7 @@ def vote_page(
     }
     # Kontext panelu sdílení jako JSON (share.js), ne inline skript: CSP nepovoluje 'unsafe-inline'.
     share_script = f'<script type="application/json" id="share-context">{json_script(share_ctx)}</script>\n'
-    body = f"""{back_row(f"{ROOT}votes.html?m={v['date'][:7]}", "← Hlasování v měsíci")}
+    body = f"""{back_row(f"{ROOT}votes?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
@@ -606,10 +605,10 @@ def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = No
 
     def url(p: str) -> str:
         day = lastmod.get(p) or default_day
-        loc = base if p == "index.html" else base + p  # úvod jako kanonické „/“, ne /index.html
+        loc = page_url(base, p)  # bez .html (cleanUrls), úvod jako kanonické „/“
         return f"  <url><loc>{esc(loc)}</loc>{f'<lastmod>{day}</lastmod>' if day else ''}</url>\n"
 
-    urls = "".join(url(p) for p in STATIC_PAGES + paths)
+    urls = "".join(url(p) for p in dict.fromkeys(STATIC_PAGES + paths))  # index.html je v obou seznamech
     return {
         "sitemap.xml": f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
         "robots.txt": f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n",
@@ -632,7 +631,7 @@ def atom_feed(base_url: str, votes: list[dict], meps_by_id: dict) -> str:
         cz = active_positions(v, meps_by_id)
         n = [sum(p["position"] == k for p in cz) for k in POSITIONS]
         topic = topic_text(categories_for(v))
-        url = f"{base}v/{v['id']}.html"
+        url = page_url(base, f"v/{v['id']}.html")
         summary = (
             f"{fmt_date(v['date'])}{' · ' + topic if topic else ''} · {KIND_LABELS.get(kind, kind)}: "
             f"{result_sentence(kind, v.get('result'))}. Čeští poslanci: {n[0]} pro, {n[1]} proti, {n[2]} se zdrželo, {n[3]} nehlasovalo. "
@@ -780,9 +779,10 @@ _ABS_META_RE = re.compile(r'(<meta (?:property="og:(?:url|image)"|name="twitter:
 
 
 def sync_head(page: Path, rel: str, base_url: str) -> bool:
-    """Nastaví <link rel="canonical"> (vloží za <title>, když chybí) a doménu v og:url / og:image / twitter:image."""
+    """Nastaví <link rel="canonical"> (vloží za <title>, když chybí) a og:url na adresu bez .html, doménu v og:image / twitter:image."""
     base = base_url.rstrip("/") + "/"
-    canon = f'<link rel="canonical" href="{esc(base + rel)}">'
+    url = page_url(base, rel)
+    canon = f'<link rel="canonical" href="{esc(url)}">'
     old = page.read_text(encoding="utf-8")
     if '<link rel="canonical"' in old:
         new = re.sub(r'<link rel="canonical" href="[^"]*">', canon, old)
@@ -791,6 +791,7 @@ def sync_head(page: Path, rel: str, base_url: str) -> bool:
     else:
         raise FormatError(f"{rel} nemá <title> pro vložení kanonického odkazu")
     new = _ABS_META_RE.sub(lambda m: m[1] + base, new)
+    new = re.sub(r'(<meta property="og:url" content=")[^"]*"', lambda m: f'{m[1]}{esc(url)}"', new)  # bez .html jako canonical
     if new != old:
         page.write_text(new, encoding="utf-8")
     return new != old

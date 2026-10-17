@@ -62,7 +62,7 @@ def proc_id(label: str) -> str:
 
 def procedure_url(label: str | None, root: str = "") -> str | None:
     s = slug(label)
-    return f"{root}z/{s}.html" if s else None
+    return f"{root}z/{s}" if s else None
 
 
 def _read(path: Path, default):
@@ -145,7 +145,7 @@ def vote_row(v: dict, meps_by_id: dict, final_pages: set[int]) -> str:
     kind, _ = kind_of(v)
     cz = active_positions(v, meps_by_id)
     n = [sum(p["position"] == k for p in cz) for k in POSITIONS]
-    href = f"{ROOT}v/{v['id']}.html" if v["id"] in final_pages else f"{ROOT}vote.html?id={v['id']}&amp;m={v['date'][:7]}"
+    href = f"{ROOT}v/{v['id']}" if v["id"] in final_pages else f"{ROOT}vote?id={v['id']}&amp;m={v['date'][:7]}"
     res = v.get("result")
     # Název procedury je v nadpisu stránky, v řádku stačí, o čem se hlasovalo (popis z HowTheyVote).
     what = v.get("description_cs") or v.get("description") or vote_title(v)
@@ -199,7 +199,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
     trace = cz_trace(row, vote_roles, meps_by_id)
     if trace:
         lis = "".join(
-            f'<li><a href="{ROOT}p/{r["mep_id"]}.html">{esc(display_name(meps_by_id[r["mep_id"]]))}</a> '
+            f'<li><a href="{ROOT}p/{r["mep_id"]}">{esc(display_name(meps_by_id[r["mep_id"]]))}</a> '
             f'<span class="muted">– {esc(CZ_ROLE_CS[r["role"]])}</span></li>'
             for r in trace
         )
@@ -245,7 +245,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
         if last_final
         else "Závěrečné hlasování v datech zatím není."
     )
-    body = f"""{back_row(f"{ROOT}votes.html", "← Všechna hlasování")}
+    body = f"""{back_row(f"{ROOT}votes", "← Všechna hlasování")}
 <p class="muted vote-meta">{meta}</p>
 <h1>{esc(title)}</h1>
 <p class="lead">{esc(summary)} Jmenovitých hlasování: {fmt_num(len(votes))}.</p>

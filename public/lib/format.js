@@ -3,14 +3,20 @@
 // Veřejná adresa webu pro sdílení a citace (stejná jako data/manual/site.json, hlídá test).
 export const BASE_URL = "https://epwatch.cz/";
 
+// Adresa stránky bez koncovky .html (vercel.json cleanUrls): p/1.html → p/1, votes.html?c=x → votes?c=x, index.html → ""
+// (kořen webu). Kotvy a parametry zůstávají. Stejná funkce je page_path ve scripts/web_ui.py.
+export function pagePath(path) {
+  return String(path).replace(/^\/+/, "").replace(/(^|\/)index\.html(?=[?#]|$)/, "$1").replace(/\.html(?=[?#]|$)/, "");
+}
+
 // Absolutní adresa stránky na veřejné doméně (i když běží náhled nebo lokální server).
-export function siteUrl(path) { return BASE_URL + String(path).replace(/^\/+/, ""); }
+export function siteUrl(path) { return BASE_URL + pagePath(path); }
 
 // Kontext panelu sdílení připravený buildem ({kind, path, …}) doplní o plnou adresu a její krátký tvar na kartu.
 export function withShareUrl(ctx) {
   if (!ctx) return null;
   const url = siteUrl(ctx.path);
-  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") } };
+  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "") } };
 }
 
 export const HTV_SOURCE = "https://howtheyvote.eu";
@@ -190,10 +196,10 @@ export function debounce(fn, ms) {
   return (...args) => { clearTimeout(tid); tid = setTimeout(() => fn(...args), ms); };
 }
 
-// Stránka „Příběh zákona“ k číslu procedury: 2023/0447(COD) -> z/2023-0447-COD.html (scripts/procedure_pages.py).
+// Stránka „Příběh zákona“ k číslu procedury: 2023/0447(COD) -> z/2023-0447-COD (scripts/procedure_pages.py).
 export function procedureUrl(ref, root = "") {
   const m = /^(\d{4})\/(\d{4})\(([A-Z]{3})\)$/.exec(ref || "");
-  return m ? `${root}z/${m[1]}-${m[2]}-${m[3]}.html` : null;
+  return m ? `${root}z/${m[1]}-${m[2]}-${m[3]}` : null;
 }
 
 // Tvar parametrů z URL (měsíc, den): cokoli jiného se ignoruje.

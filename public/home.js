@@ -22,7 +22,7 @@ function renderKpis(ov, bench) {
   const att = active.reduce((a, m) => [a[0] + m.total.attendance[0], a[1] + m.total.attendance[1]], [0, 0]);
   const med = bench?.ep?.attendance;
   document.getElementById("kpis").innerHTML = [
-    kpiBlock("Jmenovitých hlasování", ov.votes_total, {}, `od ${fmtDate(ov.period.from)} · <a href="votes.html">seznam hlasování</a>`),
+    kpiBlock("Jmenovitých hlasování", ov.votes_total, {}, `od ${fmtDate(ov.period.from)} · <a href="votes">seznam hlasování</a>`),
     kpiBlock("Účast delegace na hlasování", Math.round((att[0] / att[1]) * 1000) / 10, { decimals: 1, suffix: " %" },
       `${fmtNum(att[0])} z ${fmtNum(att[1])} hlasů současných poslanců` +
       (med != null ? ` · medián celého EP ${fmtPct(med)}` : "")),
@@ -164,7 +164,7 @@ function renderSession(session) {
   const keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
   const total = (cz) => cz.reduce((a, b) => a + b, 0) || 1;
   document.getElementById("ses-list").innerHTML = list.length ? list.map((v) => `
-    <a class="vrow" href="vote.html?id=${v.id}&m=${v.month}">
+    <a class="vrow" href="vote?id=${v.id}&m=${v.month}">
       <div class="vrow-head"><span class="vrow-title">${catChip(v)}${onlyFinal ? "" : kindTag(v)}${esc(voteTitle(v))}</span>
         ${resultHtml(v)}</div>
       <div class="split grow" role="img" aria-label="${v.cz[0]} pro, ${v.cz[1]} proti, ${v.cz[2]} se zdrželo, ${v.cz[3]} nehlasovalo">
@@ -173,7 +173,7 @@ function renderSession(session) {
     </a>`).join("") : '<p class="muted">Na posledním zasedání hlasovali Češi jednotně.</p>';
   document.getElementById("ses-source").innerHTML =
     `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(session.sources.votes?.release || "")}) ·
-     <a href="rozkol.html?v=last_session">všechna rozdělená hlasování zasedání (${fmtNum(session.split_count)})</a>`;
+     <a href="rozkol?v=last_session">všechna rozdělená hlasování zasedání (${fmtNum(session.split_count)})</a>`;
 }
 
 // Karta poslance: účast na hlasování vůči mediánu EP, hlasování s frakcí vůči mediánu vlastní frakce (U2).
@@ -242,7 +242,7 @@ function groupedCards(list, groups, parties, bench) {
     const rows = ov.meps.map((m) => ({ m, s: m.total, g: m.group, p: m.party, active: isActive(m) }));
     const former = document.getElementById("former");
     const q = document.getElementById("q");
-    if (param("q")) q.value = param("q");   // hledání z úvodní stránky bez JavaScriptu (form action=poslanci.html)
+    if (param("q")) q.value = param("q");   // hledání z úvodní stránky bez JavaScriptu (form action=poslanci)
     const asTable = document.getElementById("as-table");
     const tableWrap = document.getElementById("table-wrap");
     const tbody = document.querySelector("#meps tbody");

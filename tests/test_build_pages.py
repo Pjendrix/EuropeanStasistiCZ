@@ -25,7 +25,7 @@ def test_pages_for_meps_parties_and_final_votes_only(data_dir):
 def test_vote_page_content(data_dir):
     html = built(data_dir)["v/1.html"]
     assert "<h1>MOCK vote</h1>" in html and "přijato" in html
-    assert 'href="../p/1.html"' in html and 'data-root="../"' in html
+    assert 'href="../p/1"' in html and 'data-root="../"' in html
     assert "https://howtheyvote.eu/votes/1" in html
 
 
@@ -52,18 +52,18 @@ def test_profile_page_has_numbers_with_source(data_dir):
     html = built(data_dir)["p/1.html"]
     assert "50,0 %" in html and "1 z 2 hlasování" in html  # docházka [1, 2]
     assert "https://howtheyvote.eu/members/1" in html
-    assert 'href="v/3.html"' in html  # poslední závěrečné hlasování (odkazy od <base href="../">)
+    assert 'href="v/3"' in html  # poslední závěrečné hlasování (odkazy od <base href="../">)
     assert '<base href="../">' in html and 'data-mep="1"' in html and '<script type="module" src="profile.js?v=' in html
-    assert 'class="skip-link" href="p/1.html#main"' in html
+    assert 'class="skip-link" href="p/1#main"' in html
 
 
 def test_og_url_only_with_known_base_url(data_dir):
     assert "og:url" not in built(data_dir)["p/1.html"]
     (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
     html = bp.build(data_dir)["p/1.html"]
-    assert '<link rel="canonical" href="https://example.test/p/1.html">' in html
+    assert '<link rel="canonical" href="https://example.test/p/1">' in html
     pages = bp.build(data_dir)
-    assert "<loc>https://example.test/v/1.html</loc>" in pages["sitemap.xml"]
+    assert "<loc>https://example.test/v/1</loc>" in pages["sitemap.xml"]
     assert "<loc>https://example.test/</loc>" in pages["sitemap.xml"]
     assert "index.html</loc>" not in pages["sitemap.xml"]
     assert pages["robots.txt"].endswith("Sitemap: https://example.test/sitemap.xml\n")
@@ -129,19 +129,19 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     first = home["votes"][0]
     assert html.count('class="hm-seat"') == len(first["ppl"])
     assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
-    assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
+    assert 'href="p/1"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
     assert "<dt>4</dt><dd>jmenovitých hlasování od" in html and "1 z 2 jednotně" in html and "1 hlasování" in html
     assert "Z posledního zasedání" in html and 'id="hm-mosaic"' in html  # B6 místo „Tři cesty do dat“
     for href in (
-        "poslanci.html",
-        "hlasovani.html",
-        "prace.html",
-        "party.html",
-        "temata.html",
-        "rozkol.html",
-        "rozhodujici.html",
-        "shoda.html",
-        "o-projektu.html#metodika",
+        "poslanci",
+        "hlasovani",
+        "prace",
+        "party",
+        "temata",
+        "rozkol",
+        "rozhodujici",
+        "shoda",
+        "o-projektu#metodika",
     ):
         assert f'href="{href}"' in html
     assert "row-no" not in html and "home-door" not in html  # bez číslování a bez starých dveří
@@ -159,7 +159,7 @@ def test_blocks_for_manual_pages(data_dir, tmp_path):
     assert "Kdo jsou čeští poslanci" in mep and 'class="hub-strip heads-strip"' in mep
     votes = (tmp_path / "hlasovani.html").read_text(encoding="utf-8")
     assert "Co se naposledy odhlasovalo" in votes and "Nejnovější zákony" in votes and "Češi proti výsledku" in votes
-    assert "<h1>Jmenovitá hlasování</h1>" in votes and 'href="votes.html"' in votes
+    assert "<h1>Jmenovitá hlasování</h1>" in votes and 'href="votes"' in votes
     assert "<!--sync:agenda-->\n\n<!--/sync:agenda-->" in votes  # bez programu žádný prázdný blok
 
 
@@ -210,8 +210,8 @@ def test_topic_chips_markup_and_empty():
     assert bp.topic_chips([]) == "" and bp.topic_chips(None) == "" and bp.topic_chips(["neznámé"]) == ""
     html = bp.topic_chips(["env", "tra", "fin"], 1, True, "7", "../")
     assert html.count('class="topic-chip"') == 3  # 1 viditelný + 2 v popoveru
-    assert 'href="../votes.html?c=env"' in html and 'popovertarget="tc-7"' in html and ">+2<" in html
-    assert 'href="../o-projektu.html#tema-hlasovani"' in html and "<svg" in html
+    assert 'href="../votes?c=env"' in html and 'popovertarget="tc-7"' in html and ">+2<" in html
+    assert 'href="../o-projektu#tema-hlasovani"' in html and "<svg" in html
     assert 'class="info-btn"' not in html and 'class="info-btn"' in bp.topic_chips(["env"], info=True)
     assert bp.topic_text(["env", "tra"]) == "Klima, příroda a energie (+1)" and bp.topic_text([]) == ""
 
@@ -267,10 +267,10 @@ def test_feed_and_sitemap_lastmod(data_dir):
     pages = bp.build(data_dir)
     feed = pages["feed.xml"]
     assert feed.startswith("<?xml") and 'xmlns="http://www.w3.org/2005/Atom"' in feed
-    assert feed.count("<entry>") == 2 and "<id>https://example.test/v/3.html</id>" in feed  # závěrečná 1 a 3, nejnovější první
-    assert feed.index("v/3.html") < feed.index("v/1.html") and "<updated>2024-10-16T12:00:00Z</updated>" in feed
+    assert feed.count("<entry>") == 2 and "<id>https://example.test/v/3</id>" in feed  # závěrečná 1 a 3, nejnovější první
+    assert feed.index("v/3<") < feed.index("v/1<") and "<updated>2024-10-16T12:00:00Z</updated>" in feed
     assert "Zdroj: HowTheyVote.eu" in feed
-    assert "<loc>https://example.test/v/1.html</loc><lastmod>2024-09-16</lastmod>" in pages["sitemap.xml"]
+    assert "<loc>https://example.test/v/1</loc><lastmod>2024-09-16</lastmod>" in pages["sitemap.xml"]
     assert bp.build(data_dir)["feed.xml"] == feed  # deterministický
 
 
@@ -354,7 +354,7 @@ def test_next_session_block():
     html = hub.next_session_html(agenda)
     assert 'data-from="2026-10-19"' in html and 'data-to="2026-10-22"' in html
     assert "MOCK DPH" in html and "MOCK jiný" not in html  # na úvodu jen výběr
-    assert html.count('class="cz-badge"') == 1 and 'href="p/1.html"' in html
+    assert html.count('class="cz-badge"') == 1 and 'href="p/1"' in html
     assert "data.europarl.europa.eu" in html  # zdroj
     full = hub.next_session_html(agenda, full=True)
     assert "MOCK jiný" in full
@@ -422,8 +422,8 @@ def test_radar_page_html():
     assert 'id="rd-cat"' in html and '<option value="env">' in html
     assert 'data-cat="fin" data-leg="1" data-cz="0"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html
     assert html.count('aria-current="step"') == 2 and "Datum hlasování v plénu zatím nezveřejněno" in html
-    assert 'href="v/99.html"' in html and 'class="cz-badge"' in html and "U 3 procedur" in html
-    assert 'data-from="2026-10-19"' in html and "o-projektu.html#radar" in html
+    assert 'href="v/99"' in html and 'class="cz-badge"' in html and "U 3 procedur" in html
+    assert 'data-from="2026-10-19"' in html and "o-projektu#radar" in html
     assert "zatím nejsou" in hub.radar_html(None)
     empty = hub.radar_html({"categories": [], "session": None, "active": [], "done": [], "without_events": 0})
     assert "Program zatím není zveřejněný" in empty and "Žádné takové procedury" in empty
@@ -452,4 +452,4 @@ def test_radar_proc_card_links_to_procedure_story():
         "next_vote": None,
     }
     html = radar_proc_card(row, "")
-    assert 'href="z/2023-0447-COD.html"' in html and "oeil.example" not in html
+    assert 'href="z/2023-0447-COD"' in html and "oeil.example" not in html

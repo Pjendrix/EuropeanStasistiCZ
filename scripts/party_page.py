@@ -72,7 +72,7 @@ def reports_html(r: dict | None, meps_by_id: dict) -> str:
         title = x.get("title_cs") or x.get("label") or "zpráva"
         title = f"{title[:157]}…" if len(title) > 160 else title
         status = (
-            f'<a href="v/{x["vote_id"]}.html">{REPORT_STATUS.get(x.get("status"), "hlasování")}</a>'
+            f'<a href="v/{x["vote_id"]}">{REPORT_STATUS.get(x.get("status"), "hlasování")}</a>'
             if x.get("vote_id")
             else REPORT_STATUS.get(x.get("status"), "stav neuveden")
         )
@@ -96,7 +96,7 @@ def reports_html(r: dict | None, meps_by_id: dict) -> str:
     return (
         f'<h2>Zprávy, které vedli poslanci strany</h2><p class="muted">{lead}{shadow}. Strana k datu zprávy.</p>'
         + (f'<div class="card"><ul class="plain">{items}</ul></div>' if items else "")
-        + f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0){updated} · <a href="prace.html">Práce poslanců</a></p>'
+        + f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0){updated} · <a href="prace">Práce poslanců</a></p>'
     )
 
 
@@ -118,7 +118,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
             else empty_state(
                 "Poslanci strany se v žádném takovém hlasování nerozdělili.",
                 "Zkuste zrušit filtr „jen závěrečná“.",
-                [("votes.html", "Všechna hlasování")],
+                [("votes", "Všechna hlasování")],
             )
         )
         return f'<div class="split-list" data-main="{"1" if only_main else "0"}"{" hidden" if only_main else ""}>{inner}</div>'
@@ -142,7 +142,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
 <div class="controls"><label><input type="checkbox" id="split-main"> jen závěrečná hlasování</label></div>
 <div id="splits">{split_list(pp["splits"], False)}{split_list(pp["splits_main"], True)}</div>"""
     )
-    body = f"""<div class="back-row"><p class="small"><a href="party.html">← Všechny strany</a></p>{share_button}</div>
+    body = f"""<div class="back-row"><p class="small"><a href="party">← Všechny strany</a></p>{share_button}</div>
 {f'<div class="logo-row">{logo_tile(pp, 48)}</div>' if pp.get("logo") else ""}
 <h1>{esc(name)} {party_badge(pp["id"], pp["short_label"], parties)}</h1>
 
@@ -172,7 +172,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
     )
     share = {
         "kind": "party",
-        "path": f"s/{pp['id']}.html",
+        "path": f"s/{pp['id']}",
         "filename": f"ep-watch-strana-{pp['id']}",
         "subtitle": f"Strana · {pp['short_label']}",
         "cite": ""

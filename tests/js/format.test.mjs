@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
-  esc, fmtDate, fmtMonth, fmtPct, highlight, isStale, matchesAll, mepsCount, norm, pct, procedureUrl, resultSentence,
+  esc, fmtDate, fmtMonth, fmtPct, highlight, isStale, matchesAll, mepsCount, norm, pagePath, pct, procedureUrl, resultSentence,
   resultText, searchTerms, sessionCountdown, siteUrl,
 } from "../../public/lib/format.js";
 
@@ -47,14 +47,18 @@ test("highlight zvýrazní shodu i s diakritikou a escapuje", () => {
 });
 
 test("procedureUrl jen pro platné číslo procedury", () => {
-  assert.equal(procedureUrl("2023/0447(COD)"), "z/2023-0447-COD.html");
-  assert.equal(procedureUrl("2023/0447(COD)", "../"), "../z/2023-0447-COD.html");
+  assert.equal(procedureUrl("2023/0447(COD)"), "z/2023-0447-COD");
+  assert.equal(procedureUrl("2023/0447(COD)", "../"), "../z/2023-0447-COD");
   assert.equal(procedureUrl("<script>"), null);
   assert.equal(procedureUrl(null), null);
 });
 
-test("siteUrl na veřejné doméně", () => {
-  assert.equal(siteUrl("/v/1.html"), "https://epwatch.cz/v/1.html");
+test("siteUrl na veřejné doméně, adresa stránky bez .html (cleanUrls)", () => {
+  assert.equal(siteUrl("/v/1.html"), "https://epwatch.cz/v/1");
+  assert.equal(siteUrl("rozkol.html?v=last_session"), "https://epwatch.cz/rozkol?v=last_session");
+  assert.equal(siteUrl("index.html"), "https://epwatch.cz/");
+  assert.equal(siteUrl("data/home.json"), "https://epwatch.cz/data/home.json");
+  assert.equal(pagePath("o-projektu.html#kontakt"), "o-projektu#kontakt");
 });
 
 test("výsledek u návrhu na zamítnutí a námitky", () => {

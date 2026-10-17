@@ -20,6 +20,8 @@ import sys
 from html import escape
 from pathlib import Path
 
+from web_ui import page_path
+
 REPO = "https://github.com/Pjendrix/ep-watch-cz-open"
 INSTAGRAM = "https://www.instagram.com/epwatch.cz/"  # jediné místo s adresou profilu (hlavička, panel Více, patička, JSON-LD)
 
@@ -55,12 +57,12 @@ BRAND_MARK = (
 )
 
 NAV = [
-    ("poslanci.html", "meps", "Poslanci"),
-    ("party.html", "parties", "Strany"),
-    ("hlasovani.html", "votes", "Hlasování"),
-    ("prace.html", "work", "Práce poslanců"),
-    ("rozkol.html", "analyses", "Analýzy"),
-    ("o-projektu.html", "about", "O projektu"),
+    ("poslanci", "meps", "Poslanci"),
+    ("party", "parties", "Strany"),
+    ("hlasovani", "votes", "Hlasování"),
+    ("prace", "work", "Práce poslanců"),
+    ("rozkol", "analyses", "Analýzy"),
+    ("o-projektu", "about", "O projektu"),
 ]
 
 INSTAGRAM_ICON = (
@@ -80,7 +82,7 @@ SEARCH_ICON = (
 )
 # Hledání v liště (B2): bez JS odkaz na Poslance, s JS otevře dialog s našeptávačem (app.js, lib/search.js).
 SEARCH_BUTTON = (
-    '<a class="search-btn" href="{root}poslanci.html" aria-label="Hledat poslance, stranu nebo hlasování" aria-haspopup="dialog">'
+    '<a class="search-btn" href="{root}poslanci" aria-label="Hledat poslance, stranu nebo hlasování" aria-haspopup="dialog">'
     + SEARCH_ICON
     + '<span class="search-txt" aria-hidden="true">Hledat</span><kbd aria-hidden="true">/</kbd></a>'
 )
@@ -102,36 +104,37 @@ TAB_ICONS = {
     "more": _I.format('<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>'),
 }
 TABS = [
-    ("poslanci.html", "meps", "Poslanci"),
-    ("party.html", "parties", "Strany"),
-    ("hlasovani.html", "votes", "Hlasování"),
-    ("prace.html", "work", "Práce"),
+    ("poslanci", "meps", "Poslanci"),
+    ("party", "parties", "Strany"),
+    ("hlasovani", "votes", "Hlasování"),
+    ("prace", "work", "Práce"),
 ]
 MORE_PAGES = ("analyses", "about")
 SHEET = [
     (
         "Analýzy",
         [
-            ("rozkol.html", "Kde se Češi rozdělili"),
-            ("rozhodujici.html", "Kde rozhodly české hlasy"),
-            ("shoda.html", "Shoda mezi Čechy"),
-            ("moje-shoda.html", "Moje shoda s poslanci"),
+            ("rozkol", "Kde se Češi rozdělili"),
+            ("rozhodujici", "Kde rozhodly české hlasy"),
+            ("shoda", "Shoda mezi Čechy"),
+            ("moje-shoda", "Moje shoda s poslanci"),
         ],
     ),
     (
         "Hlasování a strany",
         [
-            ("votes.html", "Všechna hlasování"),
-            ("temata.html", "Hlasování podle témat"),
-            ("party.html?v=eu", "Evropské frakce"),
-            ("prace-poslanci.html", "Práce po poslancích"),
+            ("votes", "Všechna hlasování"),
+            ("radar", "Co se chystá"),
+            ("temata", "Hlasování podle témat"),
+            ("party?v=eu", "Evropské frakce"),
+            ("prace-poslanci", "Práce po poslancích"),
         ],
     ),
     (
         "Projekt",
         [
-            ("o-projektu.html", "O projektu a metodika"),
-            ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby"),
+            ("o-projektu", "O projektu a metodika"),
+            ("o-projektu#kontakt", "Kontakt a nahlášení chyby"),
             (INSTAGRAM, "Instagram @epwatch.cz"),
         ],
     ),
@@ -194,7 +197,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
     return (
         f'<a class="skip-link" href="{skip_href}">Přejít na obsah</a>\n'
         f'<header class="site-header"><div class="inner">\n'
-        f'  <a class="brand" href="{root}index.html">{BRAND_MARK}{BRAND_TEXT}</a>\n'
+        f'  <a class="brand" href="{root or "./"}">{BRAND_MARK}{BRAND_TEXT}</a>\n'
         f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
         f"  {SEARCH_BUTTON.format(root=root)}\n"
         f"  {INSTAGRAM_LINK}\n"
@@ -211,7 +214,7 @@ def footer(root: str = "") -> str:
         f'<a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).\n'
         f"  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.\n"
         f"  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.\n"
-        f'  <a href="{root}o-projektu.html">O projektu</a> · <a href="{root}o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · '
+        f'  <a href="{root}o-projektu">O projektu</a> · <a href="{root}o-projektu#kontakt">Kontakt a nahlášení chyby</a> · '
         f'<a href="{REPO}">výpočty na GitHubu</a> · <a href="{INSTAGRAM}" rel="me noopener">Instagram</a>.\n'
         f"</div></footer>"
     )
@@ -235,7 +238,7 @@ def page(
     desc = f'<meta name="description" content="{escape(description)}">\n' if description else ""
     root_attr = f' data-root="{root}"' if root else ""
     base_tag = f'<base href="{base}">\n' if base else ""
-    skip = f"{path}#main" if base and path else "#main"
+    skip = f"{page_path(path)}#main" if base and path else "#main"
     attrs = f" {main_attrs}" if main_attrs else ""
     return version_assets(
         f'<!doctype html>\n<html lang="cs"{root_attr}>\n<head>\n<meta charset="utf-8">\n'

@@ -27,7 +27,7 @@ setNav("decisive");
     document.getElementById("source").innerHTML = sourceLine(d);
     // Sdílet pohled: prvních pár hlasování ve stejném pořadí jako na stránce.
     const day = overview.sources?.votes?.release || overview.period.to;
-    const url = siteUrl("rozhodujici.html");
+    const url = siteUrl("rozhodujici");
     window.shareContext = () => ({
       kind: "split", url, filename: "ep-watch-rozhodujici", subtitle: "Kde rozhodly české hlasy",
       trust: "Karta ukazuje jen první řádky seznamu. Datum dat, zdroj a adresa jsou na ní.",
@@ -48,7 +48,7 @@ setNav("decisive");
       const c = v.counts;
       return `<div class="card list-card">
         <div class="small muted">${fmtDate(v.date)} ${kindTag(v)}</div>
-        <a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+        <a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
         <div class="small muted">${esc(voteSubtitle(v))}</div>
         <p class="small">Výsledek: <span class="result-${v.result}">${resultHtml(v)}</span>
           (${c.for} pro : ${c.against} proti, rozdíl ${Math.abs(c.for - c.against)}).

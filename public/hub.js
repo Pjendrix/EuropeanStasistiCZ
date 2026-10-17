@@ -53,7 +53,7 @@ function renderVote(i) {
     leg.innerHTML = v.leg;
     document.getElementById("hm-idx").textContent = `${i + 1} / ${HOME.votes.length}`;
     const more = document.getElementById("hm-more");
-    more.href = `v/${v.id}.html`;
+    more.href = `v/${v.id}`;
     more.setAttribute("aria-label", `Detail hlasování: ${v.title}`);
     document.getElementById("hm-prev").disabled = i === 0;
     document.getElementById("hm-next").disabled = i === HOME.votes.length - 1;

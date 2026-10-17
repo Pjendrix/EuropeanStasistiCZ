@@ -34,7 +34,7 @@ def test_trace_row_roles_order_and_more():
     # zpravodaj první, pak stínoví abecedně; nejvýš dva, zbytek „a další 1“ s odkazem na detail
     assert html.index("A První") < html.index("B Druhá") and "C Třetí" not in html
     assert "<b>Zpravodaj:</b> A První (EPP)" in html and "<b>Stínová zpravodajka:</b> B Druhá (ECR)" in html
-    assert 'href="p/1.html"' in html and "thumbs/1.webp" in html and 'href="v/9.html#ceska-stopa">a další 1<' in html
+    assert 'href="p/1"' in html and "thumbs/1.webp" in html and 'href="v/9#ceska-stopa">a další 1<' in html
 
 
 def test_no_trace_no_row():
