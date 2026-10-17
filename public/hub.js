@@ -1,11 +1,11 @@
-// Úvodní stránka (index.html, generuje scripts/hub.py z data/home.json). Statický obsah funguje i bez tohoto skriptu:
-// hemicykl ukazuje poslední závěrečné hlasování, hledání odešle formulář na Poslance. Skript přidá přepínání pěti
-// nejnovějších závěrečných hlasování, tooltip u teček, našeptávač hledání a sdílení hlasování z hera.
-import { combobox } from "./lib/search.js";
+// Stránka Aktuálně (aktualne.html, generuje scripts/hub.py z data/home.json). Statický obsah funguje i bez tohoto skriptu:
+// hemicykl ukazuje poslední závěrečné hlasování. Skript přidá přepínání pěti nejnovějších závěrečných hlasování,
+// tooltip u teček a sdílení hlasování z hera. Hledání je v liště (app.js), pole v heru má jen rozcestník (portal.js).
 import { esc, fmtDate, todayCZ, withShareUrl } from "./lib/format.js";
+import { paintSeats, rovingSeats } from "./lib/hemi.js";
 import { setNav } from "./lib/ui.js";
 
-setNav("");
+setNav("now");
 
 const HOME = JSON.parse(document.getElementById("home-data")?.textContent || "null");
 const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -40,11 +40,7 @@ function renderVote(i) {
   if (!HOME) return;
   vi = i;
   const v = HOME.votes[i];
-  seats.forEach((a) => {
-    a.dataset.pos = v.pos[a.dataset.id] || "X";
-    a.dataset.party = v.party[a.dataset.id] || "";
-    a.setAttribute("aria-label", `${HOME.names[a.dataset.id] || ""}, ${a.dataset.party}: ${HOME.pos_txt[a.dataset.pos] || ""}`);
-  });
+  paintSeats(seats, v, { names: HOME.names, posTxt: HOME.pos_txt, party: v.party });
   // Číslo „pro : proti“ je <text> ve stejném SVG jako tečky (hub.py hemi_number), obsah i velikost připravil build.
   const big = document.getElementById("hm-big");
   big.innerHTML = v.num[0];
@@ -106,17 +102,7 @@ if (HOME && hemi) {
     seats.forEach((s) => s.classList.toggle("mate", s.dataset.party === a.dataset.party));
   };
   const hide = () => { tip.classList.remove("on"); hemi.classList.remove("dim"); };
-  // Roving tabindex: půlkruh je jedna zastávka tabulátoru, mezi sedadly šipky, Home/End na kraj.
-  hemi.addEventListener("keydown", (ev) => {
-    const cur = seats.indexOf(ev.target.closest(".hm-seat"));
-    if (cur < 0) return;
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
-    const next = ev.key === "Home" ? 0 : ev.key === "End" ? seats.length - 1 : step ? Math.min(seats.length - 1, Math.max(0, cur + step)) : -1;
-    if (next < 0) return;
-    ev.preventDefault();
-    seats.forEach((s, k) => s.setAttribute("tabindex", k === next ? "0" : "-1"));
-    seats[next].focus();
-  });
+  rovingSeats(hemi, seats);
   seats.forEach((a) => {
     a.addEventListener("pointerenter", () => show(a));
     a.addEventListener("pointerleave", hide);
@@ -138,8 +124,3 @@ if (mosaic) {
   mosaic.addEventListener("pointerleave", () => { mcap.textContent = ""; });
   mosaic.addEventListener("focusout", () => { mcap.textContent = ""; });
 }
-
-// --- hledání v heru: stejný našeptávač jako v liště (lib/search.js); klávesu „/“ obsluhuje app.js -----------------
-const q = document.getElementById("hub-q");
-const list = document.getElementById("hub-results");
-if (q && list) combobox(q, list, "hub");
