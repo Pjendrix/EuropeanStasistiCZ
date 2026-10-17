@@ -4,7 +4,7 @@ Z design/tokens.json se vygeneruje:
   - blok :root ve public/style.css (mezi značkami tokens:start / tokens:end): barvy světlého a tmavého režimu jako
     light-dark(světlá, tmavá), pro hodnoty, které nejsou barvy (stín, sytost tabulky shody), krátký tmavý přepis,
     a záložní blok pro prohlížeče bez light-dark() (před rokem 2024),
-  - řádek konstant SC v public/share.js (barvy obrázků ke sdílení, vždy tmavý podklad).
+  - řádek konstant SC_THEMES v public/share.js (barvy obrázků ke sdílení: tmavá karta z „card“, světlá z „card_light“).
 build_cards.py čte design/tokens.json přímo (card_rgb).
 
 Použití:
@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TOKENS = ROOT / "design" / "tokens.json"
 START, END = "/* tokens:start", "/* tokens:end */"
-SC_RE = re.compile(r"^const SC = \{.*?\};$", re.M | re.S)
+SC_RE = re.compile(r"^const SC_THEMES = \{.*?\};$", re.M | re.S)
 DARK = ':root[data-theme="dark"]'
 DARK_AUTO = '@media (prefers-color-scheme: dark) {{ :root:not([data-theme="light"]) {{ {} }} }}'
 
@@ -72,10 +72,12 @@ def css_block(t: dict) -> str:
 
 
 def sc_line(t: dict) -> str:
-    """Konstanty barev pro obrázky ke sdílení v share.js."""
-    c = t["card"]
-    items = ", ".join(f'{k}: "{v}"' for k, v in c.items())
-    return f"const SC = {{ {items} }};"
+    """Konstanty barev pro obrázky ke sdílení v share.js: tmavá a světlá karta se stejnými rolemi."""
+
+    def obj(c: dict) -> str:
+        return "{ " + ", ".join(f'{k}: "{v}"' for k, v in c.items() if k != "note") + " }"
+
+    return f"const SC_THEMES = {{ dark: {obj(t['card'])}, light: {obj(t['card_light'])} }};"
 
 
 def card_rgb(t: dict | None = None) -> dict[str, tuple[int, int, int]]:
@@ -93,7 +95,7 @@ def sync_css(css: str, t: dict) -> str:
 
 def sync_share(js: str, t: dict) -> str:
     if len(SC_RE.findall(js)) != 1:
-        raise ValueError("share.js nemá právě jeden řádek const SC = {…};")
+        raise ValueError("share.js nemá právě jeden řádek const SC_THEMES = {…};")
     return SC_RE.sub(lambda _: sc_line(t), js)
 
 

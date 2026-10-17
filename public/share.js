@@ -4,7 +4,7 @@
 //
 // Pravidla karty: každá karta má datum, zdroj a adresu; u poslance vždy medián EP; žádné pořadí, žádné hodnocení barvou,
 // žádná loga stran ani frakcí (jen zkratka a tečka); portrét s popiskem „© European Union – Source: EP“.
-// Exporty (…Ops, SHARE_FORMATS, measureText) jsou jen pro e2e test karet; stránky share.js neimportují.
+// Exporty (…Ops, SHARE_FORMATS, measureText, renderCardPng, useCardTheme) jsou jen pro e2e test karet; stránky share.js neimportují.
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 import { citeText, getJSON } from "./lib/data.js";
 import { SHARE_KEYS } from "./lib/ui.js";
@@ -14,8 +14,15 @@ const SHARE_ROOT = new URL(".", import.meta.url).href;
 
 export const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
   slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
-const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155" };
-const SC_POS = { FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent };
+// Barvy karty podle role (design/tokens.json → python scripts/tokens.py): tmavá = dosavadní karta, světlá = volba „Vzhled“.
+const SC_THEMES = { dark: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155", text: "#F8FAFC", accent: "#F59E0B", bg0: "#0F172A", bg1: "#0A1226", line: "#334155", rowLine: "#1E293B", chip: "#1E293B", chipLine: "#475569", tile: "#16213A", tileLine: "#16213A", silhouette: "#475569", glyph: "#0A1226", pillOk: "#F8FAFC", pillOkText: "#0F172A", pillNo: "#334155", pillNoText: "#F8FAFC" }, light: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#64748B", soft: "#334155", gold: "#F59E0B", for: "#2AA560", against: "#9F1D2B", abst: "#64748B", absent: "#8092AB", track: "#E2E8F0", text: "#0F172A", accent: "#B45309", bg0: "#F8FAFC", bg1: "#F8FAFC", line: "#E2E8F0", rowLine: "#E2E8F0", chip: "#EEF2F7", chipLine: "#CBD5E1", tile: "#FFFFFF", tileLine: "#E2E8F0", silhouette: "#94A3B8", glyph: "#FFFFFF", pillOk: "#0F172A", pillOkText: "#FFFFFF", pillNo: "#475569", pillNoText: "#FFFFFF" } };
+// Hlavička karty (logo, datum, téma) je v obou variantách modrá jako hlavička webu.
+const BAND = { glow: "#1E3A8A", navy: "#0F172A", navy2: "#0A1226", text: "#F8FAFC", soft: "#CBD5E1", chip: "rgba(248, 250, 252, .12)", chipLine: "rgba(248, 250, 252, .26)" };
+export const CARD_THEMES = ["dark", "light"];
+let THEME = "dark", SC = SC_THEMES.dark;
+// Vzhled pro kreslicí funkce: renderCardPng ho nastaví před kreslením (e2e test kreslí obě varianty).
+export function useCardTheme(name) { THEME = SC_THEMES[name] ? name : "dark"; SC = SC_THEMES[THEME]; return SC; }
+const scPos = (k) => ({ FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent })[k];
 const SC_FONT = '"Plus Jakarta Sans", system-ui, sans-serif';
 
 let _measureCtx = null;
@@ -55,26 +62,38 @@ const LINE = (x1, y1, x2, y2, stroke, sw) => ({ k: "line", x1, y1, x2, y2, strok
 // Tečka hlasu se symbolem uvnitř (✓ pro, ✕ proti, – zdržel se, kroužek nehlasoval): barva + tvar, aby karta fungovala i při poruše barvocitu.
 function POSDOT(cx, cy, r, pos) {
   if (pos === "DID_NOT_VOTE") return [CIRC(cx, cy, r - 2, null, SC.absent, 3)];
-  const g = SC.navy2, sw = Math.max(2, r * 0.24), k = r;
+  const g = SC.glyph, sw = Math.max(2, r * 0.24), k = r;
   const sym = pos === "FOR" ? [LINE(cx - 0.42 * k, cy + 0.04 * k, cx - 0.12 * k, cy + 0.34 * k, g, sw), LINE(cx - 0.12 * k, cy + 0.34 * k, cx + 0.44 * k, cy - 0.32 * k, g, sw)]
     : pos === "AGAINST" ? [LINE(cx - 0.34 * k, cy - 0.34 * k, cx + 0.34 * k, cy + 0.34 * k, g, sw), LINE(cx + 0.34 * k, cy - 0.34 * k, cx - 0.34 * k, cy + 0.34 * k, g, sw)]
     : [LINE(cx - 0.4 * k, cy, cx + 0.4 * k, cy, g, sw)];
-  return [CIRC(cx, cy, r, SC_POS[pos]), ...sym];
+  return [CIRC(cx, cy, r, scPos(pos)), ...sym];
 }
 const shift = (ops, dy) => ops.map((o) => ({ ...o, ...("y" in o ? { y: o.y + dy } : {}), ...("y1" in o ? { y1: o.y1 + dy, y2: o.y2 + dy } : {}) }));
 
 let _symbolImg = null; // symbol loga (assets/brand/symbol-white.svg), načte se před kreslením
 
-function shareHeader(right) {
-  const x = 72 + 102 + 18;
-  return [...(_symbolImg ? [{ k: "image", img: _symbolImg, x: 72, y: 66, w: 102, h: 78, r: 0 }] : []),
-    T(x, 118, "EP", 38, 800, SC.white), T(x + measureText("EP", 38, 800), 118, " Watch ", 38, 400, SC.white),
-    T(x + measureText("EP", 38, 800) + measureText(" Watch ", 38, 400), 118, "CZ", 38, 800, SC.white), T(1008, 112, right, 26, 500, SC.soft, "right")];
+// Modrá hlavička karty (obě varianty): logo, vpravo datum, pod tím čipy (téma, česká stopa). Vrací ops a výšku pásu.
+const bandHeight = (chips) => (chips && chips.length ? 206 : 150);
+function shareHeader(right, chips = []) {
+  const bh = bandHeight(chips), x = 72 + 84 + 16, base = 98;
+  const ops = [{ k: "band", x: 0, y: 0, w: 1080, h: bh }, LINE(0, bh, 1080, bh, SC.line, 2),
+    ...(_symbolImg ? [{ k: "image", img: _symbolImg, x: 72, y: 52, w: 84, h: 64, r: 0 }] : []),
+    T(x, base, "EP", 34, 800, BAND.text), T(x + measureText("EP", 34, 800), base, " Watch ", 34, 400, BAND.text),
+    T(x + measureText("EP", 34, 800) + measureText(" Watch ", 34, 400), base, "CZ", 34, 800, BAND.text), T(1008, base - 4, right, 24, 500, BAND.soft, "right")];
+  let cx = 72;
+  chips.forEach((c, i) => {
+    const room = 936 - (cx - 72) - (i < chips.length - 1 ? 260 : 0);
+    const s = fitText(c.label, c.strong ? 22 : 24, c.strong ? 800 : 700, room - 40), tw = measureText(s, c.strong ? 22 : 24, c.strong ? 800 : 700);
+    ops.push(c.strong ? RECT(cx, 140, tw + 40, 44, 22, BAND.text) : RECT(cx, 140, tw + 40, 44, 22, BAND.chip, BAND.chipLine, 2),
+      T(cx + 20, 170, s, c.strong ? 22 : 24, c.strong ? 800 : 700, c.strong ? BAND.navy : BAND.text));
+    cx += tw + 56;
+  });
+  return ops;
 }
 
 function shareFooter(H, left, url) {
-  return [LINE(72, H - 128, 1008, H - 128, "#334155", 2), T(72, H - 88, fitText(left, 22, 500, 936), 22, 500, SC.muted),
-    ...(url ? [T(72, H - 52, fitText(url, 24, 700, 936), 24, 700, SC.soft)] : [])];
+  return [LINE(72, H - 128, 1008, H - 128, SC.line, 2), T(72, H - 88, fitText(left, 22, 500, 936), 22, 500, SC.muted),
+    ...(url ? [T(72, H - 52, fitText(url, 24, 700, 936), 24, 700, SC.text)] : [])];
 }
 
 function barOps(x, y, w, h, counts) {
@@ -83,7 +102,7 @@ function barOps(x, y, w, h, counts) {
   const out = [];
   ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].forEach((pos, i) => {
     const seg = Math.round((w * counts[i]) / total);
-    if (counts[i] && seg) out.push(RECT(cx, y, Math.max(seg - 3, 2), h, 4, SC_POS[pos]));
+    if (counts[i] && seg) out.push(RECT(cx, y, Math.max(seg - 3, 2), h, 4, scPos(pos)));
     cx += seg;
   });
   return out;
@@ -95,87 +114,75 @@ const SHARE_SHORT = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdrž.", DID_NO
 const partySummary = (positions) => SHARE_KEYS.map((k) => [positions.filter((p) => p === k).length, SHARE_SHORT[k]]).filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(" · ");
 
 // Karta hlasování (S5): název, výsledek větou, celý EP, Češi po stranách (barva tečky = hlas). Obsah vystředěný mezi hlavičkou a patičkou.
+// Téma a štítek „česká stopa“ (d.trace: zpravodaj nebo stínový zpravodaj z ČR) jsou v modré hlavičce; bez nich se řádek vynechá.
 export function voteCardOps(d, f) {
   const H = f.h, story = f.h > 1500;
+  const chips = [...(d.topic ? [{ label: d.topic }] : []), ...(d.trace ? [{ label: "ČESKÁ STOPA", strong: true }] : [])];
   const ops = [];
   let y = 0;
-  // Téma (stejná data jako čip v seznamu hlasování): jeden čip nad názvem, další jen jako „+N“; bez tématu se řádek vynechá.
-  // Vedle tématu štítek „česká stopa“ (d.trace: zpravodaj nebo stínový zpravodaj z ČR), jen když záznam existuje.
-  if (d.topic || d.trace) {
-    let x = 72;
-    if (d.topic) {
-      const t = fitText(d.topic, 26, 700, d.trace ? 660 : 900), tw = measureText(t, 26, 700);
-      ops.push(RECT(x, y, tw + 40, 46, 23, "#1E293B", "#475569", 2), T(x + 20, y + 32, t, 26, 700, SC.white));
-      x += tw + 56;
-    }
-    if (d.trace) {
-      const t = "ČESKÁ STOPA", tw = measureText(t, 24, 800);
-      ops.push(RECT(x, y, tw + 40, 46, 23, SC.white), T(x + 20, y + 32, t, 24, 800, SC.navy));
-    }
-    y += 66;
-  }
-  const title = wrapText(d.title, 58, 700, 936, 3);
-  title.forEach((l, i) => ops.push(T(72, y + 58 + i * 68, l, 58, 700, SC.white)));
-  y += title.length * 68 + 14;
+  const title = wrapText(d.title, 54, 800, 936, 3);
+  title.forEach((l, i) => ops.push(T(72, y + 54 + i * 60, l, 54, 800, SC.text)));
+  y += title.length * 60 + 10;
   if (d.subtitle) {
-    const sub = wrapText(d.subtitle, 28, 500, 936, 2);
-    sub.forEach((l, i) => ops.push(T(72, y + 28 + i * 38, l, 28, 500, SC.soft)));
-    y += sub.length * 38 + 10;
+    const sub = wrapText(d.subtitle, 26, 500, 936, 2);
+    sub.forEach((l, i) => ops.push(T(72, y + 26 + i * 34, l, 26, 500, SC.muted)));
+    y += sub.length * 34 + 6;
   }
-  y += 22;
+  y += 18;
   const ok = d.result === "ADOPTED";
   const pill = (d.resultLabel || "").toUpperCase();
   const icon = ok || d.result === "REJECTED" ? 34 : 0;
   const pw = measureText(pill, 26, 800) + 44 + icon;
-  const fg = ok ? SC.navy : SC.white;
-  ops.push(RECT(72, y, pw, 52, 26, ok ? SC.white : "#334155"));
+  const fg = ok ? SC.pillOkText : SC.pillNoText;
+  ops.push(RECT(72, y, pw, 50, 25, ok ? SC.pillOk : SC.pillNo));
   if (icon) {   // ✓ / ✕ kreslené čarami (písmo ikonu nemusí mít)
-    const cx = 72 + 34, cy = y + 26;
+    const cx = 72 + 34, cy = y + 25;
     if (ok) ops.push(LINE(cx - 9, cy, cx - 2, cy + 8, fg, 4), LINE(cx - 2, cy + 8, cx + 10, cy - 8, fg, 4));
     else ops.push(LINE(cx - 8, cy - 8, cx + 8, cy + 8, fg, 4), LINE(cx + 8, cy - 8, cx - 8, cy + 8, fg, 4));
   }
-  ops.push(T(72 + icon + (pw - icon) / 2 + 2, y + 36, pill, 26, 800, fg, "center"));
-  const sent = wrapText(d.sentence, 30, 600, 936 - pw - 20, 2);
-  sent.forEach((l, i) => ops.push(T(72 + pw + 20, y + 36 + i * 38, l, 30, 600, SC.white)));
-  y += Math.max(52, sent.length * 38) + 34;
-  ops.push(T(72, y + 24, fitText(`Celý EP: ${fmtNum(d.ep[0])} pro · ${fmtNum(d.ep[1])} proti · ${fmtNum(d.ep[2])} zdržel se · ${fmtNum(d.ep[3])} nehlasovalo`, 28, 500, 936), 28, 500, SC.soft),
-    ...barOps(72, y + 48, 936, 16, d.ep));
-  y += 100;
-  // Češi: souhrn s barevnými tečkami (zároveň legenda), pak mřížka stran
+  ops.push(T(72 + icon + (pw - icon) / 2 + 2, y + 35, pill, 26, 800, fg, "center"));
+  const sent = wrapText(d.sentence, 28, 600, 936 - pw - 20, 2);
+  sent.forEach((l, i) => ops.push(T(72 + pw + 20, y + 35 + i * 36, l, 28, 600, SC.text)));
+  y += Math.max(50, sent.length * 36) + 26;
+  ops.push(T(72, y + 24, fitText(`Celý EP: ${fmtNum(d.ep[0])} pro · ${fmtNum(d.ep[1])} proti · ${fmtNum(d.ep[2])} zdržel se · ${fmtNum(d.ep[3])} nehlasovalo`, 24, 500, 936), 24, 500, SC.soft),
+    ...barOps(72, y + 40, 936, 16, d.ep));
+  y += 84;
+  // Češi: souhrn s barevnými tečkami (zároveň legenda), pak mřížka stran. Na světlé kartě je text počtů tmavý
+  // (barvy hlasů na světlém podkladu nemají pro text kontrast 4,5 : 1), barvu nese tečka.
   const czTotal = SHARE_KEYS.map((k) => d.parties.reduce((n, g) => n + g.positions.filter((p) => p === k).length, 0));
-  ops.push(T(72, y + 30, "JAK HLASOVALI ČEŠI", 22, 800, SC.gold));
+  ops.push(T(72, y + 30, "JAK HLASOVALI ČEŠI", 22, 800, SC.accent));
   let lx = 1008;
   [...SHARE_KEYS].reverse().forEach((k) => {
     const n = czTotal[SHARE_KEYS.indexOf(k)];
     if (!n) return;
-    const txt = `${n} ${SHARE_SHORT[k]}`, w = measureText(txt, 30, 700);
-    ops.push(T(lx, y + 32, txt, 30, 700, k === "DID_NOT_VOTE" ? SC.soft : SC_POS[k], "right"));
+    const minor = k === "ABSTENTION" || k === "DID_NOT_VOTE";
+    const txt = `${n} ${SHARE_SHORT[k]}`, w = measureText(txt, 28, 700);
+    const color = THEME === "dark" ? (k === "DID_NOT_VOTE" ? SC.soft : scPos(k)) : minor ? SC.muted : SC.text;
+    ops.push(T(lx, y + 32, txt, 28, 700, color, "right"));
     ops.push(...POSDOT(lx - w - 22, y + 22, 13, k));
     lx -= w + 56;
   });
-  if (!d.parties.length) ops.push(T(1008, y + 32, "žádný poslanec v mandátu", 28, 600, SC.white, "right"));
-  y += 52;
-  ops.push(LINE(72, y, 1008, y, "#334155", 2));
+  if (!d.parties.length) ops.push(T(1008, y + 32, "žádný poslanec v mandátu", 28, 600, SC.text, "right"));
+  y += 50;
+  ops.push(LINE(72, y, 1008, y, SC.line, 2));
+  // Řádek strany: název, frakce a souhrn („1 proti · 5 zdrž.“) nahoře, tečky celou šířkou pod tím (vejde se i 7 a víc).
   const cols = story ? 1 : 2, colW = cols === 1 ? 936 : 448, perCol = Math.ceil(d.parties.length / cols);
-  const rowH = story ? 104 : 96;
+  const rowH = story ? 96 : 86;
   d.parties.forEach((g, i) => {
     const col = cols === 1 ? 0 : Math.floor(i / perCol), row = cols === 1 ? i : i % perCol;
     const x0 = 72 + col * (colW + 40), ry = y + row * rowH;
-    const groups = g.groups.join(" · ");
-    ops.push(T(x0, ry + 38, fitText(g.label, 30, 800, colW), 30, 800, SC.white),
-      T(x0 + measureText(g.label, 30, 800) + 12, ry + 38, fitText(groups, 20, 500, colW - measureText(g.label, 30, 800) - 12), 20, 500, SC.muted));
-    const r = 13;
-    const right = partySummary(g.positions), rw = measureText(right, 24, 500);
-    const maxDots = Math.max(Math.floor((colW - rw - 20) / (2 * r + 6)), 1);
-    g.positions.slice(0, maxDots).forEach((p, j) => {
-      const cx = x0 + r + j * (2 * r + 6), cy = ry + 64;
-      ops.push(...POSDOT(cx, cy, r, p));
-    });
-    ops.push(T(x0 + colW, ry + 72, right, 24, 500, SC.soft, "right"), LINE(x0, ry + rowH - 8, x0 + colW, ry + rowH - 8, "#1E293B", 2));
+    const right = partySummary(g.positions), rw = measureText(right, 22, 500);
+    const label = fitText(g.label, 28, 800, colW - rw - 24), lw = measureText(label, 28, 800);
+    const groups = fitText(g.groups.join(" · "), 20, 500, colW - rw - lw - 40);
+    ops.push(T(x0, ry + 36, label, 28, 800, SC.text), ...(groups ? [T(x0 + lw + 12, ry + 36, groups, 20, 500, SC.muted)] : []),
+      T(x0 + colW, ry + 36, right, 22, 500, SC.soft, "right"));
+    const r = 13, maxDots = Math.max(Math.floor(colW / (2 * r + 6)), 1);
+    g.positions.slice(0, maxDots).forEach((p, j) => ops.push(...POSDOT(x0 + r + j * (2 * r + 6), ry + 62, r, p)));
+    ops.push(LINE(x0, ry + rowH - 6, x0 + colW, ry + rowH - 6, SC.rowLine, 2));
   });
   y += perCol * rowH + 6;
-  const top = 160, bottom = H - 150;
-  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
+  const top = bandHeight(chips) + 30, bottom = H - 150;
+  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`, chips), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
     ...shareFooter(H, `Zdroj: HowTheyVote.eu (ODbL) · strana k datu hlasování · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
@@ -184,19 +191,19 @@ export function voteCardOps(d, f) {
 
 function chipOps(x, y, label, color) {
   const w = measureText(label, 28, 600) + 62;
-  return { w, ops: [RECT(x, y, w, 52, 26, "#1E293B"), CIRC(x + 28, y + 26, 8, color || SC.muted), T(x + 46, y + 36, label, 28, 600, SC.white)] };
+  return { w, ops: [RECT(x, y, w, 52, 26, SC.chip), CIRC(x + 28, y + 26, 8, color || SC.muted), T(x + 46, y + 36, label, 28, 600, SC.text)] };
 }
 
-function sectionTitle(y, s) { return T(72, y, s, 26, 800, SC.gold); }
+function sectionTitle(y, s) { return T(72, y, s, 26, 800, SC.accent); }
 
 // Metrika s posuvníkem 60–100 % (stejná osa jako benchRow na webu), mediánem a „x z y“.
 function metricOps(x, y, w, label, pair, median, medLabel) {
   const share = pair && pair[1] ? pair[0] / pair[1] : null;
   const lo = 0.6, pos = (v) => x + w * Math.min(Math.max((v - lo) / (1 - lo), 0), 1);
-  const ops = [T(x, y + 30, fitText(label, 30, 600, w), 30, 600, SC.soft), T(x, y + 120, share === null ? "–" : fmtPct(share), 90, 800, SC.white),
+  const ops = [T(x, y + 30, fitText(label, 30, 600, w), 30, 600, SC.soft), T(x, y + 120, share === null ? "–" : fmtPct(share), 90, 800, SC.text),
     RECT(x, y + 152, w, 10, 5, SC.track)];
-  if (share !== null) ops.push(CIRC(pos(share), y + 157, 14, SC.white));
-  if (median != null) ops.push(LINE(pos(median), y + 138, pos(median), y + 176, SC.gold, 6), T(x, y + 212, `${medLabel} ${fmtPct(median)}`, 28, 700, SC.gold));
+  if (share !== null) ops.push(CIRC(pos(share), y + 157, 14, SC.text));
+  if (median != null) ops.push(LINE(pos(median), y + 138, pos(median), y + 176, SC.accent, 6), T(x, y + 212, `${medLabel} ${fmtPct(median)}`, 28, 700, SC.accent));
   if (pair && pair[1]) ops.push(T(x, y + (median != null ? 248 : 212), `${fmtNum(pair[0])} z ${fmtNum(pair[1])} hlasování`, 24, 500, SC.muted));
   return ops;
 }
@@ -223,7 +230,7 @@ export function mepBasicOps(d, f) {
   const mand = d.mandate ? wrapText(d.mandate, 28, 500, nw, 2) : [];
   const blockH = nameLines.length * 80 + 24 + chipH + (mand.length ? 20 + mand.length * 38 : 0);
   let by = y0 + Math.max((ph - blockH) / 2, 0);
-  nameLines.forEach((l, i) => ops.push(T(nx, by + 62 + i * 80, l, 72, 800, SC.white)));
+  nameLines.forEach((l, i) => ops.push(T(nx, by + 62 + i * 80, l, 72, 800, SC.text)));
   by += nameLines.length * 80 + 24;
   chipRows.forEach(({ c, x, y }) => { const r = chipOps(x, by + y, c.label, c.color); ops.push(...r.ops); });
   by += chipH + 20;
@@ -246,7 +253,7 @@ function mepMiniHead(d, n) {
   if (neutral) ops.push(...neutralAvatarOps(72, 190, 104, 104, 52));
   else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 54, null, SC.gold, 4));
   const nx = d.photo || neutral ? 200 : 72;
-  ops.push(T(nx, 238, fitText(d.name, 52, 800, 700), 52, 800, SC.white),
+  ops.push(T(nx, 238, fitText(d.name, 52, 800, 700), 52, 800, SC.text),
     T(nx, 280, fitText((d.chips || []).map((c) => c.label).join(" · "), 28, 500, 700), 28, 500, SC.soft), T(1008, 252, `${n} / 3`, 30, 500, SC.muted, "right"));
   return ops;
 }
@@ -254,7 +261,7 @@ function mepMiniHead(d, n) {
 const SLIDE_FOOT = { 2: "Zdroj: HowTheyVote.eu (ODbL) · výpočet EP Watch CZ · bez pořadí a hodnocení", 3: "Zdroj: EP Open Data (CC BY 4.0) · počty, ne hodnocení kvality práce" };
 
 function tileOps(x, y, w, h, label, value, sub) {
-  const ops = [RECT(x, y, w, h, 28, "#16213A"), T(x + 28, y + 44, fitText(label, 26, 600, w - 56), 26, 600, SC.soft), T(x + 28, y + 118, value, 68, 800, SC.white)];
+  const ops = [RECT(x, y, w, h, 28, SC.tile, SC.tileLine, 2), T(x + 28, y + 44, fitText(label, 26, 600, w - 56), 26, 600, SC.soft), T(x + 28, y + 118, value, 68, 800, SC.text)];
   if (sub) wrapText(sub, 22, 500, w - 56, 2).forEach((l, i) => ops.push(T(x + 28, y + 156 + i * 28, l, 22, 500, SC.muted)));
   return ops;
 }
@@ -271,7 +278,7 @@ function mepVotingOps(d, f) {
     const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržel se", DID_NOT_VOTE: "nehlasoval" };
     SHARE_KEYS.forEach((k) => {
       const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
-      ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 30, 600, SC.white));
+      ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 30, 600, SC.text));
       lx += measureText(t, 30, 600) + 64;
     });
     y += 200;
@@ -290,8 +297,8 @@ function mepVotingOps(d, f) {
     ops.push(sectionTitle(y, "NEJČASTĚJI HLASUJE STEJNĚ JAKO"));
     d.pairwiseTop.forEach((p, i) => {
       const ry = y + 62 + i * 70;
-      ops.push(T(72, ry, fitText(`${p.name}${p.party ? ` · ${p.party}` : ""}`, 32, 600, 780), 32, 600, SC.white), T(1008, ry, fmtPct(p.share), 32, 700, SC.white, "right"),
-        LINE(72, ry + 20, 1008, ry + 20, "#334155", 2));
+      ops.push(T(72, ry, fitText(`${p.name}${p.party ? ` · ${p.party}` : ""}`, 32, 600, 780), 32, 600, SC.text), T(1008, ry, fmtPct(p.share), 32, 700, SC.text, "right"),
+        LINE(72, ry + 20, 1008, ry + 20, SC.line, 2));
     });
   }
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[2], d.urlShort)];
@@ -347,19 +354,19 @@ export function metricCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;
-  wrapText(d.context || "", 30, 700, 936, 2).forEach((l, i) => ops.push(T(72, y + 30 + i * 40, l, 30, 700, SC.gold)));
+  wrapText(d.context || "", 30, 700, 936, 2).forEach((l, i) => ops.push(T(72, y + 30 + i * 40, l, 30, 700, SC.accent)));
   y += d.context ? Math.min(2, wrapText(d.context, 30, 700, 936, 2).length) * 40 + 30 : 0;
   const lab = wrapText(d.label, 50, 800, 936, 2);
-  lab.forEach((l, i) => ops.push(T(72, y + 50 + i * 60, l, 50, 800, SC.white)));
+  lab.forEach((l, i) => ops.push(T(72, y + 50 + i * 60, l, 50, 800, SC.text)));
   y += lab.length * 60 + 20;
   const share = d.pair && d.pair[1] ? d.pair[0] / d.pair[1] : null;
-  ops.push(T(60, y + 220, share === null ? "–" : fmtPct(share), 230, 800, SC.white));
+  ops.push(T(60, y + 220, share === null ? "–" : fmtPct(share), 230, 800, SC.text));
   y += 270;
   if (d.median != null && share !== null) {
     const lo = 0.6, w = 936, pos = (v) => 72 + w * Math.min(Math.max((v - lo) / (1 - lo), 0), 1);
-    ops.push(RECT(72, y + 14, w, 12, 6, SC.track), CIRC(pos(share), y + 20, 18, SC.white),
-      LINE(pos(d.median), y - 4, pos(d.median), y + 44, SC.gold, 7),
-      T(72, y + 92, `${d.medLabel} ${fmtPct(d.median)}`, 32, 700, SC.gold), T(1008, y + 92, "osa 60–100 %", 22, 500, SC.muted, "right"));
+    ops.push(RECT(72, y + 14, w, 12, 6, SC.track), CIRC(pos(share), y + 20, 18, SC.text),
+      LINE(pos(d.median), y - 4, pos(d.median), y + 44, SC.accent, 7),
+      T(72, y + 92, `${d.medLabel} ${fmtPct(d.median)}`, 32, 700, SC.accent), T(1008, y + 92, "osa 60–100 %", 22, 500, SC.muted, "right"));
     y += 110;
   }
   if (d.pair && d.pair[1]) { ops.push(T(72, y + 40, `${fmtNum(d.pair[0])} z ${fmtNum(d.pair[1])} ${d.unit || "hlasování v době mandátu"}`, 32, 600, SC.soft)); y += 64; }
@@ -381,7 +388,7 @@ export function splitCardOps(d, f) {
   const ops = [];
   let y = 0;
   const tl = wrapText(d.title, 64, 800, 936, 2);
-  tl.forEach((l, i) => ops.push(T(72, y + 64 + i * 74, l, 64, 800, SC.white)));
+  tl.forEach((l, i) => ops.push(T(72, y + 64 + i * 74, l, 64, 800, SC.text)));
   y += tl.length * 74 + 24;
   const lead = wrapText(`${d.lead ? `${d.lead} ` : ""}Na kartě ${n === d.rows.length && n === d.total ? `všech ${n}` : `prvních ${n} z ${fmtNum(d.total ?? d.rows.length)}`}, pořadí jako na webu${d.order ? ` (${d.order})` : ""}.`, 28, 500, 936, 4);
   lead.forEach((l, i) => ops.push(T(72, y + 28 + i * 38, l, 28, 500, SC.soft)));
@@ -391,12 +398,12 @@ export function splitCardOps(d, f) {
     const sw = Math.max(measureText(r.score, 56, 800), measureText(r.scoreSub || "", 18, 500)) + 24;
     ops.push(T(72, y + 40, fitText(r.meta, 20, 600, 936 - sw), 20, 600, SC.muted));
     const tt = wrapText(r.title, 28, 700, 936 - sw, 2);
-    tt.forEach((l, i) => ops.push(T(72, y + 76 + i * 36, l, 28, 700, SC.white)));
-    ops.push(T(1008, y + 82, r.score, 56, 800, SC.white, "right"));
+    tt.forEach((l, i) => ops.push(T(72, y + 76 + i * 36, l, 28, 700, SC.text)));
+    ops.push(T(1008, y + 82, r.score, 56, 800, SC.text, "right"));
     if (r.scoreSub) ops.push(T(1008, y + 108, r.scoreSub, 18, 500, SC.muted, "right"));
     const rh = Math.max(76 + (tt.length - 1) * 36 + 30, 124);
     y += rh;
-    ops.push(LINE(72, y, 1008, y, "#1E293B", 2));
+    ops.push(LINE(72, y, 1008, y, SC.rowLine, 2));
   });
   const rest = (d.total ?? d.rows.length) - n;
   if (rest > 0) { ops.push(T(72, y + 44, `… a dalších ${fmtNum(rest)} na webu`, 26, 600, SC.soft)); y += 64; }
@@ -409,15 +416,15 @@ export function partyCardOps(d, f) {
   const ops = [];
   let y = 0;
   const nm = wrapText(d.name, 66, 800, 936, 3);
-  nm.forEach((l, i) => ops.push(T(72, y + 66 + i * 76, l, 66, 800, SC.white)));
+  nm.forEach((l, i) => ops.push(T(72, y + 66 + i * 76, l, 66, 800, SC.text)));
   y += nm.length * 76 + 24;
   ops.push(T(72, y + 32, fitText(d.sub, 32, 600, 936), 32, 600, SC.soft));
   y += 80;
   const tiles = (d.tiles || []).filter((t) => t.pair && t.pair[1]);
   tiles.forEach((t, i) => {
     const h = story ? 250 : 220, ty = y + i * (h + 24);
-    ops.push(RECT(72, ty, 936, h, 28, "#16213A"), T(108, ty + 62, fitText(t.label, 32, 700, 520), 32, 700, SC.soft),
-      T(1008 - 36, ty + h / 2 + 36, fmtPct(t.pair[0] / t.pair[1]), 104, 800, SC.white, "right"),
+    ops.push(RECT(72, ty, 936, h, 28, SC.tile, SC.tileLine, 2), T(108, ty + 62, fitText(t.label, 32, 700, 520), 32, 700, SC.soft),
+      T(1008 - 36, ty + h / 2 + 36, fmtPct(t.pair[0] / t.pair[1]), 104, 800, SC.text, "right"),
       T(108, ty + 112, `${fmtNum(t.pair[0])} z ${fmtNum(t.pair[1])}`, 28, 500, SC.muted));
     if (t.note) ops.push(T(108, ty + 158, fitText(t.note, 24, 500, 520), 24, 500, SC.muted));
   });
@@ -432,8 +439,8 @@ function neutralAvatarOps(x, y, w, h, r) {
   const cx = x + w / 2;
   // hlava a ramena celé uvnitř dlaždice (i kulaté): nic nepřesahuje okraj
   const head = Math.min(w, h) * 0.19;
-  return [RECT(x, y, w, h, r, "#1E293B"), CIRC(cx, y + h * 0.4, head, "#475569"),
-    RECT(cx - w * 0.28, y + h * 0.62, w * 0.56, h * 0.26, Math.min(w * 0.28, h * 0.13), "#475569")];
+  return [RECT(x, y, w, h, r, SC.chip), CIRC(cx, y + h * 0.4, head, SC.silhouette),
+    RECT(cx - w * 0.28, y + h * 0.62, w * 0.56, h * 0.26, Math.min(w * 0.28, h * 0.13), SC.silhouette)];
 }
 
 // --- kreslení na canvas → PNG ---------------------------------------------------------
@@ -461,7 +468,7 @@ async function photoDataUrl(url) {
   } catch (e) { return null; }
 }
 
-async function renderCardPng(ctx, formatKey) {
+export async function renderCardPng(ctx, formatKey, theme = "dark") {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
   const data = { ...ctx.data };
@@ -472,6 +479,7 @@ async function renderCardPng(ctx, formatKey) {
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
+  useCardTheme(theme);
   const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps }[ctx.kind];
   const ops = draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
   const canvas = document.createElement("canvas");
@@ -479,14 +487,19 @@ async function renderCardPng(ctx, formatKey) {
   canvas.height = f.h;
   const c = canvas.getContext("2d");
   const g = c.createLinearGradient(0, 0, 0, f.h);
-  g.addColorStop(0, SC.navy);
-  g.addColorStop(1, SC.navy2);
+  g.addColorStop(0, SC.bg0);
+  g.addColorStop(1, SC.bg1);
   c.fillStyle = g;
   c.fillRect(0, 0, f.w, f.h);
-  c.fillStyle = SC.gold;
-  c.fillRect(0, 0, 12, f.h);
   for (const o of ops) {
-    if (o.k === "text") {
+    if (o.k === "band") {   // modrá hlavička: záře vpravo nahoře jako hlavička webu
+      const rg = c.createRadialGradient(o.w * 0.85, -o.h * 0.4, 0, o.w * 0.85, -o.h * 0.4, 900);
+      rg.addColorStop(0, BAND.glow);
+      rg.addColorStop(0.62, BAND.navy);
+      rg.addColorStop(1, BAND.navy2);
+      c.fillStyle = rg;
+      c.fillRect(o.x, o.y, o.w, o.h);
+    } else if (o.k === "text") {
       c.font = `${o.weight} ${o.size}px ${SC_FONT}`;
       c.fillStyle = o.fill;
       c.textAlign = o.anchor;
@@ -518,6 +531,8 @@ async function renderCardPng(ctx, formatKey) {
       c.restore();
     }
   }
+  c.fillStyle = SC.gold;   // zlatý proužek vlevo přes hlavičku i tělo karty
+  c.fillRect(0, 0, 12, f.h);
   return new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error("Obrázek se nepodařilo vytvořit."))), "image/png"));
 }
 
@@ -553,6 +568,20 @@ function shareFormats(kind) {
 const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled" };
 const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
 const SD_FMT_KEY = "epw-share-format";
+const SD_THEME_KEY = "ep-share-theme";
+const SD_THEME_LABEL = { dark: "Tmavý", light: "Světlý" };
+const SD_THEME_FILE = { dark: "tmava", light: "svetla" };
+
+// Výchozí vzhled karty: uložená volba, jinak podle režimu webu (data-theme, jinak prefers-color-scheme).
+// Úložiště může chybět nebo házet výjimku (soukromé okno, zakázané cookies): pak jen výchozí hodnota.
+export function cardThemeDefault() {
+  let saved = null;
+  try { saved = localStorage.getItem(SD_THEME_KEY); } catch (e) { /* bez úložiště */ }
+  if (CARD_THEMES.includes(saved)) return saved;
+  const site = document.documentElement.dataset.theme;
+  if (CARD_THEMES.includes(site)) return site;
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 const canShareFiles = (n) => {
   try {
@@ -598,12 +627,14 @@ async function openSharePanel(trigger) {
   let saved = null;
   try { saved = localStorage.getItem(SD_FMT_KEY); } catch (e) { /* bez úložiště */ }
   let fmt = formats.find((x) => x.key === saved) || formats[0];
+  let theme = cardThemeDefault();
   const urlShort = ctx.data?.urlShort || ctx.url.replace(/^https?:\/\//, "");
-  const cache = new Map();   // slide → Promise<Blob>; stejný blob pro náhled, stažení i sdílení
+  const cache = new Map();   // vzhled:slide → Promise<Blob>; stejný blob pro náhled, stažení i sdílení
   const objUrls = [];
   const blobFor = (slide) => {
-    if (!cache.has(slide)) cache.set(slide, renderCardPng(ctx, slide));
-    return cache.get(slide);
+    const key = `${theme}:${slide}`;
+    if (!cache.has(key)) cache.set(key, renderCardPng(ctx, slide, theme));
+    return cache.get(key);
   };
 
   const dlg = document.createElement("dialog");
@@ -619,6 +650,8 @@ async function openSharePanel(trigger) {
       <div class="sd-ctl">
         <p class="sd-lab" id="sd-fl">Formát</p>
         <div class="sd-formats" role="radiogroup" aria-labelledby="sd-fl">${formats.map((x) => `<button type="button" role="radio" data-fmt="${x.key}">${x.icon}<span class="sd-fn">${esc(x.label)}</span><span class="sd-fr">${esc(x.ratio)}</span></button>`).join("")}</div>
+        <p class="sd-lab" id="sd-tl">Vzhled</p>
+        <div class="sd-themes" role="group" aria-labelledby="sd-tl">${CARD_THEMES.map((x) => `<button type="button" data-card-theme="${x}" aria-pressed="false"><span class="sd-sw sd-sw-${x}" aria-hidden="true"><i></i><i></i></span><span class="sd-fn">${SD_THEME_LABEL[x]}</span></button>`).join("")}</div>
         <div class="sd-actions"><button type="button" class="sd-primary"></button><button type="button" class="sd-secondary"></button></div>
         <p class="sd-lab"><label for="sd-url">Odkaz</label></p>
         <div class="sd-link"><input id="sd-url" type="text" readonly value="${esc(urlShort)}"><button type="button" class="sd-btn" data-act="link">${SD_ICON.copy}<span>Kopírovat</span></button></div>
@@ -647,7 +680,7 @@ async function openSharePanel(trigger) {
     toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
   };
   const files = async () => (await Promise.all(fmt.slides.map(blobFor)))
-    .map((b, i) => new File([b], `${ctx.filename}-${fmt.slides.length > 1 ? `${i + 1}-z-${fmt.slides.length}` : fmt.key}.png`, { type: "image/png" }));
+    .map((b, i) => new File([b], `${ctx.filename}-${fmt.slides.length > 1 ? `${i + 1}-z-${fmt.slides.length}` : fmt.key}-${SD_THEME_FILE[theme]}.png`, { type: "image/png" }));
 
   const setActions = () => {
     const many = fmt.slides.length > 1;
@@ -661,7 +694,7 @@ async function openSharePanel(trigger) {
   const showPreview = async () => {
     const seq = ++renderSeq;
     const f = SHARE_FORMATS[fmt.slides[0]];
-    $(".sd-meta").textContent = `PNG · ${f.w} × ${f.h} px${fmt.slides.length > 1 ? ` · ${fmt.slides.length} obrázky` : ""}`;
+    $(".sd-meta").textContent = `PNG · ${f.w} × ${f.h} px${fmt.slides.length > 1 ? ` · ${fmt.slides.length} obrázky` : ""} · ${theme === "light" ? "světlá" : "tmavá"}`;
     preview.className = `sd-preview${f.h > 1500 ? " tall" : ""}`;
     const slow = setTimeout(() => { if (seq === renderSeq) preview.classList.add("loading"); }, 150);
     preview.setAttribute("aria-busy", "true");
@@ -709,6 +742,13 @@ async function openSharePanel(trigger) {
     showPreview();
   };
 
+  const selectTheme = (name) => {
+    theme = CARD_THEMES.includes(name) ? name : theme;
+    dlg.querySelectorAll("[data-card-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cardTheme === theme)));
+    try { localStorage.setItem(SD_THEME_KEY, theme); } catch (e) { /* bez úložiště */ }
+    showPreview();
+  };
+
   const flash = (btn, text) => {
     const old = btn.innerHTML;
     btn.classList.add("ok");
@@ -751,6 +791,7 @@ async function openSharePanel(trigger) {
     if (!b) return;
     if (b.classList.contains("sd-x")) closeSharePanel();
     else if (b.dataset.fmt) selectFormat(b.dataset.fmt);
+    else if (b.dataset.cardTheme) { if (b.dataset.cardTheme !== theme) selectTheme(b.dataset.cardTheme); }
     else if (b.dataset.act) act(b);
   });
   $(".sd-formats").addEventListener("keydown", (ev) => {
@@ -768,6 +809,7 @@ async function openSharePanel(trigger) {
     if (trigger.isConnected) trigger.focus();
   });
 
+  dlg.querySelectorAll("[data-card-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cardTheme === theme)));
   selectFormat(fmt.key);
   trigger.setAttribute("aria-expanded", "true");
   if (typeof dlg.showModal === "function") dlg.showModal();

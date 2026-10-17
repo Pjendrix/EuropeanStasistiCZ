@@ -67,11 +67,11 @@ function renderVote(i) {
   else { cap.classList.add("swap"); leg.classList.add("swap"); setTimeout(() => { upd(); cap.classList.remove("swap"); leg.classList.remove("swap"); }, 170); }
 }
 
-// Shrnutí AI má nejvýš 2 řádky; „víc“ ho rozbalí. Když se vejde, tlačítko zmizí jen vizuálně (řádek s odkazem
-// na přijatý text zůstane, takže se nic neposune).
+// Shrnutí AI má nejvýš 2 řádky; „víc“ ho rozbalí. Když se vejde, tlačítko zmizí (řádek s odkazem na přijatý text
+// má pevnou výšku, takže se nic neposune).
 function sumToggle() {
   const sum = document.getElementById("hm-sum");
-  const btn = document.querySelector("#hm-cap .hm-more");
+  const btn = document.querySelector("#hm-cap .hm-sum-more");
   if (!sum || !btn) return;
   btn.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
   btn.addEventListener("click", () => {
@@ -83,7 +83,7 @@ function sumToggle() {
 sumToggle();
 window.addEventListener("resize", () => {
   const sum = document.getElementById("hm-sum");
-  if (sum && !sum.classList.contains("open")) document.querySelector("#hm-cap .hm-more")?.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
+  if (sum && !sum.classList.contains("open")) document.querySelector("#hm-cap .hm-sum-more")?.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
 }, { passive: true });
 
 if (HOME && hemi) {

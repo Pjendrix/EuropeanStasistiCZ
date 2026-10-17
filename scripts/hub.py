@@ -613,7 +613,7 @@ def caption_html(vote: dict, meps_by_id: dict | None = None, groups: list[dict] 
     summary = (
         f'<p class="hm-sum" id="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) {why}, bez čísel a výsledku">AI</span>'
         f"{esc(vote['summary'])}</p>"
-        '<p class="hm-sum-act"><button type="button" class="hm-more" aria-expanded="false" aria-controls="hm-sum">víc</button>'
+        '<p class="hm-sum-act"><button type="button" class="hm-sum-more" aria-expanded="false" aria-controls="hm-sum">víc</button>'
         + (
             f'<span aria-hidden="true">·</span><a class="hm-sum-src" href="{esc(vote["summary_url"])}">přijatý text</a>'
             if from_text
