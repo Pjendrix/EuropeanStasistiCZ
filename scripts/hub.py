@@ -1,7 +1,7 @@
 """Úvodní stránka jako vstupní brána (index.html) a bloky vkládané do ručních stránek.
 
 - hub_page: hero s hemicyklem pěti nejnovějších závěrečných hlasování (data/home.json), hledání (hub.js), pruh faktů,
-  tři cesty do dat (bento), další pohledy a pás zásad. Čísla jen z JSON, žádné natvrdo.
+  blok Z posledního zasedání (B6), další pohledy a pás zásad. Čísla jen z JSON, žádné natvrdo.
 - heads_html: portréty poslanců po frakcích, blok na poslanci.html (build_pages.sync_block).
 - votes_overview_html: poslední zasedání a klíčová hlasování, přehled na hlasovani.html. Tabulka s filtry je na votes.html.
 
@@ -20,7 +20,7 @@ from hero_art import STARS
 from procedure_pages import procedure_url
 from compute_stats import apply_titles, procedure_titles
 from layout import MODULES
-from vote_kinds import KIND_LABELS
+from vote_kinds import KIND_LABELS, is_final
 
 LIST_TITLES = {
     "laws": ("Nejnovější zákony", "Poslední závěrečná hlasování nebo prozatímní dohody v legislativním postupu."),
@@ -533,19 +533,202 @@ def hemi_html(vote: dict) -> str:
     )
 
 
-def caption_html(vote: dict) -> str:
+TRACE_ROLE = {
+    "rapporteur": ("Zpravodaj", "Zpravodajka"),
+    "co": ("Spoluzpravodaj", "Spoluzpravodajka"),
+    "shadow": ("Stínový zpravodaj", "Stínová zpravodajka"),
+}
+TRACE_MAX = 2
+
+
+def trace_html(vote: dict, meps_by_id: dict, groups: list[dict]) -> str:
+    """Česká stopa na kartě (B4): kdo z Čechů byl zpravodajem nebo stínovým zpravodajem zprávy (vote_roles.json).
+    Nejvýš TRACE_MAX lidí s portrétem, jménem, rolí a frakcí k datu hlasování, zbytek „a další N“. Bez stopy nic."""
+    trace = sorted(
+        vote.get("trace") or [], key=lambda t: (list(TRACE_ROLE).index(t["role"]) if t["role"] in TRACE_ROLE else 9, t.get("name") or "")
+    )
+    people = [t for t in trace if t["mep_id"] in meps_by_id]
+    if not people:
+        return ""
+    items = []
+    for t in people[:TRACE_MAX]:
+        m = meps_by_id[t["mep_id"]]
+        g = next((x for x in m.get("groups") or [] if x["start"] <= vote["date"] and (not x.get("end") or vote["date"] <= x["end"])), None)
+        role = TRACE_ROLE.get(t["role"], ("Zpravodaj", "Zpravodajka"))[1 if m.get("gender") == "FEMALE" else 0]
+        img = (
+            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="28" height="28" loading="lazy">'
+            if m.get("photo_url")
+            else '<span class="hm-tr-i" aria-hidden="true"></span>'
+        )
+        grp = f" ({esc(group_label(g['code'], groups))})" if g else ""
+        items.append(f'<a href="p/{m["id"]}.html">{img}<span><b>{role}:</b> {esc(t.get("name") or m["name"])}{grp}</span></a>')
+    more = len(people) - TRACE_MAX
+    if more > 0:
+        items.append(f'<a class="hm-tr-more" href="v/{vote["id"]}.html#ceska-stopa">a další {more}</a>')
+    return f'<div class="hm-trace" aria-label="Česká stopa">{"".join(items)}</div>'
+
+
+def caption_html(vote: dict, meps_by_id: dict | None = None, groups: list[dict] | None = None) -> str:
     """Hlavička karty nad hemicyklem: datum, typ, výsledek, téma, nadpis a krátké AI shrnutí (když je, vote_summaries.py)."""
     ok = vote["result"] == "ADOPTED"
     res = f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>'
+    from_text = vote.get("summary_source") == "adopted_text" and vote.get("summary_url")
+    why = "z úryvku přijatého textu (EP Open Data)" if from_text else "jen z úředního názvu a témat"
     summary = (
-        f'<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) jen z úředního názvu a témat, bez čísel a výsledku">AI</span>'
-        f"{esc(vote['summary'])}</p>"
+        f'<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) {why}, bez čísel a výsledku">AI</span>'
+        f"{esc(vote['summary'])}"
+        + (f' <a class="hm-sum-src" href="{esc(vote["summary_url"])}">přijatý text</a>' if from_text else "")
+        + "</p>"
         if vote.get("summary")
         else ""
     )
     return (
         f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{hero_topic(vote)}'
+        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{trace_html(vote, meps_by_id or {}, groups or [])}{hero_topic(vote)}'
+    )
+
+
+def session_facts(data_dir: Path) -> dict | None:
+    """Čísla řádku „Poslední zasedání“ pod úvodní větou (B3): jen ze session.json (build_web.py) a vote_roles.json.
+    Jednotnost stejná jako jinde na webu (compute_stats, unity.last_session); česká stopa = závěrečné hlasování zasedání,
+    u jehož zprávy byl český poslanec zpravodajem nebo stínovým zpravodajem. Co v datech chybí, se vynechá."""
+    session = _read(data_dir / "session.json")
+    if not session or not session.get("from"):
+        return None
+    out = {"from": session["from"], "to": session["to"], "final": session.get("main")}
+    unity = session.get("unity") or {}
+    if unity.get("considered"):
+        out["united"], out["considered"] = unity["united"], unity["considered"]
+    roles = (_read(data_dir / "vote_roles.json") or {}).get("votes")
+    if roles is not None:
+        months = {session["from"][:7], session["to"][:7]}
+        votes = [v for m in sorted(months) for v in (_read(data_dir / "votes" / f"{m}.json") or {"votes": []})["votes"]]
+        out["trace"] = sum(1 for v in votes if session["from"] <= v["date"] <= session["to"] and is_final(v) and str(v["id"]) in roles)
+    return out
+
+
+SESSION_PEOPLE_MAX = 4
+
+
+def _at(periods: list[dict] | None, day: str) -> dict | None:
+    return next((x for x in periods or [] if x["start"] <= day and (not x.get("end") or day <= x["end"])), None)
+
+
+def session_people(data_dir: Path, meps_by_id: dict) -> dict | None:
+    """Blok „Z posledního zasedání“ (B6). Výběr pravidlem, ne redakcí ani podle aktivity: poslanci, kteří byli zpravodajem
+    nebo stínovým zpravodajem zprávy, o které se na posledním zasedání hlasovalo (vote_roles.json), abecedně.
+    U každého jen doložitelná činnost s datem v rozsahu zasedání: role u zprávy, projevy v plénu (speeches.json)
+    a otázky (own_work.json). Bez session.json nic; bez vote_roles.json prázdný výběr."""
+    session = _read(data_dir / "session.json")
+    if not session or not session.get("from"):
+        return None
+    a, b = session["from"], session["to"]
+    roles = (_read(data_dir / "vote_roles.json") or {}).get("votes") or {}
+    votes = [v for m in sorted({a[:7], b[:7]}) for v in (_read(data_dir / "votes" / f"{m}.json") or {"votes": []})["votes"]]
+    apply_titles(votes, procedure_titles(data_dir))
+    speeches = (_read(data_dir / "speeches.json") or {}).get("meps") or {}
+    own = (_read(data_dir / "own_work.json") or {}).get("meps") or {}
+    people: dict[int, dict] = {}
+    for v in sorted((v for v in votes if a <= v["date"] <= b), key=lambda v: (v["date"], v["id"])):
+        for r in roles.get(str(v["id"]), []):
+            if r["mep_id"] not in meps_by_id:
+                continue
+            p = people.setdefault(r["mep_id"], {"id": r["mep_id"], "reports": {}})
+            key = r.get("report") or str(v["id"])
+            if key not in p["reports"]:
+                p["reports"][key] = {"role": r["role"], "title": v.get("title_cs") or v["title"], "vote_id": v["id"], "final": is_final(v)}
+    out = []
+    for pid, p in people.items():
+        m = meps_by_id[pid]
+        sp = [x for x in speeches.get(str(pid), []) if a <= x.get("date", "") <= b and x.get("type") == "speech"]
+        qs = [x for x in (own.get(str(pid)) or {}).get("items", []) if x.get("type") == "question" and a <= (x.get("date") or "") <= b]
+        out.append(
+            {
+                **p,
+                "reports": list(p["reports"].values()),
+                "speeches": len(sp),
+                "questions": len(qs),
+                "sort": m.get("sort_label") or m["name"],
+            }
+        )
+    out.sort(key=lambda p: p["sort"])
+    return {"from": a, "to": b, "people": out}
+
+
+def session_people_html(sp: dict | None, meps_by_id: dict, groups: list[dict], mosaic_tile: str) -> str:
+    """Kartičky poslanců z posledního zasedání (nejvýš SESSION_PEOPLE_MAX) a dlaždice se všemi poslanci."""
+    if not sp:
+        return ""
+    people = sp["people"]
+    cards = []
+    for p in people[:SESSION_PEOPLE_MAX]:
+        m = meps_by_id[p["id"]]
+        g, pa = _at(m.get("groups"), sp["to"]), _at(m.get("parties"), sp["to"])
+        party = (pa or {}).get("short_label")
+        sub = " · ".join(
+            x for x in ("nezávislý/á" if party in ("Ind.", None) and pa else party, group_label(g["code"], groups) if g else "") if x
+        )
+        female = m.get("gender") == "FEMALE"
+        lines = []
+        for r in p["reports"]:
+            role = TRACE_ROLE.get(r["role"], ("Zpravodaj", "Zpravodajka"))[1 if female else 0]
+            href = f"v/{r['vote_id']}.html" if r["final"] else f"vote.html?id={r['vote_id']}"
+            lines.append(f'<li><b>{role}</b> <a href="{href}">{esc(r["title"])}</a></li>')
+        if p["speeches"]:
+            n = p["speeches"]
+            lines.append(f"<li>{fmt_num(n)} {'projev' if n == 1 else 'projevy' if n < 5 else 'projevů'} v plénu</li>")
+        if p["questions"]:
+            n = p["questions"]
+            lines.append(f"<li>{fmt_num(n)} {'otázka' if n == 1 else 'otázky' if n < 5 else 'otázek'} Komisi nebo Radě</li>")
+        img = (
+            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="56" height="56" loading="lazy">'
+            if m.get("photo_url")
+            else '<span class="hm-pc-i" aria-hidden="true"></span>'
+        )
+        cards.append(
+            f'<article class="hm-tile hm-pc"><a class="hm-pc-h" href="p/{m["id"]}.html">{img}<span><b>{esc(dname(m))}</b><small>{esc(sub)}</small></span></a>'
+            f'<ul class="plain">{"".join(lines)}</ul></article>'
+        )
+    more = len(people) - SESSION_PEOPLE_MAX
+    base = f"votes.html?od={sp['from']}&amp;m={sp['to'][:7]}&amp;f=all&amp;stopa=1"
+    if more > 0:
+        cards.append(f'<a class="hm-tile hm-pc hm-pc-more" href="{base}">a dalších {fmt_num(more)} {_ARROW}</a>')
+    if not people:
+        cards.append(
+            '<p class="hm-pc-none">Na posledním zasedání se nehlasovalo o žádné zprávě, u které by byl český poslanec '
+            "zpravodajem nebo stínovým zpravodajem.</p>"
+        )
+    span = f"{fmt_date(sp['from'])[:-5]}–{fmt_date(sp['to'])}"
+    return f"""<section class="hm-wrap" aria-labelledby="h-doors">
+  <div class="hm-head"><div><p class="hm-kicker">Z posledního zasedání · {span}</p><h2 id="h-doors">Češi, kteří <strong>vedli texty.</strong></h2></div>
+    <p>Zpravodajové a stínoví zpravodajové zpráv, o kterých se na zasedání hlasovalo, abecedně. Bez pořadí a hodnocení (<a href="o-projektu.html#z-posledniho-zasedani">pravidlo</a>).</p></div>
+  <div class="hm-bento hm-sess-grid">{"".join(cards)}{mosaic_tile}</div>
+  <p class="hm-note">Zdroj: EP Open Data (role u zpráv, projevy, otázky s datem v rozsahu zasedání) a HowTheyVote.eu (hlasování). Portréty © European Union – Source: EP.</p>
+</section>"""
+
+
+def dname(m: dict) -> str:
+    return " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
+
+
+def session_line_html(f: dict | None) -> str:
+    """Řádek pod úvodní větou: 2–3 čísla z posledního zasedání, každé s odkazem na seznam."""
+    if not f:
+        return ""
+    base = f"votes.html?od={f['from']}&amp;m={f['to'][:7]}&amp;f=final"
+    parts = []
+    if f.get("final") is not None:
+        parts.append(f'<a href="{base}"><b>{fmt_num(f["final"])}</b> závěrečných hlasování</a>')
+    if f.get("considered"):
+        parts.append(f'<a href="rozkol.html">Češi jednotní v <b>{fmt_num(f["united"])}</b> z {fmt_num(f["considered"])}</a>')
+    if f.get("trace") is not None:
+        parts.append(f'<a href="{base}&amp;stopa=1">česká stopa u <b>{fmt_num(f["trace"])}</b></a>')
+    if not parts:
+        return ""
+    return (
+        f'<p class="hm-sess"><span class="hm-sess-l">Poslední zasedání {fmt_date(f["from"])[:-5]}–{fmt_date(f["to"])}</span> '
+        + '<span aria-hidden="true">·</span> '.join(parts)
+        + "</p>"
     )
 
 
@@ -594,15 +777,9 @@ def next_vote_html(agenda: dict | None) -> str:
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) a štítek české stopy pod nadpisem; bez obojího nic."""
+    """Jeden čip tématu (+N) pod nadpisem; česká stopa má vlastní řádek s portréty (trace_html)."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
-    trace = vote.get("trace") or []
-    badge = (
-        f'<span class="cz-badge" title="{esc(", ".join(f"{t['name']} ({_ROLE_CS[t['role']]})" for t in trace))}">česká stopa</span>'
-        if trace
-        else ""
-    )
-    return f'<div class="hm-topic">{chips}{badge}</div>' if chips or badge else ""
+    return f'<div class="hm-topic">{chips}</div>' if chips else ""
 
 
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -624,7 +801,8 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     votes = home["votes"]
     sums = (_read(data_dir / "vote_summaries.json") or {}).get("items", {})
     for x in votes:  # krátké AI shrnutí (vote_summaries.py); bez něj karta ukáže jen nadpis
-        x["summary"] = (sums.get(str(x["id"])) or {}).get("shrnuti")
+        item = sums.get(str(x["id"])) or {}
+        x["summary"], x["summary_source"], x["summary_url"] = item.get("shrnuti"), item.get("source"), item.get("source_url")
     first = votes[0]
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
@@ -645,7 +823,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
                 "title": x["title"],
                 "counts": x["counts"],
                 # popisek a legenda jako hotové HTML ze stejných šablon jako statická stránka (audit A1: bez dvojčat v hub.js)
-                "cap": caption_html(x),
+                "cap": caption_html(x, meps_by_id, groups),
                 "leg": legend_html(x),
                 "share": hero_share(x, share.get(str(x["id"]))),
                 "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
@@ -665,6 +843,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
+      {session_line_html(session_facts(data_dir))}
       <form class="hm-search" role="search" action="poslanci.html" method="get">
         <label for="hub-q">{_SEARCH_ICON}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
           <input id="hub-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list" aria-haspopup="listbox"><kbd aria-hidden="true">/</kbd><button class="hm-go" type="submit">Hledat</button></label>
@@ -681,28 +860,25 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
           <button id="hm-next" type="button" aria-label="Starší hlasování"{" disabled" if len(votes) < 2 else ""}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_CHEV["next"]}</svg></button>
         </div>
       </div>
-      <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first)}</div>
+      <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first, meps_by_id, groups)}</div>
       <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
       <ul class="hm-legend" id="hm-leg">{legend_html(first)}</ul>
       <div class="hm-act"><a class="hm-detail" id="hm-more" href="v/{first["id"]}.html">Detail hlasování {_ARROW}</a>
         <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div>
-      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku jen z úředního názvu a témat (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}</p>
+      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku z přijatého textu, a dokud není, jen z úředního názvu (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}{" Portréty © European Union – Source: EP." if any(x.get("trace") for x in votes) else ""}</p>
     </section>
   </div>
   <dl class="hm-facts">
     <div><dt>{fmt_num(f["meps_active"])}</dt><dd>poslanců v mandátu</dd></div>
     <div><dt>{fmt_num(f["parties"])}</dt><dd>{"českých stran" if f["parties"] >= 5 else "české strany"}{f" a {fmt_num(f['no_party'])} bez strany" if f["no_party"] else ""}</dd></div>
     <div><dt>{fmt_num(f["votes_total"])}</dt><dd>jmenovitých hlasování od {fmt_date(f["votes_from"])}</dd></div>
-    <div><dt>{fmt_date(f["data_day"])}</dt><dd>stav dat (export HowTheyVote) · <a href="o-projektu.html#metodika">aktualizace každý týden</a></dd></div>
+    <div><dt>{fmt_date(f["data_day"])}</dt><dd>stav dat · <a href="o-projektu.html#metodika">aktualizace každý týden</a></dd></div>
   </dl>
   <script type="application/json" id="home-data">{data_json}</script>
 </section>"""
 
     # Bento: Poslanci (mozaika abecedně), Hlasování (číslo + měsíce), Práce (tři součty).
     active = sorted((m for m in overview["meps"] if _active(m)), key=lambda m: m.get("sort_label") or m["name"])
-
-    def dname(m):
-        return " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
 
     def plabel(m):
         p = m.get("party") or {}
@@ -718,35 +894,10 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         + "</a>"
         for m in active
     )
-    months = [x["month"] for x in f["monthly"]]
-    by_month = {x["month"]: x["votes"] for x in f["monthly"]}
-    keys, (y, mo) = [], (int(months[0][:4]), int(months[0][5:]))
-    while f"{y}-{mo:02d}" <= months[-1]:
-        keys.append(f"{y}-{mo:02d}")
-        y, mo = (y + 1, 1) if mo == 12 else (y, mo + 1)
-    vmax = max(by_month.values()) or 1
-    spark = "".join(
-        f'<i class="{"last" if i == len(keys) - 1 else ""}" style="height:{max(3, round(by_month.get(k, 0) / vmax * 100))}%" '
-        f'title="{int(k[5:])}/{k[:4]}: {fmt_num(by_month.get(k, 0))} hlasování"></i>'
-        for i, k in enumerate(keys)
-    )
-    w = f["work"]
-    bento = f"""<section class="hm-wrap" aria-labelledby="h-doors">
-  <div class="hm-head"><div><p class="hm-kicker">Začněte tady</p><h2 id="h-doors">Tři cesty <strong>do dat.</strong></h2></div>
-    <p>Podle lidí, podle hlasování, nebo podle práce mimo plénum.</p></div>
-  <div class="hm-bento">
-    <div class="hm-tile hm-people"><h3><a href="poslanci.html">Poslanci</a></h3><p>Profil každého z {fmt_num(len(active))} českých europoslanců. Řazeno abecedně.</p>
+    mosaic_tile = f"""<div class="hm-tile hm-people"><h3><a href="poslanci.html">Všech {fmt_num(len(active))} poslanců</a></h3><p>Profil každého z českých europoslanců, abecedně.</p>
       <div class="hm-mosaic" id="hm-mosaic">{mosaic}</div><div class="hm-mcap" id="hm-mcap" aria-hidden="true"></div>
-      <a class="hm-open" href="poslanci.html">Otevřít {_ARROW}</a></div>
-    <a class="hm-tile hm-votes" href="hlasovani.html"><h3>Hlasování</h3><p>Jak hlasoval Parlament a jak v tom Češi.</p>
-      <div class="hm-row"><div class="hm-bignum">{fmt_num(f["votes_total"])}<small>jmenovitých hlasování od {fmt_date(f["votes_from"])}</small></div>
-        <div class="hm-sparkbox"><div class="hm-spark" aria-hidden="true">{spark}</div><div class="hm-spark-cap" aria-hidden="true"><span>{int(keys[0][5:])}/{keys[0][:4]}</span><span>{int(keys[-1][5:])}/{keys[-1][:4]}</span></div></div></div></a>
-    <a class="hm-tile hm-work" href="prace.html"><h3>Práce</h3><p>Zprávy, stanoviska, projevy a otázky Komisi.</p>
-      <div class="hm-nums"><div><b>{fmt_num(w["speeches"])}</b><span>projevů v plénu</span></div><div><b>{fmt_num(w["questions"])}</b><span>otázek Komisi a Radě</span></div>
-        <div><b>{fmt_num(w["reports_lead"])}</b><span>zpráv, které poslanci vedli jako zpravodajové</span></div></div>
-      <p class="hm-note">Součet za všech {fmt_num(w["meps"])} poslanců 10. období včetně bývalých (proto víc než {fmt_num(len(active))} v mandátu) · EP Open Data, stav k {fmt_date(w["updated"][:10])}</p></a>
-  </div>
-</section>"""
+      <a class="hm-open" href="poslanci.html">Otevřít {_ARROW}</a></div>"""
+    bento = session_people_html(session_people(data_dir, meps_by_id), meps_by_id, groups, mosaic_tile)
 
     badge = {
         "unity": f"{fmt_num(f['united_final'])} z {fmt_num(f['considered_final'])} jednotně",

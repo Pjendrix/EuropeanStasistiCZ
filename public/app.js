@@ -1,7 +1,8 @@
 // Vstup pro všechny stránky EP Watch CZ: navigace, ⓘ, kopírování, motiv, animace. Funkce jsou v lib/*.js.
 // Vstupní moduly (app.js, share.js, skripty stránek) se navzájem neimportují, jen lib/*.js: HTML je načítá s ?v=…,
 // import bez ?v= by modul spustil podruhé (hlídá tests/test_js_modules.py).
-import { citeText, copyText } from "./lib/data.js";
+import { ROOT, citeText, copyText } from "./lib/data.js";
+import { combobox } from "./lib/search.js";
 import { HAS_POPOVER, REDUCED_MOTION, fillCountdowns, infoPopFor, motion, placeInfo, setupThemeToggle, staleNotice, toast } from "./lib/ui.js";
 
 // Přepínač „Podle stran | Podle hlasu“ (detail hlasování, statický i interaktivní).
@@ -110,3 +111,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Stav načítání čtečky oznámí jednou a sám zmizí, až se obsah nahradí.
 document.querySelectorAll(".loading").forEach((el) => el.setAttribute("role", "status"));
+
+// --- hledání v liště (B2): dialog s našeptávačem, otevře ho tlačítko s lupou, klávesa „/“ nebo Ctrl/⌘+K ----------------
+// Na úvodu, dokud je vidět pole v heru, je tlačítko skryté a „/“ zaměří pole v heru.
+const searchBtn = document.querySelector(".search-btn");
+const heroQ = document.getElementById("hub-q");
+let heroVisible = false;
+if (heroQ && searchBtn && "IntersectionObserver" in window) {
+  new IntersectionObserver(([e]) => {
+    heroVisible = e.isIntersecting;
+    searchBtn.classList.toggle("by-hero", heroVisible);
+  }).observe(heroQ.closest("form") || heroQ);
+}
+let searchDlg = null;
+function openSearch() {
+  if (!searchDlg) {
+    searchDlg = document.createElement("dialog");
+    searchDlg.className = "search-dlg";
+    searchDlg.setAttribute("aria-label", "Hledání");
+    searchDlg.innerHTML = `<form class="hm-search" role="search" action="${ROOT}poslanci.html" method="get">
+      <label for="site-q">${searchBtn ? searchBtn.querySelector("svg").outerHTML : ""}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
+        <input id="site-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="site-results" aria-autocomplete="list" aria-haspopup="listbox"></label>
+      <ul id="site-results" class="hm-results" role="listbox" aria-label="Výsledky hledání" hidden></ul>
+      <p class="search-hint" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> výběr · <kbd>Enter</kbd> otevřít · <kbd>Esc</kbd> zavřít</p></form>`;
+    document.body.append(searchDlg);
+    const input = searchDlg.querySelector("#site-q");
+    combobox(input, searchDlg.querySelector("#site-results"), "site");
+    // klik mimo panel (na ztmavené pozadí) dialog zavře
+    searchDlg.addEventListener("click", (ev) => { if (ev.target === searchDlg) searchDlg.close(); });
+    searchDlg.addEventListener("close", () => { (searchDlg.opener || searchBtn)?.focus(); });
+  }
+  // po zavření fokus zpět na prvek, odkud se hledalo (při „/“ odjinud na tlačítko s lupou)
+  const from = document.activeElement;
+  searchDlg.opener = from && from !== document.body ? from : searchBtn;
+  searchDlg.showModal();
+  searchDlg.querySelector("#site-q").focus();
+}
+searchBtn?.addEventListener("click", (ev) => { ev.preventDefault(); openSearch(); });
+document.addEventListener("keydown", (ev) => {
+  const inField = /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable;
+  const slash = ev.key === "/" && !ev.ctrlKey && !ev.metaKey && !ev.altKey && !inField;
+  const cmdK = (ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "k";
+  if (!slash && !cmdK) return;
+  if (searchDlg?.open) return;
+  ev.preventDefault();
+  if (heroQ && heroVisible) heroQ.focus();
+  else openSearch();
+});

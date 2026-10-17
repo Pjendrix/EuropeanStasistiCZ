@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 PUBLIC_SCRIPTS = [
     "activity.py",
+    "adopted_texts.py",
     "agenda.py",
     "attendance.py",
     "benchmarks.py",

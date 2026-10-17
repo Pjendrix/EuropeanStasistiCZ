@@ -248,6 +248,33 @@ for (const width of [1440, 400]) {
   await Promise.all([page.waitForURL((u) => target && u.pathname.endsWith(target.replace(/^\.\//, "")), { timeout: 10000 }).catch(() => problems.push(`${where}: Enter neotevřel ${target}`)), page.keyboard.press("Enter")]);
   await ctx.close();
 }
+// B2: hledání v liště z libovolné stránky (i z podsložek p/, v/): „/“ otevře dialog, „Kolář“ najde poslance, Enter na něj
+// přejde; Esc dialog zavře a vrátí fokus na tlačítko s lupou; otevřený dialog bez porušení axe.
+for (const width of [1366, 390]) {
+  const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+  for (const url of ["poslanci.html", "p/256846.html", `v/${voteId}.html`]) {
+    const page = await ctx.newPage();
+    const where = `${url} [hledání v liště, ${width}px]`;
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    await page.keyboard.press("/");
+    await page.waitForTimeout(150);
+    if (!(await page.evaluate(() => document.querySelector("dialog.search-dlg")?.open))) { problems.push(`${where}: „/“ neotevřel dialog`); await page.close(); continue; }
+    await page.evaluate(axeSource);
+    const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.search-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => x.id));
+    v.forEach((id) => problems.push(`${where}: axe v dialogu: ${id}`));
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(150);
+    const after = await page.evaluate(() => ({ open: document.querySelector("dialog.search-dlg").open, focus: document.activeElement?.classList.contains("search-btn") }));
+    if (after.open || !after.focus) problems.push(`${where}: Esc nezavřel dialog nebo nevrátil fokus na tlačítko`);
+    await page.keyboard.press("/");
+    await page.keyboard.type("Kolář");
+    const hit = await page.waitForSelector("#site-results [role=option]", { timeout: 8000 }).catch(() => null);
+    if (!hit) { problems.push(`${where}: „Kolář“ nic nenašel`); await page.close(); continue; }
+    await Promise.all([page.waitForURL(/p\/256846\.html$/, { timeout: 10000 }).catch(() => problems.push(`${where}: Enter nepřešel na poslance`)), page.keyboard.press("Enter")]);
+    await page.close();
+  }
+  await ctx.close();
+}
 // Téma hlasování: čip na detailu (statickém = JS šablona) i v heru, odkaz na filtr, „+N“ klávesou a Esc, výměna s přepínačem.
 {
   const voteCats = read("data/vote_cats.json").votes;
