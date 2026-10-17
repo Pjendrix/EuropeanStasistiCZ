@@ -37,7 +37,7 @@ const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
 // Příběh zákona (z/): první stránka procedury podle čísla.
 const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0]}`;
-const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
+const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html",
   "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`, procPage];
 
 const problems = [];
@@ -386,6 +386,28 @@ for (const width of [1440, 400]) {
   await page.click("#votes tbody [data-act=clear]");
   const after = await page.evaluate(() => ({ q: document.getElementById("q").value, rows: document.querySelectorAll("#votes tbody a.vote-title").length }));
   if (after.q || !after.rows) problems.push("votes.html: „Zrušit všechny filtry“ v prázdném stavu nefunguje");
+  await ctx.close();
+}
+
+// N5 Moje shoda: po 3 odpovědích jde vyhodnotit, výsledek je seřazený podle shody a u otázek se ukáže skutečný výsledek.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "moje-shoda.html", { waitUntil: "networkidle" });
+  const n = await page.locator(".quiz-q").count();
+  if (n < 3) problems.push(`moje-shoda.html: jen ${n} otázek`);
+  else {
+    if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda.html: vyhodnocení jde bez odpovědí");
+    for (let i = 0; i < 3; i++) await page.locator(`.quiz-q[data-i="${i}"] .quiz-opt`).first().click();
+    await page.click("#quiz-go");
+    const r = await page.evaluate(() => ({
+      rows: [...document.querySelectorAll(".quiz-row .quiz-pct strong")].map((e) => parseFloat(e.textContent.replace(",", "."))),
+      reveal: document.querySelectorAll(".quiz-reveal:not([hidden])").length,
+    }));
+    if (!r.rows.length) problems.push("moje-shoda.html: žádný poslanec ve výsledku");
+    if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda.html: výsledek není seřazený podle shody");
+    if (r.reveal !== n) problems.push("moje-shoda.html: po vyhodnocení chybí skutečné výsledky u otázek");
+  }
   await ctx.close();
 }
 

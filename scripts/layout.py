@@ -79,7 +79,8 @@ TABS = [("poslanci.html", "meps", "Poslanci"), ("party.html", "parties", "Strany
         ("prace.html", "work", "Práce")]
 MORE_PAGES = ("analyses", "about")
 SHEET = [
-    ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")]),
+    ("Analýzy", [("rozkol.html", "Kde se Češi rozdělili"), ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy"),
+                 ("moje-shoda.html", "Moje shoda s poslanci")]),
     ("Hlasování a strany", [("votes.html", "Všechna hlasování"), ("temata.html", "Hlasování podle témat"), ("party.html?v=eu", "Evropské frakce"),
                             ("prace-poslanci.html", "Práce po poslancích")]),
     ("Projekt", [("o-projektu.html", "O projektu a metodika"), ("o-projektu.html#kontakt", "Kontakt a nahlášení chyby"),

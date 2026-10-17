@@ -571,7 +571,7 @@ def build(data_dir: Path) -> dict[str, str]:
     return out
 
 
-STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "radar.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
+STATIC_PAGES = ["index.html", "poslanci.html", "hlasovani.html", "votes.html", "temata.html", "radar.html", "party.html", "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html", "prace.html", "prace-poslanci.html", "o-projektu.html"]
 
 
 def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = None, default_day: str | None = None) -> dict[str, str]:

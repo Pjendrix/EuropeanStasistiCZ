@@ -1450,3 +1450,32 @@ mark { background: #FDE68A; color: #0F172A; border-radius: 3px; padding: 0 .05em
 .story-link { margin: .2rem 0 .6rem; font-weight: 600; }
 .ev-list li { padding: .2rem 0; }
 .ev-date { display: inline-block; min-width: 6.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* N5 Moje shoda s poslanci */
+.quiz { display: grid; gap: .8rem; margin: 1rem 0; }
+.quiz-q { margin: 0; min-width: 0; }
+.quiz-q legend { font-weight: 600; font-size: 1.02rem; padding: 0; float: left; width: 100%; margin-bottom: .3rem; }
+.quiz-q legend + * { clear: both; }
+.quiz-n { display: inline-block; min-width: 2.6rem; color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+.quiz-opts { display: flex; flex-wrap: wrap; gap: .4rem; }
+.quiz-opt { position: relative; }
+.quiz-opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.quiz-opt span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--chip); color: var(--text); font-size: .92rem; }
+.quiz-opt input:checked + span { background: var(--text); color: var(--surface); border-color: var(--text); font-weight: 600; }
+.quiz-opt input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.quiz-reveal { margin-top: .6rem; padding-top: .5rem; border-top: 1px solid var(--border); }
+.quiz-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: 1rem; }
+.quiz-actions .more-btn { margin-top: 0; }
+.more-btn.primary { background: var(--text); color: var(--surface); border-color: var(--text); font-weight: 600; }
+.more-btn:disabled { opacity: .55; cursor: not-allowed; }
+.quiz-list { display: grid; gap: .3rem; }
+.quiz-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 5.5rem; gap: .8rem; align-items: center; padding: .45rem 0; border-bottom: 1px solid var(--border); }
+.quiz-who { display: flex; gap: .6rem; align-items: center; min-width: 0; }
+.quiz-bar { height: .7rem; border-radius: 999px; background: var(--track); overflow: hidden; }
+.quiz-bar span { display: block; height: 100%; background: var(--accent); }
+.quiz-pct { text-align: right; font-variant-numeric: tabular-nums; }
+.quiz-few { padding-top: .6rem; }
+@media (max-width: 560px) {
+  .quiz-row { grid-template-columns: minmax(0, 1fr) 4.8rem; }
+  .quiz-bar { grid-column: 1 / -1; grid-row: 2; }
+}
