@@ -28,6 +28,7 @@ from pathlib import Path
 
 from build_web import vote_title
 from categories import LABEL as CAT_LABEL, categories_for
+from tokens import card_rgb
 from compute_stats import FormatError, active_positions, load_votes, require
 from vote_parties import SHORT_LABEL, card_parties, group_label, party_rows  # noqa: F401
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -36,11 +37,12 @@ W, H = 1200, 630
 FONT_PATH = Path(__file__).resolve().parent / "fonts" / "PlusJakartaSans-VF.ttf"
 CARD_MONTHS_DAYS = 365
 
-# Barvy jako na webu (public/style.css, tmavý režim): pro / proti / zdržel se / nehlasoval
-NAVY, NAVY_2 = (15, 23, 42), (10, 18, 38)
-WHITE, MUTED, SOFT = (248, 250, 252), (148, 163, 184), (203, 213, 225)
-GOLD = (245, 158, 11)
-FOR_C, AGAINST_C, ABST_C, ABSENT_C = (91, 228, 155), (229, 72, 77), (148, 163, 184), (71, 85, 105)
+# Barvy karet z design/tokens.json (stejné jako SC v share.js, audit UI6).
+_C = card_rgb()
+NAVY, NAVY_2 = _C["navy"], _C["navy2"]
+WHITE, MUTED, SOFT = _C["white"], _C["muted"], _C["soft"]
+GOLD = _C["gold"]
+FOR_C, AGAINST_C, ABST_C, ABSENT_C = _C["for"], _C["against"], _C["abst"], _C["absent"]
 POS_COLOR = {"FOR": FOR_C, "AGAINST": AGAINST_C, "ABSTENTION": ABST_C, "DID_NOT_VOTE": ABSENT_C}
 POS_LABEL = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel se", "DID_NOT_VOTE": "nehlasoval"}
 POSITIONS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]

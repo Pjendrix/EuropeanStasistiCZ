@@ -31,3 +31,16 @@ Varianty: bez přípony = barevná na světlém pozadí, `-white` = na tmavém, 
 - V hlavičce webu je symbol vložený inline (`scripts/layout.py`, `BRAND_MARK`) s `currentColor`, text „EP Watch CZ“ je HTML.
 - Hvězdy jsou modré/bílé v oblouku, ne zlatý kruh 12 hvězd: logo nesmí působit jako oficiální symbol EU nebo EP
   (web je nezávislý projekt – viz „O projektu“).
+
+## Design tokeny a breakpointy (audit UI6)
+
+- **Jediný zdroj barev je `design/tokens.json`.** Ručně se neupravuje `:root` ve `public/style.css` ani konstanty `SC` v `public/share.js`; po změně tokenů stačí `python scripts/tokens.py`. `build_cards.py` (obrázky OG karet) čte tokeny přímo. Test `tests/test_tokens.py` hlídá, že soubory sedí.
+- Skupiny tokenů: `brand` (barvy značky, stejné v obou režimech), `theme` (barvy jako dvojice světlá/tmavá, v CSS jako `light-dark()`), `theme_other` (hodnoty, které nejsou barvy: stín, sytost tabulky shody, poloměry), `card` (obrázky ke sdílení, vždy tmavý podklad).
+- Tmavý režim: `color-scheme` na `:root` (systém, nebo přepínač `html[data-theme]`). Pro prohlížeče bez `light-dark()` (před rokem 2024) generátor přidá záložní blok se stejnými hodnotami.
+- CSS má dvě vrstvy: `@layer tokens` (generované) a `@layer site` (pravidla webu). Nová pravidla patří do `site`.
+- **Breakpointy jen čtyři**, vždy `@media (max-width: …)`:
+  - `360px` malé telefony,
+  - `560px` telefony (karty místo tabulek, jednosloupcové rozložení),
+  - `760px` mobilní rozložení (spodní lišta, kompaktní hlavička),
+  - `1024px` úzký desktop (úvodní stránka do jednoho sloupce).
+  Jiná šířka v `style.css` = test selže.

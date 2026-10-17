@@ -665,7 +665,7 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
 
 
 // Dlouhé tabulky sbalit na prvních n řádků s tlačítkem „Zobrazit všech N“.
-function collapseTables(root, n = window.matchMedia("(max-width: 640px)").matches ? 3 : 5) {
+function collapseTables(root, n = window.matchMedia("(max-width: 560px)").matches ? 3 : 5) {
   root.querySelectorAll(".table-wrap table").forEach((table) => {
     const rows = [...table.tBodies[0]?.rows || []];
     if (rows.length <= n + 1 || table.dataset.collapsed) return;
