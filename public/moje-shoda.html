@@ -53,7 +53,12 @@
     <p><strong>Shoda</strong> = podíl otázek, ve kterých poslanec hlasoval stejně jako vy, z otázek, na které jste odpověděli a ve kterých poslanec hlasoval (pro, proti nebo se zdržel). Když nehlasoval nebo ještě nebyl v mandátu, otázka se mu nepočítá. Není to hodnocení poslanců ani doporučení, koho volit. <a href="o-projektu.html#moje-shoda">Jak počítáme</a>.</p>
   </div></span></div>
   <p class="note small" id="quiz-rule">Načítám…</p>
+  <p class="note small" id="quiz-ai" hidden></p>
   <p class="small muted">Odpovědi se počítají jen ve vašem prohlížeči a nikam se neposílají.</p>
+  <div class="controls quiz-len" role="radiogroup" aria-label="Délka testu">
+    <label class="quiz-opt"><input type="radio" name="len" value="short" checked><span id="len-short">Krátký test</span></label>
+    <label class="quiz-opt"><input type="radio" name="len" value="long"><span id="len-long">Delší test</span></label>
+  </div>
   <form id="quiz" class="quiz" novalidate></form>
   <div class="quiz-actions">
     <button type="button" class="more-btn primary" id="quiz-go" disabled>Ukázat shodu</button>
@@ -80,52 +85,76 @@
 <script>
 setNav("analyses");
 setNav("my-agreement");
-// Kvíz „Moje shoda“: otázky a hlasy poslanců z data/quiz.json (scripts/quiz.py), shoda se počítá jen tady v prohlížeči.
+// Kvíz „Moje shoda“: otázky a hlasy poslanců z data/quiz.json (scripts/quiz.py), srozumitelné názvy od Claude Haiku
+// z data/quiz_summaries.json (scripts/quiz_summaries.py). Shoda se počítá jen tady v prohlížeči.
 const ANSWERS = [["F", "Pro"], ["A", "Proti"], ["B", "Zdržel/a bych se"], ["", "Nevím"]];
 const MIN_COMMON = 3; // méně společných otázek = číslo bez vypovídací hodnoty, poslanec jde do zvláštní skupiny
 (async () => {
   const form = document.getElementById("quiz");
   try {
-    const [quiz, overview] = await Promise.all([getJSON("quiz.json"), getJSON("overview.json")]);
-    const qs = quiz.questions;
-    document.getElementById("quiz-rule").innerHTML = `<strong>Otázky vybírá pravidlo, ne redakce:</strong> zákony, ve kterých se čeští poslanci nejvíc rozdělili`
-      + (quiz.from ? ` (${fmtDate(quiz.from)} až ${fmtDate(quiz.to)})` : "") + "."
+    const [quiz, overview, ai] = await Promise.all([getJSON("quiz.json"), getJSON("overview.json"), getJSON("quiz_summaries.json").catch(soft(null))]);
+    const byId = new Map(quiz.questions.map((q) => [q.id, q]));
+    const summaries = ai?.items || {};
+    document.getElementById("len-short").textContent = `Krátký test · ${quiz.short.length}`;
+    document.getElementById("len-long").textContent = `Delší test · ${quiz.long.length}`;
+    document.getElementById("quiz-rule").innerHTML = "<strong>Otázky vybírá pravidlo, ne redakce:</strong> zákony, o kterých se v plénu nejvíc hlasovalo a ve kterých Češi nehlasovali jednotně."
       + infoButton(`<p>${esc(quiz.rule)} <a href="o-projektu.html#moje-shoda">Proč takhle</a>.</p>`, "Pravidlo výběru otázek");
-    if (!qs.length) {
-      form.innerHTML = '<p class="muted">Za posledních 12 měsíců žádné hlasování pravidlu neodpovídá.</p>';
+    if (Object.keys(summaries).length) {
+      const box = document.getElementById("quiz-ai");
+      box.innerHTML = `<strong>Názvy a popisy otázek napsala AI (Claude Haiku, model ${esc(ai.model)}), ne redakce ani úřady.</strong> Vychází jen z úředního názvu a popisu hlasování; úřední název je u každé otázky pod „Úřední znění“.`
+        + infoButton(`<p>Přesné zadání pro AI (stejné pro všechny otázky, k němu se připojí úřední název, popis a číslo procedury):</p><pre class="ai-prompt small">${esc(ai.prompt)}</pre><p><a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz_summaries.py">quiz_summaries.py</a></p>`, "Zadání pro AI");
+      box.hidden = false;
+    }
+    if (!quiz.questions.length) {
+      form.innerHTML = '<p class="muted">Žádné hlasování zatím pravidlu neodpovídá.</p>';
       return;
     }
-    form.innerHTML = qs.map((q, i) => {
-      const story = procedureUrl(q.procedure);
-      return `<fieldset class="card quiz-q" data-i="${i}">
-        <legend><span class="quiz-n">${i + 1}/${qs.length}</span> ${esc(q.title)}</legend>
-        <p class="small muted">${fmtDate(q.date)} · ${esc(KIND_LABEL[q.vote_kind] || "závěrečné hlasování")}${q.description ? ` · ${esc(q.description)}` : ""}${story ? ` · <a href="${story}" target="_blank" rel="noopener">o čem zákon je</a>` : ""}</p>
-        <div class="quiz-opts" role="radiogroup" aria-label="Jak byste hlasovali">${ANSWERS.map(([val, label]) =>
-          `<label class="quiz-opt"><input type="radio" name="q${i}" value="${val}"${val === "" ? " checked" : ""}><span>${label}</span></label>`).join("")}</div>
-        <div class="quiz-reveal small" hidden></div>
-      </fieldset>`;
-    }).join("");
-    const answers = () => qs.map((_, i) => form.querySelector(`input[name="q${i}"]:checked`)?.value || "");
+    const answers = new Map(); // id hlasování -> odpověď, zachová se i při přepnutí délky
+    let qs = [];
     const go = document.getElementById("quiz-go");
     const count = document.getElementById("quiz-count");
     const update = () => {
-      const n = answers().filter(Boolean).length;
+      const n = qs.filter((q) => answers.get(q.id)).length;
       go.disabled = n < MIN_COMMON;
       count.textContent = `Odpovězeno ${n} z ${qs.length}${n < MIN_COMMON ? ` (aspoň ${MIN_COMMON})` : ""}`;
     };
-    form.addEventListener("change", update);
-    update();
+    const renderForm = () => {
+      const len = document.querySelector('input[name="len"]:checked').value;
+      qs = quiz[len].map((id) => byId.get(id));
+      form.innerHTML = qs.map((q, i) => {
+        const story = procedureUrl(q.procedure);
+        const sm = summaries[q.procedure];
+        const head = sm ? `${esc(sm.nazev)} <span class="ai-tag">shrnutí AI</span>` : esc(q.title);
+        return `<fieldset class="card quiz-q" data-id="${q.id}">
+          <legend><span class="quiz-n">${i + 1}/${qs.length}</span> ${head}</legend>
+          ${sm ? `<p class="quiz-sum">${esc(sm.shrnuti)}</p>` : ""}
+          <p class="small muted">${fmtDate(q.date)} · ${esc(KIND_LABEL[q.vote_kind] || "závěrečné hlasování")}${story ? ` · <a href="${story}" target="_blank" rel="noopener">příběh zákona</a>` : ""}</p>
+          ${sm ? `<details class="small"><summary>Úřední znění</summary><p>${esc(q.title)}${q.description ? ` · ${esc(q.description)}` : ""} (${esc(q.procedure)})</p></details>` : ""}
+          <div class="quiz-opts" role="radiogroup" aria-label="Jak byste hlasovali">${ANSWERS.map(([val, label]) =>
+            `<label class="quiz-opt"><input type="radio" name="q${q.id}" value="${val}"${(answers.get(q.id) || "") === val ? " checked" : ""}><span>${label}</span></label>`).join("")}</div>
+          <div class="quiz-reveal small" hidden></div>
+        </fieldset>`;
+      }).join("");
+      document.getElementById("quiz-result").hidden = true;
+      update();
+    };
+    form.addEventListener("change", (ev) => {
+      const fs = ev.target.closest(".quiz-q");
+      if (fs) answers.set(Number(fs.dataset.id), ev.target.value);
+      update();
+    });
+    document.querySelectorAll('input[name="len"]').forEach((r) => r.addEventListener("change", renderForm));
+    renderForm();
     const meps = overview.meps;
     go.addEventListener("click", () => {
-      const a = answers();
       // Shoda: stejná odpověď / otázky, kde jste odpověděli vy i poslanec hlasoval (pro, proti, zdržel se).
       const rows = meps.map((m) => {
         let same = 0, common = 0;
-        qs.forEach((q, i) => {
-          const p = q.positions[String(m.id)];
-          if (!a[i] || !p || p === "N") return;
+        qs.forEach((q) => {
+          const a = answers.get(q.id), p = q.positions[String(m.id)];
+          if (!a || !p || p === "N") return;
           common += 1;
-          if (p === a[i]) same += 1;
+          if (p === a) same += 1;
         });
         return { m, same, common, pct: common ? same / common : null };
       }).filter((r) => r.common);
@@ -140,10 +169,10 @@ const MIN_COMMON = 3; // méně společných otázek = číslo bez vypovídací 
       document.getElementById("quiz-list").innerHTML = enough.map(li).join("")
         + (few.length ? `<li class="quiz-few small muted">Méně než ${MIN_COMMON} společné otázky (bez procenta): ${few.map((r) => `<a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a> (${r.same} z ${r.common})`).join(", ")}</li>` : "");
       document.getElementById("quiz-res-note").textContent =
-        `Počítá se ${a.filter(Boolean).length} vašich odpovědí. „x z y“ = stejně hlasoval v x z y otázek, ve kterých hlasoval. Seřazeno podle shody, u stejné shody podle počtu společných otázek.`;
+        `Počítá se ${qs.filter((q) => answers.get(q.id)).length} vašich odpovědí. „x z y“ = stejně hlasoval v x z y otázek, ve kterých hlasoval. Seřazeno podle shody, u stejné shody podle počtu společných otázek.`;
       // Po vyhodnocení ukázat u každé otázky skutečný výsledek a odkaz na detail.
       form.querySelectorAll(".quiz-q").forEach((fs) => {
-        const q = qs[Number(fs.dataset.i)];
+        const q = byId.get(Number(fs.dataset.id));
         const cz = Object.values(q.positions);
         const n = (l) => cz.filter((x) => x === l).length;
         const box = fs.querySelector(".quiz-reveal");
@@ -155,10 +184,8 @@ const MIN_COMMON = 3; // méně společných otázek = číslo bez vypovídací 
       res.querySelector("h2").focus();
     });
     document.getElementById("quiz-reset").addEventListener("click", () => {
-      form.reset();
-      form.querySelectorAll(".quiz-reveal").forEach((b) => { b.hidden = true; });
-      document.getElementById("quiz-result").hidden = true;
-      update();
+      answers.clear();
+      renderForm();
       window.scrollTo({ top: 0 });
     });
     document.getElementById("source").innerHTML =
