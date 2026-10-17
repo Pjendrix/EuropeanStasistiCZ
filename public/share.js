@@ -4,6 +4,7 @@
 //
 // Pravidla karty: každá karta má datum, zdroj a adresu; u poslance vždy medián EP; žádné pořadí, žádné hodnocení barvou,
 // žádná loga stran ani frakcí (jen zkratka a tečka); portrét s popiskem „© European Union – Source: EP“.
+// Exporty (…Ops, SHARE_FORMATS, measureText) jsou jen pro e2e test karet; stránky share.js neimportují.
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 import { citeText, getJSON } from "./lib/data.js";
 import { SHARE_KEYS } from "./lib/ui.js";
@@ -11,14 +12,14 @@ import { esc, fmtDate, fmtNum, fmtPct, siteUrl } from "./lib/format.js";
 
 const SHARE_ROOT = new URL(".", import.meta.url).href;
 
-const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
+export const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
   slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
 const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155" };
 const SC_POS = { FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent };
 const SC_FONT = '"Plus Jakarta Sans", system-ui, sans-serif';
 
 let _measureCtx = null;
-function measureText(text, size, weight) {
+export function measureText(text, size, weight) {
   _measureCtx = _measureCtx || document.createElement("canvas").getContext("2d");
   _measureCtx.font = `${weight} ${size}px ${SC_FONT}`;
   return _measureCtx.measureText(text).width;
@@ -94,7 +95,7 @@ const SHARE_SHORT = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdrž.", DID_NO
 const partySummary = (positions) => SHARE_KEYS.map((k) => [positions.filter((p) => p === k).length, SHARE_SHORT[k]]).filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(" · ");
 
 // Karta hlasování (S5): název, výsledek větou, celý EP, Češi po stranách (barva tečky = hlas). Obsah vystředěný mezi hlavičkou a patičkou.
-function voteCardOps(d, f) {
+export function voteCardOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   let y = 0;
@@ -201,7 +202,7 @@ function metricOps(x, y, w, label, pair, median, medLabel) {
 }
 
 // 1/3 Základní karta: portrét, jméno, frakce · strana, mandát, dvě čísla s mediánem.
-function mepBasicOps(d, f) {
+export function mepBasicOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   const pw = 380, ph = 475, y0 = 0;
@@ -342,7 +343,7 @@ function centered(ops, y, H, top = 172) {
 }
 
 // Karta jednoho čísla: kontext (jméno · frakce · strana), název, hodnota, osa s mediánem, „x z y“, jedna věta definice.
-function metricCardOps(d, f) {
+export function metricCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;
@@ -372,10 +373,10 @@ function metricCardOps(d, f) {
 }
 
 // Počet řádků přehledu na kartě: příspěvek 5, story 7 (vždy výslovně napsaný na kartě).
-const splitRowsFor = (f) => (f.h > 1500 ? 7 : 5);
+export const splitRowsFor = (f) => (f.h > 1500 ? 7 : 5);
 
 // Karta přehledu: titulek, věta o výběru, prvních N řádků ve stejném pořadí jako na stránce.
-function splitCardOps(d, f) {
+export function splitCardOps(d, f) {
   const H = f.h, n = Math.min(splitRowsFor(f), d.rows.length);
   const ops = [];
   let y = 0;
@@ -403,7 +404,7 @@ function splitCardOps(d, f) {
 }
 
 // Karta strany: název, zkratka a počet poslanců, tři dlaždice „Souhrn za stranu“ (bez log, bez srovnání mezi stranami).
-function partyCardOps(d, f) {
+export function partyCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;

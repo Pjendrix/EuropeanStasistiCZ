@@ -254,7 +254,10 @@ for (const width of [1440, 400]) {
     const page = await ctx.newPage();
     await page.goto(base + `v/${multi}.html`, { waitUntil: "networkidle" });
     const where = `v/${multi}.html [téma, ${width}px]`;
+    // Funkce webu jsou v ES modulech (lib/*.js), ne globální: test si je naimportuje (stejná instance jako stránka).
     const same = await page.evaluate(async (id) => {
+      const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
+      const [{ getJSON, loadCategories }, { topicChips }] = await Promise.all([lib("data.js"), lib("ui.js")]);
       await loadCategories();
       const cats = (await getJSON("vote_cats.json")).votes[id];
       // app.js po načtení přesouvá popovery do <body>: porovnat čipy bez popoverů a popovery podle id zvlášť
@@ -268,7 +271,7 @@ for (const width of [1440, 400]) {
     }, multi);
     if (!same) problems.push(`${where}: čipy statické stránky se liší od topicChips() v JS`);
     // „+N“ (tady vynucené max 1) se otevře klávesou a zavře Esc
-    await page.evaluate(async (id) => { const cats = (await getJSON("vote_cats.json")).votes[id]; const el = document.createElement("div"); el.id = "tc-test"; el.innerHTML = topicChips(cats, { max: 1, id: "e2e" }); document.querySelector("main").prepend(el); }, multi);
+    await page.evaluate(async (id) => { const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href); const [{ getJSON }, { topicChips }] = await Promise.all([lib("data.js"), lib("ui.js")]); const cats = (await getJSON("vote_cats.json")).votes[id]; const el = document.createElement("div"); el.id = "tc-test"; el.innerHTML = topicChips(cats, { max: 1, id: "e2e" }); document.querySelector("main").prepend(el); }, multi);
     await page.focus("#tc-test .tc-more");
     await page.keyboard.press("Enter");
     const open = await page.evaluate(() => Boolean(document.querySelector("#tc-e2e:popover-open")));
@@ -303,6 +306,11 @@ for (const width of [1440, 400]) {
   const page = await ctx.newPage();
   await page.goto(base + `v/${voteId}.html`, { waitUntil: "networkidle" });
   const r = await page.evaluate(async () => {
+    const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
+    const { isStale, sessionCountdown } = await lib("format.js");
+    // share.js se stejnou adresou (s ?v=) jako na stránce: stejná instance modulu, nespustí se podruhé
+    const { SHARE_FORMATS, measureText, metricCardOps, splitCardOps, splitRowsFor, partyCardOps, voteCardOps, mepBasicOps } =
+      await import(document.querySelector('script[src*="share.js"]').src);
     await document.fonts.ready;
     const out = [];
     const fits = (name, ops) => ops.filter((o) => o.k === "text").forEach((o) => {
@@ -340,7 +348,7 @@ for (const width of [1440, 400]) {
       if (!/ČESKÁ STOPA/.test(texts(tr))) out.push("vote: chybí štítek česká stopa");
       if (/ČESKÁ STOPA/.test(texts(withT))) out.push("vote: štítek česká stopa bez záznamu");
     }
-    // odpočet a pruh o starých datech (čisté funkce v app.js)
+    // odpočet a pruh o starých datech (čisté funkce v lib/format.js)
     const cd = [["2026-10-19", "2026-10-22", "2026-10-18", "zítra"], ["2026-10-19", "2026-10-22", "2026-10-16", "za 3 dny"],
       ["2026-10-19", "2026-10-22", "2026-10-12", "za 7 dní"], ["2026-10-19", "2026-10-22", "2026-10-20", "právě probíhá"]];
     cd.forEach(([a, b, t, want]) => { if (sessionCountdown(a, b, t) !== want) out.push(`odpočet ${t}: „${sessionCountdown(a, b, t)}“, čekám „${want}“`); });
