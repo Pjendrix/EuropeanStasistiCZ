@@ -599,6 +599,9 @@ main h2[id] { scroll-margin-top: 4rem; }
 .timeline .tl-seg { font-size: 13px; font-weight: 600; }
 .timeline .tl-year { font-size: 12px; fill: var(--muted); }
 .timeline .tl-tick { stroke: var(--border); }
+/* časová osa ve dvou šířkách (profile_page.py), aby text zůstal čitelný i na mobilu */
+.timeline.tl-narrow { display: none; }
+@media (max-width: 760px) { .timeline.tl-wide { display: none; } .timeline.tl-narrow { display: block; } }
 .metric .bench { margin-top: 0; }
 .metric .bench-label { font-weight: 600; color: var(--muted); font-size: .9rem; }
 .metric .bench-top b { font-size: 2rem; font-weight: 300; letter-spacing: -.02em; }

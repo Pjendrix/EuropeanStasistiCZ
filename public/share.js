@@ -8,7 +8,7 @@
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 import { citeText, getJSON } from "./lib/data.js";
 import { SHARE_KEYS } from "./lib/ui.js";
-import { esc, fmtDate, fmtNum, fmtPct, siteUrl } from "./lib/format.js";
+import { esc, fmtDate, fmtNum, fmtPct, withShareUrl } from "./lib/format.js";
 
 const SHARE_ROOT = new URL(".", import.meta.url).href;
 
@@ -571,13 +571,13 @@ function downloadBlob(blob, name) {
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
-// Statické stránky (v/*.html) mají kontext jako JSON v <script type="application/json" id="share-context"> (bez inline skriptu, CSP).
-function staticShareContext() {
+// Statické stránky (v/, p/) mají kontext jako JSON v <script type="application/json" id="share-context"> (bez inline skriptu, CSP):
+// buď jeden kontext ({kind, path, …}), nebo víc podle tlačítka ({default: …, "metric:attendance": …}).
+function staticShareContext(kindArg = "") {
   const el = document.getElementById("share-context");
   if (!el) return null;
-  const ctx = JSON.parse(el.textContent);
-  const url = siteUrl(ctx.path);
-  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, "") } };
+  const all = JSON.parse(el.textContent);
+  return withShareUrl(all.kind ? all : all[kindArg || "default"]);
 }
 
 let shareDlg = null;

@@ -50,13 +50,6 @@ export function partyBadge(id, label, parties, mep) {
   return `<span class="badge" style="--badge-dot:${groupColor(p)}" title="${esc(p ? p.name : text)}">${esc(text)}</span>`;
 }
 
-// Štítek strany s odkazem na stránku strany (nezávislí stránku nemají).
-export function partyLink(id, label, parties, mep) {
-  const p = parties.find((x) => String(x.id) === String(id));
-  const badge = partyBadge(id, label, parties, mep);
-  return p && !p.independent ? `<a href="${partyUrl(p.id)}" class="badge-link">${badge}</a>` : badge;
-}
-
 // Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
 // Jedna adresa strany (s/{id}.html; party.html?id= se přesměrovává).
 export function partyUrl(id) {
@@ -290,10 +283,6 @@ export function voteRow(v, extra = "") {
   </tr>`;
 }
 
-export function czCell(cz) {
-  return `<td class="extra cz">${splitBar(cz)}<div class="small">${czCountsHtml(cz)}</div></td>`;
-}
-
 // Jména poslanců seskupená podle volby; positions = {id: volba} nebo [{member_id, position}].
 export function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"]) {
   const list = Array.isArray(positions) ? positions : Object.entries(positions).map(([id, position]) => ({ member_id: Number(id), position }));
@@ -409,19 +398,6 @@ export function askAiBox(ctx) {
     </div>
     <pre class="ask-ai-prompt small">${esc(prompt)}</pre>
   </details>`;
-}
-
-// Citace: věta s číslem; při kopírování se doplní verze dat a adresa stránky. Tlačítko „Citovat“ je v ⓘ u čísla
-// (citeAction) a v panelu sdílení („Kopírovat jako citaci“); ❝ v rohu karet už není (revize sdílení N2).
-export const CITE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 7.2 3.5 9.4 3.5 12.3V18h6.2v-6.1H6.6c.1-1.9 1-3.3 2.6-4.2L7.2 6zm9.8 0c-2.3 1.2-3.7 3.4-3.7 6.3V18h6.2v-6.1h-3.1c.1-1.9 1-3.3 2.6-4.2L17 6z"/></svg>';
-
-export const SHARE_SMALL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
-
-// ⓘ v rohu karty s číslem: definice a dvě akce vedle sebe – Sdílet číslo (panel s kartou metric) a Citovat.
-export function metricActions(html, shareKey, cite) {
-  const acts = `<div class="pop-acts">${shareKey ? `<button type="button" class="pop-act" data-share="${esc(shareKey)}" aria-haspopup="dialog">${SHARE_SMALL_ICON}<span>Sdílet číslo</span></button>` : ""}`
-    + `${cite ? `<button type="button" class="pop-act" data-cite="${esc(cite)}">${CITE_ICON}<span>Citovat</span></button>` : ""}</div>`;
-  return infoButton(`${html}${acts}`, "Definice, sdílení a citace").replace('class="info-wrap"', 'class="info-wrap corner"');
 }
 
 // Tlačítko „Stáhnout CSV“; rows = pole polí (první řádek = záhlaví). Oddělovač středník kvůli českému Excelu.

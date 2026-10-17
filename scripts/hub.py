@@ -549,8 +549,27 @@ def caption_html(vote: dict) -> str:
     )
 
 
+def hero_share(vote: dict, d: dict | None) -> dict | None:
+    """Kontext panelu sdílení pro hlasování v heru (stejná karta jako na detailu v/, share.js)."""
+    if not d:
+        return None
+    c, day = vote["counts"], fmt_date(vote["date"])
+    topic = d.get("topic")
+    return {
+        "kind": "vote",
+        "path": f"v/{vote['id']}.html",
+        "filename": f"ep-watch-hlasovani-{vote['id']}",
+        "subtitle": f"Hlasování · {day}{' · ' + topic if topic else ''}",
+        "text": f"{d['title']} ({day}): {d['sentence']}. Češi: {c['F']} pro, {c['A']} proti. Zdroj: HowTheyVote.eu, EP Watch CZ",
+        "cite": f"Evropský parlament {day}, {d['title']} ({d['kindLabel']}{', téma ' + topic if topic else ''}): {d['resultLabel']}, "
+        f"{d['ep'][0]} pro, {d['ep'][1]} proti, {d['ep'][2]} se zdrželo. Čeští poslanci v mandátu: {c['F']} pro, {c['A']} proti, "
+        f"{c['B']} se zdrželo, {c['N']} nehlasovalo. Zdroj: HowTheyVote.eu (https://howtheyvote.eu/votes/{vote['id']}).",
+        "data": d,
+    }
+
+
 def legend_html(vote: dict) -> str:
-    """Legenda pod hemicyklem s nenulovými počty (stejná jako legendHtml v hub.js)."""
+    """Legenda pod hemicyklem s nenulovými počty (hub.js ji při přepnutí bere hotovou z home-data)."""
     legend = "".join(f"<li>{_dot_svg(k)}<span><b>{vote['counts'][k]}</b> {label}</span></li>" for k, label in LEGEND if vote["counts"][k])
     if vote["counts"].get("X"):
         legend += f'<li><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-x"/></svg><span><b>{vote["counts"]["X"]}</b> mimo mandát</span></li>'
@@ -623,13 +642,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         "votes": [
             {
                 "id": x["id"],
-                "date": x["date"],
                 "title": x["title"],
-                "kind_label": x["kind_label"],
-                "result": x["result"],
                 "counts": x["counts"],
-                "topic_html": hero_topic(x),
-                "summary": x["summary"],
+                # popisek a legenda jako hotové HTML ze stejných šablon jako statická stránka (audit A1: bez dvojčat v hub.js)
+                "cap": caption_html(x),
+                "leg": legend_html(x),
+                "share": hero_share(x, share.get(str(x["id"]))),
                 "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                 "party": {str(p["id"]): party_text(p) for p in x["ppl"]},
             }
@@ -637,7 +655,6 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         ],
         "names": {str(p["id"]): p["name"] for p in first["ppl"]},
         "pos_txt": POS_TXT,
-        "share": share,
     }
     data_json = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
 

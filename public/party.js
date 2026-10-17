@@ -1,7 +1,7 @@
-// Strany: seznam (party.html) a detail strany (s/{id}.html; statický obsah v HTML, tento skript ho nahradí interaktivní verzí).
+// Strany: seznam (party.html), evropské frakce (?v=eu, ?c=) a interakce na detailu strany (s/{id}.html).
 import { getJSON, param, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtDate, fmtNum, fmtPct, isActive, pct, siteUrl, todayCZ } from "./lib/format.js";
-import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, namesByPosition, noteLine, partyBadge, partyUrl, pctCell, photoUrl, setNav, shareButton, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
+import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtNum, fmtPct, pct } from "./lib/format.js";
+import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("parties");
 const MIN_VOTERS_EU = 10;
@@ -111,92 +111,14 @@ async function listPage() {
     <p class="source">${sourceLine(idx)}</p>`;
 }
 
-const meps_count_cs = (n) => `${fmtNum(n)} ${n === 1 ? "poslanec" : n < 5 ? "poslanci" : "poslanců"}`;
-
-async function detailPage(id) {
-  const [p, groups, parties] = await Promise.all([
-    getJSON(`parties/${id}.json`).catch(() => { throw new Error("Strana nenalezena. Vrať se na seznam stran."); }),
-    getJSON("groups.json"), getJSON("parties.json"),
-  ]);
-  document.title = `${p.name || p.short_label} – EP Watch CZ`;
-  const t = p.total;
-  const meps = Object.fromEntries(p.member_list.map((m) => [m.id, m]));
-  const single = p.cohesion[1] === 0;
-  const splitList = (list) => list.length ? `<div class="table-wrap"><table class="stack">
-      <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Poslanci strany</th><th>Výsledek</th></tr></thead>
-      <tbody>${list.map((v) => voteRow(v, `<td class="extra">${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
-    : emptyState("Poslanci strany se v žádném takovém hlasování nerozdělili.", "Zkuste zrušit filtr „jen závěrečná“.", [[`votes.html`, "Všechna hlasování"]]);
-  // Karta strany (sdílení): tři čísla ze „Souhrn za stranu“, bez log a bez srovnání mezi stranami.
-  const nowCount = p.member_list.filter((m) => isActive(m) && m.party_periods.some((x) => !x.end)).length;
-  const url = siteUrl(`s/${p.id}.html`);
-  const name = p.name || p.short_label;
-  window.shareContext = () => ({
-    kind: "party", url, filename: `ep-watch-strana-${p.id}`, subtitle: `Strana · ${p.short_label}`,
-    cite: single ? "" : `${name}: poslanci strany v Evropském parlamentu hlasovali jednotně v ${fmtPct(pct(p.cohesion))} hlasování (${fmtNum(p.cohesion[0])} z ${fmtNum(p.cohesion[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.`,
-    text: `${name} v Evropském parlamentu: účast poslanců na hlasování ${fmtPct(pct(t.attendance))}${single ? "" : `, jednotnost ${fmtPct(pct(p.cohesion))}`}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
-    data: {
-      name, sub: `${name !== p.short_label ? `${p.short_label} · ` : ""}${nowCount ? `${meps_count_cs(nowCount)} v mandátu` : "nikdo v mandátu"}`, dataDay: p.sources?.votes?.release || todayCZ(),
-      tiles: [{ label: "Účast poslanců na hlasování", pair: t.attendance }, { label: "Jednotnost", pair: single ? null : p.cohesion, note: "všichni hlasující poslanci strany stejně" },
-        { label: "Soulad s výsledkem", pair: t.outcome, note: "jen informativní" }],
-      urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, ""),
-    },
+// Detail strany (s/{id}.html) vykresluje build (scripts/party_page.py, audit A1); tady jen přepínač a sbalení tabulek.
+function detailIslands() {
+  const onlyMain = document.getElementById("split-main");
+  onlyMain?.addEventListener("change", () => {
+    main.querySelectorAll(".split-list").forEach((el) => { el.hidden = (el.dataset.main === "1") !== onlyMain.checked; });
   });
-  main.innerHTML = `
-    <div class="back-row"><p class="small"><a href="party.html">← Všechny strany</a></p>${shareButton()}</div>
-    ${p.logo ? `<div class="logo-row">${logoTile(p, 48)}</div>` : ""}
-    <h1>${esc(p.name || p.short_label)} ${partyBadge(p.id, p.short_label, parties)}</h1>
-
-    <h2>Poslanci</h2>
-    <div class="table-wrap"><table class="cards">
-      <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
-      <tbody>${[...p.member_list].sort((a, b) => (pct(b.total.attendance) ?? -1) - (pct(a.total.attendance) ?? -1)).map((m) => `<tr>
-        <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40">
-          <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a><div>${groupBadge(null, groups, m.group?.code)}</div></div></div></td>
-        <td class="small wide" data-label="Ve straně (podle EP)">${m.party_periods.map((x) => `${fmtDate(x.start)} – ${x.end ? fmtDate(x.end) : "dosud"}`).join("<br>")}</td>
-        <td class="num" data-label="Účast na hlasování">${pctCell(m.total.attendance)}</td>
-        <td class="num" data-label="Hlasuje s frakcí">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>
-    </table></div>
-
-    <h2>Souhrn za stranu</h2>
-    <div class="metrics">
-      <div class="card metric"><div class="label">Účast poslanců strany na hlasování</div><div class="value">${countPct(pct(t.attendance))}</div>
-        <div class="detail">${pairText(t.attendance, "hlasů poslanců")}</div></div>
-      <div class="card metric"><div class="label">Jednotnost</div><div class="value">${single ? "–" : fmtPct(pct(p.cohesion))}</div>
-        <div class="detail">${single ? "strana měla v žádném hlasování víc než 1 hlasujícího poslance" : pairText(p.cohesion)}</div>
-        <div class="detail">závěrečná hlasování: ${single ? "–" : `${fmtPct(pct(p.cohesion_main))} (${pairText(p.cohesion_main)})`}</div></div>
-      <div class="card metric"><div class="label">Soulad s výsledkem</div><div class="value">${countPct(pct(t.outcome))}</div>
-        <div class="detail">${pairText(t.outcome, "hlasů pro/proti")} · jen informativní</div></div>
-    </div>
-    <p class="source">${sourceLine(p)}</p>
-    ${reportsHtml(p.reports, meps)}
-
-    ${single ? "" : `<h2>Kde se strana rozdělila</h2>
-      <p class="muted">Hlasování, kde poslanci strany hlasovali pro i proti. Celkem ${fmtNum(p.splits_count)} z ${fmtNum(p.cohesion[1])} hlasování (${fmtPct(p.splits_count / p.cohesion[1])}), z toho v závěrečných ${fmtNum(p.splits_count_main)} z ${fmtNum(p.cohesion_main[1])}.</p>
-      <div class="controls"><label><input type="checkbox" id="split-main"> jen závěrečná hlasování</label></div>
-      <div id="splits">${splitList(p.splits)}</div>`}`;
-  document.getElementById("split-main")?.addEventListener("change", (e) => {
-    document.getElementById("splits").innerHTML = splitList(e.target.checked ? p.splits_main : p.splits);
-    collapseTables(document.getElementById("splits"));
-  });
-  if (!single) collapseTables(document.getElementById("splits"));
-}
-
-// Zprávy, které vedli poslanci strany (D6, data/parties/{id}.json → reports z own_work.json): výčet, bez pořadí a hodnocení.
-function reportsHtml(r, meps) {
-  if (!r) return "";
-  const STATUS = { ADOPTED: "přijato", REJECTED: "zamítnuto", no_vote: "zatím bez hlasování v plénu" };
-  const ROLE = { rapporteur: "zpravodaj/ka", co: "spoluzpravodaj/ka" };
-  const items = r.items.map((x) => {
-    const m = meps[x.mep_id];
-    const title = x.title_cs || x.label || "zpráva";
-    return `<li><a href="${esc(x.url)}">${esc(title.length > 160 ? `${title.slice(0, 157)}…` : title)}</a>
-      <div class="small muted">${esc(x.label || "")} · ${fmtDate(x.date)} · ${m ? `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>` : ""} (${ROLE[x.role]})
-      · ${x.vote_id ? `<a href="v/${x.vote_id}.html">${STATUS[x.status] || "hlasování"}</a>` : STATUS[x.status] || "stav neuveden"}</div></li>`;
-  }).join("");
-  return `<h2>Zprávy, které vedli poslanci strany</h2>
-    <p class="muted">${r.items.length ? `${fmtNum(r.items.length)} ${r.items.length === 1 ? "zpráva" : r.items.length < 5 ? "zprávy" : "zpráv"}, u kterých byl poslanec strany zpravodajem nebo spoluzpravodajem` : "Poslanci strany zatím nevedli žádnou zprávu jako zpravodajové"}${r.shadow_count ? `; stínovým zpravodajem byl poslanec strany u ${fmtNum(r.shadow_count)} ${r.shadow_count === 1 ? "zprávy" : "zpráv"}` : ""}. Strana k datu zprávy.</p>
-    ${items ? `<div class="card"><ul class="plain">${items}</ul></div>` : ""}
-    <p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0)${r.updated ? `, stav k ${fmtDate(r.updated.slice(0, 10))}` : ""} · <a href="prace.html">Práce poslanců</a></p>`;
+  const splits = document.getElementById("splits");
+  if (splits) collapseTables(splits);
 }
 
 (async () => {
@@ -206,10 +128,9 @@ function reportsHtml(r, meps) {
       if (!/^[A-Z_]+$/.test(code)) throw new Error("Skupina nenalezena.");
       return await euDetailPage(code);
     }
-    if (param("v") === "eu" && !main.dataset.party) return await euListPage();
-    const id = main.dataset.party || param("id");
-    if (id && !/^\d+$/.test(id)) throw new Error("Strana nenalezena.");
-    await (id ? detailPage(id) : listPage());
+    if (main.dataset.party) return detailIslands();
+    if (param("v") === "eu") return await euListPage();
+    await listPage();
   } catch (e) {
     showError(main, e);
   }
