@@ -121,8 +121,8 @@ function sideCell(v) {
   return `<td class="extra small muted">${won ? "ano, výsledek odpovídá hlasu" : lost ? "ne, hlasování dopadlo opačně" : "–"}</td>`;
 }
 
-function voteTable(rows, extraHead, extraCell) {
-  if (!rows.length) return '<p class="muted">Žádné takové hlasování.</p>';
+function voteTable(rows, extraHead, extraCell, empty = emptyState("Žádné takové hlasování.")) {
+  if (!rows.length) return empty;
   return `<div class="table-wrap"><table class="stack">
     <thead><tr><th class="num">Datum</th><th>Hlasování</th>${extraHead}<th>Výsledek</th></tr></thead>
     <tbody>${rows.map((v) => voteRow(v, extraCell(v))).join("")}</tbody></table></div>`;
@@ -250,7 +250,7 @@ function ownWork(ow, mep) {
     return `<details class="card own-list"><summary><strong>${esc(ow.type_labels[t])}</strong> (${items.length})</summary>
       <ul class="plain">${items.map(ownItem).join("")}</ul></details>`;
   }).join("");
-  return `${mep ? ownPassed(ow, mep) : ""}${cards ? `<div class="metrics">${cards}</div>` : '<p class="muted">V datech EP není žádná zpráva, usnesení ani otázka.</p>'}
+  return `${mep ? ownPassed(ow, mep) : ""}${cards ? `<div class="metrics">${cards}</div>` : emptyState("V datech EP není žádná zpráva, usnesení ani otázka.", "Ne každý poslanec je zpravodajem nebo autorem návrhu a práci ve výborech data EP celou neevidují.", [["o-projektu.html#metodika", "Co se počítá"]])}
     ${lists}
     ${noteLine(`Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · aktualizováno ${fmtDate(ow.updated)}${ow.complete ? "" : " (data nejsou úplná)"}`,
       `Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: ${esc(NO_VOTE_NOTE)} <a href="o-projektu.html#metodika">Jak počítáme</a>.`, "source")}`;
@@ -487,7 +487,8 @@ function periodText(x) {
       <h2 id="rozhodly">Kde rozhodly české hlasy</h2>
       <div class="card">
         ${noteLine(`Těsná hlasování, která by bez českých hlasů dopadla opačně (<a href="rozhodujici.html">všechna</a>).`, `Většinou pozměňovací návrhy a dílčí hlasování. Ukazuje se, jak ${byGender(mep, "hlasoval", "hlasovala")} v těch, která proběhla v době ${byGender(mep, "jeho", "jejího")} mandátu.`)}
-        ${voteTable(profile.decisive, "<th>Volba</th><th>Na straně výsledku</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>${sideCell(v)}`)}
+        ${voteTable(profile.decisive, "<th>Volba</th><th>Na straně výsledku</th>", (v) => `<td class="extra pos pos-${v.position}">${positionFor(v.position, mep)}</td>${sideCell(v)}`,
+          emptyState("Žádné takové hlasování v době mandátu.", "České hlasy rozhodují jen výjimečně, u velmi těsných výsledků.", [["rozhodujici.html", "Všechna hlasování, kde rozhodli Češi"]]))}
       </div>
 
       <h2 id="temata">Podle témat</h2>
@@ -539,7 +540,9 @@ function periodText(x) {
         "<th>Volba / frakce</th><th>Strana</th>",
         (v) => `<td class="extra"><span class="pos pos-${v.position}">${positionFor(v.position, mep)}</span>
           <div class="small muted">většina ${esc(v.group_code)}: ${POSITION_LABEL[v.group_majority]}</div></td>
-          <td class="extra small muted">${v.party_majority ? `většina strany: ${POSITION_LABEL[v.party_majority]}${v.party_majority === v.position ? " (stejně)" : ""}` : "strana: bez většiny"}</td>`) +
+          <td class="extra small muted">${v.party_majority ? `většina strany: ${POSITION_LABEL[v.party_majority]}${v.party_majority === v.position ? " (stejně)" : ""}` : "strana: bez většiny"}</td>`,
+        emptyState(`${byGender(mep, "Nehlasoval", "Nehlasovala")} proti většině své frakce${onlyMain ? " v žádném závěrečném hlasování" : ""}.`,
+          onlyMain ? "Zkuste zrušit filtr „jen závěrečná“." : "")) +
         `<p class="small muted">Posledních ${fmtNum((onlyMain ? profile.against_group.recent_main : profile.against_group.recent).length)} z ${fmtNum(onlyMain ? profile.against_group.count_main : profile.against_group.count)}.</p>`;
       collapseTables(el);
     };
@@ -560,7 +563,7 @@ function periodText(x) {
     </table></div>
     <p class="source">Zdroj: <a href="https://howtheyvote.eu/members/${mep.id}">HowTheyVote.eu</a>.
       Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>`
-      : '<p class="muted">Žádná hlasování.</p>';
+      : emptyState("Žádná hlasování v tomto výběru.", "", [[`votes.html?mep=${mep.id}`, "Všechna hlasování poslance"]]);
     collapseTables(main);
   } catch (e) {
     showError(main, e);

@@ -18,12 +18,34 @@ const dotSvg = (k) => (k === "N" ? '<svg viewBox="-13 -13 26 26" aria-hidden="tr
 function captionHtml(v) {
   const ok = v.result === "ADOPTED";
   const res = ok ? "✓ Přijato" : v.result === "REJECTED" ? "✕ Zamítnuto" : esc(RESULT_LABEL[v.result] || "výsledek neuveden");
-  const legend = LEGEND.filter(([k]) => v.counts[k]).map(([k, l]) => `<li>${dotSvg(k)}<span><b>${v.counts[k]}</b> ${l}</span></li>`).join("")
-    + (v.counts.X ? `<li>${dotSvg("X")}<span><b>${v.counts.X}</b> mimo mandát</span></li>` : "");
+  const sum = v.summary ? `<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) jen z úředního názvu a témat, bez čísel a výsledku">AI</span>${esc(v.summary)}</p>` : "";
   // čip tématu: hotové HTML ze stejné šablony jako statická stránka (topic_chips v build_pages.py)
   return `<div class="hm-cap-meta"><span>${fmtDate(v.date)}</span><span class="hm-tag">${esc(v.kind_label)}</span><span class="hm-res${ok ? "" : " no"}">${res}</span></div>
-    ${v.topic_html || ""}<p class="hm-cap-title">${esc(v.title)}</p><ul class="hm-legend">${legend}</ul>`;
+    <p class="hm-cap-title">${esc(v.title)}</p>${sum}${v.topic_html || ""}`;
 }
+const legendHtml = (v) => LEGEND.filter(([k]) => v.counts[k]).map(([k, l]) => `<li>${dotSvg(k)}<span><b>${v.counts[k]}</b> ${l}</span></li>`).join("")
+  + (v.counts.X ? `<li>${dotSvg("X")}<span><b>${v.counts.X}</b> mimo mandát</span></li>` : "");
+
+// Štítek „Další hlasování“ v hlavičce: odpočet počítá prohlížeč (web se kvůli tomu nepřestavuje).
+// Po posledním dni hlasování štítek zmizí a vrátí se běžný nadpis (program je starý, nový přijde s další aktualizací).
+(function nextVote() {
+  const el = document.querySelector(".hm-nx[data-from]");
+  if (!el) return;
+  const today = todayCZ(), { from, to } = el.dataset;
+  const out = el.querySelector(".hm-nx-c");
+  if (today > to) {
+    el.outerHTML = '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>';
+    return;
+  }
+  if (today >= from) {
+    el.classList.add("live");
+    el.querySelector(".hm-nx-l").textContent = "Právě se hlasuje";
+    el.querySelector("strong").textContent = today === to ? "poslední den" : `do ${fmtDate(to).slice(0, -5)}`;
+    return;
+  }
+  const n = Math.round((Date.parse(from) - Date.parse(today)) / 864e5);
+  out.textContent = n === 1 ? "· zítra" : `· za ${n} ${n < 5 ? "dny" : "dní"}`;
+})();
 
 let vi = 0;
 const hemi = document.getElementById("hm-hemi");
@@ -40,8 +62,10 @@ function renderVote(i) {
   });
   document.getElementById("hm-big").innerHTML = `${v.counts.F}<em>:</em>${v.counts.A}`;
   const cap = document.getElementById("hm-cap");
+  const leg = document.getElementById("hm-leg");
   const upd = () => {
     cap.innerHTML = captionHtml(v);
+    leg.innerHTML = legendHtml(v);
     document.getElementById("hm-idx").textContent = `${i + 1} / ${HOME.votes.length}`;
     const more = document.getElementById("hm-more");
     more.href = `v/${v.id}.html`;
@@ -50,7 +74,7 @@ function renderVote(i) {
     document.getElementById("hm-next").disabled = i === HOME.votes.length - 1;
   };
   if (REDUCED) upd();
-  else { cap.classList.add("swap"); setTimeout(() => { upd(); cap.classList.remove("swap"); }, 170); }
+  else { cap.classList.add("swap"); leg.classList.add("swap"); setTimeout(() => { upd(); cap.classList.remove("swap"); leg.classList.remove("swap"); }, 170); }
 }
 
 if (HOME && hemi) {

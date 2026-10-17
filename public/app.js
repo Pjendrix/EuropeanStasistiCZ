@@ -365,6 +365,12 @@ function debounce(fn, ms) {
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; }
 }
+// Prázdný stav s vysvětlením a dalším krokem (audit UI3): co to znamená a kam pokračovat, ne slepá ulička.
+function emptyState(title, hint = "", links = []) {
+  const acts = links.length ? `<div class="empty-acts">${links.map(([href, label]) => `<a class="more-btn" href="${esc(href)}">${esc(label)}</a>`).join("")}</div>` : "";
+  return `<div class="empty-state"><p><strong>${esc(title)}</strong>${hint ? ` ${esc(hint)}` : ""}</p>${acts}</div>`;
+}
+
 // Krátké oznámení dole (role=status), společné pro celý web (audit UI4).
 function toast(text, { bad = false, ms = 2600 } = {}) {
   let el = document.getElementById("toast");
@@ -659,7 +665,7 @@ function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "ABSTENT
 
 
 // Dlouhé tabulky sbalit na prvních n řádků s tlačítkem „Zobrazit všech N“.
-function collapseTables(root, n = window.matchMedia("(max-width: 640px)").matches ? 3 : 5) {
+function collapseTables(root, n = window.matchMedia("(max-width: 560px)").matches ? 3 : 5) {
   root.querySelectorAll(".table-wrap table").forEach((table) => {
     const rows = [...table.tBodies[0]?.rows || []];
     if (rows.length <= n + 1 || table.dataset.collapsed) return;

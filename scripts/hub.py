@@ -14,8 +14,7 @@ import json
 import math
 from pathlib import Path
 
-from build_pages import (RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, page,
-                         og_meta, split_bar)
+from build_pages import RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, page, og_meta, split_bar
 from categories import LABEL, icon_svg
 from hero_art import STARS
 from procedure_pages import procedure_url
@@ -49,10 +48,12 @@ def _dots(cz: list[int]) -> str:
 
 
 def _legend(cz: list[int]) -> str:
-    return (f'<div class="vd-legend"><span><i class="vd sm f"></i><b class="pro">{cz[0]}</b> pro</span>'
-            f'<span><i class="vd sm a"></i><b class="con">{cz[1]}</b> proti</span>'
-            f'<span><i class="vd sm s"></i><b>{cz[2]}</b> zdrž.</span>'
-            f'<span><i class="vd sm n"></i><b>{cz[3]}</b> nehl.</span></div>')
+    return (
+        f'<div class="vd-legend"><span><i class="vd sm f"></i><b class="pro">{cz[0]}</b> pro</span>'
+        f'<span><i class="vd sm a"></i><b class="con">{cz[1]}</b> proti</span>'
+        f'<span><i class="vd sm s"></i><b>{cz[2]}</b> zdrž.</span>'
+        f'<span><i class="vd sm n"></i><b>{cz[3]}</b> nehl.</span></div>'
+    )
 
 
 def vote_card(v: dict, reason: str) -> str:
@@ -61,19 +62,26 @@ def vote_card(v: dict, reason: str) -> str:
     cats = v.get("cats") or []
     head = ""
     if cats:
-        more = f'<span class="cat-more" title="{esc(", ".join(LABEL[k] for k in cats[1:]))}">+{len(cats) - 1}</span>' if len(cats) > 1 else ""
+        more = (
+            f'<span class="cat-more" title="{esc(", ".join(LABEL[k] for k in cats[1:]))}">+{len(cats) - 1}</span>' if len(cats) > 1 else ""
+        )
         head = f'<span class="cat-ico">{icon_svg(cats[0])}</span><span class="cat-name">{esc(LABEL[cats[0]])}</span>{more}'
     ok = v["result"] == "ADOPTED"
-    res = (f'<span class="res-pill{"" if ok else " no"}">{esc(RESULT_LABEL.get(v["result"], "výsledek neuveden"))}</span>'
-           if v["result"] else "")
+    res = (
+        f'<span class="res-pill{"" if ok else " no"}">{esc(RESULT_LABEL.get(v["result"], "výsledek neuveden"))}</span>'
+        if v["result"]
+        else ""
+    )
     ep_bar = split_bar([c["for"], c["against"], c["abstention"], 0])
-    return (f'<div class="card hub-vote"><div class="hub-vote-head">{head}<span class="when">{fmt_date(v["date"])}</span></div>'
-            f'<a class="vote-title" href="{vote_link(v)}">{esc(v["title"])}</a>'
-            f'<div class="meta">{res}<span>{esc(KIND_LABELS.get(v["vote_kind"], ""))}</span></div>'
-            f'<div class="vd-row" role="img" aria-label="Češi: {cz[0]} pro, {cz[1]} proti, {cz[2]} zdržel se, {cz[3]} nehlasoval">{_dots(cz)}</div>'
-            f'{_legend(cz)}'
-            f'<div class="small muted">{esc(reason)}</div>'
-            f'<div class="ep-line"><span>Celý EP</span>{ep_bar}<span><b class="pro">{c["for"]}</b> : <b class="con">{c["against"]}</b></span></div></div>')
+    return (
+        f'<div class="card hub-vote"><div class="hub-vote-head">{head}<span class="when">{fmt_date(v["date"])}</span></div>'
+        f'<a class="vote-title" href="{vote_link(v)}">{esc(v["title"])}</a>'
+        f'<div class="meta">{res}<span>{esc(KIND_LABELS.get(v["vote_kind"], ""))}</span></div>'
+        f'<div class="vd-row" role="img" aria-label="Češi: {cz[0]} pro, {cz[1]} proti, {cz[2]} zdržel se, {cz[3]} nehlasoval">{_dots(cz)}</div>'
+        f"{_legend(cz)}"
+        f'<div class="small muted">{esc(reason)}</div>'
+        f'<div class="ep-line"><span>Celý EP</span>{ep_bar}<span><b class="pro">{c["for"]}</b> : <b class="con">{c["against"]}</b></span></div></div>'
+    )
 
 
 def key_votes_html(kv: dict, limit: int | None = None) -> str:
@@ -82,17 +90,24 @@ def key_votes_html(kv: dict, limit: int | None = None) -> str:
     out = ['<div class="hub-lists">']
     for name, (title, rule) in LIST_TITLES.items():
         lst = kv["lists"]["all"][name]
-        items = "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"][:limit]) or '<p class="muted small">Nic.</p>'
-        more = (f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v 10. období)</p>'
-                if lst["total"] > len(lst["items"][:limit]) else "")
-        out.append(f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p><div class="hub-cards">{items}</div>{more}</section>')
+        items = (
+            "".join(vote_card(kv["votes"][str(i["id"])], i["reason"]) for i in lst["items"][:limit]) or '<p class="muted small">Nic.</p>'
+        )
+        more = (
+            f'<p class="small"><a href="votes.html?f=final">všechna závěrečná hlasování</a> ({fmt_num(lst["total"])} v 10. období)</p>'
+            if lst["total"] > len(lst["items"][:limit])
+            else ""
+        )
+        out.append(
+            f'<section class="hub-list"><h3>{esc(title)}</h3><p class="small muted">{esc(rule)}</p><div class="hub-cards">{items}</div>{more}</section>'
+        )
     out.append("</div>")
     out.append(f'<p class="small muted">{esc(kv["note"])} <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>')
     return "".join(out)
 
 
-
 # --- bloky vkládané do ručních stránek (build_pages.sync_block) -----------------------------
+
 
 def heads_html(data_dir: Path) -> str:
     """Portréty českých poslanců po frakcích (blok „Kdo jsou čeští poslanci“ na poslanci.html)."""
@@ -101,15 +116,22 @@ def heads_html(data_dir: Path) -> str:
     bench = _read(data_dir / "benchmarks.json")
     active = [m for m in overview["meps"] if _active(m)]
     dname = lambda m: " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
-    avatar = lambda m: (f'<a class="hub-av" href="p/{m["id"]}.html" title="{esc(dname(m))}"><img src="assets/photos/thumbs/{m["id"]}.webp" '
-                        f'alt="{esc(dname(m))}" width="56" height="56" loading="lazy"></a>' if m.get("photo_url") else "")
+    avatar = lambda m: (
+        f'<a class="hub-av" href="p/{m["id"]}.html" title="{esc(dname(m))}"><img src="assets/photos/thumbs/{m["id"]}.webp" '
+        f'alt="{esc(dname(m))}" width="56" height="56" loading="lazy"></a>'
+        if m.get("photo_url")
+        else ""
+    )
     by_group: dict[str, list[dict]] = {}
     for m in active:
         by_group.setdefault((m.get("group") or {}).get("code") or "", []).append(m)
     order = sorted(by_group, key=lambda g: (-len(by_group[g]), group_label(g or None, groups)))
     strip = "".join(
         f'<div class="hub-group"><span class="small muted">{esc(group_label(g or None, groups))}</span><div class="hub-avs">'
-        + "".join(avatar(m) for m in sorted(by_group[g], key=lambda m: m.get("sort_label") or m["name"])) + "</div></div>" for g in order)
+        + "".join(avatar(m) for m in sorted(by_group[g], key=lambda m: m.get("sort_label") or m["name"]))
+        + "</div></div>"
+        for g in order
+    )
     att = [sum(m["total"]["attendance"][0] for m in active), sum(m["total"]["attendance"][1] for m in active)]
     med = ((bench or {}).get("ep") or {}).get("attendance")
     return f"""<section class="card heads" aria-labelledby="h-heads">
@@ -130,9 +152,15 @@ def votes_overview_html(data_dir: Path) -> str:
                 sess_votes.append((it["id"], it["reason"]))
     sess_cards = "".join(vote_card(kv["votes"][str(i)], r) for i, r in sess_votes[:3])
     arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-    chips = "".join(f'<a class="vo-chip" href="{h}">{esc(t)}{arrow}</a>' for h, t in (
-        ("temata.html", "Podle témat"), ("rozkol.html", "Kde se Češi rozdělili"),
-        ("rozhodujici.html", "Kde rozhodly české hlasy"), ("shoda.html", "Shoda mezi Čechy")))
+    chips = "".join(
+        f'<a class="vo-chip" href="{h}">{esc(t)}{arrow}</a>'
+        for h, t in (
+            ("temata.html", "Podle témat"),
+            ("rozkol.html", "Kde se Češi rozdělili"),
+            ("rozhodujici.html", "Kde rozhodly české hlasy"),
+            ("shoda.html", "Shoda mezi Čechy"),
+        )
+    )
     return f"""<div class="vo-tools">
   <div class="vo-chips"><span class="vo-label">Další pohledy</span>{chips}<a class="vo-chip vo-chip-main" href="votes.html">Všechna hlasování{arrow}</a></div>
 </div>
@@ -167,10 +195,15 @@ def agenda_item_html(it: dict, root: str = "") -> str:
     """Jeden hlasovací bod: český název (jinak anglický originál), den, dokumenty s odkazem na EP a česká stopa."""
     title = it.get("title_cs") or it.get("title_en") or it["id"]
     docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
-    cz = ", ".join(f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or [])
-    return (f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
-            + (f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {cz}</span>' if cz else "")
-            + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "") + "</li>")
+    cz = ", ".join(
+        f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or []
+    )
+    return (
+        f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+        + (f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {cz}</span>' if cz else "")
+        + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "")
+        + "</li>"
+    )
 
 
 def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -> str:
@@ -187,31 +220,41 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -
     head, tail = (items[:FULL_VISIBLE], items[FULL_VISIBLE:]) if full else (items, [])
     lst = f'<ol class="ns-list">{"".join(agenda_item_html(i, root) for i in head)}</ol>' if head else ""
     if tail:
-        lst += (f'<details class="ns-rest"><summary>Zobrazit dalších {fmt_num(len(tail))}</summary>'
-                f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root) for i in tail)}</ol></details>')
+        lst += (
+            f'<details class="ns-rest"><summary>Zobrazit dalších {fmt_num(len(tail))}</summary>'
+            f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root) for i in tail)}</ol></details>'
+        )
     as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
-    more = (f'<a class="ns-all" href="{root}radar.html#zasedani">Celý program ({fmt_num(n)}) a co se chystá {_ARROW}</a>' if not full else "")
-    return (f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
-            f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
-            f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"><strong>{_range(agenda["from"], agenda["to"])}</strong>'
-            f'<span class="ns-count" aria-live="polite"></span> · {count}</p></div>'
-            f'{lst}{more}'
-            f'<p class="source">Návrh programu EP{as_of}, může se změnit. {rule}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
-            f'(CC BY 4.0) · <a href="{root}o-projektu.html#program-ep">výběr a česká stopa</a></p>'
-            '</section>')
+    more = f'<a class="ns-all" href="{root}radar.html#zasedani">Celý program ({fmt_num(n)}) a co se chystá {_ARROW}</a>' if not full else ""
+    return (
+        f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
+        f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
+        f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"><strong>{_range(agenda["from"], agenda["to"])}</strong>'
+        f'<span class="ns-count" aria-live="polite"></span> · {count}</p></div>'
+        f"{lst}{more}"
+        f'<p class="source">Návrh programu EP{as_of}, může se změnit. {rule}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
+        f'(CC BY 4.0) · <a href="{root}o-projektu.html#program-ep">výběr a česká stopa</a></p>'
+        "</section>"
+    )
 
 
 # --- radar „Co se chystá“ (radar.py → data/radar.json) ---------------------------------------------------
 
-_CZ_ROLE_SHORT = {"rapporteur": "zpravodaj/ka", "co": "spoluzpravodaj/ka", "shadow": "stínový/á zpravodaj/ka",
-                  "opinion": "zpravodaj/ka stanoviska", "shadow_opinion": "stínový/á zpravodaj/ka stanoviska"}
+_CZ_ROLE_SHORT = {
+    "rapporteur": "zpravodaj/ka",
+    "co": "spoluzpravodaj/ka",
+    "shadow": "stínový/á zpravodaj/ka",
+    "opinion": "zpravodaj/ka stanoviska",
+    "shadow_opinion": "stínový/á zpravodaj/ka stanoviska",
+}
 
 
 def _cz_html(cz: list[dict], root: str) -> str:
     if not cz:
         return ""
-    people = ", ".join(f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_CZ_ROLE_SHORT[c["role"]]})'
-                       for c in cz)
+    people = ", ".join(
+        f'<a href="{root}p/{c["mep_id"]}.html">{esc(c["name"] or str(c["mep_id"]))}</a> ({_CZ_ROLE_SHORT[c["role"]]})' for c in cz
+    )
     return f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {people}</span>'
 
 
@@ -219,7 +262,7 @@ def _committee_html(c: dict | None, root: str) -> tuple[str, str]:
     """(text výboru, čip kategorie). Bez výboru prázdné."""
     if not c:
         return "", ""
-    text = f'výbor {esc(c["code"])}' + (f' ({esc(c["name"])})' if c.get("name") else "")
+    text = f"výbor {esc(c['code'])}" + (f" ({esc(c['name'])})" if c.get("name") else "")
     chip = topic_chips([c["category"]], 1, True, "x", root) if c.get("category") else ""
     return text, chip
 
@@ -233,16 +276,26 @@ def radar_session_item(it: dict, root: str) -> str:
     proc = it.get("procedure") or {}
     comm, chip = _committee_html(it.get("committee"), root)
     legislative = bool(it.get("legislative") or proc.get("type") in ("COD", "CNS", "APP"))
-    meta = [x for x in (
-        "zákon" if legislative else None, it.get("stage_cs"),
-        (f'<a href="{esc(proc["url"])}">{esc(proc["label"])}</a>' if proc.get("url") else None), comm or None) if x]
+    meta = [
+        x
+        for x in (
+            "zákon" if legislative else None,
+            it.get("stage_cs"),
+            (f'<a href="{esc(proc["url"])}">{esc(proc["label"])}</a>' if proc.get("url") else None),
+            comm or None,
+        )
+        if x
+    ]
     docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
     cat = (it.get("committee") or {}).get("category")
-    return (f'<li class="ns-item rd-item"{_filter_attrs(cat, legislative, bool(it.get("cz")))}>'
-            f'<span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
-            + (f'<span class="rd-meta small">{chip}{" · ".join(meta)}</span>' if meta or chip else "")
-            + _cz_html(it.get("cz") or [], root)
-            + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "") + "</li>")
+    return (
+        f'<li class="ns-item rd-item"{_filter_attrs(cat, legislative, bool(it.get("cz")))}>'
+        f'<span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+        + (f'<span class="rd-meta small">{chip}{" · ".join(meta)}</span>' if meta or chip else "")
+        + _cz_html(it.get("cz") or [], root)
+        + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "")
+        + "</li>"
+    )
 
 
 def radar_steps(steps: list[dict], reached: str | None) -> str:
@@ -255,8 +308,10 @@ def radar_steps(steps: list[dict], reached: str | None) -> str:
         state = "done" if i < cur or finished else "current" if i == cur else "todo"
         when = f'<span class="rd-when">{fmt_date(s["date"])}</span>' if s.get("date") else ""
         attr = ' aria-current="step"' if state == "current" else ""
-        lis.append(f'<li class="rd-step {state}"{attr}>'
-                   f'<span class="rd-dot" aria-hidden="true"></span><span class="rd-lbl">{esc(s["label"])}</span>{when}</li>')
+        lis.append(
+            f'<li class="rd-step {state}"{attr}>'
+            f'<span class="rd-dot" aria-hidden="true"></span><span class="rd-lbl">{esc(s["label"])}</span>{when}</li>'
+        )
     return f'<ol class="rd-steps" aria-label="Průběh procedury">{"".join(lis)}</ol>'
 
 
@@ -265,24 +320,41 @@ def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     comm, chip = _committee_html(r.get("committee"), root)
     # číslo procedury vede na stránku Příběh zákona (z/, procedure_pages.py), ta odkazuje dál na Legislativní observatoř
     story = procedure_url(r.get("label"), root)
-    label = (f'<a href="{story}">{esc(r["label"])}</a>' if story
-             else f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or ""))
+    label = (
+        f'<a href="{story}">{esc(r["label"])}</a>'
+        if story
+        else f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>'
+        if r.get("url") and r.get("label")
+        else esc(r.get("label") or "")
+    )
     head = " · ".join(x for x in (label, comm) if x)
     if done:
         v = r.get("vote") or {}
-        tail = (f'<p class="rd-next">Plénum hlasovalo {fmt_date(r["plenary_date"])} · '
-                + (f'<a href="{root}v/{v["vote_id"]}.html">jak hlasovali Češi {_ARROW}</a>' if v.get("vote_id")
-                   else '<span class="muted">jmenovité hlasování k ní v datech HowTheyVote není</span>') + "</p>")
+        tail = (
+            f'<p class="rd-next">Plénum hlasovalo {fmt_date(r["plenary_date"])} · '
+            + (
+                f'<a href="{root}v/{v["vote_id"]}.html">jak hlasovali Češi {_ARROW}</a>'
+                if v.get("vote_id")
+                else '<span class="muted">jmenovité hlasování k ní v datech HowTheyVote není</span>'
+            )
+            + "</p>"
+        )
     else:
         last = r.get("last_event")
-        nxt = (f'<strong>Na programu pléna {fmt_date(r["next_vote"])}</strong>' if r.get("next_vote")
-               else "Datum hlasování v plénu zatím nezveřejněno")
-        tail = ((f'<p class="small muted">Poslední krok: {esc(last["label"])} ({fmt_date(last["date"])})</p>' if last else "")
-                + f'<p class="rd-next">{nxt}</p>')
+        nxt = (
+            f"<strong>Na programu pléna {fmt_date(r['next_vote'])}</strong>"
+            if r.get("next_vote")
+            else "Datum hlasování v plénu zatím nezveřejněno"
+        )
+        tail = (
+            f'<p class="small muted">Poslední krok: {esc(last["label"])} ({fmt_date(last["date"])})</p>' if last else ""
+        ) + f'<p class="rd-next">{nxt}</p>'
     cat = (r.get("committee") or {}).get("category")
-    return (f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
-            f'<h3 class="rd-title">{esc(title)}</h3><p class="rd-meta small">{chip}{head}</p>'
-            f'{_cz_html(r["cz"], root)}{radar_steps(r["steps"], r["reached"])}{tail}</li>')
+    return (
+        f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
+        f'<h3 class="rd-title">{esc(title)}</h3><p class="rd-meta small">{chip}{head}</p>'
+        f"{_cz_html(r['cz'], root)}{radar_steps(r['steps'], r['reached'])}{tail}</li>"
+    )
 
 
 def radar_html(radar: dict | None, root: str = "") -> str:
@@ -290,38 +362,49 @@ def radar_html(radar: dict | None, root: str = "") -> str:
     if not radar:
         return '<p class="muted">Data radaru zatím nejsou k dispozici.</p>'
     s = radar.get("session")
-    filters = ('<div class="controls rd-filters" role="group" aria-label="Filtry">'
-               '<label>Téma <select id="rd-cat"><option value="">všechna</option>'
-               + "".join(f'<option value="{k}">{esc(LABEL[k])}</option>' for k in radar.get("categories", []) if k in LABEL)
-               + '</select></label><label><input type="checkbox" id="rd-leg"> jen zákony</label>'
-               '<label><input type="checkbox" id="rd-cz"> jen s českou stopou</label></div>')
+    filters = (
+        '<div class="controls rd-filters" role="group" aria-label="Filtry">'
+        '<label>Téma <select id="rd-cat"><option value="">všechna</option>'
+        + "".join(f'<option value="{k}">{esc(LABEL[k])}</option>' for k in radar.get("categories", []) if k in LABEL)
+        + '</select></label><label><input type="checkbox" id="rd-leg"> jen zákony</label>'
+        '<label><input type="checkbox" id="rd-cz"> jen s českou stopou</label></div>'
+    )
     if s:
         items = "".join(radar_session_item(i, root) for i in s["items"])
         as_of = f" k {fmt_date(s['fetched'])}" if s.get("fetched") else ""
-        sess = (f'<section class="card next-session" id="zasedani" aria-labelledby="rd-h1">'
-                f'<div class="ns-head"><h2 id="rd-h1">Nejbližší zasedání</h2>'
-                f'<p class="ns-when" data-from="{s["from"]}" data-to="{s["to"]}"><strong>{_range(s["from"], s["to"])}</strong>'
-                f'<span class="ns-count" aria-live="polite"></span> · {fmt_num(len(s["items"]))} hlasování v programu</p></div>'
-                f'<ol class="ns-list rd-list">{items}</ol><p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>'
-                f'<p class="source">Návrh programu EP{as_of}, může se změnit. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).</p>'
-                '</section>')
+        sess = (
+            f'<section class="card next-session" id="zasedani" aria-labelledby="rd-h1">'
+            f'<div class="ns-head"><h2 id="rd-h1">Nejbližší zasedání</h2>'
+            f'<p class="ns-when" data-from="{s["from"]}" data-to="{s["to"]}"><strong>{_range(s["from"], s["to"])}</strong>'
+            f'<span class="ns-count" aria-live="polite"></span> · {fmt_num(len(s["items"]))} hlasování v programu</p></div>'
+            f'<ol class="ns-list rd-list">{items}</ol><p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>'
+            f'<p class="source">Návrh programu EP{as_of}, může se změnit. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).</p>'
+            "</section>"
+        )
     else:
-        sess = '<section class="card" id="zasedani"><h2>Nejbližší zasedání</h2><p class="muted">Program zatím není zveřejněný.</p></section>'
+        sess = (
+            '<section class="card" id="zasedani"><h2>Nejbližší zasedání</h2><p class="muted">Program zatím není zveřejněný.</p></section>'
+        )
     active = "".join(radar_proc_card(r, root) for r in radar.get("active", []))
     done = "".join(radar_proc_card(r, root, True) for r in radar.get("done", []))
-    pending = (f'<p class="small muted">U {fmt_num(radar["without_events"])} procedur se průběh ještě stahuje, doplní se při další aktualizaci.</p>'
-               if radar.get("without_events") else "")
-    return (f'{filters}{sess}'
-            f'<section class="rd-block" id="rozpracovane" aria-labelledby="rd-h2"><h2 id="rd-h2">Rozpracované zákony s českou stopou</h2>'
-            f'<p class="muted">Legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem a o kterých plénum ještě '
-            f'nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}'
-            + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
-            + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
-            '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
-            + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
-            + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
-            '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
-            f'<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) · <a href="{root}o-projektu.html#radar">jak radar funguje</a></p>')
+    pending = (
+        f'<p class="small muted">U {fmt_num(radar["without_events"])} procedur se průběh ještě stahuje, doplní se při další aktualizaci.</p>'
+        if radar.get("without_events")
+        else ""
+    )
+    return (
+        f"{filters}{sess}"
+        f'<section class="rd-block" id="rozpracovane" aria-labelledby="rd-h2"><h2 id="rd-h2">Rozpracované zákony s českou stopou</h2>'
+        f'<p class="muted">Legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem a o kterých plénum ještě '
+        f"nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}"
+        + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
+        + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
+        '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
+        + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
+        + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
+        '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
+        f'<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) · <a href="{root}o-projektu.html#radar">jak radar funguje</a></p>'
+    )
 
 
 def votes_hero_html(data_dir: Path) -> str:
@@ -334,9 +417,12 @@ def votes_hero_html(data_dir: Path) -> str:
     tiles = "".join(
         f'<a class="tp-tile" href="votes.html?c={esc(c["key"])}&amp;f=final"><span class="tp-ico">{icon_svg(c["key"])}</span>'
         f'<span class="tp-text"><span class="tp-name">{esc(LABEL[c["key"]])}</span><span class="tp-n">{fmt_num(c["final"])}<span class="tp-unit"> závěrečných</span></span></span></a>'
-        for c in cats)
-    picker = (f'<nav class="topic-picker" aria-labelledby="tp-h"><div class="tp-head"><h2 id="tp-h">Vyber téma</h2>'
-              f'<a class="tp-all" href="temata.html">tabulka témat →</a></div><div class="tp-grid">{tiles}</div></nav>')
+        for c in cats
+    )
+    picker = (
+        f'<nav class="topic-picker" aria-labelledby="tp-h"><div class="tp-head"><h2 id="tp-h">Vyber téma</h2>'
+        f'<a class="tp-all" href="temata.html">tabulka témat →</a></div><div class="tp-grid">{tiles}</div></nav>'
+    )
     return f"""<section class="hero">
   {STARS}
   <div class="hero-inner hero-compact">
@@ -365,12 +451,18 @@ def votes_hero_html(data_dir: Path) -> str:
 
 # --- úvodní stránka (revize úvodu U1–U6) ---------------------------------------------------------
 
-_ARROW = ('<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
-          'stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
-_SEARCH_ICON = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-                'aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>')
-_SHARE_ICON = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-               'stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>')
+_ARROW = (
+    '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+)
+_SEARCH_ICON = (
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+    'aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'
+)
+_SHARE_ICON = (
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+    'stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'
+)
 _CHEV = {"prev": '<path d="M15 6l-6 6 6 6"/>', "next": '<path d="M9 6l6 6-6 6"/>'}
 
 # Hemicykl: stejná geometrie jako renderDelegation v public/home.js (dvě řady, poloměry 96 a 150), viewBox 400 × 232.
@@ -420,38 +512,76 @@ def hemi_html(vote: dict) -> str:
     stars = "".join(
         f'<path class="hm-star" transform="translate({HEMI_CX + 188 * math.cos(math.pi - k * math.pi / 6):.1f} '
         f'{HEMI_CY - 188 * math.sin(math.pi - k * math.pi / 6):.1f}) scale(.62)" d="M0-9.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L0 4.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z"/>'
-        for k in range(7))
+        for k in range(7)
+    )
     seats = "".join(
         f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}.html" data-i="{i}" data-id="{p["id"]}" '
         f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" tabindex="{0 if i == 0 else -1}" '
         f'aria-label="{esc(p["name"])}, {esc(party_text(p))}: {esc(POS_TXT.get(p["pos"], ""))}">'
         f'<circle class="hm-ring" r="15.5"/><g transform="scale(.86)"><circle class="hm-f" r="13"/>'
-        + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items()) + "</g></a></g>"
-        for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False)))
+        + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items())
+        + "</g></a></g>"
+        for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False))
+    )
     c = vote["counts"]
-    return (f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
-            f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu; mezi poslanci se přechází šipkami">{seats}</svg>'
-            f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
-            '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>')
+    return (
+        f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
+        f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu; mezi poslanci se přechází šipkami">{seats}</svg>'
+        f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
+        '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>'
+    )
 
 
 def caption_html(vote: dict) -> str:
-    """Popisek pod hemicyklem: datum, typ, výsledek, titul (bez překladu, jak ho dodává HowTheyVote), legenda s nenulovými počty."""
+    """Hlavička karty nad hemicyklem: datum, typ, výsledek, téma, nadpis a krátké AI shrnutí (když je, vote_summaries.py)."""
     ok = vote["result"] == "ADOPTED"
-    res = (f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>')
-    legend = "".join(f'<li>{_dot_svg(k)}<span><b>{vote["counts"][k]}</b> {label}</span></li>' for k, label in LEGEND if vote["counts"][k])
+    res = f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>'
+    summary = (
+        f'<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) jen z úředního názvu a témat, bez čísel a výsledku">AI</span>'
+        f"{esc(vote['summary'])}</p>"
+        if vote.get("summary")
+        else ""
+    )
+    return (
+        f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
+        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{hero_topic(vote)}'
+    )
+
+
+def legend_html(vote: dict) -> str:
+    """Legenda pod hemicyklem s nenulovými počty (stejná jako legendHtml v hub.js)."""
+    legend = "".join(f"<li>{_dot_svg(k)}<span><b>{vote['counts'][k]}</b> {label}</span></li>" for k, label in LEGEND if vote["counts"][k])
     if vote["counts"].get("X"):
         legend += f'<li><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-x"/></svg><span><b>{vote["counts"]["X"]}</b> mimo mandát</span></li>'
-    return (f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-            f'{hero_topic(vote)}<p class="hm-cap-title">{esc(vote["title"])}</p><ul class="hm-legend">{legend}</ul>')
+    return legend
+
+
+def next_vote_html(agenda: dict | None) -> str:
+    """Štítek „Další hlasování“ v hlavičce úvodu: první a poslední den s hlasováním v programu (agenda.json),
+    odpočet dopočítá hub.js. Bez programu, nebo když je program starý, prázdný řetězec."""
+    if not agenda or not agenda.get("items"):
+        return ""
+    days = sorted({i["date"] for i in agenda["items"]})
+    first, last = days[0], days[-1]
+    wd = ["po", "út", "st", "čt", "pá", "so", "ne"][__import__("datetime").date.fromisoformat(first).weekday()]
+    n = agenda.get("votes") or 0
+    count = f"· {fmt_num(n)} {'bod' if n == 1 else 'body' if n < 5 else 'bodů'} k hlasování" if n else ""
+    return (
+        f'<a class="hm-nx" href="#dalsi-zasedani" data-from="{first}" data-to="{last}">'
+        f'<i aria-hidden="true"></i><span class="hm-nx-l">Další hlasování</span> '
+        f'<strong>{wd} {fmt_date(first)[:-5]}</strong><span class="hm-nx-c"></span><span class="hm-nx-n">{count}</span></a>'
+    )
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) a štítek české stopy na vlastním řádku nad nadpisem; bez obojího nic."""
+    """Jeden čip tématu (+N) a štítek české stopy pod nadpisem; bez obojího nic."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
     trace = vote.get("trace") or []
-    badge = (f'<span class="cz-badge" title="{esc(", ".join(f"{t["name"]} ({_ROLE_CS[t["role"]]})" for t in trace))}">česká stopa</span>'
-             if trace else "")
+    badge = (
+        f'<span class="cz-badge" title="{esc(", ".join(f"{t['name']} ({_ROLE_CS[t['role']]})" for t in trace))}">česká stopa</span>'
+        if trace
+        else ""
+    )
     return f'<div class="hm-topic">{chips}{badge}</div>' if chips or badge else ""
 
 
@@ -460,6 +590,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     pruh faktů, tři cesty do dat, další pohledy a pás zásad. Všechna čísla z JSON; funguje i bez JavaScriptu."""
     from build_pages import vote_share_data
     from overrides import apply_name_overrides
+
     home = _read(data_dir / "home.json")
     if not home or not home.get("votes"):
         raise ValueError("chybí data/home.json (spusť build_web.py)")
@@ -471,6 +602,9 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
     f = home["facts"]
     votes = home["votes"]
+    sums = (_read(data_dir / "vote_summaries.json") or {}).get("items", {})
+    for x in votes:  # krátké AI shrnutí (vote_summaries.py); bez něj karta ukáže jen nadpis
+        x["summary"] = (sums.get(str(x["id"])) or {}).get("shrnuti")
     first = votes[0]
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
@@ -484,17 +618,33 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))
-    payload = {"votes": [{"id": x["id"], "date": x["date"], "title": x["title"], "kind_label": x["kind_label"], "result": x["result"],
-                          "counts": x["counts"], "topic_html": hero_topic(x), "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
-                          "party": {str(p["id"]): party_text(p) for p in x["ppl"]}} for x in votes],
-               "names": {str(p["id"]): p["name"] for p in first["ppl"]}, "pos_txt": POS_TXT, "share": share}
+    payload = {
+        "votes": [
+            {
+                "id": x["id"],
+                "date": x["date"],
+                "title": x["title"],
+                "kind_label": x["kind_label"],
+                "result": x["result"],
+                "counts": x["counts"],
+                "topic_html": hero_topic(x),
+                "summary": x["summary"],
+                "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
+                "party": {str(p["id"]): party_text(p) for p in x["ppl"]},
+            }
+            for x in votes
+        ],
+        "names": {str(p["id"]): p["name"] for p in first["ppl"]},
+        "pos_txt": POS_TXT,
+        "share": share,
+    }
     data_json = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
 
     quick = "".join(f'<li><a href="{h}">{esc(t)}</a></li>' for h, t in QUICK)
     hero = f"""<section class="hm-hero" aria-labelledby="h1">
   <div class="hm-inner">
     <div class="hm-copy">
-      <p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>
+      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
       <form class="hm-search" role="search" action="poslanci.html" method="get">
@@ -513,11 +663,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
           <button id="hm-next" type="button" aria-label="Starší hlasování"{" disabled" if len(votes) < 2 else ""}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_CHEV["next"]}</svg></button>
         </div>
       </div>
-      <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
       <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first)}</div>
+      <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
+      <ul class="hm-legend" id="hm-leg">{legend_html(first)}</ul>
       <div class="hm-act"><a class="hm-detail" id="hm-more" href="v/{first["id"]}.html">Detail hlasování {_ARROW}</a>
         <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div>
-      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).</p>
+      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku jen z úředního názvu a témat (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}</p>
     </section>
   </div>
   <dl class="hm-facts">
@@ -531,16 +682,24 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     # Bento: Poslanci (mozaika abecedně), Hlasování (číslo + měsíce), Práce (tři součty).
     active = sorted((m for m in overview["meps"] if _active(m)), key=lambda m: m.get("sort_label") or m["name"])
+
     def dname(m):
         return " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
+
     def plabel(m):
         p = m.get("party") or {}
         return "nezávislý/á" if not p or p.get("short_label") in ("Ind.", None) else p["short_label"]
+
     mosaic = "".join(
         f'<a href="p/{m["id"]}.html" data-n="{esc(dname(m))} · {esc(plabel(m))}" aria-label="{esc(dname(m))}, {esc(plabel(m))}">'
-        + (f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="64" height="64" loading="lazy">' if m.get("photo_url")
-           else f'<span>{esc("".join(x[0] for x in (m.get("given_name"), m.get("family_name")) if x))}</span>') + "</a>"
-        for m in active)
+        + (
+            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="64" height="64" loading="lazy">'
+            if m.get("photo_url")
+            else f"<span>{esc(''.join(x[0] for x in (m.get('given_name'), m.get('family_name')) if x))}</span>"
+        )
+        + "</a>"
+        for m in active
+    )
     months = [x["month"] for x in f["monthly"]]
     by_month = {x["month"]: x["votes"] for x in f["monthly"]}
     keys, (y, mo) = [], (int(months[0][:4]), int(months[0][5:]))
@@ -548,8 +707,11 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         keys.append(f"{y}-{mo:02d}")
         y, mo = (y + 1, 1) if mo == 12 else (y, mo + 1)
     vmax = max(by_month.values()) or 1
-    spark = "".join(f'<i class="{"last" if i == len(keys) - 1 else ""}" style="height:{max(3, round(by_month.get(k, 0) / vmax * 100))}%" '
-                    f'title="{int(k[5:])}/{k[:4]}: {fmt_num(by_month.get(k, 0))} hlasování"></i>' for i, k in enumerate(keys))
+    spark = "".join(
+        f'<i class="{"last" if i == len(keys) - 1 else ""}" style="height:{max(3, round(by_month.get(k, 0) / vmax * 100))}%" '
+        f'title="{int(k[5:])}/{k[:4]}: {fmt_num(by_month.get(k, 0))} hlasování"></i>'
+        for i, k in enumerate(keys)
+    )
     w = f["work"]
     bento = f"""<section class="hm-wrap" aria-labelledby="h-doors">
   <div class="hm-head"><div><p class="hm-kicker">Začněte tady</p><h2 id="h-doors">Tři cesty <strong>do dat.</strong></h2></div>
@@ -568,12 +730,16 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   </div>
 </section>"""
 
-    badge = {"unity": f'{fmt_num(f["united_final"])} z {fmt_num(f["considered_final"])} jednotně',
-             "decisive": f'{fmt_num(f["decisive"])} hlasování'}
+    badge = {
+        "unity": f"{fmt_num(f['united_final'])} z {fmt_num(f['considered_final'])} jednotně",
+        "decisive": f"{fmt_num(f['decisive'])} hlasování",
+    }
     rows = "".join(
         f'<li><a href="{h}"><span class="hm-t">{esc(t)}</span><span class="hm-d">{esc(d)}</span>'
-        + (f'<span class="hm-st">{badge[b]}</span>' if b else "") + f'<span class="hm-ar">{_ARROW}</span></a></li>'
-        for h, t, d, b in MORE)
+        + (f'<span class="hm-st">{badge[b]}</span>' if b else "")
+        + f'<span class="hm-ar">{_ARROW}</span></a></li>'
+        for h, t, d, b in MORE
+    )
     more = f"""<section class="hm-wrap hm-more" aria-labelledby="h-more">
   <div><p class="hm-kicker">Další pohledy</p><h2 id="h-more">Zajímavé <strong>souvislosti.</strong></h2></div>
   <ul class="hm-rows">{rows}</ul>
@@ -597,10 +763,23 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
     meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
     from layout import INSTAGRAM, REPO
-    org = {"@context": "https://schema.org", "@type": "Organization", "name": "EP Watch CZ",
-           **({"url": base_url.rstrip("/") + "/", "logo": base_url.rstrip("/") + "/assets/brand/apple-touch-icon.png"} if base_url else {}),
-           "sameAs": [INSTAGRAM, REPO]}
+
+    org = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "EP Watch CZ",
+        **({"url": base_url.rstrip("/") + "/", "logo": base_url.rstrip("/") + "/assets/brand/apple-touch-icon.png"} if base_url else {}),
+        "sameAs": [INSTAGRAM, REPO],
+    }
     meta += f'<script type="application/ld+json">{json.dumps(org, ensure_ascii=False)}</script>\n'
-    html = page(title, body, root="", current=None, description=desc, meta=meta, main_attrs='class="home-page"',
-                scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="hub.js"></script>\n')
+    html = page(
+        title,
+        body,
+        root="",
+        current=None,
+        description=desc,
+        meta=meta,
+        main_attrs='class="home-page"',
+        scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="hub.js"></script>\n',
+    )
     return "index.html", html

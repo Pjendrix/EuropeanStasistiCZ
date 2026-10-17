@@ -1,0 +1,58 @@
+{
+ "note": "Krátká shrnutí posledních závěrečných hlasování od Claude Haiku (scripts/vote_summaries.py). Čísla ani výsledky hlasování neobsahují.",
+ "model": "claude-haiku-5-5",
+ "prompt_version": 1,
+ "prompt": "Jsi editor českého nezávislého webu o hlasování europoslanců. Na úvodní stránce je karta posledního hlasování\ns úředním názvem. Napiš pod něj \"shrnuti\": jednu až dvě krátké věty (nejvýš 180 znaků), o čem se hlasovalo, srozumitelně pro laika.\n\nPravidla:\n- Vycházej jen z údajů v zadání. Nic nedomýšlej: obsah textu, který v zadání není, nepopisuj. Když údaje říkají jen téma,\n  napiš jen, čeho se text týká (např. „Usnesení Parlamentu k situaci politických vězňů v Ázerbájdžánu.“) a víc nepiš.\n- Neopakuj doslova nadpis; přidej druh textu (usnesení, zákon, rozpočet…) a koho nebo čeho se týká.\n- Piš neutrálně: žádné hodnocení, žádné „kontroverzní“, „důležitý“, „sporný“, žádné argumenty pro ani proti.\n- Nepiš, jak hlasování dopadlo, kdo jak hlasoval, ani žádné počty hlasů.\n- Nepoužívej čísla, která nejsou v zadání.\n- Spisovná čeština, bez zkratek, které laik nezná (EU a Komise jsou v pořádku). Nepiš výplňové věty.",
+ "items": {
+  "198261": {
+   "shrnuti": "Nezávazné usnesení Evropského parlamentu o stavu lidských práv v Íránu, zejména o případech dvou žen. Témata zahrnují trest smrti, politické vězně a práva žen.",
+   "fingerprint": "1e132e1dd3dc187d",
+   "generated": "2026-10-17"
+  },
+  "198252": {
+   "shrnuti": "Nezávazné usnesení Evropského parlamentu o případech politických vězňů v Ázerbájdžánu, mezi nimi Aliho Karimliho a Anara Mammadliho.",
+   "fingerprint": "3dbfaf1946e31ac8",
+   "generated": "2026-10-17"
+  },
+  "198251": {
+   "shrnuti": "Návrh nezávazného usnesení Evropského parlamentu k pokusům vládní strany Gruzínský sen o zákaz opozičních stran v Gruzii.",
+   "fingerprint": "79adf707693f885f",
+   "generated": "2026-10-17"
+  },
+  "198216": {
+   "shrnuti": "Nezávazné usnesení Evropského parlamentu k volbám do ruské Státní dumy v roce 2026 a jejich dopadům na občanskou společnost.",
+   "fingerprint": "6f1520bea66a4793",
+   "generated": "2026-10-17"
+  },
+  "198204": {
+   "shrnuti": "Nezávazné usnesení Parlamentu o pilotním projektu Evropských školních aliancí v oblasti vzdělávání od předškolního věku po střední školy.",
+   "fingerprint": "b2ec43dfa7a35567",
+   "generated": "2026-10-17"
+  },
+  "198194": {
+   "shrnuti": "Usnesení Parlamentu k námitce proti nařízení Komise, které mění předpisy o chemických látkách, pokud jde o olovo v brokových střelách.",
+   "fingerprint": "0a39392d86555059",
+   "generated": "2026-10-17"
+  },
+  "198193": {
+   "shrnuti": "Europarlament hlasoval o námitce proti prováděcímu nařízení Komise o olovu v brokových střelách, které mění přílohu chemické legislativy EU.",
+   "fingerprint": "0a39392d86555059",
+   "generated": "2026-10-17"
+  },
+  "198176": {
+   "shrnuti": "Návrh usnesení Parlamentu k námitce proti nařízení Komise měnícímu přílohu nařízení (ES) č. 1925/2006 ohledně monakolinů z červené fermentované rýže.",
+   "fingerprint": "8ba920ad6cfb7ea9",
+   "generated": "2026-10-17"
+  },
+  "198175": {
+   "shrnuti": "Návrh usnesení Parlamentu s námitkou proti nařízení Komise, které mění přílohu k nařízení o některých rostlinných druzích obsahujících hydroxyantracenové deriváty.",
+   "fingerprint": "39a71481cd9ccee4",
+   "generated": "2026-10-17"
+  },
+  "198051": {
+   "shrnuti": "Nezávazné usnesení Parlamentu, které se týká strategie EU proti islamistickému vlivu a sítím napojeným na Muslimské bratrstvo.",
+   "fingerprint": "a44e12450b5e10e6",
+   "generated": "2026-10-17"
+  }
+ }
+}

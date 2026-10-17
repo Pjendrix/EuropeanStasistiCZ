@@ -45,12 +45,15 @@ SESSION_GAP = 2
 POS_CS = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržel se", "DID_NOT_VOTE": "nehlasoval"}
 ROLE_CS = {"rapporteur": "zpravodaj/ka", "co": "spoluzpravodaj/ka", "shadow": "stínový/á zpravodaj/ka"}
 HASHTAGS = "#EvropskyParlament #europoslanci #EPWatchCZ"
-VOTE_RULE = ("Proč právě toto hlasování: ze závěrečných hlasování posledního zasedání vybíráme pravidlem to, ve kterém se čeští "
-             "poslanci rozdělili nejvíc (podíl menšiny mezi hlasy pro a proti), při shodě novější. Nehodnotíme, kdo hlasoval správně.")
+VOTE_RULE = (
+    "Proč právě toto hlasování: ze závěrečných hlasování posledního zasedání vybíráme pravidlem to, ve kterém se čeští "
+    "poslanci rozdělili nejvíc (podíl menšiny mezi hlasy pro a proti), při shodě novější. Nehodnotíme, kdo hlasoval správně."
+)
 MEP_RULE = "Poslanci se v příspěvcích střídají v abecedním pořadí, bez výběru a bez hodnocení."
 
 
 # --- výběr (čisté funkce, testované) ----------------------------------------------------
+
 
 def last_session_days(votes: list[dict], gap: int = SESSION_GAP) -> list[str]:
     """Dny posledního zasedání: poslední skupina dnů s hlasováním, mezi kterými je mezera nejvýš `gap` dní."""
@@ -103,6 +106,7 @@ def next_mep(meps: list[dict], day: str, state: dict | None) -> dict:
 
 # --- texty ------------------------------------------------------------------------------
 
+
 def _count_text(positions: list[str]) -> str:
     n = {k: positions.count(k) for k in POS_CS}
     parts = [f"{fmt_num(n['FOR'])} pro", f"{fmt_num(n['AGAINST'])} proti"]
@@ -120,23 +124,38 @@ def vote_texts(v: dict, share: dict, trace: list[dict], data_day: str, session: 
     topic = topic_text(categories_for(v))
     lead = [f"{t['name']} ({ROLE_CS[t['role']]})" for t in trace if t.get("name")]
     rng = f"{fmt_date(session[0])} – {fmt_date(session[-1])}" if session[0] != session[-1] else fmt_date(session[0])
-    lines = [share["title"], "",
-             f"Hlasování {fmt_date(v['date'])} · {share['kindLabel']} · výsledek: {share['resultLabel']}.",
-             f"Celý Evropský parlament: {fmt_num(share['ep'][0])} pro, {fmt_num(share['ep'][1])} proti, {fmt_num(share['ep'][2])} se zdrželo.",
-             f"Čeští europoslanci (v mandátu k datu hlasování): {_count_text(positions)}."]
+    lines = [
+        share["title"],
+        "",
+        f"Hlasování {fmt_date(v['date'])} · {share['kindLabel']} · výsledek: {share['resultLabel']}.",
+        f"Celý Evropský parlament: {fmt_num(share['ep'][0])} pro, {fmt_num(share['ep'][1])} proti, {fmt_num(share['ep'][2])} se zdrželo.",
+        f"Čeští europoslanci (v mandátu k datu hlasování): {_count_text(positions)}.",
+    ]
     if topic:
         lines.append(f"Téma: {topic}.")
     if lead:
         lines.append(f"Česká stopa: {', '.join(lead)}.")
-    lines += ["", f"{VOTE_RULE} Zasedání {rng}.", "",
-              f"Jak hlasoval každý poslanec a strana: {url.replace('https://', '')} (odkaz v bio)",
-              f"Zdroj: HowTheyVote.eu (ODbL), data k {fmt_date(data_day)}.", "", HASHTAGS]
-    alt = [f"slide-1.png: Karta hlasování EP Watch CZ. {share['title']}, {fmt_date(v['date'])}, výsledek {share['resultLabel']}. "
-           f"Celý EP {fmt_num(share['ep'][0])} pro, {fmt_num(share['ep'][1])} proti. Čeští poslanci: {_count_text(positions)}, rozepsáno po stranách "
-           f"barevnými tečkami. Zdroj HowTheyVote.eu, data k {fmt_date(data_day)}, {url.replace('https://', '')}.",
-           "story.png: Stejná karta ve formátu story (9 : 16)."]
-    sources = [f"Hlasování: https://howtheyvote.eu/votes/{v['id']} (HowTheyVote.eu, ODbL)", f"Detail na webu: {url}",
-               "Česká stopa: EP Open Data (CC BY 4.0)" if lead else None, f"Data k {fmt_date(data_day)}."]
+    lines += [
+        "",
+        f"{VOTE_RULE} Zasedání {rng}.",
+        "",
+        f"Jak hlasoval každý poslanec a strana: {url.replace('https://', '')} (odkaz v bio)",
+        f"Zdroj: HowTheyVote.eu (ODbL), data k {fmt_date(data_day)}.",
+        "",
+        HASHTAGS,
+    ]
+    alt = [
+        f"slide-1.png: Karta hlasování EP Watch CZ. {share['title']}, {fmt_date(v['date'])}, výsledek {share['resultLabel']}. "
+        f"Celý EP {fmt_num(share['ep'][0])} pro, {fmt_num(share['ep'][1])} proti. Čeští poslanci: {_count_text(positions)}, rozepsáno po stranách "
+        f"barevnými tečkami. Zdroj HowTheyVote.eu, data k {fmt_date(data_day)}, {url.replace('https://', '')}.",
+        "story.png: Stejná karta ve formátu story (9 : 16).",
+    ]
+    sources = [
+        f"Hlasování: https://howtheyvote.eu/votes/{v['id']} (HowTheyVote.eu, ODbL)",
+        f"Detail na webu: {url}",
+        "Česká stopa: EP Open Data (CC BY 4.0)" if lead else None,
+        f"Data k {fmt_date(data_day)}.",
+    ]
     return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(s for s in sources if s) + "\n"}
 
 
@@ -157,23 +176,42 @@ def mep_texts(m: dict, data: dict, data_day: str) -> dict:
         lines.append(f"Medián všech poslanců EP: {_pct([data['attendanceMedian'], 1])}.")
     if _pct(data.get("loyalty")):
         lines.append(f"Hlasuje se svou frakcí: {_pct(data['loyalty'])}.")
-    lines += ["", f"Další čísla (hlasování, zprávy, projevy) jsou na dalších obrázcích a na webu: {url.replace('https://', '')} (odkaz v bio)",
-              MEP_RULE, f"Zdroj: HowTheyVote.eu (ODbL) a EP Open Data (CC BY 4.0), data k {fmt_date(data_day)}.", "", HASHTAGS]
-    alt = [f"slide-1.png: Karta poslance EP Watch CZ, {name} ({chips}), jednotný neutrální avatar místo fotky. "
-           f"{'Účast na hlasováních ' + att + '. ' if att else ''}Zdroj a datum dat v patičce, {url.replace('https://', '')}.",
-           f"slide-2.png: {name}, jak hlasuje: podíl hlasů pro, proti a zdržení, shoda s frakcí a s výsledkem, s mediány EP.",
-           f"slide-3.png: {name}, práce mimo hlasování: zprávy, stanoviska, projevy v plénu, otázky a výbory podle EP Open Data.",
-           "story.png: Základní karta ve formátu story (9 : 16)."]
-    sources = [f"Profil na webu: {url}", "Hlasování: https://howtheyvote.eu (ODbL)",
-               "Poslanci, výbory, zprávy a projevy: https://data.europarl.europa.eu (CC BY 4.0)", f"Data k {fmt_date(data_day)}."]
+    lines += [
+        "",
+        f"Další čísla (hlasování, zprávy, projevy) jsou na dalších obrázcích a na webu: {url.replace('https://', '')} (odkaz v bio)",
+        MEP_RULE,
+        f"Zdroj: HowTheyVote.eu (ODbL) a EP Open Data (CC BY 4.0), data k {fmt_date(data_day)}.",
+        "",
+        HASHTAGS,
+    ]
+    alt = [
+        f"slide-1.png: Karta poslance EP Watch CZ, {name} ({chips}), jednotný neutrální avatar místo fotky. "
+        f"{'Účast na hlasováních ' + att + '. ' if att else ''}Zdroj a datum dat v patičce, {url.replace('https://', '')}.",
+        f"slide-2.png: {name}, jak hlasuje: podíl hlasů pro, proti a zdržení, shoda s frakcí a s výsledkem, s mediány EP.",
+        f"slide-3.png: {name}, práce mimo hlasování: zprávy, stanoviska, projevy v plénu, otázky a výbory podle EP Open Data.",
+        "story.png: Základní karta ve formátu story (9 : 16).",
+    ]
+    sources = [
+        f"Profil na webu: {url}",
+        "Hlasování: https://howtheyvote.eu (ODbL)",
+        "Poslanci, výbory, zprávy a projevy: https://data.europarl.europa.eu (CC BY 4.0)",
+        f"Data k {fmt_date(data_day)}.",
+    ]
     return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(sources) + "\n"}
 
 
 def check_slide(name: str, texts: list[str], overflow: list[str]) -> None:
     """Každý slide: zdroj, datum dat a adresa webu; žádný přetékající text."""
     joined = " | ".join(texts)
-    missing = [what for what, ok in (("zdroj", "Zdroj" in joined or "zdroj" in joined), ("datum dat", "data k " in joined),
-                                     ("adresa epwatch.cz", "epwatch.cz" in joined)) if not ok]
+    missing = [
+        what
+        for what, ok in (
+            ("zdroj", "Zdroj" in joined or "zdroj" in joined),
+            ("datum dat", "data k " in joined),
+            ("adresa epwatch.cz", "epwatch.cz" in joined),
+        )
+        if not ok
+    ]
     if missing:
         raise FormatError(f"{name}: na slidu chybí {', '.join(missing)}")
     if overflow:
@@ -220,6 +258,7 @@ def serve(site: Path):
 def render(site: Path, jobs: list[tuple[str, str, bool]]) -> list[dict]:
     """jobs = [(stránka, formát, neutrální avatar)]; vrací PNG a texty každého slidu."""
     from playwright.sync_api import sync_playwright
+
     srv = serve(site)
     base = f"http://127.0.0.1:{srv.server_address[1]}/"
     out = []
@@ -247,6 +286,7 @@ def render(site: Path, jobs: list[tuple[str, str, bool]]) -> list[dict]:
 
 
 # --- sestavení ------------------------------------------------------------------------------
+
 
 def _read(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -278,7 +318,7 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
     roles = _read(roles_path)["votes"] if roles_path.exists() else {}
     state = _read(state_path) if state_path and state_path.exists() else {}
     if only_new and state.get("last_release") == data_day:
-        return None   # pro tento export už balíček je (např. pondělní pojistka po dřívější aktualizaci)
+        return None  # pro tento export už balíček je (např. pondělní pojistka po dřívější aktualizaci)
 
     vote = pick_vote(votes, meps_by_id)
     mep = next_mep(meps, day, state)
@@ -287,12 +327,13 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
     if not (public / "p" / f"{mep['id']}.html").exists():
         raise FormatError(f"chybí stránka p/{mep['id']}.html, spusť nejdřív build_pages.py")
 
-    with tempfile.TemporaryDirectory() as tmp:   # web jako na Vercelu: public/ + data/ v public/data
+    with tempfile.TemporaryDirectory() as tmp:  # web jako na Vercelu: public/ + data/ v public/data
         site = Path(tmp) / "site"
         shutil.copytree(public, site)
         shutil.copytree(data_dir, site / "data", dirs_exist_ok=True)
-        jobs = ([(f"v/{vote['id']}.html", "post", False), (f"v/{vote['id']}.html", "story", False)] if vote else []) + \
-               [(f"p/{mep['id']}.html", fmt, True) for fmt in ("post", "slide2", "slide3", "story")]
+        jobs = ([(f"v/{vote['id']}.html", "post", False), (f"v/{vote['id']}.html", "story", False)] if vote else []) + [
+            (f"p/{mep['id']}.html", fmt, True) for fmt in ("post", "slide2", "slide3", "story")
+        ]
         rendered = render(site, jobs)
 
     out = out_root / day
@@ -301,22 +342,40 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
     result = {"date": day, "vote": None, "mep": mep["id"], "out": str(out)}
     if vote:
         trace_roles = roles.get(str(vote["id"]), [])
-        trace = [{"name": display_name(meps_by_id[r["mep_id"]]) if r["mep_id"] in meps_by_id else None, "role": r["role"]}
-                 for r in trace_roles]
+        trace = [
+            {"name": display_name(meps_by_id[r["mep_id"]]) if r["mep_id"] in meps_by_id else None, "role": r["role"]} for r in trace_roles
+        ]
         share = vote_share_data(vote, meps_by_id, groups, parties, None, trace=bool(trace_roles))
         n_active = len(active_positions(vote, meps_by_id))
         if sum(len(p["positions"]) for p in share["parties"]) != n_active:
             raise FormatError(f"hlasování {vote['id']}: tečky na kartě nesedí s počtem poslanců v mandátu ({n_active})")
-        write_package(out / "hlasovani", [("slide-1.png", rendered[0]), ("story.png", rendered[1])],
-                      vote_texts(vote, share, trace, data_day, last_session_days(votes)))
+        write_package(
+            out / "hlasovani",
+            [("slide-1.png", rendered[0]), ("story.png", rendered[1])],
+            vote_texts(vote, share, trace, data_day, last_session_days(votes)),
+        )
         result["vote"] = vote["id"]
     mep_res = rendered[-4:]
-    write_package(out / "poslanec", [("slide-1.png", mep_res[0]), ("slide-2.png", mep_res[1]), ("slide-3.png", mep_res[2]),
-                                     ("story.png", mep_res[3])], mep_texts(mep, mep_res[0]["data"], data_day))
+    write_package(
+        out / "poslanec",
+        [("slide-1.png", mep_res[0]), ("slide-2.png", mep_res[1]), ("slide-3.png", mep_res[2]), ("story.png", mep_res[3])],
+        mep_texts(mep, mep_res[0]["data"], data_day),
+    )
     if state_path:
-        state_path.write_text(json.dumps({"note": "Rotace poslanců v balíčku pro Instagram (scripts/build_instagram.py).",
-                                          "last_mep": {"id": mep["id"], "sort_label": mep.get("sort_label") or mep["name"]},
-                                          "last_date": day, "last_release": data_day}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        state_path.write_text(
+            json.dumps(
+                {
+                    "note": "Rotace poslanců v balíčku pro Instagram (scripts/build_instagram.py).",
+                    "last_mep": {"id": mep["id"], "sort_label": mep.get("sort_label") or mep["name"]},
+                    "last_date": day,
+                    "last_release": data_day,
+                },
+                ensure_ascii=False,
+                indent=1,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
     return result
 
 
@@ -330,8 +389,14 @@ def main(argv=None) -> int:
     p.add_argument("--only-new", action="store_true", help="nic nedělat, když pro aktuální export dat už balíček byl")
     args = p.parse_args(argv)
     try:
-        res = build(args.data_dir, args.public, args.out, args.date,
-                    None if args.no_state else args.data_dir / "instagram_state.json", args.only_new)
+        res = build(
+            args.data_dir,
+            args.public,
+            args.out,
+            args.date,
+            None if args.no_state else args.data_dir / "instagram_state.json",
+            args.only_new,
+        )
     except FormatError as e:
         print(f"CHYBA: {e}", file=sys.stderr)
         return 2
@@ -340,8 +405,10 @@ def main(argv=None) -> int:
         print("built=false")
         return 0
     print("built=true")
-    print(f"balíček {res['date']}: hlasování {res['vote'] or 'žádné závěrečné na posledním zasedání'}, "
-          f"poslanec {res['mep']} → {res['out']}", file=sys.stderr)
+    print(
+        f"balíček {res['date']}: hlasování {res['vote'] or 'žádné závěrečné na posledním zasedání'}, poslanec {res['mep']} → {res['out']}",
+        file=sys.stderr,
+    )
     return 0
 
 

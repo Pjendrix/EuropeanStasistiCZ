@@ -52,6 +52,7 @@ def add_logo(kind: str, key: str, src: Path, source: str, root: Path = ROOT, tod
         shutil.copyfile(src, target)
     elif ext in RASTER:
         from PIL import Image
+
         target = out_dir / f"{key}.webp"
         with Image.open(src) as im:
             w, h = im.size
@@ -66,8 +67,7 @@ def add_logo(kind: str, key: str, src: Path, source: str, root: Path = ROOT, tod
         if old != target:
             old.unlink()
     entry = section[key]
-    entry.update({"file": f"assets/logos/{kind}/{target.name}", "source": source,
-                  "retrieved": today or dt.date.today().isoformat()})
+    entry.update({"file": f"assets/logos/{kind}/{target.name}", "source": source, "retrieved": today or dt.date.today().isoformat()})
     entry.setdefault("terms", None)
     entry.pop("chybi", None)
     if note:

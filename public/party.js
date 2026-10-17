@@ -50,7 +50,7 @@ async function euDetailPage(code) {
   const rows = (list) => list.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Skupina</th><th>Výsledek</th></tr></thead>
       <tbody>${list.map((v) => voteRow(v, `<td class="extra cz">${splitBar(v.gc)}<div class="small">${czCountsHtml(v.gc)}</div></td>`)).join("")}</tbody></table></div>`
-    : '<p class="muted">Žádné takové hlasování.</p>';
+    : emptyState("Skupina se v žádném takovém hlasování nerozdělila.", "Zkuste zrušit filtr „jen závěrečná“.");
   main.innerHTML = `
     <div class="page-head"><p class="small"><a href="party.html?v=eu">← Všechny frakce</a></p>${viewSwitch("eu")}</div>
     ${g.logo ? `<div class="logo-row">${logoTile(g, 48)}</div>` : ""}
@@ -124,7 +124,7 @@ async function detailPage(id) {
   const splitList = (list) => list.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Poslanci strany</th><th>Výsledek</th></tr></thead>
       <tbody>${list.map((v) => voteRow(v, `<td class="extra">${namesByPosition(v.positions, meps)}</td>`)).join("")}</tbody></table></div>`
-    : '<p class="muted">Žádné takové hlasování.</p>';
+    : emptyState("Poslanci strany se v žádném takovém hlasování nerozdělili.", "Zkuste zrušit filtr „jen závěrečná“.", [[`votes.html`, "Všechna hlasování"]]);
   // Karta strany (sdílení): tři čísla ze „Souhrn za stranu“, bez log a bez srovnání mezi stranami.
   const nowCount = p.member_list.filter((m) => isActive(m) && m.party_periods.some((x) => !x.end)).length;
   const url = siteUrl(`s/${p.id}.html`);

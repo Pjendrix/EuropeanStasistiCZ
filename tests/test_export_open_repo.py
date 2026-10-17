@@ -5,8 +5,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import export_open_repo as ex  # noqa: E402
 
-PRIVATE = ["build_pages.py", "hub.py", "layout.py", "build_cards.py", "hero_art.py", "build_brand.py", "fetch_photos.py", "add_logo.py",
-           "commit_data.sh"]
+PRIVATE = [
+    "build_pages.py",
+    "hub.py",
+    "layout.py",
+    "build_cards.py",
+    "hero_art.py",
+    "build_brand.py",
+    "fetch_photos.py",
+    "add_logo.py",
+    "commit_data.sh",
+]
 
 
 def test_export_is_self_contained_and_keeps_site_private(tmp_path):
