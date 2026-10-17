@@ -60,8 +60,12 @@ jobs:
         run: python scripts/compute_stats.py
 
       - name: Soubory pro web
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           python scripts/build_web.py
+          # krátká AI shrnutí posledních hlasování pro úvod (jen nová; bez klíče zůstanou uložená, karta ukáže jen nadpis)
+          python scripts/vote_summaries.py --backend api || echo "::warning::shrnutí hlasování se nepodařilo obnovit"
           python scripts/build_pages.py
 
       - name: Portréty
@@ -86,7 +90,7 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json data/delegations.json data/speeches.json data/attendance.json data/group_web.json public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json public/assets/photos
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

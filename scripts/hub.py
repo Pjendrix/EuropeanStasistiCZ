@@ -436,18 +436,40 @@ def hemi_html(vote: dict) -> str:
 
 
 def caption_html(vote: dict) -> str:
-    """Popisek pod hemicyklem: datum, typ, výsledek, titul (bez překladu, jak ho dodává HowTheyVote), legenda s nenulovými počty."""
+    """Hlavička karty nad hemicyklem: datum, typ, výsledek, téma, nadpis a krátké AI shrnutí (když je, vote_summaries.py)."""
     ok = vote["result"] == "ADOPTED"
     res = (f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>')
+    summary = (f'<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) jen z úředního názvu a témat, bez čísel a výsledku">AI</span>'
+               f'{esc(vote["summary"])}</p>' if vote.get("summary") else "")
+    return (f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
+            f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{hero_topic(vote)}')
+
+
+def legend_html(vote: dict) -> str:
+    """Legenda pod hemicyklem s nenulovými počty (stejná jako legendHtml v hub.js)."""
     legend = "".join(f'<li>{_dot_svg(k)}<span><b>{vote["counts"][k]}</b> {label}</span></li>' for k, label in LEGEND if vote["counts"][k])
     if vote["counts"].get("X"):
         legend += f'<li><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-x"/></svg><span><b>{vote["counts"]["X"]}</b> mimo mandát</span></li>'
-    return (f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-            f'{hero_topic(vote)}<p class="hm-cap-title">{esc(vote["title"])}</p><ul class="hm-legend">{legend}</ul>')
+    return legend
+
+
+def next_vote_html(agenda: dict | None) -> str:
+    """Štítek „Další hlasování“ v hlavičce úvodu: první a poslední den s hlasováním v programu (agenda.json),
+    odpočet dopočítá hub.js. Bez programu, nebo když je program starý, prázdný řetězec."""
+    if not agenda or not agenda.get("items"):
+        return ""
+    days = sorted({i["date"] for i in agenda["items"]})
+    first, last = days[0], days[-1]
+    wd = ["po", "út", "st", "čt", "pá", "so", "ne"][__import__("datetime").date.fromisoformat(first).weekday()]
+    n = agenda.get("votes") or 0
+    count = f'· {fmt_num(n)} {"bod" if n == 1 else "body" if n < 5 else "bodů"} k hlasování' if n else ""
+    return (f'<a class="hm-nx" href="#dalsi-zasedani" data-from="{first}" data-to="{last}">'
+            f'<i aria-hidden="true"></i><span class="hm-nx-l">Další hlasování</span> '
+            f'<strong>{wd} {fmt_date(first)[:-5]}</strong><span class="hm-nx-c"></span><span class="hm-nx-n">{count}</span></a>')
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) a štítek české stopy na vlastním řádku nad nadpisem; bez obojího nic."""
+    """Jeden čip tématu (+N) a štítek české stopy pod nadpisem; bez obojího nic."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
     trace = vote.get("trace") or []
     badge = (f'<span class="cz-badge" title="{esc(", ".join(f"{t["name"]} ({_ROLE_CS[t["role"]]})" for t in trace))}">česká stopa</span>'
@@ -471,6 +493,9 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     meps_by_id = {m["id"]: m for m in meps_doc["meps"]}
     f = home["facts"]
     votes = home["votes"]
+    sums = (_read(data_dir / "vote_summaries.json") or {}).get("items", {})
+    for x in votes:  # krátké AI shrnutí (vote_summaries.py); bez něj karta ukáže jen nadpis
+        x["summary"] = (sums.get(str(x["id"])) or {}).get("shrnuti")
     first = votes[0]
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
@@ -485,7 +510,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))
     payload = {"votes": [{"id": x["id"], "date": x["date"], "title": x["title"], "kind_label": x["kind_label"], "result": x["result"],
-                          "counts": x["counts"], "topic_html": hero_topic(x), "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
+                          "counts": x["counts"], "topic_html": hero_topic(x), "summary": x["summary"], "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                           "party": {str(p["id"]): party_text(p) for p in x["ppl"]}} for x in votes],
                "names": {str(p["id"]): p["name"] for p in first["ppl"]}, "pos_txt": POS_TXT, "share": share}
     data_json = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
@@ -494,7 +519,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     hero = f"""<section class="hm-hero" aria-labelledby="h1">
   <div class="hm-inner">
     <div class="hm-copy">
-      <p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>
+      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
       <form class="hm-search" role="search" action="poslanci.html" method="get">
@@ -513,11 +538,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
           <button id="hm-next" type="button" aria-label="Starší hlasování"{" disabled" if len(votes) < 2 else ""}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_CHEV["next"]}</svg></button>
         </div>
       </div>
-      <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
       <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first)}</div>
+      <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
+      <ul class="hm-legend" id="hm-leg">{legend_html(first)}</ul>
       <div class="hm-act"><a class="hm-detail" id="hm-more" href="v/{first["id"]}.html">Detail hlasování {_ARROW}</a>
         <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div>
-      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).</p>
+      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku jen z úředního názvu a témat (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}</p>
     </section>
   </div>
   <dl class="hm-facts">

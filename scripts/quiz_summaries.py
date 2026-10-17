@@ -89,15 +89,15 @@ def valid(summary: dict, source: str) -> bool:
 class ApiBackend:
     """Claude API (ANTHROPIC_API_KEY), např. v GitHub Actions."""
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, client, prompt: str = PROMPT, schema: dict = SCHEMA):
+        self.client, self.prompt, self.schema = client, prompt, schema
 
     def ask(self, text: str) -> dict | None:
         response = self.client.messages.create(
             model=MODEL,
             max_tokens=2048,
-            system=PROMPT,
-            output_config={"effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
+            system=self.prompt,
+            output_config={"effort": "low", "format": {"type": "json_schema", "schema": self.schema}},
             messages=[{"role": "user", "content": text}],
         )
         if response.stop_reason != "end_turn":
@@ -114,14 +114,14 @@ class CliBackend:
     Stejný model, zadání (nahrazuje výchozí systémový prompt Claude Code) a schéma výstupu; bez nástrojů a mimo repo,
     aby model neviděl nic kromě zadání."""
 
-    def __init__(self, cmd: str = "claude", timeout: int = 180):
-        self.cmd, self.timeout = cmd, timeout
+    def __init__(self, cmd: str = "claude", timeout: int = 180, prompt: str = PROMPT, schema: dict = SCHEMA):
+        self.cmd, self.timeout, self.prompt, self.schema = cmd, timeout, prompt, schema
 
     def ask(self, text: str) -> dict | None:
         with tempfile.TemporaryDirectory() as tmp:
             res = subprocess.run(
-                [self.cmd, "-p", "--model", MODEL, "--output-format", "json", "--tools=", "--system-prompt", PROMPT,
-                 "--json-schema", json.dumps(SCHEMA)],
+                [self.cmd, "-p", "--model", MODEL, "--output-format", "json", "--tools=", "--system-prompt", self.prompt,
+                 "--json-schema", json.dumps(self.schema)],
                 input=text, capture_output=True, text=True, timeout=self.timeout, cwd=tmp)
         if res.returncode != 0:
             return None
