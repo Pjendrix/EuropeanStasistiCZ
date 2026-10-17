@@ -6,7 +6,7 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths: ["public/**", "scripts/layout.py", "scripts/hub.py", "tests/e2e/**", ".github/workflows/web-check.yml"]
+    paths: ["public/**", "scripts/**", "tests/e2e/**", ".github/workflows/web-check.yml"]
   workflow_dispatch: {}
 
 permissions:
@@ -28,6 +28,11 @@ jobs:
         run: |
           pip install --require-hashes -r requirements.txt
           python scripts/layout.py --check
+
+      - name: Stránky a hlasování po jednom (jako při sestavení na Vercelu, scripts/vercel_build.sh)
+        run: |
+          python scripts/build_shards.py
+          python scripts/build_pages.py
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:

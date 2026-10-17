@@ -41,10 +41,15 @@ def test_vercel_redirects_old_hosts_with_path():
 
 
 def test_manual_pages_have_canonical_on_new_domain():
-    for rel in bp.CANONICAL_PAGES + ["index.html"]:
+    for rel in bp.CANONICAL_PAGES:
         html = (ROOT / "public" / rel).read_text(encoding="utf-8")
         assert f'<link rel="canonical" href="{BASE}/' in html, rel
-    assert (ROOT / "public" / "robots.txt").read_text(encoding="utf-8").endswith(f"Sitemap: {BASE}/sitemap.xml\n")
+    # index.html a robots.txt vznikají při sestavení (vercel_build.sh), v gitu nejsou: ověřit přímo z generátorů
+    from hub import hub_page
+
+    _, index = hub_page(ROOT / "data", f"{BASE}/")
+    assert f'<link rel="canonical" href="{BASE}/' in index
+    assert bp.sitemap(f"{BASE}/", ["index.html"])["robots.txt"].endswith(f"Sitemap: {BASE}/sitemap.xml\n")
 
 
 def test_sync_head_inserts_and_replaces(tmp_path):

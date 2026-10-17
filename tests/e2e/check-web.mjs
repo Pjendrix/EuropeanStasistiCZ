@@ -39,7 +39,10 @@ const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
 // Příběh zákona (z/): první stránka procedury podle čísla.
 const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0]}`;
-const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html",
+// Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
+const lastMonth = read("data/votes/index.json").months.at(-1).month;
+const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
+const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, `vote.html?id=${partialId}`, "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html",
   "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`, procPage];
 
 const problems = [];

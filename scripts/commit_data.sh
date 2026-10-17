@@ -31,10 +31,10 @@ for attempt in 1 2 3; do
   done
   python scripts/compute_stats.py
   python scripts/build_web.py
+  # build_pages.py kvůli blokům z dat v ručních stránkách (poslanci.html, hlasovani.html, o-projektu.html);
+  # stránky p/, s/, v/, z/, index.html, sitemap, feed a obrázky og/ jsou v .gitignore, vznikají při sestavení na Vercelu
+  # (scripts/vercel_build.sh, audit A6)
   python scripts/build_pages.py
-  python scripts/build_cards.py
-  # celý public/: kromě p/, s/, v/, og/ se z dat generují i bloky v ručních stránkách (index.html, poslanci.html,
-  # hlasovani.html, o-projektu.html), feed.xml a sitemap; ručně se v CI nic jiného nemění
   git add data public
   if git diff --cached --quiet; then
     echo "Žádná nová data."
