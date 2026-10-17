@@ -79,13 +79,13 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
         <a href="v/${finalVote.id}.html">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
-      <p class="small">
+      <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">
         ${final ? `<a href="v/${v.id}.html">Trvalý odkaz</a> · ` : ""}
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
         ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
         ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
       </p>
-      ${v.title_cs && v.title && v.title !== v.title_cs ? `<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování (HowTheyVote.eu): ${esc(v.title)}</p>` : ""}
+      ${v.title_cs && v.title && v.title !== v.title_cs ? `<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování (HowTheyVote.eu): ${esc(v.title)}</p>` : ""}</details>
 
       ${trace}
       ${askAiBox({ v, kind, final, desc, adopted, c })}
