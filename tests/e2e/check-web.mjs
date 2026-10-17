@@ -1,4 +1,4 @@
-// Kontrola webu v prohlížeči (U12): žádná chyba v konzoli, nic nepřetéká do šířky (1366 / 390 / 320 px), axe-core
+// Kontrola webu v prohlížeči (U12): žádná chyba v konzoli (ani porušení CSP), nic nepřetéká do šířky (1366 / 390 / 320 px), axe-core
 // (WCAG 2 A/AA, 2.1 AA) bez porušení ve světlém i tmavém režimu. Spouští se v CI (.github/workflows/web-check.yml) a lokálně:
 //   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
@@ -19,11 +19,13 @@ cpSync(join(root, "public"), site, { recursive: true });
 cpSync(join(root, "data"), join(site, "data"), { recursive: true });
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml",
   ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".ico": "image/x-icon", ".webmanifest": "application/manifest+json" };
+// Stejná CSP jako na Vercelu (vercel.json): porušení se v prohlížeči hlásí jako chyba v konzoli a test selže.
+const CSP = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")).headers[0].headers.find((h) => h.key === "Content-Security-Policy").value;
 const server = createServer((req, res) => {
   const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^(\.\.[/\\])+/, "");
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
   if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
-  res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream" });
+  res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream", "content-security-policy": CSP });
   res.end(readFileSync(file));
 });
 await new Promise((r) => server.listen(0, r));
@@ -77,7 +79,7 @@ for (const scheme of ["light", "dark"]) {
         text.long.forEach((t) => problems.push(`${where}: dlouhý viditelný odstavec ${t}`));
       }
       if (width === 1366) {
-        await page.addScriptTag({ content: axeSource });
+        await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
         const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
           .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
         v.forEach((x) => problems.push(`${where}: axe ${x}`));
@@ -147,7 +149,7 @@ for (const scheme of ["light", "dark"]) {
       if (st.covered.length) problems.push(`${where}: ovládací prvky panelu něco překrývá: ${st.covered.join(", ")}`);
       if (st.sw > width || st.dw > 0) problems.push(`${where}: panel přetéká do šířky`);
       if (width === 1366) {
-        await page.addScriptTag({ content: axeSource });
+        await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
         const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.share-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
           .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
         v.forEach((x) => problems.push(`${where}: axe v panelu ${x}`));
@@ -454,7 +456,7 @@ for (const scheme of ["light", "dark"]) {
     body: JSON.stringify({ release: "2000-01-01", stale_days: 14, sittings_after: ["2000-01-10"] }) }));
   await page.goto(base + "votes.html", { waitUntil: "networkidle" });
   if (!(await page.locator(".stale-note").isVisible())) problems.push(`pruh o starých datech [${scheme}]: chybí`);
-  await page.addScriptTag({ content: axeSource });
+  await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
   const v = await page.evaluate(async () => (await axe.run(document.querySelector(".stale-note"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
     .map((x) => `${x.id}: ${x.nodes.length}×`));
   v.forEach((x) => problems.push(`pruh o starých datech [${scheme}]: axe ${x}`));
