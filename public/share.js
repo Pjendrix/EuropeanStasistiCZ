@@ -8,7 +8,7 @@
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 import { citeText, getJSON } from "./lib/data.js";
 import { SHARE_KEYS } from "./lib/ui.js";
-import { esc, fmtDate, fmtNum, fmtPct, siteUrl } from "./lib/format.js";
+import { esc, fmtDate, fmtNum, fmtPct, withShareUrl } from "./lib/format.js";
 
 const SHARE_ROOT = new URL(".", import.meta.url).href;
 
@@ -577,10 +577,7 @@ function staticShareContext(kindArg = "") {
   const el = document.getElementById("share-context");
   if (!el) return null;
   const all = JSON.parse(el.textContent);
-  const ctx = all.kind ? all : all[kindArg || "default"];
-  if (!ctx) return null;
-  const url = siteUrl(ctx.path);
-  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") } };
+  return withShareUrl(all.kind ? all : all[kindArg || "default"]);
 }
 
 let shareDlg = null;

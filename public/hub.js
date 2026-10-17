@@ -2,7 +2,7 @@
 // hemicykl ukazuje poslední závěrečné hlasování, hledání odešle formulář na Poslance. Skript přidá přepínání pěti
 // nejnovějších závěrečných hlasování, tooltip u teček, našeptávač hledání a sdílení hlasování z hera.
 import { getJSON, loadSearch, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, HTV_SOURCE, KIND_LABEL, RESULT_LABEL, displayName, esc, fmtDate, isActive, isFinal, norm, siteUrl, todayCZ, voteTitle } from "./lib/format.js";
+import { CZ_GROUP_LABEL, KIND_LABEL, displayName, esc, fmtDate, isActive, isFinal, norm, todayCZ, voteTitle, withShareUrl } from "./lib/format.js";
 import { mepUrl, partyUrl, photoUrl, setNav } from "./lib/ui.js";
 
 setNav("");
@@ -11,23 +11,6 @@ const HOME = JSON.parse(document.getElementById("home-data")?.textContent || "nu
 const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // --- hemicykl: přepínání hlasování -------------------------------------------------------
-const SYM = { F: "M-5.5 1 L-1.8 4.8 L5.8 -4.2", A: "M-4.6 -4.6 L4.6 4.6 M4.6 -4.6 L-4.6 4.6", B: "M-5.2 0 L5.2 0" };
-const LEGEND = [["F", "pro"], ["A", "proti"], ["B", "zdrželo se"], ["N", "nehlasovalo"]];
-const dotSvg = (k) => (k === "N" ? '<svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-n"/></svg>'
-  : k === "X" ? '<svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10.5" class="hm-x"/></svg>'
-    : `<svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="13" class="hm-${k}"/><path class="hm-sym" d="${SYM[k]}"/></svg>`);
-
-function captionHtml(v) {
-  const ok = v.result === "ADOPTED";
-  const res = ok ? "✓ Přijato" : v.result === "REJECTED" ? "✕ Zamítnuto" : esc(RESULT_LABEL[v.result] || "výsledek neuveden");
-  const sum = v.summary ? `<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) jen z úředního názvu a témat, bez čísel a výsledku">AI</span>${esc(v.summary)}</p>` : "";
-  // čip tématu: hotové HTML ze stejné šablony jako statická stránka (topic_chips v build_pages.py)
-  return `<div class="hm-cap-meta"><span>${fmtDate(v.date)}</span><span class="hm-tag">${esc(v.kind_label)}</span><span class="hm-res${ok ? "" : " no"}">${res}</span></div>
-    <p class="hm-cap-title">${esc(v.title)}</p>${sum}${v.topic_html || ""}`;
-}
-const legendHtml = (v) => LEGEND.filter(([k]) => v.counts[k]).map(([k, l]) => `<li>${dotSvg(k)}<span><b>${v.counts[k]}</b> ${l}</span></li>`).join("")
-  + (v.counts.X ? `<li>${dotSvg("X")}<span><b>${v.counts.X}</b> mimo mandát</span></li>` : "");
-
 // Štítek „Další hlasování“ v hlavičce: odpočet počítá prohlížeč (web se kvůli tomu nepřestavuje).
 // Po posledním dni hlasování štítek zmizí a vrátí se běžný nadpis (program je starý, nový přijde s další aktualizací).
 (function nextVote() {
@@ -66,8 +49,8 @@ function renderVote(i) {
   const cap = document.getElementById("hm-cap");
   const leg = document.getElementById("hm-leg");
   const upd = () => {
-    cap.innerHTML = captionHtml(v);
-    leg.innerHTML = legendHtml(v);
+    cap.innerHTML = v.cap;
+    leg.innerHTML = v.leg;
     document.getElementById("hm-idx").textContent = `${i + 1} / ${HOME.votes.length}`;
     const more = document.getElementById("hm-more");
     more.href = `v/${v.id}.html`;
@@ -119,19 +102,7 @@ if (HOME && hemi) {
 }
 
 // Sdílení z hera: stejná karta jako na detailu hlasování (data připravená při buildu, share.js).
-window.shareContext = (kind) => {
-  if (kind !== "hero" || !HOME) return null;
-  const v = HOME.votes[vi];
-  const d = HOME.share[String(v.id)];
-  if (!d) return null;
-  const url = siteUrl(`v/${v.id}.html`);
-  return {
-    kind: "vote", url, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}${d.topic ? ` · ${d.topic}` : ""}`,
-    text: `${d.title} (${fmtDate(v.date)}): ${d.sentence}. Češi: ${v.counts.F} pro, ${v.counts.A} proti. Zdroj: HowTheyVote.eu, EP Watch CZ`,
-    cite: `Evropský parlament ${fmtDate(v.date)}, ${d.title} (${d.kindLabel}${d.topic ? `, téma ${d.topic}` : ""}): ${d.resultLabel}, ${d.ep[0]} pro, ${d.ep[1]} proti, ${d.ep[2]} se zdrželo. Čeští poslanci v mandátu: ${v.counts.F} pro, ${v.counts.A} proti, ${v.counts.B} se zdrželo, ${v.counts.N} nehlasovalo. Zdroj: HowTheyVote.eu (${HTV_SOURCE}/votes/${v.id}).`,
-    data: { ...d, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, "") },
-  };
-};
+window.shareContext = (kind) => (kind === "hero" && HOME ? withShareUrl(HOME.votes[vi].share) : null);
 
 // --- mozaika poslanců: jméno a strana pod mozaikou ----------------------------------------
 const mosaic = document.getElementById("hm-mosaic");

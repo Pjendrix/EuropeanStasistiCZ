@@ -6,6 +6,13 @@ export const BASE_URL = "https://epwatch.cz/";
 // Absolutní adresa stránky na veřejné doméně (i když běží náhled nebo lokální server).
 export function siteUrl(path) { return BASE_URL + String(path).replace(/^\/+/, ""); }
 
+// Kontext panelu sdílení připravený buildem ({kind, path, …}) doplní o plnou adresu a její krátký tvar na kartu.
+export function withShareUrl(ctx) {
+  if (!ctx) return null;
+  const url = siteUrl(ctx.path);
+  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") } };
+}
+
 export const HTV_SOURCE = "https://howtheyvote.eu";
 
 export const EP_SOURCE = "https://data.europarl.europa.eu";
