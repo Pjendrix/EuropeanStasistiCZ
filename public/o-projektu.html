@@ -13,13 +13,7 @@
 <meta property="og:site_name" content="EP Watch CZ">
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script>
-  // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
-  (function () {
-    var d = document.documentElement; d.classList.add("js");
-    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") d.dataset.theme = t; } catch (e) {}
-  })();
-</script>
+<script src="theme.js?v=c5572551"></script>
 <link rel="stylesheet" href="style.css?v=cd571cad">
 </head>
 <body>
@@ -214,21 +208,7 @@
   <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a> · <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram</a>.
 </div></footer>
 
-<script src="app.js?v=abe3acc6"></script>
-<script>
-setNav("about");
-(async () => {
-  const el = document.getElementById("release");
-  try {
-    const stats = await getJSON("overview.json");
-    // Definice metrik jsou v HTML statické (scripts/build_pages.py: sync_definitions); tady jen aktuální data.
-    const rel = stats.sources.votes?.release;
-    document.getElementById("release").textContent =
-      `Aktuální data: export HowTheyVote ${rel || ""}, hlasování ${fmtDate(stats.period.from)} – ${fmtDate(stats.period.to)}.`;
-  } catch (e) {
-    showError(el, e);
-  }
-})();
-</script>
+<script type="module" src="app.js?v=3a0f5863"></script>
+<script type="module" src="pages/o-projektu.js?v=bad41323"></script>
 </body>
 </html>

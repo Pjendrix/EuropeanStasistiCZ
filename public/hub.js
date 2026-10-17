@@ -1,7 +1,9 @@
 // Úvodní stránka (index.html, generuje scripts/hub.py z data/home.json). Statický obsah funguje i bez tohoto skriptu:
 // hemicykl ukazuje poslední závěrečné hlasování, hledání odešle formulář na Poslance. Skript přidá přepínání pěti
 // nejnovějších závěrečných hlasování, tooltip u teček, našeptávač hledání a sdílení hlasování z hera.
-"use strict";
+import { getJSON, loadSearch, soft } from "./lib/data.js";
+import { CZ_GROUP_LABEL, HTV_SOURCE, KIND_LABEL, RESULT_LABEL, displayName, esc, fmtDate, isActive, isFinal, norm, siteUrl, todayCZ, voteTitle } from "./lib/format.js";
+import { mepUrl, partyUrl, photoUrl, setNav } from "./lib/ui.js";
 
 setNav("");
 

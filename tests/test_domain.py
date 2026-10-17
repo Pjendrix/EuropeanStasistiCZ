@@ -15,7 +15,7 @@ BASE = "https://epwatch.cz"
 def test_base_url_same_in_python_and_js():
     site = json.loads((ROOT / "data" / "manual" / "site.json").read_text(encoding="utf-8"))
     assert site["base_url"].rstrip("/") == BASE
-    js = re.search(r'const BASE_URL = "([^"]+)"', (ROOT / "public" / "app.js").read_text(encoding="utf-8"))
+    js = re.search(r'const BASE_URL = "([^"]+)"', (ROOT / "public" / "lib" / "format.js").read_text(encoding="utf-8"))
     assert js and js[1].rstrip("/") == BASE
 
 

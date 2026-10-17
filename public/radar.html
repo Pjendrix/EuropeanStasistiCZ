@@ -14,13 +14,7 @@
 <meta property="og:site_name" content="EP Watch CZ">
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script>
-  // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
-  (function () {
-    var d = document.documentElement; d.classList.add("js");
-    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") d.dataset.theme = t; } catch (e) {}
-  })();
-</script>
+<script src="theme.js?v=c5572551"></script>
 <link rel="stylesheet" href="style.css?v=cd571cad">
 </head>
 <body>
@@ -66,38 +60,7 @@ a pojistných produktů s investiční složkou a zrušení nařízení Komise v
   <a href="o-projektu.html">O projektu</a> · <a href="o-projektu.html#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a> · <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram</a>.
 </div></footer>
 
-<script src="app.js?v=abe3acc6"></script>
-<script>
-setNav("votes");
-setNav("votes-radar");
-// Filtry radaru: skrývají položky podle data-cat / data-leg / data-cz (obsah stránky je vygenerovaný, funguje i bez JS).
-(() => {
-  const cat = document.getElementById("rd-cat"), leg = document.getElementById("rd-leg"), cz = document.getElementById("rd-cz");
-  if (!cat) return;
-  const params = new URLSearchParams(location.search);
-  if (params.get("c")) cat.value = params.get("c");
-  leg.checked = params.get("zakony") === "1";
-  cz.checked = params.get("stopa") === "1";
-  const apply = () => {
-    document.querySelectorAll(".rd-list, .rd-procs").forEach((list) => {
-      let shown = 0;
-      list.querySelectorAll(":scope > li").forEach((li) => {
-        const ok = (!cat.value || li.dataset.cat === cat.value) && (!leg.checked || li.dataset.leg === "1") && (!cz.checked || li.dataset.cz === "1");
-        li.hidden = !ok;
-        shown += ok;
-      });
-      const empty = list.parentElement.querySelector(".rd-empty");
-      if (empty) empty.hidden = shown > 0;
-    });
-    const qs = new URLSearchParams();
-    if (cat.value) qs.set("c", cat.value);
-    if (leg.checked) qs.set("zakony", "1");
-    if (cz.checked) qs.set("stopa", "1");
-    history.replaceState(null, "", qs.toString() ? `?${qs}` : location.pathname);
-  };
-  [cat, leg, cz].forEach((el) => el.addEventListener("change", apply));
-  apply();
-})();
-</script>
+<script type="module" src="app.js?v=3a0f5863"></script>
+<script type="module" src="pages/radar.js?v=55f8a294"></script>
 </body>
 </html>

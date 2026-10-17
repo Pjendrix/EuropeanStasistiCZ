@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import functools
 import hashlib
+import json
 import re
 import sys
 from html import escape
@@ -30,13 +31,13 @@ ICON = (
     '<meta name="theme-color" content="#0F172A">'
 )
 
-THEME_SCRIPT = """<script>
-  // Režim (světlý/tmavý) a příznak JS nastavit ještě před vykreslením, ať stránka neproblikne.
-  (function () {
-    var d = document.documentElement; d.classList.add("js");
-    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") d.dataset.theme = t; } catch (e) {}
-  })();
-</script>"""
+# Režim a příznak JS (public/theme.js): klasický skript v <head>, ne vložený (CSP bez 'unsafe-inline').
+THEME_SCRIPT = '<script src="{root}theme.js"></script>'
+# Skripty stránek jsou ES moduly (audit A2): app.js, share.js a skript stránky; navzájem se neimportují, jen lib/*.js.
+MODULES = (
+    '<script type="module" src="{root}app.js"></script>\n<script type="module" src="{root}share.js"></script>\n'
+    '<script type="module" src="{root}{page}"></script>\n'
+)
 
 # Logo: oko + oblouk hvězd (zdroj: scripts/build_brand.py, soubory v public/assets/brand/).
 # Barva = currentColor; odlesk v duhovce je průhledný (maska), takže funguje na jakémkoli pozadí.
@@ -151,6 +152,11 @@ def tabbar(root: str = "", current: str | None = None) -> str:
     )
 
 
+def json_script(data) -> str:
+    """JSON pro <script type="application/json"> (bez možnosti ukončit značku)."""
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
 def esc_(s: str) -> str:
     return escape(s, quote=False)
 
@@ -163,7 +169,7 @@ def head_assets(root: str = "") -> str:
             '<meta property="og:site_name" content="EP Watch CZ">',
             f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="{root}feed.xml">',
             f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
-            THEME_SCRIPT,
+            THEME_SCRIPT.format(root=root),
             f'<link rel="stylesheet" href="{root}style.css">',
         ]
     )
@@ -247,7 +253,7 @@ def sync_text(text: str) -> str:
 # Odkazy na vlastní .js a .css dostanou ?v=<otisk obsahu>. Prohlížeč je pak smí cachovat natrvalo (vercel.json),
 # a po změně souboru se změní adresa, takže se nikdy nenačte stará verze.
 PUBLIC = Path(__file__).resolve().parent.parent / "public"
-_ASSET_RE = re.compile(r'((?:src|href)=")((?:\.\./)*)([\w-]+\.(?:js|css))(?:\?v=[0-9a-f]{8})?"')
+_ASSET_RE = re.compile(r'((?:src|href)=")((?:\.\./)*)((?:lib/|pages/)?[\w-]+\.(?:js|css))(?:\?v=[0-9a-f]{8})?"')
 
 
 @functools.lru_cache(maxsize=None)

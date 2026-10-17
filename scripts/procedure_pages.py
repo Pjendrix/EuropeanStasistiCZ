@@ -264,7 +264,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
         current="votes",
         description=desc,
         meta=og_meta(f"{title} – příběh zákona", desc, path, base_url),
-        scripts=f'<script src="{ROOT}app.js"></script>\n<script src="{ROOT}share.js"></script>\n',
+        scripts=f'<script type="module" src="{ROOT}app.js"></script>\n<script type="module" src="{ROOT}share.js"></script>\n',
     )
 
 
