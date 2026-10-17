@@ -1038,7 +1038,7 @@ main.home-page { max-width: none; padding: 0; }
 
 /* scéna s hemicyklem */
 .hm-stage { position: relative; border: 1px solid rgba(248, 250, 252, .12); border-radius: 30px; background: linear-gradient(180deg, rgba(248, 250, 252, .07), rgba(248, 250, 252, .02));
-  padding: 18px 22px 18px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .7); min-width: 0; }
+  padding: 14px 22px 14px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .7); min-width: 0; }
 .hm-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .hm-lbl { display: flex; align-items: center; gap: 10px; margin: 0; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #CBD5E1; }
 .hm-lbl i { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(245, 158, 11, .2); }
@@ -1047,7 +1047,7 @@ main.home-page { max-width: none; padding: 0; }
 .hm-step button:hover:not(:disabled) { border-color: var(--gold); background: rgba(248, 250, 252, .1); }
 .hm-step button:disabled { opacity: .35; cursor: default; }
 @media (pointer: coarse) { .hm-step button { width: 44px; height: 44px; } }
-.hm-hemi { position: relative; margin: 14px auto 0; width: 100%; max-width: 360px; aspect-ratio: 400 / 232; }
+.hm-hemi { position: relative; margin: 10px auto 0; width: 100%; max-width: 320px; aspect-ratio: 400 / 232; }
 .hm-hemi > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .hm-star { fill: #F59E0B; opacity: .32; }
 .hm-seat { cursor: pointer; outline: none; transition: opacity .2s; }
@@ -1077,7 +1077,8 @@ main.home-page { max-width: none; padding: 0; }
 .hm-res { display: inline-flex; align-items: center; font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: .18rem .7rem; border-radius: 999px; background: #F8FAFC; color: #0F172A; }
 .hm-res.no { background: #334155; color: #F8FAFC; }
 .hm-cap-title { margin: 12px 0 0; font-size: 1.32rem; font-weight: 700; line-height: 1.28; letter-spacing: -.015em; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-width: none; text-wrap: pretty; }
-.hm-sum { margin: 8px 0 0; font-size: .95rem; line-height: 1.5; color: #CBD5E1; max-width: none; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* bez ořezu řádků: shrnutí má nejvýš 200 znaků (vote_summaries.py) a odkaz na zdroj musí být vidět */
+.hm-sum { margin: 8px 0 0; font-size: .9rem; line-height: 1.45; color: #CBD5E1; max-width: none; }
 .hm-ai { display: inline-block; margin-right: 7px; padding: 0 .42rem; border-radius: 6px; border: 1px solid rgba(245, 158, 11, .45); color: var(--gold); font-size: .66rem; font-weight: 800; letter-spacing: .06em; line-height: 1.55; vertical-align: .12em; cursor: help; }
 .hm-src .hm-ai { margin: 0 2px; cursor: default; }
 .hm-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin: 10px 0 0; transition: opacity .17s; padding: 0; list-style: none; font-size: .9rem; font-weight: 600; font-variant-numeric: tabular-nums; }

@@ -88,9 +88,9 @@ def procedure_tas(client, pid: str) -> list[str]:
 
 def ta_meta(client, ta: str) -> dict:
     t = _first(client.get(f"adopted-texts/{ta}"))
-    for k in ("document_date", "adopts"):
-        if k not in t:
-            raise FormatError(f"{ta}: chybí pole {k}")
+    if "document_date" not in t:
+        raise FormatError(f"{ta}: chybí pole document_date")
+    # adopts u některých textů chybí: pak se páruje jen podle data (jediný text toho dne)
     return {"date": str(t["document_date"])[:10], "adopts": [str(x).rsplit("/", 1)[-1] for x in t.get("adopts") or []]}
 
 
