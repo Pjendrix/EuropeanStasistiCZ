@@ -68,23 +68,11 @@ export const KIND_NOTE = {
   objection: "Hlasovalo se o usnesení, kterým Parlament vznáší námitku proti aktu Komise (čl. 114 nebo 115 jednacího řádu): hlas PRO = vznést námitku (nesouhlas s aktem), hlas PROTI = námitku nevznášet.",
 };
 
-export const INVERTED_NOTE = KIND_NOTE.rejection;
-
 export const SHORT_MANDATE_NOTE = "Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.";
 
 export const INDEPENDENT_NOTE = "EP Open Data uvádí poslance jako nezávislého (Independent, zkratka Ind.), tedy bez národní strany.";
 
 export const NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí.";
-
-export const ROLE_LABEL = {
-  MEMBER: "člen/ka",
-  MEMBER_SUBSTITUTE: "náhradník/ice",
-  CHAIR: "předseda/kyně",
-  CHAIR_VICE: "místopředseda/kyně",
-  MEMBER_BUREAU: "člen/ka předsednictva",
-};
-
-export const COMMITTEE_TYPE = { STANDING: "stálý výbor", SUB: "podvýbor", TEMPORARY: "dočasný výbor", SPECIAL: "zvláštní výbor", INQUIRY: "vyšetřovací výbor" };
 
 // Česká zkratka tam, kde zdroj dává anglický popis místo zkratky.
 export const CZ_GROUP_LABEL = { NI: "nezařazení" };
@@ -144,19 +132,9 @@ export function displayName(mep) {
   return mep.name;
 }
 
-export function currentOf(list, date) {
-  if (!list || !list.length) return null;
-  const at = date || todayCZ();
-  return list.find((x) => x.start <= at && (!x.end || at <= x.end)) || list[list.length - 1];
-}
-
 export function isActive(mep) {
   const today = todayCZ();
   return mep.mandates.some((m) => m.start <= today && (!m.end || today <= m.end));
-}
-
-export function mandateText(mep) {
-  return mep.mandates.map((m) => `${fmtDate(m.start)} – ${m.end ? fmtDate(m.end) : "dosud"}`).join(", ");
 }
 
 // Počty Čechů: pro a proti výrazně, zdržení a nehlasování menším písmem.
@@ -282,21 +260,6 @@ export function groupMajorityLabel(row) {
   return max > 0 && winners.length === 1 ? ["pro", "proti", "zdržet se"][winners[0]] : null;
 }
 
-// Hlasy Čechů po českých stranách: [{ label, counts: {FOR: n, …} }], strany seřazené podle počtu poslanců.
-export function partyVotes(cz) {
-  const by = {};
-  cz.forEach((p) => {
-    const label = p.national_party && p.national_party !== "Independent" ? p.national_party : "bez strany";
-    (by[label] = by[label] || { FOR: 0, AGAINST: 0, ABSTENTION: 0, DID_NOT_VOTE: 0 })[p.position] += 1;
-  });
-  return Object.entries(by).map(([label, counts]) => ({ label, counts, n: Object.values(counts).reduce((a, b) => a + b, 0) }))
-    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, "cs"));
-}
-
-export function partyVotesText(counts) {
-  return [["FOR", "pro"], ["AGAINST", "proti"], ["ABSTENTION", "zdržel se"], ["DID_NOT_VOTE", "nehlasoval"]].filter(([k]) => counts[k]).map(([k, l]) => `${counts[k]} ${l}`).join(", ");
-}
-
 // Slovo hlasu ve správném rodě a čísle (zrcadlo position_phrase v scripts/build_pages.py).
 export function positionPhrase(position, members) {
   if (position === "FOR") return "pro";
@@ -334,16 +297,6 @@ export function epDocUrl(ref) {
 export function adoptedTextHtmlUrl(ref) {
   const m = /^P(\d+)_TA\((\d{4})\)(\d{4})$/.exec(ref || "");
   return m ? `https://www.europarl.europa.eu/doceo/document/TA-${m[1]}-${m[2]}-${m[3]}_CS.html` : null;
-}
-
-// První věta definice metriky bez úvodního „Název: “ (karta čísla a ⓘ u čísla).
-export function firstSentence(def) {
-  let t = String(def || "").trim();
-  const colon = t.indexOf(": ");
-  if (colon > 0 && colon < 60) t = t.slice(colon + 2);
-  const end = t.search(/\.(\s|$)/);
-  t = end > 0 ? t.slice(0, end + 1) : t;
-  return t.charAt(0).toUpperCase() + t.slice(1);
 }
 
 // Odpočet do příštího zasedání (blok „Další zasedání“): počítá prohlížeč z data, web se kvůli tomu nepřestavuje.
