@@ -45,11 +45,16 @@ function renderVote(i) {
     a.dataset.party = v.party[a.dataset.id] || "";
     a.setAttribute("aria-label", `${HOME.names[a.dataset.id] || ""}, ${a.dataset.party}: ${HOME.pos_txt[a.dataset.pos] || ""}`);
   });
-  document.getElementById("hm-big").innerHTML = `${v.counts.F}<em>:</em>${v.counts.A}`;
+  // Číslo „pro : proti“ je <text> ve stejném SVG jako tečky (hub.py hemi_number), obsah i velikost připravil build.
+  const big = document.getElementById("hm-big");
+  big.innerHTML = v.num[0];
+  big.setAttribute("font-size", v.num[1]);
+  document.getElementById("hm-svg").setAttribute("aria-label", v.aria);
   const cap = document.getElementById("hm-cap");
   const leg = document.getElementById("hm-leg");
   const upd = () => {
     cap.innerHTML = v.cap;
+    sumToggle();
     leg.innerHTML = v.leg;
     document.getElementById("hm-idx").textContent = `${i + 1} / ${HOME.votes.length}`;
     const more = document.getElementById("hm-more");
@@ -61,6 +66,25 @@ function renderVote(i) {
   if (REDUCED) upd();
   else { cap.classList.add("swap"); leg.classList.add("swap"); setTimeout(() => { upd(); cap.classList.remove("swap"); leg.classList.remove("swap"); }, 170); }
 }
+
+// Shrnutí AI má nejvýš 2 řádky; „víc“ ho rozbalí. Když se vejde, tlačítko zmizí (řádek s odkazem na přijatý text
+// má pevnou výšku, takže se nic neposune).
+function sumToggle() {
+  const sum = document.getElementById("hm-sum");
+  const btn = document.querySelector("#hm-cap .hm-sum-more");
+  if (!sum || !btn) return;
+  btn.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
+  btn.addEventListener("click", () => {
+    const open = sum.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "méně" : "víc";
+  });
+}
+sumToggle();
+window.addEventListener("resize", () => {
+  const sum = document.getElementById("hm-sum");
+  if (sum && !sum.classList.contains("open")) document.querySelector("#hm-cap .hm-sum-more")?.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
+}, { passive: true });
 
 if (HOME && hemi) {
   document.getElementById("hm-prev").addEventListener("click", () => renderVote(Math.max(0, vi - 1)));

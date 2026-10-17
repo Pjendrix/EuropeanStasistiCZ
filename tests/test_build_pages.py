@@ -128,7 +128,8 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js?v=' in html
     first = home["votes"][0]
     assert html.count('class="hm-seat"') == len(first["ppl"])
-    assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
+    big = f'id="hm-big" x="200" y="221" font-size="68" font-weight="300">{first["counts"]["F"]}<tspan class="hm-num-c"'
+    assert big in html  # střed = počet teček pro : proti, v jednom SVG s tečkami
     assert 'href="p/1"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
     assert "<dt>4</dt><dd>jmenovitých hlasování od" in html and "1 z 2 jednotně" in html and "1 hlasování" in html
     assert "Z posledního zasedání" in html and 'id="hm-mosaic"' in html  # B6 místo „Tři cesty do dat“

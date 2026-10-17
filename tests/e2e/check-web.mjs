@@ -163,6 +163,20 @@ for (const scheme of ["light", "dark"]) {
       if (st.nw !== 1080 || st.nh !== 1350) problems.push(`${where}: náhled má ${st.nw}×${st.nh}, čekám 1080×1350`);
       if (st.covered.length) problems.push(`${where}: ovládací prvky panelu něco překrývá: ${st.covered.join(", ")}`);
       if (st.sw > width || st.dw > 0) problems.push(`${where}: panel přetéká do šířky`);
+      if (url.startsWith("v/")) {
+        // Vzhled karty: výchozí podle režimu webu, přepnutí překreslí náhled a uloží volbu.
+        const pressed = await page.getAttribute('.sd-themes [aria-pressed="true"]', "data-card-theme");
+        if (pressed !== scheme) problems.push(`${where}: výchozí vzhled karty je ${pressed}, čekám ${scheme} (podle režimu webu)`);
+        const other = scheme === "dark" ? "light" : "dark";
+        const before = await page.getAttribute(".sd-preview img", "src");
+        await page.click(`[data-card-theme="${other}"]`);
+        await page.waitForFunction((b) => { const i = document.querySelector(".sd-preview img"); return i && i.getAttribute("src") !== b && i.naturalWidth === 1080; }, before, { timeout: 15000 })
+          .catch(() => problems.push(`${where}: po přepnutí vzhledu se náhled nepřekreslil`));
+        if (!(await page.textContent(".sd-meta")).includes(other === "light" ? "světlá" : "tmavá")) problems.push(`${where}: popisek náhledu neuvádí vzhled`);
+        if ((await page.evaluate(() => localStorage.getItem("ep-share-theme"))) !== other) problems.push(`${where}: volba vzhledu se neuložila`);
+        await page.click(`[data-card-theme="${scheme}"]`);
+        await page.waitForFunction((s) => document.querySelector(".sd-meta")?.textContent.includes(s), scheme === "light" ? "světlá" : "tmavá", { timeout: 15000 }).catch(() => {});
+      }
       if (width === 1366) {
         await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
         const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.share-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
@@ -174,6 +188,7 @@ for (const scheme of ["light", "dark"]) {
         const [dl] = await Promise.all([page.waitForEvent("download"), page.click(".sd-primary")]);
         const size = pngSize(await (await import("node:fs/promises")).readFile(await dl.path()));
         if (!size || size[0] !== 1080 || size[1] !== 1350) problems.push(`${where}: stažená karta není PNG 1080 × 1350 (${size})`);
+        if (!dl.suggestedFilename().endsWith("-post-svetla.png")) problems.push(`${where}: název souboru ${dl.suggestedFilename()} nemá příponu -svetla`);
         await page.click('[data-fmt="story"]');
         await page.waitForFunction(() => document.querySelector(".sd-preview img")?.naturalHeight === 1920, null, { timeout: 15000 })
           .catch(() => problems.push(`${where}: po přepnutí na Story náhled nemá 1080 × 1920`));
@@ -244,6 +259,18 @@ for (const width of [1440, 400]) {
     if (st.prev !== (i === 0) || st.next !== (i === n - 1)) problems.push(`${where}: tlačítka přepínače na kraji nejsou vypnutá (${i + 1}/${n})`);
     if (i < n - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
   }
+  // ⓘ u karty: vysvětlivka v popoveru webu, bez porušení axe (odkazy a štítek AI na světlém podkladu)
+  await page.click(".hm-info .info-btn");
+  if (!(await page.locator("#hm-about:popover-open").count())) problems.push(`${where}: ⓘ neotevřel vysvětlivku`);
+  else {
+    await page.evaluate(axeSource);
+    const v = await page.evaluate(async () => (await axe.run(document.getElementById("hm-about"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×)`));
+    v.forEach((x) => problems.push(`${where}: axe ve vysvětlivce ⓘ ${x}`));
+    await page.keyboard.press("Escape");
+  }
+  // zpět nahoru a chvíli počkat, než IntersectionObserver (app.js) zjistí, že pole hledání v heru je zase vidět
+  await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+  await page.waitForTimeout(300);
   await page.mouse.click(2, 300);
   await page.keyboard.press("/");
   if (!(await page.evaluate(() => document.activeElement?.id === "hub-q"))) problems.push(`${where}: „/“ nezaměřil hledání`);
@@ -341,6 +368,22 @@ for (const width of [1366, 390]) {
   }
   await ctx.close();
 }
+// Sdílení bez úložiště (soukromé okno, zakázané cookies): localStorage hází výjimku, panel funguje s výchozím vzhledem.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 }, colorScheme: "dark" });
+  await ctx.addInitScript(() => { Object.defineProperty(window, "localStorage", { configurable: true, get() { throw new DOMException("MOCK zakázané úložiště", "SecurityError"); } }); });
+  const page = await ctx.newPage();
+  const errs = [];
+  page.on("pageerror", (e) => errs.push(e.message));
+  await page.goto(base + `v/${voteId}`, { waitUntil: "networkidle" });
+  await page.click("[data-share]");
+  await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push("sdílení bez úložiště: panel neukázal náhled"));
+  if ((await page.getAttribute('.sd-themes [aria-pressed="true"]', "data-card-theme").catch(() => null)) !== "dark") problems.push("sdílení bez úložiště: výchozí vzhled není podle režimu (tmavý)");
+  await page.click('[data-card-theme="light"]').catch(() => {});
+  await page.waitForFunction(() => document.querySelector(".sd-meta")?.textContent.includes("světlá"), null, { timeout: 15000 }).catch(() => problems.push("sdílení bez úložiště: přepnutí na světlou kartu nefunguje"));
+  errs.filter((e) => /share|Vzhled|theme/i.test(e)).forEach((e) => problems.push(`sdílení bez úložiště: chyba ${e}`));
+  await ctx.close();
+}
 // N3: pravidla nových karet (metric, split, party) s MOCK daty: text se vejde, chybějící hodnota se vynechá,
 // počet řádků napsaný na kartě = počet vykreslených řádků; neutrální avatar nekreslí portrét.
 {
@@ -351,7 +394,7 @@ for (const width of [1366, 390]) {
     const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
     const { isStale, sessionCountdown } = await lib("format.js");
     // share.js se stejnou adresou (s ?v=) jako na stránce: stejná instance modulu, nespustí se podruhé
-    const { SHARE_FORMATS, measureText, metricCardOps, splitCardOps, splitRowsFor, partyCardOps, voteCardOps, mepBasicOps } =
+    const { SHARE_FORMATS, measureText, metricCardOps, splitCardOps, splitRowsFor, partyCardOps, voteCardOps, mepBasicOps, useCardTheme, CARD_THEMES } =
       await import(document.querySelector('script[src*="share.js"]').src);
     await document.fonts.ready;
     const out = [];
@@ -362,7 +405,24 @@ for (const width of [1366, 390]) {
     });
     const texts = (ops) => ops.filter((o) => o.k === "text").map((o) => o.s).join(" | ");
     const base = { dataDay: "2026-10-10", urlShort: "epwatch.cz/p/1#dochazka" };
-    for (const [fk, f] of [["post", SHARE_FORMATS.post], ["story", SHARE_FORMATS.story]]) {
+    // Kontrast na světlé i tmavé kartě: text pod modrou hlavičkou ≥ 4,5 : 1 proti tělu karty, tečky hlasů ≥ 3 : 1.
+    const lum = (hex) => { const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+    const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+    const contrast = (name, ops, bg) => {
+      const band = ops.find((o) => o.k === "band");
+      const below = (o) => !band || o.y > band.h;
+      // podklad textu = poslední vyplněný obdélník pod ním (pilulka, dlaždice), jinak tělo karty
+      const under = (o) => [...ops.slice(0, ops.indexOf(o))].reverse().find((r) => r.k === "rect" && /^#[0-9A-F]{6}$/i.test(r.fill || "")
+        && o.y - o.size / 3 >= r.y && o.y - o.size / 3 <= r.y + r.h && o.x >= r.x && o.x <= r.x + r.w)?.fill || bg;
+      ops.filter((o) => o.k === "text" && below(o) && /^#[0-9A-F]{6}$/i.test(o.fill) && ratio(o.fill, under(o)) < 4.5)
+        .forEach((o) => out.push(`${name}: text „${o.s.slice(0, 30)}“ má kontrast ${ratio(o.fill, under(o)).toFixed(2)} : 1`));
+      ops.filter((o) => o.k === "circ" && below(o) && o.r >= 12 && (o.fill || o.stroke) && ratio(o.fill || o.stroke, bg) < 3)
+        .forEach((o) => out.push(`${name}: tečka ${o.fill || o.stroke} má kontrast ${ratio(o.fill || o.stroke, bg).toFixed(2)} : 1`));
+    };
+    for (const theme of CARD_THEMES) {
+    const SC = useCardTheme(theme);
+    for (const [fk0, f] of [["post", SHARE_FORMATS.post], ["story", SHARE_FORMATS.story]]) {
+      const fk = `${fk0} ${theme}`;
       const m1 = metricCardOps({ ...base, context: "MOCK Poslanec Dlouhé Jméno · EPP · TOP09/STAN", label: "Účast na hlasování – závěrečná", pair: [588, 615], median: 0.91, medLabel: "medián EP", definition: "MOCK definice. ".repeat(20) }, f);
       fits(`metric ${fk}`, m1);
       const m2 = metricCardOps({ ...base, context: "MOCK", label: "Shoda s ostatními Čechy", pair: [10, 20], median: null, medLabel: "" }, f);
@@ -376,11 +436,23 @@ for (const width of [1366, 390]) {
       const pc = partyCardOps({ ...base, name: "MOCK strana", sub: "MOCK · 2 poslanci v mandátu", tiles: [{ label: "Účast poslanců na hlasování", pair: [9, 10] }, { label: "Jednotnost", pair: null }, { label: "Soulad s výsledkem", pair: [0, 0] }] }, f);
       fits(`party ${fk}`, pc);
       if (/Jednotnost|Soulad/.test(texts(pc))) out.push(`party ${fk}: chybějící hodnota se nevynechala`);
+      [["metric", m1], ["split", sp], ["party", pc]].forEach(([n, ops]) => contrast(`${n} ${fk}`, ops, SC.bg0));
     }
     // karta hlasování s tématem a bez něj (MOCK): text se vejde, bez tématu žádný řádek tématu
     const vbase = { ...base, title: "MOCK hlasování s dlouhým názvem, který se musí zalomit a zkrátit na kartě", subtitle: "MOCK", date: "2026-10-08", kindLabel: "závěrečné hlasování",
       result: "ADOPTED", resultLabel: "přijato", sentence: "Parlament text přijal", ep: [400, 200, 30, 50], parties: [{ label: "MOCK", groups: ["EPP"], positions: ["FOR", "AGAINST"] }] };
     for (const f of [SHARE_FORMATS.post, SHARE_FORMATS.story]) {
+      // strana se 7 poslanci (všechny tečky se vykreslí) a 10 stran: obsah se vejde nad patičku
+      const seven = { label: "ANO 2011", groups: ["PfE"], positions: ["AGAINST", "ABSTENTION", "ABSTENTION", "ABSTENTION", "ABSTENTION", "ABSTENTION", "DID_NOT_VOTE"] };
+      const full = voteCardOps({ ...vbase, topic: "Práva a občanství", trace: true, subtitle: "Návrh Komise · A10-0254/2026",
+        parties: [seven, ...Array.from({ length: 9 }, (_, i) => ({ label: `MOCK ${i}`, groups: ["EPP"], positions: ["FOR", "FOR"] }))] }, f);
+      fits(`vote ${theme} 7 teček`, full);
+      contrast(`vote ${theme}`, full, SC.bg0);
+      const foot = Math.min(...full.filter((o) => o.k === "line" && o.x1 === 72 && o.x2 === 1008).map((o) => o.y1).filter((y) => y > f.h - 200));
+      const lowest = Math.max(...full.filter((o) => o.k !== "band" && "y" in o && o.y < foot - 1).map((o) => o.y + (o.r || 0)));
+      if (lowest > foot) out.push(`vote ${theme} ${f.h}: obsah zasahuje do patičky (${lowest} > ${foot})`);
+      const dots7 = full.filter((o) => o.k === "circ" && o.r === 13).length;
+      if (dots7 < 6 + 18 + 3) out.push(`vote ${theme} ${f.h}: nevykreslily se všechny tečky stran (${dots7})`);
       const withT = voteCardOps({ ...vbase, topic: "Klima, příroda a energie (+2) a ještě mnohem delší text, který se nevejde" }, f);
       fits("vote s tématem", withT);
       if (!/Klima, příroda a energie/.test(texts(withT))) out.push("vote: chybí téma na kartě");
@@ -390,6 +462,8 @@ for (const width of [1366, 390]) {
       if (!/ČESKÁ STOPA/.test(texts(tr))) out.push("vote: chybí štítek česká stopa");
       if (/ČESKÁ STOPA/.test(texts(withT))) out.push("vote: štítek česká stopa bez záznamu");
     }
+    }
+    useCardTheme("dark");
     // odpočet a pruh o starých datech (čisté funkce v lib/format.js)
     const cd = [["2026-10-19", "2026-10-22", "2026-10-18", "zítra"], ["2026-10-19", "2026-10-22", "2026-10-16", "za 3 dny"],
       ["2026-10-19", "2026-10-22", "2026-10-12", "za 7 dní"], ["2026-10-19", "2026-10-22", "2026-10-20", "právě probíhá"]];

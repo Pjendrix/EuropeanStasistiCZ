@@ -464,11 +464,22 @@ _SHARE_ICON = (
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
     'stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'
 )
+_INFO_ICON = (
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+    'aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>'
+)
 _CHEV = {"prev": '<path d="M15 6l-6 6 6 6"/>', "next": '<path d="M9 6l6 6-6 6"/>'}
 
 # Hemicykl: stejná geometrie jako renderDelegation v public/home.js (dvě řady, poloměry 96 a 150), viewBox 400 × 232.
-HEMI_CX, HEMI_CY, HEMI_R = 200, 204, (96, 150)
-# Symboly hlasu uvnitř tečky (barva sama nestačí): ✓ pro, ✕ proti, – zdržel se; nehlasoval = prázdný kroužek.
+# Oblouk na úvodu (návrh A): tečky i číslo „pro : proti“ v jednom SVG, takže mají vždy stejné měřítko a nepřekrývají se.
+# Vnitřní řada jde jen po oblouku 154° → 26°, střed pod ní zůstává volný pro číslo; vnější řada 180° → 0°.
+HEMI_VB = (400, 250)
+HEMI_CX, HEMI_CY = 200, 221
+HEMI_RINGS = ((114, 154, 26), (178, 180, 0))  # (poloměr, úhel první a poslední tečky ve stupních)
+HEMI_SEAT = 15  # poloměr tečky
+HEMI_STARS = (203, (30, 60, 90, 120, 150))  # poloměr a úhly hvězd
+# Obdélník čísla (x0, y0, x1, y1): tečky do něj nesmí zasahovat (test_hub_hemi.py).
+HEMI_NUM_BOX = (130, 160, 270, 250)
 SYM = {"F": "M-5.5 1 L-1.8 4.8 L5.8 -4.2", "A": "M-4.6 -4.6 L4.6 4.6 M4.6 -4.6 L-4.6 4.6", "B": "M-5.2 0 L5.2 0"}
 POS_TXT = {"F": "pro", "A": "proti", "B": "zdržel/a se", "N": "nehlasoval/a", "X": "v den hlasování nebyl/a v mandátu"}
 LEGEND = [("F", "pro"), ("A", "proti"), ("B", "zdrželo se"), ("N", "nehlasovalo")]
@@ -484,15 +495,33 @@ MORE = [
 
 
 def hemi_slots(n: int) -> list[tuple[float, float]]:
-    """Místa pro n teček: počet v řadě úměrný poloměru, seřazená zleva doprava (zrcadlově jako home.js)."""
-    inner = max(1, round(n * HEMI_R[0] / sum(HEMI_R)))
+    """Místa pro n teček: počet v řadě úměrný poloměru (pro 21: 8 + 13), seřazená zleva doprava podle úhlu;
+    při shodném úhlu vlevo nejdřív vnější, vpravo nejdřív vnitřní řada (stejné pravidlo jako home.js)."""
+    (r0, *_), (r1, *_) = HEMI_RINGS
+    inner = max(1, round(n * r0 / (r0 + r1)))
     out = []
-    for k, r in ((inner, HEMI_R[0]), (n - inner, HEMI_R[1])):
+    for k, (r, a0, a1) in zip((inner, n - inner), HEMI_RINGS, strict=True):
         for i in range(k):
-            a = math.pi - (0.5 if k == 1 else i / (k - 1)) * math.pi
+            a = math.radians(a0 + (a1 - a0) * (0.5 if k == 1 else i / (k - 1)))
             out.append((a, r, HEMI_CX + r * math.cos(a), HEMI_CY - r * math.sin(a)))
     out.sort(key=lambda s: (-s[0], -s[1] if s[0] > math.pi / 2 else s[1]))
     return [(x, y) for _, _, x, y in out]
+
+
+def hemi_number(c: dict) -> tuple[str, int]:
+    """Obsah <text> čísla „pro : proti“ (zlatá dvojtečka) a velikost písma: pětimístné „10:11“ o něco menší,
+    aby zůstalo v obdélníku HEMI_NUM_BOX."""
+    fs = 68 if len(f"{c['F']}{c['A']}") <= 3 else 58
+    return f'{c["F"]}<tspan class="hm-num-c" dx="2" dy="-4">:</tspan><tspan dx="2" dy="4">{c["A"]}</tspan>', fs
+
+
+COUNT_TXT = [("F", "pro"), ("A", "proti"), ("B", "zdrželo se"), ("N", "nehlasovalo"), ("X", "mimo mandát")]
+
+
+def hemi_label(c: dict) -> str:
+    """Popis oblouku pro čtečky: počty (jen nenulové) a jak se mezi tečkami pohybovat."""
+    counts = ", ".join(f"{c[k]} {t}" for k, t in COUNT_TXT if c.get(k))
+    return f"Čeští poslanci: {counts}. Tečka = poslanec, barva a symbol podle hlasu; mezi poslanci se přechází šipkami."
 
 
 def _dot_svg(pos: str) -> str:
@@ -507,28 +536,33 @@ def party_text(p: dict) -> str:
 
 
 def hemi_html(vote: dict) -> str:
-    """Hemicykl 21 teček pro jedno hlasování (pořadí teček pevné, hlas v data-pos); tečka je odkaz na profil."""
+    """Oblouk 21 teček pro jedno hlasování a číslo „pro : proti“ v jednom SVG (pořadí teček pevné, hlas v data-pos);
+    tečka je odkaz na profil. Velikost tečky: kruh r=13 zvětšený na HEMI_SEAT."""
     ppl = vote["ppl"]
     slots = hemi_slots(len(ppl))
+    sr, angles = HEMI_STARS
     stars = "".join(
-        f'<path class="hm-star" transform="translate({HEMI_CX + 188 * math.cos(math.pi - k * math.pi / 6):.1f} '
-        f'{HEMI_CY - 188 * math.sin(math.pi - k * math.pi / 6):.1f}) scale(.62)" d="M0-9.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L0 4.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z"/>'
-        for k in range(7)
+        f'<path class="hm-star" transform="translate({HEMI_CX + sr * math.cos(math.radians(a)):.1f} '
+        f'{HEMI_CY - sr * math.sin(math.radians(a)):.1f}) scale(.62)" d="M0-9.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L0 4.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z"/>'
+        for a in angles
     )
+    k = HEMI_SEAT / 13
     seats = "".join(
         f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}" data-i="{i}" data-id="{p["id"]}" '
         f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" tabindex="{0 if i == 0 else -1}" '
         f'aria-label="{esc(p["name"])}, {esc(party_text(p))}: {esc(POS_TXT.get(p["pos"], ""))}">'
-        f'<circle class="hm-ring" r="15.5"/><g transform="scale(.86)"><circle class="hm-f" r="13"/>'
-        + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items())
+        f'<circle class="hm-ring" r="{HEMI_SEAT + 4.5:g}"/><g transform="scale({k:.3f})"><circle class="hm-f" r="13"/>'
+        + "".join(f'<path class="hm-sym hm-s{s}" d="{d}"/>' for s, d in SYM.items())
         + "</g></a></g>"
         for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False))
     )
-    c = vote["counts"]
+    num, fs = hemi_number(vote["counts"])
+    w, h = HEMI_VB
     return (
-        f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
-        f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu; mezi poslanci se přechází šipkami">{seats}</svg>'
-        f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
+        f'<svg viewBox="0 0 {w} {h}" id="hm-svg" role="group" aria-label="{esc(hemi_label(vote["counts"]))}">'
+        f'<g aria-hidden="true">{stars}</g>{seats}'
+        f'<g aria-hidden="true" text-anchor="middle"><text class="hm-num" id="hm-big" x="{HEMI_CX}" y="{HEMI_CY}" font-size="{fs}" font-weight="300">{num}</text>'
+        f'<text class="hm-num-u" x="{HEMI_CX}" y="{HEMI_CY + 22}" font-size="12.5" font-weight="700">PRO : PROTI</text></g></svg>'
         '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>'
     )
 
@@ -574,17 +608,24 @@ def caption_html(vote: dict, meps_by_id: dict | None = None, groups: list[dict] 
     res = f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>'
     from_text = vote.get("summary_source") == "adopted_text" and vote.get("summary_url")
     why = "z úryvku přijatého textu (EP Open Data)" if from_text else "jen z úředního názvu a témat"
+    # Shrnutí má nejvýš 2 řádky, „víc“ ho rozbalí (hub.js; když se vejde, tlačítko jen zneviditelní, řádek zůstane).
+    # Odkaz na přijatý text je mimo ořez, na řádku s tlačítkem, takže zdroj je vidět i ve sbaleném stavu.
     summary = (
-        f'<p class="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) {why}, bez čísel a výsledku">AI</span>'
-        f"{esc(vote['summary'])}"
-        + (f' <a class="hm-sum-src" href="{esc(vote["summary_url"])}">přijatý text</a>' if from_text else "")
+        f'<p class="hm-sum" id="hm-sum"><span class="hm-ai" title="Shrnutí napsala AI (Claude Haiku) {why}, bez čísel a výsledku">AI</span>'
+        f"{esc(vote['summary'])}</p>"
+        '<p class="hm-sum-act"><button type="button" class="hm-sum-more" aria-expanded="false" aria-controls="hm-sum">víc</button>'
+        + (
+            f'<span aria-hidden="true">·</span><a class="hm-sum-src" href="{esc(vote["summary_url"])}">přijatý text</a>'
+            if from_text
+            else ""
+        )
         + "</p>"
         if vote.get("summary")
         else ""
     )
     return (
-        f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{trace_html(vote, meps_by_id or {}, groups or [])}{hero_topic(vote)}'
+        f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}{hero_topic(vote)}</div>'
+        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{trace_html(vote, meps_by_id or {}, groups or [])}'
     )
 
 
@@ -777,9 +818,9 @@ def next_vote_html(agenda: dict | None) -> str:
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) pod nadpisem; česká stopa má vlastní řádek s portréty (trace_html)."""
+    """Jeden čip tématu (+N) v řádku s datem a výsledkem; česká stopa má vlastní řádek s portréty (trace_html)."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
-    return f'<div class="hm-topic">{chips}</div>' if chips else ""
+    return f'<span class="hm-topic">{chips}</span>' if chips else ""
 
 
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -825,6 +866,8 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
                 # popisek a legenda jako hotové HTML ze stejných šablon jako statická stránka (audit A1: bez dvojčat v hub.js)
                 "cap": caption_html(x, meps_by_id, groups),
                 "leg": legend_html(x),
+                "num": hemi_number(x["counts"]),
+                "aria": hemi_label(x["counts"]),
                 "share": hero_share(x, share.get(str(x["id"]))),
                 "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
                 "party": {str(p["id"]): party_text(p) for p in x["ppl"]},
@@ -837,6 +880,18 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     data_json = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
 
     quick = "".join(f'<li><a href="{h}">{esc(t)}</a></li>' for h, t in QUICK)
+    # Dlouhá vysvětlivka karty je v ⓘ (stejný popover jako jinde na webu), pod kartou zůstane jen řádek se zdrojem.
+    about = (
+        "Pět nejnovějších závěrečných hlasování, bez výběru. Tečka = poslanec v mandátu v den hlasování, barva i symbol podle hlasu; "
+        'strana a frakce k datu hlasování. Data <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).'
+        + (
+            ' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku z přijatého textu, a dokud není, jen z úředního názvu '
+            '(<a href="o-projektu#ai">jak</a>).'
+            if any(x.get("summary") for x in votes)
+            else ""
+        )
+        + (" Portréty © European Union – Source: EP." if any(x.get("trace") for x in votes) else "")
+    )
     hero = f"""<section class="hm-hero" aria-labelledby="h1">
   <div class="hm-inner">
     <div class="hm-copy">
@@ -864,8 +919,9 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
       <ul class="hm-legend" id="hm-leg">{legend_html(first)}</ul>
       <div class="hm-act"><a class="hm-detail" id="hm-more" href="v/{first["id"]}">Detail hlasování {_ARROW}</a>
-        <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div>
-      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku z přijatého textu, a dokud není, jen z úředního názvu (<a href="o-projektu#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}{" Portréty © European Union – Source: EP." if any(x.get("trace") for x in votes) else ""}</p>
+        <div class="hm-icons"><span class="info-wrap hm-info"><button type="button" class="info-btn hm-icon" popovertarget="hm-about" aria-label="Zdroj a jak číst" aria-expanded="false">{_INFO_ICON}</button><div popover id="hm-about" class="info-pop" role="note"><p>{about}</p></div></span>
+        <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div></div>
+      <p class="hm-src">Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · hlasy k datu hlasování</p>
     </section>
   </div>
   <dl class="hm-facts">
