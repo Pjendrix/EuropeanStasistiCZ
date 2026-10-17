@@ -246,9 +246,9 @@ function groupedCards(list, groups, parties, bench) {
     const tbody = document.querySelector("#meps tbody");
     const sortSelect = document.getElementById("sort-select");
     const visible = () => {
-      const needle = q.value.trim().toLowerCase();
+      const terms = searchTerms(q.value);
       return rows.filter((r) => (former.checked || r.active) &&
-        (!needle || [displayName(r.m), r.p?.short_label, r.g?.short_label].join(" ").toLowerCase().includes(needle)));
+        matchesAll(r.hay ??= norm([displayName(r.m), r.m.name, r.p?.short_label, r.g?.short_label].join(" ")), terms));
     };
     const columns = {
       name: (r) => r.m.sort_label || r.m.name,
@@ -263,8 +263,9 @@ function groupedCards(list, groups, parties, bench) {
       cards.innerHTML = (sortSelect.value === "groups"
         ? groupedCards(list, groups, parties, bench)
         : `<div class="mep-grid">${list.map((r) => mepCard(r, groups, parties, bench)).join("")}</div>`) ||
-        '<p class="muted">Nikdo neodpovídá hledání.</p>';
-      if (!list.length) cards.innerHTML = '<p class="muted">Nikdo neodpovídá hledání.</p>';
+        "";
+      if (!list.length) cards.innerHTML = `<div class="empty-state"><p><strong>Nikoho jsme nenašli.</strong> Zkuste jen část jména nebo zkratku strany${former.checked ? "" : ", případně zahrňte i bývalé poslance"}.</p>
+        <button type="button" class="more-btn" data-clear-search>Zrušit hledání</button></div>`;
       tbody.innerHTML = list.map(({ m, s, g, p, active }) => {
         const isNI = htvCode(m, groups) === "NI";
         return `<tr class="${active ? "" : "former"}">
@@ -293,7 +294,14 @@ function groupedCards(list, groups, parties, bench) {
         table.set(key, Number(dir));
       }
     });
-    [former, q].forEach((el) => el.addEventListener(el === q ? "input" : "change", () => table.refresh()));
+    former.addEventListener("change", () => table.refresh());
+    q.addEventListener("input", debounce(() => table.refresh(), 150));
+    cards.addEventListener("click", (ev) => {
+      if (!ev.target.closest("[data-clear-search]")) return;
+      q.value = "";
+      table.refresh();
+      q.focus();
+    });
     asTable.addEventListener("change", () => {
       tableWrap.hidden = !asTable.checked;
       cards.hidden = asTable.checked;

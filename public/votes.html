@@ -52,20 +52,26 @@
   <div class="lead-row"><p class="lead">Vyberte měsíc, typ, téma nebo poslance. Co je závěrečné hlasování a jak typy určujeme, vysvětlí ⓘ.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-votes" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-votes" class="info-pop" role="note">
     <p>Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci. <strong>Závěrečná</strong> jsou hlasování o celém textu nebo o prozatímní dohodě s Radou. <strong>Všechna hlavní</strong> navíc zahrnují návrhy na zamítnutí, mandáty k jednání s Radou a žádosti o naléhavý postup. Ostatní jsou pozměňovací návrhy a dílčí hlasování. <a href="o-projektu.html#metodika">Jak typ hlasování určujeme</a>.</p>
   </div></span></div>
-  <div class="controls">
-    <label>Měsíc <select id="month"></select></label>
-    <label>Typ <select id="kind">
-      <option value="final">jen závěrečná</option>
-      <option value="main">všechna hlavní</option>
-      <option value="all">všechna hlasování</option>
-    </select></label>
-    <label>Téma <select id="cat"><option value="">všechna témata</option></select></label>
-    <label>Podtéma <select id="topic"><option value="">všechna podtémata</option></select></label>
-    <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
-    <label><input type="checkbox" id="stopa"> jen s českou stopou</label>
-    <input type="search" id="q" placeholder="Hledat v celém období…" aria-label="Hledat">
-    <span class="small muted" id="count"></span>
+  <div class="controls search-row">
+    <input type="search" id="q" placeholder="Hledat v celém období (stačí bez diakritiky)…" aria-label="Hledat v hlasováních">
   </div>
+  <details class="filters" id="filters" open>
+    <summary>Filtry <span id="filter-n"></span></summary>
+    <div class="controls">
+      <label>Měsíc <select id="month"></select></label>
+      <label>Typ <select id="kind">
+        <option value="final">jen závěrečná</option>
+        <option value="main">všechna hlavní</option>
+        <option value="all">všechna hlasování</option>
+      </select></label>
+      <label>Téma <select id="cat"><option value="">všechna témata</option></select></label>
+      <label>Podtéma <select id="topic"><option value="">všechna podtémata</option></select></label>
+      <label>Poslanec <select id="mep"><option value="">všichni Češi souhrnně</option></select></label>
+      <label><input type="checkbox" id="stopa"> jen s českou stopou</label>
+    </div>
+  </details>
+  <div class="chips-row" id="chips" hidden></div>
+  <p class="small muted" id="count" aria-live="polite"></p>
 
   <div class="table-wrap">
     <table id="votes" class="stack">
@@ -148,12 +154,18 @@ setNav("votes-list");
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
         `<p>Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál. Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.</p>`, "Zdroj a metodika");
 
+    // Hledaný text se normalizuje jednou (bez diakritiky, malá písmena), ne při každém stisku klávesy.
+    for (const v of all) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" "));
+    const filters = document.getElementById("filters");
+    if (matchMedia("(max-width: 760px)").matches) filters.open = false;
+    const chips = document.getElementById("chips");
     const kindOk = (v) => kindSel.value === "all" || (kindSel.value === "final" ? isFinal(v) : v.is_main);
     const LIMIT = 300;
     let current = [];
     const render = () => {
       const month = monthSel.value;
-      const needle = q.value.trim().toLowerCase();
+      const terms = searchTerms(q.value);
+      const needle = terms.length > 0;
       const topic = topicSel.value, cat = catSel.value;
       // Při hledání nebo výběru tématu se prochází celé období, jinak jen vybraný měsíc.
       const onlyTrace = stopa.checked;
@@ -162,7 +174,7 @@ setNav("votes-list");
       const pool = wide ? all : all.filter((v) => v.month === month && (!since || v.date >= since));
       const matches = pool.filter((v) => kindOk(v) &&
         (!topic || (v.topics || []).includes(topic)) && (!cat || (v.cats || []).includes(cat)) && (!mepVotes || mepVotes.has(v.id)) && (!onlyTrace || trace.has(v.id)) &&
-        (!needle || [v.title, v.reference, v.description, v.description_cs].join(" ").toLowerCase().includes(needle)));
+        matchesAll(v._hay, terms));
       const list = matches.slice(0, LIMIT);
       current = matches;
       document.getElementById("count").textContent = wide
@@ -174,22 +186,55 @@ setNav("votes-list");
       if (needle) qs.set("q", q.value.trim());
       if (mepVotes) qs.set("mep", mepSel.value);
       if (onlyTrace) qs.set("stopa", "1");
-      document.getElementById("cz-head").textContent = mepVotes ? displayName(overview.meps.find((m) => String(m.id) === mepSel.value)) : "Češi";
+      const mp = mepVotes ? overview.meps.find((m) => String(m.id) === mepSel.value) : null;
+      document.getElementById("cz-head").textContent = mp ? displayName(mp) : "Češi";
+      renderChips();
       if (since && !wide) qs.set("od", since);
       history.replaceState(null, "", `?${qs}`);
       tbody.innerHTML = list.map((v) => {
         const counts = v.cz;
         return `<tr>
           <td class="num date">${fmtDate(v.date)}</td>
-          <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+          <td class="title">${catChip(v)}<a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${highlight(voteTitle(v), terms)}</a>
             <div class="small muted">${trace.has(v.id) ? '<span class="cz-badge" title="Český poslanec byl zpravodajem nebo stínovým zpravodajem">česká stopa</span> ' : ""}${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
           <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
-          ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)]; const mp = overview.meps.find((m) => String(m.id) === mepSel.value);
+          ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)];
             return `<td class="extra pos pos-${pos}">${positionFor(pos, mp)}</td>`; })()
             : `<td class="extra cz">${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>`}
         </tr>`;
-      }).join("") || '<tr><td colspan="4" class="muted">Žádné hlasování neodpovídá filtru.</td></tr>';
+      }).join("") || `<tr><td colspan="4" class="empty-state"><p><strong>Nic jsme nenašli.</strong>${needle ? " Zkuste psát bez koncovek (např. „ukrajin“) nebo méně slov." : ""}</p>
+        <div class="empty-acts">${!wide && kindSel.value !== "all" ? '<button type="button" class="more-btn" data-act="kind-all">Ukázat všechna hlasování</button>' : ""}${activeFilters().length ? '<button type="button" class="more-btn" data-act="clear">Zrušit všechny filtry</button>' : ""}</div></td></tr>`;
     };
+    // Aktivní filtry jako čipy s ×; počet i v nadpisu sbalených filtrů (mobil).
+    const selText = (sel) => sel.options[sel.selectedIndex]?.text || sel.value;
+    const activeFilters = () => [
+      q.value.trim() && { label: `„${q.value.trim()}“`, clear: () => { q.value = ""; } },
+      kindSel.value !== "final" && { label: selText(kindSel), clear: () => { kindSel.value = "final"; } },
+      catSel.value && { label: selText(catSel), clear: () => { catSel.value = ""; } },
+      topicSel.value && { label: selText(topicSel), clear: () => { topicSel.value = ""; } },
+      mepSel.value && { label: selText(mepSel), clear: () => { mepSel.value = ""; mepVotes = null; } },
+      stopa.checked && { label: "česká stopa", clear: () => { stopa.checked = false; } },
+      since && { label: `od ${fmtDate(since)}`, clear: () => { since = null; } },
+    ].filter(Boolean);
+    let chipList = [];
+    function renderChips() {
+      chipList = activeFilters();
+      document.getElementById("filter-n").textContent = chipList.length ? `(${chipList.length})` : "";
+      chips.hidden = !chipList.length;
+      chips.innerHTML = chipList.map((c, i) => `<button type="button" class="chip-x" data-chip="${i}" aria-label="Zrušit filtr ${esc(c.label)}">${esc(c.label)} <span aria-hidden="true">×</span></button>`).join("")
+        + (chipList.length > 1 ? '<button type="button" class="chip-clear" data-act="clear">Zrušit vše</button>' : "");
+    }
+    const onAct = (ev) => {
+      const chip = ev.target.closest("[data-chip]"), act = ev.target.closest("[data-act]");
+      if (chip) chipList[Number(chip.dataset.chip)]?.clear();
+      else if (act?.dataset.act === "clear") activeFilters().forEach((c) => c.clear());
+      else if (act?.dataset.act === "kind-all") kindSel.value = "all";
+      else return;
+      render();
+      q.focus();
+    };
+    chips.addEventListener("click", onAct);
+    tbody.addEventListener("click", onAct);
     monthSel.addEventListener("change", () => { since = null; render(); });
     document.querySelector("#votes").closest(".table-wrap").before(csvButton("hlasovani.csv", () => [
       ["id", "datum", "nazev", "reference", "popis", "typ", "vysledek", "cesi_pro", "cesi_proti", "cesi_zdrzel", "cesi_nehlasoval", "hlas_poslance", "zdroj"],
@@ -201,7 +246,7 @@ setNav("votes-list");
     catSel.addEventListener("change", render);
     stopa.addEventListener("change", render);
     mepSel.addEventListener("change", async () => { await loadMepVotes(); render(); });
-    q.addEventListener("input", render);
+    q.addEventListener("input", debounce(render, 150));
     render();
   } catch (e) {
     showError(tbody.closest(".table-wrap"), e);

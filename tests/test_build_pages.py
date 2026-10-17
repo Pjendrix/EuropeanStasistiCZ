@@ -64,7 +64,8 @@ def test_og_url_only_with_known_base_url(data_dir):
     assert '<link rel="canonical" href="https://example.test/p/1.html">' in html
     pages = bp.build(data_dir)
     assert "<loc>https://example.test/v/1.html</loc>" in pages["sitemap.xml"]
-    assert "<loc>https://example.test/index.html</loc>" in pages["sitemap.xml"]
+    assert "<loc>https://example.test/</loc>" in pages["sitemap.xml"]
+    assert "index.html</loc>" not in pages["sitemap.xml"]
     assert pages["robots.txt"].endswith("Sitemap: https://example.test/sitemap.xml\n")
 
 

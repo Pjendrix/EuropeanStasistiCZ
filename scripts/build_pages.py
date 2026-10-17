@@ -124,6 +124,16 @@ def split_bar(counts: list[int]) -> str:
     return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
 
 
+def compare_card(total: list[int], cz_counts: list[int], src: str) -> str:
+    """Celý parlament a Češi v jedné kartě, proužky pod sebou na stejné ose 0–100 % (stejné jako compareCard() v public/app.js)."""
+    def row(label: str, n: list[int]) -> str:
+        return (f'<div class="cmp-row"><div class="cmp-label">{label}</div>{split_bar(n)}'
+                f'<div class="detail"><span class="pos pos-FOR">pro {n[0]}</span> · <span class="pos pos-AGAINST">proti {n[1]}</span> · '
+                f'zdrželo se {n[2]} · nehlasovalo {n[3]}</div></div>')
+    return (f'<div class="card metric compare"><div class="label">Parlament a Češi</div>{row("Celý parlament", total)}'
+            f'{row("Čeští poslanci", cz_counts)}<div class="detail"><a href="{esc(src)}">zdroj</a></div></div>')
+
+
 # Tlačítko „Sdílet“ v hlavičce stránky: stejný kód jako SHARE_BTN_HTML / shareButton() v public/share.js (hlídá test).
 SHARE_BUTTON = ('<button type="button" class="share-btn" data-share aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24'
                 '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8'
@@ -480,10 +490,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>
     <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div></div>
-  <div class="card metric"><div class="label">Celý parlament</div>{split_bar(total)}
-    <div class="detail"><span class="pos pos-FOR">pro {c['for']}</span> · <span class="pos pos-AGAINST">proti {c['against']}</span> · zdrželo se {c['abstention']} · nehlasovalo {c['did_not_vote']}</div></div>
-  <div class="card metric"><div class="label">Čeští poslanci</div>{split_bar(cz_counts)}
-    <div class="detail"><span class="pos pos-FOR">pro {cz_counts[0]}</span> · <span class="pos pos-AGAINST">proti {cz_counts[1]}</span> · zdrželo se {cz_counts[2]} · nehlasovalo {cz_counts[3]}</div></div>
+  {compare_card(total, cz_counts, src)}
 </div>
 {trace}<h2>Jak hlasovali Češi</h2>
 <div class="cz-views" data-view="party">
@@ -565,7 +572,8 @@ def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = No
     lastmod = lastmod or {}
     def url(p: str) -> str:
         day = lastmod.get(p) or default_day
-        return f"  <url><loc>{esc(base + p)}</loc>{f'<lastmod>{day}</lastmod>' if day else ''}</url>\n"
+        loc = base if p == "index.html" else base + p  # úvod jako kanonické „/“, ne /index.html
+        return f"  <url><loc>{esc(loc)}</loc>{f'<lastmod>{day}</lastmod>' if day else ''}</url>\n"
     urls = "".join(url(p) for p in STATIC_PAGES + paths)
     return {
         "sitemap.xml": f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',

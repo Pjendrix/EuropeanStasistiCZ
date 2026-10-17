@@ -365,6 +365,28 @@ for (const width of [1440, 400]) {
   await ctx.close();
 }
 
+// Audit UI1/UI2: hledání bez diakritiky a koncovek, zvýraznění shod, čipy aktivních filtrů a prázdný stav s akcí.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "votes.html?q=zemedelstvi", { waitUntil: "networkidle" });
+  const r = await page.evaluate(() => ({
+    rows: document.querySelectorAll("#votes tbody a.vote-title").length,
+    marks: document.querySelectorAll("#votes tbody mark").length,
+    chips: document.querySelectorAll("#chips .chip-x").length,
+    live: document.getElementById("count").getAttribute("aria-live"),
+  }));
+  if (!r.rows) problems.push("votes.html: „zemedelstvi“ bez diakritiky nic nenašlo");
+  if (!r.marks) problems.push("votes.html: shody hledání nejsou zvýrazněné");
+  if (r.chips !== 1) problems.push(`votes.html: čekán 1 čip aktivního filtru, je ${r.chips}`);
+  if (r.live !== "polite") problems.push("votes.html: #count nemá aria-live");
+  await page.goto(base + "votes.html?q=xqzxqzxqz", { waitUntil: "networkidle" });
+  await page.click("#votes tbody [data-act=clear]");
+  const after = await page.evaluate(() => ({ q: document.getElementById("q").value, rows: document.querySelectorAll("#votes tbody a.vote-title").length }));
+  if (after.q || !after.rows) problems.push("votes.html: „Zrušit všechny filtry“ v prázdném stavu nefunguje");
+  await ctx.close();
+}
+
 // Radar „Co se chystá“: filtry skrývají položky podle tématu, zákonů a české stopy a zapíšou se do adresy.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

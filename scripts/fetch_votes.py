@@ -30,6 +30,7 @@ from delegations import compute_delegations
 from vote_kinds import FINAL_KINDS, classify
 
 BASE_URL = "https://github.com/HowTheyVote/data/releases/latest/download"
+TAG_URL = "https://github.com/HowTheyVote/data/releases/download/{tag}"
 HTV_VOTE_URL = "https://howtheyvote.eu/votes/{id}"
 TERM_START = "2024-07-16"
 COUNTRY = "CZE"
@@ -101,12 +102,19 @@ def release_is_new(latest: str | None, stored: str | None) -> bool:
     return bool(latest) and latest != stored
 
 
+def table_url(table: str, tag: str | None) -> str:
+    """Všechny tabulky ze stejného releasu: podle zjištěného tagu, latest jen když tag neznáme (jinak by vyšel mix dvou exportů)."""
+    return f"{TAG_URL.format(tag=tag) if tag else BASE_URL}/{table}.csv.gz"
+
+
 def download(dest: Path) -> str | None:
     dest.mkdir(parents=True, exist_ok=True)
     with requests.Session() as s:
         tag = resolve_release_tag(s)
+        if not tag:
+            print("varování: tag releasu se nepodařilo zjistit, stahuji latest/download", file=sys.stderr)
         for table in TABLES:
-            url = f"{BASE_URL}/{table}.csv.gz"
+            url = table_url(table, tag)
             print(f"stahuji {url}", file=sys.stderr)
             with s.get(url, stream=True, timeout=120) as r:
                 r.raise_for_status()

@@ -161,14 +161,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
           ${RESULT_NOTE[v.result ?? null] ? `<div class="detail">${esc(RESULT_NOTE[v.result ?? null])}</div>` : ""}
           <div class="detail">celý parlament · <a href="${esc(v.source_url)}">zdroj</a></div>
 </div>
-        <div class="card metric"><div class="label">Celý parlament</div>
-          ${splitBar(total)}
-          <div class="detail"><span class="pos pos-FOR">pro ${c.for}</span> · <span class="pos pos-AGAINST">proti ${c.against}</span> · zdrželo se ${c.abstention} · nehlasovalo ${c.did_not_vote}</div>
-          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
-        <div class="card metric"><div class="label">Čeští poslanci</div>
-          ${splitBar(czCounts)}
-          <div class="detail"><span class="pos pos-FOR">pro ${czCounts[0]}</span> · <span class="pos pos-AGAINST">proti ${czCounts[1]}</span> · zdrželo se ${czCounts[2]} · nehlasovalo ${czCounts[3]}</div>
-          <div class="detail"><a href="${esc(v.source_url)}">zdroj</a></div></div>
+        ${compareCard(total, czCounts, v.source_url)}
       </div>
 
       <h2>Jak hlasovali Češi</h2>

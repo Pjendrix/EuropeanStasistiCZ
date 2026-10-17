@@ -419,13 +419,14 @@ def hemi_html(vote: dict) -> str:
         for k in range(7))
     seats = "".join(
         f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}.html" data-i="{i}" data-id="{p["id"]}" '
-        f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" aria-label="{esc(p["name"])}, {esc(party_text(p))}">'
+        f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" tabindex="{0 if i == 0 else -1}" '
+        f'aria-label="{esc(p["name"])}, {esc(party_text(p))}: {esc(POS_TXT.get(p["pos"], ""))}">'
         f'<circle class="hm-ring" r="15.5"/><g transform="scale(.86)"><circle class="hm-f" r="13"/>'
         + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items()) + "</g></a></g>"
         for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False)))
     c = vote["counts"]
     return (f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
-            f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu">{seats}</svg>'
+            f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu; mezi poslanci se přechází šipkami">{seats}</svg>'
             f'<div class="hm-center" aria-hidden="true"><div class="hm-big" id="hm-big">{c["F"]}<em>:</em>{c["A"]}</div><div class="hm-u">pro : proti</div></div>'
             '<div class="hm-tip" id="hm-tip" aria-hidden="true"></div>')
 

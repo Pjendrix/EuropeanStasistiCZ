@@ -191,12 +191,12 @@ function displayName(mep) {
 
 function currentOf(list, date) {
   if (!list || !list.length) return null;
-  const at = date || new Date().toISOString().slice(0, 10);
+  const at = date || todayCZ();
   return list.find((x) => x.start <= at && (!x.end || at <= x.end)) || list[list.length - 1];
 }
 
 function isActive(mep) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayCZ();
   return mep.mandates.some((m) => m.start <= today && (!m.end || today <= m.end));
 }
 
@@ -269,6 +269,14 @@ function splitBar(counts) {
     .map((k, i) => `<span class="s-${k}" style="width:${(counts[i] / total) * 100}%"></span>`).join("")}</div>`;
 }
 
+// Celý parlament a Češi v jedné kartě, proužky pod sebou na stejné ose (audit UI5; stejné jako compare_card() v build_pages.py).
+function compareCard(total, cz, src) {
+  const row = (label, n) => `<div class="cmp-row"><div class="cmp-label">${label}</div>${splitBar(n)}`
+    + `<div class="detail"><span class="pos pos-FOR">pro ${n[0]}</span> · <span class="pos pos-AGAINST">proti ${n[1]}</span> · zdrželo se ${n[2]} · nehlasovalo ${n[3]}</div></div>`;
+  return `<div class="card metric compare"><div class="label">Parlament a Češi</div>${row("Celý parlament", total)}${row("Čeští poslanci", cz)}`
+    + `<div class="detail"><a href="${esc(src)}">zdroj</a></div></div>`;
+}
+
 // Kategorie hlasování (data/categories.json, tabulka v scripts/categories.py). Hlavní kategorie + „+n“; bez kategorie nic.
 let CATEGORY_META = {};
 async function loadCategories() {
@@ -311,6 +319,70 @@ function topicText(cats) {
 }
 
 // Oficiální český název procedury (title_cs z EP Open Data, build_web.vote_title), jinak anglický z HowTheyVote.
+// Dnešní den v pražském čase (RRRR-MM-DD). toISOString() vrací UTC, takže kolem půlnoci ukazoval včerejšek (audit A8).
+function todayCZ() {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Prague" }).format(new Date());
+}
+
+// Hledání bez ohledu na diakritiku a velikost písmen (audit UI2), stejné na všech stránkách.
+const norm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+// Slova dotazu: delší slova bez posledních 1–2 písmen, aby „ukrajina“ našla i „ukrajinu“, „migrace“ i „migraci“.
+function searchTerms(query) {
+  return norm(query).split(/\s+/).filter(Boolean).map((w) => (w.length > 5 ? w.slice(0, w.length > 7 ? -2 : -1) : w));
+}
+function matchesAll(hay, terms) {
+  return terms.every((t) => hay.includes(t));
+}
+// Zvýrazní shody dotazu v textu (<mark>); text se escapuje, pozice se hledají v normalizované podobě (stejná délka jako originál po NFD bez diakritiky).
+function highlight(text, terms) {
+  const src = String(text ?? "");
+  if (!terms.length) return esc(src);
+  // Mapa pozic: norm() maže kombinující znaky, proto si pamatujeme, kam patří každý znak normalizovaného textu.
+  let flat = "", pos = [];
+  [...src].forEach((ch, i) => {
+    const n = norm(ch);
+    for (const c of n) { flat += c; pos.push(i); }
+  });
+  const chars = [...src], hit = new Array(chars.length).fill(false);
+  for (const t of terms) {
+    let from = 0, at;
+    while (t && (at = flat.indexOf(t, from)) !== -1) {
+      for (let k = at; k < at + t.length; k++) hit[pos[k]] = true;
+      from = at + t.length;
+    }
+  }
+  let out = "", open = false;
+  chars.forEach((ch, i) => {
+    if (hit[i] !== open) { out += open ? "</mark>" : "<mark>"; open = hit[i]; }
+    out += esc(ch);
+  });
+  return open ? `${out}</mark>` : out;
+}
+function debounce(fn, ms) {
+  let tid;
+  return (...args) => { clearTimeout(tid); tid = setTimeout(() => fn(...args), ms); };
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; }
+}
+// Krátké oznámení dole (role=status), společné pro celý web (audit UI4).
+function toast(text, { bad = false, ms = 2600 } = {}) {
+  let el = document.getElementById("toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "toast";
+    el.className = "sd-toast";
+    el.setAttribute("role", "status");
+    el.setAttribute("aria-live", "polite");
+    document.body.append(el);
+  }
+  el.textContent = text;
+  el.classList.toggle("bad", bad);
+  el.classList.add("show");
+  clearTimeout(el._tid);
+  el._tid = setTimeout(() => el.classList.remove("show"), ms);
+}
+
 // Tvar parametrů z URL (měsíc, den): cokoli jiného se ignoruje.
 const MONTH_RE = /^\d{4}-\d{2}$/;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -699,11 +771,12 @@ function askAiBox(ctx) {
   </details>`;
 }
 
-document.addEventListener("click", (ev) => {
+document.addEventListener("click", async (ev) => {
   const el = ev.target.closest("[data-copy-prompt]");
   if (!el) return;
-  try { navigator.clipboard?.writeText(el.dataset.copyPrompt); } catch (e) { /* schránka nedostupná */ }
-  if (el.tagName === "BUTTON") {
+  const ok = await copyText(el.dataset.copyPrompt);
+  toast(ok ? "Dotaz je ve schránce, vložte ho do chatu (Ctrl+V)." : "Schránka není dostupná. Dotaz zkopírujte z rámečku pod tlačítky.", { bad: !ok, ms: 4000 });
+  if (ok && el.tagName === "BUTTON") {
     const old = el.textContent;
     el.textContent = "Zkopírováno";
     setTimeout(() => { el.textContent = old; }, 1500);
@@ -718,7 +791,7 @@ const SHARE_SMALL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="
 async function citeText(text) {
   let release = "";
   try { release = (await getJSON("overview.json")).sources?.votes?.release || ""; } catch (e) { /* bez verze */ }
-  const today = fmtDate(new Date().toISOString().slice(0, 10));
+  const today = fmtDate(todayCZ());
   return `${text}${release ? ` Data: export HowTheyVote ${release}.` : ""} EP Watch CZ, ${siteUrl(location.pathname + location.search)} (citováno ${today}).`;
 }
 
@@ -744,12 +817,12 @@ document.addEventListener("click", async (ev) => {
   if (!btn) return;
   const text = await citeText(btn.dataset.cite);
   const label = btn.querySelector("span");
-  try {
-    await navigator.clipboard.writeText(text);
+  if (await copyText(text)) {
     btn.classList.add("done");
     if (label) label.textContent = "Zkopírováno";
-  } catch (e) {
-    window.prompt("Zkopírujte citaci:", text);
+    toast("Citace je ve schránce.");
+  } else {
+    toast(`Schránka není dostupná. Citace: ${text}`, { bad: true, ms: 8000 });
   }
   setTimeout(() => { btn.classList.remove("done"); if (label) label.textContent = "Citovat"; }, 2000);
 });
@@ -762,7 +835,9 @@ function csvButton(filename, rowsFn, label = "Stáhnout CSV") {
   btn.textContent = label;
   btn.addEventListener("click", () => {
     const cell = (x) => {
-      const s = x === null || x === undefined ? "" : String(x);
+      let s = x === null || x === undefined ? "" : String(x);
+      // text ze zdroje začínající =, +, -, @ by Excel spustil jako vzorec (audit B5); čísla zůstanou čísly
+      if (typeof x === "string" && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
       return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
     };
     const text = "\ufeff" + rowsFn().map((r) => r.map(cell).join(";")).join("\r\n");
@@ -936,7 +1011,7 @@ function czGeoTag(v) {
 }
 
 // Odpočet do příštího zasedání (blok „Další zasedání“): počítá prohlížeč z data, web se kvůli tomu nepřestavuje.
-function sessionCountdown(from, to, today = new Date().toISOString().slice(0, 10)) {
+function sessionCountdown(from, to, today = todayCZ()) {
   const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
   if (today > to) return "zasedání skončilo, výsledky budou po zveřejnění dat";
   if (today >= from) return "právě probíhá";
@@ -952,7 +1027,7 @@ function fillCountdowns(root = document) {
 
 // Pruh „data mohou být neaktuální“ (data/freshness.json z build_web.py): export starší než stale_days dní
 // a od té doby už proběhlo zasedání EP (jinak nová hlasování být nemohou). Počítá prohlížeč, web se nepřestavuje.
-function isStale(fresh, today = new Date().toISOString().slice(0, 10)) {
+function isStale(fresh, today = todayCZ()) {
   if (!fresh?.release) return false;
   const age = Math.round((Date.parse(today) - Date.parse(fresh.release)) / 864e5);
   return age >= (fresh.stale_days ?? 14) && (fresh.sittings_after || []).some((d) => d < today);
@@ -977,8 +1052,12 @@ document.addEventListener("DOMContentLoaded", () => {
   staleNotice();
   setupThemeToggle();
   motion.scan(document);
-  new MutationObserver((muts) => {
-    for (const m of muts) m.addedNodes.forEach((n) => { if (n.nodeType === 1) motion.scan(n.parentElement || n); });
+  // Jeden sken na snímek místo skenu pro každý přidaný uzel (audit A5; scan je díky WeakSet idempotentní).
+  let scanQueued = false;
+  new MutationObserver(() => {
+    if (scanQueued) return;
+    scanQueued = true;
+    requestAnimationFrame(() => { scanQueued = false; motion.scan(document.getElementById("main") || document.body); });
   }).observe(document.body, { childList: true, subtree: true });
 });
 

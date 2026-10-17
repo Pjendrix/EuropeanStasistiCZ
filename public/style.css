@@ -383,6 +383,10 @@ table.compact thead tr:last-child th.num { text-align: right; }
   .profile-head { grid-template-columns: 88px minmax(0, 1fr); gap: 1rem; align-items: start; }
   .portrait, .portrait img { width: 88px; }
   .portrait img { height: 110px; }
+  /* Popisek fotky přes spodní okraj fotky, ne tři řádky pod ní (audit UI7). */
+  .portrait { position: relative; }
+  .portrait figcaption { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: .15rem .3rem; font-size: .56rem; line-height: 1.2;
+    color: #fff; background: rgba(15, 23, 42, .78); border-radius: 0 0 var(--radius) var(--radius); text-align: center; }
   .profile-head h1 { font-size: 1.6rem; }
   .head-only { display: none; }
   .foot-only { display: block; margin-top: 1rem; }
@@ -1418,3 +1422,28 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
   .rd-step:last-child::before { display: none; }
   .rd-dot { top: 2px; }
 }
+
+/* Audit UI1–UI4, A4: hledání a filtry hlasování, prázdné stavy, zvýraznění shod, toast, rezervovaná výška obsahu. */
+main#main { min-height: calc(100vh - 14rem); }
+.loading { min-height: 12rem; }
+.search-row input[type="search"] { flex: 1 1 22rem; min-height: 44px; font-size: 1rem; }
+.filters { margin-bottom: .6rem; }
+.filters > summary { cursor: pointer; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; gap: .35rem; }
+.filters[open] > summary { margin-bottom: .4rem; }
+.chips-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .6rem; }
+.chip-x, .chip-clear { display: inline-flex; align-items: center; gap: .35rem; min-height: 36px; padding: .25rem .75rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--chip); color: var(--text); font: inherit; font-size: .88rem; cursor: pointer; }
+.chip-x span { font-size: 1.1rem; line-height: 1; }
+.chip-clear { background: transparent; text-decoration: underline; }
+#count { margin: 0 0 .6rem; }
+.empty-state { padding: 1.2rem; }
+.empty-state p { margin: 0 0 .6rem; }
+.empty-acts { display: flex; flex-wrap: wrap; gap: .5rem; }
+mark { background: #FDE68A; color: #0F172A; border-radius: 3px; padding: 0 .05em; }
+#toast.bad { pointer-events: auto; user-select: text; border-radius: var(--radius-sm); }
+.empty-acts .more-btn { margin-top: 0; }
+/* Audit UI5: EP a Češi v jedné kartě. */
+.metric.compare { grid-column: span 2; }
+.cmp-row { margin: .5rem 0 .7rem; }
+.cmp-label { font-size: .85rem; font-weight: 600; margin-bottom: .25rem; }
+@media (max-width: 560px) { .metric.compare { grid-column: auto; } }

@@ -134,7 +134,7 @@ async function detailPage(id) {
     cite: single ? "" : `${name}: poslanci strany v Evropském parlamentu hlasovali jednotně v ${fmtPct(pct(p.cohesion))} hlasování (${fmtNum(p.cohesion[0])} z ${fmtNum(p.cohesion[1])}, kde hlasovali aspoň dva). Zdroj: HowTheyVote.eu, výpočet EP Watch CZ.`,
     text: `${name} v Evropském parlamentu: účast poslanců na hlasování ${fmtPct(pct(t.attendance))}${single ? "" : `, jednotnost ${fmtPct(pct(p.cohesion))}`}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
     data: {
-      name, sub: `${name !== p.short_label ? `${p.short_label} · ` : ""}${nowCount ? `${meps_count_cs(nowCount)} v mandátu` : "nikdo v mandátu"}`, dataDay: p.sources?.votes?.release || new Date().toISOString().slice(0, 10),
+      name, sub: `${name !== p.short_label ? `${p.short_label} · ` : ""}${nowCount ? `${meps_count_cs(nowCount)} v mandátu` : "nikdo v mandátu"}`, dataDay: p.sources?.votes?.release || todayCZ(),
       tiles: [{ label: "Účast poslanců na hlasování", pair: t.attendance }, { label: "Jednotnost", pair: single ? null : p.cohesion, note: "všichni hlasující poslanci strany stejně" },
         { label: "Soulad s výsledkem", pair: t.outcome, note: "jen informativní" }],
       urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, ""),
