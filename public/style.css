@@ -1481,7 +1481,7 @@ mark { background: #FDE68A; color: #0F172A; border-radius: 3px; padding: 0 .05em
 }
 .quiz-len { margin: .4rem 0 .2rem; }
 .ai-tag { display: inline-block; margin-left: .3rem; padding: .05rem .45rem; border-radius: 999px; border: 1px solid var(--border); background: var(--chip);
-  color: var(--muted); font-size: .72rem; font-weight: 500; vertical-align: middle; }
+  color: var(--text); font-size: .72rem; font-weight: 500; vertical-align: middle; }
 .quiz-sum { margin: .1rem 0 .3rem; }
 .quiz-q details { margin: .2rem 0 .5rem; }
 .ai-prompt { white-space: pre-wrap; max-height: 40vh; overflow: auto; background: var(--chip); padding: .5rem; border-radius: var(--radius-sm); }

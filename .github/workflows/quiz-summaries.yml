@@ -1,7 +1,8 @@
 # Srozumitelné shrnutí otázek kvízu „Moje shoda“ (Claude Haiku, scripts/quiz_summaries.py).
 # Běží po každé týdenní aktualizaci (otázky se mohou změnit s novými hlasováními) a ručně.
 # Volá API jen pro nové nebo změněné otázky; ostatní shrnutí jsou uložená v data/quiz_summaries.json.
-# Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a web ukáže úřední názvy.
+# Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a zůstanou uložená shrnutí.
+# Bez klíče jdou shrnutí vytvořit lokálně přes Claude Code: python scripts/quiz_summaries.py --backend claude-cli
 name: Shrnutí kvízu
 
 on:
@@ -39,7 +40,7 @@ jobs:
       - name: Shrnutí otázek (Claude Haiku)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/quiz_summaries.py
+        run: python scripts/quiz_summaries.py --backend api
 
       - name: Commit
         run: scripts/commit_data.sh "data: shrnutí kvízu $(date -u +%Y-%m-%d)" data/quiz_summaries.json
