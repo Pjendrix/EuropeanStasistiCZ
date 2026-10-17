@@ -571,13 +571,16 @@ function downloadBlob(blob, name) {
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
-// Statické stránky (v/*.html) mají kontext jako JSON v <script type="application/json" id="share-context"> (bez inline skriptu, CSP).
-function staticShareContext() {
+// Statické stránky (v/, p/) mají kontext jako JSON v <script type="application/json" id="share-context"> (bez inline skriptu, CSP):
+// buď jeden kontext ({kind, path, …}), nebo víc podle tlačítka ({default: …, "metric:attendance": …}).
+function staticShareContext(kindArg = "") {
   const el = document.getElementById("share-context");
   if (!el) return null;
-  const ctx = JSON.parse(el.textContent);
+  const all = JSON.parse(el.textContent);
+  const ctx = all.kind ? all : all[kindArg || "default"];
+  if (!ctx) return null;
   const url = siteUrl(ctx.path);
-  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, "") } };
+  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html(?=#|$)/, "") } };
 }
 
 let shareDlg = null;

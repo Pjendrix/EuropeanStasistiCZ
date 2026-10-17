@@ -30,11 +30,9 @@ from categories import ICON as CAT_ICON, LABEL as CAT_LABEL, categories_for
 from vote_parties import (
     POSITION_LABEL,
     POSITIONS,
-    by_gender,
     card_parties,
     group_label,
     party_rows,  # noqa: F401
-    position_for,
     position_phrase,
 )
 from compute_stats import FormatError, active_positions, load_votes, require
@@ -249,101 +247,24 @@ def bench_line(b: dict | None, key: str) -> str:
     return f'<div class="detail">{" · ".join(parts)}</div>' if parts else ""
 
 
-def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str | None) -> tuple[str, str]:
+def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str | None, today: str) -> tuple[str, str]:
+    """Profil poslance: celý obsah z profile_page.py (audit A1), profile.js jen doplní interakce."""
+    from profile_page import profile_body, share_json
+
     mep, t = prof["mep"], prof["total"]
     name = display_name(mep)
     g, p = current(mep["groups"]), current(mep["parties"])
-    active = any(not m.get("end") for m in mep["mandates"])
-    mandate = ", ".join(f"{fmt_date(m['start'])} – {fmt_date(m['end']) if m.get('end') else 'dosud'}" for m in mep["mandates"])
-    htv = f"{HTV}/members/{mep['id']}"
-    b = prof.get("benchmarks")
     att = t["attendance"]
     desc = (
         f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), "
         f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
     )
-    photo = (
-        f'<figure class="portrait"><img src="assets/photos/{mep["id"]}.jpg" alt="Portrét: {esc(name)}">'
-        f"<figcaption>{esc(mep.get('photo_credit') or '© European Union – Source: EP')}</figcaption></figure>"
-        if mep.get("photo_url")
-        else ""
-    )
-    rows = "".join(
-        f'<tr><td class="num">{fmt_date(v["date"])}</td>'
-        f'<td><a class="vote-title" href="v/{v["id"]}.html">{esc(v["title"])}</a>'
-        f'<div class="small muted">{esc(v.get("reference") or "")}{" · " + esc(v.get("description_cs") or v.get("description")) if (v.get("description_cs") or v.get("description")) else ""}</div></td>'
-        f'<td class="pos pos-{v["position"]}">{esc(position_for(v["position"], mep))}</td>'
-        f'<td class="result-{v.get("result") or ""}">{RESULT_LABEL.get(v.get("result"), "neuveden")}</td></tr>'
-        for v in prof["recent_main_votes"][:RECENT]
-    )
-    own = prof.get("own_work")
-    own_html = ""
-    if own and own.get("summary"):
-        items = "".join(
-            f"<li><strong>{esc(own['type_labels'].get(k, k))}</strong>: {fmt_num(s['count'])}</li>"
-            for k, s in own["summary"].items()
-            if s.get("count")
-        )
-        pa, ro = own.get("passed"), own.get("roles")
-        if pa and ro:
-            items = (
-                f"<li><strong>Zprávy jako zpravodaj/ka</strong>: {fmt_num(ro['lead_reports'])} (prošlo {fmt_num(pa['lead_adopted'])})</li>"
-                f"<li><strong>Stanoviska jako zpravodaj/ka</strong>: {fmt_num(ro['lead_opinions'])}</li>"
-                f"<li><strong>Zprávy jako stínový/á zpravodaj/ka</strong>: {fmt_num(ro['shadow_reports'])} (prošlo {fmt_num(pa['shadow_adopted'])})</li>"
-                f"<li><strong>Stanoviska jako stínový/á zpravodaj/ka</strong>: {fmt_num(ro['shadow_opinions'])}</li>"
-                f"<li><strong>Podepsané návrhy usnesení</strong>: {fmt_num(ro['motions_signed'])} (přijato {fmt_num(pa['resolutions_adopted'])})</li>"
-            ) + items
-        if items:
-            own_html = (
-                f'<h2 id="vlastni-prace">Práce na textech</h2><p class="small muted">{WORK_INTRO}</p><div class="card"><ul class="plain">{items}</ul>'
-                f'<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
-                f"Podrobnosti a výsledky hlasování jsou v plné verzi stránky (potřebuje JavaScript).</p></div>"
-            )
-    act = prof.get("activity")
-    if act:
-        own_html += (
-            f'<h3>Projevy v plénu</h3><div class="card"><ul class="plain">'
-            f"<li><strong>Ústní projevy v rozpravách</strong>: {fmt_num(act['speeches'])} (celkem {fmt_num(round(act['speeches_minutes']))} min)</li>"
-            f"<li><strong>Písemná prohlášení</strong>: {fmt_num(act['written_statements'])} (počítají se zvlášť)</li></ul>"
-            f'<p class="source">Počty v době mandátu. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0). '
-            f"Projevy nevypovídají o kvalitě ani vlivu.</p></div>"
-        )
-    pos = t["positions"]
-    body = f"""{back_row("poslanci.html", "← Všichni poslanci")}
-<div class="profile-head">
-  {photo}
-  <div>
-    <h1>{esc(name)}</h1>
-    <div class="facts"><span class="badge">{esc(group_label(g["code"] if g else None, groups))}</span>
-      {f'<a class="badge-link" href="s/{esc(p["org_id"])}.html"><span class="badge">{esc(p["short_label"])}</span></a>' if p and any(str(x["id"]) == str(p["org_id"]) and not x.get("independent") for x in parties) else f'<span class="badge outline">{("nezávislý/á" if p["short_label"] == "Ind." or any(str(x["id"]) == str(p["org_id"]) and x.get("independent") for x in parties) else esc(p["short_label"])) if p else "strana neuvedena"}</span>'}
-      <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
-    <p class="muted">Mandát: {mandate}</p>
-    {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
-    {'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
-    <p class="small"><a href="{esc(mep.get("profile_url"))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
-  </div>
-</div>
-
-<h2 id="dochazka">Hlasování v číslech</h2>
-<div class="metrics">
-  {metric("Účast na hlasování", t["attendance"], "všechna jmenovitá hlasování v době mandátu", bench_line(b, "attendance"))}
-  {metric("Účast na hlasování – závěrečná", t["attendance_main"], "o celém textu nebo o prozatímní dohodě s Radou", bench_line(b, "attendance_main"))}
-  {presence_card(prof.get("presence"))}
-  {metric("Hlasuje s frakcí", t["group_loyalty"], "jen informativní", bench_line(b, "group_loyalty"))}
-  {metric("Shoda s ostatními Čechy", t["cz_agreement"], "jen informativní")}
-</div>
-<p class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
-  zdržel{by_gender(mep, "", "a")} se {fmt_num(pos["ABSTENTION"])}×, nehlasoval{by_gender(mep, "", "a")} {fmt_num(pos["DID_NOT_VOTE"])}×.
-  Zdroj: <a href="{htv}">HowTheyVote.eu</a> (ODbL), <a href="o-projektu.html#metodika">metodika</a>{". " + esc(b["definition"]) if b else ""}</p>
-{own_html}
-<h2 id="posledni">Poslední závěrečná hlasování</h2>
-{f'<div class="table-wrap"><table><thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Volba</th><th>Výsledek</th></tr></thead><tbody>{rows}</tbody></table></div>' if rows else '<p class="muted">Žádná hlasování.</p>'}
-<p class="source">Zdroj: <a href="{htv}">HowTheyVote.eu</a>. Všechna hlasování v <a href="votes.html">seznamu hlasování</a>.</p>"""
+    body, share_ctx = profile_body(prof, groups, parties, today, SHARE_BUTTON)
     title = f"{name} – EP Watch CZ"
     meta = og_meta(title, desc, f"p/{mep['id']}.html", base_url, f"og/p/{mep['id']}.png", desc, card=True)
-    # Jedna adresa profilu (U5): <base href="../">, takže odkazy i data se berou od kořene webu;
-    # profile.js obsah nahradí plnou interaktivní verzí, statický obsah zůstává pro vyhledávače a bez JS.
+    # Jedna adresa profilu (U5): <base href="../">, takže odkazy i data se berou od kořene webu.
     path = f"p/{mep['id']}.html"
+    share_script = f'<script type="application/json" id="share-context">{share_json(share_ctx)}</script>\n'
     return path, page(
         title,
         body,
@@ -354,7 +275,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
         description=desc,
         meta=meta,
         main_attrs=f'data-mep="{mep["id"]}"',
-        scripts=MODULES.format(root="", page="profile.js"),
+        scripts=share_script + MODULES.format(root="", page="profile.js"),
     )
 
 
@@ -702,7 +623,7 @@ def build(data_dir: Path) -> dict[str, str]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
         require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
         apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
-        path, html = mep_page(prof, groups, parties, base_url)
+        path, html = mep_page(prof, groups, parties, base_url, data_day)
         out[path] = html
     idx_path = data_dir / "parties" / "index.json"
     if idx_path.exists():

@@ -35,7 +35,7 @@ def test_share_button_in_head_row_and_no_corner_cite(data_dir):
     for key in ("v/1.html", "p/1.html", "s/20.html"):
         html = pages[key]
         assert 'class="cite-btn"' not in html, key
-        assert html.count("data-share") == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
+        assert html.count('class="share-btn"') == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
         assert "share.js" in html, key
     assert '"cite": "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
 
