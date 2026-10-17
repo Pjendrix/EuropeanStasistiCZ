@@ -21,6 +21,7 @@ def test_page_with_root():
 
 def test_sync_rejects_page_without_header():
     import pytest
+
     with pytest.raises(ValueError):
         layout.sync_text("<html><body>bez hlavičky</body></html>")
 
@@ -28,6 +29,7 @@ def test_sync_rejects_page_without_header():
 def test_instagram_in_header_sheet_footer_and_head():
     """Blok B: odkaz na Instagram v hlavičce (desktop), v panelu Více a v patičce; og:site_name a feed v <head>."""
     from layout import INSTAGRAM, footer, head_assets, header
+
     h, f, a = header(), footer(), head_assets()
     assert INSTAGRAM == "https://www.instagram.com/epwatch.cz/"
     assert f'class="ig-link" href="{INSTAGRAM}" rel="me noopener"' in h  # hlavička
@@ -37,8 +39,10 @@ def test_instagram_in_header_sheet_footer_and_head():
 
 
 def test_assets_get_content_version():
-    html = layout.version_assets('<link rel="stylesheet" href="../style.css"><script src="app.js?v=00000000"></script>'
-                                 '<script src="https://cdn.example/x.js"></script><a href="neexistuje.js">')
+    html = layout.version_assets(
+        '<link rel="stylesheet" href="../style.css"><script src="app.js?v=00000000"></script>'
+        '<script src="https://cdn.example/x.js"></script><a href="neexistuje.js">'
+    )
     assert re.search(r'href="\.\./style\.css\?v=[0-9a-f]{8}"', html)
     assert re.search(r'src="app\.js\?v=[0-9a-f]{8}"', html) and "v=00000000" not in html
     assert 'src="https://cdn.example/x.js"' in html and 'href="neexistuje.js"' in html  # cizí a neexistující beze změny

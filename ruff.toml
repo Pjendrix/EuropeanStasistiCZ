@@ -1,4 +1,4 @@
-# Lint v CI (audit A9): jen chyby a podezřelé vzory, ne formátování.
+# Lint a formát v CI (audit A9): chyby a podezřelé vzory (ruff check) a jednotné formátování (ruff format --check).
 line-length = 140
 target-version = "py312"
 # jednorázové pomocné skripty pro šablony Instagramu

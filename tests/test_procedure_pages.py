@@ -26,13 +26,37 @@ def test_slug_and_url():
 
 
 def test_collect_merges_votes_proposals_and_state(tmp_path):
-    write(tmp_path, "proposals.json", {"items": [
-        {"kind": "procedure", "label": "2025/0001(COD)", "title": {"cs": "MOCK bez hlasování", "en": None},
-         "participants": [{"mep_id": 1, "role": "RAPPORTEUR"}], "events": [], "committee": "AGRI"}]})
-    write(tmp_path, "proposals_state.json", {"procedures": {
-        "2023-0447": {"label": LABEL, "title_cs": "MOCK český název", "committee": "ENVI",
-                      "events": [{"date": "2023-12-01", "type": "REFERRAL"}]},
-        "2025-0803": {"label": ["2025/0803(CNS)", "2025/0803(NLE)"], "title_cs": "MOCK dvě čísla"}}})
+    write(
+        tmp_path,
+        "proposals.json",
+        {
+            "items": [
+                {
+                    "kind": "procedure",
+                    "label": "2025/0001(COD)",
+                    "title": {"cs": "MOCK bez hlasování", "en": None},
+                    "participants": [{"mep_id": 1, "role": "RAPPORTEUR"}],
+                    "events": [],
+                    "committee": "AGRI",
+                }
+            ]
+        },
+    )
+    write(
+        tmp_path,
+        "proposals_state.json",
+        {
+            "procedures": {
+                "2023-0447": {
+                    "label": LABEL,
+                    "title_cs": "MOCK český název",
+                    "committee": "ENVI",
+                    "events": [{"date": "2023-12-01", "type": "REFERRAL"}],
+                },
+                "2025-0803": {"label": ["2025/0803(CNS)", "2025/0803(NLE)"], "title_cs": "MOCK dvě čísla"},
+            }
+        },
+    )
     rows = pp.collect(tmp_path, [pvote(2, "2024-10-01"), pvote(1, "2024-09-16")])
     assert set(rows) == {LABEL, "2025/0001(COD)"}
     r = rows[LABEL]
@@ -42,10 +66,24 @@ def test_collect_merges_votes_proposals_and_state(tmp_path):
 
 
 def test_page_with_events_trace_and_votes(tmp_path):
-    write(tmp_path, "proposals_state.json", {"procedures": {"2023-0447": {
-        "label": LABEL, "title_cs": "MOCK český název", "committee": "ENVI",
-        "events": [{"date": "2023-12-01", "type": "REFERRAL"}, {"date": "2024-09-16", "type": "PLENARY_VOTE"},
-                   {"date": "2024-09-17", "type": "MOCK_UNKNOWN"}]}}})
+    write(
+        tmp_path,
+        "proposals_state.json",
+        {
+            "procedures": {
+                "2023-0447": {
+                    "label": LABEL,
+                    "title_cs": "MOCK český název",
+                    "committee": "ENVI",
+                    "events": [
+                        {"date": "2023-12-01", "type": "REFERRAL"},
+                        {"date": "2024-09-16", "type": "PLENARY_VOTE"},
+                        {"date": "2024-09-17", "type": "MOCK_UNKNOWN"},
+                    ],
+                }
+            }
+        },
+    )
     meps = {m["id"]: m for m in (mep(1), mep(2))}
     votes = [pvote(1, "2024-09-16", description="Návrh Komise"), pvote(2, "2024-09-16", is_main=False, description="PN 5")]
     row = pp.collect(tmp_path, votes)[LABEL]

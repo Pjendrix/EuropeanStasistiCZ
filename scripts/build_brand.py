@@ -16,17 +16,17 @@ ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "public" / "assets" / "fonts"
 OUT = ROOT / "public" / "assets" / "brand"
 
-BLUE = "#1E4FA3"    # oko a hvězdy
-NAVY = "#14264D"    # „EP“, „CZ“, slogan
-WATCH = "#1E4FA3"   # „Watch“
+BLUE = "#1E4FA3"  # oko a hvězdy
+NAVY = "#14264D"  # „EP“, „CZ“, slogan
+WATCH = "#1E4FA3"  # „Watch“
 HEADER_BG = "#0F172A"  # --navy z style.css
 TAGLINE = "Fakta a data o českých europoslancích"
 
 # --- geometrie symbolu (střed oblouku hvězd = 0,0) ---------------------------------
-R = 80             # poloměr oblouku hvězd
-STAR_R = 13        # vnější poloměr hvězdy
+R = 80  # poloměr oblouku hvězd
+STAR_R = 13  # vnější poloměr hvězdy
 STAR_ANGLES = [-120, -90, -60, -30, 0, 30, 60, 90, 120]
-EYE_CX, EYE_HW = -45, 92   # střed a poloviční šířka oka
+EYE_CX, EYE_HW = -45, 92  # střed a poloviční šířka oka
 SYMBOL_BOX = (-158, -100, 262, 200)  # x, y, w, h (špička oka s ostrým rohem přesahuje)
 OX, OY = 158, 100  # posun symbolu v lockupech
 SW = 15  # tloušťka obrysu oka
@@ -49,10 +49,12 @@ def stars_path(r_ring: float = R, angles=STAR_ANGLES, size: float = STAR_R) -> s
 def eye(color: str, inner: str, sw: float = SW) -> str:
     """Oko: mandlový obrys, duhovka, odlesk. inner = barva bělma (pozadí)."""
     x0, x1 = EYE_CX - EYE_HW, EYE_CX + EYE_HW
-    almond = (f"M{x0},0 C{x0 + 27},-70 {x1 - 27},-70 {x1},0 C{x1 - 27},70 {x0 + 27},70 {x0},0 Z")
-    return (f'<path d="{almond}" fill="{inner}" stroke="{color}" stroke-width="{sw}" stroke-linejoin="miter"/>'
-            f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{color}"/>'
-            f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{inner}"/>')
+    almond = f"M{x0},0 C{x0 + 27},-70 {x1 - 27},-70 {x1},0 C{x1 - 27},70 {x0 + 27},70 {x0},0 Z"
+    return (
+        f'<path d="{almond}" fill="{inner}" stroke="{color}" stroke-width="{sw}" stroke-linejoin="miter"/>'
+        f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{color}"/>'
+        f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{inner}"/>'
+    )
 
 
 def symbol_group(color: str, inner: str, star_color: str | None = None) -> str:
@@ -68,6 +70,7 @@ def _font(weight: int):
     if weight not in _fonts:
         from fontTools.ttLib import TTFont
         from fontTools.varLib.instancer import instantiateVariableFont
+
         pair = []
         for name in ("plus-jakarta-sans-latin.woff2", "plus-jakarta-sans-latin-ext.woff2"):
             f = TTFont(FONTS / name)
@@ -80,6 +83,7 @@ def text_path(text: str, weight: int, size: float, x: float = 0, y: float = 0, t
     """Vrátí (SVG path d, šířka). y = účaří."""
     from fontTools.pens.svgPathPen import SVGPathPen
     from fontTools.pens.transformPen import TransformPen
+
     fonts = _font(weight)
     upm = fonts[0]["head"].unitsPerEm
     s = size / upm
@@ -110,8 +114,10 @@ def wordmark(x: float, y: float, size: float, ep: str, watch: str, cz: str) -> t
 
 def svg(w: float, h: float, body: str, vb: tuple | None = None, title: str = "EP Watch CZ") -> str:
     vb = vb or (0, 0, w, h)
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]:g} {vb[1]:g} {vb[2]:g} {vb[3]:g}" '
-            f'width="{w:g}" height="{h:g}" role="img" aria-label="{title}"><title>{title}</title>{body}</svg>\n')
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]:g} {vb[1]:g} {vb[2]:g} {vb[3]:g}" '
+        f'width="{w:g}" height="{h:g}" role="img" aria-label="{title}"><title>{title}</title>{body}</svg>\n'
+    )
 
 
 # --- varianty ------------------------------------------------------------------------
@@ -127,14 +133,15 @@ def symbol_svg(v: str) -> str:
     c, inner, *_ = VARIANTS[v]
     # u bílé varianty je bělmo průhledné (vidí se pozadí) – „díra“ přes masku
     if v == "-white":
-        body = (f'<mask id="m"><rect x="-200" y="-200" width="400" height="400" fill="#fff"/>'
-                f'{eye("#000", "#000", 0)}</mask>')
+        body = f'<mask id="m"><rect x="-200" y="-200" width="400" height="400" fill="#fff"/>{eye("#000", "#000", 0)}</mask>'
         x0, x1 = EYE_CX - EYE_HW, EYE_CX + EYE_HW
         almond = f"M{x0},0 C{x0 + 27},-70 {x1 - 27},-70 {x1},0 C{x1 - 27},70 {x0 + 27},70 {x0},0 Z"
-        body = (f'<path d="{almond}" fill="none" stroke="{c}" stroke-width="{SW}"/>'
-                f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{c}"/>'
-                f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{HEADER_BG}"/>'
-                f'<path d="{stars_path()}" fill="{c}"/>')
+        body = (
+            f'<path d="{almond}" fill="none" stroke="{c}" stroke-width="{SW}"/>'
+            f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{c}"/>'
+            f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{HEADER_BG}"/>'
+            f'<path d="{stars_path()}" fill="{c}"/>'
+        )
         return svg(SYMBOL_BOX[2], SYMBOL_BOX[3], body, SYMBOL_BOX)
     return svg(SYMBOL_BOX[2], SYMBOL_BOX[3], symbol_group(c, inner), SYMBOL_BOX)
 
@@ -143,10 +150,12 @@ def symbol_inline(c: str, highlight: str) -> str:
     """Prvky symbolu bez <svg> (pro vložení do jiného SVG); bělmo průhledné."""
     x0, x1 = EYE_CX - EYE_HW, EYE_CX + EYE_HW
     almond = f"M{x0},0 C{x0 + 27},-70 {x1 - 27},-70 {x1},0 C{x1 - 27},70 {x0 + 27},70 {x0},0 Z"
-    return (f'<path d="{almond}" fill="none" stroke="{c}" stroke-width="{SW}"/>'
-            f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{c}"/>'
-            f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{highlight}"/>'
-            f'<path d="{stars_path()}" fill="{c}"/>')
+    return (
+        f'<path d="{almond}" fill="none" stroke="{c}" stroke-width="{SW}"/>'
+        f'<circle cx="{EYE_CX}" cy="2" r="{IRIS_R}" fill="{c}"/>'
+        f'<circle cx="{EYE_CX - 15}" cy="-13" r="12" fill="{highlight}"/>'
+        f'<path d="{stars_path()}" fill="{c}"/>'
+    )
 
 
 def horizontal_svg(v: str) -> str:
@@ -191,9 +200,11 @@ def app_icon_svg(size: int = 512, rounded: bool = True, simple: bool = False, pa
         x0, x1 = EYE_CX - EYE_HW, EYE_CX + EYE_HW
         k = size * (1 - 2 * pad) / (EYE_HW * 2 + 12)
         almond = f"M{x0},0 C{x0 + 27},-70 {x1 - 27},-70 {x1},0 C{x1 - 27},70 {x0 + 27},70 {x0},0 Z"
-        g = (f'<g transform="translate({size / 2 - EYE_CX * k:.2f},{size / 2:.2f}) scale({k:.4f})">'
-             f'<path d="{almond}" fill="none" stroke="#fff" stroke-width="20"/>'
-             f'<circle cx="{EYE_CX}" cy="2" r="40" fill="#fff"/></g>')
+        g = (
+            f'<g transform="translate({size / 2 - EYE_CX * k:.2f},{size / 2:.2f}) scale({k:.4f})">'
+            f'<path d="{almond}" fill="none" stroke="#fff" stroke-width="20"/>'
+            f'<circle cx="{EYE_CX}" cy="2" r="40" fill="#fff"/></g>'
+        )
         return svg(size, size, bg + g)
     k = size * (1 - 2 * pad) / max(SYMBOL_BOX[2], SYMBOL_BOX[3])
     cx = size / 2 - (SYMBOL_BOX[0] + SYMBOL_BOX[2] / 2) * k
@@ -205,9 +216,11 @@ def app_icon_svg(size: int = 512, rounded: bool = True, simple: bool = False, pa
 def og_svg() -> str:
     """Výchozí náhled odkazu 1200 × 630 (stránky bez vlastního obrázku)."""
     W, H = 1200, 630
-    bg = (f'<defs><radialGradient id="g" cx="85%" cy="-10%" r="90%"><stop offset="0" stop-color="#1E3A8A"/>'
-          f'<stop offset=".6" stop-color="{HEADER_BG}"/><stop offset="1" stop-color="#0A1226"/></radialGradient></defs>'
-          f'<rect width="{W}" height="{H}" fill="url(#g)"/>')
+    bg = (
+        f'<defs><radialGradient id="g" cx="85%" cy="-10%" r="90%"><stop offset="0" stop-color="#1E3A8A"/>'
+        f'<stop offset=".6" stop-color="{HEADER_BG}"/><stop offset="1" stop-color="#0A1226"/></radialGradient></defs>'
+        f'<rect width="{W}" height="{H}" fill="url(#g)"/>'
+    )
     k = 1.35
     sym = f'<g transform="translate({120 + OX * k},{250}) scale({k})">{symbol_inline("#FFFFFF", HEADER_BG)}</g>'
     words, _ = wordmark(470, 285, 104, "#FFFFFF", "#FFFFFF", "#FFFFFF")
@@ -218,12 +231,14 @@ def og_svg() -> str:
 
 def png(svg_text: str, path: Path, w: int, h: int | None = None) -> None:
     import cairosvg
+
     cairosvg.svg2png(bytestring=svg_text.encode(), write_to=str(path), output_width=w, output_height=h or w)
 
 
 def ico(paths: list[Path], out: Path) -> None:
     """favicon.ico se 16 a 32 px (PNG uvnitř ICO)."""
     import struct
+
     data = [p.read_bytes() for p in paths]
     sizes = [16, 32]
     header = struct.pack("<HHH", 0, 1, len(data))

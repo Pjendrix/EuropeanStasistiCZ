@@ -1,4 +1,5 @@
 """I1: veřejná doména epwatch.cz na jednom místě, přesměrování starých adres."""
+
 import json
 import re
 import sys
@@ -48,7 +49,9 @@ def test_manual_pages_have_canonical_on_new_domain():
 
 def test_sync_head_inserts_and_replaces(tmp_path):
     page = tmp_path / "votes.html"
-    page.write_text('<head>\n<title>X</title>\n<meta property="og:url" content="https://old.example/votes.html">\n</head>', encoding="utf-8")
+    page.write_text(
+        '<head>\n<title>X</title>\n<meta property="og:url" content="https://old.example/votes.html">\n</head>', encoding="utf-8"
+    )
     assert bp.sync_head(page, "votes.html", BASE)
     html = page.read_text(encoding="utf-8")
     assert f'<title>X</title>\n<link rel="canonical" href="{BASE}/votes.html">' in html

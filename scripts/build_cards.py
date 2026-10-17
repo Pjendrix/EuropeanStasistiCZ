@@ -97,6 +97,7 @@ _fonts: dict = {}
 
 def font(size: int, weight: int = 400):
     from PIL import ImageFont
+
     key = (size, weight)
     if key not in _fonts:
         f = ImageFont.truetype(str(FONT_PATH), size)
@@ -138,6 +139,7 @@ def wrap(draw, s: str, f, max_w: int, max_lines: int) -> list[str]:
 
 def new_card():
     from PIL import Image, ImageDraw
+
     img = Image.new("RGB", (W, H), NAVY)
     d = ImageDraw.Draw(img)
     # jemný přechod: tmavší spodek
@@ -157,6 +159,7 @@ def symbol():
     global _symbol
     if _symbol is None:
         from PIL import Image
+
         im = Image.open(Path(__file__).resolve().parent / "brand" / "symbol-white.png").convert("RGBA")
         _symbol = im.resize((68, 52), Image.LANCZOS)
     return _symbol
@@ -174,8 +177,12 @@ def header(img, d, right: str) -> None:
 
 def footer(d, left: str, url: str | None) -> None:
     d.line([(56, H - 66), (W - 56, H - 66)], fill=(51, 65, 85), width=1)
-    d.text((56, H - 50), fit(d, left, font(18, 500), W - 112 - (int(text_w(d, url, font(18, 600))) + 24 if url else 0)),
-           font=font(18, 500), fill=MUTED)
+    d.text(
+        (56, H - 50),
+        fit(d, left, font(18, 500), W - 112 - (int(text_w(d, url, font(18, 600))) + 24 if url else 0)),
+        font=font(18, 500),
+        fill=MUTED,
+    )
     if url:
         d.text((W - 56, H - 50), url, font=font(18, 600), fill=SOFT, anchor="ra")
 
@@ -193,12 +200,14 @@ def stacked_bar(d, x: int, y: int, w: int, h: int, counts: list[int]) -> None:
 def to_png(img) -> bytes:
     """PNG s paletou (menší soubor, deterministické)."""
     from PIL import Image
+
     buf = io.BytesIO()
     img.quantize(colors=96, method=Image.Quantize.MAXCOVERAGE, dither=Image.Dither.NONE).save(buf, format="PNG", optimize=True)
     return buf.getvalue()
 
 
 # --- karty ----------------------------------------------------------------------------
+
 
 def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | None, parties: list[dict] | None = None) -> bytes:
     """OG náhled 1200 × 630 (S5): název, výsledek větou, celý EP, souhrn Čechů a jeden řádek stran (zkrácený „…“)."""
@@ -240,16 +249,26 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     d.text((56 + icon + (pw - icon) / 2 + 2, y + 22), pill, font=font(22, 800), fill=fg, anchor="mm")
     sentence = result_sentence(kind, v.get("result"))
     d.text((56 + pw + 20, y + 22), fit(d, sentence, font(24, 600), W - 112 - pw - 20), font=font(24, 600), fill=WHITE, anchor="lm")
-    d.text((56, y + 66), f"Celý EP: {fmt_num(c['for'])} pro · {fmt_num(c['against'])} proti · {fmt_num(c['abstention'])} zdrželo se"
-           f" · {fmt_num(c['did_not_vote'])} nehlasovalo", font=font(22, 500), fill=SOFT)
+    d.text(
+        (56, y + 66),
+        f"Celý EP: {fmt_num(c['for'])} pro · {fmt_num(c['against'])} proti · {fmt_num(c['abstention'])} zdrželo se"
+        f" · {fmt_num(c['did_not_vote'])} nehlasovalo",
+        font=font(22, 500),
+        fill=SOFT,
+    )
     stacked_bar(d, 56, y + 100, W - 112, 12, [c["for"], c["against"], c["abstention"], c["did_not_vote"]])
     cz = active_positions(v, meps_by_id)
     cnt = Counter(p["position"] for p in cz)
-    d.text((56, 456), "Češi: " + (" · ".join(f"{cnt[p]} {POS_LABEL[p]}" for p in POSITIONS if cnt[p]) or "žádný poslanec v mandátu"),
-           font=font(26, 700), fill=WHITE)
+    d.text(
+        (56, 456),
+        "Češi: " + (" · ".join(f"{cnt[p]} {POS_LABEL[p]}" for p in POSITIONS if cnt[p]) or "žádný poslanec v mandátu"),
+        font=font(26, 700),
+        fill=WHITE,
+    )
     rows = card_parties(party_rows(cz, meps_by_id, parties or [], groups))
-    line = "  ·  ".join(f"{r['label']}: " + ", ".join(f"{r['positions'].count(k)} {SHORT_LABEL[k]}" for k in POSITIONS if k in r["positions"])
-                        for r in rows)
+    line = "  ·  ".join(
+        f"{r['label']}: " + ", ".join(f"{r['positions'].count(k)} {SHORT_LABEL[k]}" for k in POSITIONS if k in r["positions"]) for r in rows
+    )
     d.text((56, 504), fit(d, line, font(21, 500), W - 112), font=font(21, 500), fill=SOFT)
     url = f"{base_url.rstrip('/').split('://', 1)[-1]}/v/{v['id']}" if base_url else None
     # Bez data exportu: výsledek hlasování se po zveřejnění nemění, karta se tak při novém exportu nepřepisuje.
@@ -259,15 +278,17 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 
 def hex_rgb(c: str | None) -> tuple[int, int, int]:
     if c and len(c) == 7 and c.startswith("#"):
-        return tuple(int(c[i:i + 2], 16) for i in (1, 3, 5))
+        return tuple(int(c[i : i + 2], 16) for i in (1, 3, 5))
     return MUTED
 
 
-def mep_card(prof: dict, chips: list[tuple[str, str | None]], mandate_text: str, photo: Path | None, data_day: str,
-             base_url: str | None) -> bytes:
+def mep_card(
+    prof: dict, chips: list[tuple[str, str | None]], mandate_text: str, photo: Path | None, data_day: str, base_url: str | None
+) -> bytes:
     """OG náhled 1200 × 630 = základní karta poslance na šířku: portrét vlevo, jméno, frakce · strana jako tečka a zkratka
     (bez log), dvě čísla s mediánem. Práce na textech je na detailu (3. obrázek carouselu na webu)."""
     from PIL import Image
+
     mep = prof["mep"]
     img, d = new_card()
     header(img, d, f"data k {fmt_date(data_day)}")
@@ -280,6 +301,7 @@ def mep_card(prof: dict, chips: list[tuple[str, str | None]], mandate_text: str,
         im = im.crop((max((im.width - pw) // 2, 0), 0, max((im.width - pw) // 2, 0) + pw, ph))
         mask = Image.new("L", (pw, ph), 0)
         from PIL import ImageDraw
+
         ImageDraw.Draw(mask).rounded_rectangle([0, 0, pw - 1, ph - 1], radius=18, fill=255)
         img.paste(im, (px, py), mask)
         d.rounded_rectangle([px - 3, py - 3, px + pw + 2, py + ph + 2], radius=20, outline=GOLD, width=3)
@@ -326,6 +348,7 @@ def mep_card(prof: dict, chips: list[tuple[str, str | None]], mandate_text: str,
 
 # --- celek ----------------------------------------------------------------------------
 
+
 def read(path: Path):
     if not path.exists():
         raise FormatError(f"chybí {path}")
@@ -334,6 +357,7 @@ def read(path: Path):
 
 def build(data_dir: Path, public: Path) -> dict[str, int]:
     from overrides import apply_name_overrides
+
     overview = read(data_dir / "overview.json")
     require(overview, ["meps", "period"], "overview.json")
     groups = read(data_dir / "groups.json")
@@ -363,7 +387,9 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
         apply_name_overrides([prof["mep"]], overrides)
         g, p = ov[mid].get("group"), ov[mid].get("party")
         party = next((x for x in parties if p and str(x["id"]) == str(p["id"])), None)
-        party_text = "" if not p else ("nezávislý/á" if p["short_label"] == "Ind." or (party or {}).get("independent") else p["short_label"])
+        party_text = (
+            "" if not p else ("nezávislý/á" if p["short_label"] == "Ind." or (party or {}).get("independent") else p["short_label"])
+        )
         mandate = min((x["start"] for x in prof["mep"].get("mandates") or [] if x.get("start")), default=None)
         g_obj = next((x for x in groups if g and (x["code"] == g["code"] or x.get("ep_code") == g["code"])), None)
         chips = [(group_label(g["code"] if g else None, groups), (g_obj or {}).get("chart_color"))] if g else []

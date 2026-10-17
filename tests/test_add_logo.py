@@ -11,9 +11,9 @@ import compute_stats as cs  # noqa: E402
 
 def setup(tmp_path):
     (tmp_path / "data" / "manual").mkdir(parents=True)
-    (tmp_path / "data" / "manual" / "logos.json").write_text(json.dumps(
-        {"groups": {"MOCK_G": {"file": None, "source": None, "chybi": "x"}}, "parties": {"1": {"file": None}}}),
-        encoding="utf-8")
+    (tmp_path / "data" / "manual" / "logos.json").write_text(
+        json.dumps({"groups": {"MOCK_G": {"file": None, "source": None, "chybi": "x"}}, "parties": {"1": {"file": None}}}), encoding="utf-8"
+    )
 
 
 def test_add_svg_and_aspect(tmp_path):
@@ -29,6 +29,7 @@ def test_add_svg_and_aspect(tmp_path):
 
 def test_add_png_converts_to_webp(tmp_path):
     from PIL import Image
+
     setup(tmp_path)
     src = tmp_path / "in.png"
     Image.new("RGBA", (600, 300), (255, 0, 0, 255)).save(src)

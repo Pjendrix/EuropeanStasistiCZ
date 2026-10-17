@@ -8,11 +8,20 @@ import vote_summaries as vs  # noqa: E402
 
 
 def mock_vote(i=1, title="MOCK Situation in Georgia", date="2026-10-08"):
-    return {"id": i, "date": date, "timestamp": f"{date}T12:00:00", "title": title, "title_cs": "MOCK Situace v Gruzii",
-            "vote_kind": "final", "is_main": True, "result": "ADOPTED", "description_cs": "Návrh usnesení (celý text)",
-            "procedure": {"reference": "2026/2913(RSP)", "title": title, "type": "RSP"},
-            "topics": {"eurovoc": [{"code": "1", "label": "democracy"}], "oeil": [], "geo": [{"code": "GEO", "label": "Georgia"}]},
-            "counts": {"for": 500, "against": 100, "abstention": 20}}
+    return {
+        "id": i,
+        "date": date,
+        "timestamp": f"{date}T12:00:00",
+        "title": title,
+        "title_cs": "MOCK Situace v Gruzii",
+        "vote_kind": "final",
+        "is_main": True,
+        "result": "ADOPTED",
+        "description_cs": "Návrh usnesení (celý text)",
+        "procedure": {"reference": "2026/2913(RSP)", "title": title, "type": "RSP"},
+        "topics": {"eurovoc": [{"code": "1", "label": "democracy"}], "oeil": [], "geo": [{"code": "GEO", "label": "Georgia"}]},
+        "counts": {"for": 500, "against": 100, "abstention": 20},
+    }
 
 
 class Fake:
@@ -48,8 +57,14 @@ def test_cache_reused_and_invalidated():
 
 def test_api_backend_uses_vote_prompt():
     calls = []
-    api = SimpleNamespace(messages=SimpleNamespace(create=lambda **kw: calls.append(kw) or SimpleNamespace(
-        stop_reason="end_turn", content=[SimpleNamespace(type="text", text=json.dumps({"shrnuti": "Usnesení k Gruzii."}))])))
+    api = SimpleNamespace(
+        messages=SimpleNamespace(
+            create=lambda **kw: calls.append(kw)
+            or SimpleNamespace(
+                stop_reason="end_turn", content=[SimpleNamespace(type="text", text=json.dumps({"shrnuti": "Usnesení k Gruzii."}))]
+            )
+        )
+    )
     b = vs.ApiBackend(api, prompt=vs.PROMPT, schema=vs.SCHEMA)
     assert vs.summarize(b, vs.vote_input(mock_vote())) == "Usnesení k Gruzii."
     assert calls[0]["system"] == vs.PROMPT

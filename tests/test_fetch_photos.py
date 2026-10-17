@@ -31,6 +31,7 @@ URL = "https://www.europarl.europa.eu/mepphoto/1.jpg"
 def mock_jpeg(w: int, h: int) -> bytes:
     import io
     from PIL import Image
+
     buf = io.BytesIO()
     Image.new("RGB", (w, h), (120, 130, 140)).save(buf, "JPEG")
     return buf.getvalue()
@@ -48,6 +49,7 @@ def test_saves_and_skips_unchanged(tmp_path):
 def test_big_portrait_shrinks_and_stays_unchanged(tmp_path):
     """Velký portrét se zmenší na nejvýš MAX_SIDE; další stažení stejného souboru ho už nepřepíše (repo neroste)."""
     from PIL import Image
+
     meps = [{"id": 1, "photo_url": URL}]
     s = Session(Resp(mock_jpeg(1200, 1500)))
     assert fp.fetch_photos(meps, tmp_path, s, 0)["saved"] == 1
@@ -73,6 +75,7 @@ def test_rejects_foreign_url(tmp_path):
 
 def test_make_thumbs(tmp_path):
     from PIL import Image
+
     Image.new("RGB", (400, 500), "navy").save(tmp_path / "1.jpg")
     meps = [{"id": 1}, {"id": 2}]  # 2 nemá portrét
     assert fp.make_thumbs(meps, tmp_path) == 1

@@ -12,6 +12,7 @@ Použití (po build_web.py, před build_pages.py – úvod je statický):
     python scripts/vote_summaries.py                       # lokálně přes Claude Code
     ANTHROPIC_API_KEY=... python scripts/vote_summaries.py --backend api
 """
+
 from __future__ import annotations
 
 import argparse
@@ -47,10 +48,18 @@ SCHEMA = {
     "required": ["shrnuti"],
     "additionalProperties": False,
 }
-PROCESS_TYPE = {"COD": "zákon, řádný legislativní postup", "CNS": "zákon, konzultace (rozhoduje Rada)",
-                "APP": "souhlas Parlamentu", "RSP": "usnesení Parlamentu (nezávazné)",
-                "INI": "zpráva z vlastního podnětu (nezávazná)", "BUD": "rozpočet EU", "NLE": "nelegislativní akt",
-                "DEC": "rozhodnutí", "RPS": "námitka k prováděcímu aktu", "DEA": "námitka k aktu v přenesené pravomoci"}
+PROCESS_TYPE = {
+    "COD": "zákon, řádný legislativní postup",
+    "CNS": "zákon, konzultace (rozhoduje Rada)",
+    "APP": "souhlas Parlamentu",
+    "RSP": "usnesení Parlamentu (nezávazné)",
+    "INI": "zpráva z vlastního podnětu (nezávazná)",
+    "BUD": "rozpočet EU",
+    "NLE": "nelegislativní akt",
+    "DEC": "rozhodnutí",
+    "RPS": "námitka k prováděcímu aktu",
+    "DEA": "námitka k aktu v přenesené pravomoci",
+}
 
 
 def vote_input(v: dict) -> str:
@@ -112,10 +121,14 @@ def run(votes: list[dict], cache: dict, backend, today: str, log=print) -> dict:
             log(f"{key}: shrnutí zamítnuto (odmítnutí, neplatný výstup nebo číslo mimo zadání), karta ukáže jen nadpis")
             continue
         items[key] = {"shrnuti": text, "fingerprint": fp, "generated": today}
-    return {"note": "Krátká shrnutí posledních závěrečných hlasování od Claude Haiku (scripts/vote_summaries.py). "
-                    "Čísla ani výsledky hlasování neobsahují.",
-            "model": MODEL, "prompt_version": PROMPT_VERSION, "prompt": PROMPT,
-            "items": dict(sorted(items.items(), key=lambda kv: int(kv[0]), reverse=True))}
+    return {
+        "note": "Krátká shrnutí posledních závěrečných hlasování od Claude Haiku (scripts/vote_summaries.py). "
+        "Čísla ani výsledky hlasování neobsahují.",
+        "model": MODEL,
+        "prompt_version": PROMPT_VERSION,
+        "prompt": PROMPT,
+        "items": dict(sorted(items.items(), key=lambda kv: int(kv[0]), reverse=True)),
+    }
 
 
 def main(argv=None) -> int:
@@ -129,6 +142,7 @@ def main(argv=None) -> int:
     use_api = args.backend == "api" or (args.backend == "auto" and os.environ.get("ANTHROPIC_API_KEY"))
     if use_api and os.environ.get("ANTHROPIC_API_KEY"):
         import anthropic  # jen když se opravdu volá API
+
         backend = ApiBackend(anthropic.Anthropic(), prompt=PROMPT, schema=SCHEMA)
     elif not use_api and shutil.which("claude"):
         backend = CliBackend(prompt=PROMPT, schema=SCHEMA)

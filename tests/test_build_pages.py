@@ -9,8 +9,7 @@ from test_build_web import data_dir  # noqa: E402,F401  (sdílená fixture s MOC
 
 
 def built(data_dir):
-    (data_dir / "groups.json").write_text(json.dumps([{"code": "EPP", "ep_code": "PPE", "short_label": "EPP"}]),
-                                          encoding="utf-8")
+    (data_dir / "groups.json").write_text(json.dumps([{"code": "EPP", "ep_code": "PPE", "short_label": "EPP"}]), encoding="utf-8")
     bw.run(data_dir, "2024-11-01")
     return bp.build(data_dir)
 
@@ -43,6 +42,7 @@ def test_share_button_in_head_row_and_no_corner_cite(data_dir):
 
 def test_share_button_same_in_python_and_js():
     import re
+
     js = (Path(__file__).resolve().parent.parent / "public" / "share.js").read_text(encoding="utf-8")
     m = re.search(r"const SHARE_BTN_HTML = '([^']+)';", js)
     assert m and m[1] == bp.SHARE_BUTTON
@@ -92,7 +92,8 @@ def test_definitions_static_and_every_key_has_a_name(tmp_path):
     except bp.FormatError as e:
         assert "neznamy_klic" in str(e)
     pub, data = tmp_path / "public", tmp_path / "data"
-    pub.mkdir(); data.mkdir()
+    pub.mkdir()
+    data.mkdir()
     (pub / "o-projektu.html").write_text('<ul class="plain" id="definitions"><li class="loading">Načítám…</li></ul>', encoding="utf-8")
     (data / "overview.json").write_text(json.dumps({"definitions": defs}), encoding="utf-8")
     assert bp.sync_definitions(pub, data) is True
@@ -111,11 +112,16 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     """Revize úvodu: hemicykl z data/home.json (tečka = poslanec, symbol + barva, odkaz na profil), střed F : A,
     pruh faktů z JSON, tři cesty, další pohledy bez číslování, sdílení napojené na panel."""
     import build_home as bh
+
     (data_dir / "groups.json").write_text(json.dumps([{"code": "EPP", "ep_code": "PPE", "short_label": "EPP"}]), encoding="utf-8")
     bw.run(data_dir, "2024-11-01")
-    (data_dir / "splits.json").write_text(json.dumps({"unity": {"considered": 4, "united_final": 1, "considered_final": 2}}), encoding="utf-8")
+    (data_dir / "splits.json").write_text(
+        json.dumps({"unity": {"considered": 4, "united_final": 1, "considered_final": 2}}), encoding="utf-8"
+    )
     (data_dir / "decisive.json").write_text(json.dumps({"votes": [{"id": 1}]}), encoding="utf-8")
-    (data_dir / "work_hub.json").write_text(json.dumps({"updated": "2024-10-20", "totals": {"meps": 2, "speeches": 5, "questions": 3, "reports_lead": 1}}), encoding="utf-8")
+    (data_dir / "work_hub.json").write_text(
+        json.dumps({"updated": "2024-10-20", "totals": {"meps": 2, "speeches": 5, "questions": 3, "reports_lead": 1}}), encoding="utf-8"
+    )
     home = bh.build(data_dir)
     (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
     html = bp.build(data_dir)["index.html"]
@@ -124,10 +130,19 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     assert html.count('class="hm-seat"') == len(first["ppl"])
     assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
     assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
-    assert '<dt>4</dt><dd>jmenovitých hlasování od' in html and "1 z 2 jednotně" in html and "1 hlasování" in html
+    assert "<dt>4</dt><dd>jmenovitých hlasování od" in html and "1 z 2 jednotně" in html and "1 hlasování" in html
     assert "Součet za všech 2 poslanců" in html
-    for href in ("poslanci.html", "hlasovani.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",
-                 "o-projektu.html#metodika"):
+    for href in (
+        "poslanci.html",
+        "hlasovani.html",
+        "prace.html",
+        "party.html",
+        "temata.html",
+        "rozkol.html",
+        "rozhodujici.html",
+        "shoda.html",
+        "o-projektu.html#metodika",
+    ):
         assert f'href="{href}"' in html
     assert "row-no" not in html and "home-door" not in html  # bez číslování a bez starých dveří
 
@@ -151,32 +166,43 @@ def test_blocks_for_manual_pages(data_dir, tmp_path):
 def test_group_majority_and_party_votes_text():
     assert bp.group_majority_label([10, 2, 0, 5]) == "pro" and bp.group_majority_label([1, 5, 0, 0]) == "proti"
     assert bp.group_majority_label([3, 3, 0, 1]) is None and bp.group_majority_label([0, 0, 0, 9]) is None
-    cz = [{"national_party": "A", "position": "FOR"}, {"national_party": "A", "position": "FOR"},
-          {"national_party": "B", "position": "AGAINST"}, {"national_party": "Independent", "position": "DID_NOT_VOTE"}]
+    cz = [
+        {"national_party": "A", "position": "FOR"},
+        {"national_party": "A", "position": "FOR"},
+        {"national_party": "B", "position": "AGAINST"},
+        {"national_party": "Independent", "position": "DID_NOT_VOTE"},
+    ]
     assert bp.party_votes_text(cz) == [("A", "2 pro"), ("B", "1 proti"), ("bez strany", "1 nehlasoval")]
 
 
 def test_party_rows_order_dots_and_verbs():
-    meps = {i: {"id": i, "name": f"MOCK {n}", "sort_label": n, "gender": g} for i, n, g in
-            [(1, "Aaa", "MALE"), (2, "Bbb", "FEMALE"), (3, "Ccc", "FEMALE"), (4, "Ddd", "MALE"), (5, "Eee", "MALE")]}
-    parties = [{"id": 10, "short_label": "AA", "chart_color": "#111111"}, {"id": 20, "short_label": "BB", "chart_color": "#222222"},
-               {"id": 30, "short_label": "Ind.", "chart_color": None}]
+    meps = {
+        i: {"id": i, "name": f"MOCK {n}", "sort_label": n, "gender": g}
+        for i, n, g in [(1, "Aaa", "MALE"), (2, "Bbb", "FEMALE"), (3, "Ccc", "FEMALE"), (4, "Ddd", "MALE"), (5, "Eee", "MALE")]
+    }
+    parties = [
+        {"id": 10, "short_label": "AA", "chart_color": "#111111"},
+        {"id": 20, "short_label": "BB", "chart_color": "#222222"},
+        {"id": 30, "short_label": "Ind.", "chart_color": None},
+    ]
     groups = [{"code": "EPP", "short_label": "EPP"}, {"code": "NI", "short_label": "NI"}]
-    cz = [{"member_id": 1, "position": "FOR", "national_party_id": 20, "group_code": "EPP"},
-          {"member_id": 2, "position": "ABSTENTION", "national_party_id": 10, "group_code": "EPP"},
-          {"member_id": 3, "position": "ABSTENTION", "national_party_id": 10, "group_code": "NI"},
-          {"member_id": 4, "position": "DID_NOT_VOTE", "national_party_id": 30, "group_code": "NI"},
-          {"member_id": 5, "position": "AGAINST", "national_party_id": 10, "group_code": "EPP"}]
+    cz = [
+        {"member_id": 1, "position": "FOR", "national_party_id": 20, "group_code": "EPP"},
+        {"member_id": 2, "position": "ABSTENTION", "national_party_id": 10, "group_code": "EPP"},
+        {"member_id": 3, "position": "ABSTENTION", "national_party_id": 10, "group_code": "NI"},
+        {"member_id": 4, "position": "DID_NOT_VOTE", "national_party_id": 30, "group_code": "NI"},
+        {"member_id": 5, "position": "AGAINST", "national_party_id": 10, "group_code": "EPP"},
+    ]
     rows = bp.party_rows(cz, meps, parties, groups)
-    assert [r["label"] for r in rows] == ["AA", "BB", "Ind."]       # největší strana první, pak abecedně
-    assert sum(r["total"] for r in rows) == len(cz)                  # součet teček = počet poslanců
-    assert rows[0]["groups"] == ["EPP", "nezařazení"]                # frakce k datu hlasování, obě vypsané
+    assert [r["label"] for r in rows] == ["AA", "BB", "Ind."]  # největší strana první, pak abecedně
+    assert sum(r["total"] for r in rows) == len(cz)  # součet teček = počet poslanců
+    assert rows[0]["groups"] == ["EPP", "nezařazení"]  # frakce k datu hlasování, obě vypsané
     html = bp.party_rows_html(rows, "../")
     assert html.count('class="cz-dot') == len(cz)
-    assert "zdržely se" in html and "zdrželi se" not in html         # obě ženy → ženský plurál
+    assert "zdržely se" in html and "zdrželi se" not in html  # obě ženy → ženský plurál
     assert bp.position_phrase("DID_NOT_VOTE", [meps[4]]) == "nehlasoval"
     assert bp.position_phrase("ABSTENTION", [meps[1], meps[2]]) == "zdrželi se"
-    assert not bp.party_rows([], meps, parties, groups)              # prázdná strana se nevypíše
+    assert not bp.party_rows([], meps, parties, groups)  # prázdná strana se nevypíše
 
 
 def test_topic_chips_markup_and_empty():
@@ -193,6 +219,7 @@ def test_topic_chips_markup_and_empty():
 def test_topic_same_everywhere_on_real_data():
     """Pro každé hlasování z home.json je téma stejné jako z votes/*.json (categories_for), ve vote_cats.json i na stránce v/{id}.html."""
     import categories
+
     root = Path(__file__).resolve().parent.parent
     home_p, cats_p = root / "data" / "home.json", root / "data" / "vote_cats.json"
     if not home_p.exists() or not cats_p.exists():
@@ -216,6 +243,7 @@ def test_static_pages_do_not_change_with_new_data_export(data_dir):
     """Blok A: nový export dat (jiné datum v overview.json) bez nových hlasování nezmění stránky v/ ani kartu hlasování,
     aby repo nerostlo při každé aktualizaci."""
     import build_cards as bc
+
     first = built(data_dir)
     ov_path = data_dir / "overview.json"
     ov = json.loads(ov_path.read_text(encoding="utf-8"))
@@ -235,7 +263,7 @@ def test_feed_and_sitemap_lastmod(data_dir):
     (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
     pages = bp.build(data_dir)
     feed = pages["feed.xml"]
-    assert feed.startswith('<?xml') and 'xmlns="http://www.w3.org/2005/Atom"' in feed
+    assert feed.startswith("<?xml") and 'xmlns="http://www.w3.org/2005/Atom"' in feed
     assert feed.count("<entry>") == 2 and "<id>https://example.test/v/3.html</id>" in feed  # závěrečná 1 a 3, nejnovější první
     assert feed.index("v/3.html") < feed.index("v/1.html") and "<updated>2024-10-16T12:00:00Z</updated>" in feed
     assert "Zdroj: HowTheyVote.eu" in feed
@@ -247,13 +275,22 @@ def test_corrections_block(tmp_path):
     data = tmp_path / "data"
     (data / "manual").mkdir(parents=True)
     assert "Zatím žádné opravy" in bp.corrections_html(data)
-    (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [
-        {"date": "2026-10-01", "wrong": "MOCK špatně", "right": "MOCK správně", "link": "https://example.test/x"},
-        {"date": "2026-10-05", "wrong": "MOCK B", "right": "MOCK B2"}]}), encoding="utf-8")
+    (data / "manual" / "corrections.json").write_text(
+        json.dumps(
+            {
+                "corrections": [
+                    {"date": "2026-10-01", "wrong": "MOCK špatně", "right": "MOCK správně", "link": "https://example.test/x"},
+                    {"date": "2026-10-05", "wrong": "MOCK B", "right": "MOCK B2"},
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
     html = bp.corrections_html(data)
     assert html.index("5. 10. 2026") < html.index("1. 10. 2026") and 'href="https://example.test/x"' in html
     (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [{"date": "2026-10-01"}]}), encoding="utf-8")
     import pytest
+
     with pytest.raises(bp.FormatError):
         bp.corrections_html(data)
 
@@ -279,14 +316,38 @@ def test_share_data_trace_only_with_record(data_dir):
 
 def test_next_session_block():
     import hub
-    agenda = {"from": "2026-10-19", "to": "2026-10-22", "days": ["2026-10-19"], "votes": 2, "fetched": "2026-10-16",
-              "source": {"name": "EP Open Data API v2", "url": "https://data.europarl.europa.eu/api/v2/meetings"},
-              "picks": ["MOCK-1"],
-              "items": [{"id": "MOCK-1", "date": "2026-10-20", "order": 1, "title_cs": "MOCK DPH", "title_en": None,
-                         "docs": ["A-10-2026-0213"], "legislative": False,
-                         "cz": [{"mep_id": 1, "name": "MOCK Jedna", "role": "rapporteur"}]},
-                        {"id": "MOCK-2", "date": "2026-10-21", "order": 2, "title_cs": "MOCK jiný", "title_en": None,
-                         "docs": [], "legislative": False, "cz": []}]}
+
+    agenda = {
+        "from": "2026-10-19",
+        "to": "2026-10-22",
+        "days": ["2026-10-19"],
+        "votes": 2,
+        "fetched": "2026-10-16",
+        "source": {"name": "EP Open Data API v2", "url": "https://data.europarl.europa.eu/api/v2/meetings"},
+        "picks": ["MOCK-1"],
+        "items": [
+            {
+                "id": "MOCK-1",
+                "date": "2026-10-20",
+                "order": 1,
+                "title_cs": "MOCK DPH",
+                "title_en": None,
+                "docs": ["A-10-2026-0213"],
+                "legislative": False,
+                "cz": [{"mep_id": 1, "name": "MOCK Jedna", "role": "rapporteur"}],
+            },
+            {
+                "id": "MOCK-2",
+                "date": "2026-10-21",
+                "order": 2,
+                "title_cs": "MOCK jiný",
+                "title_en": None,
+                "docs": [],
+                "legislative": False,
+                "cz": [],
+            },
+        ],
+    }
     html = hub.next_session_html(agenda)
     assert 'data-from="2026-10-19"' in html and 'data-to="2026-10-22"' in html
     assert "MOCK DPH" in html and "MOCK jiný" not in html  # na úvodu jen výběr
@@ -299,20 +360,61 @@ def test_next_session_block():
 
 def test_radar_page_html():
     import hub
-    steps = [{"key": k, "label": k, "date": d} for k, d in
-             (("committee", "2025-02-01"), ("report", "2025-06-01"), ("trilogue", None), ("plenary", None), ("closed", None))]
+
+    steps = [
+        {"key": k, "label": k, "date": d}
+        for k, d in (("committee", "2025-02-01"), ("report", "2025-06-01"), ("trilogue", None), ("plenary", None), ("closed", None))
+    ]
     cz = [{"mep_id": 1, "name": "MOCK Jedna", "role": "shadow", "role_cs": "stínový/á zpravodaj/ka"}]
-    row = {"procedure": "2025-0001", "label": "2025/0001(COD)", "type": "COD", "title_cs": "MOCK zákon", "title_en": None,
-           "url": "https://example.org/oeil", "committee": {"code": "ENVI", "name": "MOCK výbor", "category": "env"},
-           "cz": cz, "steps": steps, "reached": "report", "last_event": {"date": "2025-06-01", "type": "X", "label": "výbor přijal zprávu"},
-           "next_vote": None}
-    radar = {"categories": ["env", "fin"], "without_events": 3,
-             "session": {"from": "2026-10-19", "to": "2026-10-22", "fetched": "2026-10-16", "items": [
-                 {"id": "MOCK-1", "date": "2026-10-20", "order": 1, "title_cs": "MOCK bod", "title_en": None, "docs": ["A-10-2026-0001"],
-                  "legislative": True, "stage": "RDG1", "stage_cs": "první čtení", "procedure": None,
-                  "committee": {"code": "BUDG", "name": "Rozpočty", "category": "fin"}, "cz": []}]},
-             "active": [row], "done": [{**row, "procedure": "2025-0002", "reached": "plenary", "plenary_date": "2026-09-15",
-                                        "vote": {"vote_id": 99, "vote_date": "2026-09-15", "status": "ADOPTED"}}]}
+    row = {
+        "procedure": "2025-0001",
+        "label": "2025/0001(COD)",
+        "type": "COD",
+        "title_cs": "MOCK zákon",
+        "title_en": None,
+        "url": "https://example.org/oeil",
+        "committee": {"code": "ENVI", "name": "MOCK výbor", "category": "env"},
+        "cz": cz,
+        "steps": steps,
+        "reached": "report",
+        "last_event": {"date": "2025-06-01", "type": "X", "label": "výbor přijal zprávu"},
+        "next_vote": None,
+    }
+    radar = {
+        "categories": ["env", "fin"],
+        "without_events": 3,
+        "session": {
+            "from": "2026-10-19",
+            "to": "2026-10-22",
+            "fetched": "2026-10-16",
+            "items": [
+                {
+                    "id": "MOCK-1",
+                    "date": "2026-10-20",
+                    "order": 1,
+                    "title_cs": "MOCK bod",
+                    "title_en": None,
+                    "docs": ["A-10-2026-0001"],
+                    "legislative": True,
+                    "stage": "RDG1",
+                    "stage_cs": "první čtení",
+                    "procedure": None,
+                    "committee": {"code": "BUDG", "name": "Rozpočty", "category": "fin"},
+                    "cz": [],
+                }
+            ],
+        },
+        "active": [row],
+        "done": [
+            {
+                **row,
+                "procedure": "2025-0002",
+                "reached": "plenary",
+                "plenary_date": "2026-09-15",
+                "vote": {"vote_id": 99, "vote_date": "2026-09-15", "status": "ADOPTED"},
+            }
+        ],
+    }
     html = hub.radar_html(radar)
     assert 'id="rd-cat"' in html and '<option value="env">' in html
     assert 'data-cat="fin" data-leg="1" data-cz="0"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html
@@ -333,7 +435,18 @@ def test_czech_title_preferred_and_original_kept():
 
 def test_radar_proc_card_links_to_procedure_story():
     from hub import radar_proc_card
-    row = {"procedure": "2023-0447", "label": "2023/0447(COD)", "url": "https://oeil.example/x", "title_cs": "MOCK",
-           "committee": None, "cz": [], "steps": [], "reached": None, "last_event": None, "next_vote": None}
+
+    row = {
+        "procedure": "2023-0447",
+        "label": "2023/0447(COD)",
+        "url": "https://oeil.example/x",
+        "title_cs": "MOCK",
+        "committee": None,
+        "cz": [],
+        "steps": [],
+        "reached": None,
+        "last_event": None,
+        "next_vote": None,
+    }
     html = radar_proc_card(row, "")
     assert 'href="z/2023-0447-COD.html"' in html and "oeil.example" not in html

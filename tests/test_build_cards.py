@@ -22,6 +22,7 @@ def test_cards_only_for_final_votes_of_last_twelve_months():
 
 def test_text_helpers_never_overflow():
     from PIL import Image, ImageDraw
+
     d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
     f = bc.font(46, 700)
     long = "Implementation of the Urban Wastewater Treatment Directive (UWWTD) and risks to the security of supply of medicines " * 3
@@ -58,22 +59,31 @@ def test_build_writes_card_for_every_mep_and_final_vote(data_dir):
 
 def test_card_parties_merges_singletons_and_keeps_total():
     import vote_parties as vp
+
     rows = []
     for i, n in enumerate([5, 3, 2] + [1] * 12):
-        rows.append({"label": f"S{i:02d}", "groups": ["EPP"], "total": n,
-                     "members": {"FOR": [{}] * n, "AGAINST": [], "ABSTENTION": [], "DID_NOT_VOTE": []}})
+        rows.append(
+            {
+                "label": f"S{i:02d}",
+                "groups": ["EPP"],
+                "total": n,
+                "members": {"FOR": [{}] * n, "AGAINST": [], "ABSTENTION": [], "DID_NOT_VOTE": []},
+            }
+        )
     items = vp.card_parties(rows)
     assert len(items) <= vp.MAX_CARD_ROWS
-    assert sum(len(i["positions"]) for i in items) == sum(r["total"] for r in rows)   # součet teček = počet poslanců
-    assert [i["label"] for i in items[:3]] == ["S00", "S01", "S02"]                    # pořadí zachováno
-    assert items[-1]["label"] == "ostatní" and "S14" in items[-1]["groups"]            # jména sloučených stran zůstanou
-    assert vp.card_parties(rows[:4]) == [{"label": r["label"], "groups": r["groups"], "positions": ["FOR"] * r["total"], "total": r["total"]}
-                                        for r in rows[:4]]                              # když se vejdou, nic se neslučuje
+    assert sum(len(i["positions"]) for i in items) == sum(r["total"] for r in rows)  # součet teček = počet poslanců
+    assert [i["label"] for i in items[:3]] == ["S00", "S01", "S02"]  # pořadí zachováno
+    assert items[-1]["label"] == "ostatní" and "S14" in items[-1]["groups"]  # jména sloučených stran zůstanou
+    assert vp.card_parties(rows[:4]) == [
+        {"label": r["label"], "groups": r["groups"], "positions": ["FOR"] * r["total"], "total": r["total"]} for r in rows[:4]
+    ]  # když se vejdou, nic se neslučuje
 
 
 def test_vote_card_text_fits_and_is_png(data_dir):
     from PIL import Image
     import io
+
     votes = json.loads((data_dir / "votes" / sorted(p.name for p in (data_dir / "votes").glob("2*.json"))[0]).read_text())["votes"]
     meps = {m["id"]: m for m in json.loads((data_dir / "meps.json").read_text())["meps"]}
     v = dict(votes[0], title="Very long title " * 30)

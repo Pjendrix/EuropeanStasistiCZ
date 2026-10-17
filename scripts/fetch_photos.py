@@ -40,6 +40,7 @@ def shrink(content: bytes, max_side: int = MAX_SIDE) -> bytes:
     takže se nezměněný portrét při dalším stažení nepřepíše."""
     import io
     from PIL import UnidentifiedImageError
+
     try:
         im = Image.open(io.BytesIO(content))
     except UnidentifiedImageError as e:
@@ -72,8 +73,11 @@ def fetch_photos(meps: list[dict], out_dir: Path, session, min_interval: float =
             rest = [x for x in meps[i:] if x.get("photo_url")]
             have = sum((out_dir / f"{x['id']}.jpg").exists() for x in rest)
             result["blocked"] = len(rest)
-            print(f"::warning::Web EP zablokoval stahování portrétů (HTTP {r.status_code}); ponechávám stávající "
-                  f"({have} z {len(rest)} existuje).", file=sys.stderr)
+            print(
+                f"::warning::Web EP zablokoval stahování portrétů (HTTP {r.status_code}); ponechávám stávající "
+                f"({have} z {len(rest)} existuje).",
+                file=sys.stderr,
+            )
             break
         r.raise_for_status()
         ctype = r.headers.get("Content-Type", "")
