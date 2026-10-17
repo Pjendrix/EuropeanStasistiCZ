@@ -37,7 +37,7 @@ setNav("work-overview");
     const recent = document.getElementById("recent");
     recent.className = "";
     recent.innerHTML = `<div class="hub-lists hub-cards">${h.recent_adopted.map((r) => `<div class="card hub-vote"><div class="small muted">${fmtDate(r.date)} · ${esc(r.report || "")}${r.legislative ? " · legislativní" : ""}</div>
-      <a class="vote-title" href="vote.html?id=${r.vote_id}&m=${esc((r.date || "").slice(0, 7))}">${esc(r.title || r.report)}</a>
+      <a class="vote-title" href="vote?id=${r.vote_id}&m=${esc((r.date || "").slice(0, 7))}">${esc(r.title || r.report)}</a>
       <div class="small">${r.lead.length ? `Zpravodaj/ka: ${who(r.lead)}` : ""}${r.lead.length && r.shadow.length ? " · " : ""}${r.shadow.length ? `stínoví: ${who(r.shadow)}` : ""}</div></div>`).join("")}</div>`;
 
     document.querySelector("#groups tbody").innerHTML = h.by_group.map((g) => {

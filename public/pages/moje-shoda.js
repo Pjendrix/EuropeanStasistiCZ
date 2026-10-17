@@ -17,7 +17,7 @@ const MIN_COMMON = 3; // méně společných otázek = číslo bez vypovídací 
     document.getElementById("len-short").textContent = `Krátký test · ${quiz.short.length}`;
     document.getElementById("len-long").textContent = `Delší test · ${quiz.long.length}`;
     document.getElementById("quiz-rule").innerHTML = "<strong>Otázky vybírá pravidlo, ne redakce:</strong> zákony, o kterých se v plénu nejvíc hlasovalo a ve kterých Češi nehlasovali jednotně."
-      + infoButton(`<p>${esc(quiz.rule)} <a href="o-projektu.html#moje-shoda">Proč takhle</a>.</p>`, "Pravidlo výběru otázek");
+      + infoButton(`<p>${esc(quiz.rule)} <a href="o-projektu#moje-shoda">Proč takhle</a>.</p>`, "Pravidlo výběru otázek");
     if (Object.keys(summaries).length) {
       const box = document.getElementById("quiz-ai");
       box.innerHTML = `<strong>Názvy a popisy otázek napsala AI (Claude Haiku, model ${esc(ai.model)}), ne redakce ani úřady.</strong> Vychází jen z úředního názvu a popisu hlasování; úřední název je u každé otázky pod „Úřední znění“.`
@@ -95,7 +95,7 @@ const MIN_COMMON = 3; // méně společných otázek = číslo bez vypovídací 
         const cz = Object.values(q.positions);
         const n = (l) => cz.filter((x) => x === l).length;
         const box = fs.querySelector(".quiz-reveal");
-        box.innerHTML = `Parlament: <strong>${esc(RESULT_LABEL[q.result] || "výsledek neuveden")}</strong> (${q.counts[0]} pro, ${q.counts[1]} proti, ${q.counts[2]} se zdrželo) · Češi: ${n("F")} pro, ${n("A")} proti, ${n("B")} se zdrželo, ${n("N")} nehlasovalo · <a href="v/${q.id}.html">jak hlasoval kdo</a>`;
+        box.innerHTML = `Parlament: <strong>${esc(RESULT_LABEL[q.result] || "výsledek neuveden")}</strong> (${q.counts[0]} pro, ${q.counts[1]} proti, ${q.counts[2]} se zdrželo) · Češi: ${n("F")} pro, ${n("A")} proti, ${n("B")} se zdrželo, ${n("N")} nehlasovalo · <a href="v/${q.id}">jak hlasoval kdo</a>`;
         box.hidden = false;
       });
       const res = document.getElementById("quiz-result");

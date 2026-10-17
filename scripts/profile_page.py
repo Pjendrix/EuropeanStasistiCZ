@@ -230,7 +230,7 @@ def outcome_card(label: str, own, group, detail: str, mep: dict) -> str:
     return (
         f'<div class="card metric"><div class="label">{label}</div><div class="value">{count_pct(pct(own))}</div>'
         f'<div class="detail">{own_txt}</div><div class="detail">{grp}</div>'
-        f'<div class="detail">{detail} · <a href="o-projektu.html#metodika">co to znamená</a></div></div>'
+        f'<div class="detail">{detail} · <a href="o-projektu#metodika">co to znamená</a></div></div>'
     )
 
 
@@ -275,7 +275,7 @@ def own_summary_line(typ: str, s: dict | None) -> str:
 def own_item(e: dict) -> str:
     label, cls = OWN_STATUS.get(e.get("status"), ("", ""))
     title = (e.get("title") and (e["title"].get("cs") or e["title"].get("en"))) or e.get("label") or e.get("id")
-    vote_link = f' · <a href="vote.html?id={e["vote_id"]}">hlasování</a>' if e.get("vote_id") else ""
+    vote_link = f' · <a href="vote?id={e["vote_id"]}">hlasování</a>' if e.get("vote_id") else ""
     if e.get("type") == "question":
         extra = (
             f"{QUESTION_KIND.get(e.get('subtype'), '')} otázka"
@@ -392,7 +392,7 @@ def own_passed(ui: Ui, ow: dict, mep: dict) -> str:
                 if d.get("tiers_skipped")
                 else ""
             )
-            + '\n      <a href="prace-poslanci.html">Srovnání celé delegace</a>.'
+            + '\n      <a href="prace-poslanci">Srovnání celé delegace</a>.'
         )
     else:
         note = f"{by_gender(mep, 'Bývalý poslanec', 'Bývalá poslankyně')} se se současnou delegací nesrovnává (jiné období)."
@@ -467,7 +467,7 @@ def own_work(ui: Ui, ow: dict | None, mep: dict) -> str:
         else empty_state(
             "V datech EP není žádná zpráva, usnesení ani otázka.",
             "Ne každý poslanec je zpravodajem nebo autorem návrhu a práci ve výborech data EP celou neevidují.",
-            [("o-projektu.html#metodika", "Co se počítá")],
+            [("o-projektu#metodika", "Co se počítá")],
         )
     )
     return (
@@ -477,7 +477,7 @@ def own_work(ui: Ui, ow: dict | None, mep: dict) -> str:
         + ui.note_line(
             f'Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · '
             f"aktualizováno {fmt_date(ow.get('updated'))}{'' if ow.get('complete') else ' (data nejsou úplná)'}",
-            f'Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: {esc(NO_VOTE_NOTE)} <a href="o-projektu.html#metodika">Jak počítáme</a>.',
+            f'Pozměňovací návrhy nejsou zahrnuté. „Bez jmenovitého hlasování“: {esc(NO_VOTE_NOTE)} <a href="o-projektu#metodika">Jak počítáme</a>.',
             "source",
         )
     )
@@ -570,7 +570,7 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
             continue
         out[f"metric:{key}"] = {
             "kind": "metric",
-            "path": f"p/{mep['id']}.html#dochazka",
+            "path": f"p/{mep['id']}#dochazka",
             "filename": f"ep-watch-{mep['id']}-{key}",
             "subtitle": f"{name} · {label}",
             "cite": cite(what, pair),
@@ -600,7 +600,7 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
     work_day = ow.get("updated") or (act or {}).get("updated")
     out["default"] = {
         "kind": "mep",
-        "path": f"p/{mep['id']}.html",
+        "path": f"p/{mep['id']}",
         "filename": f"ep-watch-{mep['id']}",
         "subtitle": f"Poslanec · {name}",
         "cite": cite("účast na hlasování", t["attendance"]),
@@ -848,12 +848,12 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         )
         + "</tbody></table></div>"
         f'<p class="source">Zdroj: <a href="https://howtheyvote.eu/members/{mep["id"]}">HowTheyVote.eu</a>.\n'
-        '      Všechna hlasování najdeš v <a href="votes.html">seznamu hlasování</a>.</p>'
+        '      Všechna hlasování najdeš v <a href="votes">seznamu hlasování</a>.</p>'
         if recent
-        else empty_state("Žádná hlasování v tomto výběru.", "", [(f"votes.html?mep={mep['id']}", "Všechna hlasování poslance")])
+        else empty_state("Žádná hlasování v tomto výběru.", "", [(f"votes?mep={mep['id']}", "Všechna hlasování poslance")])
     )
     topics_rows = "".join(
-        f'<tr><td class="title"><a href="votes.html?t={esc(x["code"])}&amp;f=final">{esc(x.get("label_cs") or x.get("label") or f"téma {x['code']} (zdroj neuvádí název)")}</a> '
+        f'<tr><td class="title"><a href="votes?t={esc(x["code"])}&amp;f=final">{esc(x.get("label_cs") or x.get("label") or f"téma {x['code']} (zdroj neuvádí název)")}</a> '
         f'<span class="small muted">{esc(x["code"])}</span></td>'
         f'<td class="num" data-label="Hlasování">{fmt_num(x["attendance"][1])}</td>'
         f'<td class="num" data-label="Účast">{pct_cell(x["attendance"])}</td>'
@@ -879,7 +879,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         else ""
     )
 
-    body = f"""<div class="back-row"><p class="small"><a href="poslanci.html">← Všichni poslanci</a></p>{share_button}</div>
+    body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{share_button}</div>
 <div class="profile-head">
   <figure class="portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
   <div>
@@ -915,7 +915,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "Účast na hlasování",
             t["attendance"],
             "všechna jmenovitá hlasování v době mandátu",
-            "o-projektu.html#metodika",
+            "o-projektu#metodika",
             ep.get("attendance"),
             "medián EP",
             cite("účast na hlasování", t["attendance"]),
@@ -929,7 +929,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "Účast na hlasování – závěrečná",
             t["attendance_main"],
             "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise",
-            "o-projektu.html#metodika",
+            "o-projektu#metodika",
             ep.get("attendance_main"),
             "medián EP",
             cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]),
@@ -944,7 +944,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "Hlasuje s frakcí",
             t["group_loyalty"],
             "jen informativní",
-            "o-projektu.html#metodika",
+            "o-projektu#metodika",
             None if is_ni else grp.get("group_loyalty"),
             "medián frakce",
             cite("hlasuje s frakcí", t["group_loyalty"]),
@@ -958,7 +958,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "Shoda s ostatními Čechy",
             t["cz_agreement"],
             "jen informativní",
-            "o-projektu.html#metodika",
+            "o-projektu#metodika",
             None,
             "",
             cite("shoda s ostatními českými poslanci", t["cz_agreement"]),
@@ -987,7 +987,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 <div class="metrics">
   {outcome_card("Všechna hlasování", t["outcome"], t["group_outcome"], "jen informativní", mep)}
   {outcome_card("Závěrečná hlasování", t["outcome_main"], t["group_outcome_main"], "jen informativní", mep)}
-  {metric_card("Těsná hlasování", t["outcome_close"], "rozdíl pro − proti nejvýš 21 hlasů", "o-projektu.html#metodika")}
+  {metric_card("Těsná hlasování", t["outcome_close"], "rozdíl pro − proti nejvýš 21 hlasů", "o-projektu#metodika")}
 </div>
 
 <h2 id="frakce">Frakce a strana</h2>
@@ -1036,7 +1036,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 <div class="card">
   {
         ui.note_line(
-            'Těsná hlasování, která by bez českých hlasů dopadla opačně (<a href="rozhodujici.html">všechna</a>).',
+            'Těsná hlasování, která by bez českých hlasů dopadla opačně (<a href="rozhodujici">všechna</a>).',
             f"Většinou pozměňovací návrhy a dílčí hlasování. Ukazuje se, jak {by_gender(mep, 'hlasoval', 'hlasovala')} v těch, která proběhla "
             f"v době {by_gender(mep, 'jeho', 'jejího')} mandátu.",
         )
@@ -1049,7 +1049,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             empty_state(
                 "Žádné takové hlasování v době mandátu.",
                 "České hlasy rozhodují jen výjimečně, u velmi těsných výsledků.",
-                [("rozhodujici.html", "Všechna hlasování, kde rozhodli Češi")],
+                [("rozhodujici", "Všechna hlasování, kde rozhodli Češi")],
             ),
         )
     }
@@ -1075,7 +1075,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 <div class="card">
   {
         ui.note_line(
-            f'Podíl hlasování, kde oba hlasovali stejně. <a href="shoda.html?id={mep["id"]}">Celá tabulka shody</a>.',
+            f'Podíl hlasování, kde oba hlasovali stejně. <a href="shoda?id={mep["id"]}">Celá tabulka shody</a>.',
             "Jen dvojice s aspoň 50 společnými hlasováními.",
         )
     }
@@ -1091,7 +1091,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 
 <h2 id="posledni">Poslední závěrečná hlasování</h2>
 <div id="recent">{recent_html}</div>
-<form class="card mep-search" action="votes.html" method="get" role="search" aria-label="Hledání v hlasováních poslance">
+<form class="card mep-search" action="votes" method="get" role="search" aria-label="Hledání v hlasováních poslance">
   <h3 style="margin-top:0">Jak {by_gender(mep, "hlasoval", "hlasovala")} o…?</h3>
   <input type="hidden" name="mep" value="{mep["id"]}">
   <div class="controls">

@@ -14,7 +14,7 @@ def test_all_pages_use_shared_layout():
 def test_page_with_root():
     html = layout.page("MOCK titulek", "<p>obsah</p>", root="../", current="votes", description="MOCK popis")
     assert '<html lang="cs" data-root="../">' in html
-    assert 'href="../style.css?v=' in html and 'href="../hlasovani.html" data-page="votes" aria-current="page"' in html
+    assert 'href="../style.css?v=' in html and 'href="../hlasovani" data-page="votes" aria-current="page"' in html
     assert '<main id="main">' in html and 'class="skip-link"' in html
     assert '<meta name="description" content="MOCK popis">' in html
 

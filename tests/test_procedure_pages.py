@@ -21,7 +21,7 @@ def write(d: Path, name: str, obj) -> None:
 
 def test_slug_and_url():
     assert pp.slug(LABEL) == "2023-0447-COD"
-    assert pp.procedure_url(LABEL, "../") == "../z/2023-0447-COD.html"
+    assert pp.procedure_url(LABEL, "../") == "../z/2023-0447-COD"
     assert pp.slug("MOCK") is None and pp.slug(["2025/0803(CNS)"]) is None
 
 
@@ -92,8 +92,8 @@ def test_page_with_events_trace_and_votes(tmp_path):
     assert "<h1>MOCK český název</h1>" in html and "řádný legislativní postup" in html and "výbor ENVI" in html
     assert 'class="rd-steps"' in html and "přiděleno výboru" in html
     assert "jiný krok (MOCK_UNKNOWN)" in html  # neznámý typ se nepřekládá odhadem
-    assert 'href="../p/2.html"' in html and "stínový/á zpravodaj/ka" in html  # česká stopa z rolí u hlasování
-    assert 'href="../v/1.html"' in html and "vote.html?id=2" in html  # závěrečné na v/, dílčí na interaktivní detail
+    assert 'href="../p/2"' in html and "stínový/á zpravodaj/ka" in html  # česká stopa z rolí u hlasování
+    assert 'href="../v/1"' in html and "vote?id=2" in html  # závěrečné na v/, dílčí na interaktivní detail
     assert "Pozměňovací návrhy a dílčí hlasování (1)" in html
     assert "oeil.secure.europarl.europa.eu" in html and "data.europarl.europa.eu/api/v2/procedures/2023-0447" in html
 

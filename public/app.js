@@ -129,7 +129,7 @@ function openSearch() {
     searchDlg = document.createElement("dialog");
     searchDlg.className = "search-dlg";
     searchDlg.setAttribute("aria-label", "Hledání");
-    searchDlg.innerHTML = `<form class="hm-search" role="search" action="${ROOT}poslanci.html" method="get">
+    searchDlg.innerHTML = `<form class="hm-search" role="search" action="${ROOT}poslanci" method="get">
       <label for="site-q">${searchBtn ? searchBtn.querySelector("svg").outerHTML : ""}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
         <input id="site-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="site-results" aria-autocomplete="list" aria-haspopup="listbox"></label>
       <ul id="site-results" class="hm-results" role="listbox" aria-label="Výsledky hledání" hidden></ul>

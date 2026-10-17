@@ -36,8 +36,8 @@ def test_vercel_redirects_old_hosts_with_path():
     assert r["source"] == "/:path*" and r["destination"] == f"{BASE}/:path*" and r["permanent"] is True
     # www → epwatch.cz řeší nastavení domén ve Vercelu (primární doména); pravidlo tady by se s ním mohlo zacyklit
     assert "www.epwatch.cz" not in by_host
-    # krátké adresy z karet (epwatch.cz/v/123) vedou na stránku .html
-    assert {"source": "/:dir(p|s|v)/:id(\\d+)", "destination": "/:dir/:id.html"} in cfg["rewrites"]
+    # adresy bez .html (epwatch.cz/v/123) obslouží cleanUrls, vlastní rewrite už není potřeba
+    assert cfg["cleanUrls"] is True and "rewrites" not in cfg
 
 
 def test_manual_pages_have_canonical_on_new_domain():
@@ -59,6 +59,6 @@ def test_sync_head_inserts_and_replaces(tmp_path):
     )
     assert bp.sync_head(page, "votes.html", BASE)
     html = page.read_text(encoding="utf-8")
-    assert f'<title>X</title>\n<link rel="canonical" href="{BASE}/votes.html">' in html
-    assert f'content="{BASE}/votes.html"' in html and "old.example" not in html
+    assert f'<title>X</title>\n<link rel="canonical" href="{BASE}/votes">' in html
+    assert f'content="{BASE}/votes"' in html and "old.example" not in html
     assert not bp.sync_head(page, "votes.html", BASE)  # podruhé beze změny

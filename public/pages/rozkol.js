@@ -25,7 +25,7 @@ setNav("splits");
           <p>Jednotně = všichni Češi, kteří hlasovali pro nebo proti, byli na jedné straně. Závěrečná hlasování jsou o celém textu, prozatímní dohodě s Radou nebo námitce proti aktu Komise.</p>
           <p>Ve všech ${fmtNum(u.considered)} hlasováních (většinu tvoří pozměňovací návrhy a dílčí hlasování o částech textu, kde se frakce dělí z principu) to bylo ${fmtNum(u.united)}× neboli ${fmtPct(u.united / u.considered)}. Výrazné rozdělení (menšina aspoň ${Math.round(u.strong_threshold * 100)} %): ${fmtNum(u.strong_split)}×.</p>
           ${dl && dl.peers.length ? `<p>Pro srovnání: u delegací s ${dl.seats_range[0]}–${dl.seats_range[1]} poslanci vychází jednotnost ${spanText(dl.peer_range.unity, (x) => fmtPct(x))} ve všech hlasováních a ${spanText(dl.peer_range.unity_final, (x) => fmtPct(x))} u závěrečných (<a href="#delegace">čísla jednotlivých delegací</a>).</p>` : ""}
-          <p>Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Definice, srovnání a metodika")}</div>`
+          <p>Česká delegace sedí v ${nGroups} frakcích${hasNI ? " (část poslanců je nezařazená)" : ""} a zahrnuje vládní i opoziční strany. Jednomyslnost proto není běžná a nic neříká o „českém zájmu“. <a href="o-projektu#metodika">Jak počítáme</a>.</p>`, "Definice, srovnání a metodika")}</div>`
         : "";
       document.getElementById("unity").innerHTML = `<div class="label">Češi jednotně – závěrečná hlasování</div>${fin}`;
     }
@@ -33,7 +33,7 @@ setNav("splits");
       const fin = dec.decisive_final ?? dec.votes.filter(isFinal).length;
       document.getElementById("decisive").innerHTML = `<div class="label">Rozhodly české hlasy</div>
         <div class="value"><span data-count="${dec.votes.length}">${fmtNum(dec.votes.length)}</span></div>
-        <div class="detail">těsných hlasování, která by bez českých hlasů dopadla opačně${infoButton(`<p>Z toho závěrečných ${fmtNum(fin)}. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon.</p>`, "Podrobnosti")} · <a href="rozhodujici.html">seznam</a></div>`;
+        <div class="detail">těsných hlasování, která by bez českých hlasů dopadla opačně${infoButton(`<p>Z toho závěrečných ${fmtNum(fin)}. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon.</p>`, "Podrobnosti")} · <a href="rozhodujici">seznam</a></div>`;
     }).catch(soft({}));
     const view = new URLSearchParams(location.search).get("v");
     if (view) document.querySelector(`input[value="${CSS.escape(view)}"]`)?.click();
@@ -59,7 +59,7 @@ setNav("splits");
       const lead = v === "last_session"
         ? `Zasedání ${fmtDate(d.last_session.from)} – ${fmtDate(d.last_session.to)}: ${fmtNum(d.last_session.votes)} hlasování, Češi se rozdělili v ${fmtNum(d.last_session.split_count)}.`
         : `Celé období: Češi se rozdělili v ${fmtNum(v === "main" ? d.count_main : d.count)} ${v === "main" ? "závěrečných " : ""}hlasováních.`;
-      const url = siteUrl(`rozkol.html?v=${v}`);
+      const url = siteUrl(`rozkol?v=${v}`);
       window.shareContext = () => ({
         kind: "split", url, filename: `ep-watch-rozkol-${v}`, subtitle: `Kde se Češi rozdělili · ${VIEW_NAME[v]}`,
         trust: "Karta ukazuje právě zvolený pohled, jen první řádky seznamu. Datum dat, zdroj a adresa jsou na ní.",
@@ -91,7 +91,7 @@ setNav("splits");
     const card = (x) => `<div class="card list-card">
         <div class="small muted">${fmtDate(x.date)} ${kindTag(x)}
           · výsledek <span class="result-${x.result || ""}">${resultHtml(x)}</span></div>
-        <a class="vote-title" href="vote.html?id=${x.id}&m=${x.month}">${esc(voteTitle(x))}</a>
+        <a class="vote-title" href="vote?id=${x.id}&m=${x.month}">${esc(voteTitle(x))}</a>
         <div class="small muted">${esc(voteSubtitle(x))}</div>
         <p class="split-score"><strong>${x.cz[0]} : ${x.cz[1]}</strong> <span class="small muted">Češi pro : proti${x.cz[2] ? `, ${x.cz[2]} se zdrželo` : ""}</span></p>
         ${x.groups ? `<p class="small"><span class="pos pos-FOR">pro:</span> ${byGroup(x, "FOR")}<br>

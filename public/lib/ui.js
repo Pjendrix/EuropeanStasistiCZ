@@ -53,11 +53,11 @@ export function partyBadge(id, label, parties, mep) {
 // Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
 // Jedna adresa strany (s/{id}.html; party.html?id= se přesměrovává).
 export function partyUrl(id) {
-  return `s/${id}.html`;
+  return `s/${id}`;
 }
 
 export function mepUrl(id) {
-  return `p/${id}.html`;
+  return `p/${id}`;
 }
 
 export function czCountsHtml(cz) {
@@ -114,10 +114,10 @@ export function topicChips(cats, opts = {}) {
   if (!known.length) return "";
   const chip = (k) => {
     const inner = `<span class="cat-ico sm">${TOPIC_ICON_SVG(CATEGORY_META[k].icon)}</span>${esc(CATEGORY_META[k].label)}`;
-    return link ? `<a class="topic-chip" href="${root}votes.html?c=${k}">${inner}</a>` : `<span class="topic-chip">${inner}</span>`;
+    return link ? `<a class="topic-chip" href="${root}votes?c=${k}">${inner}</a>` : `<span class="topic-chip">${inner}</span>`;
   };
   const shown = known.slice(0, max), rest = known.slice(max);
-  const method = `<a href="${root}o-projektu.html#tema-hlasovani">Jak určujeme téma</a>`;
+  const method = `<a href="${root}o-projektu#tema-hlasovani">Jak určujeme téma</a>`;
   const more = rest.length ? `<span class="info-wrap"><button type="button" class="topic-chip tc-more" popovertarget="tc-${id}" aria-expanded="false" aria-label="${esc(`Další témata: ${rest.map((k) => CATEGORY_META[k].label).join(", ")}`)}">+${rest.length}</button>`
     + `<div popover id="tc-${id}" class="info-pop tc-pop" role="note"><p class="tc-list">${rest.map(chip).join("")}</p><p class="small">${method}</p></div></span>` : "";
   const tip = info ? `<span class="info-wrap"><button type="button" class="info-btn" popovertarget="ti-${id}" aria-label="Jak určujeme téma" aria-expanded="false">ⓘ</button>`
@@ -267,7 +267,7 @@ export function sourceLine(stats) {
   return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
     + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
       Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
-      <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`, "Zdroj a metodika");
+      <a href="o-projektu#metodika">Jak počítáme</a>.</p>`, "Zdroj a metodika");
 }
 
 // --- sdílené části pro seznamy hlasování -------------------------------------
@@ -276,7 +276,7 @@ export function sourceLine(stats) {
 export function voteRow(v, extra = "") {
   return `<tr>
     <td class="num date">${fmtDate(v.date)}</td>
-    <td class="title"><a class="vote-title" href="vote.html?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
+    <td class="title"><a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
     <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
@@ -570,7 +570,7 @@ export async function staleNotice() {
   p.setAttribute("role", "status");
   p.innerHTML = `Data mohou být neaktuální: poslední export hlasování je z ${fmtDate(fresh.release)} a od té doby už zasedal
     Evropský parlament. Nová data přibudou po zveřejnění na <a href="${HTV_SOURCE}">HowTheyVote.eu</a>
-    (<a href="${ROOT}o-projektu.html#zdroje">jak to funguje</a>).`;
+    (<a href="${ROOT}o-projektu#zdroje">jak to funguje</a>).`;
   main.prepend(p);
 }
 

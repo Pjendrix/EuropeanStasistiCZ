@@ -21,9 +21,16 @@ const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", "
   ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".ico": "image/x-icon", ".webmanifest": "application/manifest+json" };
 // Stejná CSP jako na Vercelu (vercel.json): porušení se v prohlížeči hlásí jako chyba v konzoli a test selže.
 const CSP = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")).headers[0].headers.find((h) => h.key === "Content-Security-Policy").value;
+// Adresy bez .html jako na Vercelu (vercel.json "cleanUrls": true): /x.html a /index přesměruje 308 na /x a /,
+// /x obslouží soubor x.html. Odkaz na .html by tu tedy prošel jen přes přesměrování, které test hlídá (redirects).
+const redirects = [];
 const server = createServer((req, res) => {
-  const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^(\.\.[/\\])+/, "");
+  const u = new URL(req.url, "http://x");
+  const path = normalize(decodeURIComponent(u.pathname)).replace(/^(\.\.[/\\])+/, "");
+  const clean = path.replace(/(^|\/)index(\.html)?$/, "$1").replace(/\.html$/, "");
+  if (clean !== path) { redirects.push(req.url); res.writeHead(308, { location: clean + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
+  if (!existsSync(file) && !extname(path) && existsSync(`${file}.html`)) file = `${file}.html`;
   if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
   res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream", "content-security-policy": CSP });
   res.end(readFileSync(file));
@@ -38,12 +45,12 @@ const month = kv.votes[String(voteId)].month;
 const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
 // Příběh zákona (z/): první stránka procedury podle čísla.
-const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0]}`;
+const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/\.html$/, "")}`;
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, `vote.html?id=${partialId}`, "rozkol.html", "rozhodujici.html", "shoda.html", "moje-shoda.html",
-  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`, procPage];
+const pages = ["", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "moje-shoda",
+  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];
 const browser = await chromium.launch();
@@ -61,6 +68,11 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      // Odkazy na stránky bez .html (cleanUrls), i ty, které doplní JavaScript.
+      const htmlLinks = await page.evaluate(() => [...document.querySelectorAll("a[href], form[action]")]
+        .map((a) => new URL(a.getAttribute("href") ?? a.getAttribute("action"), document.baseURI))
+        .filter((u) => u.origin === location.origin && /\.html$/.test(u.pathname)).map((u) => u.pathname));
+      if (htmlLinks.length) problems.push(`${where}: odkazy s .html: ${[...new Set(htmlLinks)].slice(0, 5).join(", ")}`);
       // I1: kanonická adresa (kde je) vždy na veřejné doméně
       const canon = await page.evaluate(() => document.querySelector('link[rel="canonical"]')?.href || null);
       if (canon && !canon.startsWith("https://epwatch.cz/")) problems.push(`${where}: canonical mimo epwatch.cz: ${canon}`);
@@ -95,7 +107,7 @@ for (const scheme of ["light", "dark"]) {
 // S1: ⓘ se otevře klikem i klávesou a zavře Esc.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
-  for (const url of ["prace-poslanci.html", "shoda.html", "temata.html"]) {
+  for (const url of ["prace-poslanci", "shoda", "temata"]) {
     const page = await ctx.newPage();
     await page.goto(base + url, { waitUntil: "networkidle" });
     const btn = page.locator(".info-btn").first();
@@ -120,7 +132,7 @@ for (const scheme of ["light", "dark"]) {
     if (scheme === "dark" && width !== 1366) continue;
     const ctx = await browser.newContext({ viewport: { width, height: 800 }, colorScheme: scheme, acceptDownloads: true });
     await ctx.addInitScript(() => { window.__alerts = 0; window.alert = () => { window.__alerts += 1; }; });
-    for (const url of [`v/${voteId}.html`, `p/${mepId}.html`, `s/${partyId}.html`, "rozkol.html", `vote.html?id=${voteId}&m=${month}`]) {
+    for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`]) {
       const page = await ctx.newPage();
       await page.goto(base + url, { waitUntil: "networkidle" });
       await page.waitForTimeout(900);
@@ -198,7 +210,7 @@ for (const scheme of ["light", "dark"]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto(base + `p/${mepId}.html`, { waitUntil: "networkidle" });
+  await page.goto(base + `p/${mepId}`, { waitUntil: "networkidle" });
   await page.click(".metric .info-wrap.corner .info-btn");
   const share = page.locator('.info-pop:popover-open [data-share^="metric:"]');
   if (!(await share.count())) problems.push("profil: v ⓘ u čísla chybí „Sdílet číslo“");
@@ -215,8 +227,8 @@ for (const scheme of ["light", "dark"]) {
 for (const width of [1440, 400]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base + "index.html", { waitUntil: "networkidle" });
-  const where = `index.html [úvod, ${width}px]`;
+  await page.goto(base, { waitUntil: "networkidle" });
+  const where = `index [úvod, ${width}px]`;
   const sw = await page.evaluate(() => document.documentElement.scrollWidth);
   if (sw > width) problems.push(`${where}: přetéká (${sw})`);
   const n = await page.evaluate(() => JSON.parse(document.getElementById("home-data").textContent).votes.length);
@@ -252,7 +264,7 @@ for (const width of [1440, 400]) {
 // přejde; Esc dialog zavře a vrátí fokus na tlačítko s lupou; otevřený dialog bez porušení axe.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
-  for (const url of ["poslanci.html", "p/256846.html", `v/${voteId}.html`]) {
+  for (const url of ["poslanci", "p/256846", `v/${voteId}`]) {
     const page = await ctx.newPage();
     const where = `${url} [hledání v liště, ${width}px]`;
     await page.goto(base + url, { waitUntil: "networkidle" });
@@ -270,7 +282,7 @@ for (const width of [1366, 390]) {
     await page.keyboard.type("Kolář");
     const hit = await page.waitForSelector("#site-results [role=option]", { timeout: 8000 }).catch(() => null);
     if (!hit) { problems.push(`${where}: „Kolář“ nic nenašel`); await page.close(); continue; }
-    await Promise.all([page.waitForURL(/p\/256846\.html$/, { timeout: 10000 }).catch(() => problems.push(`${where}: Enter nepřešel na poslance`)), page.keyboard.press("Enter")]);
+    await Promise.all([page.waitForURL(/p\/256846$/, { timeout: 10000 }).catch(() => problems.push(`${where}: Enter nepřešel na poslance`)), page.keyboard.press("Enter")]);
     await page.close();
   }
   await ctx.close();
@@ -282,8 +294,8 @@ for (const width of [1366, 390]) {
   for (const width of [1366, 390]) {
     const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
     const page = await ctx.newPage();
-    await page.goto(base + `v/${multi}.html`, { waitUntil: "networkidle" });
-    const where = `v/${multi}.html [téma, ${width}px]`;
+    await page.goto(base + `v/${multi}`, { waitUntil: "networkidle" });
+    const where = `v/${multi} [téma, ${width}px]`;
     // Funkce webu jsou v ES modulech (lib/*.js), ne globální: test si je naimportuje (stejná instance jako stránka).
     const same = await page.evaluate(async (id) => {
       const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
@@ -310,7 +322,7 @@ for (const width of [1366, 390]) {
     if (!open || !closed) problems.push(`${where}: „+N“ se neotevřel klávesou nebo nezavřel Esc`);
     // čip vede na filtr a filtr se použije
     const href = await page.getAttribute(".vote-meta .topic-chip", "href");
-    await Promise.all([page.waitForURL(/votes\.html\?c=/), page.click(".vote-meta a.topic-chip")]);
+    await Promise.all([page.waitForURL(/votes\?c=/), page.click(".vote-meta a.topic-chip")]);
     await page.waitForSelector("#list tr, #list .card, tbody tr", { timeout: 15000 }).catch(() => {});
     const c = new URL(page.url()).searchParams.get("c");
     const applied = await page.evaluate((c) => [...document.querySelectorAll("select")].some((sel) => sel.value === c), c);
@@ -319,12 +331,12 @@ for (const width of [1366, 390]) {
   }
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base + "index.html", { waitUntil: "networkidle" });
+  await page.goto(base, { waitUntil: "networkidle" });
   const home = read("data/home.json");
   for (let i = 0; i < home.votes.length; i++) {
     const got = await page.evaluate(() => [...document.querySelectorAll("#hm-cap .hm-topic .topic-chips > .topic-chip")].map((a) => a.getAttribute("href")));
-    const exp = home.votes[i].topics.slice(0, 1).map((t) => `votes.html?c=${t.slug}`);
-    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`index.html: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
+    const exp = home.votes[i].topics.slice(0, 1).map((t) => `votes?c=${t.slug}`);
+    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`index: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
     if (i < home.votes.length - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
   }
   await ctx.close();
@@ -334,7 +346,7 @@ for (const width of [1366, 390]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto(base + `v/${voteId}.html`, { waitUntil: "networkidle" });
+  await page.goto(base + `v/${voteId}`, { waitUntil: "networkidle" });
   const r = await page.evaluate(async () => {
     const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
     const { isStale, sessionCountdown } = await lib("format.js");
@@ -394,12 +406,12 @@ for (const width of [1366, 390]) {
   r.forEach((x) => problems.push(`karty: ${x}`));
   await ctx.close();
 }
-// Audit B1: parametry m (vote.html) a od (votes.html) nesmí dostat HTML do stránky.
+// Audit B1: parametry m (vote) a od (votes) nesmí dostat HTML do stránky.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
   const evil = encodeURIComponent(`${month}.json?x="><img src=x onerror="window.__xss=1">`);
-  for (const url of [`vote.html?id=${voteId}&m=${evil}`, `votes.html?m=${evil}&od=${encodeURIComponent('"><img src=x onerror="window.__xss=1">')}`]) {
+  for (const url of [`vote?id=${voteId}&m=${evil}`, `votes?m=${evil}&od=${encodeURIComponent('"><img src=x onerror="window.__xss=1">')}`]) {
     await page.goto(base + url, { waitUntil: "networkidle" });
     const hit = await page.evaluate(() => Boolean(window.__xss) || Boolean(document.querySelector('img[src="x"]')));
     if (hit) problems.push(`XSS přes parametr URL: ${url}`);
@@ -411,21 +423,21 @@ for (const width of [1366, 390]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await ctx.newPage();
-  await page.goto(base + "votes.html?q=zemedelstvi", { waitUntil: "networkidle" });
+  await page.goto(base + "votes?q=zemedelstvi", { waitUntil: "networkidle" });
   const r = await page.evaluate(() => ({
     rows: document.querySelectorAll("#votes tbody a.vote-title").length,
     marks: document.querySelectorAll("#votes tbody mark").length,
     chips: document.querySelectorAll("#chips .chip-x").length,
     live: document.getElementById("count").getAttribute("aria-live"),
   }));
-  if (!r.rows) problems.push("votes.html: „zemedelstvi“ bez diakritiky nic nenašlo");
-  if (!r.marks) problems.push("votes.html: shody hledání nejsou zvýrazněné");
-  if (r.chips !== 1) problems.push(`votes.html: čekán 1 čip aktivního filtru, je ${r.chips}`);
-  if (r.live !== "polite") problems.push("votes.html: #count nemá aria-live");
-  await page.goto(base + "votes.html?q=xqzxqzxqz", { waitUntil: "networkidle" });
+  if (!r.rows) problems.push("votes: „zemedelstvi“ bez diakritiky nic nenašlo");
+  if (!r.marks) problems.push("votes: shody hledání nejsou zvýrazněné");
+  if (r.chips !== 1) problems.push(`votes: čekán 1 čip aktivního filtru, je ${r.chips}`);
+  if (r.live !== "polite") problems.push("votes: #count nemá aria-live");
+  await page.goto(base + "votes?q=xqzxqzxqz", { waitUntil: "networkidle" });
   await page.click("#votes tbody [data-act=clear]");
   const after = await page.evaluate(() => ({ q: document.getElementById("q").value, rows: document.querySelectorAll("#votes tbody a.vote-title").length }));
-  if (after.q || !after.rows) problems.push("votes.html: „Zrušit všechny filtry“ v prázdném stavu nefunguje");
+  if (after.q || !after.rows) problems.push("votes: „Zrušit všechny filtry“ v prázdném stavu nefunguje");
   await ctx.close();
 }
 
@@ -433,26 +445,26 @@ for (const width of [1366, 390]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await ctx.newPage();
-  await page.goto(base + "moje-shoda.html", { waitUntil: "networkidle" });
+  await page.goto(base + "moje-shoda", { waitUntil: "networkidle" });
   const n = await page.locator(".quiz-q").count();
-  if (n < 3) problems.push(`moje-shoda.html: jen ${n} otázek`);
+  if (n < 3) problems.push(`moje-shoda: jen ${n} otázek`);
   else {
-    if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda.html: vyhodnocení jde bez odpovědí");
+    if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda: vyhodnocení jde bez odpovědí");
     for (let i = 0; i < 3; i++) await page.locator(".quiz-q").nth(i).locator(".quiz-opt").first().click();
     await page.click("#quiz-go");
     const r = await page.evaluate(() => ({
       rows: [...document.querySelectorAll(".quiz-row .quiz-pct strong")].map((e) => parseFloat(e.textContent.replace(",", "."))),
       reveal: document.querySelectorAll(".quiz-reveal:not([hidden])").length,
     }));
-    if (!r.rows.length) problems.push("moje-shoda.html: žádný poslanec ve výsledku");
-    if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda.html: výsledek není seřazený podle shody");
-    if (r.reveal !== n) problems.push("moje-shoda.html: po vyhodnocení chybí skutečné výsledky u otázek");
+    if (!r.rows.length) problems.push("moje-shoda: žádný poslanec ve výsledku");
+    if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda: výsledek není seřazený podle shody");
+    if (r.reveal !== n) problems.push("moje-shoda: po vyhodnocení chybí skutečné výsledky u otázek");
     // Delší test: víc otázek, odpovědi z krátkého zůstanou.
     await page.locator('input[name="len"][value="long"]').check();
     const longN = await page.locator(".quiz-q").count();
     const kept = await page.locator('.quiz-q input[value="F"]:checked').count();
-    if (longN <= n) problems.push(`moje-shoda.html: delší test nemá víc otázek (${longN})`);
-    if (!kept) problems.push("moje-shoda.html: po přepnutí délky se ztratily odpovědi");
+    if (longN <= n) problems.push(`moje-shoda: delší test nemá víc otázek (${longN})`);
+    if (!kept) problems.push("moje-shoda: po přepnutí délky se ztratily odpovědi");
   }
   await ctx.close();
 }
@@ -461,7 +473,7 @@ for (const width of [1366, 390]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
-  await page.goto(base + "radar.html", { waitUntil: "networkidle" });
+  await page.goto(base + "radar", { waitUntil: "networkidle" });
   const r = await page.evaluate(() => {
     const items = () => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")];
     const out = [];
@@ -492,12 +504,24 @@ for (const scheme of ["light", "dark"]) {
   const page = await ctx.newPage();
   await page.route("**/data/freshness.json", (r) => r.fulfill({ contentType: "application/json",
     body: JSON.stringify({ release: "2000-01-01", stale_days: 14, sittings_after: ["2000-01-10"] }) }));
-  await page.goto(base + "votes.html", { waitUntil: "networkidle" });
+  await page.goto(base + "votes", { waitUntil: "networkidle" });
   if (!(await page.locator(".stale-note").isVisible())) problems.push(`pruh o starých datech [${scheme}]: chybí`);
   await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
   const v = await page.evaluate(async () => (await axe.run(document.querySelector(".stale-note"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
     .map((x) => `${x.id}: ${x.nodes.length}×`));
   v.forEach((x) => problems.push(`pruh o starých datech [${scheme}]: axe ${x}`));
+  await ctx.close();
+}
+// Žádný požadavek webu nevedl přes přesměrování z .html; staré adresy (Instagram, vyhledávače) skončí na adrese bez .html.
+if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new Set(redirects)].slice(0, 5).join(", ")}`);
+{
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  for (const [from, to] of [["moje-shoda.html", "moje-shoda"], [`p/${mepId}.html`, `p/${mepId}`], ["index.html", ""],
+    ["o-projektu.html#kontakt", "o-projektu#kontakt"], [`mep.html?id=${mepId}`, `p/${mepId}`]]) {
+    await page.goto(base + from, { waitUntil: "networkidle" });
+    if (page.url() !== base + to) problems.push(`stará adresa ${from} skončila na ${page.url()}, čekám ${base + to}`);
+  }
   await ctx.close();
 }
 await browser.close();

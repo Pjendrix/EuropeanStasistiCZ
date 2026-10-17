@@ -5,7 +5,7 @@ import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBa
 
 setNav("parties");
 const MIN_VOTERS_EU = 10;
-const groupPageUrl = (code) => `party.html?c=${encodeURIComponent(code)}`;
+const groupPageUrl = (code) => `party?c=${encodeURIComponent(code)}`;
 const main = document.getElementById("main");
 
 function pairText(pair, unit = "hlasování") {
@@ -24,14 +24,14 @@ const FLAGS = {
 };
 function viewSwitch(current) {
   const to = current === "cz" ? "eu" : "cz";
-  return `<a class="flag-switch" href="party.html${to === "eu" ? "?v=eu" : ""}" title="${to === "eu" ? "Přepnout na evropské frakce" : "Přepnout na české strany"}">${FLAGS[to]}<span>${to === "eu" ? "Evropské frakce" : "České strany"}</span></a>`;
+  return `<a class="flag-switch" href="party${to === "eu" ? "?v=eu" : ""}" title="${to === "eu" ? "Přepnout na evropské frakce" : "Přepnout na české strany"}">${FLAGS[to]}<span>${to === "eu" ? "Evropské frakce" : "České strany"}</span></a>`;
 }
 
 async function euListPage() {
   const [idx, bench] = await Promise.all([getJSON("eugroups/index.json"), getJSON("benchmarks.json").catch(soft(null))]);
   main.innerHTML = `
     <div class="page-head"><h1>Evropské frakce v Evropském parlamentu</h1>${viewSwitch("eu")}</div>
-    <div class="lead-row"><p class="lead">Souhrn hlasování celých politických skupin EP, ve kterých sedí čeští poslanci.</p>${infoButton(`<p>Čísla jsou za všechny poslance skupiny v celém Evropském parlamentu, ne jen za české. <strong>Účast</strong> = podíl hlasů pro, proti nebo zdržel se z hlasů všech členů skupiny. <strong>Soudržnost</strong> = podíl hlasů pro a proti, které odpovídají většině skupiny (v hlasováních, kde hlasovalo pro nebo proti aspoň ${MIN_VOTERS_EU} členů). <strong>Výrazně rozdělená hlasování</strong> = menšina mezi hlasy pro a proti tvoří aspoň 30 % (stejný práh jako u české delegace). Nezařazení poslanci nejsou skupina, proto tu nejsou. Žádné pořadí ani hodnocení. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`)}</div>
+    <div class="lead-row"><p class="lead">Souhrn hlasování celých politických skupin EP, ve kterých sedí čeští poslanci.</p>${infoButton(`<p>Čísla jsou za všechny poslance skupiny v celém Evropském parlamentu, ne jen za české. <strong>Účast</strong> = podíl hlasů pro, proti nebo zdržel se z hlasů všech členů skupiny. <strong>Soudržnost</strong> = podíl hlasů pro a proti, které odpovídají většině skupiny (v hlasováních, kde hlasovalo pro nebo proti aspoň ${MIN_VOTERS_EU} členů). <strong>Výrazně rozdělená hlasování</strong> = menšina mezi hlasy pro a proti tvoří aspoň 30 % (stejný práh jako u české delegace). Nezařazení poslanci nejsou skupina, proto tu nejsou. Žádné pořadí ani hodnocení. <a href="o-projektu#metodika">Jak počítáme</a>.</p>`)}</div>
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Skupina</th><th class="num">Čeští poslanci</th><th class="num">Účast skupiny${bench?.ep?.attendance != null ? `<div class="small muted th-note">medián EP ${fmtPct(bench.ep.attendance)}</div>` : ""}</th>
         <th class="num">Soudržnost</th><th class="num">Výrazně rozdělená hlasování</th></tr></thead>
@@ -53,7 +53,7 @@ async function euDetailPage(code) {
       <tbody>${list.map((v) => voteRow(v, `<td class="extra cz">${splitBar(v.gc)}<div class="small">${czCountsHtml(v.gc)}</div></td>`)).join("")}</tbody></table></div>`
     : emptyState("Skupina se v žádném takovém hlasování nerozdělila.", "Zkuste zrušit filtr „jen závěrečná“.");
   main.innerHTML = `
-    <div class="page-head"><p class="small"><a href="party.html?v=eu">← Všechny frakce</a></p>${viewSwitch("eu")}</div>
+    <div class="page-head"><p class="small"><a href="party?v=eu">← Všechny frakce</a></p>${viewSwitch("eu")}</div>
     ${g.logo ? `<div class="logo-row">${logoTile(g, 48)}</div>` : ""}
     <h1>${esc(g.name_cs || g.label)} ${groupBadge(g.code, groups)}</h1>
     <p class="small">${g.cz_members} ${g.cz_members === 1 ? "český poslanec" : g.cz_members < 5 ? "čeští poslanci" : "českých poslanců"}${g.web ? ` · <a class="ext" href="${esc(g.web)}" rel="noopener" title="Adresu webu uvádí Wikidata (CC0)">oficiální web</a>` : ""}</p>
@@ -96,7 +96,7 @@ async function listPage() {
   const epMed = bench?.ep?.attendance;
   main.innerHTML = `
     <div class="page-head"><h1>České strany v Evropském parlamentu</h1>${viewSwitch("cz")}</div>
-    <div class="lead-row"><p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období.</p>${infoButton(`<p>Příslušnost ke straně se bere k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. Strany jsou řazené podle počtu poslanců. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností se rozejít. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`)}</div>
+    <div class="lead-row"><p class="lead">Souhrnné metriky poslanců jednotlivých stran v 10. volebním období.</p>${infoButton(`<p>Příslušnost ke straně se bere k datu hlasování. Nezávislí poslanci nejsou strana, a proto tu nejsou. Strany jsou řazené podle počtu poslanců. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností se rozejít. <a href="o-projektu#metodika">Jak počítáme</a>.</p>`)}</div>
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Strana</th><th class="num">Poslanců</th><th class="num">Účast na hlasování${epMed != null ? `<div class="small muted th-note">medián EP ${fmtPct(epMed)}</div>` : ""}</th>
         <th class="num">Jednotnost</th><th class="num">Hlasování, kde se strana rozdělila</th></tr></thead>
