@@ -37,14 +37,14 @@ def test_share_button_in_head_row_and_no_corner_cite(data_dir):
         assert 'class="cite-btn"' not in html, key
         assert html.count("data-share") == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
         assert "share.js" in html, key
-    assert 'cite: "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
+    assert '"cite": "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
 
 
 def test_share_button_same_in_python_and_js():
     import re
 
-    js = (Path(__file__).resolve().parent.parent / "public" / "share.js").read_text(encoding="utf-8")
-    m = re.search(r"const SHARE_BTN_HTML = '([^']+)';", js)
+    js = (Path(__file__).resolve().parent.parent / "public" / "lib" / "ui.js").read_text(encoding="utf-8")
+    m = re.search(r"export const SHARE_BTN_HTML = '([^']+)';", js)
     assert m and m[1] == bp.SHARE_BUTTON
 
 
@@ -53,7 +53,7 @@ def test_profile_page_has_numbers_with_source(data_dir):
     assert "50,0 %" in html and "1 z 2 hlasování" in html  # docházka [1, 2]
     assert "https://howtheyvote.eu/members/1" in html
     assert 'href="v/3.html"' in html  # poslední závěrečné hlasování (odkazy od <base href="../">)
-    assert '<base href="../">' in html and 'data-mep="1"' in html and '<script src="profile.js?v=' in html
+    assert '<base href="../">' in html and 'data-mep="1"' in html and '<script type="module" src="profile.js?v=' in html
     assert 'class="skip-link" href="p/1.html#main"' in html
 
 
@@ -296,12 +296,12 @@ def test_corrections_block(tmp_path):
 
 
 def test_cz_geo_tag_only_from_source():
-    """„Týká se Česka“ jen když zdroj uvádí geografické téma CZE; jinak žádná značka. Stejný text jako czGeoTag v app.js."""
+    """„Týká se Česka“ jen když zdroj uvádí geografické téma CZE; jinak žádná značka. Stejný text jako czGeoTag v lib/ui.js."""
     assert bp.cz_geo_tag({"topics": {"geo": [{"code": "UKR"}]}}) == ""
     assert bp.cz_geo_tag({"topics": {}}) == "" and bp.cz_geo_tag({}) == ""
     tag = bp.cz_geo_tag({"topics": {"geo": [{"code": "CZE", "label": "Czechia"}]}})
     assert ">Týká se Česka<" in tag
-    app = (Path(__file__).resolve().parent.parent / "public" / "app.js").read_text(encoding="utf-8")
+    app = (Path(__file__).resolve().parent.parent / "public" / "lib" / "ui.js").read_text(encoding="utf-8")
     assert tag in app.replace("'", '"').replace('"<span', "<span").replace('</span>"', "</span>")
 
 

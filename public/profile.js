@@ -1,6 +1,8 @@
 // Profil poslance (p/{id}.html, dříve mep.html?id=). Statická stránka má obsah v HTML (build_pages.py),
 // tento skript ho nahradí plnou interaktivní verzí (graf účasti na hlasování, přepínače, seznamy).
-"use strict";
+import { getJSON, param } from "./lib/data.js";
+import { COMMITTEE_TYPE, CZ_GROUP_LABEL, NO_PARTY_NOTE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, ROLE_LABEL, SHORT_MANDATE_NOTE, byGender, currentOf, displayName, esc, firstSentence, fmtDate, fmtMonth, fmtNum, fmtPct, groupColor, isActive, mandateText, pct, positionFor, siteUrl, todayCZ, voteSubtitle, voteTitle } from "./lib/format.js";
+import { benchRow, collapseTables, countPct, emptyState, entityCell, groupBadge, infoButton, kindTag, logoTile, mepUrl, metricActions, noteLine, partyBadge, partyLink, partyUrl, pctCell, photoUrl, resultHtml, setNav, shareButton, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("meps");
 const main = document.getElementById("main");

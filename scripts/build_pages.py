@@ -39,7 +39,7 @@ from vote_parties import (
 )
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
-from layout import page
+from layout import MODULES, json_script, page
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -354,7 +354,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
         description=desc,
         meta=meta,
         main_attrs=f'data-mep="{mep["id"]}"',
-        scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="profile.js"></script>\n',
+        scripts=MODULES.format(root="", page="profile.js"),
     )
 
 
@@ -421,7 +421,7 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         description=desc,
         meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
         main_attrs=f'data-party="{pp["id"]}"',
-        scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="party.js"></script>\n',
+        scripts=MODULES.format(root="", page="party.js"),
     )
 
 
@@ -629,13 +629,17 @@ def vote_page(
         f"{cz_counts[0]} pro, {cz_counts[1]} proti, {cz_counts[2]} se zdrželo, {cz_counts[3]} nehlasovalo. "
         f"Zdroj: HowTheyVote.eu ({src})"
     )
-    share_script = (
-        '<script>window.shareContext = () => { const url = siteUrl("v/' + str(v["id"]) + '.html"); return { kind: "vote", url, '
-        f'filename: "ep-watch-hlasovani-{v["id"]}", subtitle: {json.dumps("Hlasování · " + fmt_date(v["date"]) + (" · " + topic if topic else ""), ensure_ascii=False)}, '
-        f"cite: {json.dumps(cite, ensure_ascii=False).replace('</', '<\\/')}, "
-        f"text: {json.dumps(f'{title_txt} ({fmt_date(v["date"])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ', ensure_ascii=False).replace('</', '<\\/')}, "
-        f'data: Object.assign({json.dumps(share_data, ensure_ascii=False).replace("</", "<\\/")}, {{ urlShort: url.replace(/^https?:\\/\\//, "").replace(/\\.html$/, "") }}) }}; }};</script>\n'
-    )
+    share_ctx = {
+        "kind": "vote",
+        "path": f"v/{v['id']}.html",
+        "filename": f"ep-watch-hlasovani-{v['id']}",
+        "subtitle": "Hlasování · " + fmt_date(v["date"]) + (" · " + topic if topic else ""),
+        "cite": cite,
+        "text": f"{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ",
+        "data": share_data,
+    }
+    # Kontext panelu sdílení jako JSON (share.js), ne inline skript: CSP nepovoluje 'unsafe-inline'.
+    share_script = f'<script type="application/json" id="share-context">{json_script(share_ctx)}</script>\n'
     body = f"""{back_row(f"{ROOT}votes.html?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
@@ -669,7 +673,7 @@ def vote_page(
         current="votes",
         description=desc,
         meta=og_meta(title, desc, f"v/{v['id']}.html", base_url, f"og/v/{v['id']}.png" if has_card else None, desc, card=True),
-        scripts=f'<script src="{ROOT}app.js"></script>\n{share_script}<script src="{ROOT}share.js"></script>\n',
+        scripts=f'<script type="module" src="{ROOT}app.js"></script>\n{share_script}<script type="module" src="{ROOT}share.js"></script>\n',
     )
 
 

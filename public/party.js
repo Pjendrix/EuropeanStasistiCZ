@@ -1,5 +1,7 @@
 // Strany: seznam (party.html) a detail strany (s/{id}.html; statický obsah v HTML, tento skript ho nahradí interaktivní verzí).
-"use strict";
+import { getJSON, param, soft } from "./lib/data.js";
+import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtDate, fmtNum, fmtPct, isActive, pct, siteUrl, todayCZ } from "./lib/format.js";
+import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, namesByPosition, noteLine, partyBadge, partyUrl, pctCell, photoUrl, setNav, shareButton, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("parties");
 const MIN_VOTERS_EU = 10;
@@ -46,7 +48,6 @@ async function euListPage() {
 async function euDetailPage(code) {
   const [g, groups] = await Promise.all([getJSON(`eugroups/${code}.json`).catch(() => { throw new Error("Skupina nenalezena. Vrať se na seznam frakcí."); }), getJSON("groups.json")]);
   document.title = `${g.name_cs || g.label} – EP Watch CZ`;
-  const mepsById = Object.fromEntries(g.member_list.map((m) => [m.id, m]));
   const rows = (list) => list.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Skupina</th><th>Výsledek</th></tr></thead>
       <tbody>${list.map((v) => voteRow(v, `<td class="extra cz">${splitBar(v.gc)}<div class="small">${czCountsHtml(v.gc)}</div></td>`)).join("")}</tbody></table></div>`
@@ -89,7 +90,7 @@ async function euDetailPage(code) {
 }
 
 async function listPage() {
-  const [idx, groups, parties, bench] = await Promise.all([getJSON("parties/index.json"), getJSON("groups.json"), getJSON("parties.json"), getJSON("benchmarks.json").catch(soft(null))]);
+  const [idx, bench] = await Promise.all([getJSON("parties/index.json"), getJSON("benchmarks.json").catch(soft(null))]);
   // Nejdřív strany s nejvíc poslanci (pořadí podle ID nic neříká).
   const list = [...idx.parties].sort((a, b) => b.members - a.members || (a.name || a.short_label).localeCompare(b.name || b.short_label, "cs"));
   const epMed = bench?.ep?.attendance;
@@ -141,7 +142,7 @@ async function detailPage(id) {
     },
   });
   main.innerHTML = `
-    <div class="back-row"><p class="small"><a href="party.html">← Všechny strany</a></p>${typeof shareButton === "function" ? shareButton() : ""}</div>
+    <div class="back-row"><p class="small"><a href="party.html">← Všechny strany</a></p>${shareButton()}</div>
     ${p.logo ? `<div class="logo-row">${logoTile(p, 48)}</div>` : ""}
     <h1>${esc(p.name || p.short_label)} ${partyBadge(p.id, p.short_label, parties)}</h1>
 

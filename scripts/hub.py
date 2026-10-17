@@ -19,6 +19,7 @@ from categories import LABEL, icon_svg
 from hero_art import STARS
 from procedure_pages import procedure_url
 from compute_stats import apply_titles, procedure_titles
+from layout import MODULES
 from vote_kinds import KIND_LABELS
 
 LIST_TITLES = {
@@ -780,6 +781,6 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
         description=desc,
         meta=meta,
         main_attrs='class="home-page"',
-        scripts='<script src="app.js"></script>\n<script src="share.js"></script>\n<script src="hub.js"></script>\n',
+        scripts=MODULES.format(root="", page="hub.js"),
     )
     return "index.html", html

@@ -4,19 +4,22 @@
 //
 // Pravidla karty: každá karta má datum, zdroj a adresu; u poslance vždy medián EP; žádné pořadí, žádné hodnocení barvou,
 // žádná loga stran ani frakcí (jen zkratka a tečka); portrét s popiskem „© European Union – Source: EP“.
+// Exporty (…Ops, SHARE_FORMATS, measureText) jsou jen pro e2e test karet; stránky share.js neimportují.
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
-"use strict";
+import { citeText, getJSON } from "./lib/data.js";
+import { SHARE_KEYS } from "./lib/ui.js";
+import { esc, fmtDate, fmtNum, fmtPct, siteUrl } from "./lib/format.js";
 
-const SHARE_ROOT = document.currentScript ? new URL(".", document.currentScript.src).href : "";
+const SHARE_ROOT = new URL(".", import.meta.url).href;
 
-const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
+export const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
   slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
 const SC = { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155" };
 const SC_POS = { FOR: SC.for, AGAINST: SC.against, ABSTENTION: SC.abst, DID_NOT_VOTE: SC.absent };
 const SC_FONT = '"Plus Jakarta Sans", system-ui, sans-serif';
 
 let _measureCtx = null;
-function measureText(text, size, weight) {
+export function measureText(text, size, weight) {
   _measureCtx = _measureCtx || document.createElement("canvas").getContext("2d");
   _measureCtx.font = `${weight} ${size}px ${SC_FONT}`;
   return _measureCtx.measureText(text).width;
@@ -86,27 +89,13 @@ function barOps(x, y, w, h, counts) {
   return out;
 }
 
-const SHARE_KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 const SHARE_SHORT = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdrž.", DID_NOT_VOTE: "nehl." };
 
-// Řádky stran pro kartu z czPartyRows() (app.js); zrcadlo card_parties() v scripts/vote_parties.py.
-// Když by se strany nevešly (víc než 12), sloučí se jednočlenné do „ostatní“.
-function shareCardParties(rows, maxRows = 12) {
-  let items = rows.map((r) => ({ label: r.label, groups: r.groups, positions: SHARE_KEYS.flatMap((k) => r.members[k].map(() => k)), total: r.total }));
-  if (items.length > maxRows) {
-    const keep = items.filter((i) => i.total > 1), rest = items.filter((i) => i.total === 1);
-    while (keep.length >= maxRows && keep.length) rest.unshift(keep.pop());
-    keep.push({ label: "ostatní", groups: rest.map((i) => i.label).sort((a, b) => a.localeCompare(b, "cs")),
-      positions: rest.flatMap((i) => i.positions).sort((a, b) => SHARE_KEYS.indexOf(a) - SHARE_KEYS.indexOf(b)), total: rest.reduce((n, i) => n + i.total, 0) });
-    items = keep;
-  }
-  return items;
-}
 
 const partySummary = (positions) => SHARE_KEYS.map((k) => [positions.filter((p) => p === k).length, SHARE_SHORT[k]]).filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(" · ");
 
 // Karta hlasování (S5): název, výsledek větou, celý EP, Češi po stranách (barva tečky = hlas). Obsah vystředěný mezi hlavičkou a patičkou.
-function voteCardOps(d, f) {
+export function voteCardOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   let y = 0;
@@ -213,7 +202,7 @@ function metricOps(x, y, w, label, pair, median, medLabel) {
 }
 
 // 1/3 Základní karta: portrét, jméno, frakce · strana, mandát, dvě čísla s mediánem.
-function mepBasicOps(d, f) {
+export function mepBasicOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
   const pw = 380, ph = 475, y0 = 0;
@@ -223,7 +212,7 @@ function mepBasicOps(d, f) {
     T(72, y0 + ph + 32, "© European Union – Source: EP", 20, 500, SC.muted));
   const nx = d.photo || neutral ? 72 + pw + 50 : 72, nw = 1008 - nx;
   const nameLines = wrapText(d.name, 72, 800, nw, 3);
-  let chips = [], cx = nx, cy = 0;
+  let cx = nx, cy = 0;
   const chipRows = [];
   (d.chips || []).forEach((c) => {
     const w = measureText(c.label, 28, 600) + 62;
@@ -354,7 +343,7 @@ function centered(ops, y, H, top = 172) {
 }
 
 // Karta jednoho čísla: kontext (jméno · frakce · strana), název, hodnota, osa s mediánem, „x z y“, jedna věta definice.
-function metricCardOps(d, f) {
+export function metricCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;
@@ -384,10 +373,10 @@ function metricCardOps(d, f) {
 }
 
 // Počet řádků přehledu na kartě: příspěvek 5, story 7 (vždy výslovně napsaný na kartě).
-const splitRowsFor = (f) => (f.h > 1500 ? 7 : 5);
+export const splitRowsFor = (f) => (f.h > 1500 ? 7 : 5);
 
 // Karta přehledu: titulek, věta o výběru, prvních N řádků ve stejném pořadí jako na stránce.
-function splitCardOps(d, f) {
+export function splitCardOps(d, f) {
   const H = f.h, n = Math.min(splitRowsFor(f), d.rows.length);
   const ops = [];
   let y = 0;
@@ -415,7 +404,7 @@ function splitCardOps(d, f) {
 }
 
 // Karta strany: název, zkratka a počet poslanců, tři dlaždice „Souhrn za stranu“ (bez log, bez srovnání mezi stranami).
-function partyCardOps(d, f) {
+export function partyCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;
@@ -538,15 +527,6 @@ async function renderCardPng(ctx, formatKey) {
 // Stránka nastaví window.shareContext(kind) → { kind, url, text, filename, data, title?, subtitle?, cite?, trust? } (i jako Promise);
 // kind je hodnota atributu data-share („“ = karta stránky, „metric:attendance“, „view“ …).
 
-const SHARE_BTN_HTML = '<button type="button" class="share-btn" data-share aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Sdílet</span></button>';
-
-// Tlačítko do hlavičky stránky (stejný kód jako share_button() v build_pages.py, hlídá test).
-// Varianta „view“: obrys, „Sdílet pohled“ (přehledy), kind se předá do shareContext.
-function shareButton(kind = "", label = "") {
-  if (!kind && !label) return SHARE_BTN_HTML;
-  return SHARE_BTN_HTML.replace('class="share-btn"', `class="share-btn${kind === "view" ? " outline" : ""}"`)
-    .replace("data-share", `data-share="${esc(kind)}"`).replace("<span>Sdílet</span>", `<span>${esc(label || "Sdílet")}</span>`);
-}
 
 const SD_ICON = {
   x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
@@ -591,6 +571,15 @@ function downloadBlob(blob, name) {
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
+// Statické stránky (v/*.html) mají kontext jako JSON v <script type="application/json" id="share-context"> (bez inline skriptu, CSP).
+function staticShareContext() {
+  const el = document.getElementById("share-context");
+  if (!el) return null;
+  const ctx = JSON.parse(el.textContent);
+  const url = siteUrl(ctx.path);
+  return { ...ctx, url, data: ctx.data && { ...ctx.data, urlShort: url.replace(/^https?:\/\//, "").replace(/\.html$/, "") } };
+}
+
 let shareDlg = null;
 
 function closeSharePanel() {
@@ -602,7 +591,7 @@ async function openSharePanel(trigger) {
   if (shareDlg) return;
   const kindArg = trigger.dataset.share || "";
   let ctx;
-  try { ctx = await window.shareContext?.(kindArg); } catch (e) { ctx = null; }
+  try { ctx = await (window.shareContext || staticShareContext)(kindArg); } catch (e) { ctx = null; }
   if (!ctx) return;
   const enc = encodeURIComponent;
   const formats = ctx.formats || shareFormats(ctx.kind);

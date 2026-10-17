@@ -31,4 +31,6 @@ jobs:
       - name: Lint JS (ESLint, pravidla v eslint.config.mjs)
         run: |
           npm install --no-save --no-package-lock eslint@9.36.0 @eslint/js@9.36.0
-          npx eslint public/*.js tests/e2e/*.mjs eslint.config.mjs
+          npx eslint public tests/e2e/*.mjs tests/js/*.mjs eslint.config.mjs
+      - name: Testy JS (node --test, čisté funkce z public/lib)
+        run: node --test tests/js/*.test.mjs
