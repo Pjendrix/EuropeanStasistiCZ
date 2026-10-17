@@ -74,6 +74,17 @@ INSTAGRAM_LINK = (
     f'aria-label="EP Watch CZ na Instagramu (otevře se v nové záložce)" title="Instagram @epwatch.cz">{INSTAGRAM_ICON}</a>'
 )
 
+SEARCH_ICON = (
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+    'aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'
+)
+# Hledání v liště (B2): bez JS odkaz na Poslance, s JS otevře dialog s našeptávačem (app.js, lib/search.js).
+SEARCH_BUTTON = (
+    '<a class="search-btn" href="{root}poslanci.html" aria-label="Hledat poslance, stranu nebo hlasování" aria-haspopup="dialog">'
+    + SEARCH_ICON
+    + '<span class="search-txt" aria-hidden="true">Hledat</span><kbd aria-hidden="true">/</kbd></a>'
+)
+
 THEME_BUTTON = (
     '<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim">'
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
@@ -185,6 +196,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
         f'<header class="site-header"><div class="inner">\n'
         f'  <a class="brand" href="{root}index.html">{BRAND_MARK}{BRAND_TEXT}</a>\n'
         f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
+        f"  {SEARCH_BUTTON.format(root=root)}\n"
         f"  {INSTAGRAM_LINK}\n"
         f"  {THEME_BUTTON}\n"
         f"</div></header>\n"

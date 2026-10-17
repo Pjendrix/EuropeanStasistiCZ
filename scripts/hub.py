@@ -20,7 +20,7 @@ from hero_art import STARS
 from procedure_pages import procedure_url
 from compute_stats import apply_titles, procedure_titles
 from layout import MODULES
-from vote_kinds import KIND_LABELS
+from vote_kinds import KIND_LABELS, is_final
 
 LIST_TITLES = {
     "laws": ("Nejnovější zákony", "Poslední závěrečná hlasování nebo prozatímní dohody v legislativním postupu."),
@@ -549,6 +549,46 @@ def caption_html(vote: dict) -> str:
     )
 
 
+def session_facts(data_dir: Path) -> dict | None:
+    """Čísla řádku „Poslední zasedání“ pod úvodní větou (B3): jen ze session.json (build_web.py) a vote_roles.json.
+    Jednotnost stejná jako jinde na webu (compute_stats, unity.last_session); česká stopa = závěrečné hlasování zasedání,
+    u jehož zprávy byl český poslanec zpravodajem nebo stínovým zpravodajem. Co v datech chybí, se vynechá."""
+    session = _read(data_dir / "session.json")
+    if not session or not session.get("from"):
+        return None
+    out = {"from": session["from"], "to": session["to"], "final": session.get("main")}
+    unity = session.get("unity") or {}
+    if unity.get("considered"):
+        out["united"], out["considered"] = unity["united"], unity["considered"]
+    roles = (_read(data_dir / "vote_roles.json") or {}).get("votes")
+    if roles is not None:
+        months = {session["from"][:7], session["to"][:7]}
+        votes = [v for m in sorted(months) for v in (_read(data_dir / "votes" / f"{m}.json") or {"votes": []})["votes"]]
+        out["trace"] = sum(1 for v in votes if session["from"] <= v["date"] <= session["to"] and is_final(v) and str(v["id"]) in roles)
+    return out
+
+
+def session_line_html(f: dict | None) -> str:
+    """Řádek pod úvodní větou: 2–3 čísla z posledního zasedání, každé s odkazem na seznam."""
+    if not f:
+        return ""
+    base = f"votes.html?od={f['from']}&amp;m={f['to'][:7]}&amp;f=final"
+    parts = []
+    if f.get("final") is not None:
+        parts.append(f'<a href="{base}"><b>{fmt_num(f["final"])}</b> závěrečných hlasování</a>')
+    if f.get("considered"):
+        parts.append(f'<a href="rozkol.html">Češi jednotní v <b>{fmt_num(f["united"])}</b> z {fmt_num(f["considered"])}</a>')
+    if f.get("trace") is not None:
+        parts.append(f'<a href="{base}&amp;stopa=1">česká stopa u <b>{fmt_num(f["trace"])}</b></a>')
+    if not parts:
+        return ""
+    return (
+        f'<p class="hm-sess"><span class="hm-sess-l">Poslední zasedání {fmt_date(f["from"])[:-5]}–{fmt_date(f["to"])}</span> '
+        + '<span aria-hidden="true">·</span> '.join(parts)
+        + "</p>"
+    )
+
+
 def hero_share(vote: dict, d: dict | None) -> dict | None:
     """Kontext panelu sdílení pro hlasování v heru (stejná karta jako na detailu v/, share.js)."""
     if not d:
@@ -665,6 +705,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
+      {session_line_html(session_facts(data_dir))}
       <form class="hm-search" role="search" action="poslanci.html" method="get">
         <label for="hub-q">{_SEARCH_ICON}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
           <input id="hub-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list" aria-haspopup="listbox"><kbd aria-hidden="true">/</kbd><button class="hm-go" type="submit">Hledat</button></label>
@@ -693,7 +734,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     <div><dt>{fmt_num(f["meps_active"])}</dt><dd>poslanců v mandátu</dd></div>
     <div><dt>{fmt_num(f["parties"])}</dt><dd>{"českých stran" if f["parties"] >= 5 else "české strany"}{f" a {fmt_num(f['no_party'])} bez strany" if f["no_party"] else ""}</dd></div>
     <div><dt>{fmt_num(f["votes_total"])}</dt><dd>jmenovitých hlasování od {fmt_date(f["votes_from"])}</dd></div>
-    <div><dt>{fmt_date(f["data_day"])}</dt><dd>stav dat (export HowTheyVote) · <a href="o-projektu.html#metodika">aktualizace každý týden</a></dd></div>
+    <div><dt>{fmt_date(f["data_day"])}</dt><dd>stav dat · <a href="o-projektu.html#metodika">aktualizace každý týden</a></dd></div>
   </dl>
   <script type="application/json" id="home-data">{data_json}</script>
 </section>"""
