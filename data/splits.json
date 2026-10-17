@@ -4,7 +4,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -13,13 +13,13 @@
   }
  },
  "count": 5682,
- "count_main": 499,
+ "count_main": 500,
  "unity": {
   "united": 472,
   "considered": 6154,
   "strong_split": 2308,
   "united_final": 141,
-  "considered_final": 640,
+  "considered_final": 641,
   "strong_threshold": 0.3,
   "last_session": {
    "united": 8,
@@ -4505,7 +4505,7 @@
     10,
     10,
     0,
-    0
+    1
    ],
    "amendment_number": "§",
    "texts_adopted_reference": "P10_TA(2025)0214",
@@ -4537,7 +4537,8 @@
     "256852": "AGAINST",
     "256853": "AGAINST",
     "261038": "AGAINST",
-    "270261": "FOR"
+    "270261": "FOR",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -4559,7 +4560,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {
@@ -6461,7 +6463,7 @@
     9,
     9,
     1,
-    1
+    2
    ],
    "amendment_number": "§",
    "texts_adopted_reference": "P10_TA(2025)0230",
@@ -6493,7 +6495,8 @@
     "256852": "AGAINST",
     "256853": "AGAINST",
     "261038": "AGAINST",
-    "270261": "DID_NOT_VOTE"
+    "270261": "DID_NOT_VOTE",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -6515,7 +6518,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {
@@ -10131,7 +10135,7 @@
     6,
     6,
     7,
-    1
+    2
    ],
    "amendment_number": "§",
    "texts_adopted_reference": "P10_TA(2025)0231",
@@ -10163,7 +10167,8 @@
     "256852": "ABSTENTION",
     "256853": "ABSTENTION",
     "261038": "ABSTENTION",
-    "270261": "DID_NOT_VOTE"
+    "270261": "DID_NOT_VOTE",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -10185,7 +10190,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {
@@ -10279,7 +10285,7 @@
     "for": 172,
     "against": 440,
     "abstention": 10,
-    "did_not_vote": 97
+    "did_not_vote": 96
    },
    "cz": [
     6,
@@ -10357,7 +10363,7 @@
     "for": 406,
     "against": 176,
     "abstention": 29,
-    "did_not_vote": 108
+    "did_not_vote": 107
    },
    "cz": [
     6,
@@ -12396,7 +12402,7 @@
     5,
     5,
     9,
-    1
+    2
    ],
    "amendment_number": null,
    "texts_adopted_reference": "P10_TA(2025)0231",
@@ -12428,7 +12434,8 @@
     "256852": "ABSTENTION",
     "256853": "ABSTENTION",
     "261038": "ABSTENTION",
-    "270261": "DID_NOT_VOTE"
+    "270261": "DID_NOT_VOTE",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -12450,7 +12457,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {
@@ -13409,7 +13417,7 @@
     "for": 454,
     "against": 172,
     "abstention": 19,
-    "did_not_vote": 74
+    "did_not_vote": 73
    },
    "cz": [
     9,
@@ -14042,7 +14050,7 @@
     5,
     4,
     9,
-    2
+    3
    ],
    "amendment_number": null,
    "texts_adopted_reference": "P10_TA(2025)0217",
@@ -14074,7 +14082,8 @@
     "256852": "AGAINST",
     "256853": "ABSTENTION",
     "261038": "ABSTENTION",
-    "270261": "ABSTENTION"
+    "270261": "ABSTENTION",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -14096,7 +14105,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {
@@ -14118,7 +14128,7 @@
     5,
     4,
     10,
-    1
+    2
    ],
    "amendment_number": "79",
    "texts_adopted_reference": "P10_TA(2025)0226",
@@ -14150,7 +14160,8 @@
     "256852": "AGAINST",
     "256853": "ABSTENTION",
     "261038": "ABSTENTION",
-    "270261": "DID_NOT_VOTE"
+    "270261": "DID_NOT_VOTE",
+    "272024": "DID_NOT_VOTE"
    },
    "groups": {
     "23699": "NI",
@@ -14172,7 +14183,8 @@
     "256852": "PFE",
     "256853": "PFE",
     "261038": "PFE",
-    "270261": "PFE"
+    "270261": "PFE",
+    "272024": "PFE"
    }
   },
   {

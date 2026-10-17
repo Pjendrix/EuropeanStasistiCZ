@@ -14,27 +14,27 @@
   281405
  ],
  "attendance_main": [
-  24703,
-  29254
+  24742,
+  29300
  ],
  "majority": [
   215032,
   223475
  ],
  "majority_main": [
-  19671,
-  20950
+  19709,
+  20988
  ],
  "splits": 244,
  "considered": 6096,
  "splits_main": 53,
- "considered_main": 613,
+ "considered_main": 614,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -1214,12 +1214,13 @@
     14,
     6,
     0,
-    0
+    1
    ],
    "amendment_number": "23",
    "texts_adopted_reference": "P10_TA(2025)0213",
    "cats": [
-    "agr"
+    "agr",
+    "eco"
    ],
    "vote_kind": "amendment",
    "is_final": false,
@@ -3082,11 +3083,14 @@
     19,
     0,
     0,
-    1
+    2
    ],
    "amendment_number": null,
    "texts_adopted_reference": "P10_TA(2025)0228",
-   "cats": [],
+   "cats": [
+    "civ",
+    "ins"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -3380,7 +3384,7 @@
     5,
     4,
     9,
-    2
+    3
    ],
    "amendment_number": null,
    "texts_adopted_reference": "P10_TA(2025)0217",
@@ -3565,7 +3569,7 @@
     10,
     6,
     3,
-    1
+    2
    ],
    "amendment_number": null,
    "texts_adopted_reference": null,
