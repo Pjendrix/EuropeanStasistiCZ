@@ -45,7 +45,6 @@ RESULT_LABEL = {"ADOPTED": "přijato", "REJECTED": "zamítnuto", "LAPSED": "prop
 HTV = "https://howtheyvote.eu"
 NBSP = " "
 ROOT = "../"
-RECENT = 15
 
 
 def esc(x) -> str:
@@ -61,9 +60,6 @@ def fmt_pct(pair_or_value) -> str:
     if isinstance(v, list):
         v = v[0] / v[1] if v[1] else None
     return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
-
-
-WORK_INTRO = "Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je."
 
 
 def meps_count(n: int) -> str:
@@ -214,39 +210,6 @@ def kind_of(v: dict) -> tuple[str, bool]:
 # --- poslanec ------------------------------------------------------------------------
 
 
-def metric(label: str, pair: list[int] | None, detail: str, bench_line: str = "") -> str:
-    if not (pair and pair[1]):
-        bench_line = ""  # srovnání u nepočítané metriky
-    count = f"{fmt_num(pair[0])} z {fmt_num(pair[1])} hlasování" if pair and pair[1] else "nepočítá se"
-    return (
-        f'<div class="card metric"><div class="label">{label}</div><div class="value">{fmt_pct(pair) if pair else "–"}</div>'
-        f'<div class="detail">{count}</div>{bench_line}<div class="detail">{detail}</div></div>'
-    )
-
-
-def presence_card(pr: dict | None) -> str:
-    """Prezence na zasedání podle prezenční listiny EP (bez mediánu a pořadí)."""
-    if not pr or not pr["days"]:
-        return ""
-    excused = f" · {fmt_num(pr['excused'])} omluven/a" if pr.get("excused") else ""
-    return (
-        f'<div class="card metric"><div class="label">Prezence na zasedání (podle EP)</div><div class="value">{fmt_pct([pr["present"], pr["days"]])}</div>'
-        f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání v době mandátu{excused}</div>'
-        f'<div class="detail">podle prezenční listiny EP · EP Open Data</div></div>'
-    )
-
-
-def bench_line(b: dict | None, key: str) -> str:
-    if not b:
-        return ""
-    parts = []
-    if b["ep"].get(key) is not None:
-        parts.append(f"medián EP {fmt_pct(b['ep'][key])}")
-    if b.get("group") and b["group"].get(key) is not None:
-        parts.append(f"medián frakce {fmt_pct(b['group'][key])}")
-    return f'<div class="detail">{" · ".join(parts)}</div>' if parts else ""
-
-
 def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str | None, today: str) -> tuple[str, str]:
     """Profil poslance: celý obsah z profile_page.py (audit A1), profile.js jen doplní interakce."""
     from profile_page import profile_body, share_json
@@ -282,56 +245,21 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
 # --- strana --------------------------------------------------------------------------
 
 
-def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
+def party_page(pp: dict, groups: list[dict], parties: list[dict], base_url: str | None, today: str) -> tuple[str, str]:
+    """Detail strany: celý obsah z party_page.py (audit A1), party.js jen přepínač a sbalení tabulek."""
+    from party_page import party_body
+    from profile_page import share_json
+
     name = pp.get("name") or pp["short_label"]
-    coh = pp["cohesion"]
     desc = (
         f"{name} ({pp['short_label']}) v Evropském parlamentu: {meps_count(pp['members'])} v 10. období, "
-        f"jednotnost {fmt_pct(coh)}. Data z HowTheyVote.eu a EP."
+        f"jednotnost {fmt_pct(pp['cohesion'])}. Data z HowTheyVote.eu a EP."
     )
-    members = "".join(
-        f'<li><a href="p/{m["id"]}.html">{esc(display_name(m))}</a>'
-        f'<div class="small muted">{", ".join(fmt_date(x["start"]) + " – " + (fmt_date(x["end"]) if x.get("end") else "dosud") for x in m["party_periods"])}'
-        f" · účast na hlasování {fmt_pct(m['total']['attendance'])}</div></li>"
-        for m in sorted(
-            pp["member_list"],
-            key=lambda m: (
-                -(m["total"]["attendance"][0] / m["total"]["attendance"][1]) if m["total"]["attendance"][1] else 1,
-                m.get("sort_label") or m["name"],
-            ),
-        )
-    )
-    heading = f"<h1>{esc(name)}</h1>"
-    if pp.get("logo"):
-        a = pp.get("logo_aspect")  # stejná výška jako logoHeight() v app.js
-        h = 40 if not a or a <= 1 else round(40 * max(0.42, a**-0.4), 1)
-        w = f' width="{round(h * pp["logo_aspect"])}"' if pp.get("logo_aspect") else ""
-        heading = (
-            f'<div class="entity-cell"><span class="logo-tile" style="height:40px"><img src="{esc(pp["logo"])}" '
-            f'alt="Logo {esc(name)}" style="height:{h:.0f}px"{w} height="{h:.0f}"></span><h1>{esc(name)}</h1></div>'
-        )
-    splits_value = (
-        f"{fmt_num(pp['splits_count'])} z {fmt_num(coh[1])} ({fmt_pct(pp['splits_count'] / coh[1])})" if coh[1] else "jen 1 poslanec"
-    )
-    body = f"""{back_row("party.html", "← Všechny strany")}
-{heading}
-<p class="muted">{esc(pp["short_label"])} · {meps_count(pp["members"])} v 10. volebním období</p>
-<div class="metrics">
-  {metric("Jednotnost strany", coh, "hlasování, kde hlasovali aspoň dva poslanci strany")}
-  {metric("Jednotnost – závěrečná hlasování", pp["cohesion_main"], "o celém textu nebo o prozatímní dohodě s Radou")}
-  <div class="card metric"><div class="label">Hlasování, kde se strana rozdělila</div><div class="value">{splits_value}</div>
-    <div class="detail">aspoň jeden pro a jeden proti; z toho závěrečných {fmt_num(pp["splits_count_main"])}{
-        f" z {fmt_num(pp['cohesion_main'][1])}" if pp["cohesion_main"][1] else ""
-    }</div></div>
-</div>
-<h2>Poslanci</h2>
-<div class="card"><ul class="plain">{members}</ul></div>
-<p class="source">Příslušnost ke straně k datu hlasování. U stran s více poslanci je jednotnost přirozeně nižší: víc lidí, víc možností
-  se rozejít. Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL) a
-  <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), <a href="o-projektu.html#metodika">metodika</a>.</p>"""
+    body, share_ctx = party_body(pp, groups, parties, today, SHARE_BUTTON)
     title = f"{name} – EP Watch CZ"
-    # Jedna adresa strany: <base href="../">, party.js obsah nahradí interaktivní verzí (jako u profilu poslance).
+    # Jedna adresa strany: <base href="../">, odkazy i data se berou od kořene webu (jako u profilu poslance).
     path = f"s/{pp['id']}.html"
+    share_script = f'<script type="application/json" id="share-context">{share_json(share_ctx)}</script>\n'
     return path, page(
         title,
         body,
@@ -342,7 +270,7 @@ def party_page(pp: dict, base_url: str | None) -> tuple[str, str]:
         description=desc,
         meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
         main_attrs=f'data-party="{pp["id"]}"',
-        scripts=MODULES.format(root="", page="party.js"),
+        scripts=share_script + MODULES.format(root="", page="party.js"),
     )
 
 
@@ -628,7 +556,7 @@ def build(data_dir: Path) -> dict[str, str]:
     idx_path = data_dir / "parties" / "index.json"
     if idx_path.exists():
         for p in read(idx_path)["parties"]:
-            path, html = party_page(read(data_dir / "parties" / f"{p['id']}.json"), base_url)
+            path, html = party_page(read(data_dir / "parties" / f"{p['id']}.json"), groups, parties, base_url, data_day)
             out[path] = html
     _, votes = load_votes(data_dir / "votes")
     vr_path = data_dir / "vote_roles.json"
