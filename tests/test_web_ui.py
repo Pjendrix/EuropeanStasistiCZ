@@ -52,5 +52,5 @@ def test_fmt_pct_same_as_browser_for_many_values():
     )
     out = subprocess.run(["node", "-e", script, json.dumps(values)], cwd=ROOT, capture_output=True, text=True, check=True).stdout
     js = json.loads(out)
-    diff = [(v, a, ui.fmt_pct(v)) for v, a in zip(values, js) if a != ui.fmt_pct(v)]
+    diff = [(v, a, ui.fmt_pct(v)) for v, a in zip(values, js, strict=True) if a != ui.fmt_pct(v)]
     assert not diff, diff[:5]
