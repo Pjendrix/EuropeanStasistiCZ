@@ -94,3 +94,12 @@ def test_cli_backend_rejects_other_model_and_errors(monkeypatch):
     assert run_with({"structured_output": ok, "modelUsage": {"claude-opus-5-5": {}}}) == {}
     assert run_with({"is_error": True, "structured_output": ok}) == {}
     assert run_with({"structured_output": ok}, code=1) == {}
+
+
+def test_check_lists_questions_without_summary():
+    Q2 = {**Q, "procedure": "2025/0001(COD)", "title": "MOCK druhý"}
+    out = qs.run(quiz(Q), {}, FakeClient({"nazev": "MOCK A", "shrnuti": "MOCK a."}), "d")
+    assert [q["procedure"] for q in qs.missing(quiz(Q, Q2), out)] == ["2025/0001(COD)"]
+    text = qs.check_output(quiz(Q, Q2), out)
+    assert text.startswith("missing=1\n") and "- MOCK druhý (2025/0001(COD))" in text
+    assert qs.check_output(quiz(Q), out).startswith("missing=0\n")

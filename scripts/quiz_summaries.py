@@ -165,17 +165,36 @@ def run(quiz: dict, cache: dict, client, today: str, log=print) -> dict:
             "model": MODEL, "prompt_version": PROMPT_VERSION, "prompt": PROMPT, "items": items}
 
 
+def missing(quiz: dict, cache: dict) -> list[dict]:
+    """Otázky kvízu bez platného shrnutí (nové, změněné nebo po změně zadání)."""
+    items = cache.get("items", {})
+    return [q for q in quiz.get("questions", [])
+            if items.get(q["procedure"], {}).get("fingerprint") != fingerprint(question_input(q))]
+
+
+def check_output(quiz: dict, cache: dict) -> str:
+    """Výstup pro GITHUB_OUTPUT: missing=N a seznam otázek (pro upozornění v issue)."""
+    miss = missing(quiz, cache)
+    lines = "\n".join(f"- {q['title']} ({q['procedure']})" for q in miss)
+    return f"missing={len(miss)}\nlist<<EOF_LIST\n{lines}\nEOF_LIST\n"
+
+
 def main(argv=None) -> int:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--data-dir", type=Path, default=root / "data")
     p.add_argument("--backend", choices=["auto", "api", "claude-cli"], default="auto",
                    help="api = ANTHROPIC_API_KEY; claude-cli = lokální Claude Code bez API klíče; auto = api, když je klíč, jinak claude-cli")
+    p.add_argument("--check", action="store_true", help="nic negeneruje, jen vypíše počet otázek bez shrnutí (GITHUB_OUTPUT)")
     args = p.parse_args(argv)
     quiz_path, out_path = args.data_dir / "quiz.json", args.data_dir / "quiz_summaries.json"
     if not quiz_path.exists():
         print("chybí data/quiz.json, spusť nejdřív build_web.py", file=sys.stderr)
         return 2
+    if args.check:
+        cache = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
+        print(check_output(json.loads(quiz_path.read_text(encoding="utf-8")), cache), end="")
+        return 0
     client = None
     use_api = args.backend == "api" or (args.backend == "auto" and os.environ.get("ANTHROPIC_API_KEY"))
     if use_api and os.environ.get("ANTHROPIC_API_KEY"):
