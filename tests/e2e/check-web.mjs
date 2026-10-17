@@ -398,7 +398,7 @@ for (const width of [1440, 400]) {
   if (n < 3) problems.push(`moje-shoda.html: jen ${n} otázek`);
   else {
     if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda.html: vyhodnocení jde bez odpovědí");
-    for (let i = 0; i < 3; i++) await page.locator(`.quiz-q[data-i="${i}"] .quiz-opt`).first().click();
+    for (let i = 0; i < 3; i++) await page.locator(".quiz-q").nth(i).locator(".quiz-opt").first().click();
     await page.click("#quiz-go");
     const r = await page.evaluate(() => ({
       rows: [...document.querySelectorAll(".quiz-row .quiz-pct strong")].map((e) => parseFloat(e.textContent.replace(",", "."))),
@@ -407,6 +407,12 @@ for (const width of [1440, 400]) {
     if (!r.rows.length) problems.push("moje-shoda.html: žádný poslanec ve výsledku");
     if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda.html: výsledek není seřazený podle shody");
     if (r.reveal !== n) problems.push("moje-shoda.html: po vyhodnocení chybí skutečné výsledky u otázek");
+    // Delší test: víc otázek, odpovědi z krátkého zůstanou.
+    await page.locator('input[name="len"][value="long"]').check();
+    const longN = await page.locator(".quiz-q").count();
+    const kept = await page.locator('.quiz-q input[value="F"]:checked').count();
+    if (longN <= n) problems.push(`moje-shoda.html: delší test nemá víc otázek (${longN})`);
+    if (!kept) problems.push("moje-shoda.html: po přepnutí délky se ztratily odpovědi");
   }
   await ctx.close();
 }

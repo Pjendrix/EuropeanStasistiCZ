@@ -1,0 +1,49 @@
+# Srozumitelné shrnutí otázek kvízu „Moje shoda“ (Claude Haiku, scripts/quiz_summaries.py).
+# Běží po každé týdenní aktualizaci (otázky se mohou změnit s novými hlasováními) a ručně.
+# Volá API jen pro nové nebo změněné otázky; ostatní shrnutí jsou uložená v data/quiz_summaries.json.
+# Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a web ukáže úřední názvy.
+name: Shrnutí kvízu
+
+on:
+  workflow_run:
+    workflows: ["Týdenní aktualizace dat"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write    # issue při selhání
+
+concurrency:
+  group: weekly-data  # commity do main se nepřekrývají s ostatními datovými běhy
+  cancel-in-progress: false
+
+jobs:
+  summaries:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalace závislostí
+        run: pip install --require-hashes -r requirements.txt
+
+      - name: Shrnutí otázek (Claude Haiku)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/quiz_summaries.py
+
+      - name: Commit
+        run: scripts/commit_data.sh "data: shrnutí kvízu $(date -u +%Y-%m-%d)" data/quiz_summaries.json
+
+      - name: Issue při selhání
+        if: failure()
+        uses: ./.github/actions/failure-issue

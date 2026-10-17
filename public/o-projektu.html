@@ -118,12 +118,15 @@
         <strong>Datum hlasování v plénu</strong> je známé jen z programu zasedání (asi 1–2 týdny dopředu); jinde píšeme „zatím nezveřejněno“.
         <strong>Téma</strong> se odvozuje z odpovědného výboru (např. ENVI → Klima, příroda a energie; ITRE → Průmysl a vnitřní trh;
         CULT téma nemá). Řazení rozpracovaných: nejdřív ty nejblíž hlasování, pak podle poslední události. Nejde o hodnocení důležitosti.</li>
-      <li id="moje-shoda"><strong>Moje shoda s poslanci</strong> (<a href="moje-shoda.html">kvíz</a>): otázky vybírá jedno pravidlo
-        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>): nejvýš 15 závěrečných hlasování o zákonech
-        (COD, CNS, APP) za posledních 12 měsíců, ve kterých se čeští poslanci nejvíc rozdělili mezi pro a proti, z každého zákona jen jedno. Rozdělení je
-        podmínkou proto, aby odpovědi poslance od sebe odlišily. Shoda = podíl otázek se stejnou odpovědí z otázek, na které jste odpověděli a ve kterých
-        poslanec hlasoval; „nehlasoval/a“ a hlasování mimo mandát se nepočítají. Výsledek je seřazený podle shody, ale není to
-        hodnocení poslanců: 15 otázek je malý vzorek. Počítá se jen v prohlížeči, odpovědi se nikam neposílají.</li>
+      <li id="moje-shoda"><strong>Moje shoda s poslanci</strong> (<a href="moje-shoda.html">kvíz</a>): otázky vybírá pravidlo
+        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>): závěrečná hlasování o zákonech (COD, CNS, APP)
+        za celé období, ve kterých čeští poslanci nehlasovali jednotně, seřazená podle počtu jmenovitých hlasování k zákonu v plénu (hodně hlasování
+        znamená hodně pozměňovacích návrhů, tedy sporný a sledovaný zákon). Z jednoho tématu nejvýš 3 zákony a nejvýš polovina otázek, kde
+        menšina Čechů měla do 2 hlasů. Krátký test má 12 otázek, delší 25. Srozumitelný název a popis otázky píše AI (Claude Haiku) jen z úředního
+        názvu a popisu hlasování; nesmí přidat číslo, které ve vstupu není, ani výsledek hlasování, jinak se shrnutí zahodí. Přesné zadání pro AI je
+        u kvízu pod ⓘ a úřední znění u každé otázky. Shoda = podíl otázek se stejnou odpovědí z otázek, na které jste odpověděli a ve kterých
+        poslanec hlasoval; „nehlasoval/a“ a hlasování mimo mandát se nepočítají. Výsledek je seřazený podle shody, ale není to hodnocení
+        poslanců. Počítá se jen v prohlížeči, odpovědi se nikam neposílají.</li>
       <li id="pribeh-zakona"><strong>Příběh zákona</strong> (stránky <code>z/…</code>, odkaz „Příběh zákona“ u hlasování a v radaru): jedna stránka
         pro každou proceduru, o které se v plénu jmenovitě hlasovalo, a pro každou proceduru s českou rolí. Průběh je ze stejných událostí EP Open Data
         jako u radaru, hlasování z HowTheyVote.eu (všechna, včetně pozměňovacích návrhů), česká stopa ze zpravodajů a stínových zpravodajů v EP Open Data.
