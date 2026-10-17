@@ -1,7 +1,8 @@
 # Srozumitelné shrnutí otázek kvízu „Moje shoda“ (Claude Haiku, scripts/quiz_summaries.py).
 # Běží po každé týdenní aktualizaci (otázky se mohou změnit s novými hlasováními) a ručně.
 # Volá API jen pro nové nebo změněné otázky; ostatní shrnutí jsou uložená v data/quiz_summaries.json.
-# Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a web ukáže úřední názvy.
+# Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a zůstanou uložená shrnutí.
+# Bez klíče jdou shrnutí vytvořit lokálně přes Claude Code: python scripts/quiz_summaries.py --backend claude-cli
 name: Shrnutí kvízu
 
 on:
@@ -12,7 +13,7 @@ on:
 
 permissions:
   contents: write
-  issues: write    # issue při selhání
+  issues: write    # issue při selhání a upozornění na chybějící shrnutí
 
 concurrency:
   group: weekly-data  # commity do main se nepřekrývají s ostatními datovými běhy
@@ -39,10 +40,39 @@ jobs:
       - name: Shrnutí otázek (Claude Haiku)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/quiz_summaries.py
+        run: python scripts/quiz_summaries.py --backend api
 
       - name: Commit
-        run: scripts/commit_data.sh "data: shrnutí kvízu $(date -u +%Y-%m-%d)" data/quiz_summaries.json
+        run: |
+          scripts/commit_data.sh "data: shrnutí kvízu $(date -u +%Y-%m-%d)" data/quiz_summaries.json
+
+      - name: Chybějící shrnutí
+        id: check
+        run: python scripts/quiz_summaries.py --check >> "$GITHUB_OUTPUT"
+
+      - name: Upozornění na chybějící shrnutí (issue)
+        # Bez API klíče se shrnutí nové otázky nevytvoří samo: issue připomene, že je potřeba je obnovit přes Claude Code.
+        # Když shrnutí chybí, issue se založí (nebo doplní komentářem); když jsou všechna, otevřené issue se zavře.
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          MISSING: ${{ steps.check.outputs.missing }}
+          LIST: ${{ steps.check.outputs.list }}
+        with:
+          script: |
+            const title = "Kvíz Moje shoda: chybí shrnutí otázek";
+            const n = Number(process.env.MISSING || 0);
+            const open = await github.paginate(github.rest.issues.listForRepo, { ...context.repo, state: "open", creator: "github-actions[bot]" });
+            const hit = open.find((i) => i.title === title && !i.pull_request);
+            if (n > 0) {
+              const body = `Kvíz se obnovil a ${n} otázek nemá srozumitelné shrnutí (zobrazuje se úřední název):\n\n${process.env.LIST}\n\n` +
+                "Co udělat: v konzoli Claude Code napiš „obnov shrnutí kvízu“ (spustí `python scripts/quiz_summaries.py --backend claude-cli`, " +
+                "zkontroluje výsledek a založí PR). Po mergi se toto issue při dalším běhu samo zavře.";
+              if (hit) await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body });
+              else await github.rest.issues.create({ ...context.repo, title, body });
+            } else if (hit) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body: "Všechny otázky kvízu mají shrnutí, zavírám." });
+              await github.rest.issues.update({ ...context.repo, issue_number: hit.number, state: "closed", state_reason: "completed" });
+            }
 
       - name: Issue při selhání
         if: failure()

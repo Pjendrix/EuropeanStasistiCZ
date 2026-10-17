@@ -1,7 +1,164 @@
 {
  "note": "Shrnutí otázek kvízu Moje shoda od Claude Haiku (scripts/quiz_summaries.py). Čísla ani výsledky hlasování neobsahují.",
  "model": "claude-haiku-5-5",
- "prompt_version": 1,
- "prompt": "Jsi editor českého nezávislého webu o hlasování europoslanců. Web má kvíz: čtenář řekne, jak by hlasoval o zákonu, a porovná se s poslanci.\nÚřední názvy zákonů jsou pro laiky nesrozumitelné. Napiš ke každému zákonu:\n- \"nazev\": krátký srozumitelný český název (nejvýš 80 znaků), ne otázka,\n- \"shrnuti\": jednu až dvě věty (nejvýš 300 znaků), co zákon dělá a koho se týká.\n\nPravidla:\n- Vycházej jen z údajů v zadání. Nic nedomýšlej; když z údajů není jasné, co zákon mění, převeď úřední název do srozumitelné češtiny a víc nepiš.\n- Piš neutrálně: žádné hodnocení, žádné „kontroverzní“, „důležitý“, „sporný“, žádné argumenty pro ani proti.\n- Nepiš, jak hlasování dopadlo, kdo jak hlasoval, ani žádné počty hlasů.\n- Nepoužívej čísla, která nejsou v zadání (letopočty a čísla předpisů jen tak, jak jsou v zadání).\n- Piš spisovnou češtinou bez zkratek, které laik nezná (EU a Komise jsou v pořádku).",
- "items": {}
+ "prompt_version": 3,
+ "prompt": "Jsi editor českého nezávislého webu o hlasování europoslanců. Web má kvíz: čtenář řekne, jak by hlasoval o zákonu, a porovná se s poslanci.\nÚřední názvy zákonů jsou pro laiky nesrozumitelné. Napiš ke každému zákonu:\n- \"nazev\": krátký srozumitelný český název (nejvýš 80 znaků), ne otázka,\n- \"shrnuti\": jednu až dvě věty (nejvýš 200 znaků), co zákon dělá a koho se týká.\n\nPravidla:\n- Vycházej jen z údajů v zadání. Nic nedomýšlej; když z údajů není jasné, co zákon mění, převeď úřední název do srozumitelné češtiny a víc nepiš.\n- Piš neutrálně: žádné hodnocení, žádné „kontroverzní“, „důležitý“, „sporný“, žádné argumenty pro ani proti.\n- Nepiš, jak hlasování dopadlo, kdo jak hlasoval, ani žádné počty hlasů.\n- Nepoužívej čísla, která nejsou v zadání (letopočty a čísla předpisů jen tak, jak jsou v zadání).\n- Piš spisovnou češtinou bez zkratek, které laik nezná (EU a Komise jsou v pořádku); zkratky, které nejsou v zadání, nepřidávej.\n- Nezmiňuj zadání, hlasování ani to, kdo o návrhu rozhoduje; popisuj jen obsah zákona. Nepiš výplňové věty.",
+ "items": {
+  "2025/0045(COD)": {
+   "nazev": "Změna pravidel pro zprávy o udržitelnosti podniků a jejich náležitou péči",
+   "shrnuti": "Mění několik existujících předpisů EU a upravuje požadavky na zprávy o udržitelnosti, které podniky vykazují, a na jejich povinnost náležité péče.",
+   "fingerprint": "e069abc8c5869898",
+   "generated": "2026-10-17"
+  },
+  "2025/0571R(APP)": {
+   "nazev": "Průběžná zpráva o víceletém rozpočtovém rámci EU na roky 2028–2034",
+   "shrnuti": "Usnesení k průběžné zprávě o návrhu víceletého finančního rámce EU na roky 2028–2034. Rámec stanovuje, kolik peněz může EU v těchto letech celkově utratit.",
+   "fingerprint": "387833a9508f7810",
+   "generated": "2026-10-17"
+  },
+  "2025/0429(COD)": {
+   "nazev": "Prodloužení dočasné výjimky z pravidel ochrany soukromí online proti zneužívání dětí",
+   "shrnuti": "Zákon prodlužuje dobu platnosti dočasné výjimky z pravidel ochrany soukromí v elektronických komunikacích. Výjimka slouží k boji proti sexuálnímu zneužívání dětí na internetu a týká se online služeb.",
+   "fingerprint": "1f0d07f774514f85",
+   "generated": "2026-10-17"
+  },
+  "2025/0524(COD)": {
+   "nazev": "Rámec EU pro dosažení klimatické neutrality",
+   "shrnuti": "Mění evropské nařízení č. 2021/1119, které stanovuje rámec pro dosažení klimatické neutrality v EU.",
+   "fingerprint": "ac49fda91319e775",
+   "generated": "2026-10-17"
+  },
+  "2025/0329(COD)": {
+   "nazev": "Úprava některých povinností firem a obchodníků podle nařízení proti odlesňování",
+   "shrnuti": "Mění nařízení EU proti odlesňování (nařízení (EU) 2023/1115) a upravuje některé povinnosti firem a obchodníků, na které se toto nařízení vztahuje.",
+   "fingerprint": "e93871991f48591b",
+   "generated": "2026-10-17"
+  },
+  "2025/0359(COD)": {
+   "nazev": "Zjednodušení pravidel EU pro umělou inteligenci (digitální balíček)",
+   "shrnuti": "Mění nařízení EU o umělé inteligenci a nařízení (EU) 2018/1139 tak, aby bylo jednodušší provádět jednotná pravidla pro umělou inteligenci.",
+   "fingerprint": "9db1c00357c23f7d",
+   "generated": "2026-10-17"
+  },
+  "2024/0071(COD)": {
+   "nazev": "Finanční pomoc Evropské unie pro Egypt",
+   "shrnuti": "Předpis upravuje poskytnutí makrofinanční pomoci Evropské unie Egyptské arabské republice, tedy finanční podpory pro tuto zemi. Týká se Egypta a Evropské unie.",
+   "fingerprint": "32187d01b821aa5d",
+   "generated": "2026-10-17"
+  },
+  "2024/0017(COD)": {
+   "nazev": "Prověřování zahraničních investic v EU",
+   "shrnuti": "Upravuje, jak se v Evropské unii prověřují zahraniční investice. Zároveň ruší dosavadní nařízení z roku 2019, které tuto oblast upravovalo.",
+   "fingerprint": "df7d3ff0012b6ee2",
+   "generated": "2026-10-17"
+  },
+  "2024/0319(COD)": {
+   "nazev": "Posílení postavení zemědělců v potravinovém řetězci",
+   "shrnuti": "Zákon má posílit postavení zemědělců ve vztazích s dalšími články potravinového řetězce, tedy s těmi, kdo zemědělské produkty dále zpracovávají nebo prodávají.",
+   "fingerprint": "14363837663e9cbf",
+   "generated": "2026-10-17"
+  },
+  "2025/0261(COD)": {
+   "nazev": "Cla na vybrané zboží z USA a celní kvóty",
+   "shrnuti": "Zákon mění cla na vybrané zboží dovážené do EU ze Spojených států amerických a otevírá celní kvóty pro dovoz některého zboží z těchto států. Týká se dovozců tohoto zboží.",
+   "fingerprint": "76e57ca7b12943d8",
+   "generated": "2026-10-17"
+  },
+  "2025/0102(COD)": {
+   "nazev": "Rámec pro bezpečnost dodávek kriticky důležitých léčivých přípravků",
+   "shrnuti": "Zákon stanoví rámec pro posílení bezpečnosti a dostupnosti dodávek kriticky důležitých léčivých přípravků a dostupnosti léčivých přípravků obecného zájmu v EU. Mění také nařízení (EU) 2024/795.",
+   "fingerprint": "3e0d001b9fca7b44",
+   "generated": "2026-10-17"
+  },
+  "2023/0321(CNS)": {
+   "nazev": "Rámec pro zdanění příjmů podnikání v Evropě (BEFIT)",
+   "shrnuti": "Návrh rámce pro zdanění příjmů podnikání v Evropě. Upravuje způsob, jakým se zdaňují příjmy podniků působících v evropských zemích.",
+   "fingerprint": "271a6c5c67b5e567",
+   "generated": "2026-10-17"
+  },
+  "2025/0531(COD)": {
+   "nazev": "Zjednodušení požadavků na chemické výrobky",
+   "shrnuti": "Mění několik předpisů EU o chemických výrobcích a zjednodušuje některé požadavky a postupy, které se na tyto výrobky vztahují.",
+   "fingerprint": "90c21ae7e644536e",
+   "generated": "2026-10-17"
+  },
+  "2024/0035(COD)": {
+   "nazev": "Boj proti sexuálnímu zneužívání dětí a dětské pornografii",
+   "shrnuti": "Evropský předpis, který upravuje boj proti sexuálnímu zneužívání a vykořisťování dětí a proti materiálům se sexuálním zneužíváním dětí. Přepracovaně nahrazuje starší rámcové rozhodnutí z roku 2004.",
+   "fingerprint": "2facb9c4f779f320",
+   "generated": "2026-10-17"
+  },
+  "2025/0580(CNS)": {
+   "nazev": "Spotřební daň z tabákových výrobků a souvisejících výrobků",
+   "shrnuti": "Upravuje, jak se zdaňují tabákové výrobky a výrobky s nimi související spotřební daní, a stanoví strukturu a sazby této daně. Jde o přepracované znění dosavadních pravidel.",
+   "fingerprint": "f9a3d63eb1ffd907",
+   "generated": "2026-10-17"
+  },
+  "2025/0236(COD)": {
+   "nazev": "Změny pravidel EU pro zemědělské podpory a jejich kontroly",
+   "shrnuti": "Mění pravidla EU pro zemědělské podpory: přímé platby, intervence v některých odvětvích, rozvoj venkova, výroční zprávy, správu dat, pozastavení plateb, kontroly a sankce.",
+   "fingerprint": "dd355f3e98deeee6",
+   "generated": "2026-10-17"
+  },
+  "2024/0187(CNS)": {
+   "nazev": "Zabezpečení průkazů totožnosti a pobytových dokladů občanů EU",
+   "shrnuti": "Zákon má posílit zabezpečení průkazů totožnosti občanů EU a povolení k pobytu, která se vydávají občanům EU a jejich rodinným příslušníkům při výkonu práva volného pohybu.",
+   "fingerprint": "52b640bf8cb03b68",
+   "generated": "2026-10-17"
+  },
+  "2023/0441(CNS)": {
+   "nazev": "Pomoc konzulárních úřadů pro občany EU bez zastoupení ve třetích zemích",
+   "shrnuti": "Opatření usnadňuje konzulární ochranu občanů EU ve třetích zemích, kde jejich vlastní stát nemá zastoupení. Pomoc mohou poskytnout konzulární úřady jiných členských států EU.",
+   "fingerprint": "6795362bf8b90f0c",
+   "generated": "2026-10-17"
+  },
+  "2023/0410(COD)": {
+   "nazev": "Změna zřízení Stálého lesnického výboru",
+   "shrnuti": "Mění rozhodnutí, kterým se zřizuje Stálý lesnický výbor, tedy stálá odborná skupina pro lesnictví. Týká se oblasti lesů a lesnictví.",
+   "fingerprint": "b74f6d4d37aeb78b",
+   "generated": "2026-10-17"
+  },
+  "2025/0590(COD)": {
+   "nazev": "Program EU pro jednotný trh a cla na období 2028–2034",
+   "shrnuti": "Zřizuje program EU pro jednotný trh a cla na období 2028–2034 a zrušuje pět dosavadních nařízení EU. Nahrazuje tak dřívější právní předpisy pro tuto oblast.",
+   "fingerprint": "f0b56c85ac16c086",
+   "generated": "2026-10-17"
+  },
+  "2025/0059(COD)": {
+   "nazev": "Společný systém EU pro navracení cizinců bez oprávnění k pobytu",
+   "shrnuti": "Stanoví společná pravidla EU pro navracení státních příslušníků třetích zemí, kteří v Unii neoprávněně pobývají. Nahrazuje směrnici o navracení z roku 2008 a dvě starší právní akty.",
+   "fingerprint": "83610f71acc7c6c7",
+   "generated": "2026-10-17"
+  },
+  "2023/0404(COD)": {
+   "nazev": "Talentový pool EU",
+   "shrnuti": "Zákon zavádí talentový pool EU, tedy společný unijní nástroj pro evidenci pracovních talentů. Má sloužit k jejich propojování s potřebami trhu práce v EU.",
+   "fingerprint": "3e389006b9db3384",
+   "generated": "2026-10-17"
+  },
+  "2024/0061(COD)": {
+   "nazev": "Evropský program investic do obrany (EDIP)",
+   "shrnuti": "Evropský program na podporu investic do obranného průmyslu a soubor opatření, která mají zajistit včasnou dostupnost a dodávky obranných produktů.",
+   "fingerprint": "f9fbd14c34722b27",
+   "generated": "2026-10-17"
+  },
+  "2024/0006(COD)": {
+   "nazev": "Evropské rady zaměstnanců a právo na informování v nadnárodních společnostech",
+   "shrnuti": "Upravuje zřizování a fungování evropských rad zaměstnanců v nadnárodních společnostech a účinnější uplatňování jejich práva na informování a projednání na nadnárodní úrovni.",
+   "fingerprint": "471c6adc5de1b6e4",
+   "generated": "2026-10-17"
+  },
+  "2025/0084(COD)": {
+   "nazev": "Úprava fondů EU pro regionální rozvoj, soudržnost a spravedlivou transformaci",
+   "shrnuti": "Mění pravidla čerpání evropských fondů pro regionální rozvoj, soudržnost a spravedlivou transformaci. Stanoví zvláštní opatření k řešení strategických výzev při přezkumu v polovině období.",
+   "fingerprint": "0efa9efcc03a1275",
+   "generated": "2026-10-17"
+  },
+  "2026/0078(COD)": {
+   "nazev": "Program AGILE pro rychlé inovace v obraně",
+   "shrnuti": "Zavádí program AGILE, jehož cílem je pružné a rychlé inovace v oblasti obrany. Jde o předpis Evropské unie v oblasti obrany a bezpečnosti.",
+   "fingerprint": "5826dba99992b6c1",
+   "generated": "2026-10-17"
+  }
+ }
 }
