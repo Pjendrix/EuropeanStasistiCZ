@@ -131,13 +131,26 @@ def run(votes: list[dict], cache: dict, backend, today: str, log=print) -> dict:
     }
 
 
+def missing(votes: list[dict], cache: dict, n: int = 5) -> list[dict]:
+    """Hlasování na úvodu (n nejnovějších závěrečných) bez platného shrnutí."""
+    items = cache.get("items", {}) if cache.get("prompt_version") == PROMPT_VERSION else {}
+    return [v for v in latest_final(votes, n) if items.get(str(v["id"]), {}).get("fingerprint") != fingerprint(vote_input(v))]
+
+
 def main(argv=None) -> int:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--data-dir", type=Path, default=root / "data")
     p.add_argument("--backend", choices=["auto", "api", "claude-cli"], default="auto")
+    p.add_argument("--check", action="store_true", help="nic negeneruje, jen vypíše hlasování na úvodu bez shrnutí (GITHUB_OUTPUT)")
     args = p.parse_args(argv)
     out_path = args.data_dir / "vote_summaries.json"
+    if args.check:
+        cache = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
+        miss = missing(load_votes(args.data_dir / "votes")[1], cache)
+        lines = "\n".join(f"- {v.get('title_cs') or v['title']} ({v['date']})" for v in miss)
+        print(f"missing_votes={len(miss)}\nlist_votes<<EOF_LIST\n{lines}\nEOF_LIST")
+        return 0
     backend = None
     use_api = args.backend == "api" or (args.backend == "auto" and os.environ.get("ANTHROPIC_API_KEY"))
     if use_api and os.environ.get("ANTHROPIC_API_KEY"):

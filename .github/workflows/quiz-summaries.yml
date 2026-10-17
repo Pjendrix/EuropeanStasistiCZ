@@ -48,7 +48,9 @@ jobs:
 
       - name: Chybějící shrnutí
         id: check
-        run: python scripts/quiz_summaries.py --check >> "$GITHUB_OUTPUT"
+        run: |
+          python scripts/quiz_summaries.py --check >> "$GITHUB_OUTPUT"
+          python scripts/vote_summaries.py --check >> "$GITHUB_OUTPUT"
 
       - name: Upozornění na chybějící shrnutí (issue)
         # Bez API klíče se shrnutí nové otázky nevytvoří samo: issue připomene, že je potřeba je obnovit přes Claude Code.
@@ -57,20 +59,26 @@ jobs:
         env:
           MISSING: ${{ steps.check.outputs.missing }}
           LIST: ${{ steps.check.outputs.list }}
+          MISSING_VOTES: ${{ steps.check.outputs.missing_votes }}
+          LIST_VOTES: ${{ steps.check.outputs.list_votes }}
         with:
           script: |
-            const title = "Kvíz Moje shoda: chybí shrnutí otázek";
-            const n = Number(process.env.MISSING || 0);
+            const title = "Chybí AI shrnutí (kvíz nebo úvodní stránka)";
+            const old = "Kvíz Moje shoda: chybí shrnutí otázek";  // dřívější název stejného issue
+            const n = Number(process.env.MISSING || 0), nv = Number(process.env.MISSING_VOTES || 0);
             const open = await github.paginate(github.rest.issues.listForRepo, { ...context.repo, state: "open", creator: "github-actions[bot]" });
-            const hit = open.find((i) => i.title === title && !i.pull_request);
-            if (n > 0) {
-              const body = `Kvíz se obnovil a ${n} otázek nemá srozumitelné shrnutí (zobrazuje se úřední název):\n\n${process.env.LIST}\n\n` +
-                "Co udělat: v konzoli Claude Code napiš „obnov shrnutí kvízu“ (spustí `python scripts/quiz_summaries.py --backend claude-cli`, " +
+            const hit = open.find((i) => (i.title === title || i.title === old) && !i.pull_request);
+            if (n > 0 || nv > 0) {
+              const parts = [];
+              if (n > 0) parts.push(`**Kvíz Moje shoda:** ${n} otázek nemá srozumitelné shrnutí (zobrazuje se úřední název):\n\n${process.env.LIST}`);
+              if (nv > 0) parts.push(`**Úvodní stránka:** ${nv} posledních hlasování nemá krátké shrnutí (karta ukazuje jen nadpis):\n\n${process.env.LIST_VOTES}`);
+              const body = parts.join("\n\n") + "\n\n" +
+                "Co udělat: v konzoli Claude Code napiš „obnov AI shrnutí“ (spustí `quiz_summaries.py` a `vote_summaries.py` s `--backend claude-cli`, " +
                 "zkontroluje výsledek a založí PR). Po mergi se toto issue při dalším běhu samo zavře.";
               if (hit) await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body });
               else await github.rest.issues.create({ ...context.repo, title, body });
             } else if (hit) {
-              await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body: "Všechny otázky kvízu mají shrnutí, zavírám." });
+              await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body: "Všechny otázky kvízu i hlasování na úvodu mají shrnutí, zavírám." });
               await github.rest.issues.update({ ...context.repo, issue_number: hit.number, state: "closed", state_reason: "completed" });
             }
 

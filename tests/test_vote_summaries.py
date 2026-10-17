@@ -68,3 +68,10 @@ def test_api_backend_uses_vote_prompt():
     b = vs.ApiBackend(api, prompt=vs.PROMPT, schema=vs.SCHEMA)
     assert vs.summarize(b, vs.vote_input(mock_vote())) == "Usnesení k Gruzii."
     assert calls[0]["system"] == vs.PROMPT
+
+
+def test_missing_lists_home_votes_without_summary():
+    votes = [mock_vote(1, date="2026-10-07"), mock_vote(2, date="2026-10-08")]
+    out = vs.run(votes, {}, Fake("MOCK Usnesení Parlamentu k situaci v Gruzii."), "d")
+    assert vs.missing(votes, out) == []
+    assert [v["id"] for v in vs.missing(votes + [mock_vote(3, date="2026-10-09")], out)] == [3]
