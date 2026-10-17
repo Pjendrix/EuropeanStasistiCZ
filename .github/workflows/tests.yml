@@ -1,10 +1,10 @@
-# Testy u každého pull requestu a pushe mimo main.
+# Testy a lint u každého pull requestu a pushe do main (u PR jen jednou, kontrola webu pytest nespouští).
 name: Testy
 
 on:
   pull_request:
   push:
-    branches-ignore: [main]
+    branches: [main]
 
 permissions:
   contents: read
@@ -14,10 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install --require-hashes -r requirements.txt
       - run: python -m pytest -q
+      - name: Lint Pythonu (ruff, pravidla v ruff.toml)
+        run: pipx run ruff==0.13.0 check scripts tests
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: "22"
+      - name: Lint JS (ESLint, pravidla v eslint.config.mjs)
+        run: |
+          npm install --no-save --no-package-lock eslint@9.36.0 @eslint/js@9.36.0
+          npx eslint public/*.js tests/e2e/*.mjs eslint.config.mjs

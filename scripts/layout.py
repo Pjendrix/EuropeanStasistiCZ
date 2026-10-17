@@ -168,7 +168,7 @@ def sync_text(text: str) -> str:
     for rx, new in [(_HEAD_RE, head_assets()), (_HEADER_RE, header()), (_FOOTER_RE, footer())]:
         if len(rx.findall(text)) != 1:
             raise ValueError(f"stránka nemá právě jednu část odpovídající {rx.pattern[:30]}…")
-        text = rx.sub(lambda _: new, text)
+        text = rx.sub(lambda _: new, text)  # noqa: B023 (sub volá funkci hned)
     return text
 
 

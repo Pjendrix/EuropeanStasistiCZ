@@ -423,7 +423,7 @@ def build_parties_web(stats: dict, parties: list[dict], meps: list[dict], votes_
         index.append(summary)
         split_item = lambda vid: {**vote_summary(votes_by_id[vid], meps_by_id),
                                   "positions": [p for p in cz_positions(votes_by_id[vid], meps_by_id)
-                                                if str(p["national_party_id"]) == pid]}
+                                                if str(p["national_party_id"]) == pid]}  # noqa: B023 (volá se v téže iteraci)
         pages[pid] = {**summary, "sources": stats["sources"], "definitions": stats["definitions"],
                       "member_list": members, "reports": party_reports(pid, meps, own),
                       "splits": [split_item(v) for v in st["splits"]["recent"]],
@@ -448,7 +448,7 @@ def build_eu_groups(votes: list[dict], votes_by_id: dict, meps: list[dict], stat
             if any(x["end"] is None for x in m["mandates"]) and cur and by_ep.get(cur["code"], cur["code"]) == code:
                 members.append({**mep_summary(m, day), "total": stats["meps"][str(m["id"])]["total"]})
         st = gs[code]
-        row = lambda vid: {**vote_summary(votes_by_id[vid], meps_by_id), "gc": votes_by_id[vid]["group_counts"][code]}
+        row = lambda vid: {**vote_summary(votes_by_id[vid], meps_by_id), "gc": votes_by_id[vid]["group_counts"][code]}  # noqa: B023
         summary = {**{k: g.get(k) for k in ("code", "short_label", "name_cs", "label", "color", "chart_color", "logo", "logo_aspect")},
                    "web": ((group_web or {}).get("groups") or {}).get(code, {}).get("web"), "cz_members": len(members),
                    "attendance": st["attendance"], "attendance_main": st["attendance_main"], "majority": st["majority"],

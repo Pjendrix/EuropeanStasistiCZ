@@ -12,12 +12,11 @@ from __future__ import annotations
 
 import json
 import math
-import re
 from pathlib import Path
 
-from build_pages import (POSITIONS, RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, meps_count, page,
+from build_pages import (RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_pct, group_label, page,
                          og_meta, split_bar)
-from categories import ICON, LABEL, icon_svg
+from categories import LABEL, icon_svg
 from hero_art import STARS
 from compute_stats import apply_titles, procedure_titles
 from vote_kinds import KIND_LABELS
@@ -45,7 +44,7 @@ def vote_link(v: dict) -> str:
 
 def _dots(cz: list[int]) -> str:
     cls = ("f", "a", "s", "n")
-    return "".join(f'<i class="vd {c}"></i>' for c, n in zip(cls, cz) for _ in range(n))
+    return "".join(f'<i class="vd {c}"></i>' for c, n in zip(cls, cz, strict=False) for _ in range(n))
 
 
 def _legend(cz: list[int]) -> str:
@@ -314,7 +313,7 @@ def radar_html(radar: dict | None, root: str = "") -> str:
             f'nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}'
             + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
             + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
-            f'<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
+            '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
             + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
             + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
             '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
@@ -423,7 +422,7 @@ def hemi_html(vote: dict) -> str:
         f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" aria-label="{esc(p["name"])}, {esc(party_text(p))}">'
         f'<circle class="hm-ring" r="15.5"/><g transform="scale(.86)"><circle class="hm-f" r="13"/>'
         + "".join(f'<path class="hm-sym hm-s{k}" d="{d}"/>' for k, d in SYM.items()) + "</g></a></g>"
-        for i, (p, (x, y)) in enumerate(zip(ppl, slots)))
+        for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False)))
     c = vote["counts"]
     return (f'<svg viewBox="0 0 400 232" class="hm-ring-stars" aria-hidden="true">{stars}</svg>'
             f'<svg viewBox="0 0 400 232" class="hm-seats" role="group" aria-label="Čeští poslanci jako tečky, barva a symbol podle hlasu">{seats}</svg>'

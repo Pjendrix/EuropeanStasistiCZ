@@ -9,7 +9,6 @@ Text loga se převádí na křivky z písma webu (Plus Jakarta Sans, OFL), takž
 
 from __future__ import annotations
 
-import io
 import math
 from pathlib import Path
 
@@ -230,7 +229,7 @@ def ico(paths: list[Path], out: Path) -> None:
     header = struct.pack("<HHH", 0, 1, len(data))
     offset = 6 + 16 * len(data)
     entries = b""
-    for s, d in zip(sizes, data):
+    for s, d in zip(sizes, data, strict=False):
         entries += struct.pack("<BBBBHHII", s, s, 0, 0, 1, 32, len(d), offset)
         offset += len(d)
     out.write_bytes(header + entries + b"".join(data))

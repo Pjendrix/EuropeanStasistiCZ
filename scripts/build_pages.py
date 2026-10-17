@@ -119,8 +119,8 @@ def current(items: list[dict]) -> dict | None:
 
 def split_bar(counts: list[int]) -> str:
     total = sum(counts) or 1
-    title = ", ".join(f"{POSITION_LABEL[k]}: {n}" for k, n in zip(POSITIONS, counts))
-    spans = "".join(f'<span class="s-{k}" style="width:{n / total * 100:.2f}%"></span>' for k, n in zip(POSITIONS, counts))
+    title = ", ".join(f"{POSITION_LABEL[k]}: {n}" for k, n in zip(POSITIONS, counts, strict=False))
+    spans = "".join(f'<span class="s-{k}" style="width:{n / total * 100:.2f}%"></span>' for k, n in zip(POSITIONS, counts, strict=False))
     return f'<div class="split" role="img" aria-label="{esc(title)}">{spans}</div>'
 
 
@@ -142,7 +142,7 @@ def og_meta(title: str, description: str, path: str, base_url: str | None, image
             image_alt: str | None = None, card: bool = False) -> str:
     """Open Graph; absolutní URL jen když je známá adresa webu (data/manual/site.json).
     card = image je karta ke sdílení 1200 × 630 (scripts/build_cards.py): přidá rozměry, alt a velký náhled pro X."""
-    lines = [f'<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
+    lines = ['<meta property="og:type" content="website">', f'<meta property="og:title" content="{esc(title)}">',
              f'<meta property="og:description" content="{esc(description)}">', '<meta property="og:locale" content="cs_CZ">']
     if base_url:
         url = base_url.rstrip("/") + "/" + path
@@ -202,7 +202,6 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     mandate = ", ".join(f"{fmt_date(m['start'])} – {fmt_date(m['end']) if m.get('end') else 'dosud'}" for m in mep["mandates"])
     htv = f"{HTV}/members/{mep['id']}"
     b = prof.get("benchmarks")
-    rng = f"od {fmt_date(mep['mandates'][0]['start'])}"
     att = t["attendance"]
     desc = f"{name}: účast na hlasování {fmt_pct(att)} ({fmt_num(att[0])} z {fmt_num(att[1])} jmenovitých hlasování), " \
            f"{group_label(g['code'] if g else None, groups)}, {p['short_label'] if p else 'strana neuvedena'}. Data z HowTheyVote.eu a EP."
@@ -250,7 +249,7 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
       <span class="badge outline">{"v mandátu" if active else by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span></div>
     <p class="muted">Mandát: {mandate}</p>
     {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
-    {f'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
+    {'<p class="small note">Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování.</p>' if prof.get("short_mandate") else ""}
     <p class="small"><a href="{esc(mep.get('profile_url'))}">Profil na webu EP</a> · <a href="{htv}">Hlasování na HowTheyVote.eu</a></p>
   </div>
 </div>

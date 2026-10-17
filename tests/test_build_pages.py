@@ -36,7 +36,7 @@ def test_share_button_in_head_row_and_no_corner_cite(data_dir):
     for key in ("v/1.html", "p/1.html", "s/20.html"):
         html = pages[key]
         assert 'class="cite-btn"' not in html, key
-        assert html.count("data-share") == 1 and f'<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
+        assert html.count("data-share") == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
         assert "share.js" in html, key
     assert 'cite: "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
 
@@ -87,7 +87,7 @@ def test_definitions_static_and_every_key_has_a_name(tmp_path):
     assert "<strong>Účast na hlasování</strong>: Text &lt;b&gt;" in html and "work_profile" not in html
     try:
         bp.definitions_html({"neznamy_klic": "x"})
-        assert False, "měla být chyba"
+        raise AssertionError("měla být chyba")
     except bp.FormatError as e:
         assert "neznamy_klic" in str(e)
     pub, data = tmp_path / "public", tmp_path / "data"
@@ -224,8 +224,6 @@ def test_static_pages_do_not_change_with_new_data_export(data_dir):
     for key in (k for k in first if k.startswith("v/")):
         assert first[key] == second[key], key
         assert "dataDay" not in first[key] and "2099" not in second[key]
-    votes = json.loads((data_dir / "votes" / "2024-09.json").read_text(encoding="utf-8"))["votes"]
-    meps = {m["id"]: m for m in json.loads((data_dir / "meps.json").read_text(encoding="utf-8"))["meps"]}
     # karta hlasování nezávisí na datu exportu (v patičce je datum hlasování)
     assert "data_day" not in bc.vote_card.__code__.co_varnames
 
