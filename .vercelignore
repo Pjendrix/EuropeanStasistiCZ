@@ -1,6 +1,7 @@
-# Python skripty běží jen v GitHub Actions, na Vercelu je jen statický web.
+# Na Vercel jde jen to, co potřebuje sestavení webu (scripts/vercel_build.sh): public/, data/, scripts/, design/,
+# requirements-build.txt. Testy, dokumentace a cache ne.
 requirements.txt
-scripts/
 tests/
 docs/
 .cache/
+.pydeps/

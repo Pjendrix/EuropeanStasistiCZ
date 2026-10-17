@@ -3,6 +3,17 @@ __pycache__/
 .pytest_cache/
 .cache/
 public/data/
+# odvozené výstupy vznikají při sestavení na Vercelu (scripts/vercel_build.sh, audit A6), v gitu jsou jen data/
+public/p/
+public/s/
+public/v/
+public/z/
+public/og/
+public/index.html
+public/sitemap.xml
+public/feed.xml
+public/robots.txt
+.pydeps/
 
 # lokální tajné klíče nikdy do repa (klíče patří do GitHub Secrets)
 .env

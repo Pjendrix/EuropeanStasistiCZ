@@ -1,6 +1,6 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
-import { getJSON, loadCategories, loadSearch, param, soft } from "../lib/data.js";
-import { KIND_LABEL, KIND_NOTE, MONTH_RE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
+import { getJSON, loadCategories, param, soft } from "../lib/data.js";
+import { KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
 import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupBadge, kindTag, logoTile, mepUrl, partyBadge, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
@@ -11,22 +11,12 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     // Parametry z URL jen v očekávaném tvaru (audit B1: m se jinak dostal do cesty k souboru i do HTML).
     if (!/^\d+$/.test(param("id") || "")) throw new Error("Hlasování nenalezeno.");
     const id = Number(param("id"));
-    const month = MONTH_RE.test(param("m") || "") ? param("m") : null;
-    const [mepsDoc, groups, parties] = await Promise.all([
+    const [shard, mepsDoc, groups, parties] = await Promise.all([
+      // Jedno hlasování (≈ 7 kB) místo celého měsíce (audit A4); soubory vznikají při sestavení webu (build_shards.py).
+      getJSON(`votes/id/${id}.json`).catch(() => { throw new Error("Hlasování nenalezeno."); }),
       getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
-    // Bez měsíce v URL se měsíc najde v odlehčeném seznamu hlasování.
-    const months = month ? [month] : (await loadSearch()).filter((x) => x.id === id).map((x) => x.month);
-    let v = null, foundMonth = null;
-    for (const m of months) {
-      const data = await getJSON(`votes/${m}.json`);
-      v = data.votes.find((x) => x.id === id);
-      if (v) { foundMonth = m; break; }
-    }
-    if (!v) throw new Error("Hlasování nenalezeno.");
-    // Český název procedury (data/titles_cs.json z build_web.py); bez něj zůstane anglický název z HowTheyVote.
-    const titlesCs = (await getJSON("titles_cs.json").catch(soft(null)))?.titles || {};
-    if (titlesCs[v.procedure?.reference]) v.title_cs = titlesCs[v.procedure.reference];
+    const v = shard.vote, foundMonth = v.month;
     document.title = `${voteTitle(v)} – EP Watch CZ`; // nadpis stránky se upřesní níže
     const meps = Object.fromEntries(mepsDoc.meps.map((m) => [m.id, m]));
     const cz = v.cz_positions.filter((p) => {
@@ -39,21 +29,15 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const czGroups = new Set(cz.map((p) => p.group_code));
     const groupRows = Object.entries(v.group_counts).sort((a, b) => (b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)));
     const topics = [...v.topics.oeil.map((t) => t.label), ...v.topics.eurovoc.map((t) => t.label), ...v.topics.geo.map((t) => t.label)];
-    // Typ hlasování: z dat (nové soubory), jinak ze search.json; starší data ukážou jen hlavní / dílčí.
-    // Velký index (1,5 MB) jen když je potřeba: starší data bez typu nebo dílčí hlasování (odkaz na závěrečné).
-    const needSearch = !v.vote_kind || (!isFinal(v) && v.reference);
-    const search = needSearch ? await loadSearch().catch(soft([])) : [];
-    const row = search.find((x) => x.id === id) || {};
-    const kind = v.vote_kind || row.vote_kind;
+    const kind = v.vote_kind;
     const inverted = v.inverted ?? kind === "rejection";
-    const desc = v.description_cs || row.description_cs || v.description;
+    const desc = v.description_cs || v.description;
     const kv = { ...v, vote_kind: kind, inverted, description_cs: desc };
     const final = isFinal({ ...v, vote_kind: kind });
     // Nadpis = o čem se hlasovalo; název zákona/zprávy jako podtitul.
     const heading = final ? voteTitle(v) : (desc || (kind ? KIND_LABEL[kind] : "") || voteTitle(v));
-    // U dílčích hlasování odkaz na závěrečné hlasování téže reference (pokud proběhlo).
-    const finalVotes = !final && v.reference ? search.filter((x) => x.reference === v.reference && isFinal(x) && x.id !== id) : [];
-    const finalVote = finalVotes[finalVotes.length - 1];
+    // U dílčích hlasování odkaz na závěrečné hlasování téže reference (pokud proběhlo; připravil build_shards.py).
+    const finalVote = final ? null : shard.final_vote;
     const adopted = adoptedTextUrl(v.texts_adopted_reference);
     // Česká stopa: kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy (data/vote_roles.json z own_work.json).
     const roles = ((await getJSON("vote_roles.json").catch(soft(null)))?.votes || {})[String(v.id)] || [];
@@ -94,7 +78,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
-        <a href="vote.html?id=${finalVote.id}&m=${finalVote.month}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
+        <a href="v/${finalVote.id}.html">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <p class="small">
         ${final ? `<a href="v/${v.id}.html">Trvalý odkaz</a> · ` : ""}
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
