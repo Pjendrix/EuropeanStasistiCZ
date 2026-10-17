@@ -1047,8 +1047,12 @@ main.home-page { max-width: none; padding: 0; }
 .hm-step button:hover:not(:disabled) { border-color: var(--gold); background: rgba(248, 250, 252, .1); }
 .hm-step button:disabled { opacity: .35; cursor: default; }
 @media (pointer: coarse) { .hm-step button { width: 44px; height: 44px; } }
-.hm-hemi { position: relative; margin: 10px auto 0; width: 100%; max-width: 320px; aspect-ratio: 400 / 232; }
-.hm-hemi > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+/* Oblouk a číslo „pro : proti“ v jednom SVG (hub.py hemi_html): stejné měřítko, nic se nepřekrývá. Na šířku karty, nejvýš 460 px. */
+.hm-hemi { position: relative; margin: 10px auto 0; width: 100%; max-width: 460px; }
+.hm-hemi > svg { display: block; width: 100%; height: auto; aspect-ratio: 400 / 250; overflow: visible; }
+.hm-num { fill: #F8FAFC; font-weight: 300; letter-spacing: -2px; text-anchor: middle; font-variant-numeric: tabular-nums; }
+.hm-num-c { fill: var(--gold); }
+.hm-num-u { fill: #A5B4C8; font-size: 12.5px; font-weight: 700; letter-spacing: 1.6px; text-anchor: middle; }
 .hm-star { fill: #F59E0B; opacity: .32; }
 .hm-seat { cursor: pointer; outline: none; transition: opacity .2s; }
 .hm-f { stroke-width: 3.2; transition: fill .5s ease, stroke .5s ease; transition-delay: calc(var(--i) * 16ms); }
@@ -1062,10 +1066,6 @@ main.home-page { max-width: none; padding: 0; }
 .hm-ring { fill: none; stroke: var(--gold); stroke-width: 2.4; opacity: 0; transition: opacity .15s; }
 .hm-seat:hover .hm-ring, .hm-seat:focus-visible .hm-ring { opacity: 1; }
 .hm-hemi.dim .hm-seat:not(.mate) { opacity: .28; }
-.hm-center { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); width: 44%; text-align: center; pointer-events: none; }
-.hm-big { font-size: clamp(2.2rem, 4.3vw, 3.5rem); font-weight: 300; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
-.hm-big em { font-style: normal; color: var(--gold); margin: 0 .06em; }
-.hm-u { margin-top: 6px; font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A5B4C8; }
 .hm-tip { position: absolute; z-index: 5; pointer-events: none; transform: translate(-50%, calc(-100% - 10px)); background: #F8FAFC; color: #0F172A; border-radius: 12px; padding: 8px 12px;
   font-size: .85rem; line-height: 1.3; white-space: nowrap; box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .6); opacity: 0; transition: opacity .12s; }
 .hm-tip.on { opacity: 1; }
@@ -1077,8 +1077,16 @@ main.home-page { max-width: none; padding: 0; }
 .hm-res { display: inline-flex; align-items: center; font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: .18rem .7rem; border-radius: 999px; background: #F8FAFC; color: #0F172A; }
 .hm-res.no { background: #334155; color: #F8FAFC; }
 .hm-cap-title { margin: 12px 0 0; font-size: 1.32rem; font-weight: 700; line-height: 1.28; letter-spacing: -.015em; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-width: none; text-wrap: pretty; }
-/* bez ořezu řádků: shrnutí má nejvýš 200 znaků (vote_summaries.py) a odkaz na zdroj musí být vidět */
-.hm-sum { margin: 8px 0 0; font-size: .9rem; line-height: 1.45; color: #CBD5E1; max-width: none; }
+/* Shrnutí AI ořízne na 2 řádky, „víc“ ho rozbalí (hub.js). Odkaz na přijatý text je mimo ořez, na řádku s tlačítkem,
+   takže zdroj je vidět i ve sbaleném stavu. */
+.hm-sum { margin: 8px 0 0; font-size: .9rem; line-height: 1.45; color: #CBD5E1; max-width: none;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.hm-sum.open { display: block; overflow: visible; }
+.hm-sum-act { margin: 2px 0 0; font-size: .82rem; color: #A5B4C8; max-width: none; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.hm-more { background: none; border: 0; padding: 0 2px; min-height: 32px; font: inherit; color: #CBD5E1; text-decoration: underline; cursor: pointer; }
+.hm-more:hover { color: var(--gold); }
+.hm-more.idle { visibility: hidden; width: 0; padding: 0; overflow: hidden; }
+.hm-more.idle + span { display: none; }
 .hm-ai { display: inline-block; margin-right: 7px; padding: 0 .42rem; border-radius: 6px; border: 1px solid rgba(245, 158, 11, .45); color: var(--gold); font-size: .66rem; font-weight: 800; letter-spacing: .06em; line-height: 1.55; vertical-align: .12em; cursor: help; }
 .hm-src .hm-ai { margin: 0 2px; cursor: default; }
 .hm-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin: 10px 0 0; transition: opacity .17s; padding: 0; list-style: none; font-size: .9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -1091,6 +1099,10 @@ main.home-page { max-width: none; padding: 0; }
 .hm-detail:hover { color: var(--gold) !important; }
 .hm-icon { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(248, 250, 252, .2); background: rgba(248, 250, 252, .05); color: #F8FAFC; display: grid; place-items: center; cursor: pointer; padding: 0; }
 .hm-icon:hover { border-color: var(--gold); background: rgba(248, 250, 252, .1); }
+.hm-icons { display: flex; gap: 8px; }
+.hm-info { margin: 0; }
+.info-btn.hm-icon { width: 44px; height: 44px; border-color: rgba(248, 250, 252, .2); background: rgba(248, 250, 252, .05); color: #F8FAFC; }
+.info-btn.hm-icon:hover, .info-btn.hm-icon[aria-expanded="true"] { border-color: var(--gold); background: rgba(248, 250, 252, .1); color: #F8FAFC; }
 .hm-src { margin: 8px 0 0; font-size: .75rem; color: #A5B4C8; }
 .hm-src a { color: #CBD5E1; }
 
@@ -1201,7 +1213,6 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
   .hm-quick { display: none; }   /* stejné odkazy jsou ve spodní liště, karta hlasování je tak výš */
   .hm-cap-title { font-size: 1.16rem; }
   .hm-nx { font-size: .84rem; margin-bottom: 16px; } .hm-nx-n { display: none; }
-  .hm-seat { transform: scale(1.3); }   /* tečky aspoň 24 px i na úzkém telefonu */
   .hm-tile { padding: 24px; } .hm-tile h3 { font-size: 1.8rem; }
   .hm-mosaic { gap: 6px; }
   .hm-nums { grid-template-columns: minmax(0, 1fr); }
@@ -1399,7 +1410,8 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
 .hm-hero .topic-chip:hover { border-color: var(--gold); }
 .hm-hero .topic-chip .cat-ico { background: rgba(248, 250, 252, .12); color: #F8FAFC; }
 .hm-hero .tc-more { color: #CBD5E1; }
-.hm-topic { margin: 10px 0 0; }
+.hm-topic { display: inline-flex; }
+.hm-topic .topic-chip { font-size: .74rem; }
 
 /* Další zasedání (program EP, hub.py next_session_html): datum, odpočet, body programu, česká stopa */
 .next-session { margin: 0 0 1.5rem; }
