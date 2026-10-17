@@ -2,7 +2,7 @@
 # Sestavení webu na Vercelu (audit A6): v gitu jsou jen data/ a ruční stránky, odvozené výstupy vznikají tady.
 #   public/data/        kopie data/ (bez měsíčních souborů hlasování, web je nepotřebuje)
 #   public/data/votes/id/  hlasování po jednom pro vote.html (build_shards.py, audit A4)
-#   public/p, s, v, z/  statické stránky, index.html, sitemap.xml, feed.xml (build_pages.py)
+#   public/p, s, v, z/  statické stránky, index.html (rozcestník), aktualne.html, sitemap.xml, feed.xml (build_pages.py)
 #   public/og/          obrázky ke sdílení (build_cards.py)
 # Spouští ho vercel.json (buildCommand); lokálně stejně: bash scripts/vercel_build.sh
 set -euo pipefail
