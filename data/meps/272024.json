@@ -97,7 +97,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -130,11 +130,11 @@
  "total": {
   "attendance": [
    3705,
-   3730
+   3855
   ],
   "attendance_main": [
    370,
-   372
+   397
   ],
   "group_loyalty": [
    3134,
@@ -172,18 +172,18 @@
    "FOR": 1825,
    "AGAINST": 1377,
    "ABSTENTION": 503,
-   "DID_NOT_VOTE": 25
+   "DID_NOT_VOTE": 150
   }
  },
  "monthly": {
   "2025-10": {
    "attendance": [
     257,
-    257
+    382
    ],
    "attendance_main": [
     17,
-    17
+    42
    ],
    "group_loyalty": [
     211,
@@ -221,7 +221,7 @@
     "FOR": 133,
     "AGAINST": 87,
     "ABSTENTION": 37,
-    "DID_NOT_VOTE": 0
+    "DID_NOT_VOTE": 125
    }
   },
   "2025-11": {
@@ -1524,21 +1524,21 @@
  ],
  "benchmarks": {
   "source": {
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
   "min_votes": 100,
   "ep": {
-   "meps": 732,
-   "attendance": 0.9003,
-   "attendance_main": 0.9066,
+   "meps": 731,
+   "attendance": 0.9004,
+   "attendance_main": 0.9068,
    "group_loyalty": 0.933
   },
   "group_code": "PFE",
   "group": {
    "meps": 90,
    "attendance": 0.8938,
-   "attendance_main": 0.8958,
+   "attendance_main": 0.8959,
    "group_loyalty": 0.8471
   },
   "window": {
@@ -2665,7 +2665,7 @@
     "for": 295,
     "against": 302,
     "abstention": 7,
-    "did_not_vote": 115
+    "did_not_vote": 114
    },
    "cz": [
     3,
@@ -2715,6 +2715,38 @@
    "inverted": false,
    "description_cs": "Za odst. 36 - PN 3, 1. část",
    "position": "FOR"
+  },
+  {
+   "id": 179608,
+   "date": "2025-10-09",
+   "month": "2025-10",
+   "title": "Druhý světový summit o sociálním rozvoji",
+   "reference": "B10-0408/2025",
+   "description": "§ 13/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 291,
+    "against": 295,
+    "abstention": 20,
+    "did_not_vote": 113
+   },
+   "cz": [
+    1,
+    16,
+    2,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": "P10_TA(2025)0231",
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13, 2. část",
+   "position": "DID_NOT_VOTE"
   }
  ],
  "topics": [
@@ -2724,11 +2756,11 @@
    "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)",
    "attendance": [
     808,
-    810
+    837
    ],
    "attendance_main": [
     69,
-    69
+    73
    ],
    "group_loyalty": [
     684,
@@ -2766,7 +2798,7 @@
     "FOR": 374,
     "AGAINST": 320,
     "ABSTENTION": 114,
-    "DID_NOT_VOTE": 2
+    "DID_NOT_VOTE": 29
    }
   },
   {
@@ -2775,11 +2807,11 @@
    "label_cs": "Rozpočet Unie",
    "attendance": [
     496,
-    497
+    512
    ],
    "attendance_main": [
     47,
-    47
+    50
    ],
    "group_loyalty": [
     414,
@@ -2817,7 +2849,7 @@
     "FOR": 278,
     "AGAINST": 138,
     "ABSTENTION": 80,
-    "DID_NOT_VOTE": 1
+    "DID_NOT_VOTE": 16
    }
   },
   {
@@ -2826,11 +2858,11 @@
    "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
     537,
-    537
+    560
    ],
    "attendance_main": [
     20,
-    20
+    22
    ],
    "group_loyalty": [
     437,
@@ -2868,7 +2900,7 @@
     "FOR": 174,
     "AGAINST": 267,
     "ABSTENTION": 96,
-    "DID_NOT_VOTE": 0
+    "DID_NOT_VOTE": 23
    }
   },
   {
@@ -2877,11 +2909,11 @@
    "label_cs": "Politika životního prostředí",
    "attendance": [
     368,
-    370
+    373
    ],
    "attendance_main": [
     39,
-    39
+    41
    ],
    "group_loyalty": [
     352,
@@ -2919,7 +2951,7 @@
     "FOR": 237,
     "AGAINST": 118,
     "ABSTENTION": 13,
-    "DID_NOT_VOTE": 2
+    "DID_NOT_VOTE": 5
    }
   },
   {
@@ -2928,11 +2960,11 @@
    "label_cs": "Vztahy se třetími zeměmi",
    "attendance": [
     379,
-    380
+    384
    ],
    "attendance_main": [
     32,
-    33
+    34
    ],
    "group_loyalty": [
     314,
@@ -2970,7 +3002,7 @@
     "FOR": 187,
     "AGAINST": 137,
     "ABSTENTION": 55,
-    "DID_NOT_VOTE": 1
+    "DID_NOT_VOTE": 5
    }
   },
   {
@@ -2979,11 +3011,11 @@
    "label_cs": "Společná obchodní politika obecně",
    "attendance": [
     216,
-    219
+    220
    ],
    "attendance_main": [
     34,
-    35
+    36
    ],
    "group_loyalty": [
     160,
@@ -3021,7 +3053,7 @@
     "FOR": 128,
     "AGAINST": 49,
     "ABSTENTION": 39,
-    "DID_NOT_VOTE": 3
+    "DID_NOT_VOTE": 4
    }
   },
   {
@@ -3081,11 +3113,11 @@
    "label_cs": "Orgány Unie",
    "attendance": [
     169,
-    170
+    183
    ],
    "attendance_main": [
     21,
-    21
+    24
    ],
    "group_loyalty": [
     141,
@@ -3123,7 +3155,7 @@
     "FOR": 78,
     "AGAINST": 67,
     "ABSTENTION": 24,
-    "DID_NOT_VOTE": 1
+    "DID_NOT_VOTE": 14
    }
   },
   {
@@ -3183,11 +3215,11 @@
    "label_cs": "Podniková politika, spolupráce podniků",
    "attendance": [
     207,
-    208
+    218
    ],
    "attendance_main": [
     13,
-    13
+    14
    ],
    "group_loyalty": [
     202,
@@ -3225,7 +3257,7 @@
     "FOR": 114,
     "AGAINST": 75,
     "ABSTENTION": 18,
-    "DID_NOT_VOTE": 1
+    "DID_NOT_VOTE": 11
    }
   }
  ],
@@ -3240,7 +3272,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/speeches",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15"
+  "updated": "2026-10-17"
  },
  "presence": {
   "present": 49,
@@ -3251,7 +3283,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/meetings",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15"
+  "updated": "2026-10-17"
  },
  "own_work": {
   "source": {

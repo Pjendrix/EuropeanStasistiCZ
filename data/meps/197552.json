@@ -89,7 +89,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -125,8 +125,8 @@
    6154
   ],
   "attendance_main": [
-   598,
-   640
+   599,
+   641
   ],
   "group_loyalty": [
    4711,
@@ -134,7 +134,7 @@
   ],
   "group_loyalty_main": [
    445,
-   593
+   594
   ],
   "cz_agreement": [
    4294,
@@ -146,7 +146,7 @@
   ],
   "outcome_main": [
    400,
-   513
+   514
   ],
   "outcome_close": [
    64,
@@ -157,8 +157,8 @@
    344288
   ],
   "group_outcome_main": [
-   26562,
-   32853
+   26613,
+   32920
   ],
   "positions": {
    "FOR": 2934,
@@ -798,8 +798,8 @@
     382
    ],
    "attendance_main": [
-    40,
-    41
+    41,
+    42
    ],
    "group_loyalty": [
     294,
@@ -807,7 +807,7 @@
    ],
    "group_loyalty_main": [
     27,
-    40
+    41
    ],
    "cz_agreement": [
     276,
@@ -819,7 +819,7 @@
    ],
    "outcome_main": [
     17,
-    29
+    30
    ],
    "outcome_close": [
     3,
@@ -830,8 +830,8 @@
     21056
    ],
    "group_outcome_main": [
-    1223,
-    1792
+    1274,
+    1859
    ],
    "positions": {
     "FOR": 181,
@@ -2194,32 +2194,32 @@
  ],
  "benchmarks": {
   "source": {
-   "release": "2026-10-10"
+   "release": "2026-10-17"
   },
   "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
   "min_votes": 100,
   "ep": {
    "meps": 742,
-   "attendance": 0.899,
-   "attendance_main": 0.9062,
+   "attendance": 0.8991,
+   "attendance_main": 0.9056,
    "group_loyalty": 0.9322
   },
   "group_code": "ECR",
   "group": {
    "meps": 85,
    "attendance": 0.9166,
-   "attendance_main": 0.9172,
+   "attendance_main": 0.9173,
    "group_loyalty": 0.9115
   },
   "window": null
  },
  "against_group": {
   "count": 1021,
-  "count_main": 148,
+  "count_main": 149,
   "party_known": 773,
   "with_party": 698,
-  "party_known_main": 128,
-  "with_party_main": 120,
+  "party_known_main": 129,
+  "with_party_main": 121,
   "recent": [
    {
     "id": 198023,
@@ -3333,7 +3333,7 @@
     "for": 295,
     "against": 302,
     "abstention": 7,
-    "did_not_vote": 115
+    "did_not_vote": 114
    },
    "cz": [
     3,
@@ -3403,7 +3403,7 @@
     1,
     16,
     2,
-    1
+    2
    ],
    "amendment_number": "§",
    "texts_adopted_reference": "P10_TA(2025)0231",
@@ -4059,24 +4059,24 @@
    "label": "Social policy, social charter and protocol",
    "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
-    669,
-    708
+    670,
+    709
    ],
    "attendance_main": [
-    31,
-    33
+    32,
+    34
    ],
    "group_loyalty": [
     491,
-    668
+    669
    ],
    "group_loyalty_main": [
     23,
-    31
+    32
    ],
    "cz_agreement": [
     480,
-    644
+    645
    ],
    "outcome": [
     352,
@@ -4101,7 +4101,7 @@
    "positions": {
     "FOR": 274,
     "AGAINST": 316,
-    "ABSTENTION": 79,
+    "ABSTENTION": 80,
     "DID_NOT_VOTE": 39
    }
   },
@@ -4110,48 +4110,48 @@
    "label": "Environmental policy",
    "label_cs": "Politika životního prostředí",
    "attendance": [
-    521,
-    551
+    523,
+    553
    ],
    "attendance_main": [
-    52,
-    59
+    53,
+    60
    ],
    "group_loyalty": [
-    471,
-    521
+    473,
+    523
    ],
    "group_loyalty_main": [
-    42,
-    52
+    43,
+    53
    ],
    "cz_agreement": [
-    441,
-    507
+    443,
+    509
    ],
    "outcome": [
     248,
-    498
+    500
    ],
    "outcome_main": [
     35,
-    44
+    45
    ],
    "outcome_close": [
     2,
     5
    ],
    "group_outcome": [
-    15327,
-    34552
+    15330,
+    34698
    ],
    "group_outcome_main": [
-    2139,
-    2914
+    2141,
+    2987
    ],
    "positions": {
-    "FOR": 337,
-    "AGAINST": 161,
+    "FOR": 338,
+    "AGAINST": 162,
     "ABSTENTION": 23,
     "DID_NOT_VOTE": 30
    }
@@ -4314,49 +4314,49 @@
    "label": "Institutions of the Union",
    "label_cs": "Orgány Unie",
    "attendance": [
-    248,
-    276
+    259,
+    287
    ],
    "attendance_main": [
-    34,
-    38
+    35,
+    39
    ],
    "group_loyalty": [
-    192,
-    248
+    203,
+    259
    ],
    "group_loyalty_main": [
-    25,
-    34
+    26,
+    35
    ],
    "cz_agreement": [
-    178,
-    237
+    188,
+    248
    ],
    "outcome": [
-    95,
-    217
+    105,
+    227
    ],
    "outcome_main": [
-    19,
-    26
+    20,
+    27
    ],
    "outcome_close": [
     0,
     2
    ],
    "group_outcome": [
-    5022,
-    15150
+    5674,
+    15829
    ],
    "group_outcome_main": [
-    1253,
-    1744
+    1313,
+    1810
    ],
    "positions": {
-    "FOR": 130,
-    "AGAINST": 87,
-    "ABSTENTION": 31,
+    "FOR": 133,
+    "AGAINST": 94,
+    "ABSTENTION": 32,
     "DID_NOT_VOTE": 28
    }
   },
@@ -4416,49 +4416,49 @@
    "label": "Enterprise policy, inter-company cooperation",
    "label_cs": "Podniková politika, spolupráce podniků",
    "attendance": [
-    214,
-    215
+    224,
+    225
    ],
    "attendance_main": [
-    15,
-    15
+    16,
+    16
    ],
    "group_loyalty": [
-    207,
-    213
+    217,
+    223
    ],
    "group_loyalty_main": [
-    14,
-    15
+    15,
+    16
    ],
    "cz_agreement": [
-    193,
-    212
+    202,
+    222
    ],
    "outcome": [
-    141,
-    210
+    150,
+    219
    ],
    "outcome_main": [
-    12,
-    14
+    13,
+    15
    ],
    "outcome_close": [
     2,
     3
    ],
    "group_outcome": [
-    10208,
-    15104
+    10838,
+    15741
    ],
    "group_outcome_main": [
-    763,
-    878
+    835,
+    950
    ],
    "positions": {
-    "FOR": 121,
-    "AGAINST": 89,
-    "ABSTENTION": 4,
+    "FOR": 127,
+    "AGAINST": 92,
+    "ABSTENTION": 5,
     "DID_NOT_VOTE": 1
    }
   }
@@ -4474,7 +4474,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/speeches",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15"
+  "updated": "2026-10-17"
  },
  "presence": {
   "present": 111,
@@ -4485,7 +4485,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/meetings",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-15"
+  "updated": "2026-10-17"
  },
  "own_work": {
   "source": {
