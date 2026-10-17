@@ -533,7 +533,42 @@ def hemi_html(vote: dict) -> str:
     )
 
 
-def caption_html(vote: dict) -> str:
+TRACE_ROLE = {
+    "rapporteur": ("Zpravodaj", "Zpravodajka"),
+    "co": ("Spoluzpravodaj", "Spoluzpravodajka"),
+    "shadow": ("Stínový zpravodaj", "Stínová zpravodajka"),
+}
+TRACE_MAX = 2
+
+
+def trace_html(vote: dict, meps_by_id: dict, groups: list[dict]) -> str:
+    """Česká stopa na kartě (B4): kdo z Čechů byl zpravodajem nebo stínovým zpravodajem zprávy (vote_roles.json).
+    Nejvýš TRACE_MAX lidí s portrétem, jménem, rolí a frakcí k datu hlasování, zbytek „a další N“. Bez stopy nic."""
+    trace = sorted(
+        vote.get("trace") or [], key=lambda t: (list(TRACE_ROLE).index(t["role"]) if t["role"] in TRACE_ROLE else 9, t.get("name") or "")
+    )
+    people = [t for t in trace if t["mep_id"] in meps_by_id]
+    if not people:
+        return ""
+    items = []
+    for t in people[:TRACE_MAX]:
+        m = meps_by_id[t["mep_id"]]
+        g = next((x for x in m.get("groups") or [] if x["start"] <= vote["date"] and (not x.get("end") or vote["date"] <= x["end"])), None)
+        role = TRACE_ROLE.get(t["role"], ("Zpravodaj", "Zpravodajka"))[1 if m.get("gender") == "FEMALE" else 0]
+        img = (
+            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="28" height="28" loading="lazy">'
+            if m.get("photo_url")
+            else '<span class="hm-tr-i" aria-hidden="true"></span>'
+        )
+        grp = f" ({esc(group_label(g['code'], groups))})" if g else ""
+        items.append(f'<a href="p/{m["id"]}.html">{img}<span><b>{role}:</b> {esc(t.get("name") or m["name"])}{grp}</span></a>')
+    more = len(people) - TRACE_MAX
+    if more > 0:
+        items.append(f'<a class="hm-tr-more" href="v/{vote["id"]}.html#ceska-stopa">a další {more}</a>')
+    return f'<div class="hm-trace" aria-label="Česká stopa">{"".join(items)}</div>'
+
+
+def caption_html(vote: dict, meps_by_id: dict | None = None, groups: list[dict] | None = None) -> str:
     """Hlavička karty nad hemicyklem: datum, typ, výsledek, téma, nadpis a krátké AI shrnutí (když je, vote_summaries.py)."""
     ok = vote["result"] == "ADOPTED"
     res = f'<span class="hm-res{"" if ok else " no"}">{"✓ Přijato" if ok else "✕ Zamítnuto" if vote["result"] == "REJECTED" else esc(RESULT_LABEL.get(vote["result"], "výsledek neuveden"))}</span>'
@@ -545,7 +580,7 @@ def caption_html(vote: dict) -> str:
     )
     return (
         f'<div class="hm-cap-meta"><span>{fmt_date(vote["date"])}</span><span class="hm-tag">{esc(vote["kind_label"])}</span>{res}</div>'
-        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{hero_topic(vote)}'
+        f'<p class="hm-cap-title">{esc(vote["title"])}</p>{summary}{trace_html(vote, meps_by_id or {}, groups or [])}{hero_topic(vote)}'
     )
 
 
@@ -634,15 +669,9 @@ def next_vote_html(agenda: dict | None) -> str:
 
 
 def hero_topic(vote: dict) -> str:
-    """Jeden čip tématu (+N) a štítek české stopy pod nadpisem; bez obojího nic."""
+    """Jeden čip tématu (+N) pod nadpisem; česká stopa má vlastní řádek s portréty (trace_html)."""
     chips = topic_chips([t["slug"] for t in vote.get("topics") or []], 1, True, f"h{vote['id']}", "")
-    trace = vote.get("trace") or []
-    badge = (
-        f'<span class="cz-badge" title="{esc(", ".join(f"{t['name']} ({_ROLE_CS[t['role']]})" for t in trace))}">česká stopa</span>'
-        if trace
-        else ""
-    )
-    return f'<div class="hm-topic">{chips}{badge}</div>' if chips or badge else ""
+    return f'<div class="hm-topic">{chips}</div>' if chips else ""
 
 
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -685,7 +714,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
                 "title": x["title"],
                 "counts": x["counts"],
                 # popisek a legenda jako hotové HTML ze stejných šablon jako statická stránka (audit A1: bez dvojčat v hub.js)
-                "cap": caption_html(x),
+                "cap": caption_html(x, meps_by_id, groups),
                 "leg": legend_html(x),
                 "share": hero_share(x, share.get(str(x["id"]))),
                 "pos": {str(p["id"]): p["pos"] for p in x["ppl"]},
@@ -722,12 +751,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
           <button id="hm-next" type="button" aria-label="Starší hlasování"{" disabled" if len(votes) < 2 else ""}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_CHEV["next"]}</svg></button>
         </div>
       </div>
-      <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first)}</div>
+      <div class="hm-cap" id="hm-cap" aria-live="polite">{caption_html(first, meps_by_id, groups)}</div>
       <div class="hm-hemi" id="hm-hemi">{hemi_html(first)}</div>
       <ul class="hm-legend" id="hm-leg">{legend_html(first)}</ul>
       <div class="hm-act"><a class="hm-detail" id="hm-more" href="v/{first["id"]}.html">Detail hlasování {_ARROW}</a>
         <button class="hm-icon" type="button" data-share="hero" aria-haspopup="dialog" aria-label="Sdílet toto hlasování">{_SHARE_ICON}</button></div>
-      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku jen z úředního názvu a témat (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}</p>
+      <p class="hm-src">Hlasy k datu hlasování, pět nejnovějších závěrečných hlasování bez výběru. Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL).{' Shrnutí <span class="hm-ai">AI</span> píše Claude Haiku jen z úředního názvu a témat (<a href="o-projektu.html#ai">jak</a>).' if any(x.get("summary") for x in votes) else ""}{" Portréty © European Union – Source: EP." if any(x.get("trace") for x in votes) else ""}</p>
     </section>
   </div>
   <dl class="hm-facts">

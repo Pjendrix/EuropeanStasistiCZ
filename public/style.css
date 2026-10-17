@@ -990,6 +990,14 @@ main.home-page { max-width: none; padding: 0; }
 .hm-stop { display: inline-block; width: .17em; height: .17em; border-radius: 50%; background: var(--gold); margin-left: .06em; vertical-align: baseline; }
 .hm-lead { margin: 18px 0 0; color: #B6C3D6; font-size: 1.15rem; max-width: 34rem; }
 /* B3: řádek „Poslední zasedání“ (čísla ze session.json, každé odkaz na seznam) */
+/* B4: česká stopa na kartě hlasování (portrét, role, jméno, frakce k datu hlasování) */
+.hm-trace { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 0; font-size: .86rem; }
+.hm-trace a { display: inline-flex; align-items: center; gap: 8px; color: #E2E8F0; text-decoration: none; min-height: 32px; }
+.hm-trace a:hover span { text-decoration: underline; }
+.hm-trace b { color: var(--gold); font-weight: 600; }
+.hm-trace img, .hm-tr-i { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--gold); flex: none; }
+.hm-tr-i { background: rgba(248, 250, 252, .12); }
+.hm-tr-more { color: #CBD5E1 !important; text-decoration: underline !important; }
 .hm-sess { margin: 14px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .55rem; color: #94A3B8; font-size: .92rem; }
 .hm-sess-l { color: var(--gold); font-weight: 600; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; flex-basis: 100%; }
 .hm-sess a { color: #CBD5E1; text-decoration: none; border-bottom: 1px solid rgba(203, 213, 225, .35); }
