@@ -131,7 +131,7 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
     assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
     assert "<dt>4</dt><dd>jmenovitých hlasování od" in html and "1 z 2 jednotně" in html and "1 hlasování" in html
-    assert "Součet za všech 2 poslanců" in html
+    assert "Z posledního zasedání" in html and 'id="hm-mosaic"' in html  # B6 místo „Tři cesty do dat“
     for href in (
         "poslanci.html",
         "hlasovani.html",

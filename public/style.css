@@ -990,6 +990,8 @@ main.home-page { max-width: none; padding: 0; }
 .hm-stop { display: inline-block; width: .17em; height: .17em; border-radius: 50%; background: var(--gold); margin-left: .06em; vertical-align: baseline; }
 .hm-lead { margin: 18px 0 0; color: #B6C3D6; font-size: 1.15rem; max-width: 34rem; }
 /* B3: řádek „Poslední zasedání“ (čísla ze session.json, každé odkaz na seznam) */
+/* B1: odkaz na zdroj AI shrnutí */
+.hm-sum-src { color: #CBD5E1; font-size: .82rem; white-space: nowrap; }
 /* B4: česká stopa na kartě hlasování (portrét, role, jméno, frakce k datu hlasování) */
 .hm-trace { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 0; font-size: .86rem; }
 .hm-trace a { display: inline-flex; align-items: center; gap: 8px; color: #E2E8F0; text-decoration: none; min-height: 32px; }
@@ -1115,6 +1117,22 @@ a.hm-tile:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .hm-tile h3 a { color: inherit; text-decoration: none; }
 .hm-tile > p { margin: 8px 0 0; max-width: 30rem; }
 .hm-open { margin-top: auto; padding-top: 20px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: inherit; text-decoration: none; }
+/* B6: Z posledního zasedání (kartičky poslanců, kteří vedli texty) */
+.hm-sess-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
+.hm-pc { background: var(--surface); border: 1px solid var(--border); color: var(--text); box-shadow: var(--shadow); padding: 22px; gap: 14px; }
+.hm-pc-h { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
+.hm-pc-h:hover b { text-decoration: underline; }
+.hm-pc-h img, .hm-pc-i { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--gold); flex: none; }
+.hm-pc-i { background: var(--chip); }
+.hm-pc-h b { display: block; font-size: 1.05rem; }
+.hm-pc-h small { color: var(--muted); font-size: .82rem; }
+.hm-pc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: .9rem; }
+.hm-pc li b { color: var(--muted); font-weight: 600; margin-right: .25rem; }
+.hm-pc-more { align-items: center; justify-content: center; font-weight: 700; color: var(--text); }
+.hm-pc-none { margin: 0; align-self: center; color: var(--muted); }
+.hm-sess-grid .hm-people { grid-column: auto; grid-row: auto; }
+.hm-sess-grid .hm-people h3 { font-size: 1.4rem; }
+.hm-sess-grid .hm-mosaic { gap: 6px; margin-top: 16px; }
 .hm-people { grid-column: span 5; grid-row: span 2; background: linear-gradient(160deg, #2059B8, #173B7E 70%); color: #fff; }
 .hm-people > p { color: #D6E4FF; }
 .hm-people .hm-open { color: #fff; }

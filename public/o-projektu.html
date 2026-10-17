@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=c5572551"></script>
-<link rel="stylesheet" href="style.css?v=053969c8">
+<link rel="stylesheet" href="style.css?v=f41ddbda">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -122,7 +122,12 @@
         u kvízu pod ⓘ a úřední znění u každé otázky. Shoda = podíl otázek se stejnou odpovědí z otázek, na které jste odpověděli a ve kterých
         poslanec hlasoval; „nehlasoval/a“ a hlasování mimo mandát se nepočítají. Výsledek je seřazený podle shody, ale není to hodnocení
         poslanců. Počítá se jen v prohlížeči, odpovědi se nikam neposílají.</li>
-      <li id="ai"><strong>Shrnutí hlasování na úvodu</strong> (štítek AI u karty „Poslední hlasování“): jednu až dvě věty, o čem se hlasovalo, píše AI (Claude Haiku) jen z úředního českého a anglického názvu, druhu procedury, popisu hlasování a témat z HowTheyVote (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_summaries.py">vote_summaries.py</a>). Do shrnutí se nesmí dostat výsledek, počty hlasů ani hodnocení; číslo, které ve vstupu není, shrnutí zahodí a karta pak ukáže jen nadpis. Obsah samotného textu usnesení AI nevidí, proto shrnutí popisuje hlavně téma.</li>
+      <li id="ai"><strong>Shrnutí hlasování na úvodu</strong> (štítek AI u karty „Poslední hlasování“): jednu až dvě věty, co přijatý text říká nebo mění, píše AI (Claude Haiku) <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_summaries.py">vote_summaries.py</a>.
+        Vstupem je úryvek oficiálního českého přijatého textu z EP Open Data (DOCX; vynechají se citace „s ohledem na…“ a text se kódem zkrátí na zhruba 8 000 tokenů od začátku, tedy body odůvodnění a první články, nikdy celý zákon) a k tomu úřední název, druh procedury a témata.
+        Dokud přijatý text není zveřejněný (nebo u zamítnutých textů, kde žádný není), shrnuje AI jen z názvu a témat a štítek AI to v nápovědě uvádí; jakmile text vyjde, shrnutí se při další aktualizaci samo přegeneruje.
+        Text se do repozitáře neukládá, ukládá se jen shrnutí, otisk vstupu a odkaz na zdroj. Do shrnutí se nesmí dostat výsledek, počty hlasů ani hodnocení; číslo, které ve vstupu není, shrnutí zahodí a karta pak ukáže jen nadpis.
+        Přijatý text k hlasování dohledáváme v EP Open Data (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/adopted_texts.py">adopted_texts.py</a>: procedura → přijatý text se stejným datem a dokumentem), ne v HowTheyVote, kde od června 2026 chybí.</li>
+      <li id="z-posledniho-zasedani"><strong>Z posledního zasedání</strong> (úvodní stránka): poslanci se vybírají pravidlem, ne redakcí ani podle aktivity. Ukazují se ti, kdo byli zpravodajem nebo stínovým zpravodajem zprávy, o které se na posledním zasedání v plénu hlasovalo (role z EP Open Data), abecedně, nejvýš čtyři; ostatní jsou v odkazu „a dalších N“. U každého je jen doložitelná činnost s datem v rozsahu zasedání: role u zprávy, počet projevů v plénu a otázek Komisi nebo Radě. Nic se neřadí ani nehodnotí.</li>
       <li id="pribeh-zakona"><strong>Příběh zákona</strong> (stránky <code>z/…</code>, odkaz „Příběh zákona“ u hlasování a v radaru): jedna stránka
         pro každou proceduru, o které se v plénu jmenovitě hlasovalo, a pro každou proceduru s českou rolí. Průběh je ze stejných událostí EP Open Data
         jako u radaru, hlasování z HowTheyVote.eu (všechna, včetně pozměňovacích návrhů), česká stopa ze zpravodajů a stínových zpravodajů v EP Open Data.
