@@ -329,3 +329,11 @@ def test_czech_title_preferred_and_original_kept():
     assert bw.vote_title(v) == "MOCK česky" and bw.vote_title({"id": 2, "title": "MOCK English"}) == "MOCK English"
     assert "MOCK English" in bp.original_title_html(v) and "EP Open Data" in bp.original_title_html(v)
     assert bp.original_title_html({"id": 2, "title": "MOCK English"}) == ""
+
+
+def test_radar_proc_card_links_to_procedure_story():
+    from hub import radar_proc_card
+    row = {"procedure": "2023-0447", "label": "2023/0447(COD)", "url": "https://oeil.example/x", "title_cs": "MOCK",
+           "committee": None, "cz": [], "steps": [], "reached": None, "last_event": None, "next_vote": None}
+    html = radar_proc_card(row, "")
+    assert 'href="z/2023-0447-COD.html"' in html and "oeil.example" not in html

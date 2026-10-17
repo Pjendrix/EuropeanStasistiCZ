@@ -4,6 +4,7 @@ Výstup (obyčejné HTML v repu, web zůstává bez build stepu):
   public/p/{id}.html   poslanec (souhrn, čísla se zdrojem, poslední závěrečná hlasování)
   public/s/{id}.html   strana
   public/v/{id}.html   závěrečné hlasování (o celém textu nebo o prozatímní dohodě)
+  public/z/{rok}-{číslo}-{typ}.html   příběh zákona: průběh procedury a všechna hlasování k ní (procedure_pages.py)
   public/sitemap.xml, public/robots.txt   jen když je v data/manual/site.json adresa webu
 
 Profil poslance má jen tuto adresu (mep.html přesměrovává): statický obsah + profile.js s interakcemi.
@@ -468,6 +469,11 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     if adopted:
         links.append(f'<a href="{esc(adopted)}">Přijatý text (PDF, EP)</a>')
     proc = (v.get("procedure") or {}).get("reference")
+    story = ""
+    if proc and re.match(r"^\d{4}/\d{4}\([A-Z]{3}\)$", proc):
+        slug = proc.replace("/", "-").replace("(", "-").rstrip(")")
+        story = (f'<p class="small story-link"><a href="{ROOT}z/{slug}.html">Příběh zákona: celý průběh a všechna hlasování k {esc(proc)} '
+                 '<span aria-hidden="true">→</span></a></p>')
     if proc:
         links.append(f'<a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference={esc(proc)}">'
                      f'Legislativní observatoř ({esc(proc)})</a>')
@@ -485,7 +491,7 @@ def vote_page(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v['date'])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
-<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
+{story}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
     <div class="detail"><span class="res-badge res-{v.get('result') or 'NONE'}"><i class="res-ic" aria-hidden="true">{'✓' if v.get('result') == 'ADOPTED' else '✕' if v.get('result') == 'REJECTED' else '–'}</i><span class="res-txt">{result}</span></span></div>
@@ -552,6 +558,8 @@ def build(data_dir: Path) -> dict[str, str]:
         if is_final(v):
             path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day)
             out[path] = html
+    from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
+    out.update(procedure_pages(data_dir, votes, meps_by_id, base_url))
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
     if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
         path, html = hub_page(data_dir, base_url)
@@ -739,9 +747,9 @@ def sync_heads(public: Path, data_dir: Path) -> int:
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
-    """Zapíše stránky; soubory v p/, s/, v/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    """Zapíše stránky; soubory v p/, s/, v/, z/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
-    for sub in ("p", "s", "v"):
+    for sub in ("p", "s", "v", "z"):
         d = public / sub
         d.mkdir(parents=True, exist_ok=True)
         for f in d.glob("*.html"):

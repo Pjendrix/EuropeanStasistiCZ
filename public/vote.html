@@ -139,6 +139,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
         `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.title_cs ? "" : v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
+      ${procedureUrl(v.procedure?.reference) ? `<p class="small story-link"><a href="${procedureUrl(v.procedure.reference)}">Příběh zákona: celý průběh a všechna hlasování k ${esc(v.procedure.reference)} <span aria-hidden="true">→</span></a></p>` : ""}
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:

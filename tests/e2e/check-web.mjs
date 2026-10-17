@@ -3,7 +3,7 @@
 //   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
 import { createRequire } from "node:module";
-import { cpSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join, extname, normalize } from "node:path";
@@ -35,8 +35,10 @@ const voteId = kv.lists.all.laws.items[0].id;
 const month = kv.votes[String(voteId)].month;
 const mepId = read("data/overview.json").meps[0].id;
 const partyId = read("data/parties/index.json").parties[0].id;
+// Příběh zákona (z/): první stránka procedury podle čísla.
+const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0]}`;
 const pages = ["index.html", "poslanci.html", "party.html", "party.html?v=eu", "party.html?c=EPP", "hlasovani.html", "votes.html", "temata.html", "radar.html", `vote.html?id=${voteId}&m=${month}`, "rozkol.html", "rozhodujici.html", "shoda.html",
-  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`];
+  "prace.html", "prace-poslanci.html", "o-projektu.html", `p/${mepId}.html`, `s/${partyId}.html`, `v/${voteId}.html`, procPage];
 
 const problems = [];
 const browser = await chromium.launch();

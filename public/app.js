@@ -383,6 +383,12 @@ function toast(text, { bad = false, ms = 2600 } = {}) {
   el._tid = setTimeout(() => el.classList.remove("show"), ms);
 }
 
+// Stránka „Příběh zákona“ k číslu procedury: 2023/0447(COD) -> z/2023-0447-COD.html (scripts/procedure_pages.py).
+function procedureUrl(ref, root = "") {
+  const m = /^(\d{4})\/(\d{4})\(([A-Z]{3})\)$/.exec(ref || "");
+  return m ? `${root}z/${m[1]}-${m[2]}-${m[3]}.html` : null;
+}
+
 // Tvar parametrů z URL (měsíc, den): cokoli jiného se ignoruje.
 const MONTH_RE = /^\d{4}-\d{2}$/;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;

@@ -1447,3 +1447,6 @@ mark { background: #FDE68A; color: #0F172A; border-radius: 3px; padding: 0 .05em
 .cmp-row { margin: .5rem 0 .7rem; }
 .cmp-label { font-size: .85rem; font-weight: 600; margin-bottom: .25rem; }
 @media (max-width: 560px) { .metric.compare { grid-column: auto; } }
+.story-link { margin: .2rem 0 .6rem; font-weight: 600; }
+.ev-list li { padding: .2rem 0; }
+.ev-date { display: inline-block; min-width: 6.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }

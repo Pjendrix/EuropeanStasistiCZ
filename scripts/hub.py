@@ -18,6 +18,7 @@ from build_pages import (RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_
                          og_meta, split_bar)
 from categories import LABEL, icon_svg
 from hero_art import STARS
+from procedure_pages import procedure_url
 from compute_stats import apply_titles, procedure_titles
 from vote_kinds import KIND_LABELS
 
@@ -262,7 +263,10 @@ def radar_steps(steps: list[dict], reached: str | None) -> str:
 def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     title = r.get("title_cs") or r.get("title_en") or r["label"] or r["procedure"]
     comm, chip = _committee_html(r.get("committee"), root)
-    label = f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or "")
+    # číslo procedury vede na stránku Příběh zákona (z/, procedure_pages.py), ta odkazuje dál na Legislativní observatoř
+    story = procedure_url(r.get("label"), root)
+    label = (f'<a href="{story}">{esc(r["label"])}</a>' if story
+             else f'<a href="{esc(r["url"])}">{esc(r["label"])}</a>' if r.get("url") and r.get("label") else esc(r.get("label") or ""))
     head = " · ".join(x for x in (label, comm) if x)
     if done:
         v = r.get("vote") or {}
