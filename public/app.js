@@ -365,6 +365,12 @@ function debounce(fn, ms) {
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; }
 }
+// Prázdný stav s vysvětlením a dalším krokem (audit UI3): co to znamená a kam pokračovat, ne slepá ulička.
+function emptyState(title, hint = "", links = []) {
+  const acts = links.length ? `<div class="empty-acts">${links.map(([href, label]) => `<a class="more-btn" href="${esc(href)}">${esc(label)}</a>`).join("")}</div>` : "";
+  return `<div class="empty-state"><p><strong>${esc(title)}</strong>${hint ? ` ${esc(hint)}` : ""}</p>${acts}</div>`;
+}
+
 // Krátké oznámení dole (role=status), společné pro celý web (audit UI4).
 function toast(text, { bad = false, ms = 2600 } = {}) {
   let el = document.getElementById("toast");

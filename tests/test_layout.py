@@ -1,3 +1,4 @@
+import re
 import sys
 from pathlib import Path
 
@@ -13,7 +14,7 @@ def test_all_pages_use_shared_layout():
 def test_page_with_root():
     html = layout.page("MOCK titulek", "<p>obsah</p>", root="../", current="votes", description="MOCK popis")
     assert '<html lang="cs" data-root="../">' in html
-    assert 'href="../style.css"' in html and 'href="../hlasovani.html" data-page="votes" aria-current="page"' in html
+    assert 'href="../style.css?v=' in html and 'href="../hlasovani.html" data-page="votes" aria-current="page"' in html
     assert '<main id="main">' in html and 'class="skip-link"' in html
     assert '<meta name="description" content="MOCK popis">' in html
 
@@ -33,3 +34,22 @@ def test_instagram_in_header_sheet_footer_and_head():
     assert f'<li><a href="{INSTAGRAM}" rel="me noopener">Instagram @epwatch.cz</a></li>' in h  # panel Více
     assert f'<a href="{INSTAGRAM}" rel="me noopener">Instagram</a>' in f
     assert '<meta property="og:site_name" content="EP Watch CZ">' in a and 'type="application/atom+xml"' in a
+
+
+def test_assets_get_content_version():
+    html = layout.version_assets('<link rel="stylesheet" href="../style.css"><script src="app.js?v=00000000"></script>'
+                                 '<script src="https://cdn.example/x.js"></script><a href="neexistuje.js">')
+    assert re.search(r'href="\.\./style\.css\?v=[0-9a-f]{8}"', html)
+    assert re.search(r'src="app\.js\?v=[0-9a-f]{8}"', html) and "v=00000000" not in html
+    assert 'src="https://cdn.example/x.js"' in html and 'href="neexistuje.js"' in html  # cizí a neexistující beze změny
+
+
+def test_all_pages_reference_versioned_assets():
+    """Žádná stránka v public/ neodkazuje na vlastní .js/.css bez verze (vercel.json je cachuje natrvalo)."""
+    root = Path(__file__).resolve().parent.parent / "public"
+    bad = []
+    for f in list(root.glob("*.html")) + list(root.glob("[psvz]/*.html"))[:50]:
+        for m in re.finditer(r'(?:src|href)="(?:\.\./)*([\w-]+\.(?:js|css))"', f.read_text(encoding="utf-8")):
+            if (root / m[1]).is_file():
+                bad.append(f"{f.name}: {m[1]}")
+    assert not bad, bad

@@ -53,7 +53,7 @@ def test_profile_page_has_numbers_with_source(data_dir):
     assert "50,0 %" in html and "1 z 2 hlasování" in html  # docházka [1, 2]
     assert "https://howtheyvote.eu/members/1" in html
     assert 'href="v/3.html"' in html  # poslední závěrečné hlasování (odkazy od <base href="../">)
-    assert '<base href="../">' in html and 'data-mep="1"' in html and '<script src="profile.js">' in html
+    assert '<base href="../">' in html and 'data-mep="1"' in html and '<script src="profile.js?v=' in html
     assert 'class="skip-link" href="p/1.html#main"' in html
 
 
@@ -119,11 +119,11 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     home = bh.build(data_dir)
     (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
     html = bp.build(data_dir)["index.html"]
-    assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js"' in html
+    assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js?v=' in html
     first = home["votes"][0]
     assert html.count('class="hm-seat"') == len(first["ppl"])
     assert f'id="hm-big">{first["counts"]["F"]}<em>:</em>{first["counts"]["A"]}<' in html  # střed = počet teček pro : proti
-    assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js"' in html
+    assert 'href="p/1.html"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
     assert '<dt>4</dt><dd>jmenovitých hlasování od' in html and "1 z 2 jednotně" in html and "1 hlasování" in html
     assert "Součet za všech 2 poslanců" in html
     for href in ("poslanci.html", "hlasovani.html", "prace.html", "party.html", "temata.html", "rozkol.html", "rozhodujici.html", "shoda.html",

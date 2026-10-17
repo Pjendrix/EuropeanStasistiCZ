@@ -12,6 +12,8 @@ Web zůstává bez build stepu: výstup je obyčejné HTML v repu.
 from __future__ import annotations
 
 import argparse
+import functools
+import hashlib
 import re
 import sys
 from html import escape
@@ -151,16 +153,17 @@ def page(title: str, body: str, *, root: str = "", current: str | None = None, d
     base_tag = f'<base href="{base}">\n' if base else ""
     skip = f"{path}#main" if base and path else "#main"
     attrs = f" {main_attrs}" if main_attrs else ""
-    return (f'<!doctype html>\n<html lang="cs"{root_attr}>\n<head>\n<meta charset="utf-8">\n'
-            f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            f'{base_tag}<title>{escape(title)}</title>\n{desc}{meta}{head_assets(root)}\n</head>\n<body>\n'
-            f'{header(root, current, skip)}\n\n<main id="main"{attrs}>\n{body}\n</main>\n\n'
-            f'{footer(root)}\n{scripts}</body>\n</html>\n')
+    return version_assets(
+        f'<!doctype html>\n<html lang="cs"{root_attr}>\n<head>\n<meta charset="utf-8">\n'
+        f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f'{base_tag}<title>{escape(title)}</title>\n{desc}{meta}{head_assets(root)}\n</head>\n<body>\n'
+        f'{header(root, current, skip)}\n\n<main id="main"{attrs}>\n{body}\n</main>\n\n'
+        f'{footer(root)}\n{scripts}</body>\n</html>\n')
 
 
 # --- srovnání ručních stránek -----------------------------------------------------
 
-_HEAD_RE = re.compile(r'<link rel="icon".*?<link rel="stylesheet" href="style.css">', re.S)
+_HEAD_RE = re.compile(r'<link rel="icon".*?<link rel="stylesheet" href="style.css(?:\?v=[0-9a-f]{8})?">', re.S)
 _HEADER_RE = re.compile(r'<a class="skip-link".*?</div></header>(?:\n<nav class="tabbar".*?<!--/tabbar-->)?', re.S)
 _FOOTER_RE = re.compile(r'<footer class="site-footer">.*?</footer>', re.S)
 
@@ -170,7 +173,27 @@ def sync_text(text: str) -> str:
         if len(rx.findall(text)) != 1:
             raise ValueError(f"stránka nemá právě jednu část odpovídající {rx.pattern[:30]}…")
         text = rx.sub(lambda _: new, text)  # noqa: B023 (sub volá funkci hned)
-    return text
+    return version_assets(text)
+
+
+# --- verze skriptů a stylů (audit UI8) ------------------------------------------------
+# Odkazy na vlastní .js a .css dostanou ?v=<otisk obsahu>. Prohlížeč je pak smí cachovat natrvalo (vercel.json),
+# a po změně souboru se změní adresa, takže se nikdy nenačte stará verze.
+PUBLIC = Path(__file__).resolve().parent.parent / "public"
+_ASSET_RE = re.compile(r'((?:src|href)=")((?:\.\./)*)([\w-]+\.(?:js|css))(?:\?v=[0-9a-f]{8})?"')
+
+
+@functools.lru_cache(maxsize=None)
+def asset_hash(name: str) -> str | None:
+    f = PUBLIC / name
+    return hashlib.sha256(f.read_bytes()).hexdigest()[:8] if f.is_file() else None
+
+
+def version_assets(html: str) -> str:
+    def sub(m: re.Match) -> str:
+        h = asset_hash(m[3])
+        return f'{m[1]}{m[2]}{m[3]}?v={h}"' if h else m[0]
+    return _ASSET_RE.sub(sub, html)
 
 
 def main(argv=None) -> int:
