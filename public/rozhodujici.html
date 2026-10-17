@@ -72,7 +72,7 @@ setNav("decisive");
 (async () => {
   const el = document.getElementById("list");
   try {
-    const [d, overview, dl] = await Promise.all([getJSON("decisive.json"), getJSON("overview.json"), getJSON("delegations.json").catch(() => null)]);
+    const [d, overview, dl] = await Promise.all([getJSON("decisive.json"), getJSON("overview.json"), getJSON("delegations.json").catch(soft(null))]);
     const meps = Object.fromEntries(overview.meps.map((m) => [m.id, m]));
     document.getElementById("summary").textContent =
       `Těsných hlasování: ${fmtNum(d.close_count)} (z toho závěrečných ${fmtNum(d.close_count_main)}). ` +

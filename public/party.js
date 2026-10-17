@@ -26,7 +26,7 @@ function viewSwitch(current) {
 }
 
 async function euListPage() {
-  const [idx, bench] = await Promise.all([getJSON("eugroups/index.json"), getJSON("benchmarks.json").catch(() => null)]);
+  const [idx, bench] = await Promise.all([getJSON("eugroups/index.json"), getJSON("benchmarks.json").catch(soft(null))]);
   main.innerHTML = `
     <div class="page-head"><h1>Evropské frakce v Evropském parlamentu</h1>${viewSwitch("eu")}</div>
     <div class="lead-row"><p class="lead">Souhrn hlasování celých politických skupin EP, ve kterých sedí čeští poslanci.</p>${infoButton(`<p>Čísla jsou za všechny poslance skupiny v celém Evropském parlamentu, ne jen za české. <strong>Účast</strong> = podíl hlasů pro, proti nebo zdržel se z hlasů všech členů skupiny. <strong>Soudržnost</strong> = podíl hlasů pro a proti, které odpovídají většině skupiny (v hlasováních, kde hlasovalo pro nebo proti aspoň ${MIN_VOTERS_EU} členů). <strong>Výrazně rozdělená hlasování</strong> = menšina mezi hlasy pro a proti tvoří aspoň 30 % (stejný práh jako u české delegace). Nezařazení poslanci nejsou skupina, proto tu nejsou. Žádné pořadí ani hodnocení. <a href="o-projektu.html#metodika">Jak počítáme</a>.</p>`)}</div>
@@ -89,7 +89,7 @@ async function euDetailPage(code) {
 }
 
 async function listPage() {
-  const [idx, groups, parties, bench] = await Promise.all([getJSON("parties/index.json"), getJSON("groups.json"), getJSON("parties.json"), getJSON("benchmarks.json").catch(() => null)]);
+  const [idx, groups, parties, bench] = await Promise.all([getJSON("parties/index.json"), getJSON("groups.json"), getJSON("parties.json"), getJSON("benchmarks.json").catch(soft(null))]);
   // Nejdřív strany s nejvíc poslanci (pořadí podle ID nic neříká).
   const list = [...idx.parties].sort((a, b) => b.members - a.members || (a.name || a.short_label).localeCompare(b.name || b.short_label, "cs"));
   const epMed = bench?.ep?.attendance;

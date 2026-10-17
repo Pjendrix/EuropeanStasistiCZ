@@ -352,6 +352,19 @@ for (const width of [1440, 400]) {
   r.forEach((x) => problems.push(`karty: ${x}`));
   await ctx.close();
 }
+// Audit B1: parametry m (vote.html) a od (votes.html) nesmí dostat HTML do stránky.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  const evil = encodeURIComponent(`${month}.json?x="><img src=x onerror="window.__xss=1">`);
+  for (const url of [`vote.html?id=${voteId}&m=${evil}`, `votes.html?m=${evil}&od=${encodeURIComponent('"><img src=x onerror="window.__xss=1">')}`]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const hit = await page.evaluate(() => Boolean(window.__xss) || Boolean(document.querySelector('img[src="x"]')));
+    if (hit) problems.push(`XSS přes parametr URL: ${url}`);
+  }
+  await ctx.close();
+}
+
 // Radar „Co se chystá“: filtry skrývají položky podle tématu, zákonů a české stopy a zapíšou se do adresy.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

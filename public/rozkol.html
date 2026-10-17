@@ -84,7 +84,7 @@ setNav("splits");
 (async () => {
   const el = document.getElementById("list");
   try {
-    const [d, overview, groups, dl] = await Promise.all([getJSON("splits.json"), getJSON("overview.json"), getJSON("groups.json"), getJSON("delegations.json").catch(() => null)]);
+    const [d, overview, groups, dl] = await Promise.all([getJSON("splits.json"), getJSON("overview.json"), getJSON("groups.json"), getJSON("delegations.json").catch(soft(null))]);
     const meps = Object.fromEntries(overview.meps.map((m) => [m.id, m]));
     document.getElementById("source").innerHTML = sourceLine(d);
     const u = d.unity;
@@ -111,7 +111,7 @@ setNav("splits");
       document.getElementById("decisive").innerHTML = `<div class="label">Rozhodly české hlasy</div>
         <div class="value"><span data-count="${dec.votes.length}">${fmtNum(dec.votes.length)}</span></div>
         <div class="detail">těsných hlasování, která by bez českých hlasů dopadla opačně${infoButton(`<p>Z toho závěrečných ${fmtNum(fin)}. Většinou jde o pozměňovací návrhy a dílčí hlasování, ne o celý zákon.</p>`, "Podrobnosti")} · <a href="rozhodujici.html">seznam</a></div>`;
-    }).catch(() => {});
+    }).catch(soft({}));
     const view = new URLSearchParams(location.search).get("v");
     if (view) document.querySelector(`input[value="${CSS.escape(view)}"]`)?.click();
     const PAGE = 10;

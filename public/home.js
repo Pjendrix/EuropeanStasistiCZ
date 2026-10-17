@@ -219,13 +219,13 @@ function groupedCards(list, groups, parties, bench) {
   try {
     const [ov, groups, parties] = await Promise.all([getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json")]);
     // benchmarks.json vzniká při týdenní aktualizaci; bez něj se karty ukážou bez mediánů.
-    const bench = await getJSON("benchmarks.json").catch(() => null);
+    const bench = await getJSON("benchmarks.json").catch(soft(null));
     if (!bench) document.getElementById("bench-key").hidden = true;
     renderKpis(ov, bench);
     Promise.all([getJSON("session.json"), loadCategories()]).then(([session]) => {
       renderSession(session);
     }).catch((e) => showError(document.getElementById("ses-list"), e));
-    renderDelegation(ov, groups, parties, await getJSON("group_web.json").catch(() => null));
+    renderDelegation(ov, groups, parties, await getJSON("group_web.json").catch(soft(null)));
 
     document.getElementById("source").innerHTML = sourceLine(ov) +
       (bench ? infoButton(`<p>Mediány: ${esc(bench.definition || "")}</p><p>Weby frakcí: Wikidata (CC0), vlastnost „oficiální web“. Weby stran: adresa, ze které pochází jejich logo.</p>`, "Definice mediánů a zdroje webů") : "");

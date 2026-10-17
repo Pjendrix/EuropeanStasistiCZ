@@ -97,7 +97,7 @@ setNav("votes-list");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, all, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json"), getJSON("vote_roles.json").catch(() => null)]);
+    const [index, all, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json"), getJSON("vote_roles.json").catch(soft(null))]);
     // Česká stopa: český poslanec byl zpravodajem nebo stínovým zpravodajem zprávy, o které se hlasovalo (vote_roles.json z own_work).
     const trace = new Set(Object.keys(roles?.votes || {}).map(Number));
     const stopa = document.getElementById("stopa");
@@ -135,7 +135,7 @@ setNav("votes-list");
     topicSel.innerHTML += topicCodes.map((c) => `<option value="${esc(c)}">${esc(topicLabels[c] || c)}</option>`).join("");
     topicSel.closest("label").hidden = !topicCodes.length;
     const params = new URLSearchParams(location.search);
-    if (params.get("m")) monthSel.value = params.get("m");
+    if (MONTH_RE.test(params.get("m") || "")) monthSel.value = params.get("m");
     if (params.get("q")) q.value = params.get("q");
     if (params.get("mep") && /^\d+$/.test(params.get("mep"))) { mepSel.value = params.get("mep"); await loadMepVotes(); }
     // ?all=1 ze starších odkazů = všechna hlasování
@@ -143,7 +143,7 @@ setNav("votes-list");
     if (params.get("t")) topicSel.value = params.get("t");
     if (params.get("c")) catSel.value = params.get("c");
     if (params.get("stopa") === "1") stopa.checked = true;
-    let since = params.get("od"); // od data (např. poslední zasedání z úvodní stránky)
+    let since = DAY_RE.test(params.get("od") || "") ? params.get("od") : null; // od data (např. poslední zasedání z úvodní stránky)
     document.getElementById("source").innerHTML =
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
         `<p>Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál. Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.</p>`, "Zdroj a metodika");

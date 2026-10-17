@@ -30,7 +30,6 @@ PUBLIC_TESTS = [
     "test_labels_cs.py", "test_overrides.py", "test_own_work.py", "test_radar.py", "test_vote_kinds.py", "test_work_hub.py",
 ]
 PUBLIC_MANUAL = ["colors.json", "overrides.json", "topics_cs.json"]
-REQUIREMENTS = "pandas>=2.2\nrequests>=2.31\npytest>=8\n"
 
 
 def export(out: Path) -> list[str]:
@@ -62,8 +61,10 @@ def export(out: Path) -> list[str]:
     copy(ROOT / "docs" / "open-repo" / "LICENSE-AGPL-3.0.txt", out / "LICENSE")
     copy(ROOT / "docs" / "open-repo" / "tests.yml", out / ".github" / "workflows" / "tests.yml")
     copy(ROOT / "DATA_LICENSE.md", out / "DATA_LICENSE.md")
-    (out / "requirements.txt").write_text(REQUIREMENTS, encoding="utf-8")
-    written.append("requirements.txt")
+    # zamčené verze s hashi (audit B3): výpočty ve veřejném repu běží na stejných knihovnách
+    for name in ("requirements.in", "requirements.txt"):
+        shutil.copy2(ROOT / name, out / name)
+        written.append(name)
     (out / ".gitignore").write_text("__pycache__/\n.pytest_cache/\n.cache/\n", encoding="utf-8")
     written.append(".gitignore")
     return sorted(written)

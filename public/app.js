@@ -105,14 +105,26 @@ function entityCell(entity, { name, href, sub = "", size = 28, slot = "" } = {})
 }
 
 const cache = new Map();
-async function getJSON(path) {
+// Data webu s cache. Zamítnutý slib se z cache smaže (přechodná chyba sítě nevyžaduje reload), dlouhé čekání skončí chybou.
+async function getJSON(path, { timeout = 20000 } = {}) {
   if (!cache.has(path)) {
-    cache.set(path, fetch(DATA + path).then((r) => {
-      if (!r.ok) throw new Error(`Nepodařilo se načíst ${path} (HTTP ${r.status})`);
-      return r.json();
-    }));
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), timeout);
+    const p = fetch(DATA + path, { signal: ctl.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Nepodařilo se načíst ${path} (HTTP ${r.status})`);
+        return r.json();
+      })
+      .catch((e) => { throw e.name === "AbortError" ? new Error(`Načítání ${path} trvá příliš dlouho, zkuste to znovu.`) : e; })
+      .finally(() => clearTimeout(timer));
+    p.catch(() => cache.delete(path));
+    cache.set(path, p);
   }
   return cache.get(path);
+}
+
+// Volitelná data: při chybě náhradní hodnota, ale chyba se zapíše do konzole (rozbitý soubor se v produkci pozná).
+function soft(fallback) {
+  return (e) => { console.warn(e); return fallback; };
 }
 
 // Odlehčený seznam všech hlasování (data/votes/search.json) jako pole objektů.
@@ -299,6 +311,10 @@ function topicText(cats) {
 }
 
 // Oficiální český název procedury (title_cs z EP Open Data, build_web.vote_title), jinak anglický z HowTheyVote.
+// Tvar parametrů z URL (měsíc, den): cokoli jiného se ignoruje.
+const MONTH_RE = /^\d{4}-\d{2}$/;
+const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
 function voteTitle(v) {
   let t = v.title_cs || v.title || v.procedure?.title || v.reference || `Hlasování ${v.id}`;
   return t;
@@ -486,9 +502,11 @@ document.addEventListener("click", (ev) => {
   if (!ev.target.closest("#more-sheet")) sheet.classList.remove("open");
 });
 
-function showError(el, err) {
+// Chyba s tlačítkem „Zkusit znovu“: retry() načte obsah znovu bez reloadu; bez něj se stránka obnoví. Bez inline onclick (CSP).
+function showError(el, err, retry) {
   el.innerHTML = `<p class="error" role="alert">${esc(err.message || err)}
-    <button type="button" class="more-btn" onclick="location.reload()">Zkusit znovu</button></p>`;
+    <button type="button" class="more-btn">Zkusit znovu</button></p>`;
+  el.querySelector("button").addEventListener("click", () => (retry ? retry() : location.reload()));
   console.error(err);
 }
 

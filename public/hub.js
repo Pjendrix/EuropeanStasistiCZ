@@ -112,7 +112,7 @@ let items = [], sel = -1;
 
 async function loadIndex() {
   if (index) return index;
-  const [ov, parties, votes, groups] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(), getJSON("groups.json").catch(() => [])]);
+  const [ov, parties, votes, groups] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(), getJSON("groups.json").catch(soft([]))]);
   const gLabel = (g) => { const x = g && groups.find((y) => y.ep_code === g.code || y.code === g.code); return x ? (CZ_GROUP_LABEL[x.code] || x.short_label) : g?.short_label; };
   const sortCs = (a, b) => a.sort.localeCompare(b.sort, "cs");
   index = {
