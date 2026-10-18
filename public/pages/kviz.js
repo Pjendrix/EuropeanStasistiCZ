@@ -5,7 +5,7 @@
 // epw-kviz-frakce: délka, index, odpovědi, přepínač odhalení). Srozumitelné názvy od Claude Haiku z data/quiz_summaries.json.
 // Shodu počítá jen tenhle prohlížeč (lib/quiz.js), nic se neodesílá.
 import { CATEGORY_META, getJSON, loadCategories, soft } from "../lib/data.js";
-import { KIND_LABEL, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, procedureUrl, siteUrl, todayCZ } from "../lib/format.js";
+import { displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, KIND_LABEL, nameHtml, procedureUrl, siteUrl, todayCZ } from "../lib/format.js";
 import {
   ANSWER_LABEL, LEGACY_STORE_KEY, MIN_COMMON, POSITION_TEXT, QUIZ_GROUPS, STORE_KEYS, agreement, answeredCount, compareRows, czCounts,
   groupAgreement, groupCompareRows, groupCounts, hemiPoints, orderIds, parseHash, parseState, realCount, resumeIndex, toHash as stepHash,
@@ -201,7 +201,7 @@ function run(quizzes, overview, ai, groups, parties) {
     const label = `Čeští poslanci: ${c.F} pro, ${c.A} proti, ${c.B} se zdrželo, ${c.N} nehlasovalo`;
     return `<svg class="qz-hemi" viewBox="0 0 240 122" role="img" aria-label="${esc(label)}">${ids.map((id, i) => {
       const p = q.positions[id], m = mepById.get(Number(id));
-      const tip = names && m ? `<title>${esc(displayName(m))}: ${esc(POSITION_TEXT[p] || "")}</title>` : "";
+      const tip = names && m ? `<title translate="no">${esc(displayName(m))}: ${esc(POSITION_TEXT[p] || "")}</title>` : "";
       return `<circle class="qz-dot p-${p}" cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="8.5">${tip}</circle>`;
     }).join("")}</svg>`;
   }
@@ -319,7 +319,7 @@ function run(quizzes, overview, ai, groups, parties) {
       ${q.kind ? `<section><h3>Druh</h3><p>${q.kind === "usneseni" ? `Usnesení. ${RESOLUTION_NOTE}` : "Zákon (legislativní procedura)."}</p></section>` : ""}
       <section><h3>Hlasování</h3><p>${fmtDate(q.date)} · ${esc(KIND_LABEL[q.vote_kind] || "závěrečné hlasování")}${topic(q) ? ` · ${esc(topic(q))}` : ""}</p>
         ${q.roll_calls ? `<p>O ${q.kind === "usneseni" ? "tomto usnesení" : "tomto zákonu"} se v plénu jmenovitě hlasovalo <b>${fmtNum(q.roll_calls)}×</b> (víc hlasování znamená víc sporů o text, proto je v kvízu). V kvízu je jen závěrečné hlasování.</p>` : ""}</section>
-      <section><h3>Procedura ${esc(q.procedure)}</h3><p>${story ? `<a href="${story}">Příběh zákona na EP Watch</a> · ` : ""}<a href="${OEIL(q.procedure)}">Legislativní observatoř EP</a></p></section>
+      <section><h3>Procedura <span translate="no" class="notranslate">${esc(q.procedure)}</span></h3><p>${story ? `<a href="${story}">Příběh zákona na EP Watch</a> · ` : ""}<a href="${OEIL(q.procedure)}">Legislativní observatoř EP</a></p></section>
       <section><h3>Zdroj</h3><p>${HTV}, ${variant === "frakce" ? "postoj frakce = většina jejích hlasujících členů k datu hlasování" : "hlasy poslanců v mandátu k datu hlasování"}.</p></section>
     </div>`;
     dlg.querySelector(".qz-dlg-x").addEventListener("click", closeDetail);
@@ -349,7 +349,7 @@ function run(quizzes, overview, ai, groups, parties) {
   });
 
   // --- výsledek --------------------------------------------------------------------------------
-  const subLine = (m) => esc([m.party?.short_label, m.group?.short_label].filter(Boolean).join(" · ")) + (isActive(m) ? "" : " · bývalý/á poslanec/kyně");
+  const subLine = (m) => `<span translate="no" class="notranslate">${esc([m.party?.short_label, m.group?.short_label].filter(Boolean).join(" · "))}</span>` + (isActive(m) ? "" : " · bývalý/á poslanec/kyně");
 
   function renderResult() {
     if (variant === "frakce") { renderGroupResult(); return; }
@@ -374,7 +374,7 @@ function run(quizzes, overview, ai, groups, parties) {
       return `<li><span class="${cls}" aria-hidden="true">${sym}</span><span>${esc(title(r.q))}</span><span class="qz-pair"><span class="sr-only">${txt}: </span>vy ${ANSWER_LABEL[r.a].toLowerCase()} · ${r.p && r.p !== "N" ? POSITION_TEXT[r.p] : txt}</span></li>`;
     }).join("")}</ul>`;
     const row = (r) => `<li><details class="qz-row"><summary>
-        <span class="qz-who">${avatar(r.m, 36)}<span><b>${esc(displayName(r.m))}</b><small>${subLine(r.m)}</small></span></span>
+        <span class="qz-who">${avatar(r.m, 36)}<span><b>${nameHtml(r.m)}</b><small>${subLine(r.m)}</small></span></span>
         <span class="qz-bar" role="img" aria-label="Shoda ${fmtPct(r.pct)}"><span style="width:${(r.pct * 100).toFixed(1)}%"></span></span>
         <span class="qz-rp"><b>${fmtPct(r.pct)}</b><small>${r.same} z ${r.common}</small></span>${IC.chev}</summary>
         ${cmp(r.m)}<p class="small"><a href="${mepUrl(r.m.id)}">Profil poslance</a></p></details></li>`;
@@ -383,7 +383,7 @@ function run(quizzes, overview, ai, groups, parties) {
       const ids = orderIds(q, mepById);
       const grp = (p, l) => {
         const xs = ids.filter((id) => q.positions[id] === p);
-        return xs.length ? `<div><span class="qz-pl">${l} (${xs.length})</span>${xs.map((id) => { const m = mepById.get(Number(id)); return m ? `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>` : ""; }).join("")}</div>` : "";
+        return xs.length ? `<div><span class="qz-pl">${l} (${xs.length})</span>${xs.map((id) => { const m = mepById.get(Number(id)); return m ? `<a href="${mepUrl(m.id)}">${nameHtml(m)}</a>` : ""; }).join("")}</div>` : "";
       };
       return `<div class="qz-rv-card"><h3>${esc(title(q))}</h3>${miniHemi(q, true)}<div><span class="qz-you ${a}">Vy: ${ANSWER_LABEL[a]}</span> <span class="small muted">${fmtDate(q.date)}</span></div>
         <details><summary>Kdo jak hlasoval</summary><div class="qz-posg">${grp("F", "Pro")}${grp("A", "Proti")}${grp("B", "Zdrželi se")}${grp("N", "Nehlasovali")}</div>
@@ -394,7 +394,7 @@ function run(quizzes, overview, ai, groups, parties) {
       <div class="qz-rs-head"><p class="qz-eyebrow">Výsledek · ${n} ${n < 5 ? "odpovědi" : "odpovědí"} z ${qs.length} otázek</p>
         <h1 tabindex="-1">Nejčastěji stejně jako vy <b>hlasovali</b></h1>
         <p>Shoda = podíl otázek, ve kterých poslanec hlasoval stejně jako vy, z otázek, na které jste odpověděli a ve kterých poslanec hlasoval (pro, proti nebo se zdržel). „x z y“ = stejně v x z y takových otázek.</p></div>
-      ${top.length ? `<ul class="qz-podium">${top.map((r, i) => `<li class="qz-pod" style="--n:${i}">${avatar(r.m, 76)}<a class="qz-nm" href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a><span class="qz-sub">${subLine(r.m)} · ${r.same} z ${r.common}</span><span class="qz-pp">${fmtPct(r.pct)}</span></li>`).join("")}</ul>`
+      ${top.length ? `<ul class="qz-podium">${top.map((r, i) => `<li class="qz-pod" style="--n:${i}">${avatar(r.m, 76)}<a class="qz-nm" href="${mepUrl(r.m.id)}">${nameHtml(r.m)}</a><span class="qz-sub">${subLine(r.m)} · ${r.same} z ${r.common}</span><span class="qz-pp">${fmtPct(r.pct)}</span></li>`).join("")}</ul>`
         : `<p class="muted">Žádný poslanec s vámi nemá aspoň ${MIN_COMMON} společné otázky.</p>`}
       <div class="qz-tabs" role="tablist" aria-label="Zobrazení výsledku">
         <button type="button" role="tab" id="qz-tab-m" aria-selected="${tab === "meps"}" aria-controls="qz-pan-m" tabindex="${tab === "meps" ? 0 : -1}">Všichni poslanci</button>
@@ -402,7 +402,7 @@ function run(quizzes, overview, ai, groups, parties) {
       </div>
       <div id="qz-pan-m" role="tabpanel" aria-labelledby="qz-tab-m"${tab === "meps" ? "" : " hidden"}>
         <ol class="qz-rlist">${enough.map(row).join("")}</ol>
-        ${few.length ? `<p class="qz-few">Méně než ${MIN_COMMON} společné otázky (bez procenta): ${few.map((r) => `<a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a> (${r.same} z ${r.common})`).join(", ")}</p>` : ""}
+        ${few.length ? `<p class="qz-few">Méně než ${MIN_COMMON} společné otázky (bez procenta): ${few.map((r) => `<a href="${mepUrl(r.m.id)}">${nameHtml(r.m)}</a> (${r.same} z ${r.common})`).join(", ")}</p>` : ""}
         <p class="small muted">Klikněte na řádek: porovnání otázka po otázce. Seřazeno podle shody, u stejné shody podle počtu společných otázek, pak abecedně.</p>
       </div>
       <div id="qz-pan-r" class="qz-review" role="tabpanel" aria-labelledby="qz-tab-r"${tab === "rev" ? "" : " hidden"}>${review}</div>
@@ -492,7 +492,7 @@ function run(quizzes, overview, ai, groups, parties) {
         <span class="qz-pair"><span class="sr-only">${txt}: </span>vy ${ANSWER_LABEL[r.a].toLowerCase()} · frakce ${r.pos ? GPOS_TEXT[r.pos] : txt}<small>${gcounts(r)}</small></span></li>`;
     }).join("")}</ul>`;
     const row = (r) => `<li><details class="qz-row"><summary>
-        <span class="qz-who">${gMark(r.code, 30)}<span><b>${esc(gName(r.code))}</b><small>${esc(gmeta(r.code).name_cs || gmeta(r.code).label || "")}</small></span></span>
+        <span class="qz-who">${gMark(r.code, 30)}<span translate="no" class="notranslate"><b>${esc(gName(r.code))}</b><small>${esc(gmeta(r.code).name_cs || gmeta(r.code).label || "")}</small></span></span>
         <span class="qz-bar" role="img" aria-label="Shoda ${fmtPct(r.pct)}"><span style="width:${(r.pct * 100).toFixed(1)}%;background:${groupColor(gmeta(r.code))}"></span></span>
         <span class="qz-rp"><b>${fmtPct(r.pct)}</b><small>${r.same} z ${r.common}</small></span>${IC.chev}</summary>
         <p class="small muted">${czLine(r.code)}.</p>${cmp(r.code)}<p class="small"><a href="party?c=${encodeURIComponent(r.code)}">Frakce na EP Watch</a></p></details></li>`;
@@ -501,7 +501,7 @@ function run(quizzes, overview, ai, groups, parties) {
       const chips = QUIZ_GROUPS.map((g) => {
         const x = q.groups?.[g] || {};
         const split = x.share !== null && x.share !== undefined && x.share < 2 / 3;
-        return `<li class="qz-gchip" style="--gc:${groupColor(gmeta(g))}"><b>${esc(gName(g))}</b> ${x.pos ? GPOS_TEXT[x.pos] : "bez postoje"}${split ? " (nejednotná)" : ""}</li>`;
+        return `<li class="qz-gchip" style="--gc:${groupColor(gmeta(g))}"><b translate="no" class="notranslate">${esc(gName(g))}</b> ${x.pos ? GPOS_TEXT[x.pos] : "bez postoje"}${split ? " (nejednotná)" : ""}</li>`;
       }).join("");
       return `<div class="qz-rv-card"><h3>${esc(title(q))}</h3>
         <div><span class="qz-you ${a}">Vy: ${ANSWER_LABEL[a]}</span> <span class="small muted">${fmtDate(q.date)} · ${kindWord(q)}</span></div>
@@ -517,7 +517,7 @@ function run(quizzes, overview, ai, groups, parties) {
         <p>Shoda = podíl otázek, ve kterých se vaše odpověď shoduje s postojem frakce (většina jejích hlasujících členů), z otázek, na které jste odpověděli a ve kterých frakce většinový postoj měla. „x z y“ = stejně v x z y takových otázek.</p></div>
       ${best ? `<div class="qz-gtop" style="--gc:${groupColor(gmeta(best.code))}">
           <span class="qz-gtop-logo">${gMark(best.code, 56)}</span>
-          <div class="qz-gtop-txt"><b class="qz-gtop-n">${esc(gName(best.code))}</b><span class="qz-sub">${esc(gmeta(best.code).name_cs || gmeta(best.code).label || "")}</span>
+          <div class="qz-gtop-txt"><b class="qz-gtop-n notranslate" translate="no">${esc(gName(best.code))}</b><span class="qz-sub notranslate" translate="no">${esc(gmeta(best.code).name_cs || gmeta(best.code).label || "")}</span>
             <span class="qz-sub">${czLine(best.code)}.</span>
             ${splitN ? `<span class="qz-sub">V ${splitN} z vašich otázek frakce nehlasovala jednotně (většina pod 2/3).</span>` : ""}</div>
           <div class="qz-gtop-p"><span class="qz-pp">${fmtPct(best.pct)}</span><span class="qz-sub">${best.same} z ${best.common} otázek</span></div>

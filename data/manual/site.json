@@ -1,4 +1,13 @@
 {
- "note": "Veřejná adresa webu (jediný zdroj pro Python): kanonické odkazy, Open Graph, sitemap.xml, karty. V JS je stejná hodnota v BASE_URL (public/app.js), test hlídá shodu.",
- "base_url": "https://epwatch.cz"
+ "note": "Veřejná adresa webu (jediný zdroj pro Python): kanonické odkazy, Open Graph, sitemap.xml, karty. V JS je stejná hodnota v BASE_URL (public/app.js), test hlídá shodu. translate = strojový překlad přes Google Translate (odkaz v hlavičce a v panelu Více, scripts/layout.py): enabled false vše vypne, languages = nabízené jazyky (kódy z LANG_NAMES v layout.py). Po změně spusť scripts/layout.py a scripts/build_pages.py.",
+ "base_url": "https://epwatch.cz",
+ "translate": {
+  "enabled": true,
+  "languages": [
+   "en",
+   "de",
+   "pl",
+   "uk"
+  ]
+ }
 }

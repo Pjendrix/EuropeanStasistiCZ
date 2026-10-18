@@ -197,7 +197,8 @@ def agenda_item_html(it: dict, root: str = "") -> str:
     title = it.get("title_cs") or it.get("title_en") or it["id"]
     docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
     cz = ", ".join(
-        f'<a href="{root}p/{c["mep_id"]}">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or []
+        f'<a href="{root}p/{c["mep_id"]}"><span translate="no" class="notranslate">{esc(c["name"] or str(c["mep_id"]))}</span></a> ({_ROLE_CS[c["role"]]})'
+        for c in it.get("cz") or []
     )
     return (
         f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
@@ -254,7 +255,8 @@ def _cz_html(cz: list[dict], root: str) -> str:
     if not cz:
         return ""
     people = ", ".join(
-        f'<a href="{root}p/{c["mep_id"]}">{esc(c["name"] or str(c["mep_id"]))}</a> ({_CZ_ROLE_SHORT[c["role"]]})' for c in cz
+        f'<a href="{root}p/{c["mep_id"]}"><span translate="no" class="notranslate">{esc(c["name"] or str(c["mep_id"]))}</span></a> ({_CZ_ROLE_SHORT[c["role"]]})'
+        for c in cz
     )
     return f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {people}</span>'
 
@@ -546,7 +548,8 @@ def seats_svg(ppl: list[dict], slots: list[tuple[float, float]], seat: float, co
         label = f"{p['name']}, {party_text(p)}: {POS_TXT.get(p['pos'], '')}"
         g = f";--g:{colors[p['group']]}" if colors and colors.get(p.get("group")) else ""
         return (
-            f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}" data-i="{i}" data-id="{p["id"]}" '
+            # translate="no": jméno a strana v <title> se strojově nepřekládají
+            f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" translate="no" href="p/{p["id"]}" data-i="{i}" data-id="{p["id"]}" '
             f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}{g}" tabindex="{0 if i == 0 else -1}" '
             f'aria-label="{esc(label)}">{f"<title>{esc(label)}</title>" if titles else ""}'
             f'<circle class="hm-ring" r="{seat + 4.5:g}"/><g transform="scale({k:.3f})"><circle class="hm-f" r="13"/>'
@@ -608,7 +611,9 @@ def trace_html(vote: dict, meps_by_id: dict, groups: list[dict]) -> str:
             else '<span class="hm-tr-i" aria-hidden="true"></span>'
         )
         grp = f" ({esc(group_label(g['code'], groups))})" if g else ""
-        items.append(f'<a href="p/{m["id"]}">{img}<span><b>{role}:</b> {esc(t.get("name") or m["name"])}{grp}</span></a>')
+        items.append(
+            f'<a href="p/{m["id"]}">{img}<span><b>{role}:</b> <span translate="no" class="notranslate">{esc(t.get("name") or m["name"])}{grp}</span></span></a>'
+        )
     more = len(people) - TRACE_MAX
     if more > 0:
         items.append(f'<a class="hm-tr-more" href="v/{vote["id"]}#ceska-stopa">a další {more}</a>')

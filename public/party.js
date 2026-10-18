@@ -1,6 +1,6 @@
 // Strany: seznam (party.html), evropské frakce (?v=eu, ?c=) a interakce na detailu strany (s/{id}.html).
 import { getJSON, param, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtNum, fmtPct, pct } from "./lib/format.js";
+import { byGender, CZ_GROUP_LABEL, esc, fmtNum, fmtPct, nameHtml, pct } from "./lib/format.js";
 import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("parties");
@@ -62,7 +62,7 @@ async function euDetailPage(code) {
     <div class="table-wrap"><table class="cards">
       <thead><tr><th>Poslanec</th><th>Strana</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
       <tbody>${[...g.member_list].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs")).map((m) => `<tr>
-        <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40"><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></td>
+        <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40"><a href="${mepUrl(m.id)}">${nameHtml(m)}</a></div></td>
         <td class="wide" data-label="Strana">${m.party ? esc(m.party.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : m.party.short_label) : ""}</td>
         <td class="num" data-label="Účast na hlasování">${pctCell(m.total.attendance)}</td><td class="num" data-label="Hlasuje s frakcí">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>
     </table></div>` : '<p class="muted">Ve skupině nesedí žádný český poslanec.</p>'}

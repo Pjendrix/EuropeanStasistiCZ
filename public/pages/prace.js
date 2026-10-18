@@ -1,6 +1,6 @@
 // Skript stránky prace.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON } from "../lib/data.js";
-import { CZ_GROUP_LABEL, displayName, esc, fmtDate, fmtMonth, fmtNum, fmtPct } from "../lib/format.js";
+import { CZ_GROUP_LABEL, esc, fmtDate, fmtMonth, fmtNum, fmtPct, nameHtml } from "../lib/format.js";
 import { infoButton, mepUrl, setNav, showError } from "../lib/ui.js";
 setNav("work");
 setNav("work-overview");
@@ -33,7 +33,7 @@ setNav("work-overview");
     document.querySelector("#proc tbody").innerHTML = h.by_process.map((r) => `<tr><td>${esc(r.label)} <span class="small muted">${esc(r.process_type)}</span></td>
       <td class="num" data-label="Vedou">${fmtNum(r.reports_lead)}</td><td class="num" data-label="Stínoví">${fmtNum(r.reports_shadow)}</td><td class="num" data-label="Přijato">${fmtNum(r.adopted)}</td></tr>`).join("");
 
-    const who = (ids) => ids.map((id) => meps[id] ? `<a href="${mepUrl(id)}">${esc(displayName(meps[id]))}</a>` : "").filter(Boolean).join(", ");
+    const who = (ids) => ids.map((id) => meps[id] ? `<a href="${mepUrl(id)}">${nameHtml(meps[id])}</a>` : "").filter(Boolean).join(", ");
     const recent = document.getElementById("recent");
     recent.className = "";
     recent.innerHTML = `<div class="hub-lists hub-cards">${h.recent_adopted.map((r) => `<div class="card hub-vote"><div class="small muted">${fmtDate(r.date)} · ${esc(r.report || "")}${r.legislative ? " · legislativní" : ""}</div>

@@ -1,6 +1,6 @@
 // Skript stránky shoda.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, param } from "../lib/data.js";
-import { displayName, esc, fmtNum, fmtPct, isActive, pct } from "../lib/format.js";
+import { displayName, esc, fmtNum, fmtPct, isActive, nameHtml, pct } from "../lib/format.js";
 import { csvButton, groupBadge, mepUrl, setNav, showError, sourceLine } from "../lib/ui.js";
 setNav("analyses");
 setNav("agreement");
@@ -12,7 +12,7 @@ const LIMIT = 50;
     document.getElementById("source").innerHTML = sourceLine(d);
     const former = document.getElementById("former");
     const anchor = document.getElementById("anchor");
-    anchor.innerHTML += d.meps.map((m) => `<option value="${m.id}">${esc(displayName(m))}</option>`).join("");
+    anchor.innerHTML += d.meps.map((m) => `<option value="${m.id}" translate="no">${esc(displayName(m))}</option>`).join("");
     const pre = param("id");
     if (pre && d.meps.some((m) => String(m.id) === pre)) anchor.value = pre;
     if (pre && !d.meps.find((m) => String(m.id) === pre && isActive(m)) && d.meps.some((m) => String(m.id) === pre)) former.checked = true;
@@ -38,7 +38,7 @@ const LIMIT = 50;
       el.className = "table-wrap";
       el.innerHTML = `<table class="matrix"><thead><tr><th class="sticky-col">Poslanec</th>${list.map((c) =>
         `<th class="mx-head"><a href="${mepUrl(c.id)}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
-        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="${mepUrl(r.id)}">${esc(displayName(r))}</a>
+        <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="${mepUrl(r.id)}">${nameHtml(r)}</a>
           <div>${groupBadge(null, groups, r.group?.code)}</div></th>${list.map((c) => td(r, c)).join("")}</tr>`).join("")}</tbody></table>`;
     };
     former.addEventListener("change", render);
