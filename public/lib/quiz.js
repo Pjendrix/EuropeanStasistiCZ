@@ -1,5 +1,6 @@
-// Čisté funkce kvízu (public/kviz.html, pages/kviz.js): shoda s poslanci, uložený postup, pořadí a poloha teček v půlkruhu.
-// Bez DOM, aby šly testovat v Node (tests/js/quiz.test.mjs). Data jsou z data/quiz.json (scripts/quiz.py).
+// Čisté funkce kvízu (public/kviz.html, pages/kviz.js): shoda s poslanci i s frakcemi, uložený postup, krok v adrese,
+// pořadí a poloha teček v půlkruhu. Bez DOM, aby šly testovat v Node (tests/js/quiz.test.mjs).
+// Data: varianta „Čeští poslanci“ data/quiz.json (scripts/quiz.py), „Evropské frakce“ data/quiz_groups.json (scripts/quiz_groups.py).
 
 // Méně společných otázek = procento bez vypovídací hodnoty, poslanec jde do zvláštní skupiny.
 export const MIN_COMMON = 3;
@@ -10,7 +11,14 @@ export const ANSWER_LABEL = { F: "Pro", A: "Proti", B: "Zdržel/a bych se", S: "
 export const POSITION_TEXT = { F: "pro", A: "proti", B: "zdržel/a se", N: "nehlasoval/a" };
 // Pořadí frakcí zleva doprava (stejné jako GROUP_ORDER v scripts/build_home.py a portal.py).
 export const GROUP_ORDER = ["GUE_NGL", "SD", "GREEN_EFA", "RENEW", "EPP", "ECR", "PFE", "ESN", "NI"];
-export const STORE_KEY = "epw-kviz";
+// Rozpracovaný kvíz každé varianty zvlášť; dřívější společný klíč epw-kviz patří variantě poslanci (převezme se).
+export const VARIANTS = ["poslanci", "frakce"];
+export const STORE_KEYS = { poslanci: "epw-kviz-poslanci", frakce: "epw-kviz-frakce" };
+export const LEGACY_STORE_KEY = "epw-kviz";
+// 8 frakcí, se kterými se počítá shoda (bez nezařazených, ti nejsou frakce); pořadí jako GROUPS v scripts/quiz_groups.py.
+export const QUIZ_GROUPS = ["EPP", "SD", "PFE", "ECR", "RENEW", "GREEN_EFA", "GUE_NGL", "ESN"];
+// Většina frakce pod 2/3 hlasujících = frakce nehlasovala jednotně (otázka se ale počítá).
+export const SPLIT_SHARE = 2 / 3;
 
 const sortKey = (m) => m.sort_label || m.name || "";
 const byName = (x, y) => sortKey(x.m).localeCompare(sortKey(y.m), "cs");
@@ -102,4 +110,67 @@ export function hemiPoints(n, rows = 3, r0 = 54, r1 = 100, cx = 120, cy = 112) {
     }
   });
   return pts.sort((p, q) => p.a - q.a || q.r - p.r).map(({ x, y }) => ({ x, y }));
+}
+
+// Krok v adrese: #otazka-3 / #vysledek (poslanci, adresy z dřívějška), #frakce, #frakce/otazka-3, #frakce/vysledek.
+// Vrací { variant, phase: intro|q|result, idx } nebo null (neznámý tvar = úvod zvolené varianty). idx je od 0, n = počet otázek.
+export function parseHash(hash, n = Infinity) {
+  const m = /^#(?:(frakce)(?:\/|$))?(?:otazka-(\d+)|(vysledek))?$/.exec(hash || "");
+  if (!m || hash === "#") return null;
+  const variant = m[1] ? "frakce" : "poslanci";
+  if (m[2]) {
+    const i = Number(m[2]);
+    return i >= 1 && i <= n ? { variant, phase: "q", idx: i - 1 } : { variant, phase: "intro", idx: 0 };
+  }
+  if (m[3]) return { variant, phase: "result", idx: 0 };
+  return m[1] ? { variant, phase: "intro", idx: 0 } : null;
+}
+
+export function toHash(variant, phase, idx) {
+  const pre = variant === "frakce" ? "frakce" : "";
+  const step = phase === "q" ? `otazka-${idx + 1}` : phase === "result" ? "vysledek" : "";
+  if (!pre) return step ? `#${step}` : "";
+  return step ? `#${pre}/${step}` : `#${pre}`;
+}
+
+// Postoje frakcí u otázky: kolik z 8 frakcí většinou pro / proti / zdrželo se, kolik postoj nemá (remíza),
+// a kolik nehlasovalo jednotně (většina pod SPLIT_SHARE). Bez názvů frakcí (ty jsou až ve výsledku).
+export function groupCounts(q, codes = QUIZ_GROUPS) {
+  const c = { F: 0, A: 0, B: 0, none: 0, split: 0 };
+  codes.forEach((g) => {
+    const x = q.groups?.[g];
+    if (!x || !x.pos) { c.none += 1; return; }
+    c[x.pos] += 1;
+    if (x.share !== null && x.share < SPLIT_SHARE) c.split += 1;
+  });
+  return c;
+}
+
+// Shoda s frakcí = otázky, kde se odpověď shoduje s postojem frakce / otázky, na které uživatel odpověděl (ne přeskočil)
+// a kde frakce postoj má. enough: aspoň MIN_COMMON společných, podle shody, pak počtu společných, pak pořadí v codes;
+// few: zbytek.
+export function groupAgreement(questions, answers, codes = QUIZ_GROUPS) {
+  const rows = codes.map((code, i) => {
+    let same = 0, common = 0;
+    questions.forEach((q) => {
+      const a = answers[q.id], p = q.groups?.[code]?.pos;
+      if (!a || a === "S" || !p) return;
+      common += 1;
+      if (p === a) same += 1;
+    });
+    return { code, i, same, common, pct: common ? same / common : null };
+  }).filter((r) => r.common);
+  return {
+    enough: rows.filter((r) => r.common >= MIN_COMMON).sort((x, y) => y.pct - x.pct || y.common - x.common || x.i - y.i),
+    few: rows.filter((r) => r.common < MIN_COMMON),
+  };
+}
+
+// Porovnání s jednou frakcí otázku po otázce: ok (stejně), no (jinak), na (frakce postoj nemá); split = nejednotná frakce.
+export function groupCompareRows(questions, answers, code) {
+  return questions.filter((q) => answers[q.id] && answers[q.id] !== "S").map((q) => {
+    const a = answers[q.id], x = q.groups?.[code] || { pos: null, share: null, counts: [0, 0, 0, 0] };
+    const state = !x.pos ? "na" : x.pos === a ? "ok" : "no";
+    return { q, a, pos: x.pos, share: x.share, counts: x.counts, split: x.share !== null && x.share < SPLIT_SHARE, state };
+  });
 }

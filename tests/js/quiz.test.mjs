@@ -67,3 +67,50 @@ test("půlkruh: n bodů zleva doprava", () => {
   const p = hemiPoints(21);
   assert.ok(p[0].x < p[20].x);
 });
+
+// --- varianta Evropské frakce --------------------------------------------------------------------
+import { QUIZ_GROUPS, SPLIT_SHARE, STORE_KEYS, groupAgreement, groupCompareRows, groupCounts, parseHash, toHash } from "../../public/lib/quiz.js";
+
+const G = (pos, share = 0.9) => ({ pos, share: pos ? share : null, counts: [0, 0, 0, 0] });
+const GQ = (id, groups) => ({ id, groups });
+const GQS = [
+  GQ(1, { EPP: G("F"), SD: G("A"), PFE: G("F", 0.6), NI: G("F") }),
+  GQ(2, { EPP: G("F"), SD: G("F"), PFE: G("A") }),
+  GQ(3, { EPP: G("A"), SD: G(null), PFE: G("A") }),
+  GQ(4, { EPP: G("F"), SD: G("A"), PFE: G("B") }),
+];
+
+test("frakce: shoda jen z otázek, kde frakce má postoj; přeskočené se nepočítají; NI mimo", () => {
+  const { enough, few } = groupAgreement(GQS, { 1: "F", 2: "F", 3: "A", 4: "S" });
+  assert.deepEqual(enough.map((r) => [r.code, r.same, r.common]), [["EPP", 3, 3], ["PFE", 2, 3]]);
+  assert.deepEqual(few.map((r) => [r.code, r.same, r.common]), [["SD", 1, 2]]);   // remíza ve 3. otázce se nepočítá
+  assert.ok(!enough.concat(few).some((r) => r.code === "NI" || r.code === "ECR"));
+  assert.equal(QUIZ_GROUPS.length, 8);
+});
+
+test("frakce: porovnání otázka po otázce a nejednotná frakce", () => {
+  const rows = groupCompareRows(GQS, { 1: "F", 2: "F", 3: "B" }, "PFE");
+  assert.deepEqual(rows.map((r) => [r.q.id, r.state, r.split]), [[1, "ok", true], [2, "no", false], [3, "no", false]]);
+  assert.equal(groupCompareRows(GQS, { 3: "A" }, "SD")[0].state, "na");
+  assert.ok(Math.abs(SPLIT_SHARE - 2 / 3) < 1e-9);
+});
+
+test("frakce: počty postojů bez názvů", () => {
+  assert.deepEqual(groupCounts(GQS[0], ["EPP", "SD", "PFE", "ECR"]), { F: 2, A: 1, B: 0, none: 1, split: 1 });
+});
+
+test("krok v adrese: obě varianty, staré adresy poslanců platí", () => {
+  assert.deepEqual(parseHash("#otazka-3", 12), { variant: "poslanci", phase: "q", idx: 2 });
+  assert.deepEqual(parseHash("#vysledek"), { variant: "poslanci", phase: "result", idx: 0 });
+  assert.deepEqual(parseHash("#frakce/otazka-12", 12), { variant: "frakce", phase: "q", idx: 11 });
+  assert.deepEqual(parseHash("#frakce/vysledek"), { variant: "frakce", phase: "result", idx: 0 });
+  assert.deepEqual(parseHash("#frakce"), { variant: "frakce", phase: "intro", idx: 0 });
+  assert.deepEqual(parseHash("#frakce/otazka-13", 12), { variant: "frakce", phase: "intro", idx: 0 });   // mimo rozsah
+  assert.equal(parseHash(""), null);
+  assert.equal(parseHash("#neco"), null);
+  for (const [v, ph, i] of [["poslanci", "q", 2], ["poslanci", "result", 0], ["frakce", "q", 0], ["frakce", "result", 0], ["frakce", "intro", 0]]) {
+    assert.deepEqual(parseHash(toHash(v, ph, i)), { variant: v, phase: ph, idx: i });
+  }
+  assert.equal(toHash("poslanci", "intro", 0), "");
+  assert.deepEqual(STORE_KEYS, { poslanci: "epw-kviz-poslanci", frakce: "epw-kviz-frakce" });
+});

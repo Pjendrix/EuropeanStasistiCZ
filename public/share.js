@@ -468,6 +468,49 @@ export function quizCardOps(d, f) {
   return [...shareHeader(fmtDate(d.date)), ...centered(ops, y, H), ...shareFooter(H, "Zdroj hlasů: HowTheyVote.eu (ODbL) · shodu spočítal prohlížeč, nic se neodesílá", d.urlShort)];
 }
 
+// Karta výsledku kvízu „Evropské frakce“: nejbližší frakce (logo na bílé dlaždici nebo barevná tečka, název, %, „x z y“),
+// české strany ve frakci dnes, pruhy dalších dvou frakcí, počet odpovědí, datum. Spočítal prohlížeč (lib/quiz.js), nic se neodesílá.
+export function quizGroupsCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  const tl = wrapText(d.title || "Ke které evropské frakci mám nejblíž", 62, 800, 936, 2);
+  tl.forEach((l, i) => ops.push(T(72, y + 62 + i * 72, l, 62, 800, SC.text)));
+  y += tl.length * 72 + 24;
+  const lead = wrapText(`V kvízu EP Watch CZ jsem odpověděl/a na ${fmtNum(d.answered)} ${d.answered === 1 ? "otázku" : d.answered < 5 ? "otázky" : "otázek"} ze skutečných hlasování Evropského parlamentu. Nejblíž mám k:`, 28, 500, 936, 4);
+  lead.forEach((l, i) => ops.push(T(72, y + 28 + i * 40, l, 28, 500, SC.soft)));
+  y += lead.length * 40 + 30;
+  const b = d.best;
+  if (b) {
+    const th = story ? 300 : 264, lw = 220, lh = 120;
+    ops.push(RECT(72, y, 936, th, 28, SC.tile, SC.tileLine, 2), RECT(72, y, 12, th, 6, b.color || SC.gold));
+    const lx = 112, ly = y + 36;
+    if (b.logoImg) {
+      const a = b.logoAspect || b.logoImg.width / b.logoImg.height;
+      const hh = Math.min(lh - 24, (lw - 24) / a), ww = hh * a;
+      ops.push(RECT(lx, ly, lw, lh, 18, "#FFFFFF"), { k: "image", img: b.logoImg, x: lx + (lw - ww) / 2, y: ly + (lh - hh) / 2, w: ww, h: hh, r: 0 });
+    } else ops.push(CIRC(lx + 40, ly + 40, 30, b.color || SC.gold));
+    const pw = Math.max(measureText(b.pct, 96, 800), measureText(b.pair, 24, 500)) + 24;
+    ops.push(T(1008 - 36, ly + 92, b.pct, 96, 800, SC.text, "right"), T(1008 - 36, ly + 130, b.pair, 24, 500, SC.muted, "right"));
+    const nx = b.logoImg ? lx + lw + 28 : lx + 100, nw = 1008 - 36 - pw - nx;
+    ops.push(T(nx, ly + 52, fitText(b.name, 48, 800, nw), 48, 800, SC.text));
+    wrapText(b.full || "", 24, 500, nw, 2).forEach((l, i) => ops.push(T(nx, ly + 90 + i * 32, l, 24, 500, SC.muted)));
+    const cz = wrapText(b.parties?.length ? `Čeští poslanci ve frakci dnes: ${b.parties.join(", ")}` : "Dnes ve frakci není žádný český poslanec.", 26, 600, 864, 2);
+    cz.forEach((l, i) => ops.push(T(112, y + th - 36 - (cz.length - 1 - i) * 36, l, 26, 600, SC.soft)));
+    y += th + 30;
+  }
+  (d.rest || []).forEach((r) => {
+    const w = 936 - 200;
+    ops.push(T(72, y + 30, fitText(r.name, 30, 700, 300), 30, 700, SC.text), T(1008, y + 30, r.pct, 30, 700, SC.text, "right"),
+      RECT(72, y + 48, w + 200, 14, 7, SC.track), RECT(72, y + 48, Math.max(14, (w + 200) * (r.share || 0)), 14, 7, r.color || SC.soft));
+    y += 90;
+  });
+  const def = wrapText("Shoda = podíl otázek, kde se moje odpověď shoduje s většinou hlasujících členů frakce. Není to doporučení, koho volit.", 24, 500, 936, 3);
+  def.forEach((l, i) => ops.push(T(72, y + 30 + i * 34, l, 24, 500, SC.soft)));
+  y += def.length * 34 + 30;
+  return [...shareHeader(fmtDate(d.date)), ...centered(ops, y, H), ...shareFooter(H, "Zdroj hlasů: HowTheyVote.eu (ODbL) · shodu spočítal prohlížeč, nic se neodesílá", d.urlShort)];
+}
+
 // Neutrální silueta (stejná pro všechny) místo portrétu: jen balíček pro Instagram (avatar: "neutral").
 function neutralAvatarOps(x, y, w, h, r) {
   const cx = x + w / 2;
@@ -513,9 +556,10 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
+  if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
   useCardTheme(theme);
-  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps }[ctx.kind];
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps }[ctx.kind];
   const ops = draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
   const canvas = document.createElement("canvas");
   canvas.width = f.w;
@@ -600,7 +644,7 @@ function shareFormats(kind) {
   return [post, story];
 }
 
-const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu" };
+const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu", "quiz-groups": "Sdílet výsledek kvízu" };
 const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
 const SD_FMT_KEY = "epw-share-format";
 const SD_THEME_KEY = "ep-share-theme";

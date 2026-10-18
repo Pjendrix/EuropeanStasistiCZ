@@ -699,6 +699,50 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
   }
   await ctx.close();
 }
+// Kvíz, varianta Evropské frakce: krátký test, odhalení bez názvů frakcí, výsledek, rozkliknutí, odpovědi, sdílení, axe.
+for (const width of [1366, 390]) {
+  const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  const where = `kvíz frakce [${width}px]`;
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  await page.goto(base + "kviz#frakce", { waitUntil: "networkidle" });
+  if (!(await page.isChecked('input[name="qz-var"][value="frakce"]'))) problems.push(`${where}: #frakce nevybralo variantu`);
+  await page.click("#qz-start");
+  const short = read("data/quiz_groups.json").short.length;
+  const names = read("data/groups.json").map((g) => g.short_label);
+  for (let i = 0; i < short; i++) {
+    await page.waitForSelector(".qz-ans");
+    if (i === 0 && (await page.evaluate(() => location.hash)) !== "#frakce/otazka-1") problems.push(`${where}: adresa otázky není #frakce/otazka-1`);
+    await page.click(`.qz-ans.${["F", "A", "B"][i % 3]}`);
+    const rev = (await page.textContent("#qz-rev")) || "";
+    if (i === 0 && !/Frakce: \d+ pro · \d+ proti/.test(rev)) problems.push(`${where}: odhalení bez počtů frakcí`);
+    const leak = names.filter((n) => rev.includes(n));
+    if (leak.length) problems.push(`${where}: odhalení prozradilo frakce ${leak.join(", ")}`);
+    await page.click("#qz-next");
+  }
+  await page.waitForSelector(".qz-rs h1");
+  if ((await page.evaluate(() => location.hash)) !== "#frakce/vysledek") problems.push(`${where}: výsledek není na #frakce/vysledek`);
+  const rs = await page.evaluate(() => ({ h1: document.querySelector(".qz-rs h1").textContent, rows: document.querySelectorAll(".qz-rlist > li").length,
+    top: !!document.querySelector(".qz-gtop"), store: Object.keys(localStorage).filter((k) => k.startsWith("epw-kviz")) }));
+  if (!rs.h1.startsWith("Nejblíž máte k") || !rs.top || !rs.rows || rs.rows > 8) problems.push(`${where}: výsledek ${JSON.stringify(rs)}`);
+  if (rs.store.join() !== "epw-kviz-frakce") problems.push(`${where}: uložený postup ${rs.store.join(", ")}`);
+  await page.click(".qz-rlist details summary");
+  if (!(await page.locator(".qz-rlist details[open] .qz-cmp li").count())) problems.push(`${where}: rozkliknutí frakce bez otázek`);
+  await page.click("#qz-tab-r");
+  if (!(await page.locator("#qz-pan-r .qz-gchips").first().isVisible())) problems.push(`${where}: záložka Vaše odpovědi bez postojů frakcí`);
+  await page.click("#qz-tab-m");
+  if (width === 1366) {
+    await page.evaluate(axeSource);
+    const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
+    v.forEach((x) => problems.push(`${where}: axe ${x}`));
+  }
+  await page.click("#qz-share");
+  try { await page.waitForSelector(".sd-preview img", { timeout: 15000 }); } catch { problems.push(`${where}: náhled obrázku ke sdílení se nevykreslil`); }
+  errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
+  await ctx.close();
+}
 // O projektu: dlaždice vedou na sekce, kotva otevře definici (i při hashchange), hledání, filtr časové osy, formulář.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
