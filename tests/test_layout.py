@@ -57,3 +57,65 @@ def test_all_pages_reference_versioned_assets():
             if (root / m[1]).is_file():
                 bad.append(f"{f.name}: {m[1]}")
     assert not bad, bad
+
+
+# --- strojový překlad: jeden přepínač v data/manual/site.json (translate.enabled) --------------------
+TR_ON = {"enabled": True, "languages": ["en", "de", "pl", "uk"]}
+TR_OFF = {"enabled": False, "languages": ["en", "de", "pl", "uk"]}
+
+
+def _all_pages():
+    """Ruční stránky po srovnání hlavičky (sync_text) a stránka z page() jako u generovaných p/, v/, s/, z/."""
+    root = Path(__file__).resolve().parent.parent / "public"
+    pages = {f.name: layout.sync_text(f.read_text(encoding="utf-8")) for f in sorted(root.glob("*.html")) if f.name not in layout.GENERATED}
+    pages["generated"] = layout.page("MOCK", "<p>MOCK</p>", root="../", current="votes")
+    import build_pages as bp  # blok s odkazy v O projektu srovnává build_pages.py (sync_blocks)
+
+    pages["o-projektu.html"] = re.sub(
+        r"(<!--sync:translate-->).*?(<!--/sync:translate-->)",
+        lambda m: f"{m[1]}\n{bp.translate_html()}\n{m[2]}",
+        pages["o-projektu.html"],
+        flags=re.S,
+    )
+    return pages
+
+
+def test_translate_switch_on_every_page(monkeypatch):
+    monkeypatch.setattr(layout, "translate_config", lambda path=None: TR_ON)
+    for name, html in _all_pages().items():
+        assert 'class="tr-btn notranslate" translate="no"' in html, name
+        assert 'data-translate="en de pl uk"' in html and "translate.js" in html, name
+        assert 'class="tr-link notranslate"' in html, name  # panel Více
+
+
+def test_translate_switch_off_removes_everything(monkeypatch):
+    import build_pages as bp
+
+    monkeypatch.setattr(layout, "translate_config", lambda path=None: TR_OFF)
+    for name, html in _all_pages().items():
+        assert "tr-btn" not in html and "tr-link" not in html and "translate.js" not in html, name
+        assert "translate.google.com" not in html, name
+    assert bp.translate_html() == ""  # věta a odkazy v O projektu zmizí
+    monkeypatch.setattr(layout, "translate_config", lambda path=None: TR_ON)
+    assert "translate.google.com/translate?sl=cs&amp;tl=uk" in bp.translate_html()
+
+
+def test_translate_config_validation(tmp_path):
+    import json
+
+    import pytest
+
+    f = tmp_path / "site.json"
+    f.write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
+    assert layout.translate_config(f) == {"enabled": False, "languages": []}  # bez klíče vypnuto
+    f.write_text(json.dumps({"translate": {"enabled": True, "languages": ["en", "xx"]}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="xx"):
+        layout.translate_config(f)
+    f.write_text(json.dumps({"translate": {"enabled": "ano", "languages": ["en"]}}), encoding="utf-8")
+    with pytest.raises(ValueError):
+        layout.translate_config(f)
+
+
+def test_repo_translate_config():
+    cfg = layout.translate_config()
+    assert cfg["enabled"] is True and cfg["languages"] == ["en", "de", "pl", "uk"]

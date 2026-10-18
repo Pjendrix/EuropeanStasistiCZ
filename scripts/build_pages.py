@@ -786,6 +786,27 @@ def follow_html() -> str:
     )
 
 
+def translate_html() -> str:
+    """Odkazy na Google Translate pro titulní stránku v O projektu (#preklad); prázdné, když je překlad vypnutý
+    (data/manual/site.json → translate.enabled, scripts/layout.py)."""
+    from layout import LANG_NAMES, translate_config
+
+    cfg = translate_config()
+    if not cfg["enabled"]:
+        return ""
+    home = "https%3A%2F%2Fepwatch.cz%2F"
+    links = " · ".join(
+        f'<a lang="{code}" href="https://translate.google.com/translate?sl=cs&amp;tl={code}&amp;u={home}" rel="noopener noreferrer">{esc(LANG_NAMES[code])}</a>'
+        for code in cfg["languages"]
+    )
+    return (
+        f'<p lang="en" class="notranslate" translate="no">Google Translate (home page): {links}. '
+        "Machine translation by Google; the Czech version is authoritative. The globe button in the header translates the page you are on.</p>\n"
+        "<p>Tlačítko s glóbem v hlavičce otevře aktuální stránku v Google Translate v jazyce vašeho prohlížeče. "
+        "Je to obyčejný odkaz: adresu stránky dostane Google, teprve když na něj kliknete; web žádný skript Googlu nenačítá.</p>"
+    )
+
+
 def sync_blocks(public: Path, data_dir: Path) -> int:
     """Portréty na poslanci.html a přehled na hlasovani.html se generují z dat při každém buildu (týdenní aktualizace)."""
     from hub import heads_html, next_session_html, radar_html, votes_hero_html, votes_overview_html
@@ -794,6 +815,7 @@ def sync_blocks(public: Path, data_dir: Path) -> int:
     if (public / "o-projektu.html").exists() and "<!--sync:corrections-->" in (public / "o-projektu.html").read_text(encoding="utf-8"):
         changed += sync_block(public / "o-projektu.html", "corrections", corrections_html(data_dir))
         changed += sync_block(public / "o-projektu.html", "follow", follow_html())
+        changed += sync_block(public / "o-projektu.html", "translate", translate_html())
     if (data_dir / "overview.json").exists() and (public / "poslanci.html").exists():
         changed += sync_block(public / "poslanci.html", "heads", heads_html(data_dir))
     if (data_dir / "key_votes.json").exists() and (data_dir / "session.json").exists() and (public / "hlasovani.html").exists():

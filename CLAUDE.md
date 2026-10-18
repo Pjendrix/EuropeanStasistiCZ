@@ -23,4 +23,5 @@ Celý koncept je v `docs/KONCEPT.md`. Před každou fází si přečti relevantn
 - Když narazíš na otevřenou otázku nebo zdroj nevrací očekávaná data, zastav se a zeptej se. Neobcházej to vymyšleným řešením.
 - Commity malé a pojmenované podle fáze (`faze1: fetch_meps`).
 - Web: statické HTML + JS bez build stepu, česky, funkční na mobilu i desktopu.
+- Strojový překlad (odkaz na Google Translate v hlavičce) zapíná a vypíná jediný přepínač `translate.enabled` v `data/manual/site.json`; po změně spusť `scripts/layout.py` a `scripts/build_pages.py`.
 - Komunikuj česky, stručně.
