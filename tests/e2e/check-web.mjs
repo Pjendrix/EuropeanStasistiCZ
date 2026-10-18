@@ -298,7 +298,7 @@ for (const width of [1440, 400]) {
   await Promise.all([page.waitForURL((u) => target && u.pathname.endsWith(target.replace(/^\.\//, "")), { timeout: 10000 }).catch(() => problems.push(`${where}: Enter neotevřel ${target}`)), page.keyboard.press("Enter")]);
   await ctx.close();
 }
-// R2 rozcestník: nadpis v oblouku se nepotká s tečkami, na 1366 × 900 je první řada dlaždic vidět bez scrollu,
+// R2 rozcestník: nadpis v oblouku se nepotká s tečkami, na 1366 × 900 jsou tři hlavní úkoly (první řada pod herem, audit UX 2026-10-18) vidět bez scrollu,
 // po úvodní animaci tečky 1–5 přepínají hlasování a pauza zastaví přepínání; s prefers-reduced-motion statický stav.
 for (const [w, h] of [[1366, 900], [390, 844]]) {
   for (const motion of ["no-preference", "reduce"]) {
@@ -314,14 +314,14 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
       const t = document.querySelector(".pt-art h1").getBoundingClientRect();
       const seats = [...document.querySelectorAll("#pt-svg .hm-f")].map((c) => c.getBoundingClientRect());
       return { overlap: seats.filter((s) => s.right > t.left && s.left < t.right && s.bottom > t.top && s.top < t.bottom).length,
-        now: document.querySelector(".pt-now").getBoundingClientRect().bottom, k: document.getElementById("pt-k").textContent,
+        now: document.querySelector(".pt-tasks").getBoundingClientRect().bottom, k: document.getElementById("pt-k").textContent,
         ctl: !document.getElementById("pt-ctl").hidden, paused: document.getElementById("pt-pp").getAttribute("aria-pressed"),
         pos: [...document.querySelectorAll("#pt-svg .hm-seat")].map((a) => a.dataset.pos).join(""),
         titles: [...document.querySelectorAll("#pt-svg .hm-seat title")].filter((x) => x.textContent.includes(":")).length,
         seats: document.querySelectorAll("#pt-svg .hm-seat").length };
     });
     if (st.overlap) problems.push(`${where}: nadpis se překrývá s ${st.overlap} tečkami`);
-    if (w === 1366 && st.now > h) problems.push(`${where}: první řada dlaždic není bez scrollu vidět (konec ${Math.round(st.now)} px)`);
+    if (w === 1366 && st.now > h) problems.push(`${where}: tři hlavní úkoly nejsou bez scrollu vidět (konec ${Math.round(st.now)} px)`);
     if (!st.ctl) problems.push(`${where}: chybí ovládání (tečky 1–5, pauza)`);
     if (st.titles !== st.seats) problems.push(`${where}: tečky bez <title> se jménem a hlasem (${st.titles}/${st.seats})`);
     if (/G/.test(st.pos) || !st.k.startsWith("Poslední hlasování")) problems.push(`${where}: po úvodu není vidět hlasování (${st.k})`);
