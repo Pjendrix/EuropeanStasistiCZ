@@ -1,14 +1,16 @@
-// Kvíz „Moje shoda“ jako aplikace (kviz.html): úvod → jedna otázka na obrazovce → výsledek. Krok je v #hash
-// (#otazka-3, #vysledek), postup v localStorage (epw-kviz: délka, index, odpovědi, přepínač odhalení).
-// Otázky a hlasy z data/quiz.json (scripts/quiz.py), srozumitelné názvy od Claude Haiku z data/quiz_summaries.json.
+// Kvíz „Moje shoda“ jako aplikace (kviz.html): úvod s volbou varianty → jedna otázka na obrazovce → výsledek.
+// Dvě varianty: „Čeští poslanci“ (data/quiz.json, scripts/quiz.py, výsledek = poslanci) a „Evropské frakce“
+// (data/quiz_groups.json, scripts/quiz_groups.py, výsledek = frakce). Krok je v #hash (#otazka-3, #vysledek;
+// #frakce, #frakce/otazka-3, #frakce/vysledek), postup každé varianty zvlášť v localStorage (epw-kviz-poslanci,
+// epw-kviz-frakce: délka, index, odpovědi, přepínač odhalení). Srozumitelné názvy od Claude Haiku z data/quiz_summaries.json.
 // Shodu počítá jen tenhle prohlížeč (lib/quiz.js), nic se neodesílá.
 import { CATEGORY_META, getJSON, loadCategories, soft } from "../lib/data.js";
-import { KIND_LABEL, displayName, esc, fmtDate, fmtNum, fmtPct, isActive, procedureUrl, siteUrl, todayCZ } from "../lib/format.js";
+import { KIND_LABEL, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, procedureUrl, siteUrl, todayCZ } from "../lib/format.js";
 import {
-  ANSWER_LABEL, MIN_COMMON, POSITION_TEXT, STORE_KEY, agreement, answeredCount, compareRows, czCounts, hemiPoints, orderIds, parseState,
-  realCount, resumeIndex,
+  ANSWER_LABEL, LEGACY_STORE_KEY, MIN_COMMON, POSITION_TEXT, QUIZ_GROUPS, STORE_KEYS, agreement, answeredCount, compareRows, czCounts,
+  groupAgreement, groupCompareRows, groupCounts, hemiPoints, orderIds, parseHash, parseState, realCount, resumeIndex, toHash as stepHash,
 } from "../lib/quiz.js";
-import { REDUCED_MOTION, avatar, mepUrl, photoUrl, setNav, showError } from "../lib/ui.js";
+import { REDUCED_MOTION, avatar, logoTile, mepUrl, photoUrl, setNav, showError } from "../lib/ui.js";
 
 setNav("quiz");
 
@@ -31,56 +33,90 @@ const GLYPH = { F: IC.check, A: IC.x, B: IC.minus };
 const RES_VERB = { ADOPTED: "přijal", REJECTED: "zamítl" };
 const OEIL = (ref) => `https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(ref)}`;
 const HTV = '<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL)';
+const GPOS_TEXT = { F: "pro", A: "proti", B: "zdržela se" };
+const RESOLUTION_NOTE = "Usnesení není zákon, vyjadřuje postoj Parlamentu.";
+const VARIANT = {
+  poslanci: {
+    name: "Čeští poslanci",
+    pick: "Zákony, o kterých se v plénu nejvíc hlasovalo a ve kterých Češi nehlasovali jednotně.",
+    result: "Výsledek: jak často s vámi hlasoval každý český europoslanec.",
+    lead: "Projděte skutečná hlasování Evropského parlamentu jedno po druhém. Na konci uvidíte, jak často s vámi hlasoval každý český europoslanec.",
+    reveal: "Po každé odpovědi ukázat, jak hlasovali Češi",
+    method: "o-projektu#moje-shoda",
+    script: "quiz.py",
+  },
+  frakce: {
+    name: "Evropské frakce",
+    pick: "Nejspornější zákony a usnesení období, ve kterých se evropské frakce rozešly.",
+    result: "Výsledek: ke které evropské frakci máte nejblíž.",
+    lead: "Projděte nejspornější hlasování Evropského parlamentu jedno po druhém. Na konci uvidíte, ke které evropské frakci máte nejblíž.",
+    reveal: "Po každé odpovědi ukázat, jak hlasovaly frakce",
+    method: "o-projektu#kviz-frakce",
+    script: "quiz_groups.py",
+  },
+};
 
 const root = document.getElementById("qz");
 const dlg = document.getElementById("qz-dlg");
 
 (async () => {
   try {
-    const [quiz, overview, ai] = await Promise.all([getJSON("quiz.json"), getJSON("overview.json"), getJSON("quiz_summaries.json").catch(soft(null)), loadCategories()]);
-    run(quiz, overview, ai);
+    const [quiz, overview, ai, gquiz, groups, parties] = await Promise.all([getJSON("quiz.json"), getJSON("overview.json"),
+      getJSON("quiz_summaries.json").catch(soft(null)), getJSON("quiz_groups.json").catch(soft(null)), getJSON("groups.json").catch(soft([])),
+      getJSON("parties.json").catch(soft([])), loadCategories()]);
+    run({ poslanci: quiz, frakce: gquiz?.questions?.length ? gquiz : null }, overview, ai, groups || [], parties || []);
   } catch (e) {
     showError(root, e);
   }
 })();
 
-function run(quiz, overview, ai) {
-  const byId = new Map(quiz.questions.map((q) => [String(q.id), q]));
+function run(quizzes, overview, ai, groups, parties) {
+  const byIds = Object.fromEntries(Object.entries(quizzes).map(([v, qz]) => [v, new Map((qz?.questions || []).map((q) => [String(q.id), q]))]));
+  const states = Object.fromEntries(Object.keys(quizzes).map((v) => [v, quizzes[v] ? load(v) : null]));
+  let variant = "poslanci", quiz = quizzes.poslanci, byId = byIds.poslanci, st = states.poslanci;
+  const setVariant = (v) => {
+    if (!quizzes[v]) v = "poslanci";
+    variant = v; quiz = quizzes[v]; byId = byIds[v]; st = states[v];
+  };
   const meps = overview.meps;
   const mepById = new Map(meps.map((m) => [m.id, m]));
   const sm = ai?.items || {};
   const title = (q) => sm[q.procedure]?.nazev || q.title;
   const summary = (q) => sm[q.procedure]?.shrnuti || "";
   const topic = (q) => CATEGORY_META[q.topic]?.label || "";
-  const st = load();
   let phase = "intro", dir = 1, tab = "meps";
 
-  document.getElementById("source").innerHTML = `Zdroj hlasů: ${HTV}, poslanci v mandátu k datu hlasování. Výběr otázek <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>, shodu počítá <a href="lib/quiz.js">quiz.js</a> v prohlížeči, <a href="o-projektu#moje-shoda">jak počítáme</a>.`;
-  if (!quiz.questions.length) {
+  const setSource = () => {
+    document.getElementById("source").innerHTML = variant === "frakce"
+      ? `Zdroj hlasů: ${HTV}, postoj frakce = většina jejích hlasujících členů k datu hlasování. Výběr otázek <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz_groups.py">quiz_groups.py</a>, shodu počítá <a href="lib/quiz.js">quiz.js</a> v prohlížeči, <a href="o-projektu#kviz-frakce">jak počítáme</a>.`
+      : `Zdroj hlasů: ${HTV}, poslanci v mandátu k datu hlasování. Výběr otázek <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>, shodu počítá <a href="lib/quiz.js">quiz.js</a> v prohlížeči, <a href="o-projektu#moje-shoda">jak počítáme</a>.`;
+  };
+  if (!quizzes.poslanci.questions.length && !quizzes.frakce) {
     root.innerHTML = '<h1>Jak byste hlasovali vy?</h1><p class="muted">Žádné hlasování zatím pravidlu výběru neodpovídá.</p>';
     return;
   }
 
-  function load() {
+  // Uložený postup varianty; dřívější společný klíč epw-kviz patří variantě poslanci (převezme se, dokud nový neexistuje).
+  function load(v) {
     let raw = null;
-    try { raw = localStorage.getItem(STORE_KEY); } catch (e) { /* bez úložiště funguje vše, jen bez pokračování */ }
-    return parseState(raw, quiz);
+    try { raw = localStorage.getItem(STORE_KEYS[v]) ?? (v === "poslanci" ? localStorage.getItem(LEGACY_STORE_KEY) : null); } catch (e) { /* bez úložiště funguje vše, jen bez pokračování */ }
+    return parseState(raw, quizzes[v]);
   }
   function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify({ len: st.len, idx: st.idx, answers: st.answers, reveal: st.reveal })); } catch (e) { /* bez úložiště */ }
+    try { localStorage.setItem(STORE_KEYS[variant], JSON.stringify({ len: st.len, idx: st.idx, answers: st.answers, reveal: st.reveal })); } catch (e) { /* bez úložiště */ }
   }
   const list = () => quiz[st.len].map((id) => byId.get(String(id))).filter(Boolean);
 
   // --- krok v adrese ---------------------------------------------------------------------------
   function fromHash() {
-    const h = location.hash;
-    const m = /^#otazka-(\d+)$/.exec(h);
-    if (m && Number(m[1]) >= 1 && Number(m[1]) <= list().length) { phase = "q"; st.idx = Number(m[1]) - 1; }
-    else if (h === "#vysledek") phase = "result";
+    const v = parseHash(location.hash)?.variant || variant;
+    setVariant(v);
+    const s = parseHash(location.hash, list().length);
+    if (s && s.variant === variant) { phase = s.phase; if (s.phase === "q") st.idx = s.idx; }
     else phase = "intro";
   }
   function toHash(push) {
-    const h = phase === "q" ? `#otazka-${st.idx + 1}` : phase === "result" ? "#vysledek" : "";
+    const h = stepHash(variant, phase, st.idx);
     if (location.hash === h || (!h && !location.hash)) return;
     const url = location.pathname + location.search + h;
     if (push) history.pushState(null, "", url); else history.replaceState(null, "", url);
@@ -96,6 +132,7 @@ function run(quiz, overview, ai) {
   function render(focus) {
     // ≤760 px „režim aplikace“: hlavička, spodní lišta i patička zmizí jen u otázek (CSS body.qz-app).
     document.body.classList.toggle("qz-app", phase === "q");
+    setSource();
     if (phase === "q") renderQ();
     else if (phase === "result") renderResult();
     else renderIntro();
@@ -111,22 +148,28 @@ function run(quiz, overview, ai) {
     const qs = list(), done = answeredCount(qs, st.answers);
     const resume = done > 0 && done < qs.length, finished = done === qs.length;
     const pv = quiz.short.slice(0, 3).map((id) => byId.get(String(id))).filter(Boolean);
+    const vcard = (v) => {
+      const on = v === variant, off = !quizzes[v];
+      return `<label class="qz-var-opt${off ? " off" : ""}"><input type="radio" name="qz-var" value="${v}"${on ? " checked" : ""}${off ? " disabled" : ""}>
+        <span><b>${VARIANT[v].name}</b><small>${off ? "Zatím žádné hlasování neodpovídá pravidlu výběru." : `${VARIANT[v].pick} ${VARIANT[v].result}`}</small></span></label>`;
+    };
     const len = (key, name, minutes) => `<label class="qz-len-opt"><input type="radio" name="qz-len" value="${key}"${st.len === key ? " checked" : ""}><span><b>${name}</b><small>${quiz[key].length} otázek · asi ${minutes} minut${minutes < 5 ? "y" : ""}</small></span></label>`;
     root.innerHTML = `<div class="qz-intro">
       <div>
         <p class="qz-eyebrow">Kvíz · Moje shoda</p>
         <h1 tabindex="-1">Jak byste <b>hlasovali vy?</b></h1>
-        <p class="qz-lead">Projděte skutečná hlasování Evropského parlamentu jedno po druhém. Na konci uvidíte, jak často s vámi hlasoval každý český europoslanec.</p>
+        <p class="qz-lead">${VARIANT[variant].lead}</p>
+        <div class="qz-var" role="radiogroup" aria-label="Varianta kvízu">${vcard("poslanci")}${vcard("frakce")}</div>
         <div class="qz-len" role="radiogroup" aria-label="Délka kvízu">${len("short", "Rychlý", Math.max(1, Math.round(quiz.short.length / 4)))}${len("long", "Delší", Math.max(1, Math.round(quiz.long.length / 4)))}</div>
-        <label class="qz-sw"><input type="checkbox" id="qz-rev"${st.reveal ? " checked" : ""}> Po každé odpovědi ukázat, jak hlasovali Češi</label>
+        <label class="qz-sw"><input type="checkbox" id="qz-rev"${st.reveal ? " checked" : ""}> ${VARIANT[variant].reveal}</label>
         <div class="qz-go">${resume
           ? `<button type="button" class="qz-btn gold" id="qz-resume">Pokračovat · ${done} z ${qs.length} ${IC.arrow}</button><button type="button" class="qz-btn" id="qz-new">Začít znovu</button>`
           : finished
             ? `<button type="button" class="qz-btn gold" id="qz-show">Ukázat výsledek ${IC.arrow}</button><button type="button" class="qz-btn" id="qz-new">Začít znovu</button>`
             : `<button type="button" class="qz-btn gold" id="qz-start">Začít ${IC.arrow}</button>`}</div>
         <ul class="qz-notes">
-          <li>${IC.rule}<span><b>Otázky vybírá pravidlo, ne redakce.</b> Zákony, o kterých se v plénu nejvíc hlasovalo a ve kterých Češi nehlasovali jednotně.
-            <details><summary>Celé pravidlo</summary><p>${esc(quiz.rule)} <a href="o-projektu#moje-shoda">Proč takhle</a>.</p></details></span></li>
+          <li>${IC.rule}<span><b>Otázky vybírá pravidlo, ne redakce.</b> ${VARIANT[variant].pick}
+            <details><summary>Celé pravidlo</summary><p>${esc(quiz.rule)} <a href="${VARIANT[variant].method}">Proč takhle</a>.</p></details></span></li>
           ${Object.keys(sm).length ? `<li>${IC.spark}<span><b>Názvy a popisy otázek napsala AI</b> (Claude Haiku, model ${esc(ai.model)}), ne redakce ani úřady. Vychází jen z úředního názvu a popisu hlasování; úřední znění je u každé otázky pod „Více o hlasování“.
             <details><summary>Přesné zadání pro AI</summary><pre class="ai-prompt small">${esc(ai.prompt)}</pre><p><a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz_summaries.py">quiz_summaries.py</a></p></details></span></li>` : ""}
           <li>${IC.lock}<span><b>Nic se neodesílá.</b> Odpovědi se počítají jen ve vašem prohlížeči.</span></li>
@@ -134,6 +177,13 @@ function run(quiz, overview, ai) {
       </div>
       <div class="qz-art" aria-hidden="true">${pv.map((q, i) => `<div class="qz-pc"><div class="qz-pc-m">${esc(topic(q))}${topic(q) ? " · " : ""}${fmtDate(q.date)}</div><p class="qz-pc-h">${esc(title(q))}</p>${i === pv.length - 1 ? `<p class="qz-pc-s">${esc(summary(q))}</p><div class="qz-pc-o"><span class="sel">Pro</span><span>Proti</span><span>Zdržet se</span></div>` : ""}</div>`).join("")}</div>
     </div>`;
+    root.querySelectorAll('input[name="qz-var"]').forEach((r) => r.addEventListener("change", () => {
+      setVariant(r.value);
+      toHash(false);
+      renderIntro();
+      setSource();
+      root.querySelector(`input[name="qz-var"][value="${r.value}"]`).focus();
+    }));
     root.querySelectorAll('input[name="qz-len"]').forEach((r) => r.addEventListener("change", () => { st.len = r.value; st.idx = 0; save(); renderIntro(); root.querySelector(`input[value="${r.value}"]`).focus(); }));
     root.querySelector("#qz-rev").addEventListener("change", (e) => { st.reveal = e.target.checked; save(); });
     const start = (reset) => { if (reset) { st.answers = {}; st.idx = 0; } else st.idx = resumeIndex(list(), st.answers); dir = 1; go("q"); };
@@ -167,6 +217,30 @@ function run(quiz, overview, ai) {
     </div>`;
   }
 
+  // Postoje frakcí po odpovědi: tečky seřazené podle postoje (ne podle frakcí), bez názvů, aby neovlivnily další odpovědi.
+  function groupDots(q) {
+    const order = { F: 0, A: 1, B: 2 };
+    const pos = QUIZ_GROUPS.map((g) => q.groups?.[g]?.pos || "N").sort((a, b) => (order[a] ?? 3) - (order[b] ?? 3));
+    const c = groupCounts(q);
+    const pts = hemiPoints(pos.length, 1, 96, 96);
+    const label = `Frakce: ${c.F} pro, ${c.A} proti, ${c.B} se zdržely, ${c.none} bez většinového postoje`;
+    return `<svg class="qz-hemi qz-ghemi" viewBox="0 0 240 122" role="img" aria-label="${esc(label)}">${pos.map((p, i) => `<circle class="qz-dot p-${p}" cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="13"></circle>`).join("")}</svg>`;
+  }
+
+  function groupRevealHtml(q, a) {
+    const c = groupCounts(q), withPos = c.F + c.A + c.B;
+    const split = c.split === 1 ? "1 frakce tu nehlasovala jednotně" : `${c.split} ${c.split <= 4 ? "frakce" : "frakcí"} tu nehlasovaly jednotně`;
+    return `<div class="qz-reveal">
+      ${groupDots(q)}
+      <p class="qz-rv-l">Parlament <b>${esc(RES_VERB[q.result] || "rozhodl")}</b> · ${fmtNum(q.counts[0])} pro · ${fmtNum(q.counts[1])} proti · ${fmtNum(q.counts[2])} se zdrželo</p>
+      <p class="qz-rv-l">Frakce: <b>${c.F} pro · ${c.A} proti · ${c.B} se zdržely</b>${c.none ? ` · ${c.none} bez většinového postoje` : ""}</p>
+      ${c.split ? `<p class="qz-rv-l small">${split} (většina pod 2/3 hlasujících členů).</p>` : ""}
+      <p class="qz-rv-you">${a === "S" ? "Přeskočeno, do shody se nepočítá." : `Vy: ${ANSWER_LABEL[a]}. Stejný postoj mělo ${c[a]} z ${withPos} frakcí s většinovým postojem.`}</p>
+      <p class="qz-rv-hint">Názvy frakcí uvidíte až ve výsledku, aby neovlivnily další odpovědi.</p>
+    </div>`;
+  }
+  const kindWord = (q) => (q.kind === "usneseni" ? "usnesení" : "zákon");
+
   function renderQ() {
     const qs = list(), q = qs[st.idx], a = st.answers[q.id];
     const last = st.idx === qs.length - 1;
@@ -184,7 +258,7 @@ function run(quiz, overview, ai) {
         <span class="qz-n">${st.idx + 1} / ${qs.length}</span>
       </div>
       <article class="qz-card${REDUCED_MOTION || !dir ? "" : dir > 0 ? " in-next" : " in-prev"}" tabindex="-1" aria-labelledby="qz-qh">
-        <div class="qz-meta">${topic(q) ? `<span class="qz-chip">${esc(topic(q))}</span>` : ""}<span>${fmtDate(q.date)} · ${esc(kind)}</span></div>
+        <div class="qz-meta">${topic(q) ? `<span class="qz-chip">${esc(topic(q))}</span>` : ""}<span>${fmtDate(q.date)} · ${esc(kind)}${q.kind ? ` · ${kindWord(q)}` : ""}</span></div>
         <h1 class="qz-qh" id="qz-qh"><span class="sr-only">Otázka ${st.idx + 1} z ${qs.length}: </span>${esc(title(q))}${hasAi ? ' <span class="qz-ai" title="Název a shrnutí napsala AI (Claude Haiku) z úředního názvu">AI</span>' : ""}</h1>
         ${summary(q) ? `<p class="qz-sum">${esc(summary(q))}</p>` : ""}
         <button type="button" class="qz-more" id="qz-more" aria-haspopup="dialog">${IC.info} Více o hlasování</button>
@@ -194,7 +268,7 @@ function run(quiz, overview, ai) {
         <div class="qz-answers" role="group" aria-labelledby="qz-ask-h">${ans("F", "Pro")}${ans("A", "Proti")}${ans("B", "Zdržel/a bych se", "Zdržet se")}</div>
         <button type="button" class="qz-skip" data-a="S" aria-pressed="${a === "S"}">Nevím, přeskočit <kbd aria-hidden="true">0</kbd></button>
       </div>
-      <div id="qz-rev" aria-live="polite">${a && st.reveal ? revealHtml(q, a) : ""}</div>
+      <div id="qz-rev" aria-live="polite">${a && st.reveal ? (variant === "frakce" ? groupRevealHtml(q, a) : revealHtml(q, a)) : ""}</div>
       <div class="qz-nav">
         <button type="button" class="qz-btn" id="qz-prev"${st.idx === 0 ? " disabled" : ""}>${IC.left}<span>Předchozí</span></button>
         ${a ? `<button type="button" class="qz-btn primary" id="qz-next">${last ? "Ukázat výsledek" : "Další otázka"} ${IC.arrow}</button>`
@@ -242,10 +316,11 @@ function run(quiz, overview, ai) {
       <h2 id="qz-dlg-h">${esc(title(q))}</h2>
       ${s ? `<section><h3>Shrnutí <span class="qz-ai">AI</span></h3><p>${esc(s)}</p><p class="small muted">Napsala AI (Claude Haiku, model ${esc(ai.model)}) jen z úředního názvu a popisu hlasování.</p></section>` : ""}
       <section><h3>Úřední znění</h3><p>${esc(q.title)}${q.description ? ` · ${esc(q.description)}` : ""}</p>${q.title_en && q.title_en !== q.title ? `<p class="small muted" lang="en">${esc(q.title_en)}</p>` : ""}</section>
+      ${q.kind ? `<section><h3>Druh</h3><p>${q.kind === "usneseni" ? `Usnesení. ${RESOLUTION_NOTE}` : "Zákon (legislativní procedura)."}</p></section>` : ""}
       <section><h3>Hlasování</h3><p>${fmtDate(q.date)} · ${esc(KIND_LABEL[q.vote_kind] || "závěrečné hlasování")}${topic(q) ? ` · ${esc(topic(q))}` : ""}</p>
-        ${q.roll_calls ? `<p>O tomto zákonu se v plénu jmenovitě hlasovalo <b>${fmtNum(q.roll_calls)}×</b> (víc hlasování znamená víc sporů o text, proto je v kvízu). V kvízu je jen závěrečné hlasování.</p>` : ""}</section>
+        ${q.roll_calls ? `<p>O ${q.kind === "usneseni" ? "tomto usnesení" : "tomto zákonu"} se v plénu jmenovitě hlasovalo <b>${fmtNum(q.roll_calls)}×</b> (víc hlasování znamená víc sporů o text, proto je v kvízu). V kvízu je jen závěrečné hlasování.</p>` : ""}</section>
       <section><h3>Procedura ${esc(q.procedure)}</h3><p>${story ? `<a href="${story}">Příběh zákona na EP Watch</a> · ` : ""}<a href="${OEIL(q.procedure)}">Legislativní observatoř EP</a></p></section>
-      <section><h3>Zdroj</h3><p>${HTV}, hlasy poslanců v mandátu k datu hlasování.</p></section>
+      <section><h3>Zdroj</h3><p>${HTV}, ${variant === "frakce" ? "postoj frakce = většina jejích hlasujících členů k datu hlasování" : "hlasy poslanců v mandátu k datu hlasování"}.</p></section>
     </div>`;
     dlg.querySelector(".qz-dlg-x").addEventListener("click", closeDetail);
     if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
@@ -277,6 +352,7 @@ function run(quiz, overview, ai) {
   const subLine = (m) => esc([m.party?.short_label, m.group?.short_label].filter(Boolean).join(" · ")) + (isActive(m) ? "" : " · bývalý/á poslanec/kyně");
 
   function renderResult() {
+    if (variant === "frakce") { renderGroupResult(); return; }
     const qs = list(), n = realCount(qs, st.answers);
     if (n < MIN_COMMON) {
       root.innerHTML = `<div class="qz-rs"><div class="qz-rs-head"><p class="qz-eyebrow">Výsledek</p>
@@ -335,6 +411,7 @@ function run(quiz, overview, ai) {
         ${extra ? `<button type="button" class="qz-btn" id="qz-long">Pokračovat delším testem (+${extra})</button>` : ""}
         <button type="button" class="qz-btn" id="qz-again">Začít znovu</button>
       </div>
+      ${otherLink()}
     </div>`;
     const tabs = [...root.querySelectorAll('[role="tab"]')];
     const setTab = (t, focus) => { tab = t; renderResult(); if (focus) root.querySelector(t === "meps" ? "#qz-tab-m" : "#qz-tab-r").focus(); };
@@ -344,6 +421,7 @@ function run(quiz, overview, ai) {
     });
     root.querySelector("#qz-long")?.addEventListener("click", () => { st.len = "long"; st.idx = resumeIndex(list(), st.answers); dir = 1; go("q"); });
     root.querySelector("#qz-again").addEventListener("click", () => { st.answers = {}; st.idx = 0; go("intro"); });
+    bindOther();
     // Kontext pro panel sdílení (share.js): jen to, co je na obrazovce; obrázek se kreslí v prohlížeči.
     const url = siteUrl("kviz");
     window.shareContext = () => ({
@@ -353,6 +431,138 @@ function run(quiz, overview, ai) {
       data: {
         answered: n, date: todayCZ(), urlShort: url.replace(/^https?:\/\//, ""), title: "Moje shoda s českými europoslanci",
         top: top.map((r) => ({ name: displayName(r.m), sub: [r.m.party?.short_label, r.m.group?.short_label].filter(Boolean).join(" · "), pct: fmtPct(r.pct), pair: `${r.same} z ${r.common} otázek`, photoUrl: photoUrl(r.m) || null })),
+      },
+    });
+  }
+
+  // --- odkaz na druhou variantu ---------------------------------------------------------------
+  const other = () => (variant === "frakce" ? "poslanci" : "frakce");
+  function otherLink() {
+    return quizzes[other()] ? `<p class="qz-other"><button type="button" class="qz-link" id="qz-other">Zkusit i variantu ${VARIANT[other()].name}</button></p>` : "";
+  }
+  function bindOther() {
+    root.querySelector("#qz-other")?.addEventListener("click", () => { setVariant(other()); go("intro"); });
+  }
+
+  // --- výsledek varianty Evropské frakce -------------------------------------------------------
+  const gmeta = (code) => groups.find((g) => g.code === code) || { code, short_label: code };
+  const gName = (code) => gmeta(code).short_label || code;
+  const gMark = (code, size) => logoTile(gmeta(code), size) || `<span class="qz-gdot" style="background:${groupColor(gmeta(code))}" aria-hidden="true"></span>`;
+  // České strany ve frakci dnes (overview.json: současná frakce a strana poslanců v mandátu).
+  function czParties(code) {
+    const ep = gmeta(code).ep_code || code;
+    const indep = new Set(parties.filter((x) => x.independent).map((x) => String(x.id)));
+    const labels = [];
+    let ind = 0;
+    meps.filter((m) => isActive(m) && m.group?.code === ep).forEach((m) => {
+      if (!m.party || indep.has(String(m.party.id)) || m.party.short_label === "Ind.") ind += 1;
+      else if (!labels.includes(m.party.short_label)) labels.push(m.party.short_label);
+    });
+    if (ind) labels.push(ind === 1 ? "1 nezávislý poslanec" : `${ind} nezávislí poslanci`);
+    return labels;
+  }
+  const czLine = (code) => {
+    const ps = czParties(code);
+    return ps.length ? `Čeští poslanci ve frakci dnes: ${esc(ps.join(", "))}` : "Dnes ve frakci není žádný český poslanec.";
+  };
+  const joinAnd = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} a ${xs.at(-1)}` : xs[0] || "");
+  const gcounts = (x) => `${fmtNum(x.counts[0])} pro · ${fmtNum(x.counts[1])} proti · ${fmtNum(x.counts[2])} se zdrželo`;
+
+  function renderGroupResult() {
+    const qs = list(), n = realCount(qs, st.answers);
+    if (n < MIN_COMMON) {
+      root.innerHTML = `<div class="qz-rs"><div class="qz-rs-head"><p class="qz-eyebrow">Výsledek</p>
+        <h1 tabindex="-1">Na výsledek je potřeba <b>aspoň ${MIN_COMMON} odpovědi</b></h1>
+        <p>Odpověděli jste na ${n} z ${qs.length} otázek (přeskočené se nepočítají).</p></div>
+        <div class="qz-actions"><button type="button" class="qz-btn gold" id="qz-back">Zpět k otázkám</button></div></div>`;
+      root.querySelector("#qz-back").addEventListener("click", () => {
+        const i = qs.findIndex((q) => !st.answers[q.id] || st.answers[q.id] === "S");
+        st.idx = Math.max(0, i);
+        dir = 1;
+        go("q");
+      });
+      return;
+    }
+    const { enough, few } = groupAgreement(qs, st.answers);
+    const best = enough[0];
+    const tied = best ? enough.filter((r) => r.pct === best.pct) : [];
+    const cmp = (code) => `<ul class="qz-cmp">${groupCompareRows(qs, st.answers, code).map((r) => {
+      const [cls, sym, txt] = r.state === "ok" ? ["ok", "✓", "stejně"] : r.state === "no" ? ["no", "✕", "jinak"] : ["na", "–", "bez většinového postoje"];
+      return `<li><span class="${cls}" aria-hidden="true">${sym}</span><span>${esc(title(r.q))}${r.split ? ' <span class="qz-split">nejednotná</span>' : ""}</span>
+        <span class="qz-pair"><span class="sr-only">${txt}: </span>vy ${ANSWER_LABEL[r.a].toLowerCase()} · frakce ${r.pos ? GPOS_TEXT[r.pos] : txt}<small>${gcounts(r)}</small></span></li>`;
+    }).join("")}</ul>`;
+    const row = (r) => `<li><details class="qz-row"><summary>
+        <span class="qz-who">${gMark(r.code, 30)}<span><b>${esc(gName(r.code))}</b><small>${esc(gmeta(r.code).name_cs || gmeta(r.code).label || "")}</small></span></span>
+        <span class="qz-bar" role="img" aria-label="Shoda ${fmtPct(r.pct)}"><span style="width:${(r.pct * 100).toFixed(1)}%;background:${groupColor(gmeta(r.code))}"></span></span>
+        <span class="qz-rp"><b>${fmtPct(r.pct)}</b><small>${r.same} z ${r.common}</small></span>${IC.chev}</summary>
+        <p class="small muted">${czLine(r.code)}.</p>${cmp(r.code)}<p class="small"><a href="party?c=${encodeURIComponent(r.code)}">Frakce na EP Watch</a></p></details></li>`;
+    const review = qs.map((q) => {
+      const a = st.answers[q.id] || "S";
+      const chips = QUIZ_GROUPS.map((g) => {
+        const x = q.groups?.[g] || {};
+        const split = x.share !== null && x.share !== undefined && x.share < 2 / 3;
+        return `<li class="qz-gchip" style="--gc:${groupColor(gmeta(g))}"><b>${esc(gName(g))}</b> ${x.pos ? GPOS_TEXT[x.pos] : "bez postoje"}${split ? " (nejednotná)" : ""}</li>`;
+      }).join("");
+      return `<div class="qz-rv-card"><h3>${esc(title(q))}</h3>
+        <div><span class="qz-you ${a}">Vy: ${ANSWER_LABEL[a]}</span> <span class="small muted">${fmtDate(q.date)} · ${kindWord(q)}</span></div>
+        <p class="small">Parlament <b>${esc(RES_VERB[q.result] || "rozhodl")}</b> · ${fmtNum(q.counts[0])} pro · ${fmtNum(q.counts[1])} proti · ${fmtNum(q.counts[2])} se zdrželo</p>
+        <ul class="qz-gchips" aria-label="Postoje frakcí">${chips}</ul>
+        <p class="small muted"><a href="v/${q.id}">Detail hlasování</a> · zdroj ${HTV}</p></div>`;
+    }).join("");
+    const extra = st.len === "short" ? quiz.long.filter((id) => !quiz.short.includes(id)).length : 0;
+    const splitN = best ? groupCompareRows(qs, st.answers, best.code).filter((r) => r.split && r.state !== "na").length : 0;
+    root.innerHTML = `<div class="qz-rs">
+      <div class="qz-rs-head"><p class="qz-eyebrow">Výsledek · Evropské frakce · ${n} ${n < 5 ? "odpovědi" : "odpovědí"} z ${qs.length} otázek</p>
+        <h1 tabindex="-1">${best ? `Nejblíž máte k <b>${esc(joinAnd(tied.map((r) => gName(r.code))))}</b>` : "Nejbližší frakci <b>nelze určit</b>"}</h1>
+        <p>Shoda = podíl otázek, ve kterých se vaše odpověď shoduje s postojem frakce (většina jejích hlasujících členů), z otázek, na které jste odpověděli a ve kterých frakce většinový postoj měla. „x z y“ = stejně v x z y takových otázek.</p></div>
+      ${best ? `<div class="qz-gtop" style="--gc:${groupColor(gmeta(best.code))}">
+          <span class="qz-gtop-logo">${gMark(best.code, 56)}</span>
+          <div class="qz-gtop-txt"><b class="qz-gtop-n">${esc(gName(best.code))}</b><span class="qz-sub">${esc(gmeta(best.code).name_cs || gmeta(best.code).label || "")}</span>
+            <span class="qz-sub">${czLine(best.code)}.</span>
+            ${splitN ? `<span class="qz-sub">V ${splitN} z vašich otázek frakce nehlasovala jednotně (většina pod 2/3).</span>` : ""}</div>
+          <div class="qz-gtop-p"><span class="qz-pp">${fmtPct(best.pct)}</span><span class="qz-sub">${best.same} z ${best.common} otázek</span></div>
+        </div>${tied.length > 1 ? `<p class="small muted">Stejnou shodu máte i s ${esc(tied.slice(1).map((r) => gName(r.code)).join(", "))}.</p>` : ""}`
+        : `<p class="muted">S žádnou frakcí nemáte aspoň ${MIN_COMMON} společné otázky.</p>`}
+      <div class="qz-tabs" role="tablist" aria-label="Zobrazení výsledku">
+        <button type="button" role="tab" id="qz-tab-m" aria-selected="${tab === "meps"}" aria-controls="qz-pan-m" tabindex="${tab === "meps" ? 0 : -1}">Všechny frakce</button>
+        <button type="button" role="tab" id="qz-tab-r" aria-selected="${tab === "rev"}" aria-controls="qz-pan-r" tabindex="${tab === "rev" ? 0 : -1}">Vaše odpovědi</button>
+      </div>
+      <div id="qz-pan-m" role="tabpanel" aria-labelledby="qz-tab-m"${tab === "meps" ? "" : " hidden"}>
+        <ol class="qz-rlist">${enough.map(row).join("")}</ol>
+        ${few.length ? `<p class="qz-few">Méně než ${MIN_COMMON} společné otázky (bez procenta): ${few.map((r) => `${esc(gName(r.code))} (${r.same} z ${r.common})`).join(", ")}</p>` : ""}
+        <p class="small muted">Klikněte na řádek: porovnání otázka po otázce s poměrem hlasů ve frakci. Seřazeno podle shody, u stejné shody podle počtu společných otázek. Nezařazení nejsou frakce, proto tu nejsou.</p>
+      </div>
+      <div id="qz-pan-r" class="qz-review" role="tabpanel" aria-labelledby="qz-tab-r"${tab === "rev" ? "" : " hidden"}>${review}</div>
+      <p class="qz-disc">Není to hodnocení frakcí ani doporučení, koho volit. Frakce hlasuje podle většiny svých členů; jednotliví poslanci se mohou lišit.
+        Zdroj: ${HTV}, postoj frakce k datu hlasování; české strany ve frakci podle <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0), dnešní stav.</p>
+      <div class="qz-actions">
+        ${best ? `<button type="button" class="qz-btn gold" id="qz-share" data-share="quiz-groups" aria-haspopup="dialog">${IC.share}<span>Sdílet výsledek</span></button>` : ""}
+        ${extra ? `<button type="button" class="qz-btn" id="qz-long">Pokračovat delším testem (+${extra})</button>` : ""}
+        <button type="button" class="qz-btn" id="qz-again">Začít znovu</button>
+      </div>
+      ${otherLink()}
+    </div>`;
+    const tabs = [...root.querySelectorAll('[role="tab"]')];
+    const setTab = (t, focus) => { tab = t; renderGroupResult(); if (focus) root.querySelector(t === "meps" ? "#qz-tab-m" : "#qz-tab-r").focus(); };
+    tabs.forEach((b) => {
+      b.addEventListener("click", () => setTab(b.id === "qz-tab-m" ? "meps" : "rev", true));
+      b.addEventListener("keydown", (e) => { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); setTab(tab === "meps" ? "rev" : "meps", true); } });
+    });
+    root.querySelector("#qz-long")?.addEventListener("click", () => { st.len = "long"; st.idx = resumeIndex(list(), st.answers); dir = 1; go("q"); });
+    root.querySelector("#qz-again").addEventListener("click", () => { st.answers = {}; st.idx = 0; go("intro"); });
+    bindOther();
+    const url = siteUrl("kviz");
+    const rest = enough.slice(1, 3);
+    window.shareContext = () => ({
+      kind: "quiz-groups", url, filename: "ep-watch-kviz-frakce", subtitle: `Nejbližší frakce z ${n} odpovědí`,
+      trust: "Obrázek vznikne jen ve vašem prohlížeči, nic se neodesílá. Má datum, zdroj a adresu kvízu. Není to doporučení, koho volit.",
+      text: `Ke které evropské frakci mám nejblíž (kvíz EP Watch CZ, ${n} otázek): ${enough.slice(0, 3).map((r) => `${gName(r.code)} ${fmtPct(r.pct)}`).join(", ")}.`,
+      data: {
+        answered: n, date: todayCZ(), urlShort: url.replace(/^https?:\/\//, ""), title: "Ke které evropské frakci mám nejblíž",
+        best: best && { name: gName(best.code), full: gmeta(best.code).name_cs || "", pct: fmtPct(best.pct), share: best.pct, pair: `${best.same} z ${best.common} otázek`,
+          color: gmeta(best.code).color || gmeta(best.code).chart_color || null, logo: gmeta(best.code).logo || null, logoAspect: gmeta(best.code).logo_aspect || null,
+          parties: czParties(best.code) },
+        rest: rest.map((r) => ({ name: gName(r.code), pct: fmtPct(r.pct), share: r.pct, color: gmeta(r.code).color || gmeta(r.code).chart_color || null })),
       },
     });
   }

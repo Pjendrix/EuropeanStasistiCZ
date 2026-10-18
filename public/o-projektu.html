@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=c5572551"></script>
-<link rel="stylesheet" href="style.css?v=9ec12075">
+<link rel="stylesheet" href="style.css?v=d1d9e79c">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -168,6 +168,30 @@
             s porovnáním otázka po otázce a vaše odpovědi s tím, kdo jak hlasoval. <strong>Obrázek ke sdílení</strong> (tři nejvyšší shody, počet
             odpovědí, datum) vzniká jen ve vašem prohlížeči a nic se při tom neodesílá.</p>
           <a class="ab-def-link" href="#moje-shoda">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="kviz-frakce"><summary><b>Kvíz Evropské frakce</b></summary><div class="ab-def-body">
+          <p>Kvíz Evropské frakce (<a href="kviz#frakce">kvíz</a>): otázky vybírá pravidlo
+            (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz_groups.py">quiz_groups.py</a>) ze závěrečných hlasování
+            za celé volební období s výsledkem přijato nebo zamítnuto; z každé procedury nejnovější hlasování, které pravidlem projde.
+            Hlasování musí rozdělit Parlament (menšina má aspoň <span data-param="MIN_MINORITY">20 %</span> hlasů pro a proti) i frakce
+            (aspoň <span data-param="MIN_SIDE">2</span> frakce většinou pro a aspoň 2 většinou proti).</p>
+          <p>Zákon (procedura COD, CNS nebo APP) projde, když se o něm v plénu jmenovitě hlasovalo aspoň <span data-param="LAW_MIN_ROLL_CALLS">10</span>×
+            (boj o text v pozměňovacích návrzích), nebo když jde o dohodu s Radou, ve které má menšina aspoň <span data-param="LAW_DEAL_MIN_MINORITY">30 %</span>.
+            Dvě cesty proto, že dohody s Radou mívají jen 2–4 jmenovitá hlasování: pozměňovací návrhy se řeší dřív v jednáních s Radou.
+            Usnesení (ostatní procedury) projde s aspoň <span data-param="RES_MIN_ROLL_CALLS">20</span> jmenovitými hlasováními a menšinou aspoň
+            <span data-param="RES_MIN_MINORITY">30 %</span>. Usnesení není zákon, vyjadřuje postoj Parlamentu.</p>
+          <p>Pořadí: podle počtu jmenovitých hlasování k proceduře, nejdřív zákony, pak usnesení. Z jednoho tématu nejvýš
+            <span data-param="MAX_PER_TOPIC">3</span> otázky, z každoročně se opakujících zpráv (rozpočet, absolutorium, zpráva o právním státu)
+            jen nejnovější. Delší test má <span data-param="LONG">25</span> otázek (nejvýš <span data-param="LONG_LAWS">18</span> zákonů, zbytek usnesení),
+            krátký <span data-param="SHORT">12</span> (prvních <span data-param="SHORT_LAWS">9</span> zákonů a 3 usnesení z delšího). Když kandidátů
+            není dost, test je kratší; prahy se nikdy nevolní.</p>
+          <p><strong>Postoj frakce</strong> = nejčastější z pro / proti / zdržel se mezi jejími členy, kteří hlasovali, podle příslušnosti
+            k frakci k datu hlasování (HowTheyVote.eu). Při shodě dvou možností frakce postoj nemá a otázka se jí nepočítá. Když většina tvoří
+            méně než 2/3 hlasujících členů, výsledek u frakce upozorní, že nehlasovala jednotně; otázka se ale počítá.
+            <strong>Shoda s frakcí</strong> = otázky, kde se vaše odpověď shoduje s postojem frakce, z otázek, na které jste odpověděli a kde
+            frakce postoj má (nejméně 3 společné otázky). Nezařazení poslanci nejsou frakce a společný postoj nemají, proto ve výsledku nejsou.
+            Po odpovědi kvíz ukáže jen počty frakcí pro a proti bez názvů, aby názvy neovlivnily další odpovědi. České strany u frakce jsou
+            podle EP Open Data, dnešní stav. Výsledek se počítá jen ve vašem prohlížeči; není to hodnocení frakcí ani doporučení, koho volit.</p>
+          <a class="ab-def-link" href="#kviz-frakce">odkaz na pravidlo</a></div></details>
         <details class="ab-def" id="radar"><summary><b>Co se chystá (radar)</b></summary><div class="ab-def-body">
           <p>Co se chystá (<a href="radar">radar</a>): program nejbližšího zasedání a legislativní procedury
             (řádný legislativní postup COD, zvláštní postupy CNS a APP), ve kterých je český poslanec zpravodajem, spoluzpravodajem, stínovým
