@@ -83,18 +83,26 @@ def test_formatting():
 
 
 def test_definitions_static_and_every_key_has_a_name(tmp_path):
-    defs = {"attendance": "Text <b>", "work_profile": "Další"}
+    defs = {"attendance": "Účast na hlasování: text <b>. Druhá věta.", "cz_split": "Míra rozdělení mezi Čechy: menší z čísel."}
     html = bp.definitions_html(defs)
-    assert "<strong>Účast na hlasování</strong>: Text &lt;b&gt;" in html and "work_profile" not in html
-    try:
-        bp.definitions_html({"neznamy_klic": "x"})
-        raise AssertionError("měla být chyba")
-    except bp.FormatError as e:
-        assert "neznamy_klic" in str(e)
+    # sbalovací definice s kotvou = klíč; „Název:“ se vynechá jen když opakuje název pojmu, první písmeno velké
+    assert '<details class="ab-def" id="attendance"><summary><b>Účast na hlasování</b><span>Text &lt;b&gt;.</span></summary>' in html
+    assert "<p>Druhá věta.</p>" in html and 'href="#attendance">odkaz na definici' in html
+    assert "<span>Míra rozdělení mezi Čechy: menší z čísel.</span>" in html  # jiný štítek nese informaci, zůstává
+    assert html.index("<h3>Hlasování</h3>") < html.index("<h3>Češi jako delegace</h3>") and "Poslanci a frakce" not in html
+    for bad in ({"neznamy_klic": "x"},):
+        try:
+            bp.definitions_html(bad)
+            raise AssertionError("měla být chyba")
+        except bp.FormatError as e:
+            assert "neznamy_klic" in str(e)
+    assert sorted(k for _, keys in bp.DEFINITION_GROUPS for k in keys) == sorted(bp.DEFINITION_NAMES)  # každý pojem má skupinu
     pub, data = tmp_path / "public", tmp_path / "data"
     pub.mkdir()
     data.mkdir()
-    (pub / "o-projektu.html").write_text('<ul class="plain" id="definitions"><li class="loading">Načítám…</li></ul>', encoding="utf-8")
+    (pub / "o-projektu.html").write_text(
+        '<div id="definitions"><!--sync:definitions-->\nNačítám…\n<!--/sync:definitions--></div>', encoding="utf-8"
+    )
     (data / "overview.json").write_text(json.dumps({"definitions": defs}), encoding="utf-8")
     assert bp.sync_definitions(pub, data) is True
     assert "Načítám" not in (pub / "o-projektu.html").read_text(encoding="utf-8")
@@ -295,6 +303,7 @@ def test_corrections_block(tmp_path):
     )
     html = bp.corrections_html(data)
     assert html.index("5. 10. 2026") < html.index("1. 10. 2026") and 'href="https://example.test/x"' in html
+    assert html.count('<li data-kind="fix">') == 2 and '<time datetime="2026-10-05">' in html  # položky časové osy
     (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [{"date": "2026-10-01"}]}), encoding="utf-8")
     import pytest
 

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O projektu – mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F172A;--gold:#F59E0B;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--line:rgba(15,23,42,.09);--chip:#F1F5F9;--link:#1E3A8A;--soft:#334155}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1220;--surface:#111A2E;--text:#E2E8F0;--muted:#94A3B8;--line:rgba(148,163,184,.16);--chip:rgba(30,41,59,.85);--link:#BFDBFE;--soft:#CBD5E1}}
+:root[data-theme="dark"]{--bg:#0B1220;--surface:#111A2E;--text:#E2E8F0;--muted:#94A3B8;--line:rgba(148,163,184,.16);--chip:rgba(30,41,59,.85);--link:#BFDBFE;--soft:#CBD5E1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,sans-serif;line-height:1.55}
+a{color:var(--link);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--gold)}
+header.site{background:radial-gradient(900px 300px at 85% -40%,#1E3A8A 0%,#0F172A 60%,#0A1226 100%);color:#F8FAFC}
+header.site .in{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:22px}
+header.site b{font-size:1.05rem}
+header.site nav{display:flex;gap:18px;font-size:.88rem;color:#CBD5E1;flex-wrap:wrap}
+.kz{margin-left:auto;background:var(--gold);color:#0F172A;font-weight:800;border-radius:999px;padding:6px 14px;font-size:.85rem}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+.hero{padding:44px 0 28px;max-width:760px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+h1{font-size:clamp(2rem,4vw,2.9rem);letter-spacing:-.035em;line-height:1.05;margin:10px 0 14px;font-weight:300}
+h1 b{font-weight:700}
+.lead{font-size:1.08rem;color:var(--soft);margin:0}
+.indep{margin-top:14px;font-size:.88rem;color:var(--muted)}
+.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:8px 0 46px}
+@media (max-width:860px){.doors{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.door{display:flex;flex-direction:column;gap:6px;padding:18px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:border-color .15s}
+.door:hover{border-color:var(--gold)}
+.door svg{width:26px;height:26px;color:var(--gold)}
+.door b{font-size:1rem}
+.door span{font-size:.84rem;color:var(--muted);line-height:1.4}
+.door.k{background:#0F172A;color:#F8FAFC;border-color:#0F172A}.door.k span{color:#CBD5E1}
+.grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr);gap:0}}
+.toc{position:sticky;top:20px;align-self:start;font-size:.9rem}
+.toc p{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.toc a{display:block;padding:7px 12px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none}
+.toc a.on{border-left-color:var(--gold);color:var(--text);font-weight:700}
+.toc-m{display:none}
+@media (max-width:860px){.toc{display:none}.toc-m{display:block;position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;margin-bottom:10px}
+ .toc-m select{width:100%;font:inherit;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text)}}
+section{max-width:760px;padding:6px 0 44px;scroll-margin-top:20px}
+section+section{border-top:1px solid var(--line);padding-top:40px}
+h2{font-size:1.55rem;letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px;font-size:.95rem}
+.src{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.src{grid-template-columns:minmax(0,1fr)}}
+.src div{padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.src b{display:block;color:var(--text);font-size:1rem;margin-bottom:4px}
+.lic{display:inline-block;margin-top:8px;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--soft)}
+.note{font-size:.9rem;color:var(--soft);margin:16px 0 0}
+.find{display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);margin:0 0 18px}
+.find input{flex:1;border:0;background:transparent;font:inherit;padding:12px 0;color:var(--text);outline:none}
+.find svg{width:18px;height:18px;color:var(--muted)}
+.grp{margin:22px 0 6px;font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+details.def{border-bottom:1px solid var(--line)}
+details.def summary{list-style:none;cursor:pointer;padding:13px 0;display:grid;grid-template-columns:minmax(0,1fr) 20px;gap:4px 12px}
+details.def summary::-webkit-details-marker{display:none}
+details.def summary b{font-size:.98rem}
+details.def summary span{grid-column:1;color:var(--muted);font-size:.9rem;line-height:1.45}
+details.def summary i{grid-row:1/3;grid-column:2;align-self:center;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;color:var(--muted);transition:transform .2s}
+details.def[open] summary i{transform:rotate(45deg);color:var(--gold)}
+details.def .body{padding:0 0 16px;color:var(--soft);font-size:.92rem}
+details.def .body a.anc{font-size:.78rem;color:var(--muted)}
+details.def:target summary b,details.def.hl summary b{background:linear-gradient(transparent 60%,rgba(245,158,11,.35) 0)}
+.empty{color:var(--muted);font-size:.9rem;padding:14px 0}
+.contact{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:24px}
+@media (max-width:700px){.contact{grid-template-columns:minmax(0,1fr)}}
+label{display:block;font-size:.84rem;font-weight:700;margin:0 0 6px}
+textarea,input.t{width:100%;font:inherit;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);margin-bottom:14px}
+textarea{min-height:120px;resize:vertical}
+.btn{border:0;border-radius:999px;background:var(--navy);color:#fff;font:inherit;font-weight:700;padding:12px 22px;cursor:pointer}
+:root[data-theme="dark"] .btn{background:#F8FAFC;color:#0F172A}
+.side h3{margin:0 0 10px;font-size:1rem}
+.side ol{margin:0 0 16px;padding-left:20px;color:var(--soft);font-size:.9rem}
+.side ol li{margin:4px 0}
+.side .alt{font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.side .alt a{display:inline-flex;margin:6px 10px 0 0}
+.tl-f{display:flex;gap:6px;margin:0 0 14px}
+.tl-f button{border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:.84rem;font-weight:600;padding:6px 14px;border-radius:99px;cursor:pointer}
+.tl-f button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+:root[data-theme="dark"] .tl-f button[aria-pressed="true"]{background:#F8FAFC;color:#0F172A}
+ol.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+ol.tl li{position:relative;padding:0 0 18px 20px}
+ol.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--bg)}
+ol.tl li.fix::before{background:#E5484D}
+ol.tl time{font-size:.8rem;font-weight:700;color:var(--muted)}
+ol.tl .tg{font-size:.7rem;font-weight:800;margin-left:8px;padding:1px 8px;border-radius:99px;background:var(--chip);color:var(--soft)}
+ol.tl p{margin:2px 0 0;font-size:.92rem;color:var(--soft)}
+ol.tl p b{color:var(--text)}
+ol.tl .cl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.more{background:none;border:0;color:var(--link);font:inherit;font-size:.86rem;cursor:pointer;padding:0;text-decoration:underline}
+.mock-bar{position:fixed;right:14px;bottom:14px;z-index:20;display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:5px;box-shadow:0 10px 30px -10px rgba(0,0,0,.3)}
+.mock-bar button{border:0;background:transparent;color:var(--text);font:inherit;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:99px;cursor:pointer}
+.mock-bar button[aria-pressed="true"]{background:var(--gold);color:#0F172A}
+</style>
+</head>
+<body>
+<header class="site"><div class="in"><b>EP Watch CZ</b><nav><span>Aktuálně</span><span>Poslanci</span><span>Strany</span><span>Hlasování</span><span>Práce poslanců</span><span>Analýzy</span></nav><span class="kz">✓ Kvíz</span></div></header>
+<div class="wrap">
+ <div class="hero">
+  <div class="eyebrow">O projektu</div>
+  <h1>Fakta o českých europoslancích. <b>Z oficiálních dat, bez hodnocení.</b></h1>
+  <p class="lead">EP Watch CZ sleduje práci českých poslanců Evropského parlamentu v 10. volebním období (od 16. 7. 2024): hlasování, účast, práci na textech. Každé číslo spočítal veřejný skript a má odkaz na zdroj.</p>
+  <p class="indep">Nezávislý projekt. Není spojen s žádnou stranou, hnutím ani frakcí.</p>
+ </div>
+ <div class="doors">
+  <a class="door" href="#zdroje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><b>Odkud jsou data</b><span>HowTheyVote.eu, EP Open Data, aktualizace každý týden</span></a>
+  <a class="door" href="#metodika"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg><b>Jak počítáme</b><span>20 pojmů a pravidla jednotlivých stránek</span></a>
+  <a class="door k" href="#kontakt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg><b>Nahlásit chybu</b><span>Napište nám, opravíme a zveřejníme</span></a>
+  <a class="door" href="#zmeny"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><b>Opravy a změny</b><span>Co jsme opravili a jak se mění metodika</span></a>
+ </div>
+
+ <div class="grid">
+  <nav class="toc" aria-label="Obsah stránky"><p>Na této stránce</p>
+   <a href="#zdroje">Zdroje dat</a><a href="#metodika">Jak počítáme</a><a href="#stranky">Pravidla stránek</a><a href="#kontakt">Kontakt</a><a href="#zmeny">Opravy a změny</a><a href="#licence">Licence a loga</a></nav>
+  <main>
+   <div class="toc-m"><select aria-label="Přejít na sekci" onchange="location.hash=this.value"><option value="">Obsah stránky…</option><option value="zdroje">Zdroje dat</option><option value="metodika">Jak počítáme</option><option value="stranky">Pravidla stránek</option><option value="kontakt">Kontakt</option><option value="zmeny">Opravy a změny</option><option value="licence">Licence a loga</option></select></div>
+
+   <section id="zdroje"><h2>Zdroje dat</h2><p class="sub">Jen oficiální data a exporty, žádné stahování z webových stránek.</p>
+    <div class="src">
+     <div><b>HowTheyVote.eu</b>Jmenovitá hlasování v plénu a hlas každého poslance.<br><span class="lic">ODbL</span></div>
+     <div><b>EP Open Data API</b>Poslanci, mandáty, frakce, strany, výbory, zprávy, projevy.<br><span class="lic">CC BY 4.0</span></div>
+     <div><b>Portréty</b>Fotografie poslanců z webu Evropského parlamentu.<br><span class="lic">© European Union – Source: EP</span></div>
+    </div>
+    <p class="note">Hlasování se obnovují, jakmile HowTheyVote vydá nový export (zpravidla jednou týdně), program zasedání každý den. <b>Aktuální data:</b> export 17. 10. 2026, hlasování 17. 7. 2024 – 8. 10. 2026.</p>
+   </section>
+
+   <section id="metodika"><h2>Jak počítáme</h2><p class="sub">Čísla počítá ověřený kód s testy, ne AI. Klikněte na pojem pro celou definici.</p>
+    <label class="find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Najít pojem, např. účast, frakce, těsné…" aria-label="Najít pojem"></label>
+    <div id="defs"></div>
+    <p class="empty" id="none" hidden>Nic nenalezeno.</p>
+   </section>
+
+   <section id="stranky"><h2>Pravidla jednotlivých stránek</h2><p class="sub">Jak se vybírá obsah kvízu, radaru, shrnutí a dalších částí webu.</p>
+    <div id="rules"></div>
+   </section>
+
+   <section id="kontakt"><h2>Kontakt a nahlášení chyby</h2><p class="sub">Našli jste chybu v datech nebo ve výpočtu, nebo máte dotaz?</p>
+    <div class="contact">
+     <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Odesláno ✓'">
+      <label for="m">Zpráva</label><textarea id="m" placeholder="Co je špatně, nebo na co se chcete zeptat"></textarea>
+      <label for="u">Odkaz na stránku <span style="font-weight:400;color:var(--muted)">(nepovinné)</span></label><input class="t" id="u" placeholder="https://epwatch.cz/…">
+      <label for="e">E-mail pro odpověď <span style="font-weight:400;color:var(--muted)">(nepovinné)</span></label><input class="t" id="e" type="email">
+      <button class="btn">Odeslat</button>
+     </form>
+     <div class="side"><h3>Co se stane po odeslání</h3>
+      <ol><li>Zpráva přijde správci webu (služba Formspree, uloží jen to, co vyplníte).</li><li>Chybu ověříme proti zdroji.</li><li>Opravu zveřejníme níže v „Opravy“ a na Instagramu.</li></ol>
+      <div class="alt">Raději veřejně?<br><a href="#">Issue na GitHubu</a><a href="#">Instagram @epwatch.cz</a><a href="#">RSS / Atom</a></div></div>
+    </div>
+   </section>
+
+   <section id="zmeny"><h2>Opravy a změny</h2><p class="sub">Chyby, které jsme opravili, a změny metodiky. Highlight „Opravy“ na Instagramu vede sem.</p>
+    <div class="tl-f" role="group" aria-label="Filtr"><button aria-pressed="true" data-f="all">Vše</button><button aria-pressed="false" data-f="fix">Opravy (0)</button><button aria-pressed="false" data-f="chg">Změny</button></div>
+    <ol class="tl" id="tl"></ol>
+   </section>
+
+   <section id="licence"><h2>Licence a loga</h2>
+    <details class="def"><summary><b>Licence kódu a dat</b><span>Kód AGPL-3.0, data ODbL 1.0 a CC BY 4.0, písmo SIL OFL.</span><i>+</i></summary><div class="body">Výpočty (skripty a testy ve veřejném repozitáři) mají licenci GNU AGPL-3.0. Data odvozená z HowTheyVote.eu jsou pod ODbL 1.0, údaje z EP Open Data pod CC BY 4.0. Každá týdenní aktualizace má v repozitáři značku data-RRRR-MM-DD, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</div></details>
+    <details class="def"><summary><b>Loga a barvy stran</b><span>Oficiální soubory stran, neupravujeme je. Barvy v grafech jsou pro rozlišení.</span><i>+</i></summary><div class="body">Loga stran a frakcí jsou ochranné známky jejich vlastníků. Používáme je v rámci informačního užití, jen k identifikaci strany nebo frakce u čísel, která se jí týkají. Kde logo chybí, ukazujeme tečku a zkratku. U každého loga je uveden oficiální zdroj. Na žádost vlastníka logo odstraníme.</div></details>
+   </section>
+  </main>
+ </div>
+</div>
+<div class="mock-bar" role="group" aria-label="Režim náhledu"><button data-t="light" aria-pressed="false">Světlý</button><button data-t="dark" aria-pressed="false">Tmavý</button></div>
+<script>
+const D = {"defs": {"attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).", "attendance_main": "Účast na hlasování jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.", "vote_kind": "Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, procedurální hlasování, ostatní.", "group_loyalty": "Hlasuje s frakcí: v kolika procentech hlasování hlasoval stejně jako většina jeho frakce (k datu hlasování). Vysoké ani nízké číslo samo o sobě není dobré ani špatné. Odchylky často vycházejí z postoje domácí strany nebo z národních zájmů. Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.", "cz_agreement": "Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.", "pairwise": "Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.", "outcome_agreement": "Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.", "group_outcome_agreement": "Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.", "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).", "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.", "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).", "presence": "Prezence na zasedání (podle EP): v kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP (EP Open Data, meetings). Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. Bez mediánu EP a bez pořadí.", "speeches": "Projevy v plénu: počet ústních projevů v rozpravách v době mandátu podle EP Open Data (endpoint speeches) a jejich celková délka z časových značek zdroje (jen u projevů, kde jsou obě značky). Písemná prohlášení se počítají zvlášť a do projevů se nesčítají, protože se dají psát hromadně. Jde o počet a čas, ne o kvalitu ani vliv; do třetin v delegaci nevstupuje a medián EP se neuvádí (projevy všech poslanců EP by znamenaly tisíce dotazů týdně). Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026.", "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.", "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.", "cz_unity": "Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.", "party_cohesion": "Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.", "own_work": "Práce na textech: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se počítá jednou.", "work_profile": "Profil práce na textech (stránka Práce na textech) počítá přidělené role bez ohledu na výsledek hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí ani body záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádná váha by nebyla podložená. Podepsané návrhy usnesení se ukazují zvlášť a do třetin nevstupují: podepisují je desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává. Kdo byl v mandátu méně než 75 % období (od začátku období do posledního hlasování v datech), třetinu nedostane: srovnání počtů s kolegy, kteří mají za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají.", "topics": "Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období."}, "rules": ["Typ hlasování určují pevná pravidla podle popisu hlasování ve zdroji (vote_kinds.py). U návrhu na zamítnutí znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také pevnými pravidly (labels_cs.py); co pravidla neznají, zůstává v originále.", "Počítají se jen jmenovitá hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.", "Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.", "„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká účast na hlasování může mít i důvody jako nemoc nebo rodičovství.", "Oficiální výsledek bereme ze zdroje. U několika hlasování neodpovídá prosté většině (např. vyžadovala absolutní většinu 361 hlasů, nebo hlasování 181313 skončilo 289 : 289 a zdroj ho uvádí jako přijaté). Taková hlasování se do rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.", "Hlasování s frakcí a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.", "Čísla počítá deterministický skript compute_stats.py s testy, ne AI."], "changes": [["15. 10. 2026", "Nová stránka Strany → Evropské frakce: souhrn hlasování celých politických skupin EP (všichni členové, ne jen čeští). Účast skupiny = podíl hlasů pro, proti nebo zdržel se ze všech hlasů členů, soudržnost = podíl hlasů pro a proti odpovídajících většině skupiny (v hlasováních, kde hlasovalo pro nebo proti aspoň 10 členů), výrazně rozdělené hlasování = menšina mezi hlasy pro a proti aspoň 30 % (stejný práh jako u české delegace). Nezařazení nejsou skupina, proto tu nejsou. Weby skupin jsou z Wikidat, popisy skupin záměrně neuvádíme."], ["15. 10. 2026", "Nová stránka Hlasování podle témat: 12 témat jako pevná pravidla nad tématy Legislativní observatoře EP (žádná AI). Jedno hlasování se počítá do všech svých témat, hlasování bez tématu je v řádku „Bez tématu“. U každého tématu je počet hlasování, závěrečných, „Češi jednotně“, rozložení hlasů Čechů v závěrečných hlasováních a účast Čechů."], ["15. 10. 2026", "Práce poslanců má vlastní položku v menu a přehledovou stránku: souhrn (zprávy, které čeští poslanci vedou a vyjednávají, projevy, otázky, prezence), kdy se pracovalo, rozpad zpráv podle typu procedury, naposledy přijaté zprávy s českou stopou a rozpad podle frakcí. Každý text se v součtech počítá jednou, i když na něm pracovali dva Češi. Frakce jsou řazené podle počtu poslanců, ne podle výkonu, a u každé je i průměr na poslance, protože zprávy se mezi frakce dělí podle jejich velikosti. Tabulka po poslancích s třetinami je na samostatné záložce."]]};
+const GROUPS = [
+ ["Hlasování", [["vote_kind","Typ hlasování"],["attendance","Účast na hlasování"],["attendance_main","Účast u závěrečných hlasování"],["close_votes","Těsné hlasování"],["decisive_votes","Kde rozhodly české hlasy"],["topics","Témata"]]],
+ ["Poslanci a frakce", [["group_loyalty","Hlasuje s frakcí"],["against_group","Kde hlasoval jinak než frakce"],["outcome_agreement","Soulad s výsledkem"],["group_outcome_agreement","Soulad s výsledkem – průměr frakce"],["party_cohesion","Jednotnost strany"]]],
+ ["Češi jako delegace", [["cz_agreement","Shoda s ostatními Čechy"],["pairwise","S kým hlasuje stejně"],["cz_split","Kde se Češi rozdělili"],["cz_unity","Češi jednotně"],["delegations","Srovnání s delegacemi podobné velikosti"]]],
+ ["Práce na textech", [["own_work","Práce na textech"],["work_profile","Třetiny v delegaci"],["speeches","Projevy v plénu"],["presence","Prezence na zasedání (podle EP)"]]],
+];
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function split(t){ t = t.replace(/^[^:]{2,60}:\s*/, ""); t = t.charAt(0).toUpperCase() + t.slice(1); const m = t.match(/^(.+?[.!?])(\s|$)/); return m ? [m[1], t.slice(m[1].length).trim()] : [t, ""]; }
+document.getElementById("defs").innerHTML = GROUPS.map(([g, items]) => `<p class="grp">${g}</p>` + items.filter(([k]) => D.defs[k]).map(([k, label]) => {
+  const [first, rest] = split(D.defs[k]);
+  return `<details class="def" id="${k}"><summary><b>${label}</b><span>${esc(first)}</span><i>+</i></summary><div class="body">${rest ? esc(rest) : ""} <a class="anc" href="#${k}">odkaz na definici</a></div></details>`;
+}).join("")).join("");
+const RT = ["Typ hlasování","Jmenovitá hlasování","Hlasování mimo mandát","„Nehlasoval/a“","Oficiální výsledek","Informativní srovnání","Výpočty"];
+const PAGES = [
+ ["Kvíz Moje shoda","Otázky vybírá pravidlo: závěrečná hlasování o zákonech, kde Češi nehlasovali jednotně, seřazená podle počtu jmenovitých hlasování k zákonu. Z jednoho tématu nejvýš 3, shoda se počítá jen ve vašem prohlížeči."],
+ ["Co se chystá","Program nejbližšího zasedání (návrh EP, může se změnit) a legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem."],
+ ["Shrnutí hlasování (AI)","Krátké shrnutí píše Claude Haiku z přijatého textu, dokud není, jen z úředního názvu. Nikdy nevkládá čísla ani výsledek, vždy je označené štítkem AI."],
+ ["Příběh zákona","Všechna jmenovitá hlasování k jedné proceduře v pořadí, s odkazem na Legislativní observatoř EP."],
+ ["Z posledního zasedání","Poslanci se vybírají pravidlem: kdo byl zpravodajem nebo stínovým zpravodajem u zprávy, o které se na zasedání hlasovalo, abecedně."],
+];
+document.getElementById("rules").innerHTML = PAGES.map(([t, d]) => `<details class="def"><summary><b>${t}</b><span>${d.split(". ")[0]}.</span><i>+</i></summary><div class="body">${d.split(". ").slice(1).join(". ")}</div></details>`).join("")
+ + `<p class="grp">Obecná pravidla</p>` + D.rules.map((r, i) => { const [f, rest] = split(r); return `<details class="def"><summary><b>${RT[i] || "Pravidlo"}</b><span>${esc(f)}</span><i>+</i></summary><div class="body">${esc(rest)}</div></details>`; }).join("");
+const tl = document.getElementById("tl");
+tl.innerHTML = D.changes.map(([d, t], i) => { const m = t.match(/^(.{0,80}?)(:|\s–\s)/); const head = m ? m[1] : t.slice(0, 60);
+  return `<li class="chg"${i >= 5 ? " hidden" : ""}><time>${d}</time><span class="tg">změna</span><p class="cl"><b>${esc(head)}</b>${esc(t.slice(head.length))}</p><button class="more">celý text</button></li>`; }).join("")
+ + `<li class="fix" data-empty hidden><time>—</time><p>Zatím žádné opravy.</p></li>`;
+tl.addEventListener("click", e => { const b = e.target.closest(".more"); if (!b) return; const p = b.previousElementSibling; p.classList.toggle("cl"); b.textContent = p.classList.contains("cl") ? "celý text" : "méně"; });
+document.querySelectorAll(".tl-f button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tl-f button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  const f = b.dataset.f; tl.querySelectorAll("li").forEach(li => { if (li.dataset.empty !== undefined) li.hidden = f !== "fix"; else li.hidden = f === "fix"; });
+}));
+const q = document.getElementById("q");
+q.addEventListener("input", () => { const v = q.value.trim().toLowerCase(); let n = 0;
+  document.querySelectorAll("#defs details").forEach(d => { const hit = !v || d.textContent.toLowerCase().includes(v); d.hidden = !hit; d.classList.toggle("hl", !!v && hit); if (hit) n++; });
+  document.querySelectorAll("#defs .grp").forEach(g => { let s = g.nextElementSibling, any = false; while (s && !s.classList.contains("grp")) { if (!s.hidden) any = true; s = s.nextElementSibling; } g.hidden = !any; });
+  document.getElementById("none").hidden = n > 0; });
+function openHash(){ const el = document.getElementById(location.hash.slice(1)); if (el && el.tagName === "DETAILS") { el.open = true; el.scrollIntoView({block:"center"}); } }
+addEventListener("hashchange", openHash); openHash();
+const links = [...document.querySelectorAll(".toc a")];
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); }), {rootMargin: "-30% 0px -60% 0px"});
+document.querySelectorAll("main section").forEach(s => io.observe(s));
+document.querySelectorAll(".mock-bar button").forEach(b => b.addEventListener("click", () => { document.documentElement.dataset.theme = b.dataset.t; document.querySelectorAll(".mock-bar button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }));
+</script>
+</body>
+</html>

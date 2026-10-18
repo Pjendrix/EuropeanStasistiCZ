@@ -699,6 +699,74 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
   }
   await ctx.close();
 }
+// O projektu: dlaždice vedou na sekce, kotva otevře definici (i při hashchange), hledání, filtr časové osy, formulář.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  const err = (m) => problems.push(`o-projektu: ${m}`);
+  await page.goto(base + "o-projektu", { waitUntil: "networkidle" });
+  for (const id of ["zdroje", "metodika", "kontakt", "zmeny"]) {
+    await page.click(`.ab-door[href="#${id}"]`);
+    await page.waitForTimeout(150);
+    const ok = await page.evaluate((id) => { const r = document.getElementById(id).getBoundingClientRect(); return location.hash === `#${id}` && r.top < innerHeight && r.bottom > 0; }, id);
+    if (!ok) err(`dlaždice #${id} neposunula na sekci`);
+  }
+  // obsah stránky zvýrazní aktuální sekci
+  const cur = await page.evaluate(() => document.querySelector('.ab-toc a[aria-current="true"]')?.getAttribute("href"));
+  if (!cur) err("obsah stránky nezvýraznil aktuální sekci (aria-current)");
+  // kotva na definici: otevřená a uprostřed obrazovky; i po hashchange
+  for (const [how, id] of [["load", "attendance"], ["hashchange", "cz_unity"], ["hashchange", "moje-shoda"]]) {
+    if (how === "load") await page.goto(base + `o-projektu#${id}`, { waitUntil: "networkidle" });
+    else await page.evaluate((id) => { location.hash = id; }, id);
+    await page.waitForTimeout(250);
+    const st = await page.evaluate((id) => { const d = document.getElementById(id); const r = d.getBoundingClientRect();
+      return { open: d.open, mid: r.top + r.height / 2, h: innerHeight }; }, id);
+    if (!st.open) err(`#${id} (${how}): definice se neotevřela`);
+    if (Math.abs(st.mid - st.h / 2) > st.h * 0.3) err(`#${id} (${how}): definice není uprostřed obrazovky (střed ${Math.round(st.mid)} px z ${st.h})`);
+  }
+  // hledání „frakce“: zbydou jen odpovídající pojmy, skupiny bez výsledku zmizí, při nule „Nic nenalezeno“
+  await page.fill("#ab-q", "frakce");
+  const s = await page.evaluate(() => {
+    const vis = [...document.querySelectorAll("#definitions details")].filter((d) => !d.hidden);
+    return { n: vis.length, all: document.querySelectorAll("#definitions details").length,
+      bad: vis.filter((d) => !d.textContent.toLowerCase().includes("frakce")).map((d) => d.id),
+      groups: [...document.querySelectorAll("#definitions .ab-group")].filter((g) => !g.hidden).length };
+  });
+  if (!s.n || s.n >= s.all || s.bad.length) err(`hledání „frakce“: ${s.n} z ${s.all} pojmů, neodpovídající ${s.bad.join(", ")}`);
+  await page.fill("#ab-q", "xyzzy-nic");
+  if (!(await page.locator("#ab-none").isVisible())) err("hledání bez výsledku neukázalo „Nic nenalezeno“");
+  await page.fill("#ab-q", "");
+  // filtr časové osy
+  const tl = async () => page.evaluate(() => [...document.querySelectorAll("#corrections li")].filter((l) => !l.hidden).map((l) => l.dataset.kind + (l.classList.contains("ab-tl-empty") ? ":empty" : "")));
+  const nFix = Number(await page.textContent('.ab-tl-filter [data-count="fix"]'));
+  await page.click('.ab-tl-filter [data-f="change"]');
+  const ch = await tl();
+  if (!ch.length || ch.some((k) => k !== "change")) err(`filtr Změny ukazuje ${ch.join(", ")}`);
+  await page.click('.ab-tl-filter [data-f="fix"]');
+  const fx = await tl();
+  if (nFix ? fx.some((k) => k !== "fix") : fx.join() !== "fix:empty") err(`filtr Opravy (${nFix}) ukazuje ${fx.join(", ")}`);
+  if (await page.getAttribute('.ab-tl-filter [data-f="fix"]', "aria-pressed") !== "true") err("filtr nemá aria-pressed");
+  await page.click('.ab-tl-filter [data-f="all"]');
+  if ((await tl()).length > 5) err("časová osa ukazuje víc než 5 položek bez „Starší změny“");
+  // formulář: stejná pole, odeslání POST na Formspree (požadavek se zachytí, nic se neodešle)
+  let sent = null;
+  const csp = [];
+  page.on("console", (m) => { if (m.type() === "error") csp.push(m.text()); });
+  await page.route("https://formspree.io/**", (r) => { sent = { method: r.request().method(), body: r.request().postData() || "" }; r.fulfill({ status: 200, body: "ok" }); });
+  await page.fill('textarea[name="zprava"]', "MOCK zpráva z e2e testu");
+  await page.evaluate(() => document.querySelector(".contact-form").requestSubmit());
+  await page.waitForTimeout(1000);
+  if (!sent || sent.method !== "POST" || !sent.body.includes("zprava=MOCK")) err(`odeslání formuláře neprošlo (${sent ? sent.method : "žádný požadavek"}${csp.length ? `; ${csp[0].slice(0, 160)}` : ""})`);
+  await ctx.close();
+  // bez JavaScriptu: definice zavřené, ale čitelné; hledání a filtr skryté
+  const nojs = await browser.newContext({ javaScriptEnabled: false });
+  const p2 = await nojs.newPage();
+  await p2.goto(base + "o-projektu", { waitUntil: "load" });
+  const nj = await p2.evaluate(() => ({ find: !!document.querySelector(".ab-find")?.offsetParent, filter: !!document.querySelector(".ab-tl-filter")?.offsetParent,
+    defs: document.querySelectorAll("#definitions details").length, open: document.querySelectorAll("#definitions details[open]").length }));
+  if (nj.find || nj.filter || !nj.defs || nj.open) err(`bez JS: hledání ${nj.find}, filtr ${nj.filter}, definic ${nj.defs}, otevřených ${nj.open}`);
+  await nojs.close();
+}
 await browser.close();
 server.close();
 if (problems.length) {
