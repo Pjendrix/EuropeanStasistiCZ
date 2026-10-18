@@ -66,7 +66,7 @@ NAV = [
 ]
 # Kvíz má v menu zvýrazněné místo (zlaté tlačítko na desktopu, kulaté uprostřed spodní lišty na mobilu).
 # „O projektu“ je jen v patičce a v panelu Více (na 1024 px by se lišta jinak nevešla).
-QUIZ_HREF = "moje-shoda"  # adresa kvízu; samostatná aplikace /kviz přijde ve druhém kroku
+QUIZ_HREF = "kviz"  # adresa kvízu (stará /moje-shoda přesměruje vercel.json)
 QUIZ_ICON = (
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" '
     'stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
