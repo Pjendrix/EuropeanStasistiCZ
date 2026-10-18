@@ -30,6 +30,12 @@ ALIASES = {
 }  # fmt: skip
 
 
+# Pravidla stránek, která jsou <details> s kotvou (odkazy z kvízu, radaru, úvodu…).
+RULE_DETAILS = {
+    "kviz-frakce", "radar", "program-ep", "tema-hlasovani", "moje-shoda", "ai", "z-posledniho-zasedani", "nazvy", "pribeh-zakona",
+}  # fmt: skip
+
+
 class _Ids(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -70,7 +76,7 @@ def test_definitions_and_rules_are_details():
     """Definice (kotva = klíč z overview.json) a pravidla stránek jsou <details>, které skript otevře podle kotvy."""
     d = page_ids().details
     assert set(bp.DEFINITION_NAMES) <= d
-    assert {"kviz-frakce", "radar", "program-ep", "tema-hlasovani", "moje-shoda", "ai", "z-posledniho-zasedani", "nazvy", "pribeh-zakona"} <= d
+    assert RULE_DETAILS <= d
 
 
 def test_page_keeps_form_and_sync_blocks():
@@ -89,7 +95,14 @@ def test_quiz_groups_rule_matches_constants():
 
     html = (ROOT / "public" / "o-projektu.html").read_text(encoding="utf-8")
     found = dict(re.findall(r'<span data-param="([A-Z_]+)">([^<]+)</span>', html))
-    assert set(found) >= {"MIN_MINORITY", "MIN_SIDE", "LAW_MIN_ROLL_CALLS", "LAW_DEAL_MIN_MINORITY", "RES_MIN_ROLL_CALLS", "RES_MIN_MINORITY"}
+    assert set(found) >= {
+        "MIN_MINORITY",
+        "MIN_SIDE",
+        "LAW_MIN_ROLL_CALLS",
+        "LAW_DEAL_MIN_MINORITY",
+        "RES_MIN_ROLL_CALLS",
+        "RES_MIN_MINORITY",
+    }
     for k, text in found.items():
         v = getattr(qg, k)
         assert text == (f"{round(v * 100)} %" if isinstance(v, float) else str(v)), k
