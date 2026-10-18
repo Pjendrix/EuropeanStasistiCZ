@@ -683,19 +683,56 @@ DEFINITION_NAMES = {
 }
 
 
+# Skupiny definic na stránce O projektu (sbalovací <details>, pořadí = pořadí na webu). Klíč mimo skupiny je chyba.
+DEFINITION_GROUPS = [
+    ("Hlasování", ["vote_kind", "attendance", "attendance_main", "close_votes", "decisive_votes", "topics"]),
+    ("Poslanci a frakce", ["group_loyalty", "against_group", "outcome_agreement", "group_outcome_agreement", "party_cohesion"]),
+    ("Češi jako delegace", ["cz_agreement", "pairwise", "cz_split", "cz_unity", "delegations"]),
+    ("Práce na textech", ["own_work", "work_profile", "speeches", "presence"]),
+]
+_DEF_LABEL_RE = re.compile(r"^([^:.]{2,60}):\s+")
+_SENTENCE_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ„0-9])")
+
+
+def split_definition(name: str, text: str) -> tuple[str, str]:
+    """(první věta, zbytek) definice. Úvodní „Název:“ se vynechá jen tehdy, když opakuje název pojmu
+    (jinak nese informaci, např. „Účast na hlasování jen u závěrečných hlasování:“), a první písmeno se zvětší."""
+    m = _DEF_LABEL_RE.match(text)
+    if m and (m[1].lower() in name.lower() or name.lower() in m[1].lower()):
+        text = text[m.end() :]
+        text = text[:1].upper() + text[1:]
+    first, *rest = _SENTENCE_RE.split(text, maxsplit=1)
+    return first, rest[0] if rest else ""
+
+
 def definitions_html(definitions: dict[str, str]) -> str:
-    """Seznam definic metrik jako statické HTML (pro „Jak počítáme“; funguje i bez JavaScriptu a pro vyhledávače)."""
+    """Definice metrik jako statické HTML (pro „Jak počítáme“; funguje i bez JavaScriptu a pro vyhledávače):
+    skupiny s <details id="klíč">, v <summary> název a první věta, v těle zbytek a odkaz na definici."""
     missing = [k for k in definitions if k not in DEFINITION_NAMES]
     if missing:
         raise FormatError(f"definice bez názvu v DEFINITION_NAMES: {', '.join(missing)}")
-    return "".join(f"<li><strong>{esc(DEFINITION_NAMES[k])}</strong>: {esc(text)}</li>\n" for k, text in definitions.items())
-
-
-_DEFS_RE = re.compile(r'(<ul class="plain" id="definitions">).*?(</ul>)', re.S)
+    grouped = [k for _, keys in DEFINITION_GROUPS for k in keys]
+    ungrouped = [k for k in definitions if k not in grouped]
+    if ungrouped:
+        raise FormatError(f"definice bez skupiny v DEFINITION_GROUPS: {', '.join(ungrouped)}")
+    out = []
+    for title, keys in DEFINITION_GROUPS:
+        items = []
+        for k in (k for k in keys if k in definitions):
+            first, rest = split_definition(DEFINITION_NAMES[k], definitions[k])
+            body = f"<p>{esc(rest)}</p>" if rest else ""
+            items.append(
+                f'<details class="ab-def" id="{k}"><summary><b>{esc(DEFINITION_NAMES[k])}</b><span>{esc(first)}</span></summary>'
+                f'<div class="ab-def-body">{body}<a class="ab-def-link" href="#{k}">odkaz na definici</a></div></details>\n'
+            )
+        if items:
+            out.append(f'<div class="ab-group"><h3>{esc(title)}</h3>\n{"".join(items)}</div>\n')
+    return "".join(out)
 
 
 def sync_definitions(public: Path, data_dir: Path) -> bool:
-    """Přepíše seznam definic v public/o-projektu.html podle data/overview.json. Vrací True, když se soubor změnil."""
+    """Přepíše definice v public/o-projektu.html (blok <!--sync:definitions-->) podle data/overview.json.
+    Vrací True, když se soubor změnil."""
     page = public / "o-projektu.html"
     overview = data_dir / "overview.json"
     if not page.exists() or not overview.exists():
@@ -703,13 +740,7 @@ def sync_definitions(public: Path, data_dir: Path) -> bool:
     defs = json.loads(overview.read_text(encoding="utf-8")).get("definitions")
     if not defs:
         raise FormatError("overview.json nemá definitions")
-    old = page.read_text(encoding="utf-8")
-    if len(_DEFS_RE.findall(old)) != 1:
-        raise FormatError('o-projektu.html nemá právě jeden seznam <ul id="definitions">')
-    new = _DEFS_RE.sub(lambda m: f"{m[1]}\n{definitions_html(defs)}{m[2]}", old)
-    if new != old:
-        page.write_text(new, encoding="utf-8")
-    return new != old
+    return sync_block(page, "definitions", definitions_html(defs).rstrip("\n"))
 
 
 def sync_block(page: Path, name: str, html: str) -> bool:
@@ -725,22 +756,25 @@ def sync_block(page: Path, name: str, html: str) -> bool:
 
 
 def corrections_html(data_dir: Path) -> str:
-    """Tabulka oprav z data/manual/corrections.json (ruční záznamy); prázdná = „Zatím žádné opravy.“"""
+    """Opravy z data/manual/corrections.json (ruční záznamy) jako položky časové osy „Opravy a změny“
+    (<li data-kind="fix">, nejnovější první); prázdná = „Zatím žádné opravy.“"""
     path = data_dir / "manual" / "corrections.json"
     items = read(path)["corrections"] if path.exists() else []
     for i, c in enumerate(items):
         require(c, ["date", "wrong", "right"], f"manual/corrections.json[{i}]")
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c["date"])):
+            raise FormatError(f"manual/corrections.json[{i}]: date není RRRR-MM-DD: {c['date']!r}")
     if not items:
-        return '<p class="muted">Zatím žádné opravy.</p>'
-    rows = "".join(
-        f'<tr><td class="num date">{fmt_date(c["date"])}</td><td>{esc(c["wrong"])}</td><td>{esc(c["right"])}</td>'
-        f"<td>{f'''<a href="{esc(c["link"])}">odkaz</a>''' if c.get('link') else ''}</td></tr>"
-        for c in sorted(items, key=lambda c: c["date"], reverse=True)
-    )
-    return (
-        '<div class="table-wrap"><table class="cards"><thead><tr><th class="num">Datum</th><th>Co bylo špatně</th><th>Co je správně</th><th>Odkaz</th></tr></thead>'
-        f"<tbody>{rows}</tbody></table></div>"
-    )
+        return '<li class="ab-tl-empty" data-kind="fix"><p>Zatím žádné opravy.</p></li>'
+
+    def item(c: dict) -> str:
+        link = f' <a href="{esc(c["link"])}">odkaz</a>' if c.get("link") else ""
+        return (
+            f'<li data-kind="fix"><time datetime="{c["date"]}">{fmt_date(c["date"])}</time> <span class="ab-tl-tag">oprava</span>'
+            f'<p class="ab-tl-text"><strong>Co bylo špatně:</strong> {esc(c["wrong"])} <strong>Co je správně:</strong> {esc(c["right"])}{link}</p></li>'
+        )
+
+    return "\n".join(item(c) for c in sorted(items, key=lambda c: c["date"], reverse=True))
 
 
 def follow_html() -> str:

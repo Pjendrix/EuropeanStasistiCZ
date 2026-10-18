@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=c5572551"></script>
-<link rel="stylesheet" href="style.css?v=2d194aaa">
+<link rel="stylesheet" href="style.css?v=9ec12075">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -36,181 +36,296 @@
 <nav class="tabbar" aria-label="Hlavní navigace (mobil)"><a href="aktualne" data-page="now"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a.5.5 0 0 1-.5.5H15v-6h-6v6H4.5A.5.5 0 0 1 4 20z"/></svg><span>Aktuálně</span></a><a href="poslanci" data-page="meps"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/></svg><span>Poslanci</span></a><a class="tab-quiz" href="kviz" data-page="quiz"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><span>Kvíz</span></a><a href="hlasovani" data-page="votes"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span>Hlasování</span></a><button type="button" class="tab-more" popovertarget="more-sheet" data-pages="parties work analyses about"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Více</span></button></nav>
 <div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div><p class="sheet-h">Strany a práce poslanců</p><ul><li><a href="party">Strany</a></li><li><a href="party?v=eu">Evropské frakce</a></li><li><a href="prace">Práce poslanců</a></li><li><a href="prace-poslanci">Práce po poslancích</a></li></ul><p class="sheet-h">Analýzy</p><ul><li><a href="rozkol">Kde se Češi rozdělili</a></li><li><a href="rozhodujici">Kde rozhodly české hlasy</a></li><li><a href="shoda">Shoda mezi Čechy</a></li></ul><p class="sheet-h">Hlasování</p><ul><li><a href="votes">Všechna hlasování</a></li><li><a href="radar">Co se chystá</a></li><li><a href="temata">Hlasování podle témat</a></li></ul><p class="sheet-h">Projekt</p><ul><li><a href="o-projektu">O projektu a metodika</a></li><li><a href="o-projektu#kontakt">Kontakt a nahlášení chyby</a></li><li><a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram @epwatch.cz</a></li></ul><p class="sheet-foot"><a href="https://github.com/Pjendrix/ep-watch-cz-open">Výpočty na GitHubu</a></p></div><!--/tabbar-->
 
-<main id="main">
-  <h1>O projektu</h1>
-  <p class="lead">EP Watch CZ sleduje práci českých poslanců Evropského parlamentu v 10. volebním období
-    (od ustavující schůze 16. 7. 2024). Ukazuje jen fakta z oficiálních dat, bez hodnocení.</p>
-
-  <div class="card note" id="nezavislost">
-    <p style="margin:0"><strong>Nezávislý analytický projekt.</strong> EP Watch CZ není oficiálně spojen s žádnou politickou stranou
+<main id="main" class="ab-page">
+  <div class="ab-hero">
+    <p class="eyebrow">O projektu</p>
+    <h1>Fakta o českých europoslancích. <b>Z oficiálních dat, bez hodnocení.</b></h1>
+    <p class="lead">EP Watch CZ sleduje práci českých poslanců Evropského parlamentu v 10. volebním období
+      (od ustavující schůze 16. 7. 2024). Ukazuje jen fakta z oficiálních dat, bez hodnocení.</p>
+    <p class="ab-indep" id="nezavislost"><strong>Nezávislý analytický projekt.</strong> EP Watch CZ není oficiálně spojen s žádnou politickou stranou
       ani hnutím, s žádnou frakcí Evropského parlamentu, s Evropským parlamentem ani s jinou institucí. Názvy a loga stran a frakcí
       slouží jen k jejich identifikaci a neznamenají podporu, spolupráci ani souhlas jejich vlastníků s obsahem webu.
       Všechna čísla počítají veřejné skripty z veřejných dat, takže si je může kdokoli ověřit.</p>
   </div>
 
-  <h2 id="zdroje">Zdroje dat</h2>
-  <div class="card"><ul class="plain">
-    <li><a href="https://howtheyvote.eu">HowTheyVote.eu</a> – jmenovitá hlasování v plénu, jak hlasoval každý poslanec,
-      frakce a strana k datu hlasování. Datový export z <a href="https://github.com/HowTheyVote/data">GitHubu</a>, licence ODbL.</li>
-    <li><a href="https://data.europarl.europa.eu">EP Open Data API</a> – seznam poslanců, mandáty, frakce, strany, výbory a portréty. Licence CC BY 4.0.</li>
-    <li>Portréty: © European Union – Source: EP.</li>
-    <li>Data se aktualizují automaticky: každý den se kontroluje, jestli HowTheyVote.eu zveřejnil nový export, a když ano,
-      web se hned přepočítá; každé pondělí ráno proběhne aktualizace vždy. Program příštího zasedání se stahuje denně.
-      Když je poslední export starší než 14 dní a Evropský parlament mezitím zasedal, web to oznámí pruhem nahoře.</li>
+  <ul class="ab-doors">
+    <li><a class="ab-door" href="#zdroje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+      <b>Odkud jsou data</b><span>HowTheyVote.eu, EP Open Data, automatické aktualizace</span></a></li>
+    <li><a class="ab-door" href="#metodika"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>
+      <b>Jak počítáme</b><span>Definice pojmů a pravidla jednotlivých stránek</span></a></li>
+    <li><a class="ab-door ab-door-k" href="#kontakt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>
+      <b>Nahlásit chybu</b><span>Napište nám, opravu zveřejníme</span></a></li>
+    <li><a class="ab-door" href="#zmeny"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+      <b>Opravy a změny</b><span>Co jsme opravili a jak se mění metodika</span></a></li>
   </ul>
-  <p class="source" id="release"></p></div>
 
-  <h2 id="metodika">Jak počítáme</h2>
-  <div class="card">
-    <ul class="plain" id="definitions">
-<li><strong>Účast na hlasování</strong>: Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).</li>
-<li><strong>Účast na hlasování – závěrečná</strong>: Účast na hlasování jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise. Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.</li>
-<li><strong>Typ hlasování</strong>: Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, procedurální hlasování, ostatní.</li>
-<li><strong>Hlasuje s frakcí</strong>: Hlasuje s frakcí: v kolika procentech hlasování hlasoval stejně jako většina jeho frakce (k datu hlasování). Vysoké ani nízké číslo samo o sobě není dobré ani špatné. Odchylky často vycházejí z postoje domácí strany nebo z národních zájmů. Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.</li>
-<li><strong>Shoda s ostatními Čechy</strong>: Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali. Bez hlasování s nerozhodnou většinou.</li>
-<li><strong>S kým hlasuje stejně</strong>: Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.</li>
-<li><strong>Soulad s výsledkem</strong>: Soulad s výsledkem: podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut. Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.</li>
-<li><strong>Soulad s výsledkem – průměr frakce</strong>: Průměr frakce: soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.</li>
-<li><strong>Těsná hlasování</strong>: Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).</li>
-<li><strong>Kde rozhodly české hlasy</strong>: Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.</li>
-<li><strong>Srovnání s delegacemi podobné velikosti</strong>: Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).</li>
-<li><strong>Prezence na zasedání (podle EP)</strong>: Prezence na zasedání (podle EP): v kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP (EP Open Data, meetings). Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. Bez mediánu EP a bez pořadí.</li>
-<li><strong>Projevy v plénu</strong>: Projevy v plénu: počet ústních projevů v rozpravách v době mandátu podle EP Open Data (endpoint speeches) a jejich celková délka z časových značek zdroje (jen u projevů, kde jsou obě značky). Písemná prohlášení se počítají zvlášť a do projevů se nesčítají, protože se dají psát hromadně. Jde o počet a čas, ne o kvalitu ani vliv; do třetin v delegaci nevstupuje a medián EP se neuvádí (projevy všech poslanců EP by znamenaly tisíce dotazů týdně). Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026.</li>
-<li><strong>Kde hlasoval jinak než frakce</strong>: Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.</li>
-<li><strong>Kde se Češi rozdělili</strong>: Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.</li>
-<li><strong>Češi jednotně</strong>: Češi jednotně: podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva). Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.</li>
-<li><strong>Jednotnost strany</strong>: Jednotnost strany: podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se). Příslušnost ke straně k datu hlasování.</li>
-<li><strong>Práce na textech</strong>: Práce na textech: zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data. U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se počítá jednou.</li>
-<li><strong>Práce na textech – třetiny v delegaci</strong>: Profil práce na textech (stránka Práce na textech) počítá přidělené role bez ohledu na výsledek hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které vyjednává jako stínový zpravodaj za frakci. U každé kategorie se ukazuje třetina mezi současnými poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí ani body záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádná váha by nebyla podložená. Podepsané návrhy usnesení se ukazují zvlášť a do třetin nevstupují: podepisují je desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává. Kdo byl v mandátu méně než 75 % období (od začátku období do posledního hlasování v datech), třetinu nedostane: srovnání počtů s kolegy, kteří mají za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají.</li>
-<li><strong>Témata</strong>: Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote. České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.</li>
-</ul>
-    <p class="small">Další pravidla:</p>
-    <ul class="small">
-      <li><strong>Typ hlasování</strong> určují pevná pravidla podle popisu hlasování ve zdroji
-        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_kinds.py">vote_kinds.py</a>). U návrhu na zamítnutí
-        znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také
-        pevnými pravidly (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
-        co pravidla neznají, zůstává v originále.</li>
-      <li id="tema-hlasovani"><strong>Téma hlasování</strong> (čip u hlasování v seznamu, na detailu, na úvodu a na kartě ke sdílení) určuje pevná tabulka
-        pravidel nad kódy témat Legislativní observatoře EP (OEIL), které u hlasování uvádí HowTheyVote
-        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/categories.py">categories.py</a>): 12 témat, hlavní je první podle
-        priority (obrana, klima a energie, doprava … instituce), další jsou „+N“. Téma nevybíráme my ani AI; hlasování bez kódu OEIL téma nemá.</li>
-      <li id="program-ep"><strong>Další zasedání a program</strong>: kalendář plenárních dnů a návrh programu hlasování bere web každý den
-        z EP Open Data API (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/fetch_agenda.py">fetch_agenda.py</a>).
-        Program je návrh EP a může se změnit. Na úvodní stránce jsou nejvýš 3 body vybrané pravidlem: nejdřív body s českou stopou,
-        pak body s legislativním návrhem (dokument C), pak podle pořadí v programu. Celý program je na stránce Hlasování.
-        <strong>Česká stopa</strong> = český poslanec je zpravodajem, spoluzpravodajem nebo stínovým zpravodajem zprávy, ke které se bod
-        nebo hlasování váže (podle EP Open Data). Stanoviska výborů se nepárují, protože program na ně neodkazuje.</li>
-      <li id="nazvy"><strong>Názvy hlasování</strong> jsou oficiální české názvy procedur z EP Open Data API (stejné, jaké používá
-        Evropský parlament). HowTheyVote.eu má názvy jen anglicky; kde EP český název nemá (např. hlasování o pořadu jednání),
-        zůstává anglický originál. Původní název je u každého hlasování v odkazech na zdroje.</li>
-      <li id="radar"><strong>Co se chystá</strong> (<a href="radar">radar</a>): program nejbližšího zasedání a legislativní procedury
-        (řádný legislativní postup COD, zvláštní postupy CNS a APP), ve kterých je český poslanec zpravodajem, spoluzpravodajem, stínovým
-        zpravodajem nebo zpravodajem stanoviska. Vše z EP Open Data API
-        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/radar.py">radar.py</a>), nic se neodhaduje.
-        <strong>Průběh procedury</strong> určuje pevná tabulka událostí, které EP u procedury zveřejňuje: výbor (přidělení, návrh zprávy,
-        pozměňovací návrhy), zpráva výboru (přijetí ve výboru, předložení plénu), jednání s Radou (mandát, trialog, schválení dohody ve výboru),
-        hlasování v plénu a podpis s vyhlášením v Úředním věstníku. Pole „fáze“ z API nepoužíváme, protože u uzavřených procedur zůstává „první čtení“.
-        <strong>Datum hlasování v plénu</strong> je známé jen z programu zasedání (asi 1–2 týdny dopředu); jinde píšeme „zatím nezveřejněno“.
-        <strong>Téma</strong> se odvozuje z odpovědného výboru (např. ENVI → Klima, příroda a energie; ITRE → Průmysl a vnitřní trh;
-        CULT téma nemá). Řazení rozpracovaných: nejdřív ty nejblíž hlasování, pak podle poslední události. Nejde o hodnocení důležitosti.</li>
-      <li id="moje-shoda"><strong>Kvíz Moje shoda s poslanci</strong> (<a href="kviz">kvíz</a>): otázky vybírá pravidlo
-        (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>): závěrečná hlasování o zákonech (COD, CNS, APP)
-        za celé období, ve kterých čeští poslanci nehlasovali jednotně, seřazená podle počtu jmenovitých hlasování k zákonu v plénu (hodně hlasování
-        znamená hodně pozměňovacích návrhů, tedy sporný a sledovaný zákon). Z jednoho tématu nejvýš 3 zákony a nejvýš polovina otázek, kde
-        menšina Čechů měla do 2 hlasů. Krátký test má 12 otázek, delší 25. Srozumitelný název a popis otázky píše AI (Claude Haiku) jen z úředního
-        názvu a popisu hlasování; nesmí přidat číslo, které ve vstupu není, ani výsledek hlasování, jinak se shrnutí zahodí. Přesné zadání pro AI je
-        u kvízu pod ⓘ a úřední znění u každé otázky. Shoda = podíl otázek se stejnou odpovědí z otázek, na které jste odpověděli a ve kterých
-        poslanec hlasoval; „nehlasoval/a“ a hlasování mimo mandát se nepočítají. Výsledek je seřazený podle shody, ale není to hodnocení
-        poslanců. Počítá se jen v prohlížeči, odpovědi se nikam neposílají (rozpracovaný kvíz si pamatuje jen váš prohlížeč, v localStorage).
-        Kvíz má tři obrazovky: úvod (délka, přepínač odhalení), jednu otázku na obrazovce a výsledek. Po odpovědi může ukázat, jak hlasoval
-        Parlament a čeští poslanci, ale <strong>bez jmen</strong> (jen tečky v půlkruhu seřazené podle frakce k datu hlasování), aby jména
-        neovlivnila další odpovědi; jména jsou až ve výsledku. Výsledek ukazuje tři nejvyšší shody bez pořadových čísel a medailí, všechny poslance
-        s porovnáním otázka po otázce a vaše odpovědi s tím, kdo jak hlasoval. <strong>Obrázek ke sdílení</strong> (tři nejvyšší shody, počet
-        odpovědí, datum) vzniká jen ve vašem prohlížeči a nic se při tom neodesílá.</li>
-      <li id="ai"><strong>Shrnutí hlasování na úvodu</strong> (štítek AI u karty „Poslední hlasování“): jednu až dvě věty, co přijatý text říká nebo mění, píše AI (Claude Haiku) <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_summaries.py">vote_summaries.py</a>.
-        Vstupem je úryvek oficiálního českého přijatého textu z EP Open Data (DOCX; vynechají se citace „s ohledem na…“ a text se kódem zkrátí na zhruba 8 000 tokenů od začátku, tedy body odůvodnění a první články, nikdy celý zákon) a k tomu úřední název, druh procedury a témata.
-        Dokud přijatý text není zveřejněný (nebo u zamítnutých textů, kde žádný není), shrnuje AI jen z názvu a témat a štítek AI to v nápovědě uvádí; jakmile text vyjde, shrnutí se při další aktualizaci samo přegeneruje.
-        Text se do repozitáře neukládá, ukládá se jen shrnutí, otisk vstupu a odkaz na zdroj. Do shrnutí se nesmí dostat výsledek, počty hlasů ani hodnocení; číslo, které ve vstupu není, shrnutí zahodí a karta pak ukáže jen nadpis.
-        Přijatý text k hlasování dohledáváme v EP Open Data (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/adopted_texts.py">adopted_texts.py</a>: procedura → přijatý text se stejným datem a dokumentem), ne v HowTheyVote, kde od června 2026 chybí.</li>
-      <li id="z-posledniho-zasedani"><strong>Z posledního zasedání</strong> (úvodní stránka): poslanci se vybírají pravidlem, ne redakcí ani podle aktivity. Ukazují se ti, kdo byli zpravodajem nebo stínovým zpravodajem zprávy, o které se na posledním zasedání v plénu hlasovalo (role z EP Open Data), abecedně, nejvýš čtyři; ostatní jsou v odkazu „a dalších N“. U každého je jen doložitelná činnost s datem v rozsahu zasedání: role u zprávy, počet projevů v plénu a otázek Komisi nebo Radě. Nic se neřadí ani nehodnotí.</li>
-      <li id="pribeh-zakona"><strong>Příběh zákona</strong> (stránky <code>z/…</code>, odkaz „Příběh zákona“ u hlasování a v radaru): jedna stránka
-        pro každou proceduru, o které se v plénu jmenovitě hlasovalo, a pro každou proceduru s českou rolí. Průběh je ze stejných událostí EP Open Data
-        jako u radaru, hlasování z HowTheyVote.eu (všechna, včetně pozměňovacích návrhů), česká stopa ze zpravodajů a stínových zpravodajů v EP Open Data.
-        Když události procedury ještě nemáme stažené, stránka to napíše a odkáže na Legislativní observatoř EP; nic se nedoplňuje odhadem.</li>
-      <li>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</li>
-      <li>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
-        ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</li>
-      <li>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká účast na hlasování může mít i důvody jako nemoc nebo rodičovství.</li>
-      <li>Oficiální výsledek bereme ze zdroje. U několika hlasování neodpovídá prosté většině (např. vyžadovala absolutní většinu
-        361 hlasů, nebo hlasování 181313 skončilo 289 : 289 a zdroj ho uvádí jako přijaté). Taková hlasování se do
-        rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.</li>
-      <li>Hlasování s frakcí a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</li>
-      <li>Čísla počítá deterministický skript
-        <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</li>
-    </ul>
-  </div>
+  <div class="ab-layout">
+    <nav class="ab-toc" aria-label="Na této stránce">
+      <p class="ab-toc-title">Na této stránce</p>
+      <ul>
+        <li><a href="#zdroje">Zdroje dat</a></li>
+        <li><a href="#metodika">Jak počítáme</a></li>
+        <li><a href="#stranky">Pravidla stránek</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="#zmeny">Opravy a změny</a></li>
+        <li><a href="#licence">Licence a loga</a></li>
+      </ul>
+    </nav>
 
-  <h2 id="licence">Licence</h2>
-  <div class="card"><ul class="plain">
-    <li><strong>Výpočty</strong> (skripty a testy ve veřejném repozitáři): licence GNU AGPL-3.0, viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/LICENSE">LICENSE</a>. Zdrojový kód webu samotného (vzhled a stránky) je soukromý.</li>
-    <li><strong>Data v adresáři <code>data/</code></strong>: odvozená z HowTheyVote.eu, proto pod licencí
-      <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a> (sdílet za stejných podmínek).
-      Údaje z EP Open Data jsou pod <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
-      Viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/DATA_LICENSE.md">DATA_LICENSE.md</a>.</li>
-    <li><strong>Portréty</strong>: © European Union – Source: EP.</li>
-    <li><strong>Písmo</strong> Plus Jakarta Sans: SIL Open Font License 1.1, hostované přímo na tomto webu (žádné Google Fonts).</li>
-    <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
-  </ul></div>
+    <div class="ab-content">
+      <nav class="ab-toc-m" aria-label="Obsah stránky">
+        <details><summary>Obsah stránky…</summary>
+          <ul>
+            <li><a href="#zdroje">Zdroje dat</a></li>
+            <li><a href="#metodika">Jak počítáme</a></li>
+            <li><a href="#stranky">Pravidla stránek</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+            <li><a href="#zmeny">Opravy a změny</a></li>
+            <li><a href="#licence">Licence a loga</a></li>
+          </ul>
+        </details>
+      </nav>
 
-    <h2 id="opravy">Opravy</h2>
-  <p class="small muted">Chyby v datech nebo ve výpočtu, které jsme našli sami nebo nám je někdo nahlásil, a co je správně. Highlight „Opravy“ na Instagramu odkazuje sem.</p>
-  <div class="card" id="corrections"><!--sync:corrections-->
-<p class="muted">Zatím žádné opravy.</p>
-<!--/sync:corrections--></div>
+      <section class="ab-sec" id="zdroje" aria-labelledby="zdroje-h">
+        <h2 id="zdroje-h">Zdroje dat</h2>
+        <ul class="ab-src">
+          <li><h3><a href="https://howtheyvote.eu">HowTheyVote.eu</a></h3>
+            <p>Jmenovitá hlasování v plénu, jak hlasoval každý poslanec, frakce a strana k datu hlasování. Datový export z <a href="https://github.com/HowTheyVote/data">GitHubu</a>.</p>
+            <span class="ab-lic">Licence ODbL</span></li>
+          <li><h3><a href="https://data.europarl.europa.eu">EP Open Data API</a></h3>
+            <p>Seznam poslanců, mandáty, frakce, strany, výbory a portréty.</p>
+            <span class="ab-lic">Licence CC BY 4.0</span></li>
+          <li><h3>Portréty</h3>
+            <p>Portréty poslanců z EP Open Data API.</p>
+            <span class="ab-lic">© European Union – Source: EP</span></li>
+        </ul>
+        <p class="ab-note">Data se aktualizují automaticky: každý den se kontroluje, jestli HowTheyVote.eu zveřejnil nový export, a když ano,
+          web se hned přepočítá; každé pondělí ráno proběhne aktualizace vždy. Program příštího zasedání se stahuje denně.
+          Když je poslední export starší než 14 dní a Evropský parlament mezitím zasedal, web to oznámí pruhem nahoře.</p>
+        <p class="source" id="release"></p>
+      </section>
 
-    <h2 id="zmeny">Změny metodiky a webu</h2>
-  <div class="card"><ul class="plain">
-    <li><strong>15. 10. 2026</strong> – Nová stránka <strong>Strany → Evropské frakce</strong>: souhrn hlasování celých politických skupin EP (všichni členové, ne jen čeští).
-      <em>Účast skupiny</em> = podíl hlasů pro, proti nebo zdržel se ze všech hlasů členů, <em>soudržnost</em> = podíl hlasů pro a proti odpovídajících většině skupiny
-      (v hlasováních, kde hlasovalo pro nebo proti aspoň 10 členů), <em>výrazně rozdělené hlasování</em> = menšina mezi hlasy pro a proti aspoň 30 % (stejný práh jako u české delegace).
-      Nezařazení nejsou skupina, proto tu nejsou. Weby skupin jsou z Wikidat, popisy skupin záměrně neuvádíme.</li>
-    <li><strong>15. 10. 2026</strong> – Nová stránka <strong>Hlasování podle témat</strong>: 12 témat jako pevná pravidla nad tématy Legislativní observatoře EP (žádná AI).
-      Jedno hlasování se počítá do všech svých témat, hlasování bez tématu je v řádku „Bez tématu“. U každého tématu je počet hlasování, závěrečných, „Češi jednotně“,
-      rozložení hlasů Čechů v závěrečných hlasováních a účast Čechů.</li>
-    <li><strong>15. 10. 2026</strong> – Práce poslanců má vlastní položku v menu a přehledovou stránku: souhrn (zprávy, které čeští poslanci vedou a vyjednávají,
-      projevy, otázky, prezence), kdy se pracovalo, rozpad zpráv podle typu procedury, naposledy přijaté zprávy s českou stopou a rozpad podle frakcí.
-      Každý text se v součtech počítá jednou, i když na něm pracovali dva Češi. Frakce jsou řazené podle počtu poslanců, ne podle výkonu, a u každé je i průměr
-      na poslance, protože zprávy se mezi frakce dělí podle jejich velikosti. Tabulka po poslancích s třetinami je na samostatné záložce.</li>
-</ul></div>
+      <section class="ab-sec" id="metodika" aria-labelledby="metodika-h">
+        <h2 id="metodika-h">Jak počítáme</h2>
+        <p class="ab-sub">Klikněte na pojem pro celou definici.</p>
+        <div class="ab-find" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <label class="sr-only" for="ab-q">Najít pojem</label>
+          <input id="ab-q" type="search" placeholder="Najít pojem, např. účast, frakce, těsné…" autocomplete="off">
+        </div>
+        <p class="sr-only" id="ab-q-status" aria-live="polite"></p>
+        <div id="definitions"><!--sync:definitions-->
+<div class="ab-group"><h3>Hlasování</h3>
+<details class="ab-def" id="vote_kind"><summary><b>Typ hlasování</b><span>Typ hlasování určují pevná pravidla podle popisu hlasování v datech HowTheyVote (scripts/vote_kinds.py): závěrečné hlasování, prozatímní dohoda s Radou, námitka proti aktu Komise (hlas PRO = vznést námitku), návrh na zamítnutí (hlas PRO = text zamítnout), mandát k jednání, naléhavý postup, pozměňovací návrh, dílčí hlasování o části textu, procedurální hlasování, ostatní.</span></summary><div class="ab-def-body"><a class="ab-def-link" href="#vote_kind">odkaz na definici</a></div></details>
+<details class="ab-def" id="attendance"><summary><b>Účast na hlasování</b><span>V kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel).</span></summary><div class="ab-def-body"><p>Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).</p><a class="ab-def-link" href="#attendance">odkaz na definici</a></div></details>
+<details class="ab-def" id="attendance_main"><summary><b>Účast na hlasování – závěrečná</b><span>Účast na hlasování jen u závěrečných hlasování: o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise.</span></summary><div class="ab-def-body"><p>Nepočítají se návrhy na zamítnutí, mandáty k jednání s Radou ani žádosti o naléhavý postup.</p><a class="ab-def-link" href="#attendance_main">odkaz na definici</a></div></details>
+<details class="ab-def" id="close_votes"><summary><b>Těsná hlasování</b><span>Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).</span></summary><div class="ab-def-body"><a class="ab-def-link" href="#close_votes">odkaz na definici</a></div></details>
+<details class="ab-def" id="decisive_votes"><summary><b>Kde rozhodly české hlasy</b><span>Těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto).</span></summary><div class="ab-def-body"><p>Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.</p><a class="ab-def-link" href="#decisive_votes">odkaz na definici</a></div></details>
+<details class="ab-def" id="topics"><summary><b>Témata</b><span>Témata podle Legislativní observatoře EP (OEIL, úroveň 2) z HowTheyVote.</span></summary><div class="ab-def-body"><p>České názvy jsou ruční překlad (data/manual/topics_cs.json), OEIL je jen anglicky a francouzsky. Jedno hlasování může patřit do více témat. Ukazuje se deset témat s nejvíce hlasováními v celém období.</p><a class="ab-def-link" href="#topics">odkaz na definici</a></div></details>
+</div>
+<div class="ab-group"><h3>Poslanci a frakce</h3>
+<details class="ab-def" id="group_loyalty"><summary><b>Hlasuje s frakcí</b><span>V kolika procentech hlasování hlasoval stejně jako většina jeho frakce (k datu hlasování).</span></summary><div class="ab-def-body"><p>Vysoké ani nízké číslo samo o sobě není dobré ani špatné. Odchylky často vycházejí z postoje domácí strany nebo z národních zájmů. Počítá se jen tam, kde hlasoval a frakce měla jednoznačnou většinu (pro / proti / zdržet se). Nezařazení (NI) se nepočítají.</p><a class="ab-def-link" href="#group_loyalty">odkaz na definici</a></div></details>
+<details class="ab-def" id="against_group"><summary><b>Kde hlasoval jinak než frakce</b><span>Poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování.</span></summary><div class="ab-def-body"><p>U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.</p><a class="ab-def-link" href="#against_group">odkaz na definici</a></div></details>
+<details class="ab-def" id="outcome_agreement"><summary><b>Soulad s výsledkem</b><span>Podíl hlasování, kde poslanec hlasoval pro a návrh byl přijat, nebo hlasoval proti a návrh byl zamítnut.</span></summary><div class="ab-def-body"><p>Počítají se jen hlasy pro a proti (zdržení a nehlasování ne) a jen hlasování s výsledkem přijato / zamítnuto (bez propadlých, stažených a bez výsledku). Číslo hlavně odráží velikost a pozici frakce: poslanci velkých frakcí, které tvoří většinu, mají soulad vysoký, poslanci menších a opozičních frakcí nižší. Hlasovat proti většině je legitimní opoziční role, nízké číslo neznamená horší práci.</p><a class="ab-def-link" href="#outcome_agreement">odkaz na definici</a></div></details>
+<details class="ab-def" id="group_outcome_agreement"><summary><b>Soulad s výsledkem – průměr frakce</b><span>Soulad s výsledkem všech poslanců jeho frakce (z celého EP, včetně něj) ve stejných hlasováních, ve kterých se počítá jemu.</span></summary><div class="ab-def-body"><a class="ab-def-link" href="#group_outcome_agreement">odkaz na definici</a></div></details>
+<details class="ab-def" id="party_cohesion"><summary><b>Jednotnost strany</b><span>Podíl hlasování, kde aspoň dva poslanci strany hlasovali a všichni hlasovali stejně (pro / proti / zdržel se).</span></summary><div class="ab-def-body"><p>Příslušnost ke straně k datu hlasování.</p><a class="ab-def-link" href="#party_cohesion">odkaz na definici</a></div></details>
+</div>
+<div class="ab-group"><h3>Češi jako delegace</h3>
+<details class="ab-def" id="cz_agreement"><summary><b>Shoda s ostatními Čechy</b><span>Podíl hlasování, kde poslanec hlasoval stejně jako většina ostatních českých poslanců, kteří hlasovali.</span></summary><div class="ab-def-body"><p>Bez hlasování s nerozhodnou většinou.</p><a class="ab-def-link" href="#cz_agreement">odkaz na definici</a></div></details>
+<details class="ab-def" id="pairwise"><summary><b>S kým hlasuje stejně</b><span>Shoda dvou poslanců: podíl hlasování, kde oba hlasovali a hlasovali stejně.</span></summary><div class="ab-def-body"><a class="ab-def-link" href="#pairwise">odkaz na definici</a></div></details>
+<details class="ab-def" id="cz_split"><summary><b>Kde se Češi rozdělili</b><span>Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti.</span></summary><div class="ab-def-body"><p>0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.</p><a class="ab-def-link" href="#cz_split">odkaz na definici</a></div></details>
+<details class="ab-def" id="cz_unity"><summary><b>Češi jednotně</b><span>Podíl hlasování, ve kterých všichni čeští poslanci, kteří hlasovali pro nebo proti, byli na stejné straně (počítají se jen hlasování, kde pro nebo proti hlasovali aspoň dva).</span></summary><div class="ab-def-body"><p>Výrazné rozdělení: menšina tvoří aspoň 30 % hlasů pro a proti.</p><a class="ab-def-link" href="#cz_unity">odkaz na definici</a></div></details>
+<details class="ab-def" id="delegations"><summary><b>Srovnání s delegacemi podobné velikosti</b><span>Stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech).</span></summary><div class="ab-def-body"><p>Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).</p><a class="ab-def-link" href="#delegations">odkaz na definici</a></div></details>
+</div>
+<div class="ab-group"><h3>Práce na textech</h3>
+<details class="ab-def" id="own_work"><summary><b>Práce na textech</b><span>Zprávy (poslanec je zpravodaj), stínové zprávy, stanoviska výborů, návrhy usnesení (poslanec je signatář) a otázky Komisi a Radě podle EP Open Data.</span></summary><div class="ab-def-body"><p>U zpráv a usnesení se ukazuje výsledek posledního hlavního hlasování o textu v plénu (HowTheyVote), vždy po typech zvlášť. Samostatný návrh usnesení, který nahradil společný návrh, se počítá jako „nahrazený“, ne jako zamítnutý. Kde HowTheyVote nemá jmenovité hlasování (ještě neproběhlo, nebo se hlasovalo zvednutím ruky či tajně), ukazuje se „bez jmenovitého hlasování“. Stanoviska výborů výsledek nemají. Pozměňovací návrhy nejsou zahrnuté: v plénu je zdroje neuvádějí podle jmen, ve výborech nejsou dostupná aktuální data. Jedna role v jedné proceduře se počítá jednou.</p><a class="ab-def-link" href="#own_work">odkaz na definici</a></div></details>
+<details class="ab-def" id="work_profile"><summary><b>Práce na textech – třetiny v delegaci</b><span>Profil práce na textech (stránka Práce na textech) počítá přidělené role bez ohledu na výsledek hlasování: zprávy a stanoviska, které poslanec vede jako zpravodaj, a zprávy a stanoviska, které vyjednává jako stínový zpravodaj za frakci.</span></summary><div class="ab-def-body"><p>U každé kategorie se ukazuje třetina mezi současnými poslanci delegace (horní třetina = alespoň 2/3 kolegů má méně), nula třetinu nemá. Celkové pořadí ani body záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádná váha by nebyla podložená. Podepsané návrhy usnesení se ukazují zvlášť a do třetin nevstupují: podepisují je desítky poslanců za frakci a společné návrhy sepisují jen některé frakce, takže počet vypovídá hlavně o frakci. Funkce (předseda či místopředseda výboru, vedení frakce) se uvádějí podle EP jako kontext a čísla neupravují. Zprávy si frakce rozdělují podle bodů úměrných velikosti, takže malé frakce a nezařazení jich dostávají méně; ani to se do čísel nepřepočítává. Kdo byl v mandátu méně než 75 % období (od začátku období do posledního hlasování v datech), třetinu nedostane: srovnání počtů s kolegy, kteří mají za sebou celé období, by vyznělo jako verdikt. Čísla zůstávají.</p><a class="ab-def-link" href="#work_profile">odkaz na definici</a></div></details>
+<details class="ab-def" id="speeches"><summary><b>Projevy v plénu</b><span>Počet ústních projevů v rozpravách v době mandátu podle EP Open Data (endpoint speeches) a jejich celková délka z časových značek zdroje (jen u projevů, kde jsou obě značky).</span></summary><div class="ab-def-body"><p>Písemná prohlášení se počítají zvlášť a do projevů se nesčítají, protože se dají psát hromadně. Jde o počet a čas, ne o kvalitu ani vliv; do třetin v delegaci nevstupuje a medián EP se neuvádí (projevy všech poslanců EP by znamenaly tisíce dotazů týdně). Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026.</p><a class="ab-def-link" href="#speeches">odkaz na definici</a></div></details>
+<details class="ab-def" id="presence"><summary><b>Prezence na zasedání (podle EP)</b><span>V kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP (EP Open Data, meetings).</span></summary><div class="ab-def-body"><p>Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. Bez mediánu EP a bez pořadí.</p><a class="ab-def-link" href="#presence">odkaz na definici</a></div></details>
+</div>
+<!--/sync:definitions--></div>
+        <p class="ab-none" id="ab-none" hidden>Nic nenalezeno.</p>
+      </section>
 
-  <h2 id="sledujte">Sledujte nás</h2>
-  <div class="card"><!--sync:follow-->
+      <section class="ab-sec" id="stranky" aria-labelledby="stranky-h">
+        <h2 id="stranky-h">Pravidla jednotlivých stránek</h2>
+        <p class="ab-sub">Jak se vybírá obsah kvízu, radaru, shrnutí a dalších částí webu.</p>
+        <details class="ab-def" id="moje-shoda"><summary><b>Kvíz Moje shoda s poslanci</b></summary><div class="ab-def-body">
+          <p>Kvíz Moje shoda s poslanci (<a href="kviz">kvíz</a>): otázky vybírá pravidlo
+            (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz.py">quiz.py</a>): závěrečná hlasování o zákonech (COD, CNS, APP)
+            za celé období, ve kterých čeští poslanci nehlasovali jednotně, seřazená podle počtu jmenovitých hlasování k zákonu v plénu (hodně hlasování
+            znamená hodně pozměňovacích návrhů, tedy sporný a sledovaný zákon). Z jednoho tématu nejvýš 3 zákony a nejvýš polovina otázek, kde
+            menšina Čechů měla do 2 hlasů. Krátký test má 12 otázek, delší 25.</p>
+          <p>Srozumitelný název a popis otázky píše AI (Claude Haiku) jen z úředního
+            názvu a popisu hlasování; nesmí přidat číslo, které ve vstupu není, ani výsledek hlasování, jinak se shrnutí zahodí. Přesné zadání pro AI je
+            u kvízu pod ⓘ a úřední znění u každé otázky.</p>
+          <p>Shoda = podíl otázek se stejnou odpovědí z otázek, na které jste odpověděli a ve kterých
+            poslanec hlasoval; „nehlasoval/a“ a hlasování mimo mandát se nepočítají. Výsledek je seřazený podle shody, ale není to hodnocení
+            poslanců. Počítá se jen v prohlížeči, odpovědi se nikam neposílají (rozpracovaný kvíz si pamatuje jen váš prohlížeč, v localStorage).</p>
+          <p>Kvíz má tři obrazovky: úvod (délka, přepínač odhalení), jednu otázku na obrazovce a výsledek. Po odpovědi může ukázat, jak hlasoval
+            Parlament a čeští poslanci, ale <strong>bez jmen</strong> (jen tečky v půlkruhu seřazené podle frakce k datu hlasování), aby jména
+            neovlivnila další odpovědi; jména jsou až ve výsledku. Výsledek ukazuje tři nejvyšší shody bez pořadových čísel a medailí, všechny poslance
+            s porovnáním otázka po otázce a vaše odpovědi s tím, kdo jak hlasoval. <strong>Obrázek ke sdílení</strong> (tři nejvyšší shody, počet
+            odpovědí, datum) vzniká jen ve vašem prohlížeči a nic se při tom neodesílá.</p>
+          <a class="ab-def-link" href="#moje-shoda">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="radar"><summary><b>Co se chystá (radar)</b></summary><div class="ab-def-body">
+          <p>Co se chystá (<a href="radar">radar</a>): program nejbližšího zasedání a legislativní procedury
+            (řádný legislativní postup COD, zvláštní postupy CNS a APP), ve kterých je český poslanec zpravodajem, spoluzpravodajem, stínovým
+            zpravodajem nebo zpravodajem stanoviska. Vše z EP Open Data API
+            (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/radar.py">radar.py</a>), nic se neodhaduje.</p>
+          <p><strong>Průběh procedury</strong> určuje pevná tabulka událostí, které EP u procedury zveřejňuje: výbor (přidělení, návrh zprávy,
+            pozměňovací návrhy), zpráva výboru (přijetí ve výboru, předložení plénu), jednání s Radou (mandát, trialog, schválení dohody ve výboru),
+            hlasování v plénu a podpis s vyhlášením v Úředním věstníku. Pole „fáze“ z API nepoužíváme, protože u uzavřených procedur zůstává „první čtení“.</p>
+          <p><strong>Datum hlasování v plénu</strong> je známé jen z programu zasedání (asi 1–2 týdny dopředu); jinde píšeme „zatím nezveřejněno“.
+            <strong>Téma</strong> se odvozuje z odpovědného výboru (např. ENVI → Klima, příroda a energie; ITRE → Průmysl a vnitřní trh;
+            CULT téma nemá). Řazení rozpracovaných: nejdřív ty nejblíž hlasování, pak podle poslední události. Nejde o hodnocení důležitosti.</p>
+          <a class="ab-def-link" href="#radar">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="ai"><summary><b>Shrnutí hlasování na úvodu (AI)</b></summary><div class="ab-def-body">
+          <p>Shrnutí hlasování na úvodu (štítek AI u karty „Poslední hlasování“): jednu až dvě věty, co přijatý text říká nebo mění, píše AI (Claude Haiku) <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_summaries.py">vote_summaries.py</a>.
+            Vstupem je úryvek oficiálního českého přijatého textu z EP Open Data (DOCX; vynechají se citace „s ohledem na…“ a text se kódem zkrátí na zhruba 8 000 tokenů od začátku, tedy body odůvodnění a první články, nikdy celý zákon) a k tomu úřední název, druh procedury a témata.</p>
+          <p>Dokud přijatý text není zveřejněný (nebo u zamítnutých textů, kde žádný není), shrnuje AI jen z názvu a témat a štítek AI to v nápovědě uvádí; jakmile text vyjde, shrnutí se při další aktualizaci samo přegeneruje.
+            Text se do repozitáře neukládá, ukládá se jen shrnutí, otisk vstupu a odkaz na zdroj. Do shrnutí se nesmí dostat výsledek, počty hlasů ani hodnocení; číslo, které ve vstupu není, shrnutí zahodí a karta pak ukáže jen nadpis.</p>
+          <p>Přijatý text k hlasování dohledáváme v EP Open Data (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/adopted_texts.py">adopted_texts.py</a>: procedura → přijatý text se stejným datem a dokumentem), ne v HowTheyVote, kde od června 2026 chybí.</p>
+          <a class="ab-def-link" href="#ai">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="pribeh-zakona"><summary><b>Příběh zákona</b></summary><div class="ab-def-body">
+          <p>Příběh zákona (stránky <code>z/…</code>, odkaz „Příběh zákona“ u hlasování a v radaru): jedna stránka
+            pro každou proceduru, o které se v plénu jmenovitě hlasovalo, a pro každou proceduru s českou rolí. Průběh je ze stejných událostí EP Open Data
+            jako u radaru, hlasování z HowTheyVote.eu (všechna, včetně pozměňovacích návrhů), česká stopa ze zpravodajů a stínových zpravodajů v EP Open Data.
+            Když události procedury ještě nemáme stažené, stránka to napíše a odkáže na Legislativní observatoř EP; nic se nedoplňuje odhadem.</p>
+          <a class="ab-def-link" href="#pribeh-zakona">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="z-posledniho-zasedani"><summary><b>Z posledního zasedání</b></summary><div class="ab-def-body">
+          <p>Z posledního zasedání (úvodní stránka): poslanci se vybírají pravidlem, ne redakcí ani podle aktivity. Ukazují se ti, kdo byli zpravodajem nebo stínovým zpravodajem zprávy, o které se na posledním zasedání v plénu hlasovalo (role z EP Open Data), abecedně, nejvýš čtyři; ostatní jsou v odkazu „a dalších N“. U každého je jen doložitelná činnost s datem v rozsahu zasedání: role u zprávy, počet projevů v plénu a otázek Komisi nebo Radě. Nic se neřadí ani nehodnotí.</p>
+          <a class="ab-def-link" href="#z-posledniho-zasedani">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="program-ep"><summary><b>Další zasedání a program</b></summary><div class="ab-def-body">
+          <p>Další zasedání a program: kalendář plenárních dnů a návrh programu hlasování bere web každý den
+            z EP Open Data API (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/fetch_agenda.py">fetch_agenda.py</a>).
+            Program je návrh EP a může se změnit. Na úvodní stránce jsou nejvýš 3 body vybrané pravidlem: nejdřív body s českou stopou,
+            pak body s legislativním návrhem (dokument C), pak podle pořadí v programu. Celý program je na stránce Hlasování.</p>
+          <p><strong>Česká stopa</strong> = český poslanec je zpravodajem, spoluzpravodajem nebo stínovým zpravodajem zprávy, ke které se bod
+            nebo hlasování váže (podle EP Open Data). Stanoviska výborů se nepárují, protože program na ně neodkazuje.</p>
+          <a class="ab-def-link" href="#program-ep">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="nazvy"><summary><b>Názvy hlasování</b></summary><div class="ab-def-body">
+          <p>Názvy hlasování jsou oficiální české názvy procedur z EP Open Data API (stejné, jaké používá
+            Evropský parlament). HowTheyVote.eu má názvy jen anglicky; kde EP český název nemá (např. hlasování o pořadu jednání),
+            zůstává anglický originál. Původní název je u každého hlasování v odkazech na zdroje.</p>
+          <a class="ab-def-link" href="#nazvy">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="tema-hlasovani"><summary><b>Téma hlasování</b></summary><div class="ab-def-body">
+          <p>Téma hlasování (čip u hlasování v seznamu, na detailu, na úvodu a na kartě ke sdílení) určuje pevná tabulka
+            pravidel nad kódy témat Legislativní observatoře EP (OEIL), které u hlasování uvádí HowTheyVote
+            (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/categories.py">categories.py</a>): 12 témat, hlavní je první podle
+            priority (obrana, klima a energie, doprava … instituce), další jsou „+N“. Téma nevybíráme my ani AI; hlasování bez kódu OEIL téma nemá.</p>
+          <a class="ab-def-link" href="#tema-hlasovani">odkaz na pravidlo</a></div></details>
+
+        <div class="ab-group" id="obecna-pravidla"><h3>Obecná pravidla</h3>
+        <details class="ab-def"><summary><b>Typ hlasování</b></summary><div class="ab-def-body">
+          <p>Typ hlasování určují pevná pravidla podle popisu hlasování ve zdroji
+            (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/vote_kinds.py">vote_kinds.py</a>). U návrhu na zamítnutí
+            znamená hlas PRO zamítnutí textu. Český popis hlasování („Odst. 5, 2. část“, „PN 12“) vzniká ze zdrojového francouzského popisu také
+            pevnými pravidly (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/labels_cs.py">labels_cs.py</a>);
+            co pravidla neznají, zůstává v originále.</p></div></details>
+        <details class="ab-def"><summary><b>Jen jmenovitá hlasování</b></summary><div class="ab-def-body">
+          <p>Počítají se jen <strong>jmenovitá</strong> hlasování v plénu. Hlasování zvednutím ruky a hlasování ve výborech nejsou strojově dostupná.</p></div></details>
+        <details class="ab-def"><summary><b>Hlasování mimo mandát</b></summary><div class="ab-def-body">
+          <p>Hlasování mimo dobu mandátu (podle EP) se poslanci nepočítají. HowTheyVote například vede Filipa Turka i v hlasováních
+            ze 7.–9. 10. 2025, přestože jeho mandát podle EP skončil 3. 10. 2025.</p></div></details>
+        <details class="ab-def"><summary><b>„Nehlasoval/a“</b></summary><div class="ab-def-body">
+          <p>„Nehlasoval/a“ neznamená nutně nepřítomnost na jednání: poslanec mohl být přítomen a nehlasovat. Nízká účast na hlasování může mít i důvody jako nemoc nebo rodičovství.</p></div></details>
+        <details class="ab-def"><summary><b>Oficiální výsledek</b></summary><div class="ab-def-body">
+          <p>Oficiální výsledek bereme ze zdroje. U několika hlasování neodpovídá prosté většině (např. vyžadovala absolutní většinu
+            361 hlasů, nebo hlasování 181313 skončilo 289 : 289 a zdroj ho uvádí jako přijaté). Taková hlasování se do
+            rozhodujících nepočítají, protože u nich nevíme, jaká většina by bez českých hlasů byla potřeba.</p></div></details>
+        <details class="ab-def"><summary><b>Informativní srovnání</b></summary><div class="ab-def-body">
+          <p>Hlasování s frakcí a shoda s Čechy jsou jen informativní a nic neříkají o kvalitě práce. Souhrnné „skóre pracovitosti“ záměrně neukazujeme.</p></div></details>
+        <details class="ab-def"><summary><b>Výpočty</b></summary><div class="ab-def-body">
+          <p>Čísla počítá deterministický skript
+            <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a> s testy, ne AI.</p></div></details>
+        </div>
+      </section>
+
+      <section class="ab-sec" id="kontakt" aria-labelledby="kontakt-h">
+        <h2 id="kontakt-h">Kontakt a nahlášení chyby</h2>
+        <p class="ab-sub">Našli jste chybu v datech nebo ve výpočtu, nebo máte dotaz? Napište nám. Pomůže odkaz na stránku nebo hlasování.</p>
+        <div class="card ab-contact">
+          <form class="contact-form" action="https://formspree.io/f/xyegyyjo" method="POST">
+            <label>Zpráva <textarea name="zprava" rows="5" required maxlength="5000"></textarea></label>
+            <label>Odkaz na stránku (nepovinné) <input type="url" name="stranka" placeholder="https://epwatch.cz/…"></label>
+            <label>Váš e-mail pro odpověď (nepovinné) <input type="email" name="email" autocomplete="email"></label>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true">
+            <input type="hidden" name="_subject" value="EP Watch CZ – zpráva z webu">
+            <button type="submit" class="btn btn-send">Odeslat</button>
+          </form>
+          <div class="ab-contact-side">
+            <h3>Co se stane po odeslání</h3>
+            <ol class="ab-steps">
+              <li>Zpráva se odešle přes službu <a href="https://formspree.io">Formspree</a>, která ji doručí správci webu.
+                Uloží se jen to, co vyplníte; e-mail použijeme jen k odpovědi.</li>
+              <li>Chybu ověříme proti zdroji dat.</li>
+              <li>Opravu zapíšeme do <a href="#opravy">Oprav a změn</a> na této stránce.</li>
+            </ol>
+            <div class="ab-public" id="sledujte">
+              <h3>Raději veřejně?</h3>
+              <p class="small">Chyby můžete hlásit i veřejně jako
+                <a href="https://github.com/Pjendrix/ep-watch-cz-open/issues">issue na GitHubu</a>. Skripty, které počítají čísla, i data jsou veřejné.</p>
+              <div class="small"><!--sync:follow-->
 <p>Nová hlasování a souhrny zasedání sdílíme na Instagramu <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">@epwatch.cz</a>. Stejná čísla jako na webu, vždy se zdrojem. Přehled změn odebírejte i přes <a href="feed.xml">RSS / Atom</a>.</p>
 <!--/sync:follow--></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <h2 id="kontakt">Kontakt a nahlášení chyby</h2>
-  <div class="card">
-    <p>Našli jste chybu v datech nebo ve výpočtu, nebo máte dotaz? Napište nám. Pomůže odkaz na stránku nebo hlasování.</p>
-    <form class="contact-form" action="https://formspree.io/f/xyegyyjo" method="POST">
-      <label>Zpráva <textarea name="zprava" rows="5" required maxlength="5000"></textarea></label>
-      <label>Odkaz na stránku (nepovinné) <input type="url" name="stranka" placeholder="https://epwatch.cz/…"></label>
-      <label>Váš e-mail pro odpověď (nepovinné) <input type="email" name="email" autocomplete="email"></label>
-      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true">
-      <input type="hidden" name="_subject" value="EP Watch CZ – zpráva z webu">
-      <button type="submit" class="btn btn-send">Odeslat</button>
-      <p class="small muted">Zpráva se odešle přes službu <a href="https://formspree.io">Formspree</a>, která ji doručí správci webu.
-        Uloží se jen to, co vyplníte; e-mail použijeme jen k odpovědi.</p>
-    </form>
-    <p class="small">Chyby můžete hlásit i veřejně jako
-      <a href="https://github.com/Pjendrix/ep-watch-cz-open/issues">issue na GitHubu</a>. Skripty, které počítají čísla, i data jsou veřejné.</p>
+      <section class="ab-sec" id="zmeny" aria-labelledby="zmeny-h">
+        <h2 id="zmeny-h">Opravy a změny</h2>
+        <p class="ab-sub" id="opravy">Chyby v datech nebo ve výpočtu, které jsme našli sami nebo nám je někdo nahlásil, a co je správně, a změny metodiky a webu. Highlight „Opravy“ na Instagramu odkazuje sem.</p>
+        <div class="ab-tl-filter" role="group" aria-label="Filtr oprav a změn" hidden>
+          <button type="button" data-f="all" aria-pressed="true">Vše</button>
+          <button type="button" data-f="fix" aria-pressed="false">Opravy (<span data-count="fix"></span>)</button>
+          <button type="button" data-f="change" aria-pressed="false">Změny</button>
+        </div>
+        <ol class="ab-tl" id="corrections"><!--sync:corrections-->
+<li class="ab-tl-empty" data-kind="fix"><p>Zatím žádné opravy.</p></li>
+<!--/sync:corrections-->
+          <li data-kind="change"><time datetime="2026-10-15">15. 10. 2026</time> <span class="ab-tl-tag">změna</span>
+            <p class="ab-tl-text">Nová stránka <strong>Strany → Evropské frakce</strong>: souhrn hlasování celých politických skupin EP (všichni členové, ne jen čeští).
+            <em>Účast skupiny</em> = podíl hlasů pro, proti nebo zdržel se ze všech hlasů členů, <em>soudržnost</em> = podíl hlasů pro a proti odpovídajících většině skupiny
+            (v hlasováních, kde hlasovalo pro nebo proti aspoň 10 členů), <em>výrazně rozdělené hlasování</em> = menšina mezi hlasy pro a proti aspoň 30 % (stejný práh jako u české delegace).
+            Nezařazení nejsou skupina, proto tu nejsou. Weby skupin jsou z Wikidat, popisy skupin záměrně neuvádíme.</p></li>
+          <li data-kind="change"><time datetime="2026-10-15">15. 10. 2026</time> <span class="ab-tl-tag">změna</span>
+            <p class="ab-tl-text">Nová stránka <strong>Hlasování podle témat</strong>: 12 témat jako pevná pravidla nad tématy Legislativní observatoře EP (žádná AI).
+            Jedno hlasování se počítá do všech svých témat, hlasování bez tématu je v řádku „Bez tématu“. U každého tématu je počet hlasování, závěrečných, „Češi jednotně“,
+            rozložení hlasů Čechů v závěrečných hlasováních a účast Čechů.</p></li>
+          <li data-kind="change"><time datetime="2026-10-15">15. 10. 2026</time> <span class="ab-tl-tag">změna</span>
+            <p class="ab-tl-text">Práce poslanců má vlastní položku v menu a přehledovou stránku: souhrn (zprávy, které čeští poslanci vedou a vyjednávají,
+            projevy, otázky, prezence), kdy se pracovalo, rozpad zpráv podle typu procedury, naposledy přijaté zprávy s českou stopou a rozpad podle frakcí.
+            Každý text se v součtech počítá jednou, i když na něm pracovali dva Češi. Frakce jsou řazené podle počtu poslanců, ne podle výkonu, a u každé je i průměr
+            na poslance, protože zprávy se mezi frakce dělí podle jejich velikosti. Tabulka po poslancích s třetinami je na samostatné záložce.</p></li>
+        </ol>
+        <button type="button" class="ab-more" id="ab-older" hidden>Starší změny</button>
+      </section>
+
+      <section class="ab-sec" id="licence" aria-labelledby="licence-h">
+        <h2 id="licence-h">Licence a loga</h2>
+        <details class="ab-def" id="licence-kod"><summary><b>Licence kódu a dat</b><span>Výpočty GNU AGPL-3.0, data ODbL 1.0 a CC BY 4.0, písmo SIL Open Font License 1.1.</span></summary><div class="ab-def-body">
+          <ul class="ab-list">
+            <li><strong>Výpočty</strong> (skripty a testy ve veřejném repozitáři): licence GNU AGPL-3.0, viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/LICENSE">LICENSE</a>. Zdrojový kód webu samotného (vzhled a stránky) je soukromý.</li>
+            <li><strong>Data v adresáři <code>data/</code></strong>: odvozená z HowTheyVote.eu, proto pod licencí
+              <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a> (sdílet za stejných podmínek).
+              Údaje z EP Open Data jsou pod <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+              Viz <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/DATA_LICENSE.md">DATA_LICENSE.md</a>.</li>
+            <li><strong>Portréty</strong>: © European Union – Source: EP.</li>
+            <li><strong>Písmo</strong> Plus Jakarta Sans: SIL Open Font License 1.1, hostované přímo na tomto webu (žádné Google Fonts).</li>
+            <li>Každá týdenní aktualizace dat má v repozitáři značku <code>data-RRRR-MM-DD</code>, takže jde zpětně dohledat, z jakých dat které číslo vzniklo.</li>
+          </ul>
+          <a class="ab-def-link" href="#licence-kod">odkaz na licence</a></div></details>
+        <details class="ab-def" id="loga"><summary><b>Loga a barvy stran</b><span>Loga stran a frakcí jsou ochranné známky jejich vlastníků.</span></summary><div class="ab-def-body">
+          <p>Používáme je v rámci informačního užití, jen k identifikaci
+            strany nebo frakce u čísel, která se jí týkají. Kde logo chybí, ukazujeme tečku a zkratku.
+            Loga se neupravují a u každého je uveden oficiální zdroj (<code>data/manual/logos.json</code>). Na žádost vlastníka logo odstraníme.
+            Barvy v grafech jsou zvolené kvůli rozlišitelnosti, nejde o oficiální barvy stran (kde oficiální barvu známe, je uvedena se zdrojem).</p>
+          <a class="ab-def-link" href="#loga">odkaz na loga</a></div></details>
+      </section>
+    </div>
   </div>
-
-  <h2>Loga a barvy</h2>
-  <p>Loga stran a frakcí jsou ochranné známky jejich vlastníků. Používáme je v rámci informačního užití, jen k identifikaci
-    strany nebo frakce u čísel, která se jí týkají. Kde logo chybí, ukazujeme tečku a zkratku.
-    Loga se neupravují a u každého je uveden oficiální zdroj (<code>data/manual/logos.json</code>). Na žádost vlastníka logo odstraníme.
-    Barvy v grafech jsou zvolené kvůli rozlišitelnosti, nejde o oficiální barvy stran (kde oficiální barvu známe, je uvedena se zdrojem).</p>
 </main>
 
 <footer class="site-footer"><div class="inner">
@@ -221,6 +336,6 @@
 </div></footer>
 
 <script type="module" src="app.js?v=33dfa080"></script>
-<script type="module" src="pages/o-projektu.js?v=bad41323"></script>
+<script type="module" src="pages/o-projektu.js?v=66cb402d"></script>
 </body>
 </html>
