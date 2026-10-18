@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=c5572551"></script>
-<link rel="stylesheet" href="style.css?v=d1d9e79c">
+<link rel="stylesheet" href="style.css?v=4eae7ad7">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -197,9 +197,12 @@
             (řádný legislativní postup COD, zvláštní postupy CNS a APP), ve kterých je český poslanec zpravodajem, spoluzpravodajem, stínovým
             zpravodajem nebo zpravodajem stanoviska. Vše z EP Open Data API
             (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/radar.py">radar.py</a>), nic se neodhaduje.</p>
-          <p><strong>Průběh procedury</strong> určuje pevná tabulka událostí, které EP u procedury zveřejňuje: výbor (přidělení, návrh zprávy,
-            pozměňovací návrhy), zpráva výboru (přijetí ve výboru, předložení plénu), jednání s Radou (mandát, trialog, schválení dohody ve výboru),
-            hlasování v plénu a podpis s vyhlášením v Úředním věstníku. Pole „fáze“ z API nepoužíváme, protože u uzavřených procedur zůstává „první čtení“.</p>
+          <p><strong>Průběh procedury</strong> skládáme z událostí, které EP u procedury zveřejňuje, v pořadí, jak proběhly, každou s vlastním datem:
+            přidělení výboru, hlasování ve výboru, předložení zprávy plénu, mandát k jednání s Radou, trialogy, schválení dohody ve výboru,
+            hlasování pléna, podpis aktu a vyhlášení v Úředním věstníku. U řádného legislativního postupu rozlišujeme 1. čtení (postoj Parlamentu
+            k návrhu) a 2. čtení (hlasování o postoji Rady) podle typu události. Obecné „hlasování v plénu“, u kterého EP neuvádí, o čem se hlasovalo,
+            na časovou osu nedáváme a za hlasování o zákoně ho nepočítáme; najdete ho v seznamu všech kroků na stránce Příběh zákona.
+            Pole „fáze“ z API nepoužíváme, protože u uzavřených procedur zůstává „první čtení“.</p>
           <p><strong>Datum hlasování v plénu</strong> je známé jen z programu zasedání (asi 1–2 týdny dopředu); jinde píšeme „zatím nezveřejněno“.
             <strong>Téma</strong> se odvozuje z odpovědného výboru (např. ENVI → Klima, příroda a energie; ITRE → Průmysl a vnitřní trh;
             CULT téma nemá). Řazení rozpracovaných: nejdřív ty nejblíž hlasování, pak podle poslední události. Nejde o hodnocení důležitosti.</p>

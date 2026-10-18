@@ -189,6 +189,8 @@ def _range(a: str, b: str) -> str:
         return fmt_date(a)
     if a[:7] == b[:7]:
         return f"{int(a[8:])}.–{fmt_date(b)}"
+    if a[:4] != b[:4]:
+        return f"{fmt_date(a)} – {fmt_date(b)}"
     return f"{fmt_date(a)[:-5]} – {fmt_date(b)}"
 
 
@@ -300,14 +302,16 @@ def radar_session_item(it: dict, root: str) -> str:
 
 
 def radar_steps(steps: list[dict], reached: str | None) -> str:
-    """Časová osa kroků procedury: hotové kroky s datem, aktuální zvýrazněný, budoucí šedě."""
-    keys = [s["key"] for s in steps]
-    cur = keys.index(reached) if reached in keys else -1
-    finished = cur == len(keys) - 1  # podpis a vyhlášení: všechny kroky hotové
+    """Časová osa procedury (radar.timeline): skutečné milníky s datem, poslední zvýrazněný, čekající kroky šedě.
+    U uzavřené procedury (podpis, vyhlášení) jsou všechny milníky hotové."""
+    last = max((i for i, s in enumerate(steps) if s.get("date")), default=-1)
     lis = []
     for i, s in enumerate(steps):
-        state = "done" if i < cur or finished else "current" if i == cur else "todo"
-        when = f'<span class="rd-when">{fmt_date(s["date"])}</span>' if s.get("date") else ""
+        state = "todo" if not s.get("date") else "current" if i == last and reached != "closed" else "done"
+        when = ""
+        if s.get("date"):
+            rng = _range(s["date"], s["date_to"]) if s.get("date_to") else fmt_date(s["date"])
+            when = f'<span class="rd-when">{rng}</span>'
         attr = ' aria-current="step"' if state == "current" else ""
         lis.append(
             f'<li class="rd-step {state}"{attr}>'
@@ -335,6 +339,9 @@ def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
             f'<p class="rd-next">Plénum hlasovalo {fmt_date(r["plenary_date"])} · '
             + (
                 f'<a href="{root}v/{v["vote_id"]}">jak hlasovali Češi {_ARROW}</a>'
+                if v.get("vote_id") and v.get("vote_date") == r["plenary_date"]
+                # poslední jmenovité hlasování je z jiného dne (např. 1. čtení, rozhodnutí pléna je 2. čtení)
+                else f'<a href="{root}v/{v["vote_id"]}">jak hlasovali Češi {fmt_date(v["vote_date"])} {_ARROW}</a>'
                 if v.get("vote_id")
                 else '<span class="muted">jmenovité hlasování k ní v datech HowTheyVote není</span>'
             )

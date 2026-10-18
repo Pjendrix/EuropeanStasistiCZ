@@ -1477,7 +1477,7 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
 .rd-proc { padding: 16px 18px; }
 .rd-title { font-size: 1.05rem; margin: 0 0 4px; line-height: 1.35; }
 .rd-next { margin: 8px 0 0; }
-.rd-steps { list-style: none; padding: 0; margin: 12px 0 4px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.rd-steps { list-style: none; padding: 0; margin: 12px 0 4px; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px 4px; }
 .rd-step { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-size: .8rem; color: var(--muted); padding-top: 14px; }
 .rd-step::before { content: ""; position: absolute; top: 4px; left: 0; right: 0; height: 3px; border-radius: 2px; background: var(--track); }
 .rd-step.done::before, .rd-step.current::before { background: var(--accent); }
