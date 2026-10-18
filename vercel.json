@@ -40,6 +40,11 @@
       ],
       "destination": "/s/:id",
       "permanent": true
+    },
+    {
+      "source": "/moje-shoda",
+      "destination": "/kviz",
+      "permanent": true
     }
   ],
   "headers": [

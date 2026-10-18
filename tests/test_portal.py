@@ -48,7 +48,7 @@ def test_portal_static_hero_and_tiles(data_dir):
     assert html.count('class="pt-tile') == 9
     for href in (
         'href="aktualne"',
-        'href="moje-shoda"',
+        'href="kviz"',
         'href="poslanci"',
         'href="hlasovani"',
         'href="party"',

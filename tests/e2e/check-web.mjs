@@ -24,11 +24,15 @@ const CSP = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")).headers[
 // Adresy bez .html jako na Vercelu (vercel.json "cleanUrls": true): /x.html a /index přesměruje 308 na /x a /,
 // /x obslouží soubor x.html. Odkaz na .html by tu tedy prošel jen přes přesměrování, které test hlídá (redirects).
 const redirects = [];
+// Pravidla z vercel.json bez podmínek (např. /moje-shoda → /kviz); cleanUrls se na Vercelu vyhodnotí dřív.
+const SIMPLE_REDIRECTS = new Map(JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")).redirects.filter((r) => !r.has).map((r) => [r.source, r.destination]));
 const server = createServer((req, res) => {
   const u = new URL(req.url, "http://x");
   const path = normalize(decodeURIComponent(u.pathname)).replace(/^(\.\.[/\\])+/, "");
   const clean = path.replace(/(^|\/)index(\.html)?$/, "$1").replace(/\.html$/, "");
   if (clean !== path) { redirects.push(req.url); res.writeHead(308, { location: clean + u.search }); res.end(); return; }
+  const moved = SIMPLE_REDIRECTS.get(clean);
+  if (moved) { res.writeHead(301, { location: moved + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
   if (!existsSync(file) && !extname(path) && existsSync(`${file}.html`)) file = `${file}.html`;
   if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
@@ -49,7 +53,7 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "moje-shoda",
+const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "kviz",
   "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];
@@ -565,31 +569,78 @@ for (const width of [1366, 390]) {
   await ctx.close();
 }
 
-// N5 Moje shoda: po 3 odpovědích jde vyhodnotit, výsledek je seřazený podle shody a u otázek se ukáže skutečný výsledek.
-{
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+// Kvíz (K1+K2) při 1366 a 390: průchod klávesami i klikem, odhalení bez jmen, výsledek, rozkliknutí řádku, záložka odpovědí,
+// pokračování po reloadu (localStorage) a axe na obrazovce otázky, detailu i výsledku.
+for (const [w, h] of [[1366, 900], [390, 844]]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base + "moje-shoda", { waitUntil: "networkidle" });
-  const n = await page.locator(".quiz-q").count();
-  if (n < 3) problems.push(`moje-shoda: jen ${n} otázek`);
-  else {
-    if (!(await page.locator("#quiz-go").isDisabled())) problems.push("moje-shoda: vyhodnocení jde bez odpovědí");
-    for (let i = 0; i < 3; i++) await page.locator(".quiz-q").nth(i).locator(".quiz-opt").first().click();
-    await page.click("#quiz-go");
-    const r = await page.evaluate(() => ({
-      rows: [...document.querySelectorAll(".quiz-row .quiz-pct strong")].map((e) => parseFloat(e.textContent.replace(",", "."))),
-      reveal: document.querySelectorAll(".quiz-reveal:not([hidden])").length,
-    }));
-    if (!r.rows.length) problems.push("moje-shoda: žádný poslanec ve výsledku");
-    if (r.rows.some((x, i) => i && x > r.rows[i - 1])) problems.push("moje-shoda: výsledek není seřazený podle shody");
-    if (r.reveal !== n) problems.push("moje-shoda: po vyhodnocení chybí skutečné výsledky u otázek");
-    // Delší test: víc otázek, odpovědi z krátkého zůstanou.
-    await page.locator('input[name="len"][value="long"]').check();
-    const longN = await page.locator(".quiz-q").count();
-    const kept = await page.locator('.quiz-q input[value="F"]:checked').count();
-    if (longN <= n) problems.push(`moje-shoda: delší test nemá víc otázek (${longN})`);
-    if (!kept) problems.push("moje-shoda: po přepnutí délky se ztratily odpovědi");
+  const tag = `kviz ${w}`;
+  const axeOn = async (label, sel = "body") => {
+    await page.evaluate(axeSource);
+    const v = await page.evaluate(async (s) => (await axe.run(document.querySelector(s), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+      .map((x) => `${x.id}: ${x.nodes.length}× (${x.nodes[0]?.target})`), sel);
+    v.forEach((x) => problems.push(`${tag} ${label}: axe ${x}`));
+  };
+  await page.goto(base + "kviz", { waitUntil: "networkidle" });
+  await page.click("#qz-start");
+  await page.waitForSelector(".qz-card");
+  if (!page.url().endsWith("#otazka-1")) problems.push(`${tag}: adresa otázky ${page.url()}`);
+  const n = await page.locator(".qz-prog button").count();
+  if (n < 3) problems.push(`${tag}: jen ${n} otázek`);
+  const app = await page.evaluate(() => getComputedStyle(document.querySelector(".site-header")).display === "none");
+  if (app !== (w <= 760)) problems.push(`${tag}: režim aplikace (skrytá hlavička) ${app ? "zapnutý" : "vypnutý"} při šířce ${w}`);
+  // 1. otázka klávesou 1 (pro): odhalení s počty, ale bez jmen poslanců
+  if (w > 760) await page.keyboard.press("1"); else await page.click('.qz-ans[data-a="F"]');
+  await page.waitForSelector(".qz-reveal");
+  const rv = await page.evaluate(() => {
+    const el = document.querySelector("#qz-rev");
+    return { live: el.getAttribute("aria-live"), titles: el.querySelectorAll("title, a").length, text: el.textContent,
+      pressed: document.querySelector('.qz-ans[data-a="F"]').getAttribute("aria-pressed") };
+  });
+  const names = await page.evaluate(async () => (await (await fetch("data/overview.json")).json()).meps.map((m) => m.family_name).filter(Boolean));
+  if (rv.live !== "polite") problems.push(`${tag}: odhalení nemá aria-live`);
+  if (rv.titles || names.some((x) => rv.text.includes(x))) problems.push(`${tag}: odhalení ukazuje jména poslanců`);
+  if (!/Stejně hlasovalo \d+ z \d+/.test(rv.text)) problems.push(`${tag}: v odhalení chybí věta „Stejně hlasovalo x z y“`);
+  if (rv.pressed !== "true") problems.push(`${tag}: odpověď nemá aria-pressed`);
+  await axeOn("otázka s odhalením");
+  // detail hlasování: <dialog>, Esc zavře
+  await page.click("#qz-more");
+  if (!(await page.locator("#qz-dlg[open]").isVisible())) problems.push(`${tag}: detail hlasování se neotevřel`);
+  await axeOn("detail hlasování", "#qz-dlg");
+  await page.keyboard.press("Escape");
+  if (await page.locator("#qz-dlg[open]").count()) problems.push(`${tag}: Esc nezavřel detail`);
+  // 2. otázka, pak reload: postup zůstane (localStorage)
+  if (w > 760) await page.keyboard.press("ArrowRight"); else await page.click("#qz-next");
+  await page.waitForFunction(() => location.hash === "#otazka-2");
+  await page.reload({ waitUntil: "networkidle" });
+  const kept = await page.evaluate(() => ({ hash: location.hash, done: document.querySelectorAll(".qz-prog .a-F").length }));
+  if (kept.hash !== "#otazka-2" || kept.done !== 1) problems.push(`${tag}: po reloadu se ztratil postup ${JSON.stringify(kept)}`);
+  for (let i = 1; i < n; i++) {
+    const a = ["A", "F", "B", "S"][i % 4];
+    if (w > 760) await page.keyboard.press({ F: "1", A: "2", B: "3", S: "0" }[a]); else await page.click(`[data-a="${a}"]`);
+    await page.click("#qz-next");
   }
+  await page.waitForSelector(".qz-rs");
+  if (!page.url().endsWith("#vysledek")) problems.push(`${tag}: adresa výsledku ${page.url()}`);
+  const res = await page.evaluate(() => ({
+    pods: document.querySelectorAll(".qz-pod").length,
+    rows: [...document.querySelectorAll(".qz-rp b")].map((e) => parseFloat(e.textContent.replace(",", "."))),
+    review: document.getElementById("qz-pan-r").hidden && getComputedStyle(document.getElementById("qz-pan-r")).display === "none",
+    header: getComputedStyle(document.querySelector(".site-header")).display !== "none",
+  }));
+  if (!res.rows.length || res.pods !== Math.min(3, res.rows.length)) problems.push(`${tag}: výsledek bez poslanců nebo tří karet ${JSON.stringify(res)}`);
+  if (res.rows.some((x, i) => i && x > res.rows[i - 1])) problems.push(`${tag}: výsledek není seřazený podle shody`);
+  if (!res.review) problems.push(`${tag}: skrytá záložka odpovědí je vidět`);
+  if (!res.header) problems.push(`${tag}: u výsledku chybí hlavička (režim aplikace jen u otázek)`);
+  await page.click(".qz-row summary");
+  if (!(await page.locator(".qz-row[open] .qz-cmp li").count())) problems.push(`${tag}: řádek poslance nejde rozkliknout na porovnání`);
+  await axeOn("výsledek");
+  await page.click("#qz-tab-r");
+  const rev = await page.evaluate(() => ({ cards: document.querySelectorAll(".qz-rv-card").length, sel: document.getElementById("qz-tab-r").getAttribute("aria-selected") }));
+  if (rev.cards !== n || rev.sel !== "true") problems.push(`${tag}: záložka „Vaše odpovědi“ ${JSON.stringify(rev)}`);
+  await axeOn("vaše odpovědi");
+  await page.click("#qz-share");
+  await page.waitForSelector(".sd-preview img", { timeout: 15000 }).catch(() => problems.push(`${tag}: náhled obrázku ke sdílení se nevytvořil`));
   await ctx.close();
 }
 
@@ -641,7 +692,7 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
 {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
-  for (const [from, to] of [["moje-shoda.html", "moje-shoda"], [`p/${mepId}.html`, `p/${mepId}`], ["index.html", ""],
+  for (const [from, to] of [["moje-shoda", "kviz"], ["moje-shoda.html", "kviz"], [`p/${mepId}.html`, `p/${mepId}`], ["index.html", ""],
     ["o-projektu.html#kontakt", "o-projektu#kontakt"], [`mep.html?id=${mepId}`, `p/${mepId}`]]) {
     await page.goto(base + from, { waitUntil: "networkidle" });
     if (page.url() !== base + to) problems.push(`stará adresa ${from} skončila na ${page.url()}, čekám ${base + to}`);
