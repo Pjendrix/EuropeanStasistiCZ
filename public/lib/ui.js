@@ -1,20 +1,20 @@
 // Stavební bloky stránek (HTML řetězce, tabulky, ⓘ, sdílení čísel, CSV, toast).
 import { CATEGORY_META, ROOT, getJSON } from "./data.js";
-import { adoptedTextHtmlUrl, byGender, COUNTRY_CS, CZ_GROUP_LABEL, czCountsText, displayName, EP_SOURCE, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, HTV_SOURCE, INDEPENDENT_NOTE, isStale, KIND_LABEL, KIND_NOTE, logoHeight, nameHtml, pct, POSITION_LABEL, positionPhrase, RESULT_NOTE, resultText, sessionCountdown, voteSubtitle, voteTitle } from "./format.js";
+import { COUNTRY_CS, CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, INDEPENDENT_NOTE, KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_NOTE, adoptedTextHtmlUrl, byGender, czCountsText, displayName, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, isStale, logoHeight, pct, positionPhrase, resultText, sessionCountdown, voteSubtitle, voteTitle } from "./format.js";
 
 export function logoTile(entity, size = 28) {
   if (!entity || !entity.logo) return "";
   const name = entity.name_cs || entity.name || entity.label || entity.short_label || "";
   const h = logoHeight(entity.logo_aspect, size);
   const w = entity.logo_aspect ? ` width="${Math.round(h * entity.logo_aspect)}"` : "";
-  return `<span class="logo-tile notranslate" translate="no" style="height:${size}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" style="height:${h}px"${w} height="${Math.round(h)}" loading="lazy"></span>`;
+  return `<span class="logo-tile" style="height:${size}px"><img src="${esc(entity.logo)}" alt="${esc(name)}" style="height:${h}px"${w} height="${Math.round(h)}" loading="lazy"></span>`;
 }
 
 // Buňka „logo + název + doplněk“: logo v pevně širokém slotu, aby názvy v tabulce lícovaly i u řádků bez loga
 // (tam je v slotu jen tečka v barvě strany/frakce). size = výška dlaždice loga.
 export function entityCell(entity, { name, href, sub = "", size = 28, slot = "" } = {}) {
   const logo = logoTile(entity, size) || `<span class="dot" style="background:${groupColor(entity)}"></span>`;
-  const title = href ? `<a href="${esc(href)}" class="vote-title notranslate" translate="no">${esc(name)}</a>` : `<span class="notranslate" translate="no">${esc(name)}</span>`;
+  const title = href ? `<a href="${esc(href)}" class="vote-title">${esc(name)}</a>` : `<span>${esc(name)}</span>`;
   return `<div class="entity-cell"><span class="logo-slot${slot ? ` ${slot}` : ""}">${logo}</span>
     <div class="entity-text">${title}${sub ? `<div class="small muted">${sub}</div>` : ""}</div></div>`;
 }
@@ -37,7 +37,7 @@ export function groupBadge(code, groups, epCode) {
   const g = groups.find((x) => x.code === code) || groups.find((x) => epCode && x.ep_code === epCode);
   const label = g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (code || epCode);
   const title = g ? (g.name_cs || g.label) : label;
-  return `<span class="badge notranslate" translate="no" style="--badge-dot:${groupColor(g)}" title="${esc(title)}">${esc(label)}</span>`;
+  return `<span class="badge" style="--badge-dot:${groupColor(g)}" title="${esc(title)}">${esc(label)}</span>`;
 }
 
 // mep (nepovinné) = poslanec kvůli rodu u „nezávislý/á“.
@@ -47,7 +47,7 @@ export function partyBadge(id, label, parties, mep) {
   // EP vede poslance bez strany jako „Independent“ (zkratka Ind.); nejde o stranu.
   if (p && p.independent) return `<span class="badge outline" title="${esc(INDEPENDENT_NOTE)}">${mep ? byGender(mep, "nezávislý", "nezávislá") : "nezávislý/á"}</span>`;
   const text = p ? p.short_label : label;
-  return `<span class="badge notranslate" translate="no" style="--badge-dot:${groupColor(p)}" title="${esc(p ? p.name : text)}">${esc(text)}</span>`;
+  return `<span class="badge" style="--badge-dot:${groupColor(p)}" title="${esc(p ? p.name : text)}">${esc(text)}</span>`;
 }
 
 // Profil poslance: statická stránka s plným obsahem, JS na ní doplní interakce (U5).
@@ -170,7 +170,7 @@ export function czDots(positions, mepsById, groups) {
   return `<div class="cz-dots" role="img" aria-label="${esc(`Čeští poslanci: ${czCountsText(counts)}`)}">${order.map((code) => {
     const g = groups.find((x) => x.code === code);
     const label = g ? (CZ_GROUP_LABEL[code] || g.short_label) : code;
-    return `<span class="cz-dot-group"><span class="cz-dot-label notranslate" translate="no">${esc(label)}</span>${by[code]
+    return `<span class="cz-dot-group"><span class="cz-dot-label">${esc(label)}</span>${by[code]
       .map((p) => `<i class="cz-dot d-${p.position}" title="${esc(`${displayName(mepsById[p.member_id] || { name: "?" })}: ${POSITION_LABEL[p.position]}`)}"></i>`).join("")}</span>`;
   }).join("")}</div>`;
 }
@@ -201,9 +201,9 @@ export function czPartyRowsHtml(rows) {
   return rows.map((r) => {
     const dots = KEYS4.flatMap((k) => r.members[k].map((m) => `<i class="cz-dot d-${k}" title="${esc(`${displayName(m)}: ${positionPhrase(k, [m])}`)}"></i>`)).join("");
     const names = KEYS4.filter((k) => r.members[k].length).map((k) =>
-      `<span class="pr-group"><b class="pos pos-${k}">${esc(positionPhrase(k, r.members[k]))}</b> ${r.members[k].map((m) => `<a href="${mepUrl(m.id)}">${nameHtml(m)}</a>`).join(", ")}</span>`).join(" · ");
-    return `<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"${r.color ? ` style="background:${esc(r.color)}"` : ""}></span><b class="notranslate" translate="no">${esc(r.label)}</b></span>
-      <span class="small muted notranslate" translate="no">${esc(r.groups.join(", "))}</span></div><div class="pr-dots" aria-hidden="true">${dots}</div><div class="pr-names">${names}</div></div>`;
+      `<span class="pr-group"><b class="pos pos-${k}">${esc(positionPhrase(k, r.members[k]))}</b> ${r.members[k].map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}</span>`).join(" · ");
+    return `<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"${r.color ? ` style="background:${esc(r.color)}"` : ""}></span><b>${esc(r.label)}</b></span>
+      <span class="small muted">${esc(r.groups.join(", "))}</span></div><div class="pr-dots" aria-hidden="true">${dots}</div><div class="pr-names">${names}</div></div>`;
   }).join("");
 }
 
@@ -291,7 +291,7 @@ export function namesByPosition(positions, mepsById, keys = ["FOR", "AGAINST", "
       .map((p) => mepsById[p.member_id])
       .filter(Boolean)
       .sort((a, b) => displayName(a).localeCompare(displayName(b), "cs"))
-      .map((m) => `<a href="${mepUrl(m.id)}">${nameHtml(m)}</a>`);
+      .map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`);
     return names.length ? `<div class="small"><span class="pos pos-${k}">${POSITION_LABEL[k]} (${names.length}):</span> ${names.join(", ")}</div>` : "";
   }).join("");
 }

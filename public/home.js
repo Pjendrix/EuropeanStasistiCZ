@@ -1,6 +1,6 @@
 // Úvodní stránka: dvě čísla, tři vstupy, česká delegace ve frakcích, rozdělená hlasování a karty poslanců.
 import { getJSON, loadCategories, param, soft } from "./lib/data.js";
-import { byGender, CZ_GROUP_LABEL, czCountsText, debounce, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, HTV_SOURCE, isActive, matchesAll, nameHtml, NO_PARTY_NOTE, norm, pct, searchTerms, SHORT_MANDATE_NOTE, voteTitle } from "./lib/format.js";
+import { CZ_GROUP_LABEL, HTV_SOURCE, NO_PARTY_NOTE, SHORT_MANDATE_NOTE, byGender, czCountsText, debounce, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, matchesAll, norm, pct, searchTerms, voteTitle } from "./lib/format.js";
 import { avatar, benchFor, benchRow, catChip, csvButton, csvShare, entityCell, groupBench, infoButton, kindTag, logoTile, mepUrl, partyBadge, partyUrl, pctCell, resultHtml, setNav, showError, sortable, sourceLine } from "./lib/ui.js";
 
 setNav("meps");
@@ -55,7 +55,7 @@ function partyLines(members, parties) {
     const full = p && !p.independent && p.name && p.name !== p.short_label && !/czechia/i.test(p.name) ? p.name : "";
     const web = p && !p.independent ? partyWeb(p) : null;
     return `<li><span class="party-name"><span class="dot" style="background:${groupColor(p)}"></span><strong>${esc(label)}</strong>${full ? ` <span class="muted">${esc(full)}</span>` : ""}${web ? ` · <a class="ext" href="${esc(web)}" rel="noopener">oficiální web</a>` : ""}</span>
-      <span class="party-members">${ms.map((m) => `<a href="${mepUrl(m.id)}">${nameHtml(m)}</a>`).join(", ")}</span></li>`;
+      <span class="party-members">${ms.map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}</span></li>`;
   }).join("")}</ul>`;
 }
 
@@ -187,7 +187,7 @@ function mepCard({ m, s, g, p, active }, groups, parties, benchAll) {
   return `<a class="mep-card reveal ${active ? "" : "former"}" href="${mepUrl(m.id)}" style="--g:${groupColor(gObj)}">
     <div class="mep-card-head">
       ${avatar(m, 48)}
-      <div style="min-width:0"><div class="name">${nameHtml(m)}</div>
+      <div style="min-width:0"><div class="name">${esc(displayName(m))}</div>
         <div class="sub"><span class="dot"></span>${gObj ? esc(CZ_GROUP_LABEL[gObj.code] || gObj.short_label) : esc(g?.short_label || "bez frakce")} ·
           ${partyText}${active ? "" : ` · do ${fmtDate(m.mandates[m.mandates.length - 1].end)}`}</div></div>
       ${logoTile(pObj, 28)}
@@ -272,7 +272,7 @@ function groupedCards(list, groups, parties, bench) {
         const isNI = htvCode(m, groups) === "NI";
         return `<tr class="${active ? "" : "former"}">
           <td class="sticky-col"><div class="mep-cell">${avatar(m, 40)}
-            <div><a href="${mepUrl(m.id)}">${nameHtml(m)}</a></div></div></td>
+            <div><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></div></td>
           <td>${(() => { const go = groups.find((x) => x.ep_code === g?.code);
             return entityCell(go || { code: g?.code }, { name: go ? (CZ_GROUP_LABEL[go.code] || go.short_label) : (g?.short_label || "bez frakce"), size: 22, slot: "sm" }); })()}</td>
           <td>${(() => { const po = p ? parties.find((x) => String(x.id) === String(p.id)) : null;

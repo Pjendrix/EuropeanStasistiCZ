@@ -699,58 +699,6 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
   }
   await ctx.close();
 }
-// Strojový překlad (P2): jména poslanců se nepřekládají (translate="no") na úvodu, profilu a detailu hlasování.
-{
-  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
-  const page = await ctx.newPage();
-  for (const url of ["", "p/256846", `v/${voteId}`]) {
-    await page.goto(base + url, { waitUntil: "networkidle" });
-    const r = await page.evaluate(() => ({
-      lang: document.documentElement.lang,
-      names: [...document.querySelectorAll('[translate="no"]')].filter((e) => e.matches(".hm-seat, h1, .notranslate") && /\p{Lu}\p{Ll}+ \p{Lu}/u.test(e.textContent + (e.getAttribute("aria-label") || ""))).length,
-      brand: !!document.querySelector('.brand-text[translate="no"]'),
-    }));
-    if (r.lang !== "cs" || !r.names || !r.brand) problems.push(`překlad ${url || "/"}: lang ${r.lang}, jmen s translate="no" ${r.names}, značka ${r.brand}`);
-  }
-  await ctx.close();
-}
-// Strojový překlad (P3): odkaz v hlavičce a v panelu Více vede na Google Translate v jazyce prohlížeče s adresou aktuální stránky.
-if (read("data/manual/site.json").translate?.enabled) {
-  for (const [width, locale, tl] of [[1366, "de-DE", "de"], [390, "en-US", "en"], [390, "fr-FR", "en"]]) {
-    const ctx = await browser.newContext({ viewport: { width, height: 900 }, locale });
-    const page = await ctx.newPage();
-    const where = `překlad [${width}px, ${locale}]`;
-    await page.goto(base + "hlasovani", { waitUntil: "networkidle" });
-    const sel = width > 760 ? ".site-header .tr-btn" : ".sheet .tr-link";
-    const href = await page.getAttribute(sel, "href");
-    const u = href && new URL(href);
-    if (!u || u.origin !== "https://translate.google.com" || u.searchParams.get("tl") !== tl || u.searchParams.get("sl") !== "cs"
-      || u.searchParams.get("u") !== "https://epwatch.cz/hlasovani") problems.push(`${where}: odkaz ${href}`);
-    if ((await page.getAttribute(sel, "rel")) !== "noopener noreferrer" || (await page.getAttribute(sel, "target")) !== "_blank") problems.push(`${where}: rel/target`);
-    if (width > 760 && !(await page.isVisible(".site-header .tr-btn"))) problems.push(`${where}: tlačítko v hlavičce není vidět`);
-    // stránka, která mění kotvu za běhu (kvíz): odkaz má aktuální adresu včetně kotvy
-    await page.goto(base + "kviz#frakce", { waitUntil: "networkidle" });
-    const k = new URL(await page.getAttribute(sel, "href")).searchParams.get("u");
-    if (k !== "https://epwatch.cz/kviz#frakce") problems.push(`${where}: kvíz u=${k}`);
-    await ctx.close();
-  }
-}
-// Strojový překlad v proxy Google Translate (*.translate.goog): web obsloužený pod adresou proxy, glóbus i „Sdílet“ se schovají,
-// místo sdílení odkaz na původní stránku (v proxy obrázek ke sdílení nevznikne).
-if (read("data/manual/site.json").translate?.enabled) {
-  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
-  await ctx.route("https://www-epwatch-cz.translate.goog/**", async (route) => {
-    const u = new URL(route.request().url());
-    const r = await fetch(base + u.pathname.slice(1));
-    route.fulfill({ status: r.status, headers: { "content-type": r.headers.get("content-type") || "text/plain" }, body: Buffer.from(await r.arrayBuffer()) });
-  });
-  const page = await ctx.newPage();
-  await page.goto(`https://www-epwatch-cz.translate.goog/v/${voteId}?_x_tr_sl=cs&_x_tr_tl=en`, { waitUntil: "networkidle" });
-  const r = await page.evaluate(() => ({ tr: !!document.querySelector(".tr-btn")?.offsetParent, share: [...document.querySelectorAll("[data-share]")].some((b) => b.offsetParent),
-    note: document.querySelector(".proxy-share")?.getAttribute("href") }));
-  if (r.tr || r.share || r.note !== `https://epwatch.cz/v/${voteId}`) problems.push(`překlad v proxy: glóbus ${r.tr}, sdílení vidět ${r.share}, odkaz ${r.note}`);
-  await ctx.close();
-}
 // Kvíz, varianta Evropské frakce: krátký test, odhalení bez názvů frakcí, výsledek, rozkliknutí, odpovědi, sdílení, axe.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
