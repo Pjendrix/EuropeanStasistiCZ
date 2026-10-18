@@ -6,7 +6,6 @@ Seznam stran a evropské frakce (party.html, ?v=eu, ?c=) statický protějšek n
 from __future__ import annotations
 
 from web_ui import (
-    name_html,
     POSITION_LABEL,
     Ui,
     display_name,
@@ -49,7 +48,7 @@ def names_by_position(positions, meps_by_id: dict) -> str:
             key=lambda m: _cs_key(display_name(m)),
         )
         if ms:
-            names = ", ".join(f'<a href="{mep_url(m["id"])}">{name_html(m)}</a>' for m in ms)
+            names = ", ".join(f'<a href="{mep_url(m["id"])}">{esc(display_name(m))}</a>' for m in ms)
             out.append(f'<div class="small"><span class="pos pos-{k}">{POSITION_LABEL[k]} ({len(ms)}):</span> {names}</div>')
     return "".join(out)
 
@@ -77,7 +76,7 @@ def reports_html(r: dict | None, meps_by_id: dict) -> str:
             if x.get("vote_id")
             else REPORT_STATUS.get(x.get("status"), "stav neuveden")
         )
-        who = f'<a href="{mep_url(m["id"])}">{name_html(m)}</a>' if m else ""
+        who = f'<a href="{mep_url(m["id"])}">{esc(display_name(m))}</a>' if m else ""
         items += (
             f'<li><a href="{esc(x.get("url"))}">{esc(title)}</a><div class="small muted">{esc(x.get("label") or "")} · {fmt_date(x.get("date"))} · '
             f"{who} ({REPORT_ROLE.get(x.get('role'), '')}) · {status}</div></li>"
@@ -127,7 +126,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
     members = sorted(pp["member_list"], key=lambda m: -(pct(m["total"]["attendance"]) if pct(m["total"]["attendance"]) is not None else -1))
     rows = "".join(
         f'<tr><td><div class="mep-cell"><img src="{photo_url(m, True)}" alt="" loading="lazy" width="40" height="40">'
-        f'<div><a href="{mep_url(m["id"])}">{name_html(m)}</a><div>{group_badge(None, groups, (m.get("group") or {}).get("code"))}</div></div></div></td>'
+        f'<div><a href="{mep_url(m["id"])}">{esc(display_name(m))}</a><div>{group_badge(None, groups, (m.get("group") or {}).get("code"))}</div></div></div></td>'
         f'<td class="small wide" data-label="Ve straně (podle EP)">{"<br>".join(f"{fmt_date(x['start'])} – {fmt_date(x['end']) if x.get('end') else 'dosud'}" for x in m["party_periods"])}</td>'
         f'<td class="num" data-label="Účast na hlasování">{pct_cell(m["total"]["attendance"])}</td>'
         f'<td class="num" data-label="Hlasuje s frakcí">{pct_cell(m["total"]["group_loyalty"])}</td></tr>'

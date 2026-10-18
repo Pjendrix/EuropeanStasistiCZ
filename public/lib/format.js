@@ -138,12 +138,6 @@ export function displayName(mep) {
   return mep.name;
 }
 
-// Jméno jako text stránky: strojový překlad (prohlížeč i Google Translate) ho nemá překládat.
-// Do atributů (alt, title, aria-label) a <option> patří holé displayName().
-export function nameHtml(mep) {
-  return `<span translate="no" class="notranslate">${esc(displayName(mep))}</span>`;
-}
-
 export function isActive(mep) {
   const today = todayCZ();
   return mep.mandates.some((m) => m.start <= today && (!m.end || today <= m.end));

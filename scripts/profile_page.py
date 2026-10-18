@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 
 from web_ui import (
-    name_html,
     COMMITTEE_TYPE,
     CZ_GROUP_LABEL,
     NO_PARTY_NOTE,
@@ -748,7 +747,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         v = [x["same"], x["total"]]
         return (
             '<li style="display:flex;justify-content:space-between;gap:1rem;align-items:center">'
-            f'<span><a href="{mep_url(x["id"])}">{name_html(x)}</a> {group_badge(None, groups, (x.get("group") or {}).get("code"))}</span>'
+            f'<span><a href="{mep_url(x["id"])}">{esc(display_name(x))}</a> {group_badge(None, groups, (x.get("group") or {}).get("code"))}</span>'
             f'<span class="num">{fmt_pct(pct(v))} <span class="small muted">({fmt_num(v[0])} z {fmt_num(v[1])})</span></span></li>'
         )
 
@@ -884,7 +883,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 <div class="profile-head">
   <figure class="portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
   <div>
-    <h1 translate="no" class="notranslate">{esc(name)}</h1>
+    <h1>{esc(name)}</h1>
     {f'<div class="logo-row">{gl}{pl}</div>' if gl or pl else ""}
     <div class="facts">
       {group_badge(None, groups, g["code"] if g else None)}{f'<span class="small muted">({esc(prev_groups)})</span>' if prev_groups else ""}

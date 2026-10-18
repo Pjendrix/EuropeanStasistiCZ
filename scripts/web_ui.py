@@ -144,11 +144,6 @@ def display_name(mep: dict) -> str:
     return mep["name"]
 
 
-def name_html(mep: dict) -> str:
-    """Jméno jako text stránky: strojový překlad (prohlížeč i Google Translate) ho nemá překládat. Do atributů patří holé display_name()."""
-    return f'<span translate="no" class="notranslate">{esc(display_name(mep))}</span>'
-
-
 def current_of(items: list[dict] | None, at: str) -> dict | None:
     if not items:
         return None
@@ -263,18 +258,14 @@ def logo_tile(entity: dict | None, size: int = 28) -> str:
     h = logo_height(entity.get("logo_aspect"), size)
     w = f' width="{js_round(h * entity["logo_aspect"])}"' if entity.get("logo_aspect") else ""
     return (
-        f'<span class="logo-tile notranslate" translate="no" style="height:{size}px"><img src="{esc(entity["logo"])}" alt="{esc(name)}" '
+        f'<span class="logo-tile" style="height:{size}px"><img src="{esc(entity["logo"])}" alt="{esc(name)}" '
         f'style="height:{num(h)}px"{w} height="{js_round(h)}" loading="lazy"></span>'
     )
 
 
 def entity_cell(entity: dict | None, name: str, href: str = "", sub: str = "", size: int = 28, slot: str = "") -> str:
     logo = logo_tile(entity, size) or f'<span class="dot" style="background:{group_color(entity)}"></span>'
-    title = (
-        f'<a href="{esc(href)}" class="vote-title notranslate" translate="no">{esc(name)}</a>'
-        if href
-        else f'<span class="notranslate" translate="no">{esc(name)}</span>'
-    )
+    title = f'<a href="{esc(href)}" class="vote-title">{esc(name)}</a>' if href else f"<span>{esc(name)}</span>"
     sub_html = f'<div class="small muted">{sub}</div>' if sub else ""
     return (
         f'<div class="entity-cell"><span class="logo-slot{" " + slot if slot else ""}">{logo}</span>'
@@ -309,7 +300,7 @@ def group_badge(code: str | None, groups: list[dict], ep_code: str | None = None
     g = find_group(groups, code, ep_code)
     label = (CZ_GROUP_LABEL.get(g["code"]) or g["short_label"]) if g else (code or ep_code)
     title = (g.get("name_cs") or g.get("label")) if g else label
-    return f'<span class="badge notranslate" translate="no" style="--badge-dot:{group_color(g)}" title="{esc(title)}">{esc(label)}</span>'
+    return f'<span class="badge" style="--badge-dot:{group_color(g)}" title="{esc(title)}">{esc(label)}</span>'
 
 
 def party_badge(party_id, label: str, parties: list[dict], mep: dict | None = None) -> str:
@@ -320,7 +311,7 @@ def party_badge(party_id, label: str, parties: list[dict], mep: dict | None = No
         text = by_gender(mep, "nezávislý", "nezávislá") if mep else "nezávislý/á"
         return f'<span class="badge outline" title="{esc(INDEPENDENT_NOTE)}">{text}</span>'
     text = p["short_label"] if p else label
-    return f'<span class="badge notranslate" translate="no" style="--badge-dot:{group_color(p)}" title="{esc(p["name"] if p else text)}">{esc(text)}</span>'
+    return f'<span class="badge" style="--badge-dot:{group_color(p)}" title="{esc(p["name"] if p else text)}">{esc(text)}</span>'
 
 
 def party_link(party_id, label: str, parties: list[dict], mep: dict | None = None) -> str:

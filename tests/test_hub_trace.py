@@ -33,8 +33,7 @@ def test_trace_row_roles_order_and_more():
     html = hub.trace_html(vote, meps, GROUPS)
     # zpravodaj první, pak stínoví abecedně; nejvýš dva, zbytek „a další 1“ s odkazem na detail
     assert html.index("A První") < html.index("B Druhá") and "C Třetí" not in html
-    nt = '<span translate="no" class="notranslate">'  # jméno a frakce se strojově nepřekládají
-    assert f"<b>Zpravodaj:</b> {nt}A První (EPP)</span>" in html and f"<b>Stínová zpravodajka:</b> {nt}B Druhá (ECR)</span>" in html
+    assert "<b>Zpravodaj:</b> A První (EPP)" in html and "<b>Stínová zpravodajka:</b> B Druhá (ECR)" in html
     assert 'href="p/1"' in html and "thumbs/1.webp" in html and 'href="v/9#ceska-stopa">a další 1<' in html
 
 

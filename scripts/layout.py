@@ -35,8 +35,6 @@ ICON = (
 
 # Režim a příznak JS (public/theme.js): klasický skript v <head>, ne vložený (CSP bez 'unsafe-inline').
 THEME_SCRIPT = '<script src="{root}theme.js"></script>'
-# Odkaz na Google Translate v jazyce prohlížeče (public/translate.js); jen při zapnutém překladu.
-TRANSLATE_SCRIPT = '<script type="module" src="{root}translate.js"></script>'
 # Skripty stránek jsou ES moduly (audit A2): app.js, share.js a skript stránky; navzájem se neimportují, jen lib/*.js.
 MODULES = (
     '<script type="module" src="{root}app.js"></script>\n<script type="module" src="{root}share.js"></script>\n'
@@ -46,7 +44,7 @@ MODULES = (
 # Logo: oko + oblouk hvězd (zdroj: scripts/build_brand.py, soubory v public/assets/brand/).
 # Barva = currentColor; odlesk v duhovce je průhledný (maska), takže funguje na jakémkoli pozadí.
 
-BRAND_TEXT = '<span class="brand-text notranslate" translate="no"><b>EP</b> Watch <b>CZ</b></span>'
+BRAND_TEXT = '<span class="brand-text"><b>EP</b> Watch <b>CZ</b></span>'
 
 BRAND_MARK = (
     '<svg class="brand-mark" viewBox="-158 -100 262 200" aria-hidden="true">'
@@ -95,53 +93,6 @@ SEARCH_BUTTON = (
     + SEARCH_ICON
     + '<span class="search-txt" aria-hidden="true">Hledat</span><kbd aria-hidden="true">/</kbd></a>'
 )
-
-# Strojový překlad (Google Translate jako obyčejný odkaz, žádný skript třetí strany). Jediný přepínač je
-# data/manual/site.json → "translate": {"enabled": true|false, "languages": [...]}. enabled: false = žádné tlačítko,
-# položka v panelu Více ani translate.js (translate="no" u jmen a zkratek platí vždy, pomáhá i překladu v prohlížeči).
-# Po změně přepínače: python scripts/layout.py (ruční stránky) a python scripts/build_pages.py (generované a O projektu).
-LANG_NAMES = {"en": "English", "de": "Deutsch", "pl": "Polski", "uk": "Українська", "fr": "Français", "sk": "Slovenčina"}
-SITE_JSON = Path(__file__).resolve().parent.parent / "data" / "manual" / "site.json"
-
-
-def translate_config(path: Path = SITE_JSON) -> dict:
-    """{"enabled": bool, "languages": [kódy]} ze site.json; chybí-li klíč, překlad je vypnutý. Neznámý jazyk = chyba."""
-    return _translate_config(path, path.stat().st_mtime_ns if path.exists() else 0)
-
-
-@functools.lru_cache(maxsize=None)
-def _translate_config(path: Path, _mtime: int) -> dict:
-    cfg = json.loads(path.read_text(encoding="utf-8")).get("translate") if path.exists() else None
-    if cfg is None:
-        return {"enabled": False, "languages": []}
-    if not isinstance(cfg.get("enabled"), bool) or not isinstance(cfg.get("languages"), list) or not cfg["languages"]:
-        raise ValueError('site.json: "translate" musí mít "enabled" (true/false) a neprázdný seznam "languages"')
-    unknown = [code for code in cfg["languages"] if code not in LANG_NAMES]
-    if unknown:
-        raise ValueError(f"site.json: jazyky bez názvu v LANG_NAMES (scripts/layout.py): {', '.join(unknown)}")
-    return {"enabled": cfg["enabled"], "languages": list(cfg["languages"])}
-
-
-GLOBE_ICON = (
-    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-    'stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9'
-    'c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>'
-)
-
-
-def translate_link(root: str = "") -> str:
-    """Tlačítko v hlavičce: bez JS odkaz na návod (o-projektu#preklad), translate.js ho přepíše na Google Translate
-    v jazyce prohlížeče (když je v seznamu, jinak první jazyk). Prázdné, když je překlad vypnutý."""
-    cfg = translate_config()
-    if not cfg["enabled"]:
-        return ""
-    first = cfg["languages"][0]
-    return (
-        f'<a class="tr-btn notranslate" translate="no" href="{root}o-projektu#preklad" data-translate="{" ".join(cfg["languages"])}" '
-        f'aria-label="Translate this page / Přeložit stránku" title="Translate this page / Přeložit stránku">{GLOBE_ICON}'
-        f'<span class="tr-code" aria-hidden="true">{first.upper()}</span></a>'
-    )
-
 
 THEME_BUTTON = (
     '<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý a tmavý režim">'
@@ -225,12 +176,6 @@ def tabbar(root: str = "", current: str | None = None) -> str:
         + "</ul>"
         for title, links in SHEET
     )
-    if translate_config()["enabled"]:
-        langs = " ".join(translate_config()["languages"])
-        groups += (
-            f'<ul class="sheet-tr"><li><a class="tr-link notranslate" translate="no" href="{root}o-projektu#preklad" '
-            f'data-translate="{langs}" lang="en">{GLOBE_ICON} Translate / Přeložit</a></li></ul>'
-        )
     return (
         f'<nav class="tabbar" aria-label="Hlavní navigace (mobil)">{tabs}'
         f'<button type="button" class="tab-more" popovertarget="more-sheet" data-pages="{" ".join(MORE_PAGES)}"{more_cur}>{TAB_ICONS["more"]}<span>Více</span></button></nav>\n'
@@ -257,7 +202,6 @@ def head_assets(root: str = "") -> str:
             f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="{root}feed.xml">',
             f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
             THEME_SCRIPT.format(root=root),
-            *([TRANSLATE_SCRIPT.format(root=root)] if translate_config()["enabled"] else []),
             f'<link rel="stylesheet" href="{root}style.css">',
         ]
     )
@@ -278,8 +222,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
         f'  <a class="brand" href="{root or "./"}">{BRAND_MARK}{BRAND_TEXT}</a>\n'
         f'  <nav aria-label="Hlavní navigace">\n{links}\n{quiz}\n  </nav>\n'
         f"  {SEARCH_BUTTON.format(root=root)}\n"
-        + (f"  {translate_link(root)}\n" if translate_config()["enabled"] else "")
-        + f"  {INSTAGRAM_LINK}\n"
+        f"  {INSTAGRAM_LINK}\n"
         f"  {THEME_BUTTON}\n"
         f"</div></header>\n"
         f"{tabbar(root, current)}"
