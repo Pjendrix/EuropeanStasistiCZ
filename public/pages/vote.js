@@ -1,6 +1,6 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, loadCategories, param, soft } from "../lib/data.js";
-import { KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
+import { adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, KIND_LABEL, KIND_NOTE, nameHtml, POSITION_LABEL, procedureUrl, RESULT_LABEL, RESULT_NOTE, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
 import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupBadge, kindTag, logoTile, mepUrl, partyBadge, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
@@ -42,7 +42,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     // Česká stopa: kdo z českých poslanců byl zpravodajem a kdo stínovým zpravodajem zprávy (data/vote_roles.json z own_work.json).
     const roles = ((await getJSON("vote_roles.json").catch(soft(null)))?.votes || {})[String(v.id)] || [];
     const roleLinks = (kinds) => roles.filter((r) => kinds.includes(r.role)).map((r) => meps[r.mep_id])
-      .filter(Boolean).map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ");
+      .filter(Boolean).map((m) => `<a href="${mepUrl(m.id)}">${nameHtml(m)}</a>`).join(", ");
     const trace = roles.length ? `<p class="small" id="ceska-stopa"><strong>Česká stopa:</strong>
       ${roleLinks(["rapporteur", "co"]) ? `zpravodaj/ka ${roleLinks(["rapporteur", "co"])}` : ""}${roleLinks(["rapporteur", "co"]) && roleLinks(["shadow"]) ? " · " : ""}
       ${roleLinks(["shadow"]) ? `stínoví zpravodajové z ČR: ${roleLinks(["shadow"])}` : ""}
@@ -71,10 +71,10 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <div class="back-row"><p class="small"><a href="votes?m=${encodeURIComponent(foundMonth)}">← Hlasování v měsíci ${fmtMonth(foundMonth)}</a></p>${shareButton()}</div>
       <p class="muted vote-meta" style="margin-bottom:.3rem"><span>${fmtDate(v.date)}</span>${topicChips(cats, { max: 4, link: true, id: String(v.id), info: true })}${czGeoTag(v)}${kind ? kindTag(kv) : (v.is_main ? '<span class="tag">hlavní hlasování</span>' : "<span>dílčí hlasování</span>")}</p>
       <h1>${esc(heading)}</h1>
-      ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · ${esc(v.reference)}` : ""}</p>` : "") :
-        `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
+      ${final ? (desc ? `<p class="muted vote-desc">${esc(desc)}${v.reference ? ` · <span translate="no" class="notranslate">${esc(v.reference)}</span>` : ""}</p>` : "") :
+        `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small notranslate" translate="no">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.title_cs ? "" : v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
-      ${procedureUrl(v.procedure?.reference) ? `<p class="small story-link"><a href="${procedureUrl(v.procedure.reference)}">Příběh zákona: celý průběh a všechna hlasování k ${esc(v.procedure.reference)} <span aria-hidden="true">→</span></a></p>` : ""}
+      ${procedureUrl(v.procedure?.reference) ? `<p class="small story-link"><a href="${procedureUrl(v.procedure.reference)}">Příběh zákona: celý průběh a všechna hlasování k <span translate="no" class="notranslate">${esc(v.procedure.reference)}</span> <span aria-hidden="true">→</span></a></p>` : ""}
       ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
       ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
@@ -83,7 +83,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         ${final ? `<a href="v/${v.id}">Trvalý odkaz</a> · ` : ""}
         <a href="${esc(v.source_url)}">Originál na HowTheyVote.eu</a>
         ${adopted ? ` · <a href="${esc(adopted)}">Přijatý text (PDF, EP)</a>` : ""}
-        ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (${esc(v.procedure.reference)})</a>` : ""}
+        ${v.procedure?.reference ? ` · <a href="https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=${encodeURIComponent(v.procedure.reference)}">Legislativní observatoř (<span translate="no" class="notranslate">${esc(v.procedure.reference)}</span>)</a>` : ""}
       </p>
       ${v.title_cs && v.title && v.title !== v.title_cs ? `<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování (HowTheyVote.eu): ${esc(v.title)}</p>` : ""}</details>
 
@@ -111,7 +111,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
               const list = cz.filter((p) => p.position === k)
                 .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
               return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
-                <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
+                <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${nameHtml(meps[p.member_id])}</a>
                   <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
             }).join("")}
           </div>

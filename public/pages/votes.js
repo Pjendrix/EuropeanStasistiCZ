@@ -24,7 +24,7 @@ setNav("votes-list");
     const q = document.getElementById("q");
     const mepSel = document.getElementById("mep");
     const sortedMeps = [...overview.meps].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs"));
-    const opt = (m) => `<option value="${m.id}">${esc(displayName(m))}</option>`;
+    const opt = (m) => `<option value="${m.id}" translate="no">${esc(displayName(m))}</option>`;
     mepSel.innerHTML += sortedMeps.filter(isActive).map(opt).join("") +
       `<optgroup label="Bývalí poslanci">${sortedMeps.filter((m) => !isActive(m)).map(opt).join("")}</optgroup>`;
     // Filtr „Poslanec“: hlasy vybraného poslance (data/meps/{id}_votes.json); sloupec Češi se změní na jeho hlas.

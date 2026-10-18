@@ -1,6 +1,6 @@
 // Skript stránky prace-poslanci.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON } from "../lib/data.js";
-import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtDate, fmtNum, fmtPct, isActive, pct } from "../lib/format.js";
+import { byGender, CZ_GROUP_LABEL, displayName, esc, fmtDate, fmtNum, fmtPct, isActive, nameHtml, pct } from "../lib/format.js";
 import { avatar, csvButton, logoTile, mepUrl, setNav, showError, sortable } from "../lib/ui.js";
 setNav("work");
 setNav("work-table");
@@ -34,7 +34,7 @@ setNav("work-table");
     };
     const partyLogo = (r) => { const p = parties.find((x) => x.id === r.m.party?.id); const t = p && !p.independent ? logoTile(p, 22) : "";
       return t ? `<span class="logo-slot sm mep-party-logo">${t}</span>` : ""; };
-    const cell = (r) => `<td><div class="mep-cell wide">${avatar(r.m, 40)}<div><a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a>
+    const cell = (r) => `<td><div class="mep-cell wide">${avatar(r.m, 40)}<div><a href="${mepUrl(r.m.id)}">${nameHtml(r.m)}</a>
         <div class="small muted">${esc((() => { const g = groups.find((x) => x.ep_code === r.m.group?.code); return g ? (CZ_GROUP_LABEL[g.code] || g.short_label) : (r.m.group?.short_label || ""); })())}${r.m.party ? ` · ${esc(r.m.party.short_label === "Ind." ? byGender(r.m, "nezávislý", "nezávislá") : r.m.party.short_label)}` : ""}${r.d?.mandate_from ? ` · mandát od ${fmtDate(r.d.mandate_from)}` : ""}</div>${fnLine(r.m)}</div>${partyLogo(r)}</div></td>`;
     const render = (list) => {
       tbody.innerHTML = list.map((r) => `<tr>${cell(r)}${KEYS.map((k) => tierCell(r, k)).join("")}
@@ -62,7 +62,7 @@ setNav("work-table");
       délek z časových značek zdroje. Písemná prohlášení se do projevů nesčítají (dají se psát hromadně). Počet projevů neříká nic o kvalitě ani vlivu a nevstupuje do třetin.
       Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026, takže by byla za část období; otázky najdete na profilu každého poslance.` : "";
     document.getElementById("former").innerHTML = former.length ? `<details class="card own-list"><summary><strong>Bývalí poslanci</strong> (bez srovnání)</summary>
-      <ul class="plain">${former.map((r) => `<li><a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a>
+      <ul class="plain">${former.map((r) => `<li><a href="${mepUrl(r.m.id)}">${nameHtml(r.m)}</a>
         <span class="small muted">zpravodaj/ka: zprávy ${fmtNum(r.m.lead_reports)}, stanoviska ${fmtNum(r.m.lead_opinions)} ·
         stínový/á: zprávy ${fmtNum(r.m.shadow_reports)}, stanoviska ${fmtNum(r.m.shadow_opinions)} ·
         podepsané návrhy usnesení ${fmtNum(r.m.motions_signed)}</span></li>`).join("")}</ul></details>` : "";

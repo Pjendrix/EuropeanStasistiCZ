@@ -699,6 +699,21 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
   }
   await ctx.close();
 }
+// Strojový překlad (P2): jména poslanců se nepřekládají (translate="no") na úvodu, profilu a detailu hlasování.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  for (const url of ["", "p/256846", `v/${voteId}`]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const r = await page.evaluate(() => ({
+      lang: document.documentElement.lang,
+      names: [...document.querySelectorAll('[translate="no"]')].filter((e) => e.matches(".hm-seat, h1, .notranslate") && /\p{Lu}\p{Ll}+ \p{Lu}/u.test(e.textContent + (e.getAttribute("aria-label") || ""))).length,
+      brand: !!document.querySelector('.brand-text[translate="no"]'),
+    }));
+    if (r.lang !== "cs" || !r.names || !r.brand) problems.push(`překlad ${url || "/"}: lang ${r.lang}, jmen s translate="no" ${r.names}, značka ${r.brand}`);
+  }
+  await ctx.close();
+}
 // Kvíz, varianta Evropské frakce: krátký test, odhalení bez názvů frakcí, výsledek, rozkliknutí, odpovědi, sdílení, axe.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });

@@ -46,7 +46,7 @@ MODULES = (
 # Logo: oko + oblouk hvězd (zdroj: scripts/build_brand.py, soubory v public/assets/brand/).
 # Barva = currentColor; odlesk v duhovce je průhledný (maska), takže funguje na jakémkoli pozadí.
 
-BRAND_TEXT = '<span class="brand-text"><b>EP</b> Watch <b>CZ</b></span>'
+BRAND_TEXT = '<span class="brand-text notranslate" translate="no"><b>EP</b> Watch <b>CZ</b></span>'
 
 BRAND_MARK = (
     '<svg class="brand-mark" viewBox="-158 -100 262 200" aria-hidden="true">'

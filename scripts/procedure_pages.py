@@ -16,10 +16,11 @@ import json
 import re
 from pathlib import Path
 
-from build_pages import HTV, RESULT_LABEL, ROOT, back_row, display_name, esc, fmt_date, fmt_num, kind_of, og_meta, split_bar
+from build_pages import HTV, RESULT_LABEL, ROOT, back_row, esc, fmt_date, fmt_num, kind_of, og_meta, split_bar
 from build_web import vote_title
 from compute_stats import active_positions
 from layout import page
+from web_ui import name_html
 from radar import COMMITTEES, CZ_ROLE_CS, CZ_ROLES, EVENT_CS, OEIL_URL, ROLE_ORDER, timeline
 from vote_kinds import KIND_LABELS, is_final
 from vote_parties import POSITIONS
@@ -167,7 +168,9 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
     api = EP_API_PROC.format(pid=proc_id(label))
     comm = row.get("committee")
     comm_txt = f"výbor {comm}" + (f" ({COMMITTEES[comm][0]})" if comm in COMMITTEES else "") if comm else None
-    meta = " · ".join(esc(x) for x in (label, PROCESS_TYPE_CS.get(ptype), comm_txt) if x)
+    meta = " · ".join(
+        [f'<span translate="no" class="notranslate">{esc(label)}</span>'] + [esc(x) for x in (PROCESS_TYPE_CS.get(ptype), comm_txt) if x]
+    )
     votes = row["votes"]
     finals = [v for v in votes if is_final(v)]
 
@@ -199,7 +202,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
     trace = cz_trace(row, vote_roles, meps_by_id)
     if trace:
         lis = "".join(
-            f'<li><a href="{ROOT}p/{r["mep_id"]}">{esc(display_name(meps_by_id[r["mep_id"]]))}</a> '
+            f'<li><a href="{ROOT}p/{r["mep_id"]}">{name_html(meps_by_id[r["mep_id"]])}</a> '
             f'<span class="muted">– {esc(CZ_ROLE_CS[r["role"]])}</span></li>'
             for r in trace
         )
@@ -253,7 +256,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
 <section aria-labelledby="z-prubeh"><h2 id="z-prubeh">Průběh</h2>{story}</section>
 <section aria-labelledby="z-stopa"><h2 id="z-stopa">Česká stopa</h2>{trace_html}</section>
 <section aria-labelledby="z-hlas"><h2 id="z-hlas">Hlasování v plénu</h2>{table}</section>
-<details class="links-more"><summary>zdroje a odkazy</summary><p class="small"><a href="{esc(oeil)}">Legislativní observatoř EP ({esc(label)})</a> ·
+<details class="links-more"><summary>zdroje a odkazy</summary><p class="small"><a href="{esc(oeil)}">Legislativní observatoř EP (<span translate="no" class="notranslate">{esc(label)}</span>)</a> ·
 <a href="{esc(api)}">EP Open Data API</a>{f" · anglický název: {esc(row['title_en'])}" if row.get("title_en") and row["title_cs"] else ""}</p></details>"""
     path = f"z/{slug(label)}.html"
     desc = f"{title} ({label}): průběh procedury v Evropském parlamentu, {len(votes)} jmenovitých hlasování a jak hlasovali čeští poslanci."

@@ -38,7 +38,7 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
-from web_ui import page_url
+from web_ui import name_html, page_url
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -87,6 +87,9 @@ def party_votes_text(cz: list[dict]) -> list[tuple[str, str]]:
     return [(k, ", ".join(f"{by[k][pos]} {names[pos]}" for pos in POSITIONS if by[k][pos])) for k in order]
 
 
+NT = '<span translate="no" class="notranslate">'  # kód dokumentu, procedury: strojový překlad ho nemá měnit
+
+
 def party_rows_html(rows: list[dict], root: str) -> str:
     out = []
     for r in rows:
@@ -97,15 +100,15 @@ def party_rows_html(rows: list[dict], root: str) -> str:
         )
         names = " · ".join(
             f'<span class="pr-group"><b class="pos pos-{k}">{esc(position_phrase(k, r["members"][k]))}</b> '
-            + ", ".join(f'<a href="{root}p/{m["id"]}">{esc(display_name(m))}</a>' for m in r["members"][k])
+            + ", ".join(f'<a href="{root}p/{m["id"]}">{name_html(m)}</a>' for m in r["members"][k])
             + "</span>"
             for k in POSITIONS
             if r["members"][k]
         )
         color = f' style="background:{esc(r["color"])}"' if r["color"] else ""
         out.append(
-            f'<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"{color}></span><b>{esc(r["label"])}</b></span>'
-            f'<span class="small muted">{esc(", ".join(r["groups"]))}</span></div>'
+            f'<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"{color}></span><b class="notranslate" translate="no">{esc(r["label"])}</b></span>'
+            f'<span class="small muted notranslate" translate="no">{esc(", ".join(r["groups"]))}</span></div>'
             f'<div class="pr-dots" aria-hidden="true">{dots}</div><div class="pr-names">{names}</div></div>'
         )
     return "".join(out)
@@ -421,16 +424,14 @@ def vote_page(
         if not names:  # prázdné skupiny se sbalí do jedné věty pod seznamy (jako na interaktivní stránce)
             nobody.append(POSITION_LABEL[k])
             continue
-        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}">{esc(display_name(m))}</a></li>' for m in names)
+        items = "".join(f'<li><a href="{ROOT}p/{m["id"]}">{name_html(m)}</a></li>' for m in names)
         lists.append(
             f'<div class="card"><h3 class="pos pos-{k}">{POSITION_LABEL[k]} ({len(names)})</h3><ul class="plain">{items}</ul></div>'
         )
     cz_groups = {p["group_code"] for p in cz}
     trace = ""
     if roles:
-        link = lambda r: (
-            f'<a href="{ROOT}p/{r["mep_id"]}">{esc(display_name(meps_by_id[r["mep_id"]]))}</a>' if r["mep_id"] in meps_by_id else ""
-        )
+        link = lambda r: (f'<a href="{ROOT}p/{r["mep_id"]}">{name_html(meps_by_id[r["mep_id"]])}</a>' if r["mep_id"] in meps_by_id else "")
         lead = ", ".join(x for x in (link(r) for r in roles if r["role"] != "shadow") if x)
         shadow = ", ".join(x for x in (link(r) for r in roles if r["role"] == "shadow") if x)
         reports = ", ".join(sorted({r["report"] for r in roles if r.get("report")}))
@@ -491,7 +492,7 @@ def vote_page(
     body = f"""{back_row(f"{ROOT}votes?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1>{esc(title_txt)}</h1>
-{f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
+{f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{f" · {NT}{esc(v['reference'])}</span>" if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 {story}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
