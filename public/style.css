@@ -151,6 +151,9 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
 /* do 360 px se glóbus vedle hledání a režimu nevejde: překlad je v panelu Více */
 @media (max-width: 360px) { .tr-btn { display: none; } }
 .sheet-tr .tr-link { display: inline-flex; align-items: center; gap: .5rem; }
+/* v proxy Google Translate sdílení nefunguje: místo tlačítka odkaz na původní stránku (translate.js) */
+.in-proxy [data-share] { display: none !important; }
+.proxy-share { display: inline-flex; align-items: center; min-height: 44px; font-size: .9rem; font-weight: 600; }
 /* Hledání v liště (B2): na desktopu lupa + „Hledat“ + nápověda „/“, na mobilu jen lupa; na úvodu skryté, dokud je vidět pole v heru */
 .search-btn { height: 40px; min-width: 40px; border-radius: 999px; flex: none; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: 0 .55rem 0 .7rem;
   border: 1px solid rgba(248, 250, 252, .25); background: rgba(248, 250, 252, .06); color: #F8FAFC; text-decoration: none; font-size: .9rem; font-weight: 600; }

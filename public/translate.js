@@ -19,12 +19,36 @@ export function translateUrl(loc, lang) {
   return `https://translate.google.com/translate?sl=cs&tl=${encodeURIComponent(lang)}&u=${encodeURIComponent(page)}`;
 }
 
+// Původní adresa stránky z proxy *.translate.goog (bez parametrů _x_tr_*), na kanonické doméně.
+export function originalUrl(loc) {
+  const q = new URLSearchParams(loc.search);
+  [...q.keys()].filter((k) => k.startsWith("_x_tr_")).forEach((k) => q.delete(k));
+  const s = q.toString();
+  return new URL(loc.pathname + (s ? `?${s}` : "") + loc.hash, BASE_URL).href;
+}
+
+// V proxy Google Translate obrázek ke sdílení nevznikne (proxy vkládá <base> na originál, plátno pak nejde uložit):
+// tlačítka „Sdílet“ skryje CSS (html.in-proxy) a za každé se doplní odkaz na původní stránku, i za později vykreslená.
+function proxyShare() {
+  document.documentElement.classList.add("in-proxy");
+  const add = () => document.querySelectorAll("[data-share]:not([data-proxy-note])").forEach((b) => {
+    b.dataset.proxyNote = "1";
+    const a = document.createElement("a");
+    a.className = "proxy-share";
+    a.href = originalUrl(location);
+    a.textContent = "Sdílení funguje na původní stránce";
+    b.after(a);
+  });
+  add();
+  new MutationObserver(add).observe(document.body, { childList: true, subtree: true });
+}
+
 const NAMES = { en: "English", de: "Deutsch", pl: "Polski", uk: "Українська", fr: "Français", sk: "Slovenčina" };
 
 function setup() {
   const links = [...document.querySelectorAll("a[data-translate]")];
   // Stránka už je přeložená (proxy *.translate.goog): tlačítko by překládalo překlad, schovat.
-  if (location.hostname.endsWith(".translate.goog")) { links.forEach((a) => { a.hidden = true; }); return; }
+  if (location.hostname.endsWith(".translate.goog")) { links.forEach((a) => { a.hidden = true; }); proxyShare(); return; }
   links.forEach((a) => {
     const langs = a.dataset.translate.split(/\s+/).filter(Boolean);
     const lang = pickLanguage(navigator.languages || [navigator.language], langs);

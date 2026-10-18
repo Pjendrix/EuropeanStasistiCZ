@@ -735,6 +735,22 @@ if (read("data/manual/site.json").translate?.enabled) {
     await ctx.close();
   }
 }
+// Strojový překlad v proxy Google Translate (*.translate.goog): web obsloužený pod adresou proxy, glóbus i „Sdílet“ se schovají,
+// místo sdílení odkaz na původní stránku (v proxy obrázek ke sdílení nevznikne).
+if (read("data/manual/site.json").translate?.enabled) {
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  await ctx.route("https://www-epwatch-cz.translate.goog/**", async (route) => {
+    const u = new URL(route.request().url());
+    const r = await fetch(base + u.pathname.slice(1));
+    route.fulfill({ status: r.status, headers: { "content-type": r.headers.get("content-type") || "text/plain" }, body: Buffer.from(await r.arrayBuffer()) });
+  });
+  const page = await ctx.newPage();
+  await page.goto(`https://www-epwatch-cz.translate.goog/v/${voteId}?_x_tr_sl=cs&_x_tr_tl=en`, { waitUntil: "networkidle" });
+  const r = await page.evaluate(() => ({ tr: !!document.querySelector(".tr-btn")?.offsetParent, share: [...document.querySelectorAll("[data-share]")].some((b) => b.offsetParent),
+    note: document.querySelector(".proxy-share")?.getAttribute("href") }));
+  if (r.tr || r.share || r.note !== `https://epwatch.cz/v/${voteId}`) problems.push(`překlad v proxy: glóbus ${r.tr}, sdílení vidět ${r.share}, odkaz ${r.note}`);
+  await ctx.close();
+}
 // Kvíz, varianta Evropské frakce: krátký test, odhalení bez názvů frakcí, výsledek, rozkliknutí, odpovědi, sdílení, axe.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
