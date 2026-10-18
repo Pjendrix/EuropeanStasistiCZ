@@ -714,6 +714,27 @@ if (redirects.length) problems.push(`web sám otevřel adresy s .html: ${[...new
   }
   await ctx.close();
 }
+// Strojový překlad (P3): odkaz v hlavičce a v panelu Více vede na Google Translate v jazyce prohlížeče s adresou aktuální stránky.
+if (read("data/manual/site.json").translate?.enabled) {
+  for (const [width, locale, tl] of [[1366, "de-DE", "de"], [390, "en-US", "en"], [390, "fr-FR", "en"]]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, locale });
+    const page = await ctx.newPage();
+    const where = `překlad [${width}px, ${locale}]`;
+    await page.goto(base + "hlasovani", { waitUntil: "networkidle" });
+    const sel = width > 760 ? ".site-header .tr-btn" : ".sheet .tr-link";
+    const href = await page.getAttribute(sel, "href");
+    const u = href && new URL(href);
+    if (!u || u.origin !== "https://translate.google.com" || u.searchParams.get("tl") !== tl || u.searchParams.get("sl") !== "cs"
+      || u.searchParams.get("u") !== "https://epwatch.cz/hlasovani") problems.push(`${where}: odkaz ${href}`);
+    if ((await page.getAttribute(sel, "rel")) !== "noopener noreferrer" || (await page.getAttribute(sel, "target")) !== "_blank") problems.push(`${where}: rel/target`);
+    if (width > 760 && !(await page.isVisible(".site-header .tr-btn"))) problems.push(`${where}: tlačítko v hlavičce není vidět`);
+    // stránka, která mění kotvu za běhu (kvíz): odkaz má aktuální adresu včetně kotvy
+    await page.goto(base + "kviz#frakce", { waitUntil: "networkidle" });
+    const k = new URL(await page.getAttribute(sel, "href")).searchParams.get("u");
+    if (k !== "https://epwatch.cz/kviz#frakce") problems.push(`${where}: kvíz u=${k}`);
+    await ctx.close();
+  }
+}
 // Kvíz, varianta Evropské frakce: krátký test, odhalení bez názvů frakcí, výsledek, rozkliknutí, odpovědi, sdílení, axe.
 for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
