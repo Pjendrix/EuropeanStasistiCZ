@@ -434,6 +434,40 @@ export function partyCardOps(d, f) {
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strana k datu hlasování", d.urlShort)];
 }
 
+// Karta výsledku kvízu (kviz.html): tři nejvyšší shody (portrét, jméno, strana · frakce, %, „x z y“), počet odpovědí, datum.
+// Bez pořadových čísel a medailí; spočítal prohlížeč z odpovědí uživatele (lib/quiz.js), nic se neodesílá.
+export function quizCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  const tl = wrapText("Moje shoda s českými europoslanci", 62, 800, 936, 2);
+  tl.forEach((l, i) => ops.push(T(72, y + 62 + i * 72, l, 62, 800, SC.text)));
+  y += tl.length * 72 + 24;
+  const lead = wrapText(`V kvízu EP Watch CZ jsem odpověděl/a na ${fmtNum(d.answered)} ${d.answered === 1 ? "otázku" : d.answered < 5 ? "otázky" : "otázek"} ze skutečných hlasování Evropského parlamentu. Nejčastěji stejně jako já hlasovali:`, 28, 500, 936, 4);
+  lead.forEach((l, i) => ops.push(T(72, y + 28 + i * 40, l, 28, 500, SC.soft)));
+  y += lead.length * 40 + 30;
+  const rh = story ? 236 : 196, ph = story ? 150 : 128;
+  (d.top || []).forEach((r, i) => {
+    const ty = y + i * (rh + 20), cy = ty + rh / 2;
+    ops.push(RECT(72, ty, 936, rh, 28, SC.tile, SC.tileLine, 2));
+    const px = 104;
+    if (r.photo) ops.push({ k: "image", img: r.photo, x: px, y: cy - ph / 2, w: ph, h: ph, r: ph / 2 }, CIRC(px + ph / 2, cy, ph / 2 + 2, null, SC.gold, 4));
+    else ops.push(...neutralAvatarOps(px, cy - ph / 2, ph, ph, ph / 2));
+    const nx = px + ph + 32, pw = Math.max(measureText(r.pct, 76, 800), measureText(r.pair, 24, 500)) + 24, nw = 1008 - 36 - pw - nx;
+    const nm = wrapText(r.name, 40, 800, nw, 2);
+    const top = cy - (nm.length * 48 + 38) / 2;
+    nm.forEach((l, k) => ops.push(T(nx, top + 40 + k * 48, l, 40, 800, SC.text)));
+    if (r.sub) ops.push(T(nx, top + nm.length * 48 + 32, fitText(r.sub, 26, 500, nw), 26, 500, SC.muted));
+    ops.push(T(1008 - 36, cy + 18, r.pct, 76, 800, SC.text, "right"), T(1008 - 36, cy + 56, r.pair, 24, 500, SC.muted, "right"));
+  });
+  y += (d.top || []).length * (rh + 20);
+  if ((d.top || []).some((r) => r.photo)) { ops.push(T(72, y + 22, "Portréty © European Union – Source: EP", 20, 500, SC.muted)); y += 34; }
+  const def = wrapText("Shoda = podíl otázek, kde poslanec hlasoval stejně, z otázek, na které jsem odpověděl/a a ve kterých hlasoval. Není to doporučení, koho volit.", 24, 500, 936, 3);
+  def.forEach((l, i) => ops.push(T(72, y + 40 + i * 34, l, 24, 500, SC.soft)));
+  y += def.length * 34 + 40;
+  return [...shareHeader(fmtDate(d.date)), ...centered(ops, y, H), ...shareFooter(H, "Zdroj hlasů: HowTheyVote.eu (ODbL) · shodu spočítal prohlížeč, nic se neodesílá", d.urlShort)];
+}
+
 // Neutrální silueta (stejná pro všechny) místo portrétu: jen balíček pro Instagram (avatar: "neutral").
 function neutralAvatarOps(x, y, w, h, r) {
   const cx = x + w / 2;
@@ -479,8 +513,9 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
+  if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
   useCardTheme(theme);
-  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps }[ctx.kind];
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps }[ctx.kind];
   const ops = draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
   const canvas = document.createElement("canvas");
   canvas.width = f.w;
@@ -565,7 +600,7 @@ function shareFormats(kind) {
   return [post, story];
 }
 
-const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled" };
+const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu" };
 const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
 const SD_FMT_KEY = "epw-share-format";
 const SD_THEME_KEY = "ep-share-theme";
