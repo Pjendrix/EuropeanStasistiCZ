@@ -1,0 +1,41 @@
+{
+ "note": "Ruční synonyma pro hledání hlasování (public/lib/search.js, public/pages/votes.js). Jen pomůcka k vyhledávání: slova se přidají k českému názvu tématu (kategorie webu, podtéma Legislativní observatoře EP), takže dotaz „spotřebitel“ najde hlasování s podtématem Ochrana spotřebitele i bez shody v názvu. Na webu se nikde nezobrazují a nic nepočítají. Klíče musí existovat v data/categories.json a v topic_labels (test_search_synonyms).",
+ "cats": {
+  "def": ["armáda", "zbraně", "vojenský", "obranný průmysl"],
+  "env": ["klima", "emise", "životní prostředí", "ochrana přírody", "zelená dohoda"],
+  "tra": ["dopravní", "silnice", "železnice", "letectví", "lodní doprava"],
+  "agr": ["zemědělci", "farmáři", "jídlo", "potravinářství"],
+  "dig": ["internet", "umělá inteligence", "technologie", "data", "kyberbezpečnost"],
+  "soc": ["zdravotnictví", "sociální", "zaměstnanost", "důchody"],
+  "eco": ["průmysl", "podniky", "firmy", "vnitřní trh"],
+  "abr": ["zahraniční", "obchodní dohody", "cla"],
+  "jus": ["migrace", "azyl", "soudy", "policie", "justice"],
+  "civ": ["lidská práva", "občanská práva", "rovnost"],
+  "fin": ["rozpočet", "daně", "banky", "finance", "peníze"],
+  "ins": ["instituce", "volby", "smlouvy EU"]
+ },
+ "topics": {
+  "1.10": ["lidská práva", "diskriminace", "svoboda projevu"],
+  "2.60": ["kartel", "monopol", "antimonopolní", "státní podpora"],
+  "2.70": ["DPH", "zdanění", "daňový"],
+  "3.10": ["zemědělci", "farmáři", "společná zemědělská politika"],
+  "3.15": ["ryby", "rybolov", "rybáři"],
+  "3.20": ["doprava"],
+  "3.50": ["věda", "inovace", "vesmír"],
+  "3.60": ["energie", "elektřina", "plyn", "jádro", "obnovitelné zdroje"],
+  "3.70": ["klima", "emise", "příroda", "znečištění", "odpady"],
+  "4.15": ["nezaměstnanost", "pracovní místa", "práce"],
+  "4.20": ["zdraví", "zdravotnictví", "léky", "nemoci"],
+  "4.40": ["školy", "studenti", "Erasmus", "mládež"],
+  "4.60": ["spotřebitel", "spotřebitelé", "zákazník", "reklamace", "práva spotřebitelů"],
+  "5": ["euro", "měnová politika"],
+  "6.10": ["zahraniční politika", "bezpečnost", "obrana"],
+  "6.20": ["obchod", "cla", "obchodní dohody"],
+  "6.30": ["rozvojová pomoc"],
+  "6.50": ["humanitární pomoc", "uprchlíci"],
+  "7.10": ["migrace", "migranti", "azyl", "přistěhovalectví"],
+  "7.30": ["policie", "Europol", "kriminalita"],
+  "8.20": ["rozšíření", "kandidátské země", "přistoupení"],
+  "8.70": ["rozpočet EU"]
+ }
+}

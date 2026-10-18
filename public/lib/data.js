@@ -1,5 +1,5 @@
 // Načítání dat (data/*.json): cache, timeout, měkké chyby.
-import { fmtDate, siteUrl, todayCZ } from "./format.js";
+import { fmtDate, norm, siteUrl, todayCZ } from "./format.js";
 
 // Statické stránky v podadresářích (p/, s/, v/) mají <html data-root="../">.
 export const ROOT = document.documentElement.dataset.root || "";
@@ -34,6 +34,17 @@ export function soft(fallback) {
 export async function loadSearch() {
   const doc = await getJSON("votes/search.json");
   return doc.rows.map((r) => Object.fromEntries(doc.fields.map((f, i) => [f, r[i]])));
+}
+
+// Text témat hlasování pro hledání (audit UX P1): české názvy kategorií webu a podtémat Legislativní observatoře EP
+// a ručně ověřená synonyma k nim (data/manual/search_synonyms.json). Vrací funkci hlasování -> normalizovaný text.
+export async function loadTopicText() {
+  const [doc, cats, syn] = await Promise.all([getJSON("votes/search.json"), getJSON("categories.json").catch(soft({})),
+    getJSON("manual/search_synonyms.json").catch(soft({}))]);
+  const topicLabels = doc.topic_labels || {};
+  const words = (label, extra) => [label || "", ...(extra || [])].join(" ");
+  return (v) => norm([...(v.topics || []).map((c) => words(topicLabels[c], syn.topics?.[c])),
+    ...(v.cats || []).map((c) => words(cats[c]?.label, syn.cats?.[c]))].join(" "));
 }
 
 export function param(name) {

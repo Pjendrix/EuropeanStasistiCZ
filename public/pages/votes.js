@@ -1,5 +1,5 @@
 // Skript stránky votes.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
-import { CATEGORY_META, getJSON, loadCategories, loadSearch, soft } from "../lib/data.js";
+import { CATEGORY_META, getJSON, loadCategories, loadSearch, loadTopicText, soft } from "../lib/data.js";
 import { DAY_RE, KIND_LABEL, MONTH_RE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, debounce, displayName, esc, fmtDate, fmtMonth, highlight, isActive, isFinal, matchesAll, norm, positionFor, searchTerms, voteDesc, voteSubtitle, voteTitle } from "../lib/format.js";
 import { catChip, csvButton, czCountsHtml, infoButton, kindTag, resultHtml, setNav, showError, splitBar } from "../lib/ui.js";
 setNav("votes");
@@ -50,6 +50,7 @@ setNav("votes-list");
     if (params.get("mep") && /^\d+$/.test(params.get("mep"))) { mepSel.value = params.get("mep"); await loadMepVotes(); }
     // ?all=1 ze starších odkazů = všechna hlasování
     kindSel.value = params.get("f") || (params.get("all") === "1" ? "all" : "final");
+    if (!kindSel.value) kindSel.value = "final"; // neznámá hodnota ?f= z ručně upraveného odkazu
     if (params.get("t")) topicSel.value = params.get("t");
     if (params.get("c")) catSel.value = params.get("c");
     if (params.get("stopa") === "1") stopa.checked = true;
@@ -58,8 +59,10 @@ setNav("votes-list");
       `Zdroj: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (export ${esc(index.source.release || "")}, ODbL)` + infoButton(
         `<p>Do počtů Čechů se berou jen poslanci v mandátu. Každé hlasování odkazuje na originál. Názvy témat jsou ruční český překlad témat Legislativní observatoře EP.</p>`, "Zdroj a metodika");
 
-    // Hledaný text se normalizuje jednou (bez diakritiky, malá písmena), ne při každém stisku klávesy.
-    for (const v of all) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" "));
+    // Hledaný text se normalizuje jednou (bez diakritiky, malá písmena), ne při každém stisku klávesy. Hledá se i v názvech
+    // témat a v ručních synonymech (stejně jako našeptávač v liště, lib/search.js).
+    const topicText = await loadTopicText();
+    for (const v of all) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" ")) + " " + topicText(v);
     const filters = document.getElementById("filters");
     if (matchMedia("(max-width: 760px)").matches) filters.open = false;
     const chips = document.getElementById("chips");
@@ -81,6 +84,7 @@ setNav("votes-list");
         matchesAll(v._hay, terms));
       const list = matches.slice(0, LIMIT);
       current = matches;
+      renderScope();
       document.getElementById("count").textContent = wide
         ? `${matches.length} nalezeno v celém období${matches.length > LIMIT ? `, zobrazeno prvních ${LIMIT}` : ""}`
         : `${matches.length} z ${pool.length} hlasování${since ? ` od ${fmtDate(since)}` : ""}`;
@@ -109,6 +113,24 @@ setNav("votes-list");
       }).join("") || `<tr><td colspan="4" class="empty-state"><p><strong>Nic jsme nenašli.</strong>${needle ? " Zkuste psát bez koncovek (např. „ukrajin“) nebo méně slov." : ""}</p>
         <div class="empty-acts">${!wide && kindSel.value !== "all" ? '<button type="button" class="more-btn" data-act="kind-all">Ukázat všechna hlasování</button>' : ""}${activeFilters().length ? '<button type="button" class="more-btn" data-act="clear">Zrušit všechny filtry</button>' : ""}</div></td></tr>`;
     };
+    // Zvolený rozsah typu hlasování je vidět vždy (audit UX P1): výchozí pohled jsou jen závěrečná hlasování.
+    const SCOPE = {
+      final: ["Zobrazena jen <strong>závěrečná hlasování</strong> (o celém textu nebo dohodě s Radou).", "all", "Zobrazit všechna hlasování"],
+      main: ["Zobrazena <strong>všechna hlavní hlasování</strong> (závěrečná, návrhy na zamítnutí, mandáty, naléhavý postup).", "all", "Zobrazit všechna hlasování"],
+      all: ["Zobrazena <strong>všechna hlasování</strong> včetně pozměňovacích návrhů a dílčích hlasování.", "final", "Jen závěrečná"],
+    };
+    const scope = document.getElementById("scope");
+    function renderScope() {
+      const [text, to, label] = SCOPE[kindSel.value] || SCOPE.final;
+      scope.innerHTML = `${text} <button type="button" class="link-btn" data-kind="${to}">${label}</button>`;
+    }
+    scope.addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-kind]");
+      if (!b) return;
+      kindSel.value = b.dataset.kind;
+      render();
+      scope.querySelector("button")?.focus();
+    });
     // Aktivní filtry jako čipy s ×; počet i v nadpisu sbalených filtrů (mobil).
     const selText = (sel) => sel.options[sel.selectedIndex]?.text || sel.value;
     const activeFilters = () => [
