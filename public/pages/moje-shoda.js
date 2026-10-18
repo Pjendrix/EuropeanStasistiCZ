@@ -2,8 +2,7 @@
 import { getJSON, soft } from "../lib/data.js";
 import { KIND_LABEL, RESULT_LABEL, displayName, esc, fmtDate, fmtPct, isActive, procedureUrl } from "../lib/format.js";
 import { avatar, infoButton, mepUrl, setNav, showError } from "../lib/ui.js";
-setNav("analyses");
-setNav("my-agreement");
+setNav("quiz");
 // Kvíz „Moje shoda“: otázky a hlasy poslanců z data/quiz.json (scripts/quiz.py), srozumitelné názvy od Claude Haiku
 // z data/quiz_summaries.json (scripts/quiz_summaries.py). Shoda se počítá jen tady v prohlížeči.
 const ANSWERS = [["F", "Pro"], ["A", "Proti"], ["B", "Zdržel/a bych se"], ["", "Nevím"]];

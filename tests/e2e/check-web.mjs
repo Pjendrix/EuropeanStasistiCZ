@@ -49,7 +49,7 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "moje-shoda",
+const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "moje-shoda",
   "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];
@@ -68,6 +68,12 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      // R1: nové menu (Aktuálně + zlaté tlačítko Kvíz, na mobilu Kvíz uprostřed lišty), logo vede na rozcestník „/“.
+      const nav = await page.evaluate(() => ({ now: !!document.querySelector('.site-header nav a[data-page="now"]'), quiz: !!document.querySelector(".site-header .quiz-btn"),
+        tab: !!document.querySelector(".tabbar .tab-quiz"), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
+        about: !!document.querySelector('.site-header nav a[data-page="about"]') }));
+      if (!nav.now || !nav.quiz || !nav.tab || nav.about) problems.push(`${where}: menu neodpovídá (Aktuálně ${nav.now}, Kvíz ${nav.quiz}, lišta ${nav.tab}, O projektu v liště ${nav.about})`);
+      if (nav.logo !== "/") problems.push(`${where}: logo vede na ${nav.logo}, čekám /`);
       // Odkazy na stránky bez .html (cleanUrls), i ty, které doplní JavaScript.
       const htmlLinks = await page.evaluate(() => [...document.querySelectorAll("a[href], form[action]")]
         .map((a) => new URL(a.getAttribute("href") ?? a.getAttribute("action"), document.baseURI))
@@ -238,12 +244,13 @@ for (const scheme of ["light", "dark"]) {
   if (!(await page.locator('.info-pop [data-cite]').count())) problems.push("profil: v ⓘ u čísla chybí „Citovat“");
   await ctx.close();
 }
-// Revize úvodu: hemicykl a přepínač 1/5 → 5/5, střed F : A = počet teček, „/“ zaměří hledání, šipky + Enter otevřou položku, Esc smaže.
+// Aktuálně (dřívější úvod): hemicykl a přepínač 1/5 → 5/5, střed F : A = počet teček, ⓘ. Rozcestník: „/“ zaměří
+// hledání v heru, šipky + Enter otevřou položku, Esc smaže.
 for (const width of [1440, 400]) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base, { waitUntil: "networkidle" });
-  const where = `index [úvod, ${width}px]`;
+  await page.goto(base + "aktualne", { waitUntil: "networkidle" });
+  const where = `aktualne [karta hlasování, ${width}px]`;
   const sw = await page.evaluate(() => document.documentElement.scrollWidth);
   if (sw > width) problems.push(`${where}: přetéká (${sw})`);
   const n = await page.evaluate(() => JSON.parse(document.getElementById("home-data").textContent).votes.length);
@@ -268,8 +275,8 @@ for (const width of [1440, 400]) {
     v.forEach((x) => problems.push(`${where}: axe ve vysvětlivce ⓘ ${x}`));
     await page.keyboard.press("Escape");
   }
-  // zpět nahoru a chvíli počkat, než IntersectionObserver (app.js) zjistí, že pole hledání v heru je zase vidět
-  await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+  // hledání v heru je jen na rozcestníku; chvíli počkat, než IntersectionObserver (app.js) zjistí, že pole je vidět
+  await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   await page.mouse.click(2, 300);
   await page.keyboard.press("/");
@@ -286,6 +293,49 @@ for (const width of [1440, 400]) {
   const target = await page.evaluate(() => document.querySelector('#hub-results [aria-selected="true"] a')?.getAttribute("href"));
   await Promise.all([page.waitForURL((u) => target && u.pathname.endsWith(target.replace(/^\.\//, "")), { timeout: 10000 }).catch(() => problems.push(`${where}: Enter neotevřel ${target}`)), page.keyboard.press("Enter")]);
   await ctx.close();
+}
+// R2 rozcestník: nadpis v oblouku se nepotká s tečkami, na 1366 × 900 je první řada dlaždic vidět bez scrollu,
+// po úvodní animaci tečky 1–5 přepínají hlasování a pauza zastaví přepínání; s prefers-reduced-motion statický stav.
+for (const [w, h] of [[1366, 900], [390, 844]]) {
+  for (const motion of ["no-preference", "reduce"]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: motion });
+    const page = await ctx.newPage();
+    const errs = [];
+    page.on("pageerror", (e) => errs.push(e.message));
+    await page.goto(base, { waitUntil: "networkidle" });
+    const where = `rozcestník [${w}px, ${motion}]`;
+    const before = await page.textContent("#pt-k");
+    await page.waitForTimeout(motion === "reduce" ? 6000 : 3200);   // úvod animace asi 2,6 s; bez pohybu se nesmí nic přepnout
+    const st = await page.evaluate(() => {
+      const t = document.querySelector(".pt-art h1").getBoundingClientRect();
+      const seats = [...document.querySelectorAll("#pt-svg .hm-f")].map((c) => c.getBoundingClientRect());
+      return { overlap: seats.filter((s) => s.right > t.left && s.left < t.right && s.bottom > t.top && s.top < t.bottom).length,
+        now: document.querySelector(".pt-now").getBoundingClientRect().bottom, k: document.getElementById("pt-k").textContent,
+        ctl: !document.getElementById("pt-ctl").hidden, paused: document.getElementById("pt-pp").getAttribute("aria-pressed"),
+        pos: [...document.querySelectorAll("#pt-svg .hm-seat")].map((a) => a.dataset.pos).join(""),
+        titles: [...document.querySelectorAll("#pt-svg .hm-seat title")].filter((x) => x.textContent.includes(":")).length,
+        seats: document.querySelectorAll("#pt-svg .hm-seat").length };
+    });
+    if (st.overlap) problems.push(`${where}: nadpis se překrývá s ${st.overlap} tečkami`);
+    if (w === 1366 && st.now > h) problems.push(`${where}: první řada dlaždic není bez scrollu vidět (konec ${Math.round(st.now)} px)`);
+    if (!st.ctl) problems.push(`${where}: chybí ovládání (tečky 1–5, pauza)`);
+    if (st.titles !== st.seats) problems.push(`${where}: tečky bez <title> se jménem a hlasem (${st.titles}/${st.seats})`);
+    if (/G/.test(st.pos) || !st.k.startsWith("Poslední hlasování")) problems.push(`${where}: po úvodu není vidět hlasování (${st.k})`);
+    if (motion === "reduce" && (st.k !== before || st.paused !== "true")) problems.push(`${where}: bez pohybu se hlasování přeplo nebo neběží pauza`);
+    if (motion === "no-preference") {
+      const t1 = await page.textContent("#pt-t");
+      await page.click('.pt-d[data-i="2"]');
+      const k3 = await page.textContent("#pt-t");
+      if (k3 === t1 || (await page.getAttribute('.pt-d[data-i="2"]', "aria-current")) !== "true") problems.push(`${where}: tečka 3 nepřepnula hlasování`);
+      if (!(await page.textContent("#pt-live")).length) problems.push(`${where}: volba uživatele se nehlásí čtečce (aria-live)`);
+      await page.click("#pt-pp");
+      if ((await page.getAttribute("#pt-pp", "aria-pressed")) !== "true") problems.push(`${where}: pauza nemá aria-pressed`);
+      await page.waitForTimeout(6000);
+      if ((await page.textContent("#pt-t")) !== k3) problems.push(`${where}: po pauze se hlasování dál přepíná`);
+    }
+    errs.forEach((e) => problems.push(`${where}: chyba ${e}`));
+    await ctx.close();
+  }
 }
 // B2: hledání v liště z libovolné stránky (i z podsložek p/, v/): „/“ otevře dialog, „Kolář“ najde poslance, Enter na něj
 // přejde; Esc dialog zavře a vrátí fokus na tlačítko s lupou; otevřený dialog bez porušení axe.
@@ -358,12 +408,12 @@ for (const width of [1366, 390]) {
   }
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base, { waitUntil: "networkidle" });
+  await page.goto(base + "aktualne", { waitUntil: "networkidle" });
   const home = read("data/home.json");
   for (let i = 0; i < home.votes.length; i++) {
     const got = await page.evaluate(() => [...document.querySelectorAll("#hm-cap .hm-topic .topic-chips > .topic-chip")].map((a) => a.getAttribute("href")));
     const exp = home.votes[i].topics.slice(0, 1).map((t) => `votes?c=${t.slug}`);
-    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`index: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
+    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`aktualne: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
     if (i < home.votes.length - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
   }
   await ctx.close();

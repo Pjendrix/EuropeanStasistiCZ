@@ -124,8 +124,11 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     )
     home = bh.build(data_dir)
     (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
-    html = bp.build(data_dir)["index.html"]
-    assert "<title>EP Watch CZ – jak hlasují čeští europoslanci</title>" in html and 'id="hub-q"' in html and 'src="hub.js?v=' in html
+    pages = bp.build(data_dir)
+    html = pages["aktualne.html"]  # dřívější úvod je na /aktualne, „/“ je rozcestník (test_portal.py)
+    assert "<title>Aktuálně – EP Watch CZ</title>" in html and 'src="hub.js?v=' in html
+    assert 'id="hub-q"' not in html  # pole hledání v heru má jen rozcestník, tady jen tlačítko v liště
+    assert 'data-page="now" aria-current="page"' in html
     first = home["votes"][0]
     assert html.count('class="hm-seat"') == len(first["ppl"])
     big = f'id="hm-big" x="200" y="221" font-size="68" font-weight="300">{first["counts"]["F"]}<tspan class="hm-num-c"'

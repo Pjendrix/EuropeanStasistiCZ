@@ -1,4 +1,4 @@
-"""Úvodní stránka jako vstupní brána (index.html) a bloky vkládané do ručních stránek.
+"""Stránka Aktuálně (aktualne.html, dřívější úvod) a bloky vkládané do ručních stránek. Rozcestník na „/“ je portal.py.
 
 - hub_page: hero s hemicyklem pěti nejnovějších závěrečných hlasování (data/home.json), hledání (hub.js), pruh faktů,
   blok Z posledního zasedání (B6), další pohledy a pás zásad. Čísla jen z JSON, žádné natvrdo.
@@ -494,16 +494,18 @@ MORE = [
 ]
 
 
-def hemi_slots(n: int) -> list[tuple[float, float]]:
-    """Místa pro n teček: počet v řadě úměrný poloměru (pro 21: 8 + 13), seřazená zleva doprava podle úhlu;
-    při shodném úhlu vlevo nejdřív vnější, vpravo nejdřív vnitřní řada (stejné pravidlo jako home.js)."""
-    (r0, *_), (r1, *_) = HEMI_RINGS
-    inner = max(1, round(n * r0 / (r0 + r1)))
+def hemi_slots(n: int, rings=HEMI_RINGS, cx: float = HEMI_CX, cy: float = HEMI_CY) -> list[tuple[float, float]]:
+    """Místa pro n teček: počet v řadě úměrný poloměru (pro 21 a dvě řady 8 + 13), seřazená zleva doprava podle úhlu;
+    při shodném úhlu vlevo nejdřív vnější, vpravo nejdřív vnitřní řada (stejné pravidlo jako home.js).
+    rings = ((poloměr, úhel první tečky, úhel poslední tečky), …) od vnitřní řady; výchozí je oblouk karty na Aktuálně."""
+    total = sum(r for r, *_ in rings)
+    counts = [max(1, round(n * r / total)) for r, *_ in rings[:-1]]
+    counts.append(n - sum(counts))
     out = []
-    for k, (r, a0, a1) in zip((inner, n - inner), HEMI_RINGS, strict=True):
+    for k, (r, a0, a1) in zip(counts, rings, strict=True):
         for i in range(k):
             a = math.radians(a0 + (a1 - a0) * (0.5 if k == 1 else i / (k - 1)))
-            out.append((a, r, HEMI_CX + r * math.cos(a), HEMI_CY - r * math.sin(a)))
+            out.append((a, r, cx + r * math.cos(a), cy - r * math.sin(a)))
     out.sort(key=lambda s: (-s[0], -s[1] if s[0] > math.pi / 2 else s[1]))
     return [(x, y) for _, _, x, y in out]
 
@@ -535,6 +537,26 @@ def party_text(p: dict) -> str:
     return "nezávislý/á" if p.get("ind") or not p.get("party") or p.get("party") in ("Independent", "Ind.") else p["party"]
 
 
+def seats_svg(ppl: list[dict], slots: list[tuple[float, float]], seat: float, colors: dict | None = None, titles: bool = False) -> str:
+    """Tečky poslanců (odkaz na profil, hlas v data-pos, symbol uvnitř) pro oblouk na Aktuálně i na rozcestníku.
+    colors = {kód frakce: barva} → proměnná --g pro fázi „barvy frakcí“ (portal.js); titles = <title> pro najetí myší."""
+    k = seat / 13
+
+    def one(i: int, p: dict, x: float, y: float) -> str:
+        label = f"{p['name']}, {party_text(p)}: {POS_TXT.get(p['pos'], '')}"
+        g = f";--g:{colors[p['group']]}" if colors and colors.get(p.get("group")) else ""
+        return (
+            f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}" data-i="{i}" data-id="{p["id"]}" '
+            f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}{g}" tabindex="{0 if i == 0 else -1}" '
+            f'aria-label="{esc(label)}">{f"<title>{esc(label)}</title>" if titles else ""}'
+            f'<circle class="hm-ring" r="{seat + 4.5:g}"/><g transform="scale({k:.3f})"><circle class="hm-f" r="13"/>'
+            + "".join(f'<path class="hm-sym hm-s{s}" d="{d}"/>' for s, d in SYM.items())
+            + "</g></a></g>"
+        )
+
+    return "".join(one(i, p, x, y) for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False)))
+
+
 def hemi_html(vote: dict) -> str:
     """Oblouk 21 teček pro jedno hlasování a číslo „pro : proti“ v jednom SVG (pořadí teček pevné, hlas v data-pos);
     tečka je odkaz na profil. Velikost tečky: kruh r=13 zvětšený na HEMI_SEAT."""
@@ -546,16 +568,7 @@ def hemi_html(vote: dict) -> str:
         f'{HEMI_CY - sr * math.sin(math.radians(a)):.1f}) scale(.62)" d="M0-9.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L0 4.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z"/>'
         for a in angles
     )
-    k = HEMI_SEAT / 13
-    seats = "".join(
-        f'<g transform="translate({x:.1f} {y:.1f})"><a class="hm-seat" href="p/{p["id"]}" data-i="{i}" data-id="{p["id"]}" '
-        f'data-party="{esc(party_text(p))}" data-pos="{p["pos"]}" style="--i:{i}" tabindex="{0 if i == 0 else -1}" '
-        f'aria-label="{esc(p["name"])}, {esc(party_text(p))}: {esc(POS_TXT.get(p["pos"], ""))}">'
-        f'<circle class="hm-ring" r="{HEMI_SEAT + 4.5:g}"/><g transform="scale({k:.3f})"><circle class="hm-f" r="13"/>'
-        + "".join(f'<path class="hm-sym hm-s{s}" d="{d}"/>' for s, d in SYM.items())
-        + "</g></a></g>"
-        for i, (p, (x, y)) in enumerate(zip(ppl, slots, strict=False))
-    )
+    seats = seats_svg(ppl, slots, HEMI_SEAT)
     num, fs = hemi_number(vote["counts"])
     w, h = HEMI_VB
     return (
@@ -748,6 +761,30 @@ def session_people_html(sp: dict | None, meps_by_id: dict, groups: list[dict], m
 </section>"""
 
 
+def active_meps(overview: dict) -> list[dict]:
+    """Poslanci v mandátu abecedně (mozaika na Aktuálně i na rozcestníku)."""
+    return sorted((m for m in overview["meps"] if _active(m)), key=lambda m: m.get("sort_label") or m["name"])
+
+
+def mosaic_html(active: list[dict]) -> str:
+    """Mozaika portrétů poslanců v mandátu; každý portrét je odkaz na profil (jméno a strana v data-n pro popisek)."""
+
+    def plabel(m):
+        p = m.get("party") or {}
+        return "nezávislý/á" if not p or p.get("short_label") in ("Ind.", None) else p["short_label"]
+
+    return "".join(
+        f'<a href="p/{m["id"]}" data-n="{esc(dname(m))} · {esc(plabel(m))}" aria-label="{esc(dname(m))}, {esc(plabel(m))}">'
+        + (
+            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="64" height="64" loading="lazy">'
+            if m.get("photo_url")
+            else f"<span>{esc(''.join(x[0] for x in (m.get('given_name'), m.get('family_name')) if x))}</span>"
+        )
+        + "</a>"
+        for m in active
+    )
+
+
 def dname(m: dict) -> str:
     return " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
 
@@ -899,11 +936,6 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
       {session_line_html(session_facts(data_dir))}
-      <form class="hm-search" role="search" action="poslanci" method="get">
-        <label for="hub-q">{_SEARCH_ICON}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
-          <input id="hub-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list" aria-haspopup="listbox"><kbd aria-hidden="true">/</kbd><button class="hm-go" type="submit">Hledat</button></label>
-        <ul id="hub-results" class="hm-results" role="listbox" aria-label="Výsledky hledání" hidden></ul>
-      </form>
       <ul class="hm-quick" aria-label="Rychlý přístup">{quick}</ul>
     </div>
     <section class="hm-stage" aria-label="Jak čeští poslanci hlasovali v posledních závěrečných hlasováních">
@@ -933,23 +965,8 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   <script type="application/json" id="home-data">{data_json}</script>
 </section>"""
 
-    # Bento: Poslanci (mozaika abecedně), Hlasování (číslo + měsíce), Práce (tři součty).
-    active = sorted((m for m in overview["meps"] if _active(m)), key=lambda m: m.get("sort_label") or m["name"])
-
-    def plabel(m):
-        p = m.get("party") or {}
-        return "nezávislý/á" if not p or p.get("short_label") in ("Ind.", None) else p["short_label"]
-
-    mosaic = "".join(
-        f'<a href="p/{m["id"]}" data-n="{esc(dname(m))} · {esc(plabel(m))}" aria-label="{esc(dname(m))}, {esc(plabel(m))}">'
-        + (
-            f'<img src="assets/photos/thumbs/{m["id"]}.webp" alt="" width="64" height="64" loading="lazy">'
-            if m.get("photo_url")
-            else f"<span>{esc(''.join(x[0] for x in (m.get('given_name'), m.get('family_name')) if x))}</span>"
-        )
-        + "</a>"
-        for m in active
-    )
+    active = active_meps(overview)
+    mosaic = mosaic_html(active)
     mosaic_tile = f"""<div class="hm-tile hm-people"><h3><a href="poslanci">Všech {fmt_num(len(active))} poslanců</a></h3><p>Profil každého z českých europoslanců, abecedně.</p>
       <div class="hm-mosaic" id="hm-mosaic">{mosaic}</div><div class="hm-mcap" id="hm-mcap" aria-hidden="true"></div>
       <a class="hm-open" href="poslanci">Otevřít {_ARROW}</a></div>"""
@@ -984,27 +1001,17 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     nxt = next_session_html(home.get("agenda"))
     body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
-    title = "EP Watch CZ – jak hlasují čeští europoslanci"
-    desc = "Hlasování, účast na hlasování a statistiky českých europoslanců v 10. volebním období. Jen ověřená data z oficiálních zdrojů."
-    meta = og_meta(title, desc, "", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
-    from layout import INSTAGRAM, REPO
-
-    org = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "EP Watch CZ",
-        **({"url": base_url.rstrip("/") + "/", "logo": base_url.rstrip("/") + "/assets/brand/apple-touch-icon.png"} if base_url else {}),
-        "sameAs": [INSTAGRAM, REPO],
-    }
-    meta += f'<script type="application/ld+json">{json.dumps(org, ensure_ascii=False)}</script>\n'
+    title = "Aktuálně – EP Watch CZ"
+    desc = "Poslední hlasování, zasedání a co se chystá: jak hlasují čeští europoslanci. Jen ověřená data z oficiálních zdrojů."
+    meta = og_meta(title, desc, "aktualne.html", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
     html = page(
         title,
         body,
         root="",
-        current=None,
+        current="now",
         description=desc,
         meta=meta,
         main_attrs='class="home-page"',
         scripts=MODULES.format(root="", page="hub.js"),
     )
-    return "index.html", html
+    return "aktualne.html", html

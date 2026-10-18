@@ -571,8 +571,11 @@ def build(data_dir: Path) -> dict[str, str]:
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
 
     if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
-        path, html = hub_page(data_dir, base_url)
-        out[path] = html
+        from portal import portal_page  # rozcestník na „/“ (index.html), Aktuálně je hub_page (aktualne.html)
+
+        for fn in (hub_page, portal_page):
+            path, html = fn(data_dir, base_url)
+            out[path] = html
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         out.update(sitemap(base_url, sorted(out), lastmod, data_day))

@@ -57,13 +57,20 @@ BRAND_MARK = (
 )
 
 NAV = [
+    ("aktualne", "now", "Aktuálně"),
     ("poslanci", "meps", "Poslanci"),
     ("party", "parties", "Strany"),
     ("hlasovani", "votes", "Hlasování"),
     ("prace", "work", "Práce poslanců"),
     ("rozkol", "analyses", "Analýzy"),
-    ("o-projektu", "about", "O projektu"),
 ]
+# Kvíz má v menu zvýrazněné místo (zlaté tlačítko na desktopu, kulaté uprostřed spodní lišty na mobilu).
+# „O projektu“ je jen v patičce a v panelu Více (na 1024 px by se lišta jinak nevešla).
+QUIZ_HREF = "moje-shoda"  # adresa kvízu; samostatná aplikace /kviz přijde ve druhém kroku
+QUIZ_ICON = (
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" '
+    'stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+)
 
 INSTAGRAM_ICON = (
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
@@ -97,37 +104,45 @@ THEME_BUTTON = (
 # Mobilní spodní lišta (jako v aplikaci): 4 hlavní sekce + „Více“ (spodní panel s analýzami a projektem). Na desktopu skrytá.
 _I = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{}</svg>'
 TAB_ICONS = {
+    "now": _I.format('<path d="M4 10.5L12 4l8 6.5V20a.5.5 0 0 1-.5.5H15v-6h-6v6H4.5A.5.5 0 0 1 4 20z"/>'),
     "meps": _I.format('<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 3.8-6.2 7.5-6.2s6.7 2.2 7.5 6.2"/>'),
     "parties": _I.format('<path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/>'),
     "votes": _I.format('<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/>'),
     "work": _I.format('<path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/>'),
     "more": _I.format('<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>'),
 }
+# Mobilní spodní lišta: Aktuálně · Poslanci · Kvíz (uprostřed, zvýrazněný) · Hlasování · Více.
 TABS = [
+    ("aktualne", "now", "Aktuálně"),
     ("poslanci", "meps", "Poslanci"),
-    ("party", "parties", "Strany"),
+    (QUIZ_HREF, "quiz", "Kvíz"),
     ("hlasovani", "votes", "Hlasování"),
-    ("prace", "work", "Práce"),
 ]
-MORE_PAGES = ("analyses", "about")
+MORE_PAGES = ("parties", "work", "analyses", "about")
 SHEET = [
+    (
+        "Strany a práce poslanců",
+        [
+            ("party", "Strany"),
+            ("party?v=eu", "Evropské frakce"),
+            ("prace", "Práce poslanců"),
+            ("prace-poslanci", "Práce po poslancích"),
+        ],
+    ),
     (
         "Analýzy",
         [
             ("rozkol", "Kde se Češi rozdělili"),
             ("rozhodujici", "Kde rozhodly české hlasy"),
             ("shoda", "Shoda mezi Čechy"),
-            ("moje-shoda", "Moje shoda s poslanci"),
         ],
     ),
     (
-        "Hlasování a strany",
+        "Hlasování",
         [
             ("votes", "Všechna hlasování"),
             ("radar", "Co se chystá"),
             ("temata", "Hlasování podle témat"),
-            ("party?v=eu", "Evropské frakce"),
-            ("prace-poslanci", "Práce po poslancích"),
         ],
     ),
     (
@@ -144,7 +159,10 @@ SHEET = [
 def tabbar(root: str = "", current: str | None = None) -> str:
     cur = lambda page: ' aria-current="page"' if page == current else ""
     tabs = "".join(
-        f'<a href="{root}{href}" data-page="{page}"{cur(page)}>{TAB_ICONS[page]}<span>{label}</span></a>' for href, page, label in TABS
+        f'<a class="tab-quiz" href="{root}{href}" data-page="{page}"{cur(page)}><i>{QUIZ_ICON}</i><span>{label}</span></a>'
+        if page == "quiz"
+        else f'<a href="{root}{href}" data-page="{page}"{cur(page)}>{TAB_ICONS[page]}<span>{label}</span></a>'
+        for href, page, label in TABS
     )
     more_cur = ' aria-current="page"' if current in MORE_PAGES else ""
     groups = "".join(
@@ -194,11 +212,15 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
         f'    <a href="{root}{href}" data-page="{page}"{' aria-current="page"' if page == current else ""}>{label}</a>'
         for href, page, label in NAV
     )
+    quiz = (
+        f'    <a class="quiz-btn" href="{root}{QUIZ_HREF}" data-page="quiz"{' aria-current="page"' if current == "quiz" else ""}>'
+        f"{QUIZ_ICON}<span>Kvíz</span></a>"
+    )
     return (
         f'<a class="skip-link" href="{skip_href}">Přejít na obsah</a>\n'
         f'<header class="site-header"><div class="inner">\n'
         f'  <a class="brand" href="{root or "./"}">{BRAND_MARK}{BRAND_TEXT}</a>\n'
-        f'  <nav aria-label="Hlavní navigace">\n{links}\n  </nav>\n'
+        f'  <nav aria-label="Hlavní navigace">\n{links}\n{quiz}\n  </nav>\n'
         f"  {SEARCH_BUTTON.format(root=root)}\n"
         f"  {INSTAGRAM_LINK}\n"
         f"  {THEME_BUTTON}\n"
@@ -285,6 +307,10 @@ def version_assets(html: str) -> str:
     return _ASSET_RE.sub(sub, html)
 
 
+# Stránky z build_pages.py (rozcestník, Aktuálně): hlavičku dostávají při generování z page(), ručně se neupravují.
+GENERATED = {"index.html", "aktualne.html"}
+
+
 def main(argv=None) -> int:
     root = Path(__file__).resolve().parent.parent
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -292,6 +318,8 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
     stale = []
     for f in sorted((root / "public").glob("*.html")):
+        if f.name in GENERATED:
+            continue
         old = f.read_text(encoding="utf-8")
         new = sync_text(old)
         if new != old:

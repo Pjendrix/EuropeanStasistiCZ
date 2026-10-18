@@ -32,7 +32,7 @@ for attempt in 1 2 3; do
   python scripts/compute_stats.py
   python scripts/build_web.py
   # build_pages.py kvůli blokům z dat v ručních stránkách (poslanci.html, hlasovani.html, o-projektu.html);
-  # stránky p/, s/, v/, z/, index.html, sitemap, feed a obrázky og/ jsou v .gitignore, vznikají při sestavení na Vercelu
+  # stránky p/, s/, v/, z/, index.html, aktualne.html, sitemap, feed a obrázky og/ jsou v .gitignore, vznikají při sestavení na Vercelu
   # (scripts/vercel_build.sh, audit A6)
   python scripts/build_pages.py
   git add data public

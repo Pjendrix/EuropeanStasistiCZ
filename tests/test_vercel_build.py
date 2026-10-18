@@ -42,7 +42,16 @@ def test_vercel_runs_build_script_and_ships_scripts():
 
 def test_generated_outputs_not_in_git():
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-    for path in ("public/p/", "public/s/", "public/v/", "public/z/", "public/og/", "public/index.html", "public/sitemap.xml"):
+    for path in (
+        "public/p/",
+        "public/s/",
+        "public/v/",
+        "public/z/",
+        "public/og/",
+        "public/index.html",
+        "public/aktualne.html",
+        "public/sitemap.xml",
+    ):
         assert path in ignore
 
 
