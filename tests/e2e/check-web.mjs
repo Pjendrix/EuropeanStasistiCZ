@@ -898,6 +898,26 @@ for (const width of [1366, 390]) {
     await ctx.close();
   }
 }
+// Radar: filtry opravdu skryjí položky (dřív je CSS display: grid přebilo) a názvy bodů programu i procedur vedou
+// na existující stránku Příběh zákona.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto(base + "radar", { waitUntil: "networkidle" });
+  const cat = await page.evaluate(() => [...document.querySelectorAll("#rd-cat option")].map((o) => o.value).find((v) => v && document.querySelector(`.rd-list > li[data-cat="${v}"]`)));
+  const visible = () => page.evaluate(() => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")].filter((li) => li.offsetParent).map((li) => li.dataset.cat || ""));
+  const before = (await visible()).length;
+  await page.selectOption("#rd-cat", cat);
+  const after = await visible();
+  if (!after.length || after.length >= before || after.some((c) => c !== cat)) problems.push(`radar [filtr]: téma ${cat} neskrylo ostatní položky (${before} → ${after.length})`);
+  await page.check("#rd-cz");
+  if ((await visible()).length > after.length) problems.push("radar [filtr]: „jen s českou stopou“ nic neskrylo");
+  const links = await page.evaluate(() => [...document.querySelectorAll(".ns-title a, .rd-title a")].map((a) => new URL(a.getAttribute("href"), document.baseURI).pathname));
+  if (!links.length) problems.push("radar [odkazy]: názvy bodů programu a procedur nevedou nikam");
+  const missing = [...new Set(links)].filter((pth) => !existsSync(join(root, "public", `${pth.replace(/^\//, "")}.html`)));
+  if (missing.length) problems.push(`radar [odkazy]: Příběh zákona neexistuje: ${missing.slice(0, 5).join(", ")}`);
+  await ctx.close();
+}
 await browser.close();
 server.close();
 if (problems.length) {

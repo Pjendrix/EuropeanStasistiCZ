@@ -194,22 +194,35 @@ def _range(a: str, b: str) -> str:
     return f"{fmt_date(a)[:-5]} – {fmt_date(b)}"
 
 
-def agenda_item_html(it: dict, root: str = "") -> str:
-    """Jeden hlasovací bod: český název (jinak anglický originál), den, dokumenty s odkazem na EP a česká stopa."""
-    title = it.get("title_cs") or it.get("title_en") or it["id"]
+def agenda_procedures(data_dir: Path) -> dict[str, str]:
+    """{id bodu programu: číslo procedury} z radar.json; bod s procedurou má stránku Příběh zákona (procedure_pages.collect)."""
+    path = data_dir / "radar.json"
+    session = (json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}).get("session") or {}
+    return {i["id"]: i["procedure"]["label"] for i in session.get("items", []) if (i.get("procedure") or {}).get("label")}
+
+
+def _title_link(title: str, label: str | None, root: str) -> str:
+    """Název bodu programu nebo procedury: odkaz na Příběh zákona, když je k němu procedura, jinak jen text."""
+    story = procedure_url(label, root)
+    return f'<a href="{story}">{esc(title)}</a>' if story else esc(title)
+
+
+def agenda_item_html(it: dict, root: str = "", procs: dict[str, str] | None = None) -> str:
+    """Jeden hlasovací bod: český název (jinak anglický originál, s odkazem na Příběh zákona), den, dokumenty a česká stopa."""
+    title = _title_link(it.get("title_cs") or it.get("title_en") or it["id"], (procs or {}).get(it["id"]), root)
     docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
     cz = ", ".join(
         f'<a href="{root}p/{c["mep_id"]}">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or []
     )
     return (
-        f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+        f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{title}</span>'
         + (f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {cz}</span>' if cz else "")
         + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "")
         + "</li>"
     )
 
 
-def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -> str:
+def next_session_html(agenda: dict | None, full: bool = False, root: str = "", procs: dict[str, str] | None = None) -> str:
     """Blok „Další zasedání“: datum, odpočet (počítá prohlížeč z data-from/data-to, bez JS jen datum), počet hlasování
     a body programu (na úvodu výběr podle pravidla, na stránce Hlasování všechny). Bez programu prázdný řetězec."""
     if not agenda:
@@ -221,11 +234,11 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "") -
     # pravidlo výběru a definice české stopy jsou celé v metodice (o-projektu.html#program-ep), tady jen odkaz
     rule = "Výběr pravidlem, ne redakcí. " if not full else ""
     head, tail = (items[:FULL_VISIBLE], items[FULL_VISIBLE:]) if full else (items, [])
-    lst = f'<ol class="ns-list">{"".join(agenda_item_html(i, root) for i in head)}</ol>' if head else ""
+    lst = f'<ol class="ns-list">{"".join(agenda_item_html(i, root, procs) for i in head)}</ol>' if head else ""
     if tail:
         lst += (
             f'<details class="ns-rest"><summary>Zobrazit dalších {fmt_num(len(tail))}</summary>'
-            f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root) for i in tail)}</ol></details>'
+            f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root, procs) for i in tail)}</ol></details>'
         )
     as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
     more = f'<a class="ns-all" href="{root}radar#zasedani">Celý program ({fmt_num(n)}) a co se chystá {_ARROW}</a>' if not full else ""
@@ -275,7 +288,7 @@ def _filter_attrs(cat: str | None, legislative: bool, cz: bool) -> str:
 
 
 def radar_session_item(it: dict, root: str) -> str:
-    title = it.get("title_cs") or it.get("title_en") or it["id"]
+    title = _title_link(it.get("title_cs") or it.get("title_en") or it["id"], (it.get("procedure") or {}).get("label"), root)
     proc = it.get("procedure") or {}
     comm, chip = _committee_html(it.get("committee"), root)
     legislative = bool(it.get("legislative") or proc.get("type") in ("COD", "CNS", "APP"))
@@ -284,7 +297,11 @@ def radar_session_item(it: dict, root: str) -> str:
         for x in (
             "zákon" if legislative else None,
             it.get("stage_cs"),
-            (f'<a href="{esc(proc["url"])}">{esc(proc["label"])}</a>' if proc.get("url") else None),
+            (
+                f'<a href="{procedure_url(proc["label"], root)}">{esc(proc["label"])}</a>'
+                if procedure_url(proc.get("label"), root)
+                else None
+            ),
             comm or None,
         )
         if x
@@ -293,7 +310,7 @@ def radar_session_item(it: dict, root: str) -> str:
     cat = (it.get("committee") or {}).get("category")
     return (
         f'<li class="ns-item rd-item"{_filter_attrs(cat, legislative, bool(it.get("cz")))}>'
-        f'<span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{esc(title)}</span>'
+        f'<span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{title}</span>'
         + (f'<span class="rd-meta small">{chip}{" · ".join(meta)}</span>' if meta or chip else "")
         + _cz_html(it.get("cz") or [], root)
         + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "")
@@ -360,7 +377,7 @@ def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     cat = (r.get("committee") or {}).get("category")
     return (
         f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
-        f'<h3 class="rd-title">{esc(title)}</h3><p class="rd-meta small">{chip}{head}</p>'
+        f'<h3 class="rd-title">{_title_link(title, r.get("label"), root)}</h3><p class="rd-meta small">{chip}{head}</p>'
         f"{_cz_html(r['cz'], root)}{radar_steps(r['steps'], r['reached'])}{tail}</li>"
     )
 
@@ -1006,7 +1023,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   </div>
 </section>"""
 
-    nxt = next_session_html(home.get("agenda"))
+    nxt = next_session_html(home.get("agenda"), procs=agenda_procedures(data_dir))
     body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
     title = "Aktuálně – EP Watch CZ"
     desc = "Poslední hlasování, zasedání a co se chystá: jak hlasují čeští europoslanci. Jen ověřená data z oficiálních zdrojů."

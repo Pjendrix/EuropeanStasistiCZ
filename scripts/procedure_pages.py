@@ -91,6 +91,14 @@ def collect(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
             out.setdefault(ref, {"votes": [], "title_en": (v.get("procedure") or {}).get("title")})["votes"].append(v)
     for label in items:
         out.setdefault(label, {"votes": [], "title_en": None})
+    # Procedury z programu nejbližšího zasedání (radar.json): stránka i bez hlasování a událostí, aby název bodu programu
+    # vedl na Příběh zákona stejně jako jinde na webu.
+    agenda = {}
+    for it in ((_read(data_dir / "radar.json", {}) or {}).get("session") or {}).get("items", []):
+        lb = (it.get("procedure") or {}).get("label")
+        if slug(lb):
+            agenda.setdefault(lb, it)
+            out.setdefault(lb, {"votes": [], "title_en": None})
     for label, row in out.items():
         it, st = items.get(label), by_label.get(label) or {}
         row["label"] = label
@@ -98,10 +106,14 @@ def collect(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
             ((it or {}).get("title") or {}).get("cs")
             or st.get("title_cs")
             or next((v["title_cs"] for v in row["votes"] if v.get("title_cs")), None)
+            or (agenda.get(label) or {}).get("title_cs")
         )
-        row["title_en"] = ((it or {}).get("title") or {}).get("en") or row["title_en"]
+        row["title_en"] = ((it or {}).get("title") or {}).get("en") or row["title_en"] or (agenda.get(label) or {}).get("title_en")
+        row["on_agenda"] = (agenda.get(label) or {}).get("date")
         row["events"] = (it or {}).get("events") if it and "events" in it else st.get("events")
-        row["committee"] = (it or {}).get("committee") or st.get("committee")
+        row["committee"] = (
+            (it or {}).get("committee") or st.get("committee") or ((agenda.get(label) or {}).get("committee") or {}).get("code")
+        )
         row["participants"] = (it or {}).get("participants") or []
         row["fetched"] = bool(it) or bool(st)  # procedura byla v EP Open Data dohledána (role jsou známé)
         row["votes"].sort(key=lambda v: (v["date"], v.get("timestamp") or "", v["id"]))
@@ -250,6 +262,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
 <h1>{esc(title)}</h1>
 <p class="lead">{esc(summary)} Jmenovitých hlasování: {fmt_num(len(votes))}.</p>
 <p class="muted">Příběh zákona: jak procedura prošla Parlamentem, od přidělení výboru po hlasování v plénu.</p>
+{f'<p class="rd-next"><strong>Na programu pléna {fmt_date(row["on_agenda"])}</strong> · <a href="{ROOT}radar">Co se chystá</a></p>' if row.get("on_agenda") else ""}
 <section aria-labelledby="z-prubeh"><h2 id="z-prubeh">Průběh</h2>{story}</section>
 <section aria-labelledby="z-stopa"><h2 id="z-stopa">Česká stopa</h2>{trace_html}</section>
 <section aria-labelledby="z-hlas"><h2 id="z-hlas">Hlasování v plénu</h2>{table}</section>

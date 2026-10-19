@@ -79,6 +79,8 @@
 @layer site {
 
 * { box-sizing: border-box; }
+/* Atribut hidden skryje prvek vždy, i když mu třída dává display: grid/flex (filtry radaru skrývaly položky jen naoko). */
+[hidden]:not([hidden="until-found"]) { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -555,7 +557,7 @@ table.matrix tbody tr:hover { background: none; }
   .site-header, .hero { background: none !important; color: #000 !important; }
   .site-header .brand, .hero h1, .hero p.lead, .kpi, .kpi .k-label, .kpi .k-note, .entry, .entry span { color: #000 !important; background: none !important; }
   .card, .table-wrap, .mep-card { box-shadow: none; break-inside: avoid; backdrop-filter: none; }
-  tr[hidden] { display: table-row !important; }
+  tr[hidden]:not([hidden="until-found"]) { display: table-row !important; } /* tisk: celé tabulky (silnější než obecné [hidden]) */
   .reveal, .grow, .chart .bar-fill { animation: none !important; transform: none !important; }
   a { color: #000; }
   main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .75em; color: #333; word-break: break-all; }
@@ -2062,3 +2064,7 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 .profile-part > .part-k { margin: 0; color: var(--bench); font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .profile-part > .part-note { margin: .2rem 0 0; color: var(--muted); font-size: .92rem; }
 .profile-part > h2:first-of-type { margin-top: 1rem; }
+
+/* Názvy bodů programu a procedur vedou na Příběh zákona: vypadají jako nadpis, odkaz prozradí podtržení při najetí */
+.ns-title a, .rd-title a { color: inherit; text-decoration: none; }
+.ns-title a:hover, .rd-title a:hover, .ns-title a:focus-visible, .rd-title a:focus-visible { text-decoration: underline; text-decoration-color: var(--gold); }

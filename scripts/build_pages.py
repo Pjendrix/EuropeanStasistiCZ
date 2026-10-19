@@ -789,7 +789,7 @@ def follow_html() -> str:
 
 def sync_blocks(public: Path, data_dir: Path) -> int:
     """Portréty na poslanci.html a přehled na hlasovani.html se generují z dat při každém buildu (týdenní aktualizace)."""
-    from hub import heads_html, next_session_html, radar_html, votes_hero_html, votes_overview_html
+    from hub import agenda_procedures, heads_html, next_session_html, radar_html, votes_hero_html, votes_overview_html
 
     changed = 0
     if (public / "o-projektu.html").exists() and "<!--sync:corrections-->" in (public / "o-projektu.html").read_text(encoding="utf-8"):
@@ -802,7 +802,7 @@ def sync_blocks(public: Path, data_dir: Path) -> int:
     hlas = public / "hlasovani.html"
     if hlas.exists() and "<!--sync:agenda-->" in hlas.read_text(encoding="utf-8"):
         home = read(data_dir / "home.json") if (data_dir / "home.json").exists() else {}
-        changed += sync_block(hlas, "agenda", next_session_html(home.get("agenda")))
+        changed += sync_block(hlas, "agenda", next_session_html(home.get("agenda"), procs=agenda_procedures(data_dir)))
     if (public / "radar.html").exists() and (data_dir / "radar.json").exists():
         changed += sync_block(public / "radar.html", "radar", radar_html(read(data_dir / "radar.json")))
     if (data_dir / "category_stats.json").exists() and (data_dir / "session.json").exists() and (public / "hlasovani.html").exists():
