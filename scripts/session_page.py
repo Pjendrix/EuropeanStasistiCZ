@@ -20,7 +20,7 @@ import json
 import re
 from pathlib import Path
 
-from build_pages import RESULT_LABEL, SHARE_BUTTON, esc, fmt_date, fmt_num, og_meta, page, read, split_bar
+from build_pages import CAT_ICON, RESULT_LABEL, SHARE_BUTTON, esc, fmt_date, fmt_num, og_meta, page, read, split_bar
 from compute_stats import active_positions, load_votes
 from hub import _committee_html, _cz_html, _range, _title_link, radar_session_item, radar_steps
 from layout import MODULES, json_script
@@ -268,6 +268,31 @@ def share_context(view: dict, data_day: str | None) -> dict:
     }
 
 
+def topics_html(items: list[dict], labels: dict[str, str], root: str = "") -> str:
+    """Témata zasedání: čip za každé téma s počtem bodů programu (téma = kategorie odpovědného výboru, jako na radaru).
+    Klik vyfiltruje program (zasedani.js); bez JS odkaz ?c=… udělá totéž po načtení."""
+    counts: dict[str, int] = {}
+    for i in items:
+        cat = (i.get("committee") or {}).get("category")
+        if cat in labels:
+            counts[cat] = counts.get(cat, 0) + 1
+    if not counts:
+        return ""
+    chips = "".join(
+        f'<a class="topic-chip zs-topic" href="{root}zasedani?c={k}#program" data-cat="{k}">'
+        f'<span class="cat-ico sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" '
+        f'stroke-linejoin="round" aria-hidden="true">{CAT_ICON[k]}</svg></span>{esc(labels[k])} <b>{n}</b></a>'
+        for k, n in sorted(counts.items(), key=lambda kv: (-kv[1], labels[kv[0]]))
+    )
+    rest = len(items) - sum(counts.values())
+    note = f" · {fmt_num(rest)} bodů bez tématu (bez odpovědného výboru)" if rest else ""
+    return (
+        '<section class="zs-topics" aria-labelledby="zs-h-topics"><h2 id="zs-h-topics" class="zs-h">O čem se hlasuje</h2>'
+        f'<p class="zs-topic-row">{chips}</p><p class="small muted">Počet bodů programu podle tématu odpovědného výboru{note}. '
+        "Klepnutím vyfiltrujete program.</p></section>"
+    )
+
+
 def session_body(view: dict, categories: list[str], labels: dict[str, str], root: str = "") -> str:
     when = _range(view["from"], view["to"])
     picks = [i for i in view["items"] if i["id"] in view["picks"]]
@@ -305,8 +330,9 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
 <p class="lead">{lead}</p>
 <p class="ns-when zs-status" data-from="{view["from"]}" data-to="{view["to"]}"><strong>{when}</strong><span class="ns-count" aria-live="polite"></span>
   · {fmt_num(len(view["items"]))} bodů v programu</p>
+{topics_html(view["items"], labels, root)}
 {picks_html}
-<section aria-labelledby="zs-h-prog"><h2 id="zs-h-prog">Celý program po dnech</h2>
+<section id="program" aria-labelledby="zs-h-prog"><h2 id="zs-h-prog">Celý program po dnech</h2>
 {filters}
 {program_html(view["items"], root)}
 <p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>
