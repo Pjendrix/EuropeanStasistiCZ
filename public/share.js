@@ -219,20 +219,36 @@ export function mepBasicOps(d, f) {
     T(72, y0 + ph + 32, "© European Union – Source: EP", 20, 500, SC.muted));
   const nx = d.photo || neutral ? 72 + pw + 50 : 72, nw = 1008 - nx;
   const nameLines = wrapText(d.name, 72, 800, nw, 3);
-  let cx = nx, cy = 0;
-  const chipRows = [];
-  (d.chips || []).forEach((c) => {
-    const w = measureText(c.label, 28, 600) + 62;
-    if (cx + w > 1008 && cx > nx) { cx = nx; cy += 62; }
-    chipRows.push({ c, x: cx, y: cy }); cx += w + 12;
+  // Frakce a strana v jedné řadě: oficiální logo na bílé dlaždici (čitelné i na tmavé kartě, logo se neupravuje), bez loga
+  // štítek s tečkou. Loga mají stejnou plochu (široké je nižší, čtvercové vyšší), aby žádné nepřebilo druhé; když se řada
+  // nevejde, zmenší se všechna loga stejným poměrem.
+  const TILE_H = 80, PAD = 16, GAP = 14, AREA = 4800, MAX_H = 60;
+  const chips = (d.chips || []).map((c) => {
+    if (!c.logoImg) return { c, w: measureText(c.label, 28, 600) + 62 };
+    const h = Math.min(MAX_H, Math.sqrt(AREA / c.aspect));
+    return { c, lw: h * c.aspect, lh: h };
   });
-  const chipH = chipRows.length ? cy + 52 : 0;
+  const fixed = chips.reduce((a, x) => a + (x.lw ? 2 * PAD : x.w), 0) + GAP * Math.max(chips.length - 1, 0);
+  const logos = chips.reduce((a, x) => a + (x.lw || 0), 0);
+  const k = logos ? Math.min(1, (nw - fixed) / logos) : 1;
+  let cx = nx;
+  const chipRows = chips.map((x) => {
+    const w = x.lw ? x.lw * k + 2 * PAD : x.w;
+    const r = { ...x, x: cx, w, lw: (x.lw || 0) * k, lh: (x.lh || 0) * k };
+    cx += w + GAP;
+    return r;
+  });
+  const rowH = chips.some((x) => x.lw) ? TILE_H : 52;
+  const chipH = chipRows.length ? rowH : 0;
   const mand = d.mandate ? wrapText(d.mandate, 28, 500, nw, 2) : [];
   const blockH = nameLines.length * 80 + 24 + chipH + (mand.length ? 20 + mand.length * 38 : 0);
   let by = y0 + Math.max((ph - blockH) / 2, 0);
   nameLines.forEach((l, i) => ops.push(T(nx, by + 62 + i * 80, l, 72, 800, SC.text)));
   by += nameLines.length * 80 + 24;
-  chipRows.forEach(({ c, x, y }) => { const r = chipOps(x, by + y, c.label, c.color); ops.push(...r.ops); });
+  chipRows.forEach(({ c, x, w, lw, lh }) => {
+    if (lw) ops.push(RECT(x, by, w, TILE_H, 16, "#FFFFFF", SC.chipLine, 2), { k: "image", img: c.logoImg, x: x + PAD, y: by + (TILE_H - lh) / 2, w: lw, h: lh, r: 0 });
+    else ops.push(...chipOps(x, by + (rowH - 52) / 2, c.label, c.color).ops);
+  });
   by += chipH + 20;
   mand.forEach((l, i) => ops.push(T(nx, by + 28 + i * 38, l, 28, 500, SC.soft)));
   let y = y0 + ph + (story ? 150 : 96);
@@ -620,6 +636,8 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
   _symbolImg = await loadImage(`${SHARE_ROOT}assets/brand/symbol-white.svg`);
   // Portrét z EP (avatar: "photo", výchozí na webu); "neutral" = stejná silueta pro všechny (balíček pro Instagram).
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
+  // loga frakce a strany (soubory webu, data/manual/logos.json); když se nenačte, zůstane štítek s tečkou
+  if (ctx.kind === "mep") data.chips = await Promise.all((data.chips || []).map(async (c) => (c.logo ? { ...c, logoImg: await loadImage(`${SHARE_ROOT}${c.logo}`).catch(() => null) } : c)));
   if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
   useCardTheme(theme);

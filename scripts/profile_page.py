@@ -538,6 +538,14 @@ def summary_sentence(mep: dict, t: dict, prof: dict) -> str:
     return " ".join(s + "." for s in sentences)
 
 
+def chip_data(label: str, entity: dict | None) -> dict:
+    """Štítek frakce nebo strany na kartě poslance: oficiální logo (data/manual/logos.json), když ho máme, jinak barevná tečka."""
+    out = {"label": label, "color": group_color(entity)}
+    if entity and entity.get("logo") and entity.get("logo_aspect"):
+        out.update(logo=entity["logo"], aspect=entity["logo_aspect"])
+    return out
+
+
 def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict, today: str) -> dict:
     """Kontext panelu sdílení: karta poslance („default“) a karty čísel („metric:klíč“). Jen čísla, která jsou na stránce."""
     mep, t, b = prof["mep"], prof["total"], prof.get("benchmarks") or {}
@@ -629,8 +637,8 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
             "chips": [
                 c
                 for c in (
-                    group_label and {"label": group_label, "color": group_color(ctx["group"])},
-                    party_label and {"label": party_label, "color": group_color(ctx["party"])},
+                    group_label and chip_data(group_label, ctx["group"]),
+                    party_label and chip_data(party_label, ctx["party"]),
                 )
                 if c
             ],
