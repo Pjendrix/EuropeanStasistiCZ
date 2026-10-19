@@ -28,7 +28,10 @@ setNav("work-overview");
           <span class="col-label${i === 0 || m === "01" || Number(m) % 3 === 1 ? "" : " col-sparse"}" aria-hidden="true">${Number(m)}${i === 0 || m === "01" ? `<br><b>${y.slice(2)}</b>` : ""}</span></span>`;
       }).join("")}</div></div>`;
     document.getElementById("timeline").className = "";
-    document.getElementById("timeline").innerHTML = series("speeches", "Ústní projevy") + series("questions", "Otázky Komisi a Radě");
+    // období a co znamená sloupec (audit UX 2026-10-18)
+    const tl = h.timeline;
+    document.getElementById("timeline").innerHTML = series("speeches", "Ústní projevy") + series("questions", "Otázky Komisi a Radě") +
+      (tl.length ? `<p class="chart-ctx small muted">Období: ${fmtMonth(tl[0].month)} – ${fmtMonth(tl.at(-1).month)} · Sloupec = počet za měsíc za všechny české poslance dohromady (projevy jen v době mandátu; otázka se počítá jednou, i když ji podepsalo víc poslanců).</p>` : "");
 
     document.querySelector("#proc tbody").innerHTML = h.by_process.map((r) => `<tr><td>${esc(r.label)} <span class="small muted">${esc(r.process_type)}</span></td>
       <td class="num" data-label="Vedou">${fmtNum(r.reports_lead)}</td><td class="num" data-label="Stínoví">${fmtNum(r.reports_shadow)}</td><td class="num" data-label="Přijato">${fmtNum(r.adopted)}</td></tr>`).join("");

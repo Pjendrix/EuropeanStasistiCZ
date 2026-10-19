@@ -158,7 +158,7 @@ def tiles_html(data_dir: Path, home: dict, overview: dict, groups: list[dict]) -
     axis = f'<span class="pt-ax"><span>{ym(monthly[0]["month"])}</span><span>{ym(monthly[-1]["month"])}</span></span>' if monthly else ""
     tiles.append(
         f'<a class="pt-tile" href="hlasovani"><span class="pt-k">Hlasování</span><span class="pt-big">{fmt_num(f["votes_total"])}</span>'
-        f"<p>jmenovitých hlasování od {fmt_date(f['votes_from'])}</p>"
+        f"<p>jmenovitých hlasování od {fmt_date(f['votes_from'])}; sloupec = počet hlasování v měsíci (nejvíc {fmt_num(mx)})</p>"
         f'<span class="pt-spark" role="img" aria-label="Počet jmenovitých hlasování po měsících, nejvíc {fmt_num(mx)} za měsíc">{bars}</span>{axis}</a>'
     )
 
@@ -213,6 +213,38 @@ def tiles_html(data_dir: Path, home: dict, overview: dict, groups: list[dict]) -
         '<a href="https://github.com/Pjendrix/ep-watch-cz-open">Kód na GitHubu</a></div></div>'
     )
     return "".join(tiles)
+
+
+def tasks_html(n_active: int) -> str:
+    """Tři hlavní úkoly návštěvníka (audit UX 2026-10-18): najít poslance, najít hlasování, porovnat postoje."""
+    tasks = [
+        (
+            "Najít poslance",
+            f"Jak hlasuje, jak často chybí a na čem pracuje každý z {fmt_num(n_active)} českých poslanců v mandátu.",
+            [("poslanci", "Všichni poslanci"), ("party", "Strany a frakce")],
+        ),
+        (
+            "Najít hlasování",
+            "Podle názvu, čísla dokumentu nebo tématu; u každého hlasování, jak hlasovali Češi a co znamenal hlas pro.",
+            [("votes", "Databáze hlasování"), ("temata", "Podle témat"), ("radar", "Co se chystá")],
+        ),
+        (
+            "Porovnat postoje",
+            "Kdo s kým hlasuje stejně, kde se Češi rozdělili a se kterými poslanci se shodujete vy.",
+            [("shoda", "Kdo s kým hlasuje"), ("kviz", "Kvíz"), ("analyzy", "Všechny analýzy")],
+        ),
+    ]
+    more = lambda links: " · ".join(f'<a href="{h}">{esc(t)}</a>' for h, t in links)  # noqa: E731
+    cards = "".join(
+        f'<li class="pt-task"><h3><a href="{links[0][0]}">{esc(title)} {_ARROW}</a></h3><p>{esc(text)}</p>'
+        f'<p class="pt-task-links">{more(links[1:])}</p></li>'
+        for title, text, links in tasks
+    )
+    return (
+        '<section class="pt-wrap pt-tasks-wrap" aria-labelledby="h-tasks">'
+        '<div class="pt-head"><h2 id="h-tasks">Co chcete <strong>zjistit?</strong></h2></div>'
+        f'<ul class="pt-tasks">{cards}</ul></section>'
+    )
 
 
 def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
@@ -272,8 +304,9 @@ def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   <script type="application/json" id="portal-data">{data_json}</script>
 </section>"""
     body = f"""{hero}
+{tasks_html(len(active_meps(overview)))}
 <section class="pt-wrap" aria-labelledby="h-tiles">
-  <div class="pt-head"><h2 id="h-tiles">Co na webu <strong>najdete</strong></h2><p>Data: HowTheyVote.eu a EP Open Data · aktualizace každý týden</p></div>
+  <div class="pt-head"><h2 id="h-tiles">Novinky a <strong>přehledy</strong></h2><p>Data: HowTheyVote.eu a EP Open Data · aktualizace každý týden</p></div>
   <div class="pt-bento">{tiles_html(data_dir, home, overview, groups)}</div>
 </section>"""
     title = "EP Watch CZ – jak hlasují čeští europoslanci"

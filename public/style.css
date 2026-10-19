@@ -2043,3 +2043,22 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 .vote-meaning .vm-list li { padding: 2px 0; border: 0; }
 .vote-meaning .pos { font-weight: 700; }
 .vote-meaning .small { margin: 0; }
+
+/* Úvod: tři hlavní úkoly (audit UX 2026-10-18) */
+.pt-tasks-wrap { padding-bottom: 0; }
+.pt-tasks { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pt-task { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px; border-radius: 22px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.pt-task:has(a:hover) { border-color: color-mix(in srgb, var(--gold) 55%, transparent); }
+.pt-task h3 { margin: 0; font-size: 1.2rem; font-weight: 800; letter-spacing: -.01em; }
+.pt-task h3 a { display: inline-flex; align-items: center; gap: 6px; color: var(--text); text-decoration: none; }
+.pt-task h3 a:hover { text-decoration: underline; }
+.pt-task h3 svg { width: 18px; height: 18px; color: var(--link); }
+.pt-task p { margin: 0; color: var(--muted); font-size: .92rem; }
+.pt-task .pt-task-links { margin-top: auto; color: var(--text); font-weight: 600; }
+@media (max-width: 760px) { .pt-tasks { grid-template-columns: minmax(0, 1fr); gap: 10px; } .pt-task { padding: 14px 16px; } }
+
+/* Profil ve třech částech: shrnutí, analýza, podrobnosti (audit UX 2026-10-18) */
+.profile-part { margin-top: 2.2rem; padding-top: 1.2rem; border-top: 2px solid var(--border); scroll-margin-top: 80px; }
+.profile-part > .part-k { margin: 0; color: var(--bench); font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.profile-part > .part-note { margin: .2rem 0 0; color: var(--muted); font-size: .92rem; }
+.profile-part > h2:first-of-type { margin-top: 1rem; }

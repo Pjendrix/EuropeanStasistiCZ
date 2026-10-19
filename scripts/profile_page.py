@@ -217,7 +217,16 @@ def monthly_chart(monthly: dict, mep: dict) -> str:
         '<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>'
         f'<div class="chart" role="group" aria-label="Účast na hlasování po měsících">{"".join(cols)}</div></div>'
         f'<p class="chart-detail" aria-live="polite">{month_detail(last, monthly[last]["attendance"], mep)}</p>'
+        + chart_context(
+            f"{fmt_month(months[0])} – {fmt_month(last)}",
+            f"všechna jmenovitá hlasování v daném měsíci v době mandátu ({fmt_num(sum(monthly[k]['attendance'][1] for k in months))} celkem)",
+        )
     )
+
+
+def chart_context(period: str, denominator: str) -> str:
+    """Období a jmenovatel pod grafem (audit UX 2026-10-18): z čeho se procenta počítají a za jakou dobu."""
+    return f'<p class="chart-ctx small muted"><span>Období: {esc(period)}</span> · <span>Jmenovatel: {esc(denominator)}</span></p>'
 
 
 def outcome_card(label: str, own, group, detail: str, mep: dict) -> str:
@@ -903,11 +912,13 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 
 <p class="lead" style="margin-top:1.5rem">{summary_sentence(mep, t, prof)}</p>
 <nav class="subnav profile-nav" aria-label="Části profilu">
-  <a href="{here}#dochazka">Účast na hlasování</a>{f'<a href="{here}#vlastni-prace">Práce na textech</a>' if has_own else ""}
-  <a href="{here}#frakce">Frakce a strana</a><a href="{here}#temata">Témata</a>
-  <a href="{here}#s-kym">S kým hlasuje</a><a href="{here}#posledni">Poslední hlasování</a>
+  <a href="{here}#shrnuti">Shrnutí</a><a href="{here}#posledni">Poslední hlasování</a>
+  <a href="{here}#analyza">Analýza hlasování</a><a href="{here}#temata">Témata</a><a href="{here}#s-kym">S kým hlasuje</a>
+  <a href="{here}#podrobnosti">{"Práce a podrobnosti" if has_own else "Podrobnosti"}</a>
 </nav>
 
+<section class="profile-part" id="shrnuti" aria-labelledby="shrnuti-h">
+<p class="part-k" id="shrnuti-h">1 · Shrnutí</p><p class="part-note">Základní čísla, příslušnost a poslední hlasování.</p>
 <h2 id="dochazka">Hlasování v číslech</h2>
 <div class="metrics">
   {
@@ -974,9 +985,29 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 
 {bench_note}
 
-{own_section}
-{activity_block(ui, prof.get("activity"))}
+<h2 id="frakce">Frakce a strana</h2>
+<div class="card">{timeline(mep, groups, parties, today)}
+  <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a>.</p></div>
 
+<h2 id="posledni">Poslední závěrečná hlasování</h2>
+<div id="recent">{recent_html}</div>
+<form class="card mep-search" action="votes" method="get" role="search" aria-label="Hledání v hlasováních poslance">
+  <h3 style="margin-top:0">Jak {by_gender(mep, "hlasoval", "hlasovala")} o…?</h3>
+  <input type="hidden" name="mep" value="{mep["id"]}">
+  <div class="controls">
+    <input type="search" name="q" placeholder="Hledat v názvech hlasování (např. klima, migrace)" aria-label="Hledat v hlasováních">
+    <label>Téma <select name="t"><option value="">všechna témata</option>{topic_options}</select></label>
+    <label>Typ <select name="f"><option value="final">jen závěrečná</option><option value="main">všechna hlavní</option><option value="all">všechna hlasování</option></select></label>
+    <button type="submit" class="more-btn">Hledat</button>
+  </div>
+  <p class="small muted">Výsledek ukáže přímo {
+        by_gender(mep, "jeho", "její")
+    } hlas u každého hlasování v době mandátu, s odkazem na detail.</p>
+</form>
+</section>
+
+<section class="profile-part" id="analyza" aria-labelledby="analyza-h">
+<p class="part-k" id="analyza-h">2 · Analýza hlasování</p><p class="part-note">Jak hlasuje ve srovnání s výsledkem, frakcí a ostatními Čechy.</p>
 <h2 id="soulad">Soulad s výsledkem hlasování</h2>
 {
         ui.note_line(
@@ -990,10 +1021,6 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
   {metric_card("Těsná hlasování", t["outcome_close"], "rozdíl pro − proti nejvýš 21 hlasů", "o-projektu#metodika")}
 </div>
 
-<h2 id="frakce">Frakce a strana</h2>
-<div class="card">{timeline(mep, groups, parties, today)}
-  <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a>.</p></div>
-
 <h2 id="mesice">Účast na hlasování po měsících</h2>
 <div class="card">{monthly_chart(prof["monthly"], mep)}
   {
@@ -1003,25 +1030,6 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             f"Nízká čárka = v měsíci {by_gender(mep, 'nehlasoval', 'nehlasovala')} ani jednou. Měsíce bez zasedání (srpen) chybí.",
         )
     }</div>
-
-<div class="grid-2">
-  <section>
-    <h2>Členství podrobně</h2>
-    <div class="card"><ul class="plain">
-      {"".join(membership_group(x) for x in mep["groups"])}
-      {"".join(membership_party(x) for x in mep["parties"]) or f'<li class="muted">{esc(NO_PARTY_NOTE)}</li>'}
-    </ul>
-    <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p></div>
-  </section>
-  <section>
-    <h2>Výbory</h2>
-    <div class="card">
-      <ul class="plain">{"".join(committee_li(c) for c in committees_now) or '<li class="muted">Žádný aktuální výbor.</li>'}</ul>
-      {f'<h3>Dříve</h3><ul class="plain">{"".join(committee_li(c) for c in committees_past)}</ul>' if committees_past else ""}
-      <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p>
-    </div>
-  </section>
-</div>
 
 <h2 id="proti-frakci">Kde hlasoval{a_suffix} jinak než frakce</h2>
 <div class="card">
@@ -1088,22 +1096,35 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         else '<p class="muted">Nedostatek společných hlasování.</p>'
     }
 </div>
+</section>
 
-<h2 id="posledni">Poslední závěrečná hlasování</h2>
-<div id="recent">{recent_html}</div>
-<form class="card mep-search" action="votes" method="get" role="search" aria-label="Hledání v hlasováních poslance">
-  <h3 style="margin-top:0">Jak {by_gender(mep, "hlasoval", "hlasovala")} o…?</h3>
-  <input type="hidden" name="mep" value="{mep["id"]}">
-  <div class="controls">
-    <input type="search" name="q" placeholder="Hledat v názvech hlasování (např. klima, migrace)" aria-label="Hledat v hlasováních">
-    <label>Téma <select name="t"><option value="">všechna témata</option>{topic_options}</select></label>
-    <label>Typ <select name="f"><option value="final">jen závěrečná</option><option value="main">všechna hlavní</option><option value="all">všechna hlasování</option></select></label>
-    <button type="submit" class="more-btn">Hledat</button>
-  </div>
-  <p class="small muted">Výsledek ukáže přímo {
-        by_gender(mep, "jeho", "její")
-    } hlas u každého hlasování v době mandátu, s odkazem na detail.</p>
-</form>
+<section class="profile-part" id="podrobnosti" aria-labelledby="podrobnosti-h">
+<p class="part-k" id="podrobnosti-h">3 · {
+        "Práce v Parlamentu a podrobnosti" if has_own else "Podrobnosti"
+    }</p><p class="part-note">Zprávy, otázky a projevy, členství a výbory s odkazy na zdroje.</p>
+{own_section}
+{activity_block(ui, prof.get("activity"))}
+
+<div class="grid-2">
+  <section>
+    <h2>Členství podrobně</h2>
+    <div class="card"><ul class="plain">
+      {"".join(membership_group(x) for x in mep["groups"])}
+      {"".join(membership_party(x) for x in mep["parties"]) or f'<li class="muted">{esc(NO_PARTY_NOTE)}</li>'}
+    </ul>
+    <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p></div>
+  </section>
+  <section>
+    <h2>Výbory</h2>
+    <div class="card">
+      <ul class="plain">{"".join(committee_li(c) for c in committees_now) or '<li class="muted">Žádný aktuální výbor.</li>'}</ul>
+      {f'<h3>Dříve</h3><ul class="plain">{"".join(committee_li(c) for c in committees_past)}</ul>' if committees_past else ""}
+      <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p>
+    </div>
+  </section>
+</div>
+</section>
+
 <p class="small profile-links foot-only">{ext_links}</p>"""
     ctx = {
         "name": name,
