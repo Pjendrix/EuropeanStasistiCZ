@@ -219,6 +219,18 @@ for (const scheme of ["light", "dark"]) {
         await page.click('[data-fmt="detail"]');
         await page.waitForFunction(() => document.querySelectorAll(".sd-carousel img").length === 3 && [...document.querySelectorAll(".sd-carousel img")].every((i) => i.naturalWidth === 1080 && i.naturalHeight === 1350), null, { timeout: 20000 })
           .catch(() => problems.push(`${where}: detail nemá 3 obrázky 1080 × 1350 v karuselu`));
+        // na desktopu jde mezi obrázky přepínat myší: tlačítko › a tečky (vodorovné posouvání myš neumí)
+        const shown = () => page.evaluate(() => {
+          const car = document.querySelector(".sd-carousel"), mid = car.getBoundingClientRect().left + car.clientWidth / 2;
+          const imgs = [...car.querySelectorAll("img")].map((i) => Math.abs(i.getBoundingClientRect().left + i.getBoundingClientRect().width / 2 - mid));
+          return { img: imgs.indexOf(Math.min(...imgs)), dot: [...document.querySelectorAll(".sd-dots button")].findIndex((d) => d.classList.contains("on")) };
+        });
+        await page.click('.sd-arr[data-step="1"]'); await page.waitForTimeout(600);
+        await page.click('.sd-arr[data-step="1"]'); await page.waitForTimeout(600);
+        const after2 = await shown();
+        if (after2.img !== 2 || after2.dot !== 2 || !(await page.isDisabled('.sd-arr[data-step="1"]'))) problems.push(`${where}: tlačítko › nepřeplo na 3. obrázek (${JSON.stringify(after2)})`);
+        await page.click('.sd-dots button[data-i="0"]'); await page.waitForTimeout(600);
+        if ((await shown()).img !== 0) problems.push(`${where}: tečka nepřepla na 1. obrázek`);
         await page.click('[data-fmt="post"]');
       }
       await page.keyboard.press("Escape");
