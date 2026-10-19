@@ -627,3 +627,37 @@ export function voteMeaningHtml(kind) {
     '<p class="small muted">Zdržet se = ani pro, ani proti. Vysvětlení plyne z typu hlasování, který určuje pevná tabulka pravidel ' +
     `(<a href="${ROOT}o-projektu#metodika">jak typ určujeme</a>).</p></section>`;
 }
+
+// Filtry seznamů programu a procedur (radar.html, zasedani.html): skrývají položky podle data-cat / data-leg / data-cz.
+// Obsah stránky je vygenerovaný a funguje i bez JS; stav filtrů je v adrese (?c=…&zakony=1&stopa=1).
+export function listFilters() {
+  const cat = document.getElementById("rd-cat"), leg = document.getElementById("rd-leg"), cz = document.getElementById("rd-cz");
+  if (!cat) return;
+  const params = new URLSearchParams(location.search);
+  if (params.get("c")) cat.value = params.get("c");
+  leg.checked = params.get("zakony") === "1";
+  cz.checked = params.get("stopa") === "1";
+  const apply = () => {
+    document.querySelectorAll(".rd-list, .rd-procs").forEach((list) => {
+      let shown = 0;
+      list.querySelectorAll(":scope > li").forEach((li) => {
+        const ok = (!cat.value || li.dataset.cat === cat.value) && (!leg.checked || li.dataset.leg === "1") && (!cz.checked || li.dataset.cz === "1");
+        li.hidden = !ok;
+        shown += ok;
+      });
+      // celý den bez položek skrýt i s nadpisem (zasedani.html)
+      const day = list.previousElementSibling;
+      if (day?.classList.contains("zs-day")) day.hidden = !shown;
+      const empty = list.parentElement.querySelector(".rd-empty");
+      if (empty && list.parentElement.querySelectorAll(".rd-list > li:not([hidden]), .rd-procs > li:not([hidden])").length === 0) empty.hidden = false;
+      else if (empty) empty.hidden = true;
+    });
+    const qs = new URLSearchParams();
+    if (cat.value) qs.set("c", cat.value);
+    if (leg.checked) qs.set("zakony", "1");
+    if (cz.checked) qs.set("stopa", "1");
+    history.replaceState(null, "", qs.toString() ? `?${qs}` : location.pathname);
+  };
+  [cat, leg, cz].forEach((el) => el.addEventListener("change", apply));
+  apply();
+}

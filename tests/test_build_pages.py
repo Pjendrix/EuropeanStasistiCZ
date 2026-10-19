@@ -433,7 +433,7 @@ def test_radar_page_html():
     }
     html = hub.radar_html(radar)
     assert 'id="rd-cat"' in html and '<option value="env">' in html
-    assert 'data-cat="fin" data-leg="1" data-cz="0"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html
+    assert 'href="zasedani"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html  # program je na stránce Zasedání
     assert html.count('aria-current="step"') == 2 and "Datum hlasování v plénu zatím nezveřejněno" in html
     assert 'href="v/99"' in html and 'class="cz-badge"' in html and "U 3 procedur" in html
     assert 'data-from="2026-10-19"' in html and "o-projektu#radar" in html

@@ -241,7 +241,7 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "", p
             f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root, procs) for i in tail)}</ol></details>'
         )
     as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
-    more = f'<a class="ns-all" href="{root}radar#zasedani">Celý program ({fmt_num(n)}) a co se chystá {_ARROW}</a>' if not full else ""
+    more = f'<a class="ns-all" href="{root}zasedani">Celý program ({fmt_num(n)}) a co se rozhoduje {_ARROW}</a>' if not full else ""
     return (
         f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
         f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
@@ -395,14 +395,16 @@ def radar_html(radar: dict | None, root: str = "") -> str:
         '<label><input type="checkbox" id="rd-cz"> jen s českou stopou</label></div>'
     )
     if s:
-        items = "".join(radar_session_item(i, root) for i in s["items"])
         as_of = f" k {fmt_date(s['fetched'])}" if s.get("fetched") else ""
+        n_cz = sum(1 for i in s["items"] if i.get("cz"))
         sess = (
             f'<section class="card next-session" id="zasedani" aria-labelledby="rd-h1">'
             f'<div class="ns-head"><h2 id="rd-h1">Nejbližší zasedání</h2>'
             f'<p class="ns-when" data-from="{s["from"]}" data-to="{s["to"]}"><strong>{_range(s["from"], s["to"])}</strong>'
-            f'<span class="ns-count" aria-live="polite"></span> · {fmt_num(len(s["items"]))} hlasování v programu</p></div>'
-            f'<ol class="ns-list rd-list">{items}</ol><p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>'
+            f'<span class="ns-count" aria-live="polite"></span> · {fmt_num(len(s["items"]))} hlasování v programu'
+            + (f" · {fmt_num(n_cz)} s českou stopou" if n_cz else "")
+            + "</p></div>"
+            f'<a class="ns-all" href="{root}zasedani">Program po dnech, co se u zákonů rozhoduje a výsledky {_ARROW}</a>'
             f'<p class="source">Návrh programu EP{as_of}, může se změnit. Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).</p>'
             "</section>"
         )

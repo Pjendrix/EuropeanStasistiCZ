@@ -576,6 +576,11 @@ def build(data_dir: Path) -> dict[str, str]:
         for fn in (hub_page, portal_page):
             path, html = fn(data_dir, base_url)
             out[path] = html
+    from session_page import session_page  # stránka Zasedání (zasedani.html) z programu v radar.json
+
+    res = session_page(data_dir, base_url)
+    if res:
+        out[res[0]] = res[1]
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         out.update(sitemap(base_url, sorted(out), lastmod, data_day))

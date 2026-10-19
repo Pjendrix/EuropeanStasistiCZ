@@ -2072,3 +2072,22 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 /* Názvy bodů programu a procedur vedou na Příběh zákona: vypadají jako nadpis, odkaz prozradí podtržení při najetí */
 .ns-title a, .rd-title a { color: inherit; text-decoration: none; }
 .ns-title a:hover, .rd-title a:hover, .ns-title a:focus-visible, .rd-title a:focus-visible { text-decoration: underline; text-decoration-color: var(--gold); }
+
+/* Zasedání pléna (zasedani.html, session_page.py) */
+.zs-when { font-weight: 700; }
+.zs-status { margin: -.2rem 0 1.2rem; color: var(--muted); }
+.zs-picks { list-style: none; padding: 0; margin: .6rem 0 1.6rem; display: grid; gap: 12px; }
+.zs-pick { padding: 16px 18px; display: flex; flex-direction: column; gap: .45rem; }
+.zs-pick .rd-title { margin: 0; }
+.zs-meta { margin: 0; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.zs-sum { margin: 0; }
+.zs-dec { margin: 0; padding: .45rem .7rem; border-left: 3px solid var(--gold); background: var(--bg); border-radius: 0 8px 8px 0; }
+.zs-h { margin: .2rem 0 .2rem; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.zs-prev, .zs-res { margin-top: .2rem; }
+.zs-prev li, .zs-res li { padding: .25rem 0; border: 0; }
+.zs-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 2px; }
+.zs-bar .split { flex: 0 0 120px; }
+.zs-res { padding: .5rem .7rem; border-radius: 10px; background: var(--accent-soft); }
+.zs-day { margin: 1.2rem 0 0; font-size: 1rem; }
+.zs-steps summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
+.zs-steps[open] summary { margin-bottom: .2rem; }

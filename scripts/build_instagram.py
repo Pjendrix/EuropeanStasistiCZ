@@ -159,6 +159,38 @@ def vote_texts(v: dict, share: dict, trace: list[dict], data_day: str, session: 
     return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(s for s in sources if s) + "\n"}
 
 
+def session_texts(data: dict) -> dict:
+    """Popisek, alt texty a zdroje ke kartě zasedání (data = kontext karty ze zasedani.html, session_page.share_context)."""
+    url = f"{SITE}/zasedani"
+    head = "Jak dopadlo zasedání Evropského parlamentu" if data["results"] else "Tento týden v Bruselu: zasedání Evropského parlamentu"
+    lines = [f"{head} {data['when']}.", ""]
+    for pk in data["picks"]:
+        lines.append(f"• {pk['title']}" + (f" ({pk['decision'][0].lower()}{pk['decision'][1:]})" if pk.get("decision") else ""))
+        lines += [f"  {x}" for x in (pk.get("result"), pk.get("cz")) if x]
+    lines += [
+        "",
+        "Body vybírá pravidlo, ne redakce: nejdřív česká stopa (zpravodajové), pak zákony a konečná schválení dohod s Radou.",
+        "",
+        f"Celý program po dnech a co se u zákonů rozhoduje: {url.replace('https://', '')} (odkaz v bio)",
+        f"Zdroj: program EP (EP Open Data, CC BY 4.0), HowTheyVote.eu, data k {fmt_date(data['dataDay'])}.",
+        "",
+        HASHTAGS,
+    ]
+    alt = [
+        f"slide-1.png: Karta EP Watch CZ „{head}“ {data['when']}: "
+        + "; ".join(pk["title"] for pk in data["picks"])
+        + f". Zdroj program EP, data k {fmt_date(data['dataDay'])}, {url.replace('https://', '')}.",
+        "story.png: Stejná karta ve formátu story (9 : 16).",
+    ]
+    sources = [
+        "Program zasedání: EP Open Data (CC BY 4.0), https://data.europarl.europa.eu",
+        "Výsledky: HowTheyVote.eu (ODbL)" if data["results"] else None,
+        f"Na webu: {url}",
+        f"Data k {fmt_date(data['dataDay'])}.",
+    ]
+    return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(x for x in sources if x) + "\n"}
+
+
 def _pct(pair) -> str | None:
     return f"{pair[0] / pair[1] * 100:.1f} %".replace(".", ",") if pair and pair[1] else None
 
@@ -221,23 +253,32 @@ def check_slide(name: str, texts: list[str], overflow: list[str]) -> None:
 # --- vykreslení v Chromiu -----------------------------------------------------------------
 
 RENDER_JS = """async ([fmt, neutral]) => {
-  for (let i = 0; i < 100 && typeof window.shareContext !== "function"; i++) await new Promise((r) => setTimeout(r, 100));
-  if (typeof window.shareContext !== "function") throw new Error("stránka nemá shareContext");
+  // Šablony karet z modulu share.js (stejná instance jako na stránce, i s ?v=…); kontext sdílení buď z window.shareContext
+  // (stránky s JS), nebo ze statického <script id="share-context"> (v/, p/, zasedani – share.js staticShareContext).
+  let script = null;
+  for (let i = 0; i < 100 && !(script = document.querySelector('script[src*="share.js"]')); i++) await new Promise((r) => setTimeout(r, 100));
+  if (!script) throw new Error("stránka nenačítá share.js");
+  const m = await import(script.src), fmtLib = await import(new URL("lib/format.js", script.src).href);
+  for (let i = 0; i < 50 && typeof window.shareContext !== "function" && !document.getElementById("share-context"); i++) await new Promise((r) => setTimeout(r, 100));
+  let ctx = typeof window.shareContext === "function" ? await window.shareContext("") : null;
+  if (!ctx && document.getElementById("share-context")) {
+    const all = JSON.parse(document.getElementById("share-context").textContent);
+    ctx = fmtLib.withShareUrl(all.kind ? all : all.default);
+  }
+  if (!ctx) throw new Error("stránka nemá kontext sdílení");
   await document.fonts.ready;
-  const ctx = await window.shareContext("");
   if (neutral) ctx.data = { ...ctx.data, avatar: "neutral" };
-  const blob = await renderCardPng(ctx, fmt);
+  const blob = await m.renderCardPng(ctx, fmt);
   const buf = new Uint8Array(await blob.arrayBuffer());
   let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
   // kontrola textů stejnými funkcemi, jakými se kreslilo
-  const f = SHARE_FORMATS[fmt], data = { ...ctx.data };
-  if (!data.dataDay) { const ov = await getJSON("overview.json"); data.dataDay = ov.sources?.votes?.release || ov.period?.to; }
-  const draw = { vote: voteCardOps }[ctx.kind];
-  const ops = draw ? draw(data, f) : fmt === "slide2" ? mepVotingOps(data, f) : fmt === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
+  const f = m.SHARE_FORMATS[fmt], data = { ...ctx.data };
+  if (!data.dataDay) { const ov = await (await fetch(new URL("data/overview.json", script.src))).json(); data.dataDay = ov.sources?.votes?.release || ov.period?.to; }
+  const ops = m.cardOps(ctx.kind, data, f, fmt);
   const texts = [], overflow = [];
   ops.filter((o) => o.k === "text").forEach((o) => {
     texts.push(o.s);
-    const w = measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
+    const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
     if (x0 < 50 || x0 + w > 1030) overflow.push(o.s.slice(0, 40));
   });
   return { png: btoa(bin), texts, overflow, data, kind: ctx.kind };
@@ -331,9 +372,12 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
         site = Path(tmp) / "site"
         shutil.copytree(public, site)
         shutil.copytree(data_dir, site / "data", dirs_exist_ok=True)
-        jobs = ([(f"v/{vote['id']}.html", "post", False), (f"v/{vote['id']}.html", "story", False)] if vote else []) + [
-            (f"p/{mep['id']}.html", fmt, True) for fmt in ("post", "slide2", "slide3", "story")
-        ]
+        session = (public / "zasedani.html").exists() and 'id="share-context"' in (public / "zasedani.html").read_text(encoding="utf-8")
+        jobs = (
+            ([(f"v/{vote['id']}.html", "post", False), (f"v/{vote['id']}.html", "story", False)] if vote else [])
+            + [("zasedani.html", "post", False), ("zasedani.html", "story", False)] * session
+            + [(f"p/{mep['id']}.html", fmt, True) for fmt in ("post", "slide2", "slide3", "story")]
+        )
         rendered = render(site, jobs)
 
     out = out_root / day
@@ -355,6 +399,11 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
             vote_texts(vote, share, trace, data_day, last_session_days(votes)),
         )
         result["vote"] = vote["id"]
+    if session:
+        sess = rendered[2 if vote else 0 : 4 if vote else 2]
+        if sess[0]["data"].get("picks"):
+            write_package(out / "zasedani", [("slide-1.png", sess[0]), ("story.png", sess[1])], session_texts(sess[0]["data"]))
+            result["session"] = sess[0]["data"]["when"]
     mep_res = rendered[-4:]
     write_package(
         out / "poslanec",
