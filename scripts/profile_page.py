@@ -314,7 +314,11 @@ def own_item(e: dict) -> str:
             + (f" (společný návrh: {RESULT_LABEL.get(e['joint_result'], e['joint_result'])})" if e.get("joint_result") else "")
             + f"{vote_link}</div>"
         )
-    return f'<li><a href="{esc(e.get("url"))}">{esc(title)}</a>{ptag}<div class="small muted">{meta}</div>{status}</li>'
+    # procedura vede na Příběh zákona (z/, stránku má každá procedura z proposals.json), dokument a otázka na EP
+    from procedure_pages import procedure_url  # procedure_pages importuje build_pages, proto až tady
+
+    href = (procedure_url(e.get("label")) if str(e.get("id", "")).startswith("proc-") else None) or e.get("url")
+    return f'<li><a href="{esc(href)}">{esc(title)}</a>{ptag}<div class="small muted">{meta}</div>{status}</li>'
 
 
 def passed_card(label: str, value, details: list[str], suffix: str = "") -> str:

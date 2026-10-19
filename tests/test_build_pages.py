@@ -505,3 +505,20 @@ def test_radar_done_card_names_vote_date_when_it_differs_from_plenary_decision()
     assert "Plénum hlasovalo 9. 7. 2026" in html and "jak hlasovali Češi 26. 3. 2026" in html
     same = radar_proc_card({**row, "vote": {**row["vote"], "vote_date": "2026-07-09"}}, "", True)
     assert "jak hlasovali Češi" in same and "26. 3. 2026" not in same
+
+
+def test_titles_link_to_procedure_story():
+    """Název bodu programu, procedury na radaru i práce poslance vede na Příběh zákona (z/), ne ven na EP."""
+    import profile_page
+    from hub import agenda_item_html, radar_session_item
+
+    it = {"id": "MOCK-1", "date": "2026-10-20", "title_cs": "MOCK nařízení", "docs": [], "cz": []}
+    assert '<a href="z/2025-0385-COD">MOCK nařízení</a>' in agenda_item_html(it, "", {"MOCK-1": "2025/0385(COD)"})
+    assert "<a " not in agenda_item_html(it, "", {}).split('class="ns-title">')[1].split("</span>")[0]  # bez procedury jen text
+    row = {**it, "procedure": {"label": "2025/0385(COD)", "type": "COD", "url": "https://oeil.example"}, "committee": None}
+    html = radar_session_item(row, "")
+    assert '<a href="z/2025-0385-COD">MOCK nařízení</a>' in html and "oeil.example" not in html
+    own = {"id": "proc-2026-2079", "label": "2026/2079(DEC)", "url": "https://oeil.example", "title": {"cs": "MOCK"}, "role": "RAPPORTEUR"}
+    assert 'href="z/2026-2079-DEC"' in profile_page.own_item(own)
+    question = {"id": "E-10-2026-000001", "label": "E-001/2026", "url": "https://ep.example/q", "title": {"cs": "MOCK"}, "type": "question"}
+    assert 'href="https://ep.example/q"' in profile_page.own_item(question)
