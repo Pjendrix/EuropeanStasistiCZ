@@ -676,26 +676,57 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-02-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-06-24"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-07-04"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
+     "date": "2025-07-09"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-10-15",
+     "date_to": "2026-06-25"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-09-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-14",
+     "date_to": "2026-10-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -731,26 +762,32 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-06"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-28"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-02",
+     "date_to": "2026-10-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -786,26 +823,32 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-29"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-02",
+     "date_to": "2026-10-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -841,26 +884,55 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-09-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-04-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-20"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
+     "date": "2026-04-29"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-06-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-07-14"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-14"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -896,26 +968,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-10"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-23"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-10-07"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-10-14"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -957,26 +1046,44 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-10"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-11"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-09-16"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-09-30",
+     "date_to": "2026-10-13"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1012,26 +1119,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-03-31"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-23"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-09-16"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-10-12"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1067,26 +1191,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-03-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-20"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-09-16"
     },
     {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-10-08"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1128,26 +1269,37 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-10"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-15"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-10-07"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1189,26 +1341,44 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-02"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-03"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-07-08"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-07-14",
+     "date_to": "2026-10-06"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1244,26 +1414,37 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-14"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-29"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-09-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1311,26 +1492,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-14"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-23",
+     "date_to": "2026-09-11"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-09-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1366,26 +1559,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-06"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-15",
+     "date_to": "2026-09-15"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-09-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1421,26 +1626,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-07-06"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-09",
+     "date_to": "2026-09-11"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-09-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1482,26 +1699,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-04-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-10"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-10",
+     "date_to": "2026-09-15"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-09-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1537,26 +1766,49 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-06"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-04-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-16"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-04-29"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-06-29"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-09-10"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1598,26 +1850,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-06-23"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-24"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-07-08"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-07-16"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1653,26 +1922,51 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-05-21"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-19",
+     "date_to": "2026-01-19"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-01-20"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-02-02",
+     "date_to": "2026-05-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-07-14"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1708,26 +2002,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-04-08"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-14"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-04-29"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-07-02"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1763,26 +2074,50 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-02-25"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-03"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-03-11"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-04-13",
+     "date_to": "2026-06-09"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-07-02"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1818,26 +2153,44 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-11-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-03"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-10"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-12-17"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-12-18",
+     "date_to": "2026-06-23"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1873,26 +2226,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-12-15"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-06-03"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-08",
+     "date_to": "2026-06-10"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_AMEND",
+     "label": "Plénum přijalo pozměňovací návrhy",
      "date": "2026-06-17"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1928,26 +2293,37 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-05-05"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-05-08"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-05-21"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -1983,26 +2359,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-01-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-10-16"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-24",
+     "date_to": "2025-11-24"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-11-27"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2044,26 +2432,38 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2023-11-21"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2024-01-15"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-09-24"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-16",
+     "date_to": "2025-11-12"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_AMEND",
+     "label": "Plénum přijalo pozměňovací návrhy",
      "date": "2025-11-13"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2105,26 +2505,43 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-02-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-06-24"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-06-27"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-07-09"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-10-15"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2160,26 +2577,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-10-01"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
-    },
-    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2215,26 +2631,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2026-09-15"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-09-17"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2270,26 +2685,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-03-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2325,26 +2739,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-03-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2380,26 +2793,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2026-09-15"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-09-17"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2447,26 +2859,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2502,26 +2913,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-04-30"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2557,26 +2967,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-10-05"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2612,26 +3021,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-10-05"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2673,26 +3081,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-06-15"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2728,26 +3135,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-09-17"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2789,26 +3195,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2844,26 +3249,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-09-14"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2899,26 +3303,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-09-14"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -2954,26 +3357,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3027,26 +3429,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3082,26 +3483,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3137,26 +3537,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3192,26 +3591,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-04-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3247,26 +3645,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3302,26 +3699,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3357,26 +3753,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3412,26 +3807,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3467,26 +3861,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3522,26 +3915,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3577,26 +3969,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-20"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3632,26 +4023,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3687,26 +4077,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3748,26 +4137,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3815,26 +4203,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3876,26 +4263,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3931,26 +4317,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -3998,26 +4383,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4053,26 +4437,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-11-24"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4144,26 +4527,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-23"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4199,26 +4581,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4254,26 +4635,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-04-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4309,26 +4689,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-09-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4364,26 +4743,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-06"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4419,26 +4797,25 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-11-13"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": null,
+     "label": "Hlasování ve výboru",
      "date": null
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": null,
+     "label": "Hlasování pléna",
      "date": null
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4477,33 +4854,7 @@
      "role_cs": "stínový/á zpravodaj/ka stanoviska"
     }
    ],
-   "steps": [
-    {
-     "key": "committee",
-     "label": "Výbor",
-     "date": null
-    },
-    {
-     "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
+   "steps": [],
    "reached": null,
    "last_event": null,
    "next_vote": null
@@ -4533,26 +4884,56 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-04-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-06-25"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-29"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-07-08"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-07-15"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-09-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-30",
+     "date_to": "2026-10-05"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-10-06"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4600,26 +4981,57 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-22"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-01-21"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-01-26",
+     "date_to": "2026-06-10"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-24"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-09",
+     "date_to": "2026-09-11"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-09-16"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4667,26 +5079,56 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-19"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-01-21"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-05-19"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-25"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-08",
+     "date_to": "2026-09-11"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-09-16"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4728,26 +5170,57 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-09-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-18"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-01-21"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-01-26",
+     "date_to": "2026-05-19"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-24"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-08",
+     "date_to": "2026-09-11"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-09-16"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4794,29 +5267,40 @@
    ],
    "steps": [
     {
-     "key": "committee",
-     "label": "Výbor",
-     "date": "2026-09-02"
-    },
-    {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-09-03"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-07"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-09-14"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-09-15"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-10-07"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-10-09"
     }
    ],
    "reached": "closed",
@@ -4862,26 +5346,56 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-12-15"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-04-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-17"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-04-29"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-06-10"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-07-06"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-08",
+     "date_to": "2026-09-09"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2026-04-29"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-09-15"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -4923,28 +5437,72 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-27"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-03-02"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-03",
+     "date_to": "2026-03-06"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-03-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-03-12",
+     "date_to": "2026-03-16"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19",
+     "date_to": "2026-03-20"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2026-03-11"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-03-26"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-07-06"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_AMEND_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (pozměněn postoj Rady)",
+     "date": "2026-07-09"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-07-24"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-07-28"
     }
    ],
    "reached": "closed",
@@ -4990,28 +5548,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-10-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-07-07"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-08-06",
+     "date_to": "2025-09-05"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-09-09"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-10-16",
+     "date_to": "2025-12-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-02-25"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-10"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-09-09"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-06-18"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-07-08"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-07-24"
     }
    ],
    "reached": "closed",
@@ -5051,26 +5646,32 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-06"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-06-03"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-08",
+     "date_to": "2026-06-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_DECISION",
+     "label": "Rozhodnutí pléna",
      "date": "2026-06-17"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -5118,26 +5719,32 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-12-15"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-06-03"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-08",
+     "date_to": "2026-06-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_DECISION",
+     "label": "Rozhodnutí pléna",
      "date": "2026-06-17"
     },
     {
      "key": "closed",
+     "type": null,
      "label": "Podpis a vyhlášení",
      "date": null
     }
@@ -5185,28 +5792,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-01-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-03-18"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19",
+     "date_to": "2026-03-26"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-03-26"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-03-26",
+     "date_to": "2026-05-06"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-10"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2026-03-26"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-06-16"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-07-08"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-07-24"
     }
    ],
    "reached": "closed",
@@ -5252,28 +5896,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-20"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-03-19"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19",
+     "date_to": "2026-03-24"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-03-26"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-04-13",
+     "date_to": "2026-05-19"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-10"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2026-03-26"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-06-16"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-06-25"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-30"
     }
    ],
    "reached": "closed",
@@ -5313,28 +5994,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-10-20"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-03-19"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19",
+     "date_to": "2026-03-23"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2026-03-26"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-04-13",
+     "date_to": "2026-05-19"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-06-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-06-10"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2026-03-26"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-06-16"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-06-25"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-30"
     }
    ],
    "reached": "closed",
@@ -5374,28 +6092,58 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-11-12"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-01-27"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-02-03"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2026-02-11"
     },
     {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-05-06"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-05-11",
+     "date_to": "2026-05-13"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-05-19"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-06-17"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-24"
     }
    ],
    "reached": "closed",
@@ -5441,28 +6189,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-04-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-04-08"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-04-10",
+     "date_to": "2025-05-06"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-05-08"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-06-17",
+     "date_to": "2025-12-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-02-24"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-05-11"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-05-08"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-05-19"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-06-17"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-26"
     }
    ],
    "reached": "closed",
@@ -5508,28 +6293,77 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-10-02"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-04"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2024-11-19"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-05"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-03-12"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2024-11-19",
+     "date_to": "2025-11-18"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-01-27"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-04-30"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-05-05"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-05-06",
+     "date_to": "2026-05-11"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-05-19"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-05-20"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-10"
     }
    ],
    "reached": "closed",
@@ -5565,28 +6399,76 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-10-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-19"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2025-12-08"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-21"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_AMEND_PROPOSAL",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-04-24"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-12-08"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-02-24"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-04-30"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-05-05"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-05-08",
+     "date_to": "2026-05-12"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-05-19"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-05-20"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-06-26"
     }
    ],
    "reached": "closed",
@@ -5628,28 +6510,39 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2026-02-09"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2026-04-15"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-16"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-04-28"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-05-20"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-05-26"
     }
    ],
    "reached": "closed",
@@ -5695,28 +6588,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-01-25"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-06-03"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-06-10",
+     "date_to": "2025-06-17"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-06-19"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-07-15",
+     "date_to": "2025-11-25"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-01-12"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-04-21"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-06-19"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-04-28"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-06-17"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-08-10"
     }
    ],
    "reached": "closed",
@@ -5756,28 +6686,76 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-10-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-04"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2025-07-02"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-06"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_AMEND_PROPOSAL",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-04-10"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-07-02",
+     "date_to": "2025-11-05"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-03"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-03-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-03-17"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-18"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-04-28"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-04-29"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-05-12"
     }
    ],
    "reached": "closed",
@@ -5813,28 +6791,76 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-20"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2024-12-17"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-25"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-04-24"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2024-12-17",
+     "date_to": "2025-06-25"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-11-05"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-03-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-03-18"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-03-26"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-30"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-04-20"
     }
    ],
    "reached": "closed",
@@ -5870,28 +6896,76 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-20"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2024-12-17"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-25"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-04-24"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2024-12-17",
+     "date_to": "2025-06-25"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-11-05"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-03-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-03-18"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-03-26"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-30"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-04-20"
     }
    ],
    "reached": "closed",
@@ -5927,28 +7001,76 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-07-10"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-03-20"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2024-12-17"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-03-25"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-04-24"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2024-12-17",
+     "date_to": "2025-06-25"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-11-05"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-03-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-03-18"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-19"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
+     "date": "2026-03-26"
+    },
+    {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-30"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-04-20"
     }
    ],
    "reached": "closed",
@@ -5984,28 +7106,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-01-18"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-06-26"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-07-16",
+     "date_to": "2025-09-05"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-09-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-09-24",
+     "date_to": "2025-12-02"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-01-27"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-04"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-09-11"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-03-12"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-04-29"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-05-08"
     }
    ],
    "reached": "closed",
@@ -6045,28 +7204,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2024-01-23"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2024-02-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-03-19"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-03-26"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-04-03"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-04-07",
+     "date_to": "2025-09-24"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-03"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-03-03",
+     "date_to": "2026-03-04"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-04-03"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-03-10"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-04-29"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-05-12"
     }
    ],
    "reached": "closed",
@@ -6112,28 +7308,64 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-07-07"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2025-11-10"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
      "date": "2025-11-10"
     },
     {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-11-13"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-12-09"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-01-19"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-02-01",
+     "date_to": "2026-02-04"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-07-09"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-02-10"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-11"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-03-18"
     }
    ],
    "reached": "closed",
@@ -6173,28 +7405,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2025-11-20"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2025-11-24"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-12-08"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-09",
+     "date_to": "2025-12-15"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-12-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-12-17"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-01-27"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-02-03",
+     "date_to": "2026-02-04"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-12-16"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2026-02-10"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-11"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-03-19"
     }
    ],
    "reached": "closed",
@@ -6234,28 +7503,64 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-12-19"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-09-25"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-09-30"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-10-08"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-11-18"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-04"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-02-04",
+     "date_to": "2026-02-06"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2026-02-10"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-03-11"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-03-20"
     }
    ],
    "reached": "closed",
@@ -6295,28 +7600,45 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-11-12"
     },
     {
-     "key": "report",
-     "label": "Zpráva výboru",
-     "date": null
-    },
-    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-11-26"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-12-04"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-15"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-11-13"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2025-12-17"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2025-12-19"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-23"
     }
    ],
    "reached": "closed",
@@ -6356,28 +7678,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
-     "date": "2025-07-14"
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2025-09-08"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-10-16"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-17"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-10-22"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-11-06",
+     "date_to": "2025-12-02"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-10",
+     "date_to": "2025-12-15"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-15"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2025-12-17"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-01-26"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-02-02"
     }
    ],
    "reached": "closed",
@@ -6423,28 +7782,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-06-16"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-09-24"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-09-26",
+     "date_to": "2025-10-07"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2025-10-08"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-10-17",
+     "date_to": "2025-11-10"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-11-20"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-10"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-10-08"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2025-12-16"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2025-12-19"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-31"
     }
    ],
    "reached": "closed",
@@ -6496,28 +7892,77 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-03-31"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-10-13"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-17"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REJECT_COMMITTEE_INTERINSTUTIONAL_NEGOTIATIONS",
+     "label": "Plénum odmítlo mandát k jednání s Radou",
      "date": "2025-10-22"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-11-04",
+     "date_to": "2025-11-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
+     "date": "2025-11-13"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-11-18",
+     "date_to": "2025-12-08"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-12-11"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-10-22"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2025-12-16"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2026-02-24"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2026-02-26"
     }
    ],
    "reached": "closed",
@@ -6557,28 +8002,77 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-11-20"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-02-22"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": "2025-02-20"
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-02-26"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_AMEND_PROPOSAL",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2024-03-13"
     },
     {
-     "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-02-20",
+     "date_to": "2025-06-26"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-09-25"
+    },
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2025-11-27"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2025-12-04"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-12-05",
+     "date_to": "2025-12-10"
+    },
+    {
+     "key": "plenary",
+     "type": "PLENARY_APPROVE_COUNCIL_POSITION",
+     "label": "Hlasování pléna – 2. čtení (schválen postoj Rady)",
      "date": "2025-12-16"
+    },
+    {
+     "key": "closed",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
+     "date": "2025-12-16"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-30"
     }
    ],
    "reached": "closed",
@@ -6620,28 +8114,65 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2024-11-13"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-04-24"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-04-30"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
      "date": "2025-05-07"
     },
     {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2025-06-30",
+     "date_to": "2025-10-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-10-20"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-11-20",
+     "date_to": "2025-11-24"
+    },
+    {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2025-03-13"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2025-11-25"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2025-12-16"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-29"
     }
    ],
    "reached": "closed",
@@ -6681,28 +8212,40 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2025-06-16"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2025-10-06"
     },
     {
-     "key": "trilogue",
-     "label": "Jednání s Radou",
-     "date": null
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-09",
+     "date_to": "2025-11-05"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
      "date": "2025-11-13"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2025-12-16"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-22"
     }
    ],
    "reached": "closed",
@@ -6742,28 +8285,64 @@
    "steps": [
     {
      "key": "committee",
-     "label": "Výbor",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
      "date": "2023-07-13"
     },
     {
      "key": "report",
-     "label": "Zpráva výboru",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
      "date": "2024-02-15"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2024-02-20"
+    },
+    {
      "key": "trilogue",
-     "label": "Jednání s Radou",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
      "date": "2024-04-10"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2024-11-04",
+     "date_to": "2025-06-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2025-07-15"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2025-10-15"
     },
     {
      "key": "plenary",
-     "label": "Hlasování v plénu",
-     "date": "2024-04-10"
+     "type": "PLENARY_ADOPT_POSITION",
+     "label": "Hlasování pléna – 1. čtení",
+     "date": "2025-10-21"
     },
     {
      "key": "closed",
-     "label": "Podpis a vyhlášení",
+     "type": "SIGNATURE",
+     "label": "Podpis aktu",
      "date": "2025-11-26"
+    },
+    {
+     "key": "closed",
+     "type": "PUBLICATION_OFFICIAL_JOURNAL",
+     "label": "Vyhlášení v Úředním věstníku",
+     "date": "2025-12-12"
     }
    ],
    "reached": "closed",

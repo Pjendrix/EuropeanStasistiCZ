@@ -126,7 +126,7 @@ def cz_trace(row: dict, vote_roles: dict, meps_by_id: dict) -> list[dict]:
 
 
 def steps_html(tl: dict) -> str:
-    """Kroky procedury jako na radaru (hub.radar_steps)."""
+    """Časová osa procedury jako na radaru (hub.radar_steps)."""
     from hub import radar_steps  # hub.py importuje build_pages, proto až tady
 
     return radar_steps(tl["steps"], tl["reached"])
@@ -172,7 +172,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
     finals = [v for v in votes if is_final(v)]
 
     if row.get("events"):
-        tl = timeline(row["events"])
+        tl = timeline(row["events"], ptype)
         story = (
             f"{steps_html(tl)}"
             + (

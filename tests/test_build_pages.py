@@ -466,3 +466,42 @@ def test_radar_proc_card_links_to_procedure_story():
     }
     html = radar_proc_card(row, "")
     assert 'href="z/2023-0447-COD"' in html and "oeil.example" not in html
+
+
+def test_radar_steps_timeline_states_and_date_ranges():
+    from hub import radar_steps
+
+    steps = [
+        {"key": "committee", "label": "Přiděleno výboru", "date": "2024-11-13"},
+        {"key": "trilogue", "label": "Jednání s Radou (trialog)", "date": "2025-06-30", "date_to": "2025-10-16"},
+        {"key": "plenary", "label": "Hlasování pléna", "date": None},
+    ]
+    html = radar_steps(steps, "trilogue")
+    assert html.count('class="rd-step done"') == 1 and html.count('aria-current="step"') == 1
+    assert '<li class="rd-step current" aria-current="step">' in html and "30. 6. – 16. 10. 2025" in html
+    assert 'class="rd-step todo"' in html
+    closed = radar_steps([{**steps[0]}, {"key": "closed", "label": "Podpis aktu", "date": "2025-12-16"}], "closed")
+    assert "aria-current" not in closed and closed.count('class="rd-step done"') == 2
+    over_year = radar_steps([{"key": "trilogue", "label": "MOCK", "date": "2024-12-02", "date_to": "2025-01-20"}], "trilogue")
+    assert "2. 12. 2024 – 20. 1. 2025" in over_year
+
+
+def test_radar_done_card_names_vote_date_when_it_differs_from_plenary_decision():
+    """Rozhodnutí pléna (2. čtení) bez jmenovitého hlasování v HowTheyVote: odkaz vede na starší hlasování a říká, z kdy je."""
+    from hub import radar_proc_card
+
+    row = {
+        "procedure": "2025-0429",
+        "label": "2025/0429(COD)",
+        "title_cs": "MOCK",
+        "committee": None,
+        "cz": [],
+        "steps": [],
+        "reached": "closed",
+        "plenary_date": "2026-07-09",
+        "vote": {"vote_id": 189270, "vote_date": "2026-03-26", "status": "REJECTED"},
+    }
+    html = radar_proc_card(row, "", True)
+    assert "Plénum hlasovalo 9. 7. 2026" in html and "jak hlasovali Češi 26. 3. 2026" in html
+    same = radar_proc_card({**row, "vote": {**row["vote"], "vote_date": "2026-07-09"}}, "", True)
+    assert "jak hlasovali Češi" in same and "26. 3. 2026" not in same
