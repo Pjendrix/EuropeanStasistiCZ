@@ -732,7 +732,7 @@ const SD_THEME_KEY = "ep-share-theme";
 const SD_THEME_LABEL = { dark: "Tmavý", light: "Světlý" };
 const SD_THEME_FILE = { dark: "tmava", light: "svetla" };
 
-// Výchozí vzhled karty: uložená volba, jinak podle režimu webu (data-theme, jinak prefers-color-scheme).
+// Výchozí vzhled karty: uložená volba, jinak podle režimu webu (výchozí je světlý).
 // Úložiště může chybět nebo házet výjimku (soukromé okno, zakázané cookies): pak jen výchozí hodnota.
 export function cardThemeDefault() {
   let saved = null;
@@ -740,7 +740,7 @@ export function cardThemeDefault() {
   if (CARD_THEMES.includes(saved)) return saved;
   const site = document.documentElement.dataset.theme;
   if (CARD_THEMES.includes(site)) return site;
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "light";
 }
 
 const canShareFiles = (n) => {

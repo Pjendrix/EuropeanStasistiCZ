@@ -2,7 +2,7 @@
 
 Z design/tokens.json se vygeneruje:
   - blok :root ve public/style.css (mezi značkami tokens:start / tokens:end): barvy světlého a tmavého režimu jako
-    light-dark(světlá, tmavá), pro hodnoty, které nejsou barvy (stín, sytost tabulky shody), krátký tmavý přepis,
+    light-dark(světlá, tmavá); výchozí je vždy světlý, tmavý jen po přepnutí (html[data-theme="dark"], theme.js), pro hodnoty, které nejsou barvy (stín, sytost tabulky shody), krátký tmavý přepis,
     a záložní blok pro prohlížeče bez light-dark() (před rokem 2024),
   - řádek konstant SC_THEMES v public/share.js (barvy obrázků ke sdílení: tmavá karta z „card“, světlá z „card_light“).
 build_cards.py čte design/tokens.json přímo (card_rgb).
@@ -25,7 +25,6 @@ TOKENS = ROOT / "design" / "tokens.json"
 START, END = "/* tokens:start", "/* tokens:end */"
 SC_RE = re.compile(r"^const SC_THEMES = \{.*?\};$", re.M | re.S)
 DARK = ':root[data-theme="dark"]'
-DARK_AUTO = '@media (prefers-color-scheme: dark) {{ :root:not([data-theme="light"]) {{ {} }} }}'
 
 
 def load(path: Path = TOKENS) -> dict:
@@ -45,25 +44,22 @@ def css_block(t: dict) -> str:
         "   a stran je v datech (groups.json, parties.json). --data = hodnota poslance, --bench = medián. */",
         "@layer tokens {",
         ":root {",
-        "  color-scheme: light dark;",
+        "  color-scheme: light;",
     ]
     lines += [f"  --{k}: {v};" for k, v in t["brand"].items()]
     lines += [f"  --{k}: light-dark({light}, {dark});" if light != dark else f"  --{k}: {light};" for k, (light, dark) in theme.items()]
     lines += [f"  --{k}: {light};" for k, (light, _dark) in other.items()]
     lines.append("}")
-    lines.append(':root[data-theme="light"] { color-scheme: light; }')
     lines.append(f"{DARK} {{ color-scheme: dark; }}")
     dark_other = {k: dark for k, (light, dark) in other.items() if light != dark}
     if dark_other:
         lines.append("/* tmavý režim pro hodnoty, které nejsou barvy (light-dark() umí jen barvy) */")
-        lines.append(DARK_AUTO.format(_decls(dark_other)))
         lines.append(f"{DARK} {{ {_decls(dark_other)} }}")
     light = {k: v[0] for k, v in theme.items() if v[0] != v[1]}
     dark = {k: v[1] for k, v in theme.items() if v[0] != v[1]}
     lines.append("/* prohlížeče bez light-dark() (před rokem 2024): stejné barvy postaru */")
     lines.append("@supports not (color: light-dark(#000, #fff)) {")
     lines.append(f"  :root {{ {_decls(light)} }}")
-    lines.append("  " + DARK_AUTO.format(_decls(dark)))
     lines.append(f"  {DARK} {{ {_decls(dark)} }}")
     lines.append("}")
     lines.append("}")

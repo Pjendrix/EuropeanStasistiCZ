@@ -445,8 +445,7 @@ export function setupThemeToggle() {
   const btn = document.getElementById("theme-toggle");
   if (!btn) return;
   const root = document.documentElement;
-  const isDark = () => root.dataset.theme === "dark" ||
-    (!root.dataset.theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const isDark = () => root.dataset.theme === "dark";
   const sync = () => btn.setAttribute("aria-pressed", String(isDark()));
   sync();
   btn.addEventListener("click", () => {

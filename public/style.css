@@ -1,6 +1,6 @@
 /* EP Watch CZ – vzhled „analytický dashboard“ (EU × ČR).
-   Barvy jsou tokeny v :root, tmavý režim je níže (automaticky podle systému,
-   nebo ručně přepínačem v hlavičce: html[data-theme="dark"|"light"]). */
+   Barvy jsou tokeny v :root. Výchozí je vždy světlý režim bez ohledu na nastavení systému,
+   tmavý jen po přepnutí v hlavičce (html[data-theme="dark"], volba se uloží v prohlížeči). */
 
 /* Plus Jakarta Sans (SIL OFL 1.1, viz assets/fonts/OFL.txt), hostované v repu – bez Google Fonts. */
 @font-face {
@@ -22,7 +22,7 @@
    a stran je v datech (groups.json, parties.json). --data = hodnota poslance, --bench = medián. */
 @layer tokens {
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --navy: #0F172A;
   --navy-2: #0A1226;
   --navy-glow: #1E3A8A;
@@ -59,15 +59,12 @@
   --radius: 18px;
   --radius-sm: 12px;
 }
-:root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 /* tmavý režim pro hodnoty, které nejsou barvy (light-dark() umí jen barvy) */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --shadow: none; --mx-max: 42%; } }
 :root[data-theme="dark"] { --shadow: none; --mx-max: 42%; }
 /* prohlížeče bez light-dark() (před rokem 2024): stejné barvy postaru */
 @supports not (color: light-dark(#000, #fff)) {
   :root { --bg: #F8FAFC; --surface: #FFFFFF; --glass: rgba(255, 255, 255, .82); --chip: #F1F5F9; --stage: #E8EDF4; --text: #0F172A; --muted: #64748B; --border: rgba(15, 23, 42, .09); --track: #E2E8F0; --accent: #2563EB; --accent-soft: #EFF6FF; --data: #334155; --bench: #B45309; --link: #1E3A8A; --for: #2BA862; --against: #9F1D2B; --abst: #64748B; --absent: #94A3B8; --for-text: #15803D; --against-text: #9F1D2B; --glyph: #FFFFFF; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0B1220; --surface: #111A2E; --glass: rgba(30, 41, 59, .55); --chip: rgba(30, 41, 59, .85); --stage: #0A101E; --text: #E2E8F0; --muted: #94A3B8; --border: rgba(148, 163, 184, .16); --track: rgba(148, 163, 184, .18); --accent: #93C5FD; --accent-soft: rgba(59, 130, 246, .14); --data: #CBD5E1; --bench: #F59E0B; --link: #BFDBFE; --for: #5BE49B; --against: #E5484D; --abst: #94A3B8; --absent: #64748B; --for-text: #86EFAC; --against-text: #FCA5A5; --glyph: #0B1220; } }
   :root[data-theme="dark"] { --bg: #0B1220; --surface: #111A2E; --glass: rgba(30, 41, 59, .55); --chip: rgba(30, 41, 59, .85); --stage: #0A101E; --text: #E2E8F0; --muted: #94A3B8; --border: rgba(148, 163, 184, .16); --track: rgba(148, 163, 184, .18); --accent: #93C5FD; --accent-soft: rgba(59, 130, 246, .14); --data: #CBD5E1; --bench: #F59E0B; --link: #BFDBFE; --for: #5BE49B; --against: #E5484D; --abst: #94A3B8; --absent: #64748B; --for-text: #86EFAC; --against-text: #FCA5A5; --glyph: #0B1220; }
 }
 }
@@ -399,7 +396,6 @@ table.compact thead tr:last-child th.num { text-align: right; }
 .contact-form textarea { resize: vertical; }
 .btn-send { justify-self: start; border: 0; cursor: pointer; background: var(--navy); color: #F8FAFC; font: inherit; font-weight: 600; }
 :root[data-theme="dark"] .btn-send { background: var(--accent); color: var(--navy); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-send { background: var(--accent); color: var(--navy); } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .card { position: relative; }
 .csv-btn { margin-top: .5rem; min-height: 32px; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--link); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
