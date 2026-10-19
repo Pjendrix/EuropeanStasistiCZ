@@ -19,7 +19,7 @@ from pathlib import Path
 from build_pages import HTV, RESULT_LABEL, ROOT, back_row, display_name, esc, fmt_date, fmt_num, kind_of, og_meta, split_bar
 from build_web import vote_title
 from compute_stats import active_positions
-from layout import page
+from layout import json_script, page
 from radar import COMMITTEES, CZ_ROLE_CS, CZ_ROLES, EVENT_CS, OEIL_URL, ROLE_ORDER, timeline
 from vote_kinds import KIND_LABELS, is_final
 from vote_parties import POSITIONS
@@ -252,6 +252,32 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
         )
 
     last_final = finals[-1] if finals else None
+    # Karta ke sdílení (share.js lawCardOps): název, kde procedura je, poslední závěrečné hlasování a hlasy Čechů.
+    done_steps = [x for x in (timeline(row["events"], ptype)["steps"] if row.get("events") else []) if x.get("date")]
+    now = done_steps[-1] if done_steps else None
+    cz_final = [sum(p["position"] == k for p in active_positions(last_final, meps_by_id)) for k in POSITIONS] if last_final else None
+    share_ctx = {
+        "kind": "law",
+        "path": f"z/{slug(label)}",
+        "filename": f"ep-watch-zakon-{slug(label)}",
+        "subtitle": f"Příběh zákona · {label}",
+        "text": f"{title} ({label}): průběh v Evropském parlamentu a jak hlasovali Češi. Zdroj: EP Open Data, HowTheyVote.eu, EP Watch CZ",
+        "data": {
+            "title": title,
+            "label": label,
+            "kind": PROCESS_TYPE_CS.get(ptype),
+            "now": f"{now['label']} ({fmt_date(now.get('date_to') or now['date'])})" if now else None,
+            "agenda": fmt_date(row["on_agenda"]) if row.get("on_agenda") else None,
+            "final": {
+                "date": fmt_date(last_final["date"]),
+                "result": RESULT_LABEL.get(last_final.get("result"), "výsledek neuveden").capitalize(),
+                "cz": cz_final,
+            }
+            if last_final
+            else None,
+            "dataDay": max([v["date"] for v in votes] + [e["date"] for e in row.get("events") or []], default=None),
+        },
+    }
     summary = (
         f"Závěrečné hlasování {fmt_date(last_final['date'])}: {RESULT_LABEL.get(last_final.get('result'), 'výsledek neuveden')}."
         if last_final
@@ -262,12 +288,13 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
 <h1>{esc(title)}</h1>
 <p class="lead">{esc(summary)} Jmenovitých hlasování: {fmt_num(len(votes))}.</p>
 <p class="muted">Příběh zákona: jak procedura prošla Parlamentem, od přidělení výboru po hlasování v plénu.</p>
-{f'<p class="rd-next"><strong>Na programu pléna {fmt_date(row["on_agenda"])}</strong> · <a href="{ROOT}radar">Co se chystá</a></p>' if row.get("on_agenda") else ""}
+{f'<p class="rd-next"><strong>Na programu pléna {fmt_date(row["on_agenda"])}</strong> · <a href="{ROOT}zasedani">Zasedání</a></p>' if row.get("on_agenda") else ""}
 <section aria-labelledby="z-prubeh"><h2 id="z-prubeh">Průběh</h2>{story}</section>
 <section aria-labelledby="z-stopa"><h2 id="z-stopa">Česká stopa</h2>{trace_html}</section>
 <section aria-labelledby="z-hlas"><h2 id="z-hlas">Hlasování v plénu</h2>{table}</section>
 <details class="links-more"><summary>zdroje a odkazy</summary><p class="small"><a href="{esc(oeil)}">Legislativní observatoř EP ({esc(label)})</a> ·
-<a href="{esc(api)}">EP Open Data API</a>{f" · anglický název: {esc(row['title_en'])}" if row.get("title_en") and row["title_cs"] else ""}</p></details>"""
+<a href="{esc(api)}">EP Open Data API</a>{f" · anglický název: {esc(row['title_en'])}" if row.get("title_en") and row["title_cs"] else ""}</p></details>
+<script type="application/json" id="share-context">{json_script(share_ctx)}</script>"""
     path = f"z/{slug(label)}.html"
     desc = f"{title} ({label}): průběh procedury v Evropském parlamentu, {len(votes)} jmenovitých hlasování a jak hlasovali čeští poslanci."
     return path, page(
