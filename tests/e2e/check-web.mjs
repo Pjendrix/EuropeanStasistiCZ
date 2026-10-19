@@ -142,7 +142,7 @@ for (const scheme of ["light", "dark"]) {
     if (scheme === "dark" && width !== 1366) continue;
     const ctx = await browser.newContext({ viewport: { width, height: 800 }, colorScheme: scheme, acceptDownloads: true });
     await ctx.addInitScript(() => { window.__alerts = 0; window.alert = () => { window.__alerts += 1; }; });
-    for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`]) {
+    for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`, procPage, "zasedani"]) {
       const page = await ctx.newPage();
       await page.goto(base + url, { waitUntil: "networkidle" });
       await page.waitForTimeout(900);
@@ -909,6 +909,24 @@ for (const width of [1366, 390]) {
     if (!(await page.locator(".empty-state:visible").count())) problems.push("votes?q=… [prázdný výsledek]: chybí vysvětlení „Nic jsme nenašli“");
     await ctx.close();
   }
+}
+// Zasedání: čip tématu nahoře vyfiltruje program, druhý klik filtr zruší.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto(base + "zasedani", { waitUntil: "networkidle" });
+  const chip = page.locator(".zs-topic").first();
+  if (!(await chip.count())) problems.push("zasedani [témata]: chybí čipy témat");
+  else {
+    const cat = await chip.getAttribute("data-cat");
+    await chip.click();
+    const st = await page.evaluate(() => ({ sel: document.getElementById("rd-cat").value, pressed: document.querySelector(".zs-topic")?.getAttribute("aria-pressed"),
+      cats: [...document.querySelectorAll(".rd-list > li")].filter((li) => li.offsetParent).map((li) => li.dataset.cat) }));
+    if (st.sel !== cat || st.pressed !== "true" || !st.cats.length || st.cats.some((c) => c !== cat)) problems.push(`zasedani [témata]: klik na ${cat} nevyfiltroval program (${JSON.stringify(st).slice(0, 120)})`);
+    await chip.click();
+    if ((await page.evaluate(() => document.getElementById("rd-cat").value)) !== "") problems.push("zasedani [témata]: druhý klik filtr nezrušil");
+  }
+  await ctx.close();
 }
 // Radar a Zasedání: filtry opravdu skryjí položky (dřív je CSS display: grid přebilo) a názvy bodů programu i procedur
 // vedou na existující stránku Příběh zákona.
