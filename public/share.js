@@ -784,20 +784,40 @@ async function openSharePanel(trigger) {
       const alt = (i) => `Náhled karty: ${ctx.subtitle || ctx.text}${srcs.length > 1 ? ` (obrázek ${i + 1} z ${srcs.length})` : ""}`;
       preview.innerHTML = srcs.length > 1
         ? `<div class="sd-carousel" tabindex="0" aria-label="Náhled, 3 obrázky (šipky přepínají)">${srcs.map((u, i) => `<img src="${u}" alt="${esc(alt(i))}" width="1080" height="1350">`).join("")}</div>
-           <div class="sd-dots" aria-label="Obrázek 1 z ${srcs.length}">${srcs.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>`
+           <div class="sd-nav"><button type="button" class="sd-arr" data-step="-1" aria-label="Předchozí obrázek" disabled>‹</button>
+             <span class="sd-dots" role="group" aria-label="Obrázek 1 z ${srcs.length}">${srcs.map((_, i) => `<button type="button" class="${i ? "" : "on"}" data-i="${i}" aria-label="Obrázek ${i + 1}"${i ? "" : ' aria-current="true"'}></button>`).join("")}</span>
+             <button type="button" class="sd-arr" data-step="1" aria-label="Další obrázek">›</button></div>`
         : `<img src="${srcs[0]}" alt="${esc(alt(0))}" width="${f.w}" height="${f.h}">`;
       const car = preview.querySelector(".sd-carousel");
       if (car) {
-        const dots = [...preview.querySelectorAll(".sd-dots i")];
-        car.addEventListener("scroll", () => {
-          const i = Math.round(car.scrollLeft / Math.max(car.firstElementChild.offsetWidth, 1));
-          dots.forEach((d, j) => d.classList.toggle("on", j === i));
+        // Přepínání obrázků: vodorovné posouvání (dotyk, touchpad), šipky na klávesnici, tlačítka ‹ › a tečky (myš na desktopu).
+        const imgs = [...car.children], dots = [...preview.querySelectorAll(".sd-dots button")], arrows = [...preview.querySelectorAll(".sd-arr")];
+        let cur = 0;
+        const current = () => {
+          const mid = car.scrollLeft + car.clientWidth / 2;
+          return imgs.reduce((best, im, j) => (Math.abs(im.offsetLeft + im.offsetWidth / 2 - mid) < Math.abs(imgs[best].offsetLeft + imgs[best].offsetWidth / 2 - mid) ? j : best), 0);
+        };
+        const mark = (i) => {
+          cur = i;
+          dots.forEach((d, j) => { d.classList.toggle("on", j === i); d.toggleAttribute("aria-current", j === i); });
           preview.querySelector(".sd-dots").setAttribute("aria-label", `Obrázek ${i + 1} z ${dots.length}`);
-        }, { passive: true });
+          arrows[0].disabled = i === 0;
+          arrows[1].disabled = i === imgs.length - 1;
+        };
+        const goTo = (i) => {
+          const im = imgs[Math.max(0, Math.min(imgs.length - 1, i))];
+          car.scrollTo({ left: im.offsetLeft - (car.clientWidth - im.offsetWidth) / 2, behavior: "smooth" });
+          mark(imgs.indexOf(im));
+        };
+        car.addEventListener("scroll", () => mark(current()), { passive: true });
         car.addEventListener("keydown", (ev) => {
           if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
           ev.preventDefault();
-          car.scrollBy({ left: (ev.key === "ArrowRight" ? 1 : -1) * car.firstElementChild.offsetWidth, behavior: "smooth" });
+          goTo(cur + (ev.key === "ArrowRight" ? 1 : -1));
+        });
+        preview.querySelector(".sd-nav").addEventListener("click", (ev) => {
+          const b = ev.target.closest("button");
+          if (b) goTo(b.dataset.i != null ? Number(b.dataset.i) : cur + Number(b.dataset.step));
         });
       }
     } catch (e) {
