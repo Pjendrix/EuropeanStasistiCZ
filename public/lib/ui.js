@@ -228,6 +228,13 @@ export function showError(el, err, retry) {
   el.innerHTML = `<p class="error" role="alert">${esc(err.message || err)}
     <button type="button" class="more-btn">Zkusit znovu</button></p>`;
   el.querySelector("button").addEventListener("click", () => (retry ? retry() : location.reload()));
+  // Ostatní místa, která čekala na stejná data, nesmí zůstat na „Načítám…“ (audit UX P2): krátká poznámka místo nekonečného načítání.
+  document.querySelectorAll("main .loading").forEach((x) => {
+    if (!/^\s*Načítám/.test(x.textContent)) return;
+    x.classList.remove("loading");
+    x.classList.add("muted");
+    x.textContent = "Nenačteno (chyba při načítání dat).";
+  });
   console.error(err);
 }
 

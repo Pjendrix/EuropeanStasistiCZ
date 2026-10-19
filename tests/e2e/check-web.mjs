@@ -811,10 +811,97 @@ for (const width of [1366, 390]) {
   if (nj.find || nj.filter || !nj.defs || nj.open) err(`bez JS: hledání ${nj.find}, filtr ${nj.filter}, definic ${nj.defs}, otevřených ${nj.open}`);
   await nojs.close();
 }
+// Audit UX P2 (2026-10-18): tablet a úzký telefon (768 a 360 px), axe v mobilním rozložení (390 px), klávesnice,
+// chybové stavy (výpadek dat) a prázdné výsledky.
+{
+  const axeRun = async (page) => { await page.evaluate(axeSource);
+    return page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+      .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`)); };
+  for (const width of [768, 390, 360]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+    for (const url of pages) {
+      const page = await ctx.newPage();
+      const errors = [];
+      page.on("pageerror", (e) => errors.push(e.message));
+      await page.goto(base + url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(300);
+      const where = `${url} [${width}px]`;
+      errors.forEach((e) => problems.push(`${where}: chyba ${e}`));
+      if (width !== 390) {
+        const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+        if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
+      } else (await axeRun(page)).forEach((x) => problems.push(`${where}: axe ${x}`));
+      await page.close();
+    }
+    await ctx.close();
+  }
+  // Klávesnice: první Tab = odkaz „Přejít na obsah“, Enter přesune fokus do <main>; dalších 25 zastávek je vidět
+  // a má viditelný indikátor fokusu (outline nebo box-shadow).
+  for (const width of [1366, 390]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+    for (const url of ["aktualne", "poslanci", "votes", "analyzy", "radar", `v/${voteId}`, `p/${mepId}`, procPage]) {
+      const page = await ctx.newPage();
+      const where = `${url} [klávesnice, ${width}px]`;
+      await page.goto(base + url, { waitUntil: "networkidle" });
+      await page.keyboard.press("Tab");
+      const skip = await page.evaluate(() => ({ cls: document.activeElement?.className, vis: document.activeElement?.getBoundingClientRect().height > 0 }));
+      if (skip.cls !== "skip-link" || !skip.vis) problems.push(`${where}: první Tab není viditelný odkaz „Přejít na obsah“ (${skip.cls})`);
+      await page.keyboard.press("Enter");
+      await page.keyboard.press("Tab");  // další zastávka po „Přejít na obsah“ musí být v obsahu, ne v hlavičce
+      const inMain = await page.evaluate(() => Boolean(document.querySelector("main")?.contains(document.activeElement)));
+      if (!inMain) problems.push(`${where}: po „Přejít na obsah“ nevede Tab do <main>`);
+      const bad = [];
+      for (let i = 0; i < 25; i++) {
+        await page.keyboard.press("Tab");
+        const st = await page.evaluate(() => {
+          const el = document.activeElement;
+          if (!el || el === document.body) return null;
+          const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+          const ring = (cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) > 0) || (cs.boxShadow && cs.boxShadow !== "none");
+          return { name: `${el.tagName.toLowerCase()}${el.className ? "." + String(el.className).split(" ")[0] : ""} „${(el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 30)}“`,
+            hidden: !r.width || !r.height || cs.visibility === "hidden", ring };
+        });
+        if (!st) continue;
+        if (st.hidden) bad.push(`neviditelný prvek ve fokusu: ${st.name}`);
+        else if (!st.ring) bad.push(`fokus bez indikátoru: ${st.name}`);
+      }
+      [...new Set(bad)].forEach((b) => problems.push(`${where}: ${b}`));
+      await page.close();
+    }
+    await ctx.close();
+  }
+  // Výpadek dat: žádné nekonečné „Načítám…“, chyba je vidět a ohlášená čtečce (role="alert").
+  const STATIC_CONTENT = /^(aktualne|hlasovani|p\/|s\/)/;
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
+    for (const url of ["aktualne", "poslanci", "party", "hlasovani", "votes", "temata", "rozkol", "rozhodujici", "shoda", "kviz", "prace", "prace-poslanci",
+      `vote?id=${voteId}&m=${month}`, `p/${mepId}`, `s/${partyId}`]) {
+      const page = await ctx.newPage();
+      const where = `${url} [výpadek dat]`;
+      await page.route(/\/data\//, (r) => r.abort("failed"));
+      await page.goto(base + url, { waitUntil: "load" });
+      await page.waitForTimeout(2500);
+      const st = await page.evaluate(() => ({
+        loading: [...document.querySelectorAll("main .loading, main [aria-busy='true']")].filter((e) => e.offsetParent && /Načítám/.test(e.textContent)).map((e) => e.id || e.className),
+        stuck: [...document.querySelectorAll("main *")].filter((e) => e.offsetParent && !e.children.length && /^\s*Načítám/.test(e.textContent)).length,
+        alert: [...document.querySelectorAll("[role=alert]")].some((e) => e.offsetParent && e.textContent.trim()),
+      }));
+      if (st.loading.length || st.stuck) problems.push(`${where}: zůstalo „Načítám…“ (${st.loading.join(", ") || st.stuck + "×"})`);
+      // statické stránky (aktualne, hlasovani, p/, s/) mají obsah v HTML; chyba doplňků je jen v konzoli
+      if (!st.alert && !STATIC_CONTENT.test(url)) problems.push(`${where}: chybí viditelná chybová hláška s role="alert"`);
+      await page.close();
+    }
+    // Prázdný výsledek má vlastní vysvětlení (ne prázdnou tabulku).
+    const page = await ctx.newPage();
+    await page.goto(base + "votes?q=qqzzxxqq", { waitUntil: "networkidle" });
+    if (!(await page.locator(".empty-state:visible").count())) problems.push("votes?q=… [prázdný výsledek]: chybí vysvětlení „Nic jsme nenašli“");
+    await ctx.close();
+  }
+}
 await browser.close();
 server.close();
 if (problems.length) {
   console.error(`Kontrola webu selhala (${problems.length}):\n - ${problems.join("\n - ")}`);
   process.exit(1);
 }
-console.log(`Kontrola webu v pořádku: ${pages.length} stránek × 2 režimy × 3 šířky.`);
+console.log(`Kontrola webu v pořádku: ${pages.length} stránek × 2 režimy × 3 šířky + 768/390/360 px, klávesnice a výpadek dat.`);
