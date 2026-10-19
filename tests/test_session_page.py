@@ -93,3 +93,11 @@ def test_session_body_links_and_ai_label():
     html = sp.session_body(view, ["fin"], {"fin": "Rozpočet a finance"})
     assert 'href="z/2025-2121-INI"' in html and "Tento týden se rozhoduje o" in html
     assert 'class="ai-tag"' in html and "o-projektu#zasedani" in html and 'id="rd-cat"' in html
+
+
+def test_topics_counts_by_committee_category():
+    items = [{**item(str(i)), "committee": {"code": "ENVI", "category": c}} for i, c in enumerate(["env", "env", "fin", None])]
+    html = sp.topics_html(items, {"env": "Klima, příroda a energie", "fin": "Rozpočet a finance"})
+    assert html.index('data-cat="env"') < html.index('data-cat="fin"')  # víc bodů dřív
+    assert "Klima, příroda a energie <b>2</b>" in html and 'href="zasedani?c=fin#program"' in html
+    assert "1 bodů bez tématu" in html and sp.topics_html([item("x")], {}) == ""

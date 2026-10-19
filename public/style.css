@@ -2091,3 +2091,8 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 .zs-day { margin: 1.2rem 0 0; font-size: 1rem; }
 .zs-steps summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
 .zs-steps[open] summary { margin-bottom: .2rem; }
+.zs-topics { margin: 0 0 1.4rem; }
+.zs-topic-row { display: flex; flex-wrap: wrap; gap: 8px; margin: .4rem 0 .4rem; }
+.zs-topic { font-size: .95rem; padding: .35rem .8rem; }
+.zs-topic b { margin-left: .35rem; padding: 0 .45rem; border-radius: 99px; background: var(--accent-soft); color: var(--text); font-variant-numeric: tabular-nums; }
+.zs-topic[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 45%, transparent); }
