@@ -54,3 +54,22 @@ def test_fmt_pct_same_as_browser_for_many_values():
     js = json.loads(out)
     diff = [(v, a, ui.fmt_pct(v)) for v, a in zip(values, js, strict=True) if a != ui.fmt_pct(v)]
     assert not diff, diff[:5]
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="bez Node.js")
+def test_vote_meaning_same_texts_in_browser():
+    script = "import('./public/lib/format.js').then((m) => console.log(JSON.stringify(m.VOTE_MEANING)));"
+    out = subprocess.run(["node", "-e", script], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+    assert json.loads(out) == {k: list(v) for k, v in ui.VOTE_MEANING.items()}
+
+
+def test_vote_meaning_block_for_every_kind_except_other():
+    from vote_kinds import KIND_LABELS
+
+    assert set(ui.VOTE_MEANING) == set(KIND_LABELS) - {"other"}
+    html = ui.vote_meaning_html("rejection", "../")
+    assert "Co znamenal hlas" in html and "PRO</span> = text zamítnout" in html and "PROTI</span> = text ponechat" in html
+    assert 'href="../o-projektu#metodika"' in html
+    assert ui.vote_meaning_html("other") == "" and ui.vote_meaning_html(None) == ""
+    for _about, yes, no in ui.VOTE_MEANING.values():
+        assert not any(ch.isdigit() for ch in yes + no)  # žádná čísla, jen význam hlasu

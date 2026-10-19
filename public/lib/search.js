@@ -1,7 +1,10 @@
 // Hledání poslanců, stran a hlasování (B2): stejný index, výsledky i klávesy v heru na úvodu (hub.js) i v dialogu z lišty
-// (app.js). Výsledky seskupené, max. 4 ve skupině, bez řazení podle „relevance“; hlasování od nejnovějšího.
-import { ROOT, getJSON, loadSearch, soft } from "./data.js";
-import { CZ_GROUP_LABEL, KIND_LABEL, displayName, esc, fmtDate, isActive, isFinal, norm, voteTitle } from "./format.js";
+// (app.js). Výsledky seskupené, max. 4 ve skupině. Hlasování se hledají i podle témat a synonym (audit UX P1, stejná slova
+// jako v databázi hlasování votes.js): nahoře shoda v názvu, pak shoda jen v tématu, v obou skupinách závěrečná hlasování
+// před dílčími a od nejnovějšího;
+// když je jich víc, poslední volba vede na všechny výsledky v databázi hlasování.
+import { ROOT, getJSON, loadSearch, loadTopicText, soft } from "./data.js";
+import { CZ_GROUP_LABEL, KIND_LABEL, displayName, esc, fmtDate, isActive, isFinal, matchesAll, norm, searchTerms, voteTitle } from "./format.js";
 import { mepUrl, partyUrl, photoUrl } from "./ui.js";
 
 let index = null; // načte se při prvním psaní
@@ -9,7 +12,8 @@ let index = null; // načte se při prvním psaní
 // Odkazy od kořene webu (ROOT), aby fungovaly i z podsložek v/ a z/; p/ a s/ mají <base href="../"> a ROOT prázdný.
 export async function loadSearchIndex() {
   if (index) return index;
-  const [ov, parties, votes, groups] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(), getJSON("groups.json").catch(soft([]))]);
+  const [ov, parties, votes, groups, topicText] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(),
+    getJSON("groups.json").catch(soft([])), loadTopicText()]);
   const gLabel = (g) => { const x = g && groups.find((y) => y.ep_code === g.code || y.code === g.code); return x ? (CZ_GROUP_LABEL[x.code] || x.short_label) : g?.short_label; };
   const sortCs = (a, b) => a.sort.localeCompare(b.sort, "cs");
   index = {
@@ -19,9 +23,9 @@ export async function loadSearchIndex() {
     parties: parties.parties.map((p) => ({ href: ROOT + partyUrl(p.id), label: p.name || p.short_label, sort: p.name || p.short_label, sub: `strana · ${p.short_label}`, mark: "S",
       key: norm(`${p.name || ""} ${p.short_label}`) })).sort(sortCs),
     votes: votes.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.id - a.id)
-      .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}`), label: voteTitle(v), mark: "H",
+      .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}`), label: voteTitle(v), mark: "H", final: isFinal(v),
         sub: `${fmtDate(v.date)}${v.vote_kind ? ` · ${KIND_LABEL[v.vote_kind] || ""}` : ""}`,
-        key: norm(`${voteTitle(v)} ${v.reference || ""} ${v.description_cs || ""}`) })),
+        key: norm(`${voteTitle(v)} ${v.title || ""} ${v.reference || ""} ${v.description || ""} ${v.description_cs || ""}`), topics: topicText(v) })),
   };
   return index;
 }
@@ -39,8 +43,19 @@ export function combobox(q, list, prefix) {
     if (needle.length < 2) { close(); return; }
     const idx = await loadSearchIndex();
     if (norm(q.value.trim()) !== needle) return; // mezitím se psalo dál
-    const groups = [["Poslanci", idx.meps], ["Strany", idx.parties], ["Hlasování", idx.votes]]
-      .map(([label, arr]) => [label, arr.filter((x) => x.key.includes(needle)).slice(0, 4)]).filter(([, arr]) => arr.length);
+    const terms = searchTerms(q.value);
+    // pořadí: shoda v názvu před shodou jen v tématu, v každé skupině závěrečná hlasování před dílčími, pak od nejnovějšího
+    const inTitle = idx.votes.filter((x) => matchesAll(x.key, terms));
+    const inTopic = idx.votes.filter((x) => !matchesAll(x.key, terms) && matchesAll(`${x.key} ${x.topics}`, terms));
+    const finalFirst = (arr) => arr.filter((x) => x.final).concat(arr.filter((x) => !x.final));
+    const votes = finalFirst(inTitle).concat(finalFirst(inTopic));
+    const shown = votes.slice(0, 4);
+    if (votes.length > shown.length) {
+      shown.push({ href: `${ROOT}votes?${new URLSearchParams({ q: q.value.trim(), f: "all" })}`, label: `Všech ${votes.length} hlasování →`,
+        sub: "výsledky v databázi hlasování, i podle témat", mark: "→" });
+    }
+    const groups = [["Poslanci", idx.meps.filter((x) => x.key.includes(needle)).slice(0, 4)], ["Strany", idx.parties.filter((x) => x.key.includes(needle)).slice(0, 4)],
+      ["Hlasování", shown]].filter(([, arr]) => arr.length);
     items = groups.flatMap(([, arr]) => arr);
     let k = 0;
     list.innerHTML = groups.map(([label, arr]) => `<li class="hm-g" role="presentation">${label}</li>` + arr.map((x) => {

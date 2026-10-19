@@ -1,6 +1,6 @@
 // Stavební bloky stránek (HTML řetězce, tabulky, ⓘ, sdílení čísel, CSV, toast).
 import { CATEGORY_META, ROOT, getJSON } from "./data.js";
-import { COUNTRY_CS, CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, INDEPENDENT_NOTE, KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_NOTE, adoptedTextHtmlUrl, byGender, czCountsText, displayName, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, isStale, logoHeight, pct, positionPhrase, resultText, sessionCountdown, voteSubtitle, voteTitle } from "./format.js";
+import { COUNTRY_CS, CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, INDEPENDENT_NOTE, KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_NOTE, VOTE_MEANING, adoptedTextHtmlUrl, byGender, czCountsText, displayName, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, isStale, logoHeight, pct, positionPhrase, resultText, sessionCountdown, voteSubtitle, voteTitle } from "./format.js";
 
 export function logoTile(entity, size = 28) {
   if (!entity || !entity.logo) return "";
@@ -607,4 +607,16 @@ export function shareCardParties(rows, maxRows = 12) {
     items = keep;
   }
   return items;
+}
+
+// Blok „Co znamenal hlas“ (stejné HTML jako vote_meaning_html ve scripts/web_ui.py): o čem se hlasovalo, význam PRO a PROTI.
+export function voteMeaningHtml(kind) {
+  const m = VOTE_MEANING[kind];
+  if (!m) return "";
+  const [about, yes, no] = m;
+  return '<section class="card vote-meaning" aria-labelledby="vm-h"><h2 id="vm-h">Co znamenal hlas</h2>' +
+    `<p>${esc(about)}</p><ul class="plain vm-list">` +
+    `<li><span class="pos pos-FOR">PRO</span> = ${esc(yes)}</li><li><span class="pos pos-AGAINST">PROTI</span> = ${esc(no)}</li></ul>` +
+    '<p class="small muted">Zdržet se = ani pro, ani proti. Vysvětlení plyne z typu hlasování, který určuje pevná tabulka pravidel ' +
+    `(<a href="${ROOT}o-projektu#metodika">jak typ určujeme</a>).</p></section>`;
 }

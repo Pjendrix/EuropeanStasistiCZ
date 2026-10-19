@@ -41,6 +41,55 @@ KIND_NOTE = {
     "objection": "Hlasovalo se o usnesení, kterým Parlament vznáší námitku proti aktu Komise (čl. 114 nebo 115 jednacího "
     "řádu): hlas PRO = vznést námitku (nesouhlas s aktem), hlas PROTI = námitku nevznášet.",
 }
+# Co znamenal hlas PRO a PROTI podle typu hlasování (audit UX P1, blok „Co znamenal hlas“ na detailu hlasování).
+# Pevná pravidla jednacího řádu EP, žádná AI; stejné texty jako VOTE_MEANING v public/lib/format.js (hlídá test).
+VOTE_MEANING = {
+    "final": (
+        "Hlasovalo se o celém textu (postoji k návrhu zákona, usnesení nebo rozhodnutí).",
+        "text přijmout",
+        "text nepřijmout",
+    ),
+    "provisional_agreement": (
+        "Hlasovalo se o dohodě, kterou Parlament vyjednal s Radou; schválením je zákon v praxi přijatý v dohodnutém znění.",
+        "dohodu schválit",
+        "dohodu neschválit",
+    ),
+    "objection": (
+        "Hlasovalo se o usnesení, kterým Parlament vznáší námitku proti aktu Komise (čl. 114 nebo 115 jednacího řádu).",
+        "vznést námitku (nesouhlas s aktem)",
+        "námitku nevznášet",
+    ),
+    "rejection": (
+        "Hlasovalo se o návrhu na zamítnutí celého textu.",
+        "text zamítnout",
+        "text ponechat",
+    ),
+    "mandate": (
+        "Hlasovalo se o tom, zda výbor může na základě své zprávy zahájit jednání s Radou.",
+        "zahájit jednání s Radou",
+        "nezahájit jednání; o zprávě pak hlasuje plénum, kde ji lze měnit pozměňovacími návrhy",
+    ),
+    "urgency": (
+        "Hlasovalo se o žádosti projednat návrh naléhavým (zrychleným) postupem; o obsahu se tím nerozhoduje.",
+        "naléhavý postup",
+        "běžný postup",
+    ),
+    "amendment": (
+        "Hlasovalo se o pozměňovacím návrhu, tedy o změně části textu; o celém textu se hlasuje zvlášť.",
+        "změnu do textu vložit",
+        "ponechat původní znění",
+    ),
+    "split_part": (
+        "Hlasovalo se odděleně jen o části textu (odstavci, bodu, článku); o celém textu se hlasuje zvlášť.",
+        "tuto část v textu ponechat",
+        "tuto část z textu vypustit",
+    ),
+    "procedural": (
+        "Procedurální žádost (např. odložení hlasování nebo vrácení věci výboru); o obsahu textu se nerozhoduje.",
+        "žádosti vyhovět",
+        "žádost zamítnout",
+    ),
+}
 SHORT_MANDATE_NOTE = "Mandát kratší než 60 dní: procenta jsou z velmi malého počtu hlasování."
 INDEPENDENT_NOTE = "EP Open Data uvádí poslance jako nezávislého (Independent, zkratka Ind.), tedy bez národní strany."
 NO_PARTY_NOTE = "Evropský parlament u tohoto poslance pro 10. období českou stranu neuvádí."
@@ -429,3 +478,17 @@ class Ui:
             f'      <a href="o-projektu#metodika">Jak počítáme</a>.</p>',
             "Zdroj a metodika",
         )
+
+
+def vote_meaning_html(kind: str | None, root: str = "") -> str:
+    """Blok „Co znamenal hlas“: o čem se hlasovalo a co znamenal hlas PRO a PROTI (VOTE_MEANING); u typu „ostatní“ nic."""
+    if kind not in VOTE_MEANING:
+        return ""
+    about, yes, no = VOTE_MEANING[kind]
+    return (
+        '<section class="card vote-meaning" aria-labelledby="vm-h"><h2 id="vm-h">Co znamenal hlas</h2>'
+        f'<p>{esc(about)}</p><ul class="plain vm-list">'
+        f'<li><span class="pos pos-FOR">PRO</span> = {esc(yes)}</li><li><span class="pos pos-AGAINST">PROTI</span> = {esc(no)}</li></ul>'
+        f'<p class="small muted">Zdržet se = ani pro, ani proti. Vysvětlení plyne z typu hlasování, který určuje pevná tabulka pravidel '
+        f'(<a href="{root}o-projektu#metodika">jak typ určujeme</a>).</p></section>'
+    )

@@ -62,7 +62,7 @@ NAV = [
     ("party", "parties", "Strany"),
     ("hlasovani", "votes", "Hlasování"),
     ("prace", "work", "Práce poslanců"),
-    ("rozkol", "analyses", "Analýzy"),
+    ("analyzy", "analyses", "Analýzy"),
 ]
 # Kvíz má v menu zvýrazněné místo (zlaté tlačítko na desktopu, kulaté uprostřed spodní lišty na mobilu).
 # „O projektu“ je jen v patičce a v panelu Více (na 1024 px by se lišta jinak nevešla).
@@ -132,9 +132,10 @@ SHEET = [
     (
         "Analýzy",
         [
+            ("analyzy", "Přehled analýz"),
             ("rozkol", "Kde se Češi rozdělili"),
             ("rozhodujici", "Kde rozhodly české hlasy"),
-            ("shoda", "Shoda mezi Čechy"),
+            ("shoda", "Kdo s kým hlasuje"),
         ],
     ),
     (

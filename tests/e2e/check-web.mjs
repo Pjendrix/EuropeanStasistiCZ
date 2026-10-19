@@ -53,7 +53,7 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "rozkol", "rozhodujici", "shoda", "kviz",
+const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
   "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];

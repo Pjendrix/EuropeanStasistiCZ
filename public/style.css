@@ -1507,6 +1507,9 @@ main#main { min-height: calc(100vh - 14rem); }
 .chip-x span { font-size: 1.1rem; line-height: 1; }
 .chip-clear { background: transparent; text-decoration: underline; }
 #count { margin: 0 0 .6rem; }
+.scope-row { margin: .2rem 0 .4rem; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--link); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 24px; }
+.link-btn:hover { text-decoration-color: var(--gold); text-decoration-thickness: 2px; }
 .empty-state { padding: 1.2rem; }
 .empty-state p { margin: 0 0 .6rem; }
 .empty-acts { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -2022,3 +2025,21 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
   .pt-big { font-size: 1.8rem; }
 }
 @media (prefers-reduced-motion: reduce) { .pt-logo, .pt-d::before { transition: none; } }
+
+/* Rozcestník analýz (analyzy.html, audit UX P1) */
+.an-grid { list-style: none; padding: 0; margin: 1.2rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.an-card { padding: 16px 18px; display: flex; flex-direction: column; gap: .4rem; }
+.an-card h2 { font-size: 1.1rem; margin: 0; }
+.an-card h2 a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.an-card h2 a:hover { text-decoration: underline; }
+.an-q { margin: 0; font-weight: 600; }
+.an-card .small { margin: 0; }
+
+/* Co znamenal hlas (detail hlasování, audit UX P1) */
+.vote-meaning { padding: 14px 18px; margin: .8rem 0; }
+.vote-meaning h2 { font-size: 1rem; margin: 0 0 .3rem; }
+.vote-meaning p { margin: 0 0 .4rem; }
+.vote-meaning .vm-list { margin: 0 0 .4rem; display: grid; gap: 2px; }
+.vote-meaning .vm-list li { padding: 2px 0; border: 0; }
+.vote-meaning .pos { font-weight: 700; }
+.vote-meaning .small { margin: 0; }

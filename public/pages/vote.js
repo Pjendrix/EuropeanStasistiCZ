@@ -1,7 +1,7 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, loadCategories, param, soft } from "../lib/data.js";
-import { KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
-import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupBadge, kindTag, logoTile, mepUrl, partyBadge, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText } from "../lib/ui.js";
+import { KIND_LABEL, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
+import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupBadge, kindTag, logoTile, mepUrl, partyBadge, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
 const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
@@ -75,8 +75,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
         `<p class="lead vote-desc" style="margin-bottom:.5rem">${esc(voteTitle(v))}${v.reference ? ` <span class="small">(${esc(v.reference)})</span>` : ""}</p>`}
       ${v.title_cs ? "" : v.procedure?.title && v.procedure.title !== voteTitle(v) ? `<p class="vote-desc">${esc(v.procedure.title)}</p>` : ""}
       ${procedureUrl(v.procedure?.reference) ? `<p class="small story-link"><a href="${procedureUrl(v.procedure.reference)}">Příběh zákona: celý průběh a všechna hlasování k ${esc(v.procedure.reference)} <span aria-hidden="true">→</span></a></p>` : ""}
-      ${inverted ? `<p class="note"><strong>Hlasovat PRO = návrh zamítnout.</strong> ${esc(KIND_NOTE.rejection)}</p>` : ""}
-      ${kind === "objection" ? `<p class="note"><strong>Hlasovat PRO = vznést námitku proti aktu Komise.</strong> ${esc(KIND_NOTE.objection)}</p>` : ""}
+      ${voteMeaningHtml(kind || (inverted ? "rejection" : v.is_main ? "final" : ""))}
       ${finalVote ? `<p class="small">Toto je ${esc(KIND_LABEL[kind] || "dílčí hlasování")}. Závěrečné hlasování o celém textu:
         <a href="v/${finalVote.id}">${fmtDate(finalVote.date)}, ${RESULT_LABEL[finalVote.result] || "výsledek neuveden"}</a>.</p>` : ""}
       <details class="links-more"><summary>zdroje a odkazy</summary><p class="small">
