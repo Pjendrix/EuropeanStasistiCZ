@@ -685,7 +685,7 @@ DEFINITION_NAMES = {
     "work_profile": "Práce na textech – třetiny v delegaci",
     "delegations": "Srovnání s delegacemi podobné velikosti",
     "speeches": "Projevy v plénu",
-    "presence": "Prezence na zasedání (podle EP)",
+    "presence": "Docházka na zasedání (podle EP)",
 }
 
 
