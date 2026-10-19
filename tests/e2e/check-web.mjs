@@ -58,9 +58,13 @@ const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP",
 
 const problems = [];
 const browser = await chromium.launch();
+// Web je vždy ve světlém režimu, tmavý jen po přepnutí (uložená volba „theme“). „dark“ v kontrolách = uložená volba
+// tmavého režimu; systém je nastavený stejně, aby se ověřilo, že se web podle systému neřídí jen ve světlém.
+const darkPick = (ctx, scheme) => (scheme === "dark" ? ctx.addInitScript(() => { try { localStorage.setItem("theme", "dark"); } catch (e) { /* bez úložiště */ } }) : null);
 for (const scheme of ["light", "dark"]) {
   for (const width of [1366, 390, 320]) {
     const ctx = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: scheme, reducedMotion: "reduce" });
+    await darkPick(ctx, scheme);
     for (const url of pages) {
       const page = await ctx.newPage();
       const errors = [];
@@ -141,6 +145,7 @@ for (const scheme of ["light", "dark"]) {
   for (const width of [1366, 390, 360]) {
     if (scheme === "dark" && width !== 1366) continue;
     const ctx = await browser.newContext({ viewport: { width, height: 800 }, colorScheme: scheme, acceptDownloads: true });
+    await darkPick(ctx, scheme);
     await ctx.addInitScript(() => { window.__alerts = 0; window.alert = () => { window.__alerts += 1; }; });
     for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`, procPage, "zasedani"]) {
       const page = await ctx.newPage();
@@ -444,9 +449,10 @@ for (const width of [1366, 390]) {
   await page.goto(base + `v/${voteId}`, { waitUntil: "networkidle" });
   await page.click("[data-share]");
   await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push("sdílení bez úložiště: panel neukázal náhled"));
-  if ((await page.getAttribute('.sd-themes [aria-pressed="true"]', "data-card-theme").catch(() => null)) !== "dark") problems.push("sdílení bez úložiště: výchozí vzhled není podle režimu (tmavý)");
-  await page.click('[data-card-theme="light"]').catch(() => {});
-  await page.waitForFunction(() => document.querySelector(".sd-meta")?.textContent.includes("světlá"), null, { timeout: 15000 }).catch(() => problems.push("sdílení bez úložiště: přepnutí na světlou kartu nefunguje"));
+  if ((await page.getAttribute('.sd-themes [aria-pressed="true"]', "data-card-theme").catch(() => null)) !== "light") problems.push("sdílení bez úložiště: výchozí vzhled karty není světlý");
+  if ((await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)) !== "light") problems.push("bez úložiště a s tmavým systémem: web není ve světlém režimu");
+  await page.click('[data-card-theme="dark"]').catch(() => {});
+  await page.waitForFunction(() => document.querySelector(".sd-meta")?.textContent.includes("tmavá"), null, { timeout: 15000 }).catch(() => problems.push("sdílení bez úložiště: přepnutí na tmavou kartu nefunguje"));
   errs.filter((e) => /share|Vzhled|theme/i.test(e)).forEach((e) => problems.push(`sdílení bez úložiště: chyba ${e}`));
   await ctx.close();
 }
@@ -688,6 +694,7 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
 // Pruh o starých datech (E3): s MOCK freshness.json se ukáže a projde axe ve světlém i tmavém režimu.
 for (const scheme of ["light", "dark"]) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 900 }, colorScheme: scheme, reducedMotion: "reduce" });
+  await darkPick(ctx, scheme);
   const page = await ctx.newPage();
   await page.route("**/data/freshness.json", (r) => r.fulfill({ contentType: "application/json",
     body: JSON.stringify({ release: "2000-01-01", stale_days: 14, sittings_after: ["2000-01-10"] }) }));
