@@ -142,7 +142,7 @@ for (const scheme of ["light", "dark"]) {
     if (scheme === "dark" && width !== 1366) continue;
     const ctx = await browser.newContext({ viewport: { width, height: 800 }, colorScheme: scheme, acceptDownloads: true });
     await ctx.addInitScript(() => { window.__alerts = 0; window.alert = () => { window.__alerts += 1; }; });
-    for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`]) {
+    for (const url of [`v/${voteId}`, `p/${mepId}`, `s/${partyId}`, "rozkol", `vote?id=${voteId}&m=${month}`, procPage, "zasedani"]) {
       const page = await ctx.newPage();
       await page.goto(base + url, { waitUntil: "networkidle" });
       await page.waitForTimeout(900);

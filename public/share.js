@@ -434,6 +434,37 @@ export function partyCardOps(d, f) {
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strana k datu hlasování", d.urlShort)];
 }
 
+// Karta Příběhu zákona (z/…, procedure_pages.py): název, druh procedury, kde je teď, kdy je na programu a poslední
+// závěrečné hlasování s hlasy Čechů v mandátu. Čísla jen z dat stránky.
+export function lawCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  ops.push(T(72, y + 30, fitText(`Příběh zákona · ${d.label}`, 26, 800, 936), 26, 800, SC.accent));
+  y += 60;
+  const nm = wrapText(d.title, 54, 800, 936, story ? 5 : 4);
+  nm.forEach((l, i) => ops.push(T(72, y + 54 + i * 64, l, 54, 800, SC.text)));
+  y += nm.length * 64 + 24;
+  if (d.kind) { ops.push(T(72, y + 30, fitText(d.kind, 28, 600, 936), 28, 600, SC.soft)); y += 64; }
+  const row = (label, value) => {
+    ops.push(LINE(72, y, 1008, y, SC.line, 2), T(72, y + 46, label, 24, 600, SC.muted), T(72, y + 88, fitText(value, 32, 700, 936), 32, 700, SC.text));
+    y += 118;
+  };
+  if (d.now) row("Kde je teď", d.now);
+  if (d.agenda) row("Na programu pléna", d.agenda);
+  if (d.final) {
+    row(`Závěrečné hlasování ${d.final.date}`, d.final.result);
+    if (d.final.cz && d.final.cz.some(Boolean)) {
+      ops.push(...barOps(72, y, 936, 22, d.final.cz));
+      const [a, b, c, n] = d.final.cz;
+      ops.push(T(72, y + 64, `Čeští poslanci: ${a} pro · ${b} proti · ${c} zdrž. · ${n} nehl.`, 26, 600, SC.soft));
+      y += 96;
+    }
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H),
+    ...shareFooter(H, "Zdroj: EP Open Data, HowTheyVote.eu · Češi v mandátu k datu hlasování", d.urlShort)];
+}
+
 // Karta zasedání pléna (zasedani.html, session_page.py): „Tento týden v Bruselu“ s body vybranými pravidlem, u každého co se
 // rozhoduje a česká stopa; po zasedání „Jak to dopadlo“ s výsledkem a hlasy Čechů. Čísla jen z dat stránky.
 export function sessionCardOps(d, f) {
@@ -574,7 +605,7 @@ async function photoDataUrl(url) {
 
 // Operace kreslení karty podle druhu (a u poslance podle slidu); stejná funkce pro web i balíček pro Instagram.
 export function cardOps(kind, data, f, formatKey) {
-  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps }[kind];
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps, law: lawCardOps }[kind];
   return draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
 }
 
