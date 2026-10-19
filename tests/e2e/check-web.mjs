@@ -53,7 +53,7 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
+const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
   "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];
@@ -910,24 +910,26 @@ for (const width of [1366, 390]) {
     await ctx.close();
   }
 }
-// Radar: filtry opravdu skryjí položky (dřív je CSS display: grid přebilo) a názvy bodů programu i procedur vedou
-// na existující stránku Příběh zákona.
-{
+// Radar a Zasedání: filtry opravdu skryjí položky (dřív je CSS display: grid přebilo) a názvy bodů programu i procedur
+// vedou na existující stránku Příběh zákona.
+for (const url of ["radar", "zasedani"]) {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(base + "radar", { waitUntil: "networkidle" });
-  const cat = await page.evaluate(() => [...document.querySelectorAll("#rd-cat option")].map((o) => o.value).find((v) => v && document.querySelector(`.rd-list > li[data-cat="${v}"]`)));
+  await page.goto(base + url, { waitUntil: "networkidle" });
+  const cat = await page.evaluate(() => [...document.querySelectorAll("#rd-cat option")].map((o) => o.value).find((v) => v && document.querySelector(`.rd-list > li[data-cat="${v}"], .rd-procs > li[data-cat="${v}"]`)));
   const visible = () => page.evaluate(() => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")].filter((li) => li.offsetParent).map((li) => li.dataset.cat || ""));
   const before = (await visible()).length;
   await page.selectOption("#rd-cat", cat);
   const after = await visible();
-  if (!after.length || after.length >= before || after.some((c) => c !== cat)) problems.push(`radar [filtr]: téma ${cat} neskrylo ostatní položky (${before} → ${after.length})`);
+  if (!after.length || after.length >= before || after.some((c) => c !== cat)) problems.push(`${url} [filtr]: téma ${cat} neskrylo ostatní položky (${before} → ${after.length})`);
+  await page.selectOption("#rd-cat", "");
   await page.check("#rd-cz");
-  if ((await visible()).length > after.length) problems.push("radar [filtr]: „jen s českou stopou“ nic neskrylo");
+  const withCz = await page.evaluate(() => document.querySelectorAll('.rd-list > li[data-cz="1"], .rd-procs > li[data-cz="1"]').length);
+  if ((await visible()).length !== withCz) problems.push(`${url} [filtr]: „jen s českou stopou“ ukazuje ${(await visible()).length} položek, s českou stopou je ${withCz}`);
   const links = await page.evaluate(() => [...document.querySelectorAll(".ns-title a, .rd-title a")].map((a) => new URL(a.getAttribute("href"), document.baseURI).pathname));
-  if (!links.length) problems.push("radar [odkazy]: názvy bodů programu a procedur nevedou nikam");
+  if (!links.length) problems.push(`${url} [odkazy]: názvy bodů programu a procedur nevedou nikam`);
   const missing = [...new Set(links)].filter((pth) => !existsSync(join(root, "public", `${pth.replace(/^\//, "")}.html`)));
-  if (missing.length) problems.push(`radar [odkazy]: Příběh zákona neexistuje: ${missing.slice(0, 5).join(", ")}`);
+  if (missing.length) problems.push(`${url} [odkazy]: Příběh zákona neexistuje: ${missing.slice(0, 5).join(", ")}`);
   await ctx.close();
 }
 await browser.close();

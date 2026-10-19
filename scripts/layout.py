@@ -142,6 +142,7 @@ SHEET = [
         "Hlasování",
         [
             ("votes", "Všechna hlasování"),
+            ("zasedani", "Zasedání pléna"),
             ("radar", "Co se chystá"),
             ("temata", "Hlasování podle témat"),
         ],
@@ -309,7 +310,7 @@ def version_assets(html: str) -> str:
 
 
 # Stránky z build_pages.py (rozcestník, Aktuálně): hlavičku dostávají při generování z page(), ručně se neupravují.
-GENERATED = {"index.html", "aktualne.html"}
+GENERATED = {"index.html", "aktualne.html", "zasedani.html"}
 
 
 def main(argv=None) -> int:

@@ -1,0 +1,148 @@
+{
+ "note": "Krátká shrnutí bodů programu zasedání od Claude Haiku (scripts/session_summaries.py), jen z úředního názvu. Čísla, hodnocení ani výsledky neobsahují.",
+ "model": "claude-haiku-5-5",
+ "prompt_version": 1,
+ "prompt": "Jsi editor českého nezávislého webu o hlasování europoslanců. Na stránce s programem zasedání Evropského\nparlamentu je u bodu úřední název. Napiš pod něj \"shrnuti\": jednu krátkou větu (nejvýš 160 znaků), čeho se návrh týká,\nsrozumitelně pro laika.\n\nPravidla:\n- Vycházej jen z dodaného názvu, druhu procedury a výboru. Nic nedomýšlej: žádné cíle, dopady ani podrobnosti, které\n  v zadání nejsou.\n- Neopakuj doslova nadpis; řekni to jednodušeji a uveď druh textu (zákon, zpráva, usnesení, rozpočet…).\n- Piš neutrálně: žádné hodnocení, žádné „důležitý“, „sporný“, žádné argumenty pro ani proti.\n- Nepiš, jak hlasování dopadne ani kdo jak bude hlasovat.\n- Nepoužívej čísla, která nejsou v zadání.\n- Spisovná čeština, bez zkratek, které laik nezná (EU a Komise jsou v pořádku). Nepiš výplňové věty.",
+ "items": {
+  "2023/0169(COD)": {
+   "shrnuti": "Návrh zákona EU o tom, který stát rozhoduje o ochraně dospělých osob a jaké právo se použije, a o uznávání takových opatření v zemích EU.",
+   "fingerprint": "576897692748ee3e",
+   "generated": "2026-10-19"
+  },
+  "2023/0437(COD)": {
+   "shrnuti": "Návrh zákona o tom, jak se v EU prosazují práva cestujících v dopravě.",
+   "fingerprint": "306a2b3ac4f2b888",
+   "generated": "2026-10-19"
+  },
+  "2024/0301(COD)": {
+   "shrnuti": "Návrh zákona o veřejném rozhraní pro ohlašování vyslání pracovníků, které bude propojeno se systémem EU pro výměnu informací o vnitřním trhu.",
+   "fingerprint": "a1b59041b184b5be",
+   "generated": "2026-10-19"
+  },
+  "2025/0222(COD)": {
+   "shrnuti": "Návrh zákona EU o pokračování programu Erasmus+ pro další období, o němž jedná výbor pro kulturu a vzdělávání.",
+   "fingerprint": "b57332a202cac1cb",
+   "generated": "2026-10-19"
+  },
+  "2025/0258(COD)": {
+   "shrnuti": "Návrh zákona o programu Pericles V, který má podporovat výměny, pomoc a odborné vzdělávání pro ochranu eura před padělky v letech 2028–2034.",
+   "fingerprint": "e5f495353d718f3d",
+   "generated": "2026-10-19"
+  },
+  "2025/0385(COD)": {
+   "shrnuti": "Návrh zákona EU, který mění pravidla o kritických surovinách, tedy klíčových materiálech pro průmysl.",
+   "fingerprint": "8945dc318bb8284c",
+   "generated": "2026-10-19"
+  },
+  "2025/0395(COD)": {
+   "shrnuti": "Návrh zákona, který pozastavuje pravidla, podle nichž výrobci odpovídají za baterie a obaly, když se stanou odpadem.",
+   "fingerprint": "128f5aa8fe02c120",
+   "generated": "2026-10-19"
+  },
+  "2025/0396(COD)": {
+   "shrnuti": "Návrh zákona, který pozastavuje pravidla, podle nichž výrobci odpovídají za odpad z elektrických přístrojů, elektroniky a jednorázových plastů.",
+   "fingerprint": "c339ddf0c56b8ac2",
+   "generated": "2026-10-19"
+  },
+  "2025/0531(COD)": {
+   "shrnuti": "Návrh zákona EU, jehož cílem je zjednodušit některé požadavky a postupy pro chemické výrobky; projednává ho výbor pro vnitřní trh a ochranu spotřebitelů.",
+   "fingerprint": "6f17c4ab954cac84",
+   "generated": "2026-10-19"
+  },
+  "2025/2121(INI)": {
+   "shrnuti": "Nezávazná zpráva o tom, jak země EU spolupracují při potírání podvodů s daní z přidané hodnoty přes hranice a jaký má dopad na rozpočet EU.",
+   "fingerprint": "a8c0a61a72521c3f",
+   "generated": "2026-10-19"
+  },
+  "2025/2147(DEC)": {
+   "shrnuti": "Rozhodnutí Parlamentu o udělení absolutoria, tedy o schválení hospodaření Evropské rady a Rady s rozpočtem EU za rok 2024.",
+   "fingerprint": "9a84bc9c6f04769c",
+   "generated": "2026-10-19"
+  },
+  "2026/0137(NLE)": {
+   "shrnuti": "Nelegislativní akt o tom, čím by se země EU měly řídit při nastavování politiky zaměstnanosti a fungování trhu práce.",
+   "fingerprint": "e15d65f24a67f0a8",
+   "generated": "2026-10-19"
+  },
+  "2026/0284(BUD)": {
+   "shrnuti": "Rozpočtový návrh EU, kterým se uvolňují peníze z Fondu solidarity na pomoc Maltě, Itálii, Portugalsku a Španělsku po bouřích v roce 2026.",
+   "fingerprint": "b241c10be9a395a8",
+   "generated": "2026-10-19"
+  },
+  "2026/2003(INI)": {
+   "shrnuti": "Nezávazná zpráva z vlastního podnětu o vysokorychlostní železniční dopravě mezi evropskými zeměmi, kterou připravuje výbor pro dopravu a cestovní ruch.",
+   "fingerprint": "1d41fcbe2a77f772",
+   "generated": "2026-10-19"
+  },
+  "2026/2027(INI)": {
+   "shrnuti": "Nezávazná zpráva z vlastního podnětu výboru pro regionální rozvoj o roli politiky soudržnosti EU při provádění Agendy EU pro města.",
+   "fingerprint": "9eff8bbd991081c7",
+   "generated": "2026-10-19"
+  },
+  "2026/2035(INI)": {
+   "shrnuti": "Nezávazná zpráva z vlastního podnětu zahraničního výboru o vztazích EU se zeměmi kolem Středozemního moře a o Paktu pro Středomoří.",
+   "fingerprint": "0b94a1ce75eb4b34",
+   "generated": "2026-10-19"
+  },
+  "2026/2054(INI)": {
+   "shrnuti": "Nezávazná zpráva z vlastního podnětu o tom, jak může politika soudržnosti EU posílit odolnost a přeshraniční spolupráci regionů u východních hranic unie.",
+   "fingerprint": "874eb3f034945be4",
+   "generated": "2026-10-19"
+  },
+  "2026/2070(INI)": {
+   "shrnuti": "Nezávazná zpráva z vlastního podnětu o tom, jak v EU zlepšit dovednosti lidí prostřednictvím odborného vzdělávání v době transformace.",
+   "fingerprint": "fdb7bc046e865700",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-20-OJ-ITM-V-79": {
+   "shrnuti": "Námitka proti metodikám, podle kterých se certifikují činnosti uhlíkového zemědělství, tedy zemědělské postupy, které pomáhají vázat uhlík.",
+   "fingerprint": "7c85a063105e0662",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-20-OJ-ITM-V-85": {
+   "shrnuti": "Europoslanci hlasují o žádostech, zda se má na některý návrh použít zrychlený postup pro naléhavé případy.",
+   "fingerprint": "e56efc116d7b73e3",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-21-OJ-ITM-V-47": {
+   "shrnuti": "Celkový rozpočet Evropské unie na rok 2027 se všemi jeho oddíly (částmi), o kterém jedná výbor pro rozpočty Evropského parlamentu.",
+   "fingerprint": "df148cf7cee1f861",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-21-OJ-ITM-V-55": {
+   "shrnuti": "Návrh na uvolnění peněz z evropského fondu na pomoc propuštěným pracovníkům z finských regionů Etelä-Suomi a Helsinki-Uusimaa.",
+   "fingerprint": "6f3522bf1f9e5f41",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-21-OJ-ITM-V-69": {
+   "shrnuti": "Námitka podle jednacího řádu Evropského parlamentu týkající se geneticky upravené sóje MON 87769.",
+   "fingerprint": "e481f7036156fe88",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-21-OJ-ITM-V-71": {
+   "shrnuti": "Návrh rozpočtu Evropské unie na rok 2027 se všemi jeho částmi, tedy plán, kolik a na co unie v tom roce utratí.",
+   "fingerprint": "e53109a9859e0e59",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-22-OJ-ITM-V-20": {
+   "shrnuti": "Návrhy usnesení Evropského parlamentu k mezinárodní konferenci OSN o změně klimatu, která se v roce 2026 uskuteční v turecké Antalyi.",
+   "fingerprint": "476e99e97176ef0a",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-22-OJ-ITM-V-54": {
+   "shrnuti": "Dokument o revizi srovnávacích hodnot pro teplo a palivo na roky 2026 až 2030.",
+   "fingerprint": "834e4fb09f1761c1",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-22-OJ-ITM-V-72": {
+   "shrnuti": "Text o stupňování ruských útoků v EU, zejména na nákladní lodě v Černém moři, které ohrožují životy, stabilitu regionu i zásobování potravinami.",
+   "fingerprint": "0d304cb97e2e4ff3",
+   "generated": "2026-10-19"
+  },
+  "MTG-PL-2026-10-22-OJ-ITM-V-82": {
+   "shrnuti": "Text se zabývá stupňováním útoků Hútiů a tím, jak by mohly ovlivnit bezpečnost v širším regionu.",
+   "fingerprint": "44541866f23692d7",
+   "generated": "2026-10-19"
+  }
+ }
+}

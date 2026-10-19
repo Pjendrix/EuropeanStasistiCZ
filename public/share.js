@@ -434,6 +434,33 @@ export function partyCardOps(d, f) {
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strana k datu hlasování", d.urlShort)];
 }
 
+// Karta zasedání pléna (zasedani.html, session_page.py): „Tento týden v Bruselu“ s body vybranými pravidlem, u každého co se
+// rozhoduje a česká stopa; po zasedání „Jak to dopadlo“ s výsledkem a hlasy Čechů. Čísla jen z dat stránky.
+export function sessionCardOps(d, f) {
+  const H = f.h, story = H > 1500, max = story ? 5 : 4;
+  const ops = [];
+  let y = 0;
+  ops.push(T(72, y + 64, d.results ? "Jak to dopadlo" : "Tento týden v Bruselu", 64, 800, SC.text));
+  y += 104;
+  ops.push(T(72, y + 30, fitText(`Zasedání Evropského parlamentu · ${d.when}`, 30, 600, 936), 30, 600, SC.soft));
+  y += 72;
+  (d.picks || []).slice(0, max).forEach((pk) => {
+    ops.push(LINE(72, y, 1008, y, SC.line, 2));
+    y += 44;
+    if (pk.decision) { ops.push(T(72, y, fitText(pk.decision, 24, 700, 936), 24, 700, SC.accent)); y += 42; }
+    const lines = wrapText(pk.title, 34, 700, 936, 2);
+    lines.forEach((l, i) => ops.push(T(72, y + i * 44, l, 34, 700, SC.text)));
+    y += lines.length * 44;
+    if (pk.result) { ops.push(T(72, y + 4, fitText(pk.result, 26, 700, 936), 26, 700, SC.text)); y += 40; }
+    if (pk.cz) { ops.push(T(72, y + 4, fitText(pk.cz, 24, 500, 936), 24, 500, SC.soft)); y += 38; }
+    y += 18;
+  });
+  ops.push(T(72, y + 34, "Výběr pravidlem, ne redakcí: česká stopa, pak zákony.", 24, 500, SC.soft));
+  y += 54;
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H),
+    ...shareFooter(H, "Zdroj: program EP (EP Open Data, CC BY 4.0), HowTheyVote.eu (ODbL)", d.urlShort)];
+}
+
 // Karta výsledku kvízu (kviz.html): tři nejvyšší shody (portrét, jméno, strana · frakce, %, „x z y“), počet odpovědí, datum.
 // Bez pořadových čísel a medailí; spočítal prohlížeč z odpovědí uživatele (lib/quiz.js), nic se neodesílá.
 export function quizCardOps(d, f) {
@@ -545,6 +572,12 @@ async function photoDataUrl(url) {
   } catch (e) { return null; }
 }
 
+// Operace kreslení karty podle druhu (a u poslance podle slidu); stejná funkce pro web i balíček pro Instagram.
+export function cardOps(kind, data, f, formatKey) {
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps }[kind];
+  return draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
+}
+
 export async function renderCardPng(ctx, formatKey, theme = "dark") {
   const f = SHARE_FORMATS[formatKey];
   await Promise.all([500, 600, 700, 800].map((w) => document.fonts.load(`${w} 20px ${SC_FONT}`, "Příliš žluťoučký kůň")));
@@ -559,8 +592,7 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
   if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
   useCardTheme(theme);
-  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps }[ctx.kind];
-  const ops = draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
+  const ops = cardOps(ctx.kind, data, f, formatKey);
   const canvas = document.createElement("canvas");
   canvas.width = f.w;
   canvas.height = f.h;

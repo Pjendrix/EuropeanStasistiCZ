@@ -71,6 +71,8 @@ jobs:
           python scripts/build_web.py
           # krátká AI shrnutí posledních hlasování pro úvod (jen nová; bez klíče zůstanou uložená, karta ukáže jen nadpis)
           python scripts/vote_summaries.py --backend api || echo "::warning::shrnutí hlasování se nepodařilo obnovit"
+          # shrnutí bodů programu na stránce Zasedání (bez klíče zůstanou uložená; doplňuje je i naplánovaná úloha v Claude Code)
+          python scripts/session_summaries.py --backend api || echo "::warning::shrnutí programu zasedání se nepodařilo obnovit"
           # stránky a hlasování po jednom jen pro kontrolu webu níže; do gitu nejdou, na webu vznikají při sestavení (vercel_build.sh)
           python scripts/build_pages.py
           python scripts/build_shards.py

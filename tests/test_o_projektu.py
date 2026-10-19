@@ -22,6 +22,7 @@ LINKED_ANCHORS = {
     "kviz-frakce",  # kvíz, varianta Evropské frakce
     "ai",  # shrnutí hlasování na úvodu
     "z-posledniho-zasedani",  # úvod
+    "zasedani",  # stránka Zasedání pléna
 }
 # Sekce a aliasy sloučených sekcí (dřívější adresy): sledujte → kontakt, corrections/opravy → zmeny.
 ALIASES = {
