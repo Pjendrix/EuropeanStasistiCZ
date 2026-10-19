@@ -454,7 +454,7 @@ def presence_card(pr: dict | None, mep: dict) -> str:
     src = f'<a href="{esc(pr["source"]["url"])}">EP Open Data (meetings)</a>' if (pr.get("source") or {}).get("url") else "EP Open Data"
     excused = f" · {fmt_num(pr['excused'])} omluven{by_gender(mep, '', 'a')}" if pr.get("excused") else ""
     return (
-        f'<div class="card metric"><div class="label">Prezence na zasedání (podle EP)</div>'
+        f'<div class="card metric"><div class="label">Docházka na zasedání (podle EP)</div>'
         f'<div class="value">{count_pct(pr["present"] / pr["days"])}</div>'
         f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání v době mandátu{excused}</div>'
         f'<div class="detail">podle prezenční listiny EP, jen dny, ke kterým listina existuje · {src}, stav k {fmt_date(pr.get("updated"))}</div></div>'

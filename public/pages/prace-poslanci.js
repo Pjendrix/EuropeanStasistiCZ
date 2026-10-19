@@ -39,7 +39,7 @@ setNav("work-table");
     const render = (list) => {
       tbody.innerHTML = list.map((r) => `<tr>${cell(r)}${KEYS.map((k) => tierCell(r, k)).join("")}
         <td class="num secondary grp-start" data-label="Účast na hlasování">${fmtPct(pct(r.m.attendance))}${epMedian ? `<div class="small muted">medián EP ${fmtPct(epMedian)}</div>` : ""}</td>
-        <td class="num secondary" data-label="Prezence na zasedání">${r.m.presence && r.m.presence.days ? `${fmtPct(r.m.presence.present / r.m.presence.days)}<div class="small muted">${fmtNum(r.m.presence.present)} z ${fmtNum(r.m.presence.days)} dnů</div>` : "–"}</td>
+        <td class="num secondary" data-label="Docházka na zasedání">${r.m.presence && r.m.presence.days ? `${fmtPct(r.m.presence.present / r.m.presence.days)}<div class="small muted">${fmtNum(r.m.presence.present)} z ${fmtNum(r.m.presence.days)} dnů</div>` : "–"}</td>
         <td class="num secondary" data-label="Podepsané návrhy">${fmtNum(r.m.motions_signed)}</td>
         <td class="num secondary" data-label="Projevy v plénu">${r.m.speeches == null ? "–" : `${fmtNum(r.m.speeches)}<div class="small muted">${fmtNum(Math.round(r.m.speeches_minutes))} min</div>`}</td></tr>`).join("");
     };
@@ -57,7 +57,7 @@ setNav("work-table");
       <strong>Funkce</strong> (předsednictví výboru, vedení frakce) uvádíme podle EP jako kontext: zabírají čas, který pak chybí na vlastní texty.
       <strong>Velikost frakce</strong>: zprávy a stanoviska si frakce rozdělují podle bodů úměrných své velikosti, takže poslanci malých frakcí
       a nezařazení jich dostávají méně bez ohledu na vlastní snahu; čísla proto neupravujeme, ale srovnávejte s tím na paměti.
-      <strong>Prezence na zasedání</strong> = dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP (jen dny, ke kterým už listina existuje);
+      <strong>Docházka na zasedání</strong> = dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP (jen dny, ke kterým už listina existuje);
       jiná metrika než účast na hlasování, bez mediánu EP. <strong>Projevy v plénu</strong> jsou ústní projevy v rozpravách v době mandátu podle EP (zdroj: EP Open Data, endpoint speeches); minuty jsou součet
       délek z časových značek zdroje. Písemná prohlášení se do projevů nesčítají (dají se psát hromadně). Počet projevů neříká nic o kvalitě ani vlivu a nevstupuje do třetin.
       Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026, takže by byla za část období; otázky najdete na profilu každého poslance.` : "";

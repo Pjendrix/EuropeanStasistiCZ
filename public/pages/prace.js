@@ -16,7 +16,7 @@ setNav("work-overview");
       card("Zprávy, které vyjednávají", fmtNum(t.reports_shadow), [`stínoví zpravodajové za frakci; z vedených a stínových zpráv přijal Parlament ${fmtNum(t.reports_adopted)}`]),
       t.speeches != null ? card("Ústní projevy v plénu", fmtNum(t.speeches), [`celkem asi ${fmtNum(t.speeches_minutes)} min`, `${fmtNum(t.written_statements)} písemných prohlášení zvlášť`]) : "",
       card("Otázky Komisi a Radě", fmtNum(t.questions), ["písemné, přednostní i ústní"]),
-      t.presence ? card("Prezence na zasedání", fmtPct(t.presence[0] / t.presence[1]), [`${fmtNum(t.presence[0])} z ${fmtNum(t.presence[1])} poslaneckých dnů jednání podle prezenční listiny EP`]) : "",
+      t.presence ? card("Docházka na zasedání", fmtPct(t.presence[0] / t.presence[1]), [`${fmtNum(t.presence[0])} z ${fmtNum(t.presence[1])} poslaneckých dnů jednání podle prezenční listiny EP`]) : "",
     ].join("");
 
     // časová osa: dvě řady pod sebou, stejná stavba jako graf účasti na profilu
