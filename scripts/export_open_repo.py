@@ -73,6 +73,7 @@ PUBLIC_TESTS = [
     "test_fetch_votes.py",
     "test_group_stats.py",
     "test_key_votes.py",
+    "test_labels.py",
     "test_labels_cs.py",
     "test_overrides.py",
     "test_own_work.py",
@@ -84,7 +85,7 @@ PUBLIC_TESTS = [
     "test_vote_summaries.py",
     "test_work_hub.py",
 ]
-PUBLIC_MANUAL = ["colors.json", "countries_cs.json", "overrides.json", "topics_cs.json"]
+PUBLIC_MANUAL = ["colors.json", "countries_cs.json", "group_labels.json", "overrides.json", "party_labels.json", "topics_cs.json"]
 
 
 def export(out: Path) -> list[str]:

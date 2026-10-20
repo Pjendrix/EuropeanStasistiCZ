@@ -21,22 +21,24 @@
    {
     "org_id": "7150",
     "code": "PFE",
-    "short_label": "PfE",
+    "short_label": "Patrioti",
     "name_cs": "skupina Patrioti pro Evropu",
     "name_en": "Patriots for Europe Group",
     "role": "MEMBER",
     "start": "2024-07-16",
-    "end": "2026-02-03"
+    "end": "2026-02-03",
+    "short_label_ep": "PfE"
    },
    {
     "org_id": "6561",
     "code": "NI",
-    "short_label": "NI",
+    "short_label": "nezařazení",
     "name_cs": "Nezařazení poslanci",
     "name_en": "Non-attached Members",
     "role": "MEMBER",
     "start": "2026-02-04",
-    "end": "2026-06-16"
+    "end": "2026-06-16",
+    "short_label_ep": "NI"
    },
    {
     "org_id": "7037",
@@ -52,11 +54,12 @@
   "parties": [
    {
     "org_id": "7033",
-    "short_label": "PSH",
+    "short_label": "Přísaha",
     "name": "Přísaha",
     "role": "MEMBER",
     "start": "2024-07-16",
-    "end": "2026-04-22"
+    "end": "2026-04-22",
+    "short_label_ep": "PSH"
    },
    {
     "org_id": "6843",
@@ -1456,11 +1459,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 969,
    "total": 1122
@@ -1483,11 +1486,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 3706,
    "total": 4435
@@ -1510,11 +1513,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 4007,
    "total": 4856
@@ -1537,11 +1540,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 4294,
    "total": 5310
@@ -1564,11 +1567,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 3946,
    "total": 4884
@@ -1591,11 +1594,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 4176,
    "total": 5201
@@ -1618,11 +1621,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 3765,
    "total": 4720
@@ -1645,11 +1648,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6794,
-    "short_label": "ANO 2011"
+    "short_label": "ANO"
    },
    "same": 2222,
    "total": 2870
@@ -1726,11 +1729,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 7034,
-    "short_label": "AUTO"
+    "short_label": "Motoristé"
    },
    "same": 2505,
    "total": 3352
@@ -1780,11 +1783,11 @@
    "short_mandate": false,
    "group": {
     "code": "PFE",
-    "short_label": "PfE"
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 7034,
-    "short_label": "AUTO"
+    "short_label": "Motoristé"
    },
    "same": 1385,
    "total": 1940
@@ -1834,7 +1837,7 @@
    "short_mandate": false,
    "group": {
     "code": "NI",
-    "short_label": "NI"
+    "short_label": "nezařazení"
    },
    "party": {
     "id": 6769,
@@ -1861,7 +1864,7 @@
    "short_mandate": false,
    "group": {
     "code": "NI",
-    "short_label": "NI"
+    "short_label": "nezařazení"
    },
    "party": {
     "id": 6843,
@@ -1888,7 +1891,7 @@
    "short_mandate": false,
    "group": {
     "code": "PPE",
-    "short_label": "PPE"
+    "short_label": "EPP"
    },
    "party": {
     "id": 6770,
@@ -1915,7 +1918,7 @@
    "short_mandate": false,
    "group": {
     "code": "PPE",
-    "short_label": "PPE"
+    "short_label": "EPP"
    },
    "party": {
     "id": 6835,
@@ -1942,7 +1945,7 @@
    "short_mandate": false,
    "group": {
     "code": "PPE",
-    "short_label": "PPE"
+    "short_label": "EPP"
    },
    "party": {
     "id": 6835,
@@ -1969,11 +1972,11 @@
    "short_mandate": false,
    "group": {
     "code": "PPE",
-    "short_label": "PPE"
+    "short_label": "EPP"
    },
    "party": {
     "id": 6793,
-    "short_label": "TOP09/STAN"
+    "short_label": "TOP 09"
    },
    "same": 2489,
    "total": 5361
@@ -1996,11 +1999,11 @@
    "short_mandate": false,
    "group": {
     "code": "PPE",
-    "short_label": "PPE"
+    "short_label": "EPP"
    },
    "party": {
     "id": 6793,
-    "short_label": "TOP09/STAN"
+    "short_label": "TOP 09"
    },
    "same": 2303,
    "total": 5385
@@ -2023,11 +2026,11 @@
    "short_mandate": false,
    "group": {
     "code": "VERTS-ALE",
-    "short_label": "Verts/ALE"
+    "short_label": "Zelení"
    },
    "party": {
     "id": 6862,
-    "short_label": "PIR"
+    "short_label": "Piráti"
    },
    "same": 1360,
    "total": 5090
