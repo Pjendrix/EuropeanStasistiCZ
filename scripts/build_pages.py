@@ -30,7 +30,7 @@ from categories import ICON as CAT_ICON, LABEL as CAT_LABEL, categories_for
 from vote_parties import (
     POSITION_LABEL,
     POSITIONS,
-    card_parties,
+    card_items,
     group_label,
     party_rows,  # noqa: F401
     position_phrase,
@@ -362,13 +362,12 @@ def vote_share_data(
     rows: list[dict] | None = None,
     trace: bool = False,
 ) -> dict:
-    """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce."""
+    """Data karty hlasování pro panel sdílení (share.js voteCardOps): detail v/ i hemicykl na úvodní stránce.
+    Strany se jmény poslanců (card_items); rows zůstává kvůli volajícím, karta ho nepotřebuje."""
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
     desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
     c = v["counts"]
-    if rows is None:
-        rows = party_rows(active_positions(v, meps_by_id), meps_by_id, parties or [], groups)
     return {
         "title": title_txt,
         "subtitle": " · ".join(x for x in (desc_cs or v.get("description"), v.get("reference")) if x),
@@ -378,7 +377,7 @@ def vote_share_data(
         "resultLabel": RESULT_LABEL.get(v.get("result"), "neuveden"),
         "sentence": result_sentence(kind, v.get("result")),
         "ep": [c["for"], c["against"], c["abstention"], c["did_not_vote"]],
-        "parties": [{k: i[k] for k in ("label", "groups", "positions")} for i in card_parties(rows)],
+        "parties": card_items(active_positions(v, meps_by_id), meps_by_id, parties or [], groups),
         "topic": topic_text(categories_for(v)) or None,
         # Štítek „česká stopa“ (zpravodaj nebo stínový zpravodaj z ČR, vote_roles.json); bez záznamu se vynechá.
         **({"trace": True} if trace else {}),
@@ -483,7 +482,9 @@ def vote_page(
         "filename": f"ep-watch-hlasovani-{v['id']}",
         "subtitle": "Hlasování · " + fmt_date(v["date"]) + (" · " + topic if topic else ""),
         "cite": cite,
-        "text": f"{title_txt} ({fmt_date(v['date'])}): {sentence}. Zdroj: HowTheyVote.eu, EP Watch CZ",
+        "text": f"{title_txt} ({fmt_date(v['date'])}): {sentence}."
+        + (" Nehlasoval/a: hlas není zaznamenaný, důvody data neuvádějí." if cz_counts[3] else "")
+        + " Zdroj: HowTheyVote.eu, EP Watch CZ",
         "data": share_data,
     }
     # Kontext panelu sdílení jako JSON (share.js), ne inline skript: CSP nepovoluje 'unsafe-inline'.

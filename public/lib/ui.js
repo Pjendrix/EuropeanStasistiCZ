@@ -616,18 +616,38 @@ export function shareButton(kind = "", label = "") {
 
 export const SHARE_KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 
-// Řádky stran pro kartu z czPartyRows() (lib/ui.js); zrcadlo card_parties() v scripts/vote_parties.py.
-// Když by se strany nevešly (víc než 12), sloučí se jednočlenné do „ostatní“.
-export function shareCardParties(rows, maxRows = 12) {
-  let items = rows.map((r) => ({ label: r.label, groups: r.groups, positions: SHARE_KEYS.flatMap((k) => r.members[k].map(() => k)), total: r.total }));
-  if (items.length > maxRows) {
-    const keep = items.filter((i) => i.total > 1), rest = items.filter((i) => i.total === 1);
-    while (keep.length >= maxRows && keep.length) rest.unshift(keep.pop());
-    keep.push({ label: "ostatní", groups: rest.map((i) => i.label).sort((a, b) => a.localeCompare(b, "cs")),
-      positions: rest.flatMap((i) => i.positions).sort((a, b) => SHARE_KEYS.indexOf(a) - SHARE_KEYS.indexOf(b)), total: rest.reduce((n, i) => n + i.total, 0) });
-    items = keep;
-  }
-  return items;
+// Strany pro kartu hlasování se jmény (zadání 20. 10. 2026, K1); zrcadlo card_items() v scripts/vote_parties.py.
+// Strana a frakce k datu hlasování, nezávislí každý zvlášť, poslanci podle hlasu a sort_label, shodná příjmení s iniciálou.
+export function cardItems(positions, mepsById, parties, groups) {
+  const byId = Object.fromEntries(parties.map((p) => [p.id, p]));
+  const items = new Map();
+  positions.forEach((p) => {
+    const m = mepsById[p.member_id];
+    const entry = byId[p.national_party_id];
+    const indep = Boolean(entry?.independent) || (!entry && (!p.national_party || p.national_party === "Independent"));
+    const key = indep ? `ind-${m.id}` : String(entry?.id || p.national_party);
+    if (!items.has(key)) items.set(key, {
+      partyId: indep || !entry ? null : entry.id,
+      label: indep ? ({ FEMALE: "nezávislá", MALE: "nezávislý" }[m.gender] || "nezávislý poslanec") : (entry?.short_label || p.national_party),
+      logo: indep ? null : entry?.logo || null, aspect: indep ? null : entry?.logo_aspect || null,
+      color: indep ? null : entry?.chart_color || entry?.color || null, independent: indep, groups: [], members: [],
+    });
+    const it = items.get(key);
+    const g = groups.find((x) => x.code === p.group_code || x.ep_code === p.group_code);
+    const gl = !p.group_code ? "bez frakce" : g ? (g.code === "NI" ? "nezařazení" : g.short_label) : p.group_code;
+    if (!it.groups.includes(gl)) it.groups.push(gl);
+    it.members.push({ id: m.id, surname: m.family_name || m.name, given: m.given_name || "", sortLabel: m.sort_label || m.name, position: p.position });
+  });
+  const surnames = [...items.values()].flatMap((it) => it.members.map((x) => x.surname));
+  const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  return [...items.values()].map((it) => {
+    it.groups.sort(cmp);
+    it.group = it.groups.join(" · ");
+    it.members.sort((a, b) => SHARE_KEYS.indexOf(a.position) - SHARE_KEYS.indexOf(b.position) || cmp(a.sortLabel, b.sortLabel));
+    it.members = it.members.map(({ given, ...x }) => ({ ...x, surname: surnames.filter((s) => s === x.surname).length > 1 && given ? `${given[0]}. ${x.surname}` : x.surname }));
+    it.positions = it.members.map((x) => x.position);
+    return it;
+  }).sort((a, b) => b.members.length - a.members.length || cmp(a.label.toLowerCase(), b.label.toLowerCase()));
 }
 
 // Blok „Co znamenal hlas“ (stejné HTML jako vote_meaning_html ve scripts/web_ui.py): o čem se hlasovalo, význam PRO a PROTI.

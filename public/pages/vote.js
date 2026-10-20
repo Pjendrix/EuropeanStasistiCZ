@@ -1,7 +1,7 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, loadCategories, param, soft } from "../lib/data.js";
 import { KIND_LABEL, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
-import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupLink, kindTag, logoTile, mepUrl, partyLink, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
+import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupLink, kindTag, logoTile, mepUrl, partyLink, resultHtml, setNav, shareButton, cardItems, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
 const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
@@ -51,7 +51,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     // Kontext pro tlačítko „Sdílet“ (share.js): stejná čísla jako na stránce, nic nového.
     const pageUrl = siteUrl(final ? `v/${v.id}` : `vote?id=${v.id}&m=${foundMonth}`);
     const dataDay = (await getJSON("overview.json").catch(soft(null)))?.sources?.votes?.release || v.date;
-    const cardParties = shareCardParties(czPartyRows(cz, meps, parties, groups));
+    const cardParties = cardItems(cz, meps, parties, groups);
     // Téma: stejná data jako čip v seznamu hlasování (data/vote_cats.json z categories_for).
     await loadCategories();
     const cats = ((await getJSON("vote_cats.json").catch(soft(null)))?.votes || {})[String(v.id)] || [];
@@ -59,7 +59,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
     const citeSentence = `Evropský parlament ${fmtDate(v.date)}, ${voteTitle(v)}${kind ? ` (${KIND_LABEL[kind]}${topic ? `, téma ${topic}` : ""})` : (topic ? ` (téma ${topic})` : "")}${desc && !final ? `, ${desc}` : ""}: ${resultText(kv)}, ${c.for} pro, ${c.against} proti, ${c.abstention} se zdrželo. Čeští poslanci v mandátu: ${czCounts[0]} pro, ${czCounts[1]} proti, ${czCounts[2]} se zdrželo, ${czCounts[3]} nehlasovalo. Zdroj: HowTheyVote.eu (${v.source_url}).`;
     window.shareContext = () => ({
       kind: "vote", url: pageUrl, filename: `ep-watch-hlasovani-${v.id}`, subtitle: `Hlasování · ${fmtDate(v.date)}${topic ? ` · ${topic}` : ""}`, cite: citeSentence,
-      text: `${voteTitle(v)} (${fmtDate(v.date)}): ${resultSentence(kind || (final ? "final" : ""), v.result)}. Češi: ${czCountsText(czCounts)}. Zdroj: HowTheyVote.eu, EP Watch CZ`,
+      text: `${voteTitle(v)} (${fmtDate(v.date)}): ${resultSentence(kind || (final ? "final" : ""), v.result)}. Češi: ${czCountsText(czCounts)}.${czCounts[3] ? " Nehlasoval/a: hlas není zaznamenaný, důvody data neuvádějí." : ""} Zdroj: HowTheyVote.eu, EP Watch CZ`,
       data: {
         title: heading, subtitle: [final ? desc : voteTitle(v), v.reference].filter(Boolean).join(" · "), date: v.date, kindLabel: kind ? KIND_LABEL[kind] : "hlasování",
         result: v.result, resultLabel: RESULT_LABEL[v.result] || "neuveden", sentence: resultSentence(kind || (final ? "final" : ""), v.result),

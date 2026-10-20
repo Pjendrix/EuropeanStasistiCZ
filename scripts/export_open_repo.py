@@ -60,6 +60,7 @@ PUBLIC_TESTS = [
     "test_benchmarks.py",
     "test_build_home.py",
     "test_build_web.py",
+    "test_card_items.py",
     "test_categories.py",
     "test_category_stats.py",
     "test_check_data.py",
