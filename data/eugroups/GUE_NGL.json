@@ -1,7 +1,7 @@
 {
  "code": "GUE_NGL",
  "short_label": "The Left",
- "name_cs": null,
+ "name_cs": "Levice v Evropském parlamentu - GUE/NGL",
  "label": "The Left in the European Parliament",
  "color": "#BE123C",
  "chart_color": "#BE123C",
@@ -53,55 +53,68 @@
   "by_country": [
    {
     "cc": "IT",
-    "n": 10
+    "n": 10,
+    "cs": "Itálie"
    },
    {
     "cc": "FR",
-    "n": 9
+    "n": 9,
+    "cs": "Francie"
    },
    {
     "cc": "DE",
-    "n": 4
+    "n": 4,
+    "cs": "Německo"
    },
    {
     "cc": "ES",
-    "n": 4
+    "n": 4,
+    "cs": "Španělsko"
    },
    {
     "cc": "FI",
-    "n": 3
+    "n": 3,
+    "cs": "Finsko"
    },
    {
     "cc": "GR",
-    "n": 3
+    "n": 3,
+    "cs": "Řecko"
    },
    {
     "cc": "IE",
-    "n": 3
+    "n": 3,
+    "cs": "Irsko"
    },
    {
     "cc": "BE",
-    "n": 2
+    "n": 2,
+    "cs": "Belgie"
    },
    {
     "cc": "PT",
-    "n": 2
+    "n": 2,
+    "cs": "Portugalsko"
    },
    {
     "cc": "SE",
-    "n": 2
+    "n": 2,
+    "cs": "Švédsko"
    },
    {
     "cc": "CY",
-    "n": 1
+    "n": 1,
+    "cs": "Kypr"
    },
    {
     "cc": "DK",
-    "n": 1
+    "n": 1,
+    "cs": "Dánsko"
    },
    {
     "cc": "NL",
-    "n": 1
+    "n": 1,
+    "cs": "Nizozemsko"
    }
   ]
  },
@@ -118,7 +131,8 @@
    "country": "FR",
    "role": "CHAIR_CO",
    "gender": "F",
-   "start": "2024-07-16"
+   "start": "2024-07-16",
+   "country_cs": "Francie"
   },
   {
    "mep_id": 190517,
@@ -126,7 +140,8 @@
    "country": "DE",
    "role": "CHAIR_CO",
    "gender": "M",
-   "start": "2024-07-16"
+   "start": "2024-07-16",
+   "country_cs": "Německo"
   }
  ],
  "chairs_source": {

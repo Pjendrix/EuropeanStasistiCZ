@@ -170,6 +170,43 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
     sub = (f"{pp['short_label']} · " if name != pp["short_label"] else "") + (
         f"{meps_count_cs(now_count)} v mandátu" if now_count else "nikdo v mandátu"
     )
+
+    def ent(e: dict | None) -> dict:
+        return {"logo": e.get("logo"), "aspect": e.get("logo_aspect"), "color": e.get("color")} if e else {}
+
+    by_code = {g["code"]: g for g in groups}
+    ordered = sorted(pp["member_list"], key=lambda m: _cs_key(m.get("sort_label") or m["name"]))
+    last = max(pp["splits_main"], key=lambda v: (v["date"], v["id"])) if pp.get("splits_main") else None
+    detail = {
+        **ent(pp),
+        "short": pp["short_label"],
+        "groups": [{"label": by_code[c]["short_label"], **ent(by_code[c])} for c in pp.get("groups", []) if c in by_code],
+        "members": [
+            {"name": display_name(m), "attendance": m["total"]["attendance"], "loyalty": m["total"]["group_loyalty"]}
+            for m in ordered
+            if m.get("current", True)
+        ],
+        "former": [{"name": display_name(m), "end": m.get("end")} for m in ordered if m.get("current") is False],
+        "positions": t.get("positions"),
+        "single": single,
+        "membersEver": len(pp["member_list"]),
+        "splits": None if single else [pp["splits_count"], pp["cohesion"][1]],
+        "splitsMain": None if single else [pp["splits_count_main"], pp["cohesion_main"][1]],
+        "lastSplit": {
+            "title": last.get("title"),
+            "date": last["date"],
+            "positions": sorted(
+                (
+                    {"name": display_name(meps_by_id[x["member_id"]]), "position": x["position"]}
+                    for x in last["positions"]
+                    if x["member_id"] in meps_by_id
+                ),
+                key=lambda r: _cs_key(r["name"]),
+            ),
+        }
+        if last
+        else None,
+    }
     share = {
         "kind": "party",
         "path": f"s/{pp['id']}",
@@ -185,6 +222,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
             "name": name,
             "sub": sub,
             "dataDay": release or today,
+            **detail,
             "tiles": [
                 {"label": "Účast poslanců na hlasování", "pair": t["attendance"]},
                 {"label": "Jednotnost", "pair": None if single else pp["cohesion"], "note": "všichni hlasující poslanci strany stejně"},

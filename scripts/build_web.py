@@ -649,6 +649,7 @@ def build_eu_groups(
     day: str,
     countries: dict | None = None,
     chairs: dict | None = None,
+    names_cs: dict | None = None,
 ) -> tuple[dict, dict]:
     """Politické skupiny EP (index + stránky): souhrn celé skupiny z group_counts, čeští členové (i bývalí, příznak current),
     složení podle zemí (group_countries.json) a předsedové (group_chairs.json) (data/eugroups/)."""
@@ -675,9 +676,15 @@ def build_eu_groups(
         members.sort(key=lambda r: (not r["current"], r.get("sort_label") or r["name"]))
         st = gs[code]
         comp = ((countries or {}).get("groups") or {}).get(code)
+        cs = lambda cc: ((names_cs or {}).get(cc) or {}).get("cs")  # noqa: E731
+        if comp:
+            comp = {**comp, "by_country": [{**c, "cs": cs(c["cc"])} for c in comp["by_country"]]}
+        group_chairs = [{**c, "country_cs": cs(c.get("country"))} for c in ((chairs or {}).get("groups") or {}).get(code, [])]
         row = lambda vid: {**vote_summary(votes_by_id[vid], meps_by_id), "gc": votes_by_id[vid]["group_counts"][code]}  # noqa: B023
         summary = {
             **{k: g.get(k) for k in ("code", "short_label", "name_cs", "label", "color", "chart_color", "logo", "logo_aspect")},
+            # úřední český název z EP API, když ho data českých poslanců nemají (skupina bez Čechů)
+            "name_cs": g.get("name_cs") or (((chairs or {}).get("group_meta") or {}).get(code) or {}).get("name_cs"),
             "web": ((group_web or {}).get("groups") or {}).get(code, {}).get("web"),
             "cz_members": sum(1 for r in members if r["current"]),
             "seats": comp["seats"] if comp else None,
@@ -698,7 +705,7 @@ def build_eu_groups(
             "member_list": members,
             "countries": {"as_of": countries["as_of"], "vote_id": countries["vote_id"], **comp} if comp else None,
             "countries_source": (countries or {}).get("source") if comp else None,
-            "chairs": ((chairs or {}).get("groups") or {}).get(code, []) if chairs else None,
+            "chairs": group_chairs if chairs else None,
             "chairs_source": (chairs or {}).get("source"),
             "splits_list": [row(v) for v in st["split_ids"]],
             "splits_list_main": [row(v) for v in st["split_ids_main"]],
@@ -854,6 +861,7 @@ def run(data_dir: Path, day: str) -> dict:
                 day,
                 json.loads(comp_path.read_text(encoding="utf-8")) if comp_path.exists() else None,
                 json.loads(chairs_path.read_text(encoding="utf-8")) if chairs_path.exists() else None,
+                json.loads((data_dir / "manual" / "countries_cs.json").read_text(encoding="utf-8")).get("countries"),
             )
             write_json(data_dir / "eugroups" / "index.json", eu_index)
             for code, page in eu_pages.items():

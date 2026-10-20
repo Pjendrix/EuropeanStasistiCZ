@@ -1,10 +1,11 @@
 // Strany: seznam (party.html), evropské frakce (?v=eu, ?c=) a interakce na detailu strany (s/{id}.html).
 import { getJSON, param, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, byGender, displayName, esc, fmtNum, fmtPct, pct } from "./lib/format.js";
-import { collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
+import { CZ_GROUP_LABEL, byGender, chairRole, chairsHeading, displayName, esc, fmtDate, fmtNum, fmtPct, fromCountriesCs, pct, seatsCs, siteUrl, topCountries } from "./lib/format.js";
+import { SHARE_BTN_HTML, collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("parties");
 const MIN_VOTERS_EU = 10;
+let PARTIES = [];
 const groupPageUrl = (code) => `party?c=${encodeURIComponent(code)}`;
 const main = document.getElementById("main");
 
@@ -33,11 +34,12 @@ async function euListPage() {
     <div class="page-head"><h1>Evropské frakce v Evropském parlamentu</h1>${viewSwitch("eu")}</div>
     <div class="lead-row"><p class="lead">Souhrn hlasování celých politických skupin EP, ve kterých sedí čeští poslanci.</p>${infoButton(`<p>Čísla jsou za všechny poslance skupiny v celém Evropském parlamentu, ne jen za české. <strong>Účast</strong> = podíl hlasů pro, proti nebo zdržel se z hlasů všech členů skupiny. <strong>Soudržnost</strong> = podíl hlasů pro a proti, které odpovídají většině skupiny (v hlasováních, kde hlasovalo pro nebo proti aspoň ${MIN_VOTERS_EU} členů). <strong>Výrazně rozdělená hlasování</strong> = menšina mezi hlasy pro a proti tvoří aspoň 30 % (stejný práh jako u české delegace). Nezařazení poslanci nejsou skupina, proto tu nejsou. Žádné pořadí ani hodnocení. <a href="o-projektu#metodika">Jak počítáme</a>.</p>`)}</div>
     <div class="table-wrap"><table class="cards">
-      <thead><tr><th>Skupina</th><th class="num">Čeští poslanci</th><th class="num">Účast skupiny${bench?.ep?.attendance != null ? `<div class="small muted th-note">medián EP ${fmtPct(bench.ep.attendance)}</div>` : ""}</th>
+      <thead><tr><th>Skupina</th><th class="num">Čeští poslanci</th><th class="num">Poslanců / zemí</th><th class="num">Účast skupiny${bench?.ep?.attendance != null ? `<div class="small muted th-note">medián EP ${fmtPct(bench.ep.attendance)}</div>` : ""}</th>
         <th class="num">Soudržnost</th><th class="num">Výrazně rozdělená hlasování</th></tr></thead>
       <tbody>${idx.groups.map((g) => `<tr>
         <td>${entityCell(g, { name: g.name_cs || g.label, href: groupPageUrl(g.code), sub: esc(CZ_GROUP_LABEL[g.code] || g.short_label) })}</td>
         <td class="num" data-label="Čeští poslanci">${g.cz_members ? fmtNum(g.cz_members) : '<span class="muted">žádný</span>'}</td>
+        <td class="num" data-label="Poslanců / zemí">${g.seats ? `${fmtNum(g.seats)} / ${fmtNum(g.n_countries)}` : "–"}</td>
         <td class="num" data-label="Účast skupiny">${pctCell(g.attendance)}</td>
         <td class="num" data-label="Soudržnost">${pctCell(g.majority, "podíl hlasů pro a proti odpovídajících většině skupiny")}</td>
         <td class="num" data-label="Výrazně rozdělená">${g.considered ? `${fmtNum(g.splits)} z ${fmtNum(g.considered)}<div class="small muted">${fmtPct(g.splits / g.considered)}</div>` : "–"}</td></tr>`).join("")}</tbody>
@@ -45,27 +47,93 @@ async function euListPage() {
     <p class="source">${sourceLine(idx)}</p>`;
 }
 
+// Prázdný stav frakce bez českých poslanců: stejný text na stránce i na kartě (zadání 20. 10. 2026).
+const NO_CZ_TITLE = "Žádný český poslanec";
+const NO_CZ_TEXT = "Za Česko v této frakci nyní nesedí žádný europoslanec.";
+const czCountCs = (n) => (n ? `${fmtNum(n)} ${n === 1 ? "český poslanec" : n < 5 ? "čeští poslanci" : "českých poslanců"}` : "žádný český poslanec");
+const formerParty = (m) => (m.party_then ? (m.party_then.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : m.party_then.short_label) : "");
+
+// Frakce v Evropě: prvních 5 zemí a Česko (sloupce s textem), celá tabulka zemí a předsednictví se zdrojem.
+function europeHtml(g) {
+  const c = g.countries;
+  if (!c) return "";
+  const max = Math.max(...c.by_country.map((x) => x.n), 1);
+  const rows = topCountries(c).map((x) => `<li class="cb-row${x.cz ? " cb-cz" : ""}"><span class="cb-name">${esc(x.cs || x.cc)}</span>
+      <span class="cb-track" aria-hidden="true"><span style="width:${((x.n / max) * 100).toFixed(1)}%"></span></span><span class="cb-n">${fmtNum(x.n)}</span></li>`).join("");
+  const chairs = g.chairs || [];
+  const src = g.chairs_source;
+  return `<h2>Frakce v Evropě</h2>
+    <p class="small muted">${fmtNum(c.n_countries)} zemí · ${seatsCs(c.seats)} · k ${fmtDate(c.as_of)} (poslanci u posledního hlasování v datech)</p>
+    <ol class="country-bars" aria-label="Počet poslanců frakce podle zemí: prvních pět zemí a Česko">${rows}</ol>
+    <details class="links-more"><summary>Zobrazit všechny země</summary>
+      <div class="table-wrap"><table class="cards"><caption class="sr-only">Poslanci frakce podle zemí</caption>
+        <thead><tr><th>Země</th><th class="num">Poslanců</th></tr></thead>
+        <tbody>${c.by_country.map((x) => `<tr${x.cc === "CZ" ? ' class="cb-cz"' : ""}><td>${esc(x.cs || x.cc)}</td><td class="num" data-label="Poslanců">${fmtNum(x.n)}</td></tr>`).join("")}</tbody></table></div>
+    </details>
+    ${chairs.length ? `<p>Předsednictví: ${chairs.map((x) => `${esc(x.name)} (${esc(x.country_cs || x.country || "")}), ${chairRole(x)}`).join("; ")}</p>` : ""}
+    <p class="source">Složení: <a href="https://github.com/HowTheyVote/data">HowTheyVote.eu</a> (ODbL), data k ${fmtDate(c.as_of)}${src ? ` · předsednictví: <a href="${esc(src.url)}">EP Open Data</a> (CC BY 4.0), stav k ${fmtDate(src.updated)}` : ""}</p>`;
+}
+
+// Karta frakce ke sdílení (share.js, kind „group“): jen čísla a jména, která ukazuje stránka.
+function groupShareContext(g, now, former, groups) {
+  const path = `party?c=${encodeURIComponent(g.code)}`;
+  const url = siteUrl(path);
+  const name = g.name_cs || g.label;
+  const partyLogo = (p) => (p ? PARTIES?.find((x) => String(x.id) === String(p.id)) : null);
+  const chip = (p, m) => {
+    const e = partyLogo(p);
+    const label = p ? (p.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : p.short_label) : "";
+    return { label, logo: e?.logo || null, aspect: e?.logo_aspect || null, color: e?.color || null };
+  };
+  const release = g.sources?.votes?.release;
+  return {
+    kind: "group", url, path, filename: `ep-watch-frakce-${g.code.toLowerCase()}`, subtitle: `Frakce · ${CZ_GROUP_LABEL[g.code] || g.short_label}`,
+    text: `${name} v Evropském parlamentu: ${g.seats ? `${seatsCs(g.seats)} ${fromCountriesCs(g.n_countries)}, ` : ""}${czCountCs(g.cz_members)}. Zdroj: HowTheyVote.eu, EP Open Data, EP Watch CZ`,
+    data: {
+      name, short: CZ_GROUP_LABEL[g.code] || g.short_label, logo: g.logo, aspect: g.logo_aspect, color: g.color,
+      seats: g.seats, nCountries: g.n_countries, czCount: g.cz_members, dataDay: release,
+      tiles: [
+        { label: "Účast skupiny na hlasování", pair: g.attendance, note: "hlasy pro, proti nebo zdržel se ze všech hlasů členů" },
+        { label: "Hlasuje s většinou frakce", pair: g.majority, note: "hlasy pro a proti shodné s většinou skupiny" },
+      ],
+      members: now.map((m) => ({ name: displayName(m), ...chip(m.party, m), current: true })),
+      former: former.map((m) => ({ name: displayName(m), ...chip(m.party_then, m), end: m.end, partyLabel: formerParty(m) })),
+      noCz: { title: NO_CZ_TITLE, text: NO_CZ_TEXT },
+      countries: g.countries ? { asOf: g.countries.as_of, seats: g.countries.seats, nCountries: g.countries.n_countries, rows: topCountries(g.countries) } : null,
+      chairs: (g.chairs || []).map((x) => ({ name: x.name, country: x.country_cs || x.country, role: chairRole(x) })),
+      chairsHeading: (g.chairs || []).length ? chairsHeading(g.chairs) : null,
+      urlShort: url.replace(/^https?:\/\//, ""),
+    },
+  };
+}
+
 async function euDetailPage(code) {
-  const [g, groups] = await Promise.all([getJSON(`eugroups/${code}.json`).catch(() => { throw new Error("Skupina nenalezena. Vrať se na seznam frakcí."); }), getJSON("groups.json")]);
+  const [g, groups, parties] = await Promise.all([getJSON(`eugroups/${code}.json`).catch(() => { throw new Error("Skupina nenalezena. Vrať se na seznam frakcí."); }), getJSON("groups.json"), getJSON("parties.json").catch(soft([]))]);
+  PARTIES = parties;
   document.title = `${g.name_cs || g.label} – EP Watch CZ`;
+  const now = g.member_list.filter((m) => m.current !== false).sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs"));
+  const former = g.member_list.filter((m) => m.current === false);
   const rows = (list) => list.length ? `<div class="table-wrap"><table class="stack">
       <thead><tr><th class="num">Datum</th><th>Hlasování</th><th>Skupina</th><th>Výsledek</th></tr></thead>
       <tbody>${list.map((v) => voteRow(v, `<td class="extra cz">${splitBar(v.gc)}<div class="small">${czCountsHtml(v.gc)}</div></td>`)).join("")}</tbody></table></div>`
     : emptyState("Skupina se v žádném takovém hlasování nerozdělila.", "Zkuste zrušit filtr „jen závěrečná“.");
   main.innerHTML = `
-    <div class="page-head"><p class="small"><a href="party?v=eu">← Všechny frakce</a></p>${viewSwitch("eu")}</div>
+    <div class="page-head"><p class="small"><a href="party?v=eu">← Všechny frakce</a></p><div class="head-acts">${SHARE_BTN_HTML}${viewSwitch("eu")}</div></div>
     ${g.logo ? `<div class="logo-row">${logoTile(g, 48)}</div>` : ""}
     <h1>${esc(g.name_cs || g.label)} ${groupBadge(g.code, groups)}</h1>
-    <p class="small">${g.cz_members} ${g.cz_members === 1 ? "český poslanec" : g.cz_members < 5 ? "čeští poslanci" : "českých poslanců"}${g.web ? ` · <a class="ext" href="${esc(g.web)}" rel="noopener" title="Adresu webu uvádí Wikidata (CC0)">oficiální web</a>` : ""}</p>
+    <p class="small">${g.seats ? `${seatsCs(g.seats)} ${fromCountriesCs(g.n_countries)} · ` : ""}${czCountCs(g.cz_members)}${g.web ? ` · <a class="ext" href="${esc(g.web)}" rel="noopener" title="Adresu webu uvádí Wikidata (CC0)">oficiální web</a>` : ""}</p>
 
-    ${g.member_list.length ? `<h2>Čeští poslanci ve skupině</h2>
-    <div class="table-wrap"><table class="cards">
+    <h2>Čeští poslanci ve skupině</h2>
+    ${now.length ? `<div class="table-wrap"><table class="cards">
       <thead><tr><th>Poslanec</th><th>Strana</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
-      <tbody>${[...g.member_list].sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs")).map((m) => `<tr>
+      <tbody>${now.map((m) => `<tr>
         <td><div class="mep-cell"><img src="${photoUrl(m, true)}" alt="" loading="lazy" width="40" height="40"><a href="${mepUrl(m.id)}">${esc(displayName(m))}</a></div></td>
         <td class="wide" data-label="Strana">${m.party ? esc(m.party.short_label === "Ind." ? byGender(m, "nezávislý", "nezávislá") : m.party.short_label) : ""}</td>
         <td class="num" data-label="Účast na hlasování">${pctCell(m.total.attendance)}</td><td class="num" data-label="Hlasuje s frakcí">${pctCell(m.total.group_loyalty)}</td></tr>`).join("")}</tbody>
-    </table></div>` : '<p class="muted">Ve skupině nesedí žádný český poslanec.</p>'}
+    </table></div>` : `<div class="empty-state"><p><strong>${NO_CZ_TITLE}</strong> ${NO_CZ_TEXT}</p></div>`}
+    ${former.length ? `<p class="small muted">Dříve ve skupině: ${former.map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>${formerParty(m) ? ` (${esc(formerParty(m))})` : ""}, do ${fmtDate(m.end)}`).join(" · ")}</p>` : ""}
+
+    ${europeHtml(g)}
 
     <h2>Souhrn za celou skupinu</h2>
     <div class="metrics">
@@ -82,6 +150,7 @@ async function euDetailPage(code) {
     ${noteLine("Hlasování s největším podílem menšiny mezi hlasy pro a proti.", "Zobrazeno nejvýš 50 hlasování. Čísla ve sloupci Skupina jsou hlasy všech členů skupiny.")}
     <div class="controls"><label><input type="checkbox" id="split-main"> jen závěrečná hlasování</label></div>
     <div id="splits">${rows(g.splits_list)}</div>`;
+  window.shareContext = () => groupShareContext(g, now, former, groups);
   document.getElementById("split-main")?.addEventListener("change", (e) => {
     document.getElementById("splits").innerHTML = rows(e.target.checked ? g.splits_list_main : g.splits_list);
     collapseTables(document.getElementById("splits"));

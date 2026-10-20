@@ -1,7 +1,7 @@
 {
  "code": "RENEW",
  "short_label": "Renew",
- "name_cs": null,
+ "name_cs": "skupina Renew Europe",
  "label": "Renew Europe",
  "color": "#F59E0B",
  "chart_color": "#F59E0B",
@@ -53,87 +53,108 @@
   "by_country": [
    {
     "cc": "FR",
-    "n": 13
+    "n": 13,
+    "cs": "Francie"
    },
    {
     "cc": "DE",
-    "n": 9
+    "n": 9,
+    "cs": "Německo"
    },
    {
     "cc": "NL",
-    "n": 7
+    "n": 7,
+    "cs": "Nizozemsko"
    },
    {
     "cc": "IE",
-    "n": 6
+    "n": 6,
+    "cs": "Irsko"
    },
    {
     "cc": "SK",
-    "n": 6
+    "n": 6,
+    "cs": "Slovensko"
    },
    {
     "cc": "BE",
-    "n": 5
+    "n": 5,
+    "cs": "Belgie"
    },
    {
     "cc": "DK",
-    "n": 4
+    "n": 4,
+    "cs": "Dánsko"
    },
    {
     "cc": "BG",
-    "n": 3
+    "n": 3,
+    "cs": "Bulharsko"
    },
    {
     "cc": "FI",
-    "n": 3
+    "n": 3,
+    "cs": "Finsko"
    },
    {
     "cc": "RO",
-    "n": 3
+    "n": 3,
+    "cs": "Rumunsko"
    },
    {
     "cc": "SE",
-    "n": 3
+    "n": 3,
+    "cs": "Švédsko"
    },
    {
     "cc": "AT",
-    "n": 2
+    "n": 2,
+    "cs": "Rakousko"
    },
    {
     "cc": "EE",
-    "n": 2
+    "n": 2,
+    "cs": "Estonsko"
    },
    {
     "cc": "IT",
-    "n": 2
+    "n": 2,
+    "cs": "Itálie"
    },
    {
     "cc": "LT",
-    "n": 2
+    "n": 2,
+    "cs": "Litva"
    },
    {
     "cc": "PT",
-    "n": 2
+    "n": 2,
+    "cs": "Portugalsko"
    },
    {
     "cc": "SI",
-    "n": 2
+    "n": 2,
+    "cs": "Slovinsko"
    },
    {
     "cc": "ES",
-    "n": 1
+    "n": 1,
+    "cs": "Španělsko"
    },
    {
     "cc": "LU",
-    "n": 1
+    "n": 1,
+    "cs": "Lucembursko"
    },
    {
     "cc": "LV",
-    "n": 1
+    "n": 1,
+    "cs": "Lotyšsko"
    },
    {
     "cc": "PL",
-    "n": 1
+    "n": 1,
+    "cs": "Polsko"
    }
   ]
  },
@@ -150,7 +171,8 @@
    "country": "FR",
    "role": "CHAIR",
    "gender": "F",
-   "start": "2024-07-16"
+   "start": "2024-07-16",
+   "country_cs": "Francie"
   }
  ],
  "chairs_source": {

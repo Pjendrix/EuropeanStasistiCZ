@@ -73,17 +73,18 @@ def chairs_from(current: list[dict], details: list[dict], org_codes: dict[str, s
     return out
 
 
-def group_orgs(client: EPClient, orgs: set[str]) -> dict[str, str]:
-    """{org/…: kód} pro politické skupiny, které se v členstvích objevily."""
-    out = {}
+def group_orgs(client: EPClient, orgs: set[str]) -> tuple[dict[str, str], dict[str, dict]]:
+    """{org/…: kód} pro politické skupiny, které se v členstvích objevily, a {kód: {org_id, name_cs}} (úřední český název
+    skupiny z prefLabel, hodí se u skupin bez českých poslanců, u kterých ho data poslanců nemají)."""
+    out, meta = {}, {}
     for org in sorted(orgs):
         body = client.get_body(org)
         version = str(body.get("isVersionOf") or "").removeprefix("org/")
-        if version in EP_TO_CODE:
-            out[org] = EP_TO_CODE[version]
-        else:
+        if version not in EP_TO_CODE:
             raise FormatError(f"{org}: neznámá politická skupina {version!r}, doplň EP_TO_CODE ve fetch_group_chairs.py")
-    return out
+        out[org] = EP_TO_CODE[version]
+        meta[EP_TO_CODE[version]] = {"org_id": body["identifier"], "name_cs": (body.get("prefLabel") or {}).get("cs")}
+    return out, meta
 
 
 def fetch(client: EPClient, day: str) -> dict:
@@ -106,7 +107,8 @@ def fetch(client: EPClient, day: str) -> dict:
         for m in p.get("hasMembership", [])
         if m.get("membershipClassification") == CLS_GROUP and m.get("role") in CHAIR_ROLES and not (m.get("memberDuring") or {}).get("endDate")
     }
-    groups = chairs_from(current, details, group_orgs(client, orgs), day)
+    org_codes, meta = group_orgs(client, orgs)
+    groups = chairs_from(current, details, org_codes, day)
     for code in EP_TO_CODE.values():
         groups.setdefault(code, [])
     return {
@@ -114,6 +116,7 @@ def fetch(client: EPClient, day: str) -> dict:
         "Prázdný seznam = API předsedu nevrátilo. Generuje scripts/fetch_group_chairs.py.",
         "source": {"name": "EP Open Data API v2", "url": f"{API}/meps/show-current", "license": "CC BY 4.0", "updated": day},
         "groups": dict(sorted(groups.items())),
+        "group_meta": dict(sorted(meta.items())),
     }
 
 
