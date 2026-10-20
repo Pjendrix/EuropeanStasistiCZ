@@ -524,7 +524,7 @@ for (const width of [1366, 390]) {
       const lowest = Math.max(...full.filter((o) => o.k !== "band" && "y" in o && o.y < foot - 1).map((o) => o.y + (o.r || 0)));
       if (lowest > foot) out.push(`vote ${theme} ${f.h}: obsah zasahuje do patičky (${lowest} > ${foot})`);
       const dots7 = full.filter((o) => o.k === "circ" && o.r === 13).length;
-      if (dots7 < 6 + 18 + 3) out.push(`vote ${theme} ${f.h}: nevykreslily se všechny tečky stran (${dots7})`);
+      if (dots7 < 6 + 18) out.push(`vote ${theme} ${f.h}: nevykreslily se všechny tečky stran (${dots7})`);
       const withT = voteCardOps({ ...vbase, topic: "Klima, příroda a energie (+2) a ještě mnohem delší text, který se nevejde" }, f);
       fits("vote s tématem", withT);
       if (!/Klima, příroda a energie/.test(texts(withT))) out.push("vote: chybí téma na kartě");

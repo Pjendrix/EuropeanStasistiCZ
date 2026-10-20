@@ -139,8 +139,10 @@ export function balanceRows(widths, maxW, gap = 8, keys = null) {
       lens.forEach((l) => { ws.push(rowW(at, at + l)); at += l; });
       let breaks = 0; at = 0;
       lens.slice(0, -1).forEach((l) => { at += l; if (keys && keys[at - 1] !== keys[at]) breaks += 1; });
-      const score = [lens.length > 1 && lens[lens.length - 1] === 1 ? 1 : 0, -breaks, Math.max(...ws) - Math.min(...ws)];
-      if (!best || score[0] < best.score[0] || (score[0] === best.score[0] && (score[1] < best.score[1] || (score[1] === best.score[1] && score[2] < best.score[2])))) best = { lens, score };
+      // poslední kritérium: delší řádky nahoře (4 + 3, ne 3 + 4)
+      const score = [lens.length > 1 && lens[lens.length - 1] === 1 ? 1 : 0, -breaks, Math.max(...ws) - Math.min(...ws), lens[0] < lens[lens.length - 1] ? 1 : 0];
+      const better = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] < b[i]; return false; };
+      if (!best || better(score, best.score)) best = { lens, score };
       return;
     }
     for (let j = start + 1; j <= n - rows + 1; j++) {
