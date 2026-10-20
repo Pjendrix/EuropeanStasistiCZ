@@ -73,3 +73,13 @@ def test_vote_meaning_block_for_every_kind_except_other():
     assert ui.vote_meaning_html("other") == "" and ui.vote_meaning_html(None) == ""
     for _about, yes, no in ui.VOTE_MEANING.values():
         assert not any(ch.isdigit() for ch in yes + no)  # žádná čísla, jen význam hlasu
+
+
+def test_group_link_leads_to_group_page_except_non_attached():
+    groups = [
+        {"code": "EPP", "ep_code": "PPE", "short_label": "EPP", "label": "MOCK EPP", "color": "#3B82F6"},
+        {"code": "NI", "ep_code": "NI", "short_label": "Non-attached", "label": "MOCK NI", "color": "#94A3B8"},
+    ]
+    assert ui.group_link(None, groups, "PPE").startswith('<a href="party?c=EPP" class="badge-link"><span class="badge"')
+    assert "<a " not in ui.group_link(None, groups, "NI")
+    assert "<a " not in ui.group_link(None, groups, None)

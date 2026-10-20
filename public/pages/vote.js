@@ -1,7 +1,7 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, loadCategories, param, soft } from "../lib/data.js";
 import { KIND_LABEL, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
-import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupBadge, kindTag, logoTile, mepUrl, partyBadge, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
+import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupLink, kindTag, logoTile, mepUrl, partyLink, resultHtml, setNav, shareButton, shareCardParties, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
 const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
@@ -111,7 +111,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
                 .sort((a, b) => displayName(meps[a.member_id]).localeCompare(displayName(meps[b.member_id]), "cs"));
               return `<div class="card"><h3 class="pos pos-${k}">${POSITION_LABEL[k]} (${list.length})</h3>
                 <ul class="plain">${list.map((p) => `<li><a href="${mepUrl(p.member_id)}">${esc(displayName(meps[p.member_id]))}</a>
-                  <div>${groupBadge(p.group_code, groups)} ${p.national_party_id ? partyBadge(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
+                  <div>${groupLink(p.group_code, groups)} ${p.national_party_id ? partyLink(p.national_party_id, p.national_party, parties, meps[p.member_id]) : ""}</div></li>`).join("")}</ul></div>`;
             }).join("")}
           </div>
           ${KEYS.some((k, i) => !czCounts[i]) ? `<p class="small muted">Nikdo z Čechů: ${KEYS.filter((k, i) => !czCounts[i]).map((k) => POSITION_LABEL[k]).join(", ")}.</p>` : ""}
@@ -127,7 +127,7 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
       <details class="explain wide"><summary><strong>Jak hlasovaly frakce</strong> · ${groupRows.length} frakcí, zvýrazněné ty s Čechy</summary>
       <div class="table-wrap"><table>
         <thead><tr><th>Frakce</th><th class="num">Pro</th><th class="num">Proti</th><th class="num">Zdrž.</th><th class="num">Nehl.</th><th>Většina frakce</th><th>Rozložení</th></tr></thead>
-        <tbody>${groupRows.map(([code, row]) => `<tr class="${czGroups.has(code) ? "cz-row" : ""}"><td><span class="dot" style="background:${groupColor(groups.find((x) => x.code === code))}"></span> <span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupBadge(code, groups)}</span></td>
+        <tbody>${groupRows.map(([code, row]) => `<tr class="${czGroups.has(code) ? "cz-row" : ""}"><td><span class="dot" style="background:${groupColor(groups.find((x) => x.code === code))}"></span> <span class="logo-row" style="margin:0;flex-wrap:nowrap"><span class="logo-slot">${logoTile(groups.find((x) => x.code === code), 20)}</span>${groupLink(code, groups)}</span></td>
           ${row.map((n) => `<td class="num">${n}</td>`).join("")}<td>${groupMajorityLabel(row) || '<span class="muted">bez jasné většiny</span>'}</td><td>${splitBar(row)}</td></tr>`).join("")}</tbody>
       </table></div>
       <p class="small muted">Zvýrazněné řádky jsou frakce, ve kterých sedí čeští poslanci. Většina frakce = jednoznačně nejvíc hlasů pro, proti nebo zdržet se.</p>

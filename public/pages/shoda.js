@@ -1,7 +1,7 @@
 // Skript stránky shoda.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, param } from "../lib/data.js";
 import { displayName, esc, fmtNum, fmtPct, isActive, pct } from "../lib/format.js";
-import { csvButton, groupBadge, mepUrl, setNav, showError, sourceLine } from "../lib/ui.js";
+import { csvButton, groupLink, mepUrl, setNav, showError, sourceLine } from "../lib/ui.js";
 setNav("analyses");
 setNav("agreement");
 const LIMIT = 50;
@@ -39,7 +39,7 @@ const LIMIT = 50;
       el.innerHTML = `<table class="matrix"><thead><tr><th class="sticky-col">Poslanec</th>${list.map((c) =>
         `<th class="mx-head"><a href="${mepUrl(c.id)}" title="${esc(displayName(c))}">${esc(c.family_name || c.name)}</a></th>`).join("")}</tr></thead>
         <tbody>${list.map((r) => `<tr><th class="sticky-col mx-row"><a href="${mepUrl(r.id)}">${esc(displayName(r))}</a>
-          <div>${groupBadge(null, groups, r.group?.code)}</div></th>${list.map((c) => td(r, c)).join("")}</tr>`).join("")}</tbody></table>`;
+          <div>${groupLink(null, groups, r.group?.code)}</div></th>${list.map((c) => td(r, c)).join("")}</tr>`).join("")}</tbody></table>`;
     };
     former.addEventListener("change", render);
     anchor.addEventListener("change", render);

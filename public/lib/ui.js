@@ -40,6 +40,21 @@ export function groupBadge(code, groups, epCode) {
   return `<span class="badge" style="--badge-dot:${groupColor(g)}" title="${esc(title)}">${esc(label)}</span>`;
 }
 
+// Štítek frakce jako odkaz na stránku frakce; nezařazení stránku nemají.
+export const groupUrl = (code) => `party?c=${encodeURIComponent(code)}`;
+export function groupLink(code, groups, epCode) {
+  const g = groups.find((x) => x.code === code) || groups.find((x) => epCode && x.ep_code === epCode);
+  const badge = groupBadge(code, groups, epCode);
+  return g && g.code !== "NI" ? `<a href="${groupUrl(g.code)}" class="badge-link">${badge}</a>` : badge;
+}
+
+// Štítek strany jako odkaz na stránku strany (nezávislí stránku nemají).
+export function partyLink(id, label, parties, mep) {
+  const p = parties.find((x) => String(x.id) === String(id));
+  const badge = partyBadge(id, label, parties, mep);
+  return p && !p.independent ? `<a href="${partyUrl(p.id)}" class="badge-link">${badge}</a>` : badge;
+}
+
 // mep (nepovinné) = poslanec kvůli rodu u „nezávislý/á“.
 export function partyBadge(id, label, parties, mep) {
   if (!id) return '<span class="badge outline">bez strany</span>';

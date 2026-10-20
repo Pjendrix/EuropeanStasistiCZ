@@ -14,7 +14,7 @@ from web_ui import (
     fmt_date,
     fmt_num,
     fmt_pct,
-    group_badge,
+    group_link,
     is_active,
     logo_tile,
     mep_url,
@@ -126,7 +126,7 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
     members = sorted(pp["member_list"], key=lambda m: -(pct(m["total"]["attendance"]) if pct(m["total"]["attendance"]) is not None else -1))
     rows = "".join(
         f'<tr><td><div class="mep-cell"><img src="{photo_url(m, True)}" alt="" loading="lazy" width="40" height="40">'
-        f'<div><a href="{mep_url(m["id"])}">{esc(display_name(m))}</a><div>{group_badge(None, groups, (m.get("group") or {}).get("code"))}</div></div></div></td>'
+        f'<div><a href="{mep_url(m["id"])}">{esc(display_name(m))}</a><div>{group_link(None, groups, (m.get("group") or {}).get("code"))}</div></div></div></td>'
         f'<td class="small wide" data-label="Ve straně (podle EP)">{"<br>".join(f"{fmt_date(x['start'])} – {fmt_date(x['end']) if x.get('end') else 'dosud'}" for x in m["party_periods"])}</td>'
         f'<td class="num" data-label="Účast na hlasování">{pct_cell(m["total"]["attendance"])}</td>'
         f'<td class="num" data-label="Hlasuje s frakcí">{pct_cell(m["total"]["group_loyalty"])}</td></tr>'
