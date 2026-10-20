@@ -93,7 +93,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 826,
+ "mandate_days": 827,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -119,7 +119,7 @@
   "close_votes": "Těsné hlasování: rozdíl mezi hlasy pro a proti je nejvýš 21 (tolik křesel má ČR).",
   "decisive_votes": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
   "delegations": "Srovnání s delegacemi podobné velikosti: stejná čísla jako u české delegace (jednotnost, těsná hlasování, která by bez hlasů delegace dopadla opačně) spočítaná stejnými pravidly pro delegace států s 20–22 poslanci (podle počtu poslanců u posledního hlasování v datech). Kontrafakt „bez hlasů delegace by hlasování dopadlo opačně“ platí pro jakoukoli skupinu poslanců, jejíž čistý rozdíl pro/proti převýší celkový rozdíl, takže nic neříká o větším vlivu české delegace. U ostatních států se berou všichni poslanci, které HowTheyVote u hlasování vede (mandáty z EP API máme jen pro české poslance).",
-  "presence": "Prezence na zasedání (podle EP): v kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP (EP Open Data, meetings). Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. Bez mediánu EP a bez pořadí.",
+  "presence": "Docházka na zasedání (podle EP): v kolika dnech jednání v plénu v době mandátu byl poslanec zapsán v prezenční listině EP (EP Open Data, meetings). Počítají se jen dny, ke kterým listina už existuje (budoucí dny se nepočítají jako neúčast). Kdo je v listině i mezi omluvenými, je přítomen; omluvení se ukazují zvlášť. Je to jiná metrika než Účast na hlasování, která počítá hlasy z HowTheyVote: poslanec mohl být na jednání a nehlasovat, nebo se hlasování nezúčastnit z jiných důvodů. Bez mediánu EP a bez pořadí.",
   "speeches": "Projevy v plénu: počet ústních projevů v rozpravách v době mandátu podle EP Open Data (endpoint speeches) a jejich celková délka z časových značek zdroje (jen u projevů, kde jsou obě značky). Písemná prohlášení se počítají zvlášť a do projevů se nesčítají, protože se dají psát hromadně. Jde o počet a čas, ne o kvalitu ani vliv; do třetin v delegaci nevstupuje a medián EP se neuvádí (projevy všech poslanců EP by znamenaly tisíce dotazů týdně). Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026.",
   "against_group": "Kde hlasoval jinak než frakce: poslanec hlasoval (pro / proti / zdržel se) jinak, než jednoznačná většina jeho frakce k datu hlasování. U každého takového hlasování se zjišťuje, jak hlasovala většina jeho české strany (ostatní poslanci strany, kteří k datu hlasování měli mandát a hlasovali). Když strana nemá jiného hlasujícího poslance nebo je většina nerozhodná, údaj není (null) a nepočítá se. Častá shoda se stranou při odchylce od frakce znamená, že poslanec sleduje linii domácí strany.",
   "cz_split": "Míra rozdělení mezi Čechy: menší ze dvou čísel (pro, proti) mezi českými poslanci v mandátu, děleno součtem pro a proti. 0 = všichni na jedné straně, 0,5 = půl na půl. Zdržení a nehlasování se nepočítají. Při stejné míře rozhoduje větší počet hlasujících.",
@@ -3795,7 +3795,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-19",
+  "updated": "2026-10-20",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
