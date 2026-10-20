@@ -105,7 +105,9 @@ def fetch(client: EPClient, day: str) -> dict:
         m["organization"]
         for p in details
         for m in p.get("hasMembership", [])
-        if m.get("membershipClassification") == CLS_GROUP and m.get("role") in CHAIR_ROLES and not (m.get("memberDuring") or {}).get("endDate")
+        if m.get("membershipClassification") == CLS_GROUP
+        and m.get("role") in CHAIR_ROLES
+        and not (m.get("memberDuring") or {}).get("endDate")
     }
     org_codes, meta = group_orgs(client, orgs)
     groups = chairs_from(current, details, org_codes, day)

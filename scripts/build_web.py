@@ -861,7 +861,9 @@ def run(data_dir: Path, day: str) -> dict:
                 day,
                 json.loads(comp_path.read_text(encoding="utf-8")) if comp_path.exists() else None,
                 json.loads(chairs_path.read_text(encoding="utf-8")) if chairs_path.exists() else None,
-                json.loads((data_dir / "manual" / "countries_cs.json").read_text(encoding="utf-8")).get("countries"),
+                json.loads(cs_path.read_text(encoding="utf-8")).get("countries")
+                if (cs_path := data_dir / "manual" / "countries_cs.json").exists()
+                else None,
             )
             write_json(data_dir / "eugroups" / "index.json", eu_index)
             for code, page in eu_pages.items():

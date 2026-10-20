@@ -574,8 +574,8 @@ function partyVotesOps(d, f) {
     if (d.splitsMain) ops.push(T(72, y + 98, fitText(line(d.splitsMain, "závěrečných hlasováních"), 30, 600, 936), 30, 600, SC.soft));
     y += 140;
     if (d.lastSplit) {
-      ops.push(sectionTitle(y + 20, `POSLEDNÍ ZÁVĚREČNÉ HLASOVÁNÍ, KDE SE STRANA ROZDĚLILA · ${fmtDate(d.lastSplit.date)}`));
-      const tl = wrapText(d.lastSplit.title || "", 30, 700, 936, 3);
+      ops.push(sectionTitle(y + 20, "POSLEDNÍ ZÁVĚREČNÉ HLASOVÁNÍ, KDE SE STRANA ROZDĚLILA"));
+      const tl = wrapText(`${fmtDate(d.lastSplit.date)} · ${d.lastSplit.title || ""}`, 30, 700, 936, 3);
       tl.forEach((l, i) => ops.push(T(72, y + 70 + i * 40, l, 30, 700, SC.text)));
       y += 70 + tl.length * 40 + 10;
       const ps = d.lastSplit.positions || [];
