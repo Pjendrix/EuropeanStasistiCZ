@@ -204,10 +204,10 @@ for (const scheme of ["light", "dark"]) {
         const size = pngSize(await (await import("node:fs/promises")).readFile(await dl.path()));
         if (!size || size[0] !== 1080 || size[1] !== 1350) problems.push(`${where}: stažená karta není PNG 1080 × 1350 (${size})`);
         if (!dl.suggestedFilename().endsWith("-post-svetla.png")) problems.push(`${where}: název souboru ${dl.suggestedFilename()} nemá příponu -svetla`);
-        await page.click('[data-fmt="story"]');
+        await page.click('[data-size="story"]');
         await page.waitForFunction(() => document.querySelector(".sd-preview img")?.naturalHeight === 1920, null, { timeout: 15000 })
           .catch(() => problems.push(`${where}: po přepnutí na Story náhled nemá 1080 × 1920`));
-        await page.click('[data-fmt="post"]');   // vrátit uložený formát
+        await page.click('[data-size="post"]');   // vrátit uložený rozměr
         // Kopírovat obrázek: ClipboardItem s PNG (mock schránky)
         const copied = await page.evaluate(async () => {
           let got = null;
@@ -221,7 +221,7 @@ for (const scheme of ["light", "dark"]) {
         if (!/schránce/.test(copied.toast)) problems.push(`${where}: chybí potvrzení přes role="status"`);
       }
       if (scheme === "light" && width === 1366 && url.startsWith("p/")) {
-        await page.click('[data-fmt="detail"]');
+        await page.click('[data-content="detail"]');
         await page.waitForFunction(() => document.querySelectorAll(".sd-carousel img").length === 3 && [...document.querySelectorAll(".sd-carousel img")].every((i) => i.naturalWidth === 1080 && i.naturalHeight === 1350), null, { timeout: 20000 })
           .catch(() => problems.push(`${where}: detail nemá 3 obrázky 1080 × 1350 v karuselu`));
         // na desktopu jde mezi obrázky přepínat myší: tlačítko › a tečky (vodorovné posouvání myš neumí)
@@ -236,7 +236,12 @@ for (const scheme of ["light", "dark"]) {
         if (after2.img !== 2 || after2.dot !== 2 || !(await page.isDisabled('.sd-arr[data-step="1"]'))) problems.push(`${where}: tlačítko › nepřeplo na 3. obrázek (${JSON.stringify(after2)})`);
         await page.click('.sd-dots button[data-i="0"]'); await page.waitForTimeout(600);
         if ((await shown()).img !== 0) problems.push(`${where}: tečka nepřepla na 1. obrázek`);
-        await page.click('[data-fmt="post"]');
+        // detail jako story: 3 obrázky 1080 × 1920
+        await page.click('[data-size="story"]');
+        await page.waitForFunction(() => document.querySelectorAll(".sd-carousel img").length === 3 && [...document.querySelectorAll(".sd-carousel img")].every((i) => i.naturalWidth === 1080 && i.naturalHeight === 1920), null, { timeout: 20000 })
+          .catch(() => problems.push(`${where}: detail story nemá 3 obrázky 1080 × 1920`));
+        await page.click('[data-size="post"]');
+        await page.click('[data-content="single"]');
       }
       await page.keyboard.press("Escape");
       await page.waitForTimeout(200);
@@ -619,6 +624,44 @@ for (const width of [1366, 390]) {
   console.log(`karta hlasování: ${picks.length} hlasování, záložní tečky u ${fallbacks} variant`);
   await ctx.close();
 }
+// Detail karty hlasování (2. a 3. obrázek, příspěvek i story) na statických stránkách v/: nic nepřetéká ani nezasahuje
+// do patičky, každý obrázek má zdroj a datum, 3. obrázek jen když je kontext (česká stopa, AI shrnutí, procedura).
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  const vids = readdirSync(join(root, "public", "v")).filter((f) => f.endsWith(".html")).map((f) => f.replace(/\.html$/, "")).sort().slice(-15);
+  for (const id of vids) {
+    await page.goto(base + `v/${id}`, { waitUntil: "networkidle" });
+    const out = await page.evaluate(async () => {
+      const src = document.querySelector('script[src*="share.js"]').src;
+      const m = await import(src), fmt = await import(new URL("lib/format.js", src).href);
+      const all = JSON.parse(document.getElementById("share-context").textContent);
+      const sc = fmt.withShareUrl(all.kind ? all : all.default);
+      await document.fonts.ready;
+      const res = [];
+      if (!sc.data.detail) return ["chybí data detailu"];
+      const formats = m.shareFormats("vote", sc.data);
+      const det = formats.find((x) => x.key === "detail"), detS = formats.find((x) => x.key === "detail-story");
+      if (!det || !detS || det.slides.length !== (m.voteHasContext(sc.data.detail) ? 3 : 2)) res.push("detail nemá správný počet obrázků");
+      const data = { ...sc.data, dataDay: sc.data.dataDay || "2026-10-17" };
+      for (const theme of m.CARD_THEMES) for (const key of [...det.slides.slice(1), ...detS.slides.slice(1)]) {
+        m.useCardTheme(theme);
+        const f = m.SHARE_FORMATS[key], ops = m.cardOps("vote", data, f, key), footY = f.h - 128;
+        const texts = ops.filter((o) => o.k === "text");
+        texts.forEach((o) => { const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x; if (x0 < 50 || x0 + w > 1030) res.push(`${theme} ${key}: text „${o.s.slice(0, 30)}“ přetéká`); });
+        const body = ops.filter((o) => o.k !== "band" && !(o.k === "line" && o.y1 === footY) && !(o.k === "text" && o.y > footY));
+        const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) + (o.k === "circ" ? o.r : 0) : o.y2 || 0)));
+        if (low > f.h - 150) res.push(`${theme} ${key}: obsah zasahuje do patičky (${Math.round(low)})`);
+        const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
+        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
+      }
+      m.useCardTheme("dark");
+      return res;
+    });
+    out.forEach((x) => problems.push(`detail hlasování v/${id}: ${x}`));
+  }
+  await ctx.close();
+}
 // Sdílení strany a frakce (zadání 20. 10. 2026): všech 8 frakcí a 10 stran má formát Detail se 3 obrázky v obou vzhledech,
 // nic nepřetéká, každý obrázek má zdroj a datum, logo je na bílém štítku i v tmavém vzhledu, frakce bez Čechů má prázdný stav.
 {
@@ -645,7 +688,7 @@ for (const width of [1366, 390]) {
       Object.assign(data, await withImg(data));
       for (const k of ["groups", "members", "former"]) if (Array.isArray(data[k])) data[k] = await Promise.all(data[k].map(withImg));
       for (const theme of m.CARD_THEMES) {
-        for (const slide of ["post", "slide2", "slide3"]) {
+        for (const slide of ["post", "slide2", "slide3", "story2", "story3"]) {
           const blob = await m.renderCardPng(sc, slide, theme);
           if (!blob || blob.size < 1000) out.push(`${theme} ${slide}: obrázek se nevykreslil`);
           m.useCardTheme(theme);

@@ -312,3 +312,23 @@ def procedure_pages(data_dir: Path, votes: list[dict], meps_by_id: dict, base_ur
     vr = _read(data_dir / "vote_roles.json", {}).get("votes", {})
     final_pages = {v["id"] for v in votes if is_final(v)}
     return dict(procedure_page(row, meps_by_id, vr, final_pages, base_url) for row in collect(data_dir, votes).values())
+
+
+def procedure_briefs(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
+    """{číslo procedury: {label, kind, now, path}} pro 3. obrázek detailu karty hlasování: druh procedury a poslední krok
+    z událostí EP (stejně jako karta Příběhu zákona). Bez událostí jen číslo, druh a odkaz."""
+    out = {}
+    for label, row in collect(data_dir, votes).items():
+        m = LABEL_RE.match(label)
+        if not m:
+            continue
+        ptype = m[3]
+        done = [x for x in (timeline(row["events"], ptype)["steps"] if row.get("events") else []) if x.get("date")]
+        now = done[-1] if done else None
+        out[label] = {
+            "label": label,
+            "kind": PROCESS_TYPE_CS.get(ptype),
+            "now": f"{now['label']} ({fmt_date(now.get('date_to') or now['date'])})" if now else None,
+            "path": f"z/{slug(label)}",
+        }
+    return out

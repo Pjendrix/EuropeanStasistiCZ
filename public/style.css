@@ -785,6 +785,8 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .sd-sw-dark i:last-child { background: #0B1220; }
 .sd-sw-light i:last-child { background: #F8FAFC; }
 .sd-fr { font-size: .75rem; }
+.sd-stack { display: inline-flex; }
+.sd-stack svg + svg { margin-left: -10px; }
 .sd-actions { display: grid; gap: .6rem; margin-top: 1.1rem; }
 .sd-primary, .sd-secondary { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer;
   transition: background .2s ease, color .2s ease; }
