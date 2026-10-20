@@ -9,6 +9,8 @@
  "logo_aspect": 8.53,
  "web": "https://www.patriotsforeurope.eu/",
  "cz_members": 8,
+ "seats": 85,
+ "n_countries": 13,
  "attendance": [
   456108,
   522928
@@ -44,79 +46,6 @@
  },
  "member_list": [
   {
-   "id": 197528,
-   "name": "Ondřej KNOTEK",
-   "given_name": "Ondřej",
-   "family_name": "Knotek",
-   "sort_label": "KNOTEK",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/197528.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16873"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PFE",
-    "short_label": "PfE"
-   },
-   "party": {
-    "id": 6794,
-    "short_label": "ANO 2011"
-   },
-   "total": {
-    "attendance": [
-     5406,
-     6154
-    ],
-    "attendance_main": [
-     566,
-     641
-    ],
-    "group_loyalty": [
-     3989,
-     5391
-    ],
-    "group_loyalty_main": [
-     331,
-     566
-    ],
-    "cz_agreement": [
-     4546,
-     5216
-    ],
-    "outcome": [
-     2260,
-     4572
-    ],
-    "outcome_main": [
-     344,
-     446
-    ],
-    "outcome_close": [
-     49,
-     106
-    ],
-    "group_outcome": [
-     126946,
-     310473
-    ],
-    "group_outcome_main": [
-     16957,
-     28843
-    ],
-    "positions": {
-     "FOR": 2752,
-     "AGAINST": 1821,
-     "ABSTENTION": 833,
-     "DID_NOT_VOTE": 748
-    }
-   }
-  },
-  {
    "id": 220840,
    "name": "Jaroslav BŽOCH",
    "given_name": "Jaroslav",
@@ -140,6 +69,8 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5736,
@@ -190,6 +121,306 @@
    }
   },
   {
+   "id": 256853,
+   "name": "Klára DOSTÁLOVÁ",
+   "given_name": "Klára",
+   "family_name": "Dostálová",
+   "sort_label": "DOSTALOVAK",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16899"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     4923,
+     6154
+    ],
+    "attendance_main": [
+     510,
+     641
+    ],
+    "group_loyalty": [
+     3704,
+     4907
+    ],
+    "group_loyalty_main": [
+     311,
+     510
+    ],
+    "cz_agreement": [
+     4173,
+     4759
+    ],
+    "outcome": [
+     2096,
+     4213
+    ],
+    "outcome_main": [
+     311,
+     401
+    ],
+    "outcome_close": [
+     43,
+     94
+    ],
+    "group_outcome": [
+     121162,
+     288347
+    ],
+    "group_outcome_main": [
+     15920,
+     26241
+    ],
+    "positions": {
+     "FOR": 2527,
+     "AGAINST": 1687,
+     "ABSTENTION": 709,
+     "DID_NOT_VOTE": 1231
+    }
+   }
+  },
+  {
+   "id": 197528,
+   "name": "Ondřej KNOTEK",
+   "given_name": "Ondřej",
+   "family_name": "Knotek",
+   "sort_label": "KNOTEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197528.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16873"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     5406,
+     6154
+    ],
+    "attendance_main": [
+     566,
+     641
+    ],
+    "group_loyalty": [
+     3989,
+     5391
+    ],
+    "group_loyalty_main": [
+     331,
+     566
+    ],
+    "cz_agreement": [
+     4546,
+     5216
+    ],
+    "outcome": [
+     2260,
+     4572
+    ],
+    "outcome_main": [
+     344,
+     446
+    ],
+    "outcome_close": [
+     49,
+     106
+    ],
+    "group_outcome": [
+     126946,
+     310473
+    ],
+    "group_outcome_main": [
+     16957,
+     28843
+    ],
+    "positions": {
+     "FOR": 2752,
+     "AGAINST": 1821,
+     "ABSTENTION": 833,
+     "DID_NOT_VOTE": 748
+    }
+   }
+  },
+  {
+   "id": 270261,
+   "name": "Jaroslav KNOT",
+   "given_name": "Jaroslav",
+   "family_name": "Knot",
+   "sort_label": "KNOTJ",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/270261.jpg",
+   "mandates": [
+    {
+     "start": "2025-07-31",
+     "end": null,
+     "mandate_id": "17561"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     3281,
+     4060
+    ],
+    "attendance_main": [
+     345,
+     426
+    ],
+    "group_loyalty": [
+     2480,
+     3271
+    ],
+    "group_loyalty_main": [
+     211,
+     345
+    ],
+    "cz_agreement": [
+     2764,
+     3167
+    ],
+    "outcome": [
+     1453,
+     2786
+    ],
+    "outcome_main": [
+     216,
+     276
+    ],
+    "outcome_close": [
+     30,
+     58
+    ],
+    "group_outcome": [
+     83453,
+     189493
+    ],
+    "group_outcome_main": [
+     10714,
+     17816
+    ],
+    "positions": {
+     "FOR": 1634,
+     "AGAINST": 1152,
+     "ABSTENTION": 495,
+     "DID_NOT_VOTE": 779
+    }
+   }
+  },
+  {
+   "id": 261038,
+   "name": "Tomáš KUBÍN",
+   "given_name": "Tomáš",
+   "family_name": "Kubín",
+   "sort_label": "KUBINT",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/261038.jpg",
+   "mandates": [
+    {
+     "start": "2024-08-01",
+     "end": null,
+     "mandate_id": "17552"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     5755,
+     6036
+    ],
+    "attendance_main": [
+     605,
+     632
+    ],
+    "group_loyalty": [
+     4336,
+     5738
+    ],
+    "group_loyalty_main": [
+     360,
+     604
+    ],
+    "cz_agreement": [
+     4824,
+     5567
+    ],
+    "outcome": [
+     2435,
+     4870
+    ],
+    "outcome_main": [
+     368,
+     476
+    ],
+    "outcome_close": [
+     48,
+     105
+    ],
+    "group_outcome": [
+     141693,
+     331256
+    ],
+    "group_outcome_main": [
+     18360,
+     30767
+    ],
+    "positions": {
+     "FOR": 2930,
+     "AGAINST": 1941,
+     "ABSTENTION": 884,
+     "DID_NOT_VOTE": 281
+    }
+   }
+  },
+  {
    "id": 256843,
    "name": "Jana NAGYOVÁ",
    "given_name": "Jana",
@@ -213,6 +444,8 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5383,
@@ -286,6 +519,8 @@
     "id": 6794,
     "short_label": "ANO 2011"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5232,
@@ -336,225 +571,6 @@
    }
   },
   {
-   "id": 256853,
-   "name": "Klára DOSTÁLOVÁ",
-   "given_name": "Klára",
-   "family_name": "Dostálová",
-   "sort_label": "DOSTALOVAK",
-   "gender": "FEMALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/256853.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16899"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PFE",
-    "short_label": "PfE"
-   },
-   "party": {
-    "id": 6794,
-    "short_label": "ANO 2011"
-   },
-   "total": {
-    "attendance": [
-     4923,
-     6154
-    ],
-    "attendance_main": [
-     510,
-     641
-    ],
-    "group_loyalty": [
-     3704,
-     4907
-    ],
-    "group_loyalty_main": [
-     311,
-     510
-    ],
-    "cz_agreement": [
-     4173,
-     4759
-    ],
-    "outcome": [
-     2096,
-     4213
-    ],
-    "outcome_main": [
-     311,
-     401
-    ],
-    "outcome_close": [
-     43,
-     94
-    ],
-    "group_outcome": [
-     121162,
-     288347
-    ],
-    "group_outcome_main": [
-     15920,
-     26241
-    ],
-    "positions": {
-     "FOR": 2527,
-     "AGAINST": 1687,
-     "ABSTENTION": 709,
-     "DID_NOT_VOTE": 1231
-    }
-   }
-  },
-  {
-   "id": 261038,
-   "name": "Tomáš KUBÍN",
-   "given_name": "Tomáš",
-   "family_name": "Kubín",
-   "sort_label": "KUBINT",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/261038.jpg",
-   "mandates": [
-    {
-     "start": "2024-08-01",
-     "end": null,
-     "mandate_id": "17552"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PFE",
-    "short_label": "PfE"
-   },
-   "party": {
-    "id": 6794,
-    "short_label": "ANO 2011"
-   },
-   "total": {
-    "attendance": [
-     5755,
-     6036
-    ],
-    "attendance_main": [
-     605,
-     632
-    ],
-    "group_loyalty": [
-     4336,
-     5738
-    ],
-    "group_loyalty_main": [
-     360,
-     604
-    ],
-    "cz_agreement": [
-     4824,
-     5567
-    ],
-    "outcome": [
-     2435,
-     4870
-    ],
-    "outcome_main": [
-     368,
-     476
-    ],
-    "outcome_close": [
-     48,
-     105
-    ],
-    "group_outcome": [
-     141693,
-     331256
-    ],
-    "group_outcome_main": [
-     18360,
-     30767
-    ],
-    "positions": {
-     "FOR": 2930,
-     "AGAINST": 1941,
-     "ABSTENTION": 884,
-     "DID_NOT_VOTE": 281
-    }
-   }
-  },
-  {
-   "id": 270261,
-   "name": "Jaroslav KNOT",
-   "given_name": "Jaroslav",
-   "family_name": "Knot",
-   "sort_label": "KNOTJ",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/270261.jpg",
-   "mandates": [
-    {
-     "start": "2025-07-31",
-     "end": null,
-     "mandate_id": "17561"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PFE",
-    "short_label": "PfE"
-   },
-   "party": {
-    "id": 6794,
-    "short_label": "ANO 2011"
-   },
-   "total": {
-    "attendance": [
-     3281,
-     4060
-    ],
-    "attendance_main": [
-     345,
-     426
-    ],
-    "group_loyalty": [
-     2480,
-     3271
-    ],
-    "group_loyalty_main": [
-     211,
-     345
-    ],
-    "cz_agreement": [
-     2764,
-     3167
-    ],
-    "outcome": [
-     1453,
-     2786
-    ],
-    "outcome_main": [
-     216,
-     276
-    ],
-    "outcome_close": [
-     30,
-     58
-    ],
-    "group_outcome": [
-     83453,
-     189493
-    ],
-    "group_outcome_main": [
-     10714,
-     17816
-    ],
-    "positions": {
-     "FOR": 1634,
-     "AGAINST": 1152,
-     "ABSTENTION": 495,
-     "DID_NOT_VOTE": 779
-    }
-   }
-  },
-  {
    "id": 272024,
    "name": "Antonín STANĚK",
    "given_name": "Antonín",
@@ -578,6 +594,8 @@
     "id": 7034,
     "short_label": "AUTO"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      3705,
@@ -626,8 +644,400 @@
      "DID_NOT_VOTE": 150
     }
    }
+  },
+  {
+   "id": 256852,
+   "name": "Nikola BARTŮŠEK",
+   "given_name": "Nikola",
+   "family_name": "Bartůšek",
+   "sort_label": "BARTUSEKN",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16898"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "current": false,
+   "end": "2026-02-03",
+   "party_then": {
+    "id": 7033,
+    "short_label": "PSH"
+   },
+   "total": {
+    "attendance": [
+     5600,
+     6154
+    ],
+    "attendance_main": [
+     577,
+     641
+    ],
+    "group_loyalty": [
+     3410,
+     4215
+    ],
+    "group_loyalty_main": [
+     311,
+     443
+    ],
+    "cz_agreement": [
+     4451,
+     5396
+    ],
+    "outcome": [
+     2541,
+     4970
+    ],
+    "outcome_main": [
+     365,
+     475
+    ],
+    "outcome_close": [
+     55,
+     119
+    ],
+    "group_outcome": [
+     111211,
+     259270
+    ],
+    "group_outcome_main": [
+     15241,
+     23855
+    ],
+    "positions": {
+     "FOR": 2987,
+     "AGAINST": 1984,
+     "ABSTENTION": 629,
+     "DID_NOT_VOTE": 554
+    }
+   }
+  },
+  {
+   "id": 197526,
+   "name": "Martin HLAVÁČEK",
+   "given_name": "Martin",
+   "family_name": "Hlaváček",
+   "sort_label": "HLAVACEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/197526.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2024-07-31",
+     "mandate_id": "16871"
+    }
+   ],
+   "short_mandate": true,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": null,
+   "current": false,
+   "end": "2024-07-31",
+   "party_then": null,
+   "total": {
+    "attendance": [
+     0,
+     24
+    ],
+    "attendance_main": [
+     0,
+     1
+    ],
+    "group_loyalty": [
+     0,
+     0
+    ],
+    "group_loyalty_main": [
+     0,
+     0
+    ],
+    "cz_agreement": [
+     0,
+     0
+    ],
+    "outcome": [
+     0,
+     0
+    ],
+    "outcome_main": [
+     0,
+     0
+    ],
+    "outcome_close": [
+     0,
+     0
+    ],
+    "group_outcome": [
+     0,
+     0
+    ],
+    "group_outcome_main": [
+     0,
+     0
+    ],
+    "positions": {
+     "FOR": 0,
+     "AGAINST": 0,
+     "ABSTENTION": 0,
+     "DID_NOT_VOTE": 24
+    }
+   }
+  },
+  {
+   "id": 118949,
+   "name": "Ondřej KOVAŘÍK",
+   "given_name": "Ondřej",
+   "family_name": "Kovařík",
+   "sort_label": "KOVARIK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/118949.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-07-30",
+     "mandate_id": "16875"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "current": false,
+   "end": "2025-07-30",
+   "party_then": {
+    "id": 6794,
+    "short_label": "ANO 2011"
+   },
+   "total": {
+    "attendance": [
+     1185,
+     2094
+    ],
+    "attendance_main": [
+     120,
+     215
+    ],
+    "group_loyalty": [
+     859,
+     1184
+    ],
+    "group_loyalty_main": [
+     69,
+     120
+    ],
+    "cz_agreement": [
+     1013,
+     1142
+    ],
+    "outcome": [
+     470,
+     1003
+    ],
+    "outcome_main": [
+     74,
+     93
+    ],
+    "outcome_close": [
+     17,
+     28
+    ],
+    "group_outcome": [
+     26204,
+     70598
+    ],
+    "group_outcome_main": [
+     3431,
+     6322
+    ],
+    "positions": {
+     "FOR": 642,
+     "AGAINST": 362,
+     "ABSTENTION": 181,
+     "DID_NOT_VOTE": 909
+    }
+   }
+  },
+  {
+   "id": 256850,
+   "name": "Filip TUREK",
+   "given_name": "Filip",
+   "family_name": "Turek",
+   "sort_label": "TUREKF",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256850.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": "2025-10-03",
+     "mandate_id": "16895"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PFE",
+    "short_label": "PfE"
+   },
+   "party": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "current": false,
+   "end": "2025-10-03",
+   "party_then": {
+    "id": 7034,
+    "short_label": "AUTO"
+   },
+   "total": {
+    "attendance": [
+     2100,
+     2299
+    ],
+    "attendance_main": [
+     227,
+     244
+    ],
+    "group_loyalty": [
+     1575,
+     2092
+    ],
+    "group_loyalty_main": [
+     170,
+     227
+    ],
+    "cz_agreement": [
+     1364,
+     2010
+    ],
+    "outcome": [
+     708,
+     1961
+    ],
+    "outcome_main": [
+     96,
+     209
+    ],
+    "outcome_close": [
+     30,
+     61
+    ],
+    "group_outcome": [
+     50978,
+     132729
+    ],
+    "group_outcome_main": [
+     7057,
+     13876
+    ],
+    "positions": {
+     "FOR": 1087,
+     "AGAINST": 875,
+     "ABSTENTION": 138,
+     "DID_NOT_VOTE": 199
+    }
+   }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 85,
+  "n_countries": 13,
+  "by_country": [
+   {
+    "cc": "FR",
+    "n": 30
+   },
+   {
+    "cc": "HU",
+    "n": 11
+   },
+   {
+    "cc": "CZ",
+    "n": 8
+   },
+   {
+    "cc": "IT",
+    "n": 7
+   },
+   {
+    "cc": "AT",
+    "n": 6
+   },
+   {
+    "cc": "ES",
+    "n": 6
+   },
+   {
+    "cc": "NL",
+    "n": 6
+   },
+   {
+    "cc": "BE",
+    "n": 3
+   },
+   {
+    "cc": "PL",
+    "n": 3
+   },
+   {
+    "cc": "PT",
+    "n": 2
+   },
+   {
+    "cc": "DK",
+    "n": 1
+   },
+   {
+    "cc": "GR",
+    "n": 1
+   },
+   {
+    "cc": "LV",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 131580,
+   "name": "Jordan Bardella",
+   "country": "FR",
+   "role": "CHAIR",
+   "gender": "M",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 197819,

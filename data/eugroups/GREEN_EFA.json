@@ -9,6 +9,8 @@
  "logo_aspect": 1.312,
  "web": "https://www.greens-efa.eu/",
  "cz_members": 1,
+ "seats": 53,
+ "n_countries": 17,
  "attendance": [
   292704,
   326162
@@ -67,6 +69,8 @@
     "id": 6862,
     "short_label": "PIR"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5604,
@@ -117,6 +121,112 @@
    }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 53,
+  "n_countries": 17,
+  "by_country": [
+   {
+    "cc": "DE",
+    "n": 15
+   },
+   {
+    "cc": "NL",
+    "n": 6
+   },
+   {
+    "cc": "FR",
+    "n": 5
+   },
+   {
+    "cc": "ES",
+    "n": 4
+   },
+   {
+    "cc": "IT",
+    "n": 4
+   },
+   {
+    "cc": "DK",
+    "n": 3
+   },
+   {
+    "cc": "SE",
+    "n": 3
+   },
+   {
+    "cc": "AT",
+    "n": 2
+   },
+   {
+    "cc": "BE",
+    "n": 2
+   },
+   {
+    "cc": "FI",
+    "n": 2
+   },
+   {
+    "cc": "CZ",
+    "n": 1
+   },
+   {
+    "cc": "HR",
+    "n": 1
+   },
+   {
+    "cc": "LT",
+    "n": 1
+   },
+   {
+    "cc": "LU",
+    "n": 1
+   },
+   {
+    "cc": "LV",
+    "n": 1
+   },
+   {
+    "cc": "RO",
+    "n": 1
+   },
+   {
+    "cc": "SI",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 103381,
+   "name": "Terry Reintke",
+   "country": "DE",
+   "role": "CHAIR_CO",
+   "gender": "F",
+   "start": "2024-07-16"
+  },
+  {
+   "mep_id": 58766,
+   "name": "Nicolae Ștefănuță",
+   "country": "RO",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2026-10-07"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 195227,

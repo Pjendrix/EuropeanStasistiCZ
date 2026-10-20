@@ -9,6 +9,8 @@
  "logo_aspect": 2.214,
  "web": "https://www.eppgroup.eu/",
  "cz_members": 5,
+ "seats": 184,
+ "n_countries": 27,
  "attendance": [
   994496,
   1148593
@@ -44,152 +46,6 @@
  },
  "member_list": [
   {
-   "id": 124701,
-   "name": "Luděk NIEDERMAYER",
-   "given_name": "Luděk",
-   "family_name": "Niedermayer",
-   "sort_label": "NIEDERMAYER",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/124701.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16877"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PPE",
-    "short_label": "PPE"
-   },
-   "party": {
-    "id": 6793,
-    "short_label": "TOP09/STAN"
-   },
-   "total": {
-    "attendance": [
-     5916,
-     6154
-    ],
-    "attendance_main": [
-     630,
-     641
-    ],
-    "group_loyalty": [
-     5326,
-     5916
-    ],
-    "group_loyalty_main": [
-     609,
-     630
-    ],
-    "cz_agreement": [
-     2757,
-     5745
-    ],
-    "outcome": [
-     5223,
-     5521
-    ],
-    "outcome_main": [
-     580,
-     619
-    ],
-    "outcome_close": [
-     57,
-     105
-    ],
-    "group_outcome": [
-     804045,
-     874998
-    ],
-    "group_outcome_main": [
-     93548,
-     99662
-    ],
-    "positions": {
-     "FOR": 2441,
-     "AGAINST": 3081,
-     "ABSTENTION": 394,
-     "DID_NOT_VOTE": 238
-    }
-   }
-  },
-  {
-   "id": 124713,
-   "name": "Tomáš ZDECHOVSKÝ",
-   "given_name": "Tomáš",
-   "family_name": "Zdechovský",
-   "sort_label": "ZDECHOVSKY",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/124713.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16896"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "PPE",
-    "short_label": "PPE"
-   },
-   "party": {
-    "id": 6770,
-    "short_label": "KDU-ČSL"
-   },
-   "total": {
-    "attendance": [
-     5566,
-     6154
-    ],
-    "attendance_main": [
-     586,
-     641
-    ],
-    "group_loyalty": [
-     5095,
-     5566
-    ],
-    "group_loyalty_main": [
-     559,
-     586
-    ],
-    "cz_agreement": [
-     2850,
-     5410
-    ],
-    "outcome": [
-     4820,
-     5450
-    ],
-    "outcome_main": [
-     523,
-     572
-    ],
-    "outcome_close": [
-     71,
-     138
-    ],
-    "group_outcome": [
-     794264,
-     871919
-    ],
-    "group_outcome_main": [
-     86653,
-     92401
-    ],
-    "positions": {
-     "FOR": 2150,
-     "AGAINST": 3301,
-     "ABSTENTION": 115,
-     "DID_NOT_VOTE": 588
-    }
-   }
-  },
-  {
    "id": 256840,
    "name": "Jan FARSKÝ",
    "given_name": "Jan",
@@ -213,6 +69,8 @@
     "id": 6835,
     "short_label": "STAN"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5832,
@@ -286,6 +144,8 @@
     "id": 6793,
     "short_label": "TOP09/STAN"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5886,
@@ -359,6 +219,8 @@
     "id": 6835,
     "short_label": "STAN"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5878,
@@ -407,8 +269,296 @@
      "DID_NOT_VOTE": 276
     }
    }
+  },
+  {
+   "id": 124701,
+   "name": "Luděk NIEDERMAYER",
+   "given_name": "Luděk",
+   "family_name": "Niedermayer",
+   "sort_label": "NIEDERMAYER",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124701.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16877"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6793,
+    "short_label": "TOP09/STAN"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     5916,
+     6154
+    ],
+    "attendance_main": [
+     630,
+     641
+    ],
+    "group_loyalty": [
+     5326,
+     5916
+    ],
+    "group_loyalty_main": [
+     609,
+     630
+    ],
+    "cz_agreement": [
+     2757,
+     5745
+    ],
+    "outcome": [
+     5223,
+     5521
+    ],
+    "outcome_main": [
+     580,
+     619
+    ],
+    "outcome_close": [
+     57,
+     105
+    ],
+    "group_outcome": [
+     804045,
+     874998
+    ],
+    "group_outcome_main": [
+     93548,
+     99662
+    ],
+    "positions": {
+     "FOR": 2441,
+     "AGAINST": 3081,
+     "ABSTENTION": 394,
+     "DID_NOT_VOTE": 238
+    }
+   }
+  },
+  {
+   "id": 124713,
+   "name": "Tomáš ZDECHOVSKÝ",
+   "given_name": "Tomáš",
+   "family_name": "Zdechovský",
+   "sort_label": "ZDECHOVSKY",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/124713.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16896"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "PPE",
+    "short_label": "PPE"
+   },
+   "party": {
+    "id": 6770,
+    "short_label": "KDU-ČSL"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     5566,
+     6154
+    ],
+    "attendance_main": [
+     586,
+     641
+    ],
+    "group_loyalty": [
+     5095,
+     5566
+    ],
+    "group_loyalty_main": [
+     559,
+     586
+    ],
+    "cz_agreement": [
+     2850,
+     5410
+    ],
+    "outcome": [
+     4820,
+     5450
+    ],
+    "outcome_main": [
+     523,
+     572
+    ],
+    "outcome_close": [
+     71,
+     138
+    ],
+    "group_outcome": [
+     794264,
+     871919
+    ],
+    "group_outcome_main": [
+     86653,
+     92401
+    ],
+    "positions": {
+     "FOR": 2150,
+     "AGAINST": 3301,
+     "ABSTENTION": 115,
+     "DID_NOT_VOTE": 588
+    }
+   }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 184,
+  "n_countries": 27,
+  "by_country": [
+   {
+    "cc": "DE",
+    "n": 31
+   },
+   {
+    "cc": "PL",
+    "n": 23
+   },
+   {
+    "cc": "ES",
+    "n": 22
+   },
+   {
+    "cc": "RO",
+    "n": 10
+   },
+   {
+    "cc": "IT",
+    "n": 9
+   },
+   {
+    "cc": "GR",
+    "n": 7
+   },
+   {
+    "cc": "HU",
+    "n": 7
+   },
+   {
+    "cc": "PT",
+    "n": 7
+   },
+   {
+    "cc": "BG",
+    "n": 6
+   },
+   {
+    "cc": "HR",
+    "n": 6
+   },
+   {
+    "cc": "AT",
+    "n": 5
+   },
+   {
+    "cc": "CZ",
+    "n": 5
+   },
+   {
+    "cc": "FR",
+    "n": 5
+   },
+   {
+    "cc": "SE",
+    "n": 5
+   },
+   {
+    "cc": "FI",
+    "n": 4
+   },
+   {
+    "cc": "IE",
+    "n": 4
+   },
+   {
+    "cc": "NL",
+    "n": 4
+   },
+   {
+    "cc": "SI",
+    "n": 4
+   },
+   {
+    "cc": "BE",
+    "n": 3
+   },
+   {
+    "cc": "LT",
+    "n": 3
+   },
+   {
+    "cc": "MT",
+    "n": 3
+   },
+   {
+    "cc": "CY",
+    "n": 2
+   },
+   {
+    "cc": "DK",
+    "n": 2
+   },
+   {
+    "cc": "EE",
+    "n": 2
+   },
+   {
+    "cc": "LU",
+    "n": 2
+   },
+   {
+    "cc": "LV",
+    "n": 2
+   },
+   {
+    "cc": "SK",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 28229,
+   "name": "Manfred Weber",
+   "country": "DE",
+   "role": "CHAIR",
+   "gender": "M",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 181408,

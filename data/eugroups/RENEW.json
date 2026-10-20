@@ -9,6 +9,8 @@
  "logo_aspect": 9.2,
  "web": null,
  "cz_members": 0,
+ "seats": 78,
+ "n_countries": 21,
  "attendance": [
   412116,
   467957
@@ -43,6 +45,120 @@
   }
  },
  "member_list": [],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 78,
+  "n_countries": 21,
+  "by_country": [
+   {
+    "cc": "FR",
+    "n": 13
+   },
+   {
+    "cc": "DE",
+    "n": 9
+   },
+   {
+    "cc": "NL",
+    "n": 7
+   },
+   {
+    "cc": "IE",
+    "n": 6
+   },
+   {
+    "cc": "SK",
+    "n": 6
+   },
+   {
+    "cc": "BE",
+    "n": 5
+   },
+   {
+    "cc": "DK",
+    "n": 4
+   },
+   {
+    "cc": "BG",
+    "n": 3
+   },
+   {
+    "cc": "FI",
+    "n": 3
+   },
+   {
+    "cc": "RO",
+    "n": 3
+   },
+   {
+    "cc": "SE",
+    "n": 3
+   },
+   {
+    "cc": "AT",
+    "n": 2
+   },
+   {
+    "cc": "EE",
+    "n": 2
+   },
+   {
+    "cc": "IT",
+    "n": 2
+   },
+   {
+    "cc": "LT",
+    "n": 2
+   },
+   {
+    "cc": "PT",
+    "n": 2
+   },
+   {
+    "cc": "SI",
+    "n": 2
+   },
+   {
+    "cc": "ES",
+    "n": 1
+   },
+   {
+    "cc": "LU",
+    "n": 1
+   },
+   {
+    "cc": "LV",
+    "n": 1
+   },
+   {
+    "cc": "PL",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 135511,
+   "name": "Valérie Hayer",
+   "country": "FR",
+   "role": "CHAIR",
+   "gender": "F",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 196510,

@@ -9,6 +9,8 @@
  "logo_aspect": 3.803,
  "web": null,
  "cz_members": 0,
+ "seats": 45,
+ "n_countries": 13,
  "attendance": [
   238060,
   281405
@@ -43,6 +45,96 @@
   }
  },
  "member_list": [],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 45,
+  "n_countries": 13,
+  "by_country": [
+   {
+    "cc": "IT",
+    "n": 10
+   },
+   {
+    "cc": "FR",
+    "n": 9
+   },
+   {
+    "cc": "DE",
+    "n": 4
+   },
+   {
+    "cc": "ES",
+    "n": 4
+   },
+   {
+    "cc": "FI",
+    "n": 3
+   },
+   {
+    "cc": "GR",
+    "n": 3
+   },
+   {
+    "cc": "IE",
+    "n": 3
+   },
+   {
+    "cc": "BE",
+    "n": 2
+   },
+   {
+    "cc": "PT",
+    "n": 2
+   },
+   {
+    "cc": "SE",
+    "n": 2
+   },
+   {
+    "cc": "CY",
+    "n": 1
+   },
+   {
+    "cc": "DK",
+    "n": 1
+   },
+   {
+    "cc": "NL",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 197533,
+   "name": "Manon Aubry",
+   "country": "FR",
+   "role": "CHAIR_CO",
+   "gender": "F",
+   "start": "2024-07-16"
+  },
+  {
+   "mep_id": 190517,
+   "name": "Martin Schirdewan",
+   "country": "DE",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 192335,

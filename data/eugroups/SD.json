@@ -9,6 +9,8 @@
  "logo_aspect": 1.0,
  "web": null,
  "cz_members": 0,
+ "seats": 135,
+ "n_countries": 25,
  "attendance": [
   722913,
   834676
@@ -43,6 +45,136 @@
   }
  },
  "member_list": [],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 135,
+  "n_countries": 25,
+  "by_country": [
+   {
+    "cc": "ES",
+    "n": 20
+   },
+   {
+    "cc": "IT",
+    "n": 19
+   },
+   {
+    "cc": "DE",
+    "n": 14
+   },
+   {
+    "cc": "FR",
+    "n": 13
+   },
+   {
+    "cc": "RO",
+    "n": 11
+   },
+   {
+    "cc": "PT",
+    "n": 8
+   },
+   {
+    "cc": "AT",
+    "n": 5
+   },
+   {
+    "cc": "SE",
+    "n": 5
+   },
+   {
+    "cc": "BE",
+    "n": 4
+   },
+   {
+    "cc": "GR",
+    "n": 4
+   },
+   {
+    "cc": "HR",
+    "n": 4
+   },
+   {
+    "cc": "NL",
+    "n": 4
+   },
+   {
+    "cc": "DK",
+    "n": 3
+   },
+   {
+    "cc": "MT",
+    "n": 3
+   },
+   {
+    "cc": "PL",
+    "n": 3
+   },
+   {
+    "cc": "BG",
+    "n": 2
+   },
+   {
+    "cc": "EE",
+    "n": 2
+   },
+   {
+    "cc": "FI",
+    "n": 2
+   },
+   {
+    "cc": "HU",
+    "n": 2
+   },
+   {
+    "cc": "LT",
+    "n": 2
+   },
+   {
+    "cc": "CY",
+    "n": 1
+   },
+   {
+    "cc": "IE",
+    "n": 1
+   },
+   {
+    "cc": "LU",
+    "n": 1
+   },
+   {
+    "cc": "LV",
+    "n": 1
+   },
+   {
+    "cc": "SI",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 28298,
+   "name": "Iratxe García Pérez",
+   "country": "ES",
+   "role": "CHAIR",
+   "gender": "F",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 182643,

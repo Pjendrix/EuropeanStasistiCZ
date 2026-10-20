@@ -32,11 +32,13 @@ PUBLIC_SCRIPTS = [
     "delegations.py",
     "fetch_agenda.py",
     "fetch_attendance.py",
+    "fetch_group_chairs.py",
     "fetch_group_web.py",
     "fetch_meps.py",
     "fetch_proposals.py",
     "fetch_speeches.py",
     "fetch_votes.py",
+    "group_countries.py",
     "group_stats.py",
     "key_votes.py",
     "labels_cs.py",
@@ -63,6 +65,8 @@ PUBLIC_TESTS = [
     "test_check_data.py",
     "test_compute_stats.py",
     "test_delegations.py",
+    "test_eugroup_chairs.py",
+    "test_eugroup_countries.py",
     "test_fetch_group_web.py",
     "test_fetch_meps.py",
     "test_fetch_proposals.py",
@@ -80,7 +84,7 @@ PUBLIC_TESTS = [
     "test_vote_summaries.py",
     "test_work_hub.py",
 ]
-PUBLIC_MANUAL = ["colors.json", "overrides.json", "topics_cs.json"]
+PUBLIC_MANUAL = ["colors.json", "countries_cs.json", "overrides.json", "topics_cs.json"]
 
 
 def export(out: Path) -> list[str]:

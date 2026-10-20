@@ -1,0 +1,123 @@
+{
+ "note": "Předsedové a spolupředsedové politických skupin EP podle rolí v EP Open Data API (hasMembership, CHAIR a CHAIR_CO). Prázdný seznam = API předsedu nevrátilo. Generuje scripts/fetch_group_chairs.py.",
+ "source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
+ "groups": {
+  "ECR": [
+   {
+    "mep_id": 197820,
+    "name": "Nicola Procaccini",
+    "country": "IT",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2024-07-16"
+   },
+   {
+    "mep_id": 197516,
+    "name": "Patryk Jaki",
+    "country": "PL",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2024-12-17"
+   }
+  ],
+  "EPP": [
+   {
+    "mep_id": 28229,
+    "name": "Manfred Weber",
+    "country": "DE",
+    "role": "CHAIR",
+    "gender": "M",
+    "start": "2024-07-16"
+   }
+  ],
+  "ESN": [
+   {
+    "mep_id": 256929,
+    "name": "René Aust",
+    "country": "DE",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2024-07-16"
+   },
+   {
+    "mep_id": 257062,
+    "name": "Stanisław Tyszka",
+    "country": "PL",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2024-07-16"
+   }
+  ],
+  "GREEN_EFA": [
+   {
+    "mep_id": 103381,
+    "name": "Terry Reintke",
+    "country": "DE",
+    "role": "CHAIR_CO",
+    "gender": "F",
+    "start": "2024-07-16"
+   },
+   {
+    "mep_id": 58766,
+    "name": "Nicolae Ștefănuță",
+    "country": "RO",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2026-10-07"
+   }
+  ],
+  "GUE_NGL": [
+   {
+    "mep_id": 197533,
+    "name": "Manon Aubry",
+    "country": "FR",
+    "role": "CHAIR_CO",
+    "gender": "F",
+    "start": "2024-07-16"
+   },
+   {
+    "mep_id": 190517,
+    "name": "Martin Schirdewan",
+    "country": "DE",
+    "role": "CHAIR_CO",
+    "gender": "M",
+    "start": "2024-07-16"
+   }
+  ],
+  "PFE": [
+   {
+    "mep_id": 131580,
+    "name": "Jordan Bardella",
+    "country": "FR",
+    "role": "CHAIR",
+    "gender": "M",
+    "start": "2024-07-16"
+   }
+  ],
+  "RENEW": [
+   {
+    "mep_id": 135511,
+    "name": "Valérie Hayer",
+    "country": "FR",
+    "role": "CHAIR",
+    "gender": "F",
+    "start": "2024-07-16"
+   }
+  ],
+  "SD": [
+   {
+    "mep_id": 28298,
+    "name": "Iratxe García Pérez",
+    "country": "ES",
+    "role": "CHAIR",
+    "gender": "F",
+    "start": "2024-07-16"
+   }
+  ]
+ }
+}

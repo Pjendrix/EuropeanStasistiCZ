@@ -9,6 +9,8 @@
  "logo_aspect": 1.195,
  "web": "https://esn-group.eu/",
  "cz_members": 1,
+ "seats": 27,
+ "n_countries": 9,
  "attendance": [
   146593,
   164485
@@ -67,6 +69,8 @@
     "id": 6864,
     "short_label": "SPD"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5644,
@@ -117,6 +121,80 @@
    }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 27,
+  "n_countries": 9,
+  "by_country": [
+   {
+    "cc": "DE",
+    "n": 15
+   },
+   {
+    "cc": "BG",
+    "n": 3
+   },
+   {
+    "cc": "PL",
+    "n": 2
+   },
+   {
+    "cc": "SK",
+    "n": 2
+   },
+   {
+    "cc": "CZ",
+    "n": 1
+   },
+   {
+    "cc": "FR",
+    "n": 1
+   },
+   {
+    "cc": "HU",
+    "n": 1
+   },
+   {
+    "cc": "IT",
+    "n": 1
+   },
+   {
+    "cc": "LT",
+    "n": 1
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 256929,
+   "name": "René Aust",
+   "country": "DE",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-07-16"
+  },
+  {
+   "mep_id": 257062,
+   "name": "Stanisław Tyszka",
+   "country": "PL",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-07-16"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 196808,
