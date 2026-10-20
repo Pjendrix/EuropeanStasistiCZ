@@ -20,7 +20,7 @@
  "groups": [
   {
    "code": "PFE",
-   "short_label": "PfE",
+   "short_label": "Patrioti",
    "name_cs": "skupina Patrioti pro Evropu",
    "label": "Patriots for Europe",
    "color": "#A855F7",
@@ -156,7 +156,7 @@
   },
   {
    "code": "GREEN_EFA",
-   "short_label": "Greens/EFA",
+   "short_label": "Zelení",
    "name_cs": "skupina Zelených / Evropské svobodné aliance",
    "label": "Greens/European Free Alliance",
    "color": "#14B8A6",
@@ -187,6 +187,40 @@
    "considered": 6043,
    "splits_main": 15,
    "considered_main": 624
+  },
+  {
+   "code": "GUE_NGL",
+   "short_label": "Levice",
+   "name_cs": "Levice v Evropském parlamentu - GUE/NGL",
+   "label": "The Left in the European Parliament",
+   "color": "#BE123C",
+   "chart_color": "#BE123C",
+   "logo": "assets/logos/ep/GUE_NGL.webp",
+   "logo_aspect": 3.803,
+   "web": null,
+   "cz_members": 0,
+   "seats": 45,
+   "n_countries": 13,
+   "attendance": [
+    238060,
+    281405
+   ],
+   "attendance_main": [
+    24742,
+    29300
+   ],
+   "majority": [
+    215032,
+    223475
+   ],
+   "majority_main": [
+    19709,
+    20988
+   ],
+   "splits": 244,
+   "considered": 6096,
+   "splits_main": 53,
+   "considered_main": 614
   },
   {
    "code": "RENEW",
@@ -255,40 +289,6 @@
    "considered": 6120,
    "splits_main": 5,
    "considered_main": 639
-  },
-  {
-   "code": "GUE_NGL",
-   "short_label": "The Left",
-   "name_cs": "Levice v Evropském parlamentu - GUE/NGL",
-   "label": "The Left in the European Parliament",
-   "color": "#BE123C",
-   "chart_color": "#BE123C",
-   "logo": "assets/logos/ep/GUE_NGL.webp",
-   "logo_aspect": 3.803,
-   "web": null,
-   "cz_members": 0,
-   "seats": 45,
-   "n_countries": 13,
-   "attendance": [
-    238060,
-    281405
-   ],
-   "attendance_main": [
-    24742,
-    29300
-   ],
-   "majority": [
-    215032,
-    223475
-   ],
-   "majority_main": [
-    19709,
-    20988
-   ],
-   "splits": 244,
-   "considered": 6096,
-   "splits_main": 53,
-   "considered_main": 614
   }
  ]
 }

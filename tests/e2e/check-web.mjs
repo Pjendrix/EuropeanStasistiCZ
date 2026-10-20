@@ -524,7 +524,7 @@ for (const width of [1366, 390]) {
       const lowest = Math.max(...full.filter((o) => o.k !== "band" && "y" in o && o.y < foot - 1).map((o) => o.y + (o.r || 0)));
       if (lowest > foot) out.push(`vote ${theme} ${f.h}: obsah zasahuje do patičky (${lowest} > ${foot})`);
       const dots7 = full.filter((o) => o.k === "circ" && o.r === 13).length;
-      if (dots7 < 6 + 18 + 3) out.push(`vote ${theme} ${f.h}: nevykreslily se všechny tečky stran (${dots7})`);
+      if (dots7 < 6 + 18) out.push(`vote ${theme} ${f.h}: nevykreslily se všechny tečky stran (${dots7})`);
       const withT = voteCardOps({ ...vbase, topic: "Klima, příroda a energie (+2) a ještě mnohem delší text, který se nevejde" }, f);
       fits("vote s tématem", withT);
       if (!/Klima, příroda a energie/.test(texts(withT))) out.push("vote: chybí téma na kartě");
@@ -550,6 +550,73 @@ for (const width of [1366, 390]) {
     return out;
   });
   r.forEach((x) => problems.push(`karty: ${x}`));
+  await ctx.close();
+}
+// Karta hlasování se jmény (zadání 20. 10. 2026, K3): hlavní hlasování posledních 3 zasedání a 20 náhodných dílčích
+// (pevné semínko), obě varianty vzhledu, příspěvek i story. Nic pod patičkou, karty stran se nepřekrývají, každý poslanec
+// právě jednou (jménem, v záložní variantě tečkou), názvy stran a frakcí z číselníků. Plus balanceRows a starší složení.
+{
+  const months = read("data/votes/index.json").months.map((m) => m.month);
+  const all = months.flatMap((m) => read(`data/votes/${m}.json`).votes.map((v) => ({ id: v.id, date: v.date, main: v.is_main, month: m })));
+  const days = [...new Set(all.map((v) => v.date))].sort();
+  const sessions = [];
+  days.forEach((d) => { const last = sessions.at(-1); if (last && (new Date(d) - new Date(last.at(-1))) / 864e5 <= 4) last.push(d); else sessions.push([d]); });
+  const lastDays = new Set(sessions.slice(-3).flat());
+  let seed = 20261020;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+  const partials = all.filter((v) => !v.main);
+  const picks = [...all.filter((v) => v.main && lastDays.has(v.date)), ...Array.from({ length: 20 }, () => partials[Math.floor(rnd() * partials.length)])];
+  const old = all.find((v) => v.main && v.month === "2024-11");
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  let fallbacks = 0;
+  for (const v of [...new Map([...picks, old].filter(Boolean).map((x) => [x.id, x])).values()]) {
+    await page.goto(base + `vote?id=${v.id}&m=${v.month}`, { waitUntil: "networkidle" });
+    const r = await page.evaluate(async (isOld) => {
+      const src = document.querySelector('script[src*="share.js"]').src;
+      const m = await import(src);
+      for (let i = 0; i < 50 && typeof window.shareContext !== "function"; i++) await new Promise((res) => setTimeout(res, 100));
+      const sc = await window.shareContext("");
+      await document.fonts.ready;
+      const load = (u) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = new URL(u, src).href; });
+      const data = { ...sc.data, parties: await Promise.all(sc.data.parties.map(async (it) => (it.logo ? { ...it, logoImg: await load(it.logo) } : it))) };
+      const ids = data.parties.flatMap((it) => it.members.map((x) => x.id)).sort();
+      const out = [];
+      let dots = 0;
+      for (const theme of m.CARD_THEMES) for (const key of ["post", "story"]) {
+        const SC = m.useCardTheme(theme), f = m.SHARE_FORMATS[key];
+        const ops = m.cardOps("vote", data, f, key);
+        const footY = f.h - 128;
+        const texts = ops.filter((o) => o.k === "text");
+        const body = ops.filter((o) => o.k !== "band" && !(o.k === "line" && o.y1 === footY) && !(o.k === "text" && o.y > footY));
+        const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) + (o.k === "circ" ? o.r : 0) : o.y2 || 0)));
+        if (low > f.h - 150) out.push(`${theme} ${key}: obsah zasahuje do patičky (${Math.round(low)})`);
+        texts.forEach((o) => { const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x; if (x0 < 50 || x0 + w > 1030) out.push(`${theme} ${key}: text „${o.s.slice(0, 30)}“ přetéká`); });
+        const cards = ops.filter((o) => o.k === "rect" && o.r === 18 && o.fill === SC.tile);
+        cards.forEach((a, i) => cards.slice(i + 1).forEach((b) => { if (a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) out.push(`${theme} ${key}: karty stran se překrývají`); }));
+        const seen = ops.filter((o) => o.mid != null).map((o) => o.mid).sort();
+        if (JSON.stringify(seen) !== JSON.stringify(ids)) out.push(`${theme} ${key}: poslanci na kartě ${seen.length}, v datech ${ids.length}`);
+        if (!cards.length && ids.length) dots += 1;
+        const bad = texts.map((o) => o.s).filter((t) => ["Ind.", "PIR", "TOP09/STAN", "AUTO", "PSH", "ANO 2011", "PfE", "Greens/EFA", "The Left"].includes(t));
+        if (bad.length) out.push(`${theme} ${key}: zkratky mimo číselník ${bad.join(", ")}`);
+        if (isOld && !texts.some((o) => o.s === "Kovařík")) out.push("starší hlasování: chybí Kovařík (složení k datu hlasování)");
+      }
+      m.useCardTheme("dark");
+      const blob = await m.renderCardPng(sc, "post", "light");
+      if (!blob || blob.size < 1000) out.push("obrázek se nevykreslil");
+      return { out, dots };
+    }, v === old);
+    r.out.forEach((x) => problems.push(`karta hlasování ${v.id}: ${x}`));
+    fallbacks += r.dots;
+  }
+  const bal = await page.evaluate(async () => {
+    const m = await import(document.querySelector('script[src*="share.js"]').src);
+    return [m.balanceRows(Array(7).fill(100), 316, 8), m.balanceRows(Array(7).fill(100), 424, 8), m.balanceRows([100, 100, 100], 1000, 8)];
+  });
+  if (bal[0].at(-1) === 1 || bal[0].length !== 3) problems.push(`balanceRows: 7 jmen po 3 na řádek dalo ${bal[0].join("+")}, čekám 3 řádky bez osamoceného jména`);
+  if (bal[1].join("+") !== "4+3") problems.push(`balanceRows: 7 jmen po 4 na řádek dalo ${bal[1].join("+")}, čekám 4+3`);
+  if (bal[2].join("+") !== "3") problems.push(`balanceRows: 3 jména na řádek dalo ${bal[2].join("+")}`);
+  console.log(`karta hlasování: ${picks.length} hlasování, záložní tečky u ${fallbacks} variant`);
   await ctx.close();
 }
 // Sdílení strany a frakce (zadání 20. 10. 2026): všech 8 frakcí a 10 stran má formát Detail se 3 obrázky v obou vzhledech,
