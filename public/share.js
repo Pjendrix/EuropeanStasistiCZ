@@ -2,8 +2,8 @@
 // takže repo nenarůstá: příspěvek 1080 × 1350 (4 : 5) a story 1080 × 1920. Náhledy odkazů 1200 × 630 vznikají předem
 // (scripts/build_cards.py) a mají stejný obsah a barvy.
 //
-// Pravidla karty: každá karta má datum, zdroj a adresu; u poslance vždy medián EP; žádné pořadí, žádné hodnocení barvou,
-// žádná loga stran ani frakcí (jen zkratka a tečka); portrét s popiskem „© European Union – Source: EP“.
+// Pravidla karty: každá karta má datum, zdroj a adresu; u poslance vždy medián EP; žádné pořadí, žádné hodnocení barvou;
+// loga stran a frakcí jen z oficiálních souborů na bílém štítku (bez loga zkratka a tečka); portrét s popiskem „© European Union – Source: EP“.
 // Exporty (…Ops, SHARE_FORMATS, measureText, renderCardPng, useCardTheme) jsou jen pro e2e test karet; stránky share.js neimportují.
 // Stránka nastaví window.shareContext = () => ({ kind: "vote" | "mep", url, text, filename, data }).
 import { citeText, getJSON } from "./lib/data.js";
@@ -426,28 +426,253 @@ export function splitCardOps(d, f) {
   return [...shareHeader(d.dateLabel || `data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, d.source || `Zdroj: HowTheyVote.eu (ODbL) · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
-// Karta strany: název, zkratka a počet poslanců, tři dlaždice „Souhrn za stranu“ (bez log, bez srovnání mezi stranami).
+// --- karta strany a frakce (party, group): základ + detail 2/3 a 3/3 (zadání 20. 10. 2026) -----------------------
+// Logo jen z oficiálního souboru, vždy na bílém štítku (vnitřní okraj 12 % výšky loga, poměr stran z logo_aspect), nepřebarvené
+// a neořezané; bez loga barevný štítek se zkratkou. Chybějící hodnota = dlaždice se vynechá, nic se nedopočítává.
+
+const ENTITY_FOOT = (d, label = "data", day = d.dataDay) => `Zdroj: HowTheyVote.eu, EP Open Data · ${label} k ${fmtDate(day)} · strana k datu hlasování`;
+
+// Logo na bílém štítku (výška loga h); bez obrázku štítek se zkratkou a tečkou v barvě. Vrací šířku, výšku a ops.
+function logoMarkOps(x, y, h, e, label) {
+  if (e && e.logoImg && e.aspect) {
+    const pad = Math.round(h * 0.12), w = h * e.aspect;
+    return { w: w + 2 * pad, h: h + 2 * pad, ops: [RECT(x, y, w + 2 * pad, h + 2 * pad, Math.min(16, pad + 6), "#FFFFFF", SC.chipLine, 2),
+      { k: "image", img: e.logoImg, x: x + pad, y: y + pad, w, h, r: 0 }] };
+  }
+  const c = chipOps(x, y, label || "", e && e.color);
+  return { w: c.w, h: 52, ops: c.ops };
+}
+
+// Logo omezené šířkou: když by široké logo přeteklo, zmenší se (poměr stran zůstane).
+function fitLogoH(e, h, maxW) { return e && e.logoImg && e.aspect ? Math.min(h, (maxW - 2 * Math.round(h * 0.12)) / e.aspect) : h; }
+
+// Hlavička 2. a 3. obrázku: malé logo na bílém štítku, název a „2 / 3“ (jako mepMiniHead).
+function entityMiniHead(d, n) {
+  const lh = fitLogoH(d, 56, 220);
+  const mark = logoMarkOps(72, 190, lh, d, d.short);
+  const nx = 72 + mark.w + 24;
+  return [...mark.ops, T(nx, 238, fitText(d.name, 44, 800, 1008 - nx - 90), 44, 800, SC.text),
+    T(nx, 278, fitText(d.headSub || "", 26, 500, 1008 - nx - 90), 26, 500, SC.soft), T(1008, 238, `${n} / 3`, 30, 500, SC.muted, "right")];
+}
+
+function bigTilesOps(tiles, y, story) {
+  const ops = [];
+  const h = story ? 230 : 176;
+  tiles.forEach((t, i) => {
+    const ty = y + i * (h + 18);
+    ops.push(RECT(72, ty, 936, h, 28, SC.tile, SC.tileLine, 2), T(108, ty + 54, fitText(t.label, 30, 700, 560), 30, 700, SC.soft),
+      T(1008 - 36, ty + h / 2 + 34, fmtPct(t.pair[0] / t.pair[1]), 96, 800, SC.text, "right"),
+      T(108, ty + 98, `${fmtNum(t.pair[0])} z ${fmtNum(t.pair[1])}`, 26, 500, SC.muted));
+    if (t.note) ops.push(T(108, ty + 138, fitText(t.note, 22, 500, 560), 22, 500, SC.muted));
+  });
+  return { ops, h: tiles.length * (h + 18) };
+}
+
+// 1/3 strana: logo strany vlevo nahoře, vedle menší logo frakce (aktuální první), název, počet poslanců, tři dlaždice.
 export function partyCardOps(d, f) {
   const H = f.h, story = H > 1500;
   const ops = [];
   let y = 0;
-  const nm = wrapText(d.name, 66, 800, 936, 3);
-  nm.forEach((l, i) => ops.push(T(72, y + 66 + i * 76, l, 66, 800, SC.text)));
-  y += nm.length * 76 + 24;
+  if (d.logoImg || d.groups?.length) {
+    // logo strany větší, logo frakce menší; obě podle plochy, aby široké logo nepřerostlo vysoké
+    const byArea = (e, maxH, area) => (e && e.aspect ? Math.min(maxH, Math.sqrt(area / e.aspect)) : maxH);
+    const ph = fitLogoH(d, byArea(d, 104, 17000), 520), mark = logoMarkOps(72, y, ph, d, d.short);
+    ops.push(...mark.ops);
+    let gx = 72 + mark.w + 28;
+    (d.groups || []).forEach((g) => {
+      const gh = fitLogoH(g, byArea(g, 64, 7000), 1008 - gx);
+      if (gx + (g.logoImg ? gh * g.aspect + 2 * Math.round(gh * 0.12) : measureText(g.label, 28, 600) + 62) > 1008) return;
+      const gm = logoMarkOps(gx, y + (mark.h - (g.logoImg ? gh + 2 * Math.round(gh * 0.12) : 52)) / 2, gh, g, g.label);
+      ops.push(...gm.ops);
+      gx += gm.w + 16;
+    });
+    y += mark.h + 30;
+  }
+  const nm = wrapText(d.name, 62, 800, 936, 2);
+  nm.forEach((l, i) => ops.push(T(72, y + 62 + i * 72, l, 62, 800, SC.text)));
+  y += nm.length * 72 + 20;
   ops.push(T(72, y + 32, fitText(d.sub, 32, 600, 936), 32, 600, SC.soft));
-  y += 80;
+  y += 70;
   const tiles = (d.tiles || []).filter((t) => t.pair && t.pair[1]);
-  tiles.forEach((t, i) => {
-    const h = story ? 250 : 220, ty = y + i * (h + 24);
-    ops.push(RECT(72, ty, 936, h, 28, SC.tile, SC.tileLine, 2), T(108, ty + 62, fitText(t.label, 32, 700, 520), 32, 700, SC.soft),
-      T(1008 - 36, ty + h / 2 + 36, fmtPct(t.pair[0] / t.pair[1]), 104, 800, SC.text, "right"),
-      T(108, ty + 112, `${fmtNum(t.pair[0])} z ${fmtNum(t.pair[1])}`, 28, 500, SC.muted));
-    if (t.note) ops.push(T(108, ty + 158, fitText(t.note, 24, 500, 520), 24, 500, SC.muted));
-  });
-  y += tiles.length * ((story ? 250 : 220) + 24) + 10;
+  const bt = bigTilesOps(tiles, y, story);
+  ops.push(...bt.ops);
+  y += bt.h + 8;
   ops.push(T(72, y + 30, "Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.", 24, 500, SC.soft));
   y += 50;
-  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strana k datu hlasování", d.urlShort)];
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, ENTITY_FOOT(d), d.urlShort)];
+}
+
+// Seznam jmen pod mini hlavičkou: aktuální, pod čarou bývalí šedě s „do D. M. RRRR“. Delší seznam zmenší řádek, nic neořízne.
+function nameRows(rows, former, y, bottom, draw, base = 76) {
+  const ops = [];
+  const n = rows.length + former.length + (former.length ? 0.6 : 0);
+  const rh = Math.min(base, Math.floor((bottom - y) / Math.max(n, 1)));
+  const fs = Math.max(20, Math.min(32, Math.round(rh * 0.42)));
+  rows.forEach((r, i) => ops.push(...draw(r, y + i * rh, rh, fs, false)));
+  y += rows.length * rh;
+  if (former.length) {
+    ops.push(LINE(72, y + rh * 0.3, 1008, y + rh * 0.3, SC.line, 2));
+    y += rh * 0.6;
+    former.forEach((r, i) => ops.push(...draw(r, y + i * rh, rh, fs, true)));
+    y += former.length * rh;
+  }
+  return { ops, y, rh };
+}
+
+const pairPct = (p) => (p && p[1] ? fmtPct(p[0] / p[1]) : "–");
+const pairSub = (p) => (p && p[1] ? `${fmtNum(p[0])} z ${fmtNum(p[1])}` : "");
+
+// 2/3 strana: současní poslanci abecedně, účast na hlasování a hlasování s frakcí; bývalí pod čarou.
+function partyMembersOps(d, f) {
+  const ops = [...entityMiniHead({ ...d, headSub: d.sub }, 2)];
+  let y = 360;
+  ops.push(sectionTitle(y, "POSLANCI STRANY"), T(780, y, "ÚČAST", 22, 800, SC.accent, "right"), T(1008, y, "S FRAKCÍ", 22, 800, SC.accent, "right"));
+  y += 24;
+  const draw = (r, ry, rh, fs, old) => {
+    const out = [T(72, ry + rh * 0.55, fitText(r.name, fs, 700, old ? 760 : 520), fs, 700, old ? SC.muted : SC.text)];
+    if (old) out.push(T(1008, ry + rh * 0.55, r.end ? `do ${fmtDate(r.end)}` : "", Math.round(fs * 0.8), 500, SC.muted, "right"));
+    else {
+      out.push(T(780, ry + rh * 0.5, pairPct(r.attendance), fs, 800, SC.text, "right"), T(780, ry + rh * 0.5 + fs * 0.8, pairSub(r.attendance), Math.round(fs * 0.6), 500, SC.muted, "right"),
+        T(1008, ry + rh * 0.5, pairPct(r.loyalty), fs, 800, SC.text, "right"), T(1008, ry + rh * 0.5 + fs * 0.8, pairSub(r.loyalty), Math.round(fs * 0.6), 500, SC.muted, "right"));
+    }
+    out.push(LINE(72, ry + rh - 4, 1008, ry + rh - 4, SC.rowLine, 2));
+    return out;
+  };
+  if (!(d.members || []).length) {
+    ops.push(T(72, y + 56, "Strana teď v EP nemá žádného poslance.", 30, 600, SC.soft));
+    y += 80;
+  }
+  ops.push(...nameRows(d.members || [], d.former || [], y, f.h - 190, draw, 92).ops);
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, ENTITY_FOOT(d), d.urlShort)];
+}
+
+// 3/3 strana: jak hlasuje (pruh všech hlasů poslanců), kolikrát se poslanci rozdělili, poslední rozdělené závěrečné hlasování.
+function partyVotesOps(d, f) {
+  const ops = [...entityMiniHead({ ...d, headSub: d.sub }, 3)];
+  let y = 384;
+  const pos = d.positions;
+  if (pos) {
+    const total = SHARE_KEYS.reduce((n, k) => n + (pos[k] || 0), 0);
+    ops.push(sectionTitle(y, `JAK HLASOVALI POSLANCI STRANY · ${fmtNum(total)} HLASŮ`), ...barOps(72, y + 28, 936, 34, SHARE_KEYS.map((k) => pos[k] || 0)));
+    let lx = 72;
+    const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržel se", DID_NOT_VOTE: "nehlasoval" };
+    SHARE_KEYS.forEach((k) => {
+      const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
+      ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 28, 600, SC.text));
+      lx += measureText(t, 28, 600) + 58;
+    });
+    y += 180;
+  }
+  ops.push(sectionTitle(y, "KDY HLASOVALI POSLANCI STRANY JINAK"));
+  y += 20;
+  if (d.single) {
+    const msg = d.membersEver === 1 ? "Strana má v EP jednoho poslance, jednotnost se nepočítá." : "Strana neměla v žádném hlasování víc než jednoho hlasujícího poslance, jednotnost se nepočítá.";
+    wrapText(msg, 32, 600, 936, 3).forEach((l, i) => ops.push(T(72, y + 48 + i * 44, l, 32, 600, SC.soft)));
+  } else {
+    const line = (p, what) => `Hlasovali jinak v ${fmtNum(p[0])} ${what} z ${fmtNum(p[1])}`;
+    if (d.splits) ops.push(T(72, y + 48, fitText(line(d.splits, "hlasováních"), 34, 700, 936), 34, 700, SC.text));
+    if (d.splitsMain) ops.push(T(72, y + 98, fitText(line(d.splitsMain, "závěrečných hlasováních"), 30, 600, 936), 30, 600, SC.soft));
+    y += 140;
+    if (d.lastSplit) {
+      ops.push(sectionTitle(y + 20, "POSLEDNÍ ZÁVĚREČNÉ HLASOVÁNÍ, KDE SE STRANA ROZDĚLILA"));
+      const tl = wrapText(`${fmtDate(d.lastSplit.date)} · ${d.lastSplit.title || ""}`, 30, 700, 936, 3);
+      tl.forEach((l, i) => ops.push(T(72, y + 70 + i * 40, l, 30, 700, SC.text)));
+      y += 70 + tl.length * 40 + 10;
+      const ps = d.lastSplit.positions || [];
+      const cols = ps.length > 4 ? 2 : 1, colW = cols === 1 ? 936 : 448, per = Math.ceil(ps.length / cols);
+      const rh = Math.min(52, Math.floor((f.h - 200 - y) / Math.max(per, 1)));
+      ps.forEach((p, i) => {
+        const cx = 72 + Math.floor(i / per) * (colW + 40), cy = y + (i % per) * rh;
+        ops.push(...POSDOT(cx + 14, cy + rh / 2, 14, p.position), T(cx + 42, cy + rh / 2 + 10, fitText(p.name, 28, 600, colW - 50), 28, 600, SC.text));
+      });
+    } else ops.push(T(72, y + 40, "V závěrečných hlasováních hlasovali všichni stejně.", 30, 600, SC.soft));
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, ENTITY_FOOT(d), d.urlShort)];
+}
+
+const groupSub = (d) => [d.seats ? `${fmtNum(d.seats)} ${d.seats === 1 ? "poslanec" : d.seats < 5 ? "poslanci" : "poslanců"} ${[2, 3, 4, 7, 17].includes(d.nCountries) || (d.nCountries >= 70 && d.nCountries < 80) ? "ze" : "z"} ${fmtNum(d.nCountries)} zemí` : "",
+  d.czCount ? `${fmtNum(d.czCount)} ${d.czCount === 1 ? "český poslanec" : d.czCount < 5 ? "čeští poslanci" : "českých poslanců"}` : "žádný český poslanec"].filter(Boolean).join(" · ");
+
+// 1/3 frakce: logo, český název, „X poslanců z Y zemí“, počet Čechů, účast skupiny a hlasování s většinou frakce.
+export function groupCardOps(d, f) {
+  const H = f.h, story = H > 1500;
+  const ops = [];
+  let y = 0;
+  const mark = logoMarkOps(72, y, fitLogoH(d, 120, 936), d, d.short);
+  ops.push(...mark.ops);
+  y += mark.h + 30;
+  const nm = wrapText(d.name, 58, 800, 936, 3);
+  nm.forEach((l, i) => ops.push(T(72, y + 58 + i * 68, l, 58, 800, SC.text)));
+  y += nm.length * 68 + 20;
+  ops.push(T(72, y + 32, fitText(groupSub(d), 32, 600, 936), 32, 600, SC.soft));
+  y += 70;
+  const bt = bigTilesOps((d.tiles || []).filter((t) => t.pair && t.pair[1]), y, story);
+  ops.push(...bt.ops);
+  y += bt.h + 8;
+  ops.push(T(72, y + 30, "Celá skupina v EP, ne jen Češi. Bez pořadí a hodnocení.", 24, 500, SC.soft));
+  y += 50;
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, H), ...shareFooter(H, ENTITY_FOOT(d), d.urlShort)];
+}
+
+// 2/3 frakce: čeští poslanci (jméno a logo strany), bývalí pod čarou; bez Čechů prázdný stav s vysvětlením.
+function groupMembersOps(d, f) {
+  const ops = [...entityMiniHead({ ...d, headSub: groupSub(d) }, 2)];
+  let y = 360;
+  const members = d.members || [], former = d.former || [];
+  if (!members.length) {
+    ops.push(T(540, y + 220, d.noCz?.title || "Žádný český poslanec", 64, 800, SC.text, "center"));
+    wrapText(d.noCz?.text || "", 32, 500, 860, 3).forEach((l, i) => ops.push(T(540, y + 290 + i * 44, l, 32, 500, SC.soft, "center")));
+    if (former.length) {
+      const prev = `Dříve: ${former.map((m) => `${m.name}${m.partyLabel ? ` (${m.partyLabel})` : ""}, do ${fmtDate(m.end)}`).join("; ")}`;
+      wrapText(prev, 26, 500, 860, 4).forEach((l, i) => ops.push(T(540, y + 420 + i * 36, l, 26, 500, SC.muted, "center")));
+    }
+  } else {
+    ops.push(sectionTitle(y, "ČEŠTÍ POSLANCI VE FRAKCI"));
+    y += 24;
+    const draw = (r, ry, rh, fs, old) => {
+      const out = [T(72, ry + rh * 0.62, fitText(r.name, fs, 700, 560), fs, 700, old ? SC.muted : SC.text)];
+      const right = old ? `${r.partyLabel ? `${r.partyLabel} · ` : ""}do ${fmtDate(r.end)}` : null;
+      if (right) out.push(T(1008, ry + rh * 0.62, fitText(right, Math.round(fs * 0.8), 500, 380), Math.round(fs * 0.8), 500, SC.muted, "right"));
+      else if (r.label) {
+        const lh = fitLogoH(r, Math.min(44, rh - 26), 300);
+        const w = r.logoImg && r.aspect ? lh * r.aspect + 2 * Math.round(lh * 0.12) : measureText(r.label, 28, 600) + 62;
+        out.push(...logoMarkOps(1008 - w, ry + (rh - (r.logoImg && r.aspect ? lh + 2 * Math.round(lh * 0.12) : 52)) / 2, lh, r, r.label).ops);
+      }
+      out.push(LINE(72, ry + rh - 4, 1008, ry + rh - 4, SC.rowLine, 2));
+      return out;
+    };
+    ops.push(...nameRows(members, former, y, f.h - 190, draw, 88).ops);
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, ENTITY_FOOT(d), d.urlShort)];
+}
+
+// 3/3 frakce: složení podle zemí (prvních 5 a Česko zvýrazněné) a předsednictví podle EP.
+function groupEuropeOps(d, f) {
+  const ops = [...entityMiniHead({ ...d, headSub: groupSub(d) }, 3)];
+  let y = 384;
+  const c = d.countries;
+  if (c) {
+    ops.push(sectionTitle(y, "FRAKCE V EVROPĚ"), T(72, y + 46, `${fmtNum(c.nCountries)} zemí · ${fmtNum(c.seats)} poslanců · k ${fmtDate(c.asOf)}`, 30, 600, SC.soft));
+    y += 80;
+    const max = Math.max(...c.rows.map((r) => r.n), 1);
+    c.rows.forEach((r, i) => {
+      const ry = y + i * 74;
+      if (r.extra) ops.push(LINE(72, ry - 6, 1008, ry - 6, SC.line, 2));
+      const color = r.cz ? SC.accent : SC.text;
+      ops.push(T(72, ry + 42, fitText(r.cz && !r.n ? "Česko" : r.cs || r.cc, 30, r.cz ? 800 : 600, 250), 30, r.cz ? 800 : 600, color),
+        RECT(340, ry + 18, 560, 32, 8, SC.track));
+      if (r.n) ops.push(RECT(340, ry + 18, Math.max(560 * (r.n / max), 8), 32, 8, r.cz ? SC.gold : SC.soft));
+      ops.push(T(1008, ry + 44, fmtNum(r.n), 32, 800, color, "right"));
+    });
+    y += c.rows.length * 74 + 30;
+  }
+  if (d.chairs && d.chairs.length) {
+    ops.push(sectionTitle(y + 20, (d.chairsHeading || "Předsednictví").toUpperCase()));
+    d.chairs.forEach((ch, i) => ops.push(T(72, y + 72 + i * 48, fitText(`${ch.name} · ${ch.country || ""}`, 32, 700, 700), 32, 700, SC.text),
+      T(1008, y + 72 + i * 48, ch.role, 26, 500, SC.muted, "right")));
+    y += 72 + d.chairs.length * 48;
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, c ? ENTITY_FOOT(d, "složení", c.asOf) : ENTITY_FOOT(d), d.urlShort)];
 }
 
 // Karta Příběhu zákona (z/…, procedure_pages.py): název, druh procedury, kde je teď, kdy je na programu a poslední
@@ -621,7 +846,9 @@ async function photoDataUrl(url) {
 
 // Operace kreslení karty podle druhu (a u poslance podle slidu); stejná funkce pro web i balíček pro Instagram.
 export function cardOps(kind, data, f, formatKey) {
-  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, party: partyCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps, law: lawCardOps }[kind];
+  if (kind === "party") return formatKey === "slide2" ? partyMembersOps(data, f) : formatKey === "slide3" ? partyVotesOps(data, f) : partyCardOps(data, f);
+  if (kind === "group") return formatKey === "slide2" ? groupMembersOps(data, f) : formatKey === "slide3" ? groupEuropeOps(data, f) : groupCardOps(data, f);
+  const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps, law: lawCardOps }[kind];
   return draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
 }
 
@@ -638,6 +865,12 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
   if (ctx.kind === "mep" && data.avatar !== "neutral") data.photo = await loadImage(await photoDataUrl(ctx.data.photoUrl));
   // loga frakce a strany (soubory webu, data/manual/logos.json); když se nenačte, zůstane štítek s tečkou
   if (ctx.kind === "mep") data.chips = await Promise.all((data.chips || []).map(async (c) => (c.logo ? { ...c, logoImg: await loadImage(`${SHARE_ROOT}${c.logo}`).catch(() => null) } : c)));
+  // logo strany/frakce a loga frakcí (strana) nebo stran (čeští poslanci frakce); když se nenačte, zůstane štítek se zkratkou
+  if (ctx.kind === "party" || ctx.kind === "group") {
+    const withImg = async (e) => (e && e.logo ? { ...e, logoImg: await loadImage(`${SHARE_ROOT}${e.logo}`) } : e);
+    Object.assign(data, await withImg(data));
+    for (const key of ["groups", "members", "former"]) if (Array.isArray(data[key])) data[key] = await Promise.all(data[key].map(withImg));
+  }
   if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
   useCardTheme(theme);
@@ -721,7 +954,9 @@ const SD_ICON = {
 function shareFormats(kind) {
   const post = { key: "post", label: "Příspěvek", ratio: "4 : 5", slides: ["post"], icon: SD_ICON.ratio(12, 15) };
   const story = { key: "story", label: "Story", ratio: "9 : 16", slides: ["story"], icon: SD_ICON.ratio(10, 18) };
-  if (kind === "mep") return [{ ...post, label: "Základní" }, { key: "detail", label: "Detail", ratio: "3 × 4 : 5", slides: ["post", "slide2", "slide3"], icon: SD_ICON.ratio(12, 15) }, story];
+  const detail = { key: "detail", label: "Detail", ratio: "3 × 4 : 5", slides: ["post", "slide2", "slide3"], icon: SD_ICON.ratio(12, 15) };
+  if (kind === "mep") return [{ ...post, label: "Základní" }, detail, story];
+  if (kind === "party" || kind === "group") return [post, detail, story];
   return [post, story];
 }
 

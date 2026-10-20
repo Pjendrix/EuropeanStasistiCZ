@@ -9,6 +9,8 @@
  "logo_aspect": 1.312,
  "web": "https://www.greens-efa.eu/",
  "cz_members": 1,
+ "seats": 53,
+ "n_countries": 17,
  "attendance": [
   292704,
   326162
@@ -67,6 +69,8 @@
     "id": 6862,
     "short_label": "PIR"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5604,
@@ -117,6 +121,131 @@
    }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 53,
+  "n_countries": 17,
+  "by_country": [
+   {
+    "cc": "DE",
+    "n": 15,
+    "cs": "Německo"
+   },
+   {
+    "cc": "NL",
+    "n": 6,
+    "cs": "Nizozemsko"
+   },
+   {
+    "cc": "FR",
+    "n": 5,
+    "cs": "Francie"
+   },
+   {
+    "cc": "ES",
+    "n": 4,
+    "cs": "Španělsko"
+   },
+   {
+    "cc": "IT",
+    "n": 4,
+    "cs": "Itálie"
+   },
+   {
+    "cc": "DK",
+    "n": 3,
+    "cs": "Dánsko"
+   },
+   {
+    "cc": "SE",
+    "n": 3,
+    "cs": "Švédsko"
+   },
+   {
+    "cc": "AT",
+    "n": 2,
+    "cs": "Rakousko"
+   },
+   {
+    "cc": "BE",
+    "n": 2,
+    "cs": "Belgie"
+   },
+   {
+    "cc": "FI",
+    "n": 2,
+    "cs": "Finsko"
+   },
+   {
+    "cc": "CZ",
+    "n": 1,
+    "cs": "Česko"
+   },
+   {
+    "cc": "HR",
+    "n": 1,
+    "cs": "Chorvatsko"
+   },
+   {
+    "cc": "LT",
+    "n": 1,
+    "cs": "Litva"
+   },
+   {
+    "cc": "LU",
+    "n": 1,
+    "cs": "Lucembursko"
+   },
+   {
+    "cc": "LV",
+    "n": 1,
+    "cs": "Lotyšsko"
+   },
+   {
+    "cc": "RO",
+    "n": 1,
+    "cs": "Rumunsko"
+   },
+   {
+    "cc": "SI",
+    "n": 1,
+    "cs": "Slovinsko"
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 103381,
+   "name": "Terry Reintke",
+   "country": "DE",
+   "role": "CHAIR_CO",
+   "gender": "F",
+   "start": "2024-07-16",
+   "country_cs": "Německo"
+  },
+  {
+   "mep_id": 58766,
+   "name": "Nicolae Ștefănuță",
+   "country": "RO",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2026-10-07",
+   "country_cs": "Rumunsko"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 195227,

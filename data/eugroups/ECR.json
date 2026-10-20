@@ -9,6 +9,8 @@
  "logo_aspect": 1.0,
  "web": "https://www.ecrgroup.eu/",
  "cz_members": 4,
+ "seats": 84,
+ "n_countries": 18,
  "attendance": [
   436521,
   493761
@@ -44,6 +46,156 @@
  },
  "member_list": [
   {
+   "id": 256852,
+   "name": "Nikola BARTŮŠEK",
+   "given_name": "Nikola",
+   "family_name": "Bartůšek",
+   "sort_label": "BARTUSEKN",
+   "gender": "FEMALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16898"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6843,
+    "short_label": "Ind."
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     5600,
+     6154
+    ],
+    "attendance_main": [
+     577,
+     641
+    ],
+    "group_loyalty": [
+     3410,
+     4215
+    ],
+    "group_loyalty_main": [
+     311,
+     443
+    ],
+    "cz_agreement": [
+     4451,
+     5396
+    ],
+    "outcome": [
+     2541,
+     4970
+    ],
+    "outcome_main": [
+     365,
+     475
+    ],
+    "outcome_close": [
+     55,
+     119
+    ],
+    "group_outcome": [
+     111211,
+     259270
+    ],
+    "group_outcome_main": [
+     15241,
+     23855
+    ],
+    "positions": {
+     "FOR": 2987,
+     "AGAINST": 1984,
+     "ABSTENTION": 629,
+     "DID_NOT_VOTE": 554
+    }
+   }
+  },
+  {
+   "id": 256845,
+   "name": "Ondřej KRUTÍLEK",
+   "given_name": "Ondřej",
+   "family_name": "Krutílek",
+   "sort_label": "KRUTILEK",
+   "gender": "MALE",
+   "photo_url": "https://www.europarl.europa.eu/mepphoto/256845.jpg",
+   "mandates": [
+    {
+     "start": "2024-07-16",
+     "end": null,
+     "mandate_id": "16891"
+    }
+   ],
+   "short_mandate": false,
+   "group": {
+    "code": "ECR",
+    "short_label": "ECR"
+   },
+   "party": {
+    "id": 6768,
+    "short_label": "ODS"
+   },
+   "current": true,
+   "end": null,
+   "total": {
+    "attendance": [
+     6007,
+     6154
+    ],
+    "attendance_main": [
+     626,
+     641
+    ],
+    "group_loyalty": [
+     4946,
+     5990
+    ],
+    "group_loyalty_main": [
+     471,
+     621
+    ],
+    "cz_agreement": [
+     4474,
+     5797
+    ],
+    "outcome": [
+     3180,
+     5462
+    ],
+    "outcome_main": [
+     416,
+     539
+    ],
+    "outcome_close": [
+     71,
+     137
+    ],
+    "group_outcome": [
+     190344,
+     359326
+    ],
+    "group_outcome_main": [
+     27643,
+     34374
+    ],
+    "positions": {
+     "FOR": 3083,
+     "AGAINST": 2379,
+     "ABSTENTION": 545,
+     "DID_NOT_VOTE": 147
+    }
+   }
+  },
+  {
    "id": 197537,
    "name": "Alexandr VONDRA",
    "given_name": "Alexandr",
@@ -67,6 +219,8 @@
     "id": 6768,
     "short_label": "ODS"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5533,
@@ -140,6 +294,8 @@
     "id": 6768,
     "short_label": "ODS"
    },
+   "current": true,
+   "end": null,
    "total": {
     "attendance": [
      5749,
@@ -188,154 +344,138 @@
      "DID_NOT_VOTE": 405
     }
    }
-  },
-  {
-   "id": 256845,
-   "name": "Ondřej KRUTÍLEK",
-   "given_name": "Ondřej",
-   "family_name": "Krutílek",
-   "sort_label": "KRUTILEK",
-   "gender": "MALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/256845.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16891"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "ECR",
-    "short_label": "ECR"
-   },
-   "party": {
-    "id": 6768,
-    "short_label": "ODS"
-   },
-   "total": {
-    "attendance": [
-     6007,
-     6154
-    ],
-    "attendance_main": [
-     626,
-     641
-    ],
-    "group_loyalty": [
-     4946,
-     5990
-    ],
-    "group_loyalty_main": [
-     471,
-     621
-    ],
-    "cz_agreement": [
-     4474,
-     5797
-    ],
-    "outcome": [
-     3180,
-     5462
-    ],
-    "outcome_main": [
-     416,
-     539
-    ],
-    "outcome_close": [
-     71,
-     137
-    ],
-    "group_outcome": [
-     190344,
-     359326
-    ],
-    "group_outcome_main": [
-     27643,
-     34374
-    ],
-    "positions": {
-     "FOR": 3083,
-     "AGAINST": 2379,
-     "ABSTENTION": 545,
-     "DID_NOT_VOTE": 147
-    }
-   }
-  },
-  {
-   "id": 256852,
-   "name": "Nikola BARTŮŠEK",
-   "given_name": "Nikola",
-   "family_name": "Bartůšek",
-   "sort_label": "BARTUSEKN",
-   "gender": "FEMALE",
-   "photo_url": "https://www.europarl.europa.eu/mepphoto/256852.jpg",
-   "mandates": [
-    {
-     "start": "2024-07-16",
-     "end": null,
-     "mandate_id": "16898"
-    }
-   ],
-   "short_mandate": false,
-   "group": {
-    "code": "ECR",
-    "short_label": "ECR"
-   },
-   "party": {
-    "id": 6843,
-    "short_label": "Ind."
-   },
-   "total": {
-    "attendance": [
-     5600,
-     6154
-    ],
-    "attendance_main": [
-     577,
-     641
-    ],
-    "group_loyalty": [
-     3410,
-     4215
-    ],
-    "group_loyalty_main": [
-     311,
-     443
-    ],
-    "cz_agreement": [
-     4451,
-     5396
-    ],
-    "outcome": [
-     2541,
-     4970
-    ],
-    "outcome_main": [
-     365,
-     475
-    ],
-    "outcome_close": [
-     55,
-     119
-    ],
-    "group_outcome": [
-     111211,
-     259270
-    ],
-    "group_outcome_main": [
-     15241,
-     23855
-    ],
-    "positions": {
-     "FOR": 2987,
-     "AGAINST": 1984,
-     "ABSTENTION": 629,
-     "DID_NOT_VOTE": 554
-    }
-   }
   }
  ],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 84,
+  "n_countries": 18,
+  "by_country": [
+   {
+    "cc": "IT",
+    "n": 24,
+    "cs": "Itálie"
+   },
+   {
+    "cc": "PL",
+    "n": 20,
+    "cs": "Polsko"
+   },
+   {
+    "cc": "RO",
+    "n": 6,
+    "cs": "Rumunsko"
+   },
+   {
+    "cc": "CZ",
+    "n": 4,
+    "cs": "Česko"
+   },
+   {
+    "cc": "FR",
+    "n": 4,
+    "cs": "Francie"
+   },
+   {
+    "cc": "BE",
+    "n": 3,
+    "cs": "Belgie"
+   },
+   {
+    "cc": "BG",
+    "n": 3,
+    "cs": "Bulharsko"
+   },
+   {
+    "cc": "LV",
+    "n": 3,
+    "cs": "Lotyšsko"
+   },
+   {
+    "cc": "NL",
+    "n": 3,
+    "cs": "Nizozemsko"
+   },
+   {
+    "cc": "SE",
+    "n": 3,
+    "cs": "Švédsko"
+   },
+   {
+    "cc": "ES",
+    "n": 2,
+    "cs": "Španělsko"
+   },
+   {
+    "cc": "GR",
+    "n": 2,
+    "cs": "Řecko"
+   },
+   {
+    "cc": "LT",
+    "n": 2,
+    "cs": "Litva"
+   },
+   {
+    "cc": "CY",
+    "n": 1,
+    "cs": "Kypr"
+   },
+   {
+    "cc": "DK",
+    "n": 1,
+    "cs": "Dánsko"
+   },
+   {
+    "cc": "EE",
+    "n": 1,
+    "cs": "Estonsko"
+   },
+   {
+    "cc": "FI",
+    "n": 1,
+    "cs": "Finsko"
+   },
+   {
+    "cc": "HR",
+    "n": 1,
+    "cs": "Chorvatsko"
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 197820,
+   "name": "Nicola Procaccini",
+   "country": "IT",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-07-16",
+   "country_cs": "Itálie"
+  },
+  {
+   "mep_id": 197516,
+   "name": "Patryk Jaki",
+   "country": "PL",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-12-17",
+   "country_cs": "Polsko"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 196544,

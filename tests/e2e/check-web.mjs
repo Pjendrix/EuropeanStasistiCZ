@@ -53,7 +53,7 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
-const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
+const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "party?c=SD", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
   "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
 
 const problems = [];
@@ -550,6 +550,72 @@ for (const width of [1366, 390]) {
     return out;
   });
   r.forEach((x) => problems.push(`karty: ${x}`));
+  await ctx.close();
+}
+// Sdílení strany a frakce (zadání 20. 10. 2026): všech 8 frakcí a 10 stran má formát Detail se 3 obrázky v obou vzhledech,
+// nic nepřetéká, každý obrázek má zdroj a datum, logo je na bílém štítku i v tmavém vzhledu, frakce bez Čechů má prázdný stav.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  const groupCodes = read("data/eugroups/index.json").groups.map((g) => g.code);
+  const partyIds = read("data/parties/index.json").parties.map((p) => p.id);
+  if (groupCodes.length !== 8) problems.push(`sdílení frakcí: čekám 8 frakcí, je ${groupCodes.length}`);
+  for (const url of [...groupCodes.map((c) => `party?c=${c}`), ...partyIds.map((id) => `s/${id}`)]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const r = await page.evaluate(async () => {
+      const src = document.querySelector('script[src*="share.js"]').src;
+      const m = await import(src), fmt = await import(new URL("lib/format.js", src).href);
+      for (let i = 0; i < 50 && typeof window.shareContext !== "function" && !document.getElementById("share-context"); i++) await new Promise((res) => setTimeout(res, 100));
+      let sc = typeof window.shareContext === "function" ? await window.shareContext("") : null;
+      if (!sc) { const all = JSON.parse(document.getElementById("share-context").textContent); sc = fmt.withShareUrl(all.kind ? all : all.default); }
+      await document.fonts.ready;
+      const out = [];
+      if (!document.querySelector("[data-share]")) out.push("chybí tlačítko Sdílet");
+      // obrázky přes renderCardPng (načtení log), kontrola rozložení stejnými ops s načtenými logy
+      const load = (u) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = new URL(u, src).href; });
+      const data = { ...sc.data };
+      const withImg = async (e) => (e && e.logo ? { ...e, logoImg: await load(e.logo) } : e);
+      Object.assign(data, await withImg(data));
+      for (const k of ["groups", "members", "former"]) if (Array.isArray(data[k])) data[k] = await Promise.all(data[k].map(withImg));
+      for (const theme of m.CARD_THEMES) {
+        for (const slide of ["post", "slide2", "slide3"]) {
+          const blob = await m.renderCardPng(sc, slide, theme);
+          if (!blob || blob.size < 1000) out.push(`${theme} ${slide}: obrázek se nevykreslil`);
+          m.useCardTheme(theme);
+          const f = m.SHARE_FORMATS[slide];
+          const ops = m.cardOps(sc.kind, data, f, slide);
+          const footY = f.h - 128;
+          const texts = ops.filter((o) => o.k === "text");
+          texts.forEach((o) => {
+            const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
+            if (x0 < 50 || x0 + w > 1030) out.push(`${theme} ${slide}: text „${o.s.slice(0, 30)}“ přetéká do stran`);
+          });
+          const body = ops.filter((o) => o.k !== "band" && !(o.k === "line" && o.y1 === footY) && !(o.k === "text" && o.y > footY));
+          const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
+          if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
+          const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data (nebo zkrácená): ${foot.join(" | ")}`);
+          if (!foot.some((t) => t.startsWith("epwatch.cz/"))) out.push(`${theme} ${slide}: chybí adresa`);
+          if (slide === "post" && data.logoImg) {
+            const img = ops.findIndex((o) => o.k === "image" && o.img === data.logoImg);
+            const tile = img > 0 ? ops[img - 1] : null;
+            if (!tile || tile.k !== "rect" || tile.fill !== "#FFFFFF") out.push(`${theme} post: logo není na bílém štítku`);
+          }
+          if (sc.kind === "group" && slide === "slide2" && !data.members.length && !texts.some((o) => o.s === "Žádný český poslanec")) out.push(`${theme} slide2: frakce bez Čechů nemá prázdný stav`);
+          if (sc.kind === "group" && slide === "slide3" && data.countries && !texts.some((o) => /^Česko$/.test(o.s))) out.push(`${theme} slide3: chybí řádek Česko`);
+        }
+      }
+      m.useCardTheme("dark");
+      if (sc.kind === "group") {
+        if (!document.querySelector(".country-bars") || document.querySelectorAll(".country-bars li").length < 6 && !document.querySelector(".country-bars .cb-cz")) out.push("stránka: chybí Frakce v Evropě s Českem");
+        if (!data.members.length && !/Žádný český poslanec/.test(document.querySelector("main").textContent)) out.push("stránka: frakce bez Čechů nemá prázdný stav");
+      }
+      return out;
+    });
+    r.forEach((x) => problems.push(`sdílení ${url}: ${x}`));
+  }
+  await page.goto(base + "party?v=eu", { waitUntil: "networkidle" });
+  if (!(await page.textContent("main")).includes("Poslanců / zemí")) problems.push("frakce: v tabulce chybí sloupec Poslanců / zemí");
   await ctx.close();
 }
 // Audit B1: parametry m (vote) a od (votes) nesmí dostat HTML do stránky.

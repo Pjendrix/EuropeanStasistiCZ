@@ -348,3 +348,30 @@ export const COUNTRY_CS = {
 export function spanText(range, fmt) {
   return range && range.min != null ? (range.min === range.max ? fmt(range.min) : `${fmt(range.min)}–${fmt(range.max)}`) : "–";
 }
+
+// Role ve vedení frakce podle EP API (data/eugroups/*.json chairs): předseda/předsedkyně, u více záznamů
+// spolupředseda/spolupředsedkyně; když API pohlaví neuvádí, obecné „předsednictví“ (zadání 20. 10. 2026).
+export function chairRole(c) {
+  if (!c.gender) return "předsednictví";
+  const co = c.role === "CHAIR_CO";
+  return c.gender === "F" ? (co ? "spolupředsedkyně" : "předsedkyně") : co ? "spolupředseda" : "předseda";
+}
+
+// Nadpis bloku vedení: jeden předseda/předsedkyně, víc lidí = spolupředsedové (bez pohlaví „Předsednictví“).
+export function chairsHeading(chairs) {
+  if (chairs.length > 1) return "Spolupředsedové";
+  const r = chairRole(chairs[0]);
+  return r.charAt(0).toUpperCase() + r.slice(1);
+}
+
+// Řádky složení frakce: prvních 5 zemí a Česko vždy jako 6. řádek (zvýrazněné), pokud v první pětici není (i s 0).
+export function topCountries(countries, n = 5) {
+  const all = countries?.by_country || [];
+  const top = all.slice(0, n).map((c) => ({ ...c, cz: c.cc === "CZ" }));
+  if (!top.some((c) => c.cz)) top.push({ ...(all.find((c) => c.cc === "CZ") || { cc: "CZ", n: 0, cs: "Česko" }), cz: true, extra: true });
+  return top;
+}
+
+export const seatsCs = (n) => `${fmtNum(n)} ${n === 1 ? "poslanec" : n >= 2 && n <= 4 ? "poslanci" : "poslanců"}`;
+// „z 13 zemí“, „ze 17 zemí“ (ze před čísly, která se čtou se s/z/dv/tř/čt: 2–4, 7, 17, 70–79).
+export const fromCountriesCs = (n) => `${[2, 3, 4, 7, 17].includes(n) || (n >= 70 && n < 80) ? "ze" : "z"} ${fmtNum(n)} ${n === 1 ? "země" : "zemí"}`;

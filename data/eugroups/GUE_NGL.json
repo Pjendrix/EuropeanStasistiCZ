@@ -1,7 +1,7 @@
 {
  "code": "GUE_NGL",
  "short_label": "The Left",
- "name_cs": null,
+ "name_cs": "Levice v Evropském parlamentu - GUE/NGL",
  "label": "The Left in the European Parliament",
  "color": "#BE123C",
  "chart_color": "#BE123C",
@@ -9,6 +9,8 @@
  "logo_aspect": 3.803,
  "web": null,
  "cz_members": 0,
+ "seats": 45,
+ "n_countries": 13,
  "attendance": [
   238060,
   281405
@@ -43,6 +45,111 @@
   }
  },
  "member_list": [],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 45,
+  "n_countries": 13,
+  "by_country": [
+   {
+    "cc": "IT",
+    "n": 10,
+    "cs": "Itálie"
+   },
+   {
+    "cc": "FR",
+    "n": 9,
+    "cs": "Francie"
+   },
+   {
+    "cc": "DE",
+    "n": 4,
+    "cs": "Německo"
+   },
+   {
+    "cc": "ES",
+    "n": 4,
+    "cs": "Španělsko"
+   },
+   {
+    "cc": "FI",
+    "n": 3,
+    "cs": "Finsko"
+   },
+   {
+    "cc": "GR",
+    "n": 3,
+    "cs": "Řecko"
+   },
+   {
+    "cc": "IE",
+    "n": 3,
+    "cs": "Irsko"
+   },
+   {
+    "cc": "BE",
+    "n": 2,
+    "cs": "Belgie"
+   },
+   {
+    "cc": "PT",
+    "n": 2,
+    "cs": "Portugalsko"
+   },
+   {
+    "cc": "SE",
+    "n": 2,
+    "cs": "Švédsko"
+   },
+   {
+    "cc": "CY",
+    "n": 1,
+    "cs": "Kypr"
+   },
+   {
+    "cc": "DK",
+    "n": 1,
+    "cs": "Dánsko"
+   },
+   {
+    "cc": "NL",
+    "n": 1,
+    "cs": "Nizozemsko"
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 197533,
+   "name": "Manon Aubry",
+   "country": "FR",
+   "role": "CHAIR_CO",
+   "gender": "F",
+   "start": "2024-07-16",
+   "country_cs": "Francie"
+  },
+  {
+   "mep_id": 190517,
+   "name": "Martin Schirdewan",
+   "country": "DE",
+   "role": "CHAIR_CO",
+   "gender": "M",
+   "start": "2024-07-16",
+   "country_cs": "Německo"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 192335,

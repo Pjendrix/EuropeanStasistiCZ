@@ -51,6 +51,11 @@ jobs:
           python scripts/fetch_speeches.py
           python scripts/fetch_attendance.py
 
+      - name: Předsedové politických skupin (EP Open Data API)
+        # Asi 10 dotazů týdně. Při výpadku nebo změně formátu zůstane předchozí soubor (stránka a karta frakce ho jen ukazují).
+        continue-on-error: true
+        run: python scripts/fetch_group_chairs.py
+
       - name: Weby politických skupin (Wikidata)
         # Weby se mění zřídka a API občas omezuje dotazy: při chybě zůstane předchozí soubor.
         continue-on-error: true
@@ -99,7 +104,7 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json data/delegations.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/adopted_texts.json public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/adopted_texts.json public/assets/photos
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

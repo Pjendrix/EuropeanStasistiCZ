@@ -1,7 +1,7 @@
 {
  "code": "RENEW",
  "short_label": "Renew",
- "name_cs": null,
+ "name_cs": "skupina Renew Europe",
  "label": "Renew Europe",
  "color": "#F59E0B",
  "chart_color": "#F59E0B",
@@ -9,6 +9,8 @@
  "logo_aspect": 9.2,
  "web": null,
  "cz_members": 0,
+ "seats": 78,
+ "n_countries": 21,
  "attendance": [
   412116,
   467957
@@ -43,6 +45,142 @@
   }
  },
  "member_list": [],
+ "countries": {
+  "as_of": "2026-10-08",
+  "vote_id": 198051,
+  "seats": 78,
+  "n_countries": 21,
+  "by_country": [
+   {
+    "cc": "FR",
+    "n": 13,
+    "cs": "Francie"
+   },
+   {
+    "cc": "DE",
+    "n": 9,
+    "cs": "Německo"
+   },
+   {
+    "cc": "NL",
+    "n": 7,
+    "cs": "Nizozemsko"
+   },
+   {
+    "cc": "IE",
+    "n": 6,
+    "cs": "Irsko"
+   },
+   {
+    "cc": "SK",
+    "n": 6,
+    "cs": "Slovensko"
+   },
+   {
+    "cc": "BE",
+    "n": 5,
+    "cs": "Belgie"
+   },
+   {
+    "cc": "DK",
+    "n": 4,
+    "cs": "Dánsko"
+   },
+   {
+    "cc": "BG",
+    "n": 3,
+    "cs": "Bulharsko"
+   },
+   {
+    "cc": "FI",
+    "n": 3,
+    "cs": "Finsko"
+   },
+   {
+    "cc": "RO",
+    "n": 3,
+    "cs": "Rumunsko"
+   },
+   {
+    "cc": "SE",
+    "n": 3,
+    "cs": "Švédsko"
+   },
+   {
+    "cc": "AT",
+    "n": 2,
+    "cs": "Rakousko"
+   },
+   {
+    "cc": "EE",
+    "n": 2,
+    "cs": "Estonsko"
+   },
+   {
+    "cc": "IT",
+    "n": 2,
+    "cs": "Itálie"
+   },
+   {
+    "cc": "LT",
+    "n": 2,
+    "cs": "Litva"
+   },
+   {
+    "cc": "PT",
+    "n": 2,
+    "cs": "Portugalsko"
+   },
+   {
+    "cc": "SI",
+    "n": 2,
+    "cs": "Slovinsko"
+   },
+   {
+    "cc": "ES",
+    "n": 1,
+    "cs": "Španělsko"
+   },
+   {
+    "cc": "LU",
+    "n": 1,
+    "cs": "Lucembursko"
+   },
+   {
+    "cc": "LV",
+    "n": 1,
+    "cs": "Lotyšsko"
+   },
+   {
+    "cc": "PL",
+    "n": 1,
+    "cs": "Polsko"
+   }
+  ]
+ },
+ "countries_source": {
+  "name": "HowTheyVote.eu",
+  "url": "https://github.com/HowTheyVote/data",
+  "license": "ODbL",
+  "release": "2026-10-17"
+ },
+ "chairs": [
+  {
+   "mep_id": 135511,
+   "name": "Valérie Hayer",
+   "country": "FR",
+   "role": "CHAIR",
+   "gender": "F",
+   "start": "2024-07-16",
+   "country_cs": "Francie"
+  }
+ ],
+ "chairs_source": {
+  "name": "EP Open Data API v2",
+  "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
+  "license": "CC BY 4.0",
+  "updated": "2026-10-20"
+ },
  "splits_list": [
   {
    "id": 196510,
