@@ -321,7 +321,9 @@ export function voteCardOps(d, f) {
     return { ops: [...head.ops, ...sum.ops, ...body.ops], y: sum.y + body.h, head };
   };
   let pick = null;
-  outer: for (const compact of [false, true]) {
+  // data bez jmen (starší kontext sdílení, jen tečky) rovnou do záložní varianty
+  const withNames = parties.every((it) => Array.isArray(it.members));
+  outer: for (const compact of withNames ? [false, true] : []) {
     for (const s of [1, 0.95, 0.9, 0.85]) {
       const r = build(2, s, compact, false);
       if (top + r.y <= limit) {
