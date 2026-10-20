@@ -363,6 +363,17 @@ def party_badge(party_id, label: str, parties: list[dict], mep: dict | None = No
     return f'<span class="badge" style="--badge-dot:{group_color(p)}" title="{esc(p["name"] if p else text)}">{esc(text)}</span>'
 
 
+def group_url(code: str) -> str:
+    return f"party?c={code}"
+
+
+def group_link(code: str | None, groups: list[dict], ep_code: str | None = None) -> str:
+    """Štítek frakce jako odkaz na stránku frakce (party?c=…); nezařazení stránku nemají, zůstane jen štítek."""
+    g = find_group(groups, code, ep_code)
+    badge = group_badge(code, groups, ep_code)
+    return f'<a href="{group_url(g["code"])}" class="badge-link">{badge}</a>' if g and g["code"] != "NI" else badge
+
+
 def party_link(party_id, label: str, parties: list[dict], mep: dict | None = None) -> str:
     p = find_party(parties, party_id)
     badge = party_badge(party_id, label, parties, mep)
