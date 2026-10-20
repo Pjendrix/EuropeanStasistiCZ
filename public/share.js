@@ -13,7 +13,8 @@ import { esc, fmtDate, fmtNum, fmtPct, withShareUrl } from "./lib/format.js";
 const SHARE_ROOT = new URL(".", import.meta.url).href;
 
 export const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
-  slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" } };
+  slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" },
+  story2: { w: 1080, h: 1920, label: "detail 2/3 (story)" }, story3: { w: 1080, h: 1920, label: "detail 3/3 (story)" } };
 // Barvy karty podle role (design/tokens.json → python scripts/tokens.py): tmavá = dosavadní karta, světlá = volba „Vzhled“.
 const SC_THEMES = { dark: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155", text: "#F8FAFC", accent: "#F59E0B", bg0: "#0F172A", bg1: "#0A1226", line: "#334155", rowLine: "#1E293B", chip: "#1E293B", chipLine: "#475569", tile: "#16213A", tileLine: "#16213A", silhouette: "#475569", glyph: "#0A1226", pillOk: "#F8FAFC", pillOkText: "#0F172A", pillNo: "#334155", pillNoText: "#F8FAFC" }, light: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#64748B", soft: "#334155", gold: "#F59E0B", for: "#2AA560", against: "#9F1D2B", abst: "#64748B", absent: "#8092AB", track: "#E2E8F0", text: "#0F172A", accent: "#B45309", bg0: "#F8FAFC", bg1: "#F8FAFC", line: "#E2E8F0", rowLine: "#E2E8F0", chip: "#EEF2F7", chipLine: "#CBD5E1", tile: "#FFFFFF", tileLine: "#E2E8F0", silhouette: "#94A3B8", glyph: "#FFFFFF", pillOk: "#0F172A", pillOkText: "#FFFFFF", pillNo: "#475569", pillNoText: "#FFFFFF" } };
 // Hlavička karty (logo, datum, téma) je v obou variantách modrá jako hlavička webu.
@@ -339,6 +340,91 @@ export function voteCardOps(d, f) {
   if (!pick) pick = build(2, 1, false, true);
   return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`, chips, true), ...shift(pick.ops, Math.round(top + Math.max((H - 150 - top - pick.y) / 2, 0))),
     ...shareFooter(H, VOTE_FOOT(d, names), d.urlShort)];
+}
+
+// --- detail karty hlasování (2. a 3. obrázek, zadání 20. 10. 2026) ---------------------------------------
+// 2/3 Frakce v celém EP (počty z HowTheyVote) a Češi, kteří hlasovali jinak než většina své frakce; 3/3 kontext:
+// česká stopa, AI shrnutí (jen když existuje, s popiskem), stav procedury. Chybějící blok se vynechá, nic se nedopočítává.
+
+export const voteHasContext = (det) => Boolean(det && ((det.trace || []).length || det.summary || det.procedure));
+
+function voteMiniHead(d, n, total) {
+  const tl = wrapText(d.title, 40, 800, 820, 2);
+  return [...tl.map((l, i) => T(72, 220 + i * 46, l, 40, 800, SC.text)), T(1008, 220, `${n} / ${total}`, 30, 500, SC.muted, "right"),
+    T(72, 220 + tl.length * 46 + 6, fitText(`${fmtDate(d.date)} · ${d.resultLabel || ""}`, 24, 600, 936), 24, 600, SC.soft)];
+}
+const POS_VERB = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržet se" };
+const voteSlides = (d) => (voteHasContext(d.detail) ? 3 : 2);
+
+function voteGroupsOps(d, f) {
+  const det = d.detail || {}, groups = det.groups || [], div = det.diverged || [];
+  const ops = [...voteMiniHead(d, 2, voteSlides(d))];
+  let y = 384;
+  ops.push(sectionTitle(y, "JAK HLASOVALY FRAKCE V CELÉM EP"));
+  y += 22;
+  const bottom = f.h - 170;
+  const divH = div.length ? 70 + Math.min(div.length, 8) * 44 : 110;
+  const rh = Math.min(66, Math.floor((bottom - y - divH) / Math.max(groups.length, 1)));
+  groups.forEach((g, i) => {
+    const ry = y + i * rh;
+    ops.push(T(72, ry + rh * 0.55, fitText(g.label, 26, 700, 190), 26, 700, SC.text));
+    if (g.cz) ops.push(T(72, ry + rh * 0.55 + 22, `Češi: ${fmtNum(g.cz)}`, 18, 600, SC.muted));
+    ops.push(...barOps(280, ry + rh * 0.5 - 13, 520, 22, g.counts));
+    ops.push(T(1008, ry + rh * 0.5 + 8, `${fmtNum(g.counts[0])} : ${fmtNum(g.counts[1])}`, 24, 700, SC.text, "right"));
+    if (i < groups.length - 1) ops.push(LINE(72, ry + rh - 2, 1008, ry + rh - 2, SC.rowLine, 1));
+  });
+  y += groups.length * rh + 10;
+  ops.push(T(1008, y + 8, "pro : proti · pruh = pro / proti / zdržel se / nehlasoval", 18, 500, SC.muted, "right"));
+  y += 50;
+  ops.push(sectionTitle(y, "ČEŠI, KTEŘÍ HLASOVALI JINAK NEŽ VĚTŠINA FRAKCE"));
+  if (!div.length) {
+    wrapText("Všichni čeští poslanci, kteří hlasovali, hlasovali jako většina své frakce (nezařazení a nehlasující se nepočítají).", 26, 500, 936, 3)
+      .forEach((l, i) => ops.push(T(72, y + 50 + i * 34, l, 26, 500, SC.soft)));
+  } else {
+    const rows = div.length > 8 ? Math.ceil(div.length / 2) : div.length, cols = div.length > 8 ? 2 : 1, cw = cols === 1 ? 936 : 458;
+    const rh2 = Math.min(44, Math.floor((bottom - y - 30) / rows));
+    div.forEach((x, i) => {
+      const cx = 72 + Math.floor(i / rows) * (cw + 20), cy = y + 30 + (i % rows) * rh2;
+      const right = `${x.group}: většina ${POS_VERB[x.majority] || ""}`;
+      ops.push(...POSDOT(cx + 12, cy + rh2 / 2, 12, x.position),
+        T(cx + 34, cy + rh2 / 2 + 9, fitText(`${x.name}${x.party ? ` (${x.party})` : ""}`, 24, 700, cw - 34 - measureText(right, 20, 500) - 16), 24, 700, SC.text),
+        T(cx + cw, cy + rh2 / 2 + 8, right, 20, 500, SC.muted, "right"));
+    });
+  }
+  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...ops,
+    ...shareFooter(f.h, `Zdroj: HowTheyVote.eu (ODbL) · frakce k datu hlasování · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
+}
+
+function voteContextOps(d, f) {
+  const det = d.detail || {};
+  const ops = [];
+  let y = 0;
+  if (det.summary) {
+    ops.push(sectionTitle(y, "O ČEM SE HLASOVALO"));
+    const tl = wrapText(det.summary.text, 32, 600, 936, 7);
+    tl.forEach((l, i) => ops.push(T(72, y + 52 + i * 44, l, 32, 600, SC.text)));
+    y += 52 + tl.length * 44 + 4;
+    wrapText(`Shrnutí napsala AI (Claude)${det.summary.source === "adopted_text" ? " z přijatého textu" : ""}, bez čísel a hodnocení. Plné znění na webu EP.`, 20, 500, 936, 2)
+      .forEach((l, i) => ops.push(T(72, y + 18 + i * 26, l, 20, 500, SC.muted)));
+    y += 80;
+  }
+  if ((det.trace || []).length) {
+    ops.push(sectionTitle(y, "ČESKÁ STOPA"));
+    det.trace.slice(0, 6).forEach((t, i) => ops.push(T(72, y + 50 + i * 42, fitText(t.name, 30, 700, 560), 30, 700, SC.text), T(1008, y + 50 + i * 42, t.role, 24, 500, SC.soft, "right")));
+    y += 50 + Math.min(det.trace.length, 6) * 42 + 30;
+  }
+  if (det.procedure) {
+    const p = det.procedure;
+    ops.push(sectionTitle(y, "PŘÍBĚH ZÁKONA"));
+    ops.push(T(72, y + 50, fitText([p.label, p.kind].filter(Boolean).join(" · "), 28, 700, 936), 28, 700, SC.text));
+    if (p.now) ops.push(T(72, y + 92, fitText(`Naposledy: ${p.now}`, 26, 500, 936), 26, 500, SC.soft));
+    ops.push(T(72, y + (p.now ? 134 : 92), fitText(`Celý průběh: epwatch.cz/${p.path}`, 24, 600, 936), 24, 600, SC.accent));
+    y += p.now ? 160 : 118;
+  }
+  const src = ["EP Open Data (CC BY 4.0)", ...(det.summary ? ["shrnutí AI"] : [])].join(", ");
+  // obsah vystředěný pod hlavičkou s názvem (karta má jen tolik bloků, kolik je v datech)
+  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...voteMiniHead(d, 3, 3), ...centered(ops, y, f.h, 360),
+    ...shareFooter(f.h, `Zdroj: ${src} · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
 // --- karta poslance (S4): základní karta + detail (2. a 3. obrázek carouselu) ----------------------------
@@ -1002,8 +1088,26 @@ async function photoDataUrl(url) {
   } catch (e) { return null; }
 }
 
+// Story verze 2. a 3. obrázku detailu: stejné rozložení jako 4 : 5, vystředěné na výšku 9 : 16 (hlavička nahoře,
+// patička dole, obsah uprostřed). Jedna logika pro všechny karty, žádné zvláštní rozložení.
+function storyOps(ops, from = 1350, to = 1920) {
+  const extra = to - from, mid = Math.round(extra / 2), footY = from - 140;
+  const yOf = (o) => ("y" in o ? o.y : o.y1);
+  return ops.map((o) => {
+    if (o.k === "band" || yOf(o) < 340) return o;   // hlavička a mini hlavička (jméno, název) zůstávají nahoře
+    const dy = yOf(o) >= footY ? extra : mid;
+    return { ...o, ...("y" in o ? { y: o.y + dy } : {}), ...("y1" in o ? { y1: o.y1 + dy, y2: o.y2 + dy } : {}) };
+  });
+}
+
 // Operace kreslení karty podle druhu (a u poslance podle slidu); stejná funkce pro web i balíček pro Instagram.
 export function cardOps(kind, data, f, formatKey) {
+  if (formatKey === "story2" || formatKey === "story3") {
+    const k = formatKey === "story2" ? "slide2" : "slide3";
+    return storyOps(cardOps(kind, data, SHARE_FORMATS[k], k), SHARE_FORMATS[k].h, f.h);
+  }
+  if (kind === "vote" && formatKey === "slide2") return voteGroupsOps(data, f);
+  if (kind === "vote" && formatKey === "slide3") return voteContextOps(data, f);
   if (kind === "party") return formatKey === "slide2" ? partyMembersOps(data, f) : formatKey === "slide3" ? partyVotesOps(data, f) : partyCardOps(data, f);
   if (kind === "group") return formatKey === "slide2" ? groupMembersOps(data, f) : formatKey === "slide3" ? groupEuropeOps(data, f) : groupCardOps(data, f);
   const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps, law: lawCardOps }[kind];
@@ -1109,15 +1213,19 @@ const SD_ICON = {
   ratio: (w, h) => `<svg width="18" height="22" viewBox="0 0 18 22" aria-hidden="true"><rect x="${(18 - w) / 2}" y="${(22 - h) / 2}" width="${w}" height="${h}" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
 };
 
-// Formáty podle typu karty; slides = obrázky, které formát vyrobí (detail poslance = 3 obrázky 4 : 5).
-function shareFormats(kind) {
-  const post = { key: "post", label: "Příspěvek", ratio: "4 : 5", slides: ["post"], icon: SD_ICON.ratio(12, 15) };
-  const story = { key: "story", label: "Story", ratio: "9 : 16", slides: ["story"], icon: SD_ICON.ratio(10, 18) };
-  const detail = { key: "detail", label: "Detail", ratio: "3 × 4 : 5", slides: ["post", "slide2", "slide3"], icon: SD_ICON.ratio(12, 15) };
-  if (kind === "mep") return [{ ...post, label: "Základní" }, detail, story];
-  if (kind === "party" || kind === "group") return [post, detail, story];
-  return [post, story];
+// Formáty = obsah (jeden obrázek / detail) × rozměr (4 : 5 / 9 : 16); slides = obrázky, které formát vyrobí.
+// Detail mají poslanec, strana, frakce a závěrečné hlasování (data.detail); u hlasování bez kontextu jen 2 obrázky.
+export function shareFormats(kind, data = {}) {
+  const out = [{ key: "post", content: "single", size: "post", slides: ["post"] }, { key: "story", content: "single", size: "story", slides: ["story"] }];
+  const n = kind === "vote" ? (data?.detail ? (voteHasContext(data.detail) ? 3 : 2) : 0) : ["mep", "party", "group"].includes(kind) ? 3 : 0;
+  if (n) {
+    out.push({ key: "detail", content: "detail", size: "post", slides: ["post", "slide2", "slide3"].slice(0, n) },
+      { key: "detail-story", content: "detail", size: "story", slides: ["story", "story2", "story3"].slice(0, n) });
+  }
+  return out;
 }
+const SD_SIZES = { post: { label: "Příspěvek", ratio: "4 : 5", icon: SD_ICON.ratio(12, 15) }, story: { label: "Story", ratio: "9 : 16", icon: SD_ICON.ratio(10, 18) } };
+const SD_CONTENT_KEY = "epw-share-content";
 
 const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu", "quiz-groups": "Sdílet výsledek kvízu" };
 const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
@@ -1177,10 +1285,13 @@ async function openSharePanel(trigger) {
   try { ctx = await (window.shareContext || staticShareContext)(kindArg); } catch (e) { ctx = null; }
   if (!ctx) return;
   const enc = encodeURIComponent;
-  const formats = ctx.formats || shareFormats(ctx.kind);
-  let saved = null;
-  try { saved = localStorage.getItem(SD_FMT_KEY); } catch (e) { /* bez úložiště */ }
-  let fmt = formats.find((x) => x.key === saved) || formats[0];
+  const formats = ctx.formats || shareFormats(ctx.kind, ctx.data);
+  let saved = null, savedContent = null;
+  try { saved = localStorage.getItem(SD_FMT_KEY); savedContent = localStorage.getItem(SD_CONTENT_KEY); } catch (e) { /* bez úložiště */ }
+  const pickFmt = (content, size) => formats.find((x) => x.content === content && x.size === size) || formats.find((x) => x.size === size) || formats[0];
+  let fmt = pickFmt(savedContent === "detail" ? "detail" : "single", saved === "story" ? "story" : "post");
+  const hasDetail = formats.some((x) => x.content === "detail");
+  const detailN = formats.find((x) => x.content === "detail")?.slides.length || 0;
   let theme = cardThemeDefault();
   const urlShort = ctx.data?.urlShort || ctx.url.replace(/^https?:\/\//, "");
   const cache = new Map();   // vzhled:slide → Promise<Blob>; stejný blob pro náhled, stažení i sdílení
@@ -1202,8 +1313,10 @@ async function openSharePanel(trigger) {
     <div class="sd-body">
       <div class="sd-stage"><div class="sd-preview"></div><p class="sd-meta"></p></div>
       <div class="sd-ctl">
-        <p class="sd-lab" id="sd-fl">Formát</p>
-        <div class="sd-formats" role="radiogroup" aria-labelledby="sd-fl">${formats.map((x) => `<button type="button" role="radio" data-fmt="${x.key}">${x.icon}<span class="sd-fn">${esc(x.label)}</span><span class="sd-fr">${esc(x.ratio)}</span></button>`).join("")}</div>
+        ${hasDetail ? `<p class="sd-lab" id="sd-cl">Obsah</p>
+        <div class="sd-formats sd-content" role="radiogroup" aria-labelledby="sd-cl"><button type="button" role="radio" data-content="single">${SD_ICON.ratio(12, 15)}<span class="sd-fn">Jeden obrázek</span><span class="sd-fr">základní karta</span></button><button type="button" role="radio" data-content="detail"><span class="sd-stack" aria-hidden="true">${SD_ICON.ratio(12, 15)}${SD_ICON.ratio(12, 15)}</span><span class="sd-fn">Detail</span><span class="sd-fr">${detailN} obrázky</span></button></div>` : ""}
+        <p class="sd-lab" id="sd-fl">Rozměr</p>
+        <div class="sd-formats sd-size" role="radiogroup" aria-labelledby="sd-fl">${["post", "story"].map((k) => `<button type="button" role="radio" data-size="${k}">${SD_SIZES[k].icon}<span class="sd-fn">${SD_SIZES[k].label}</span><span class="sd-fr">${SD_SIZES[k].ratio}</span></button>`).join("")}</div>
         <p class="sd-lab" id="sd-tl">Vzhled</p>
         <div class="sd-themes" role="group" aria-labelledby="sd-tl">${CARD_THEMES.map((x) => `<button type="button" data-card-theme="${x}" aria-pressed="false"><span class="sd-sw sd-sw-${x}" aria-hidden="true"><i></i><i></i></span><span class="sd-fn">${SD_THEME_LABEL[x]}</span></button>`).join("")}</div>
         <div class="sd-actions"><button type="button" class="sd-primary"></button><button type="button" class="sd-secondary"></button></div>
@@ -1234,13 +1347,14 @@ async function openSharePanel(trigger) {
     toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
   };
   const files = async () => (await Promise.all(fmt.slides.map(blobFor)))
-    .map((b, i) => new File([b], `${ctx.filename}-${fmt.slides.length > 1 ? `${i + 1}-z-${fmt.slides.length}` : fmt.key}-${SD_THEME_FILE[theme]}.png`, { type: "image/png" }));
+    .map((b, i) => new File([b], `${ctx.filename}-${fmt.slides.length > 1 ? `${i + 1}-z-${fmt.slides.length}${fmt.size === "story" ? "-story" : ""}` : fmt.key}-${SD_THEME_FILE[theme]}.png`, { type: "image/png" }));
 
   const setActions = () => {
     const many = fmt.slides.length > 1;
     const native = canShareFiles(fmt.slides.length);
     primary.dataset.act = native ? "native" : "download";
-    primary.innerHTML = native ? `${SD_ICON.share}<span>${many ? "Sdílet 3 obrázky…" : "Sdílet obrázek…"}</span>` : `${SD_ICON.down}<span>${many ? "Stáhnout 3 obrázky" : "Stáhnout obrázek"}</span>`;
+    const n = fmt.slides.length;
+    primary.innerHTML = native ? `${SD_ICON.share}<span>${many ? `Sdílet ${n} obrázky…` : "Sdílet obrázek…"}</span>` : `${SD_ICON.down}<span>${many ? `Stáhnout ${n} obrázky` : "Stáhnout obrázek"}</span>`;
     if (native) { secondary.dataset.act = "download"; secondary.innerHTML = `${SD_ICON.down}<span>Stáhnout</span>`; secondary.hidden = false; }
     else { secondary.dataset.act = "copyimg"; secondary.innerHTML = `${SD_ICON.copy}<span>Kopírovat obrázek</span>`; secondary.hidden = many || !canCopyImage(); }
   };
@@ -1260,7 +1374,7 @@ async function openSharePanel(trigger) {
         ? `; jména poslanců podle stran: ${ctx.data.parties.map((p) => `${p.label}: ${p.members.map((m) => `${m.surname} ${SHARE_SHORT[m.position]}`).join(", ")}`).join("; ")}` : "";
       const alt = (i) => `Náhled karty: ${ctx.subtitle || ctx.text}${names}${srcs.length > 1 ? ` (obrázek ${i + 1} z ${srcs.length})` : ""}`;
       preview.innerHTML = srcs.length > 1
-        ? `<div class="sd-carousel" tabindex="0" aria-label="Náhled, 3 obrázky (šipky přepínají)">${srcs.map((u, i) => `<img src="${u}" alt="${esc(alt(i))}" width="1080" height="1350">`).join("")}</div>
+        ? `<div class="sd-carousel" tabindex="0" aria-label="Náhled, ${srcs.length} obrázky (šipky přepínají)">${srcs.map((u, i) => `<img src="${u}" alt="${esc(alt(i))}" width="${f.w}" height="${f.h}">`).join("")}</div>
            <div class="sd-nav"><button type="button" class="sd-arr" data-step="-1" aria-label="Předchozí obrázek" disabled>‹</button>
              <span class="sd-dots" role="group" aria-label="Obrázek 1 z ${srcs.length}">${srcs.map((_, i) => `<button type="button" class="${i ? "" : "on"}" data-i="${i}" aria-label="Obrázek ${i + 1}"${i ? "" : ' aria-current="true"'}></button>`).join("")}</span>
              <button type="button" class="sd-arr" data-step="1" aria-label="Další obrázek">›</button></div>`
@@ -1305,15 +1419,18 @@ async function openSharePanel(trigger) {
     }
   };
 
-  const selectFormat = (key, focus = false) => {
-    fmt = formats.find((x) => x.key === key) || formats[0];
-    dlg.querySelectorAll("[data-fmt]").forEach((b) => {
-      const on = b.dataset.fmt === fmt.key;
-      b.setAttribute("aria-checked", String(on));
-      b.tabIndex = on ? 0 : -1;
-      if (on && focus) b.focus();
-    });
-    if (fmt.key === "post" || fmt.key === "story") { try { localStorage.setItem(SD_FMT_KEY, fmt.key); } catch (e) { /* bez úložiště */ } }
+  // Obsah a rozměr jsou dva nezávislé přepínače (radiogroup); volba se pamatuje v prohlížeči.
+  const selectFormat = (content, size, focusAttr = null) => {
+    fmt = pickFmt(content, size);
+    for (const [attr, val] of [["content", fmt.content], ["size", fmt.size]]) {
+      dlg.querySelectorAll(`[data-${attr}]`).forEach((b) => {
+        const on = b.dataset[attr] === val;
+        b.setAttribute("aria-checked", String(on));
+        b.tabIndex = on ? 0 : -1;
+        if (on && focusAttr === attr) b.focus();
+      });
+    }
+    try { localStorage.setItem(SD_FMT_KEY, fmt.size); localStorage.setItem(SD_CONTENT_KEY, fmt.content); } catch (e) { /* bez úložiště */ }
     setActions();
     showPreview();
   };
@@ -1366,16 +1483,17 @@ async function openSharePanel(trigger) {
     const b = ev.target.closest("button");
     if (!b) return;
     if (b.classList.contains("sd-x")) closeSharePanel();
-    else if (b.dataset.fmt) selectFormat(b.dataset.fmt);
+    else if (b.dataset.content) selectFormat(b.dataset.content, fmt.size);
+    else if (b.dataset.size) selectFormat(fmt.content, b.dataset.size);
     else if (b.dataset.cardTheme) { if (b.dataset.cardTheme !== theme) selectTheme(b.dataset.cardTheme); }
     else if (b.dataset.act) act(b);
   });
-  $(".sd-formats").addEventListener("keydown", (ev) => {
-    const i = formats.indexOf(fmt), d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
-    if (!d) return;
+  dlg.querySelectorAll(".sd-content, .sd-size").forEach((grp) => grp.addEventListener("keydown", (ev) => {
+    if (!{ ArrowRight: 1, ArrowDown: 1, ArrowLeft: 1, ArrowUp: 1 }[ev.key]) return;
     ev.preventDefault();
-    selectFormat(formats[(i + d + formats.length) % formats.length].key, true);
-  });
+    if (grp.classList.contains("sd-content")) selectFormat(fmt.content === "detail" ? "single" : "detail", fmt.size, "content");
+    else selectFormat(fmt.content, fmt.size === "story" ? "post" : "story", "size");
+  }));
   $("#sd-url").addEventListener("focus", (ev) => ev.target.select());
   dlg.addEventListener("close", () => {
     objUrls.forEach((u) => URL.revokeObjectURL(u));
@@ -1386,7 +1504,7 @@ async function openSharePanel(trigger) {
   });
 
   dlg.querySelectorAll("[data-card-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cardTheme === theme)));
-  selectFormat(fmt.key);
+  selectFormat(fmt.content, fmt.size);
   trigger.setAttribute("aria-expanded", "true");
   if (typeof dlg.showModal === "function") dlg.showModal();
   else {   // bez <dialog>: pevně umístěný panel v <body>

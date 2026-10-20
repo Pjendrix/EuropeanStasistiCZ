@@ -31,6 +31,7 @@ from vote_parties import (
     POSITION_LABEL,
     POSITIONS,
     card_items,
+    vote_detail,
     group_label,
     party_rows,  # noqa: F401
     position_phrase,
@@ -396,6 +397,7 @@ def vote_page(
     roles: list[dict] | None = None,
     parties: list[dict] | None = None,
     data_day: str | None = None,
+    extra: dict | None = None,
 ) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
@@ -449,6 +451,10 @@ def vote_page(
     party_html = party_rows_html(rows, ROOT)
     sentence = result_sentence(kind, v.get("result"))
     share_data = vote_share_data(v, meps_by_id, groups, parties, None, rows, bool(roles))
+    # Detail ke sdílení (3 obrázky): frakce v EP a Češi jinak než frakce, česká stopa, AI shrnutí a stav procedury.
+    share_data["detail"] = vote_detail(
+        v, cz, meps_by_id, parties or [], groups, roles, (extra or {}).get("summary"), (extra or {}).get("procedure")
+    )
     n_groups = len(v["group_counts"])
     links = [
         f'<a href="{esc(src)}">Originál na HowTheyVote.eu</a>',
@@ -562,9 +568,20 @@ def build(data_dir: Path) -> dict[str, str]:
     vr_path = data_dir / "vote_roles.json"
     vote_roles = read(vr_path)["votes"] if vr_path.exists() else {}
     with_card = card_vote_ids(votes)  # závěrečná hlasování za 12 měsíců mají kartu (build_cards.py), starší obecný obrázek
+    from procedure_pages import procedure_briefs  # až tady: importuje pomocné funkce z tohoto modulu
+
+    briefs = procedure_briefs(data_dir, votes)
+    sums_path = data_dir / "vote_summaries.json"
+    sums = read(sums_path).get("items", {}) if sums_path.exists() else {}
     for v in votes:
         if is_final(v):
-            path, html = vote_page(v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day)
+            extra = {
+                "summary": sums.get(str(v["id"])),
+                "procedure": briefs.get((v.get("procedure") or {}).get("reference") or ""),
+            }
+            path, html = vote_page(
+                v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day, extra
+            )
             out[path] = html
     from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
 
