@@ -282,6 +282,9 @@ function tileOps(x, y, w, h, label, value, sub) {
   return ops;
 }
 
+// Tvar podle pohlaví z EP (d.female: true/false); když EP pohlaví neuvádí, obě podoby („hlasoval/a“).
+const byG = (d, male, female, both) => (d.female ? female : d.female === false ? male : both);
+
 // 2/3 Jak hlasuje: rozložení hlasů, soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
 function mepVotingOps(d, f) {
   const ops = [...mepMiniHead(d, 2)];
@@ -289,18 +292,18 @@ function mepVotingOps(d, f) {
   const pos = d.positions;
   if (pos) {
     const total = SHARE_KEYS.reduce((n, k) => n + (pos[k] || 0), 0);
-    ops.push(sectionTitle(y, `JAK HLASOVAL · ${fmtNum(total)} HLASOVÁNÍ`), ...barOps(72, y + 28, 936, 34, SHARE_KEYS.map((k) => pos[k] || 0)));
+    ops.push(sectionTitle(y, `${byG(d, "JAK HLASOVAL", "JAK HLASOVALA", "JAK HLASOVAL/A")} · ${fmtNum(total)} HLASOVÁNÍ`), ...barOps(72, y + 28, 936, 34, SHARE_KEYS.map((k) => pos[k] || 0)));
     let lx = 72;
-    const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: "zdržel se", DID_NOT_VOTE: "nehlasoval" };
+    const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: byG(d, "zdržel se", "zdržela se", "zdržel/a se"), DID_NOT_VOTE: byG(d, "nehlasoval", "nehlasovala", "nehlasoval/a") };
     SHARE_KEYS.forEach((k) => {
       const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
       ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 30, 600, SC.text));
-      lx += measureText(t, 30, 600) + 64;
+      lx += measureText(t, 30, 600) + 48;
     });
     y += 200;
   }
   const tiles = [];
-  if (d.outcome && d.outcome[1]) tiles.push(["Hlasoval jako většina EP", fmtPct(d.outcome[0] / d.outcome[1]),
+  if (d.outcome && d.outcome[1]) tiles.push([byG(d, "Hlasoval jako většina EP", "Hlasovala jako většina EP", "Hlasoval/a jako většina EP"), fmtPct(d.outcome[0] / d.outcome[1]),
     `${fmtNum(d.outcome[0])} z ${fmtNum(d.outcome[1])}${d.groupOutcome && d.groupOutcome[1] ? ` · průměr frakce ${fmtPct(d.groupOutcome[0] / d.groupOutcome[1])}` : ""}`]);
   if (d.attendanceMain && d.attendanceMain[1]) tiles.push(["Účast u závěrečných hlasování", fmtPct(d.attendanceMain[0] / d.attendanceMain[1]),
     `${fmtNum(d.attendanceMain[0])} z ${fmtNum(d.attendanceMain[1])}${d.attendanceMainMedian != null ? ` · medián EP ${fmtPct(d.attendanceMainMedian)}` : ""}`]);
@@ -331,7 +334,7 @@ function mepWorkOps(d, f) {
   if (w) {
     ops.push(sectionTitle(y, "PRÁCE NA TEXTECH"));
     const adoptedNote = (n, adopted) => (n && adopted != null ? (adopted === n ? (n === 1 ? "Parlament přijal" : "všechny Parlament přijal") : `přijato ${fmtNum(adopted)}`) : "");
-    [["Vedl zprávy", w.leadReports, adoptedNote(w.leadReports, w.leadAdopted)], ["Stanoviska výborů", w.leadOpinions, d.female ? "jako zpravodajka" : d.female === false ? "jako zpravodaj" : "jako zpravodaj/ka"],
+    [[byG(d, "Vedl zprávy", "Vedla zprávy", "Vedl/a zprávy"), w.leadReports, adoptedNote(w.leadReports, w.leadAdopted)], ["Stanoviska výborů", w.leadOpinions, d.female ? "jako zpravodajka" : d.female === false ? "jako zpravodaj" : "jako zpravodaj/ka"],
       ["Stínové zprávy", w.shadowReports, `vyjednáv${d.female ? "ala" : d.female === false ? "al" : "al/a"} za frakci`]].forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, t[0], fmtNum(t[1]), t[2])));
     y += 300;
   }
@@ -345,13 +348,13 @@ function mepWorkOps(d, f) {
     y += 300;
   }
   if (d.committees && (d.committees.members.length || d.committees.substitutes.length)) {
-    ops.push(sectionTitle(y, "VÝBORY (ČLEN)"));
+    ops.push(sectionTitle(y, byG(d, "VÝBORY (ČLEN)", "VÝBORY (ČLENKA)", "VÝBORY (ČLEN/KA)")));
     let cy = y + 56;
     if (d.committees.members.length) {
       wrapText(committeeLine(d.committees.members), 28, 500, 936, 2).forEach((l, i) => ops.push(T(72, cy + i * 38, l, 28, 500, SC.soft)));
       cy += 38 * Math.min(2, Math.ceil(measureText(committeeLine(d.committees.members), 28, 500) / 936)) + 8;
     }
-    if (d.committees.substitutes.length) ops.push(T(72, cy, fitText(`náhradník: ${d.committees.substitutes.join(", ")}`, 28, 500, 936), 28, 500, SC.muted));
+    if (d.committees.substitutes.length) ops.push(T(72, cy, fitText(`${byG(d, "náhradník", "náhradnice", "náhradník/ice")}: ${d.committees.substitutes.join(", ")}`, 28, 500, 936), 28, 500, SC.muted));
   }
   return [...shareHeader(`data k ${fmtDate(d.workDay || d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[3], d.urlShort)];
 }
