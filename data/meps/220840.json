@@ -95,7 +95,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 827,
+ "mandate_days": 828,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4501,7 +4501,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4534,10 +4534,10 @@
     "count": 2
    },
    "motion": {
-    "count": 21,
+    "count": 22,
     "voted": 2,
     "adopted": 0,
-    "no_vote": 18,
+    "no_vote": 19,
     "other": 0,
     "superseded": 1
    },
@@ -4567,7 +4567,7 @@
    "lead_opinions": 1,
    "shadow_reports": 10,
    "shadow_opinions": 2,
-   "motions_signed": 21,
+   "motions_signed": 22,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -4581,6 +4581,22 @@
    }
   },
   "items": [
+   {
+    "id": "B-10-2026-0486",
+    "label": null,
+    "date": "2026-10-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the escalation of Houthi attacks and implications for regional security"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0486_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8
+   },
    {
     "id": "proc-2026-2147",
     "label": "2026/2147(INI)",

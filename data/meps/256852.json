@@ -154,7 +154,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 827,
+ "mandate_days": 828,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4562,7 +4562,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4595,10 +4595,10 @@
     "count": 6
    },
    "motion": {
-    "count": 59,
+    "count": 61,
     "voted": 5,
     "adopted": 0,
-    "no_vote": 47,
+    "no_vote": 49,
     "other": 0,
     "superseded": 7
    },
@@ -4628,7 +4628,7 @@
    "lead_opinions": 0,
    "shadow_reports": 7,
    "shadow_opinions": 6,
-   "motions_signed": 68,
+   "motions_signed": 70,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -4642,6 +4642,38 @@
    }
   },
   "items": [
+   {
+    "id": "B-10-2026-0488",
+    "label": null,
+    "date": "2026-10-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the escalation of Houthi attacks and implications for regional security"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0488_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 18
+   },
+   {
+    "id": "B-10-2026-0484",
+    "label": null,
+    "date": "2026-10-19",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 30
+   },
    {
     "id": "RC-10-2026-0452",
     "label": null,
