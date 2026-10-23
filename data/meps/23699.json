@@ -114,7 +114,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 829,
+ "mandate_days": 830,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -3816,7 +3816,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -3864,7 +3864,7 @@
     "other": 0
    },
    "question": {
-    "count": 44,
+    "count": 45,
     "answered": 35
    }
   },
@@ -3896,6 +3896,22 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-004197",
+    "label": "E-004197/2026",
+    "date": "2026-10-15",
+    "title": {
+     "cs": "Světový den artritidy 12. října",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004197_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 13
+   },
    {
     "id": "proc-2026-2079",
     "label": "2026/2079(DEC)",
