@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=ef1cdb2e"></script>
-<link rel="stylesheet" href="style.css?v=f4cb5a12">
+<link rel="stylesheet" href="style.css?v=2efb75b6">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -103,6 +103,18 @@
           web se hned přepočítá; každé pondělí ráno proběhne aktualizace vždy. Program příštího zasedání se stahuje denně.
           Když je poslední export starší než 14 dní a Evropský parlament mezitím zasedal, web to oznámí pruhem nahoře.</p>
         <p class="source" id="release"></p>
+        <div class="ab-pre" id="predbezne">
+          <h3>Předběžné a ověřené výsledky</h3>
+          <p><b>Proč je zpoždění.</b> Statistiky počítáme z exportu <a href="https://howtheyvote.eu">HowTheyVote.eu</a>, který spojuje
+            výsledky hlasování s názvy, tématy a procedurami. Export vychází obvykle do týdne po zasedání, do té doby web nová hlasování nezná.</p>
+          <p><b>Co je předběžné.</b> Ve dnech zasedání stahujeme jmenovitá hlasování přímo z
+            <a href="https://data.europarl.europa.eu/en/developer-corner/opendata-api">EP Open Data API</a> (rozhodnutí z jednání pléna,
+            několikrát denně). Na úvodu je pak blok „Poslední zasedání: předběžně“: hlasování o celých textech (návrh Komise, návrh usnesení,
+            dohoda s Radou, návrh na zamítnutí), výsledek, počty celého EP a jak hlasovali čeští poslanci. Hlas je zaznamenaný hlas; opravy hlasu,
+            které poslanci ohlásí po hlasování, jen uvádíme. Frakce a strana jsou k datu hlasování podle EP Open Data API.</p>
+          <p><b>Co je ověřené.</b> Jakmile den pokryje export HowTheyVote, předběžná data se smažou a hlasování se objeví v přehledech,
+            profilech a statistikách. Předběžná data do statistik, profilů, kvízu, duelu ani obrázků ke sdílení nikdy nevstupují.</p>
+        </div>
       </section>
 
       <section class="ab-sec" id="metodika" aria-labelledby="metodika-h">
@@ -378,7 +390,7 @@
 </main>
 
 <footer class="site-footer"><div class="inner">
-  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
+  <span class="data-asof" data-asof></span>Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).
   Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.
   Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.
   <a href="o-projektu">O projektu</a> · <a href="o-projektu#kontakt">Kontakt a nahlášení chyby</a> · <a href="https://github.com/Pjendrix/ep-watch-cz-open">výpočty na GitHubu</a> · <a href="https://www.instagram.com/epwatch.cz/" rel="me noopener">Instagram</a>.

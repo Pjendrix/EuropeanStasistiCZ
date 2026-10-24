@@ -247,6 +247,87 @@ def tasks_html(n_active: int) -> str:
     )
 
 
+def _prelim_vote(v: dict, people: dict, parties: dict, groups: dict, title: bool) -> str:
+    """Jedno předběžné hlasování: výsledek, počty EP, souhrn Čechů a rozbalení na jména (frakce a strana k datu)."""
+    from preliminary import FIX_LABEL, POS_LABEL, POS_ORDER, RESULT_LABEL, cz_summary
+
+    c, cz = v["counts"], cz_summary(v)
+    head = f'<p class="pl-t">{esc(v["title"])}</p>' if title and v.get("title") else ""
+    names = []
+    for pos in POS_ORDER:
+        rows = sorted((r for r in v["cz"] if r[1] == pos), key=lambda r: people[r[0]]["sort_label"])
+        if not rows:
+            continue
+        items = []
+        for mid, _, gcode, pid in rows:
+            m = people[mid]
+            g = "nezařazení" if gcode == "NI" else (groups.get(gcode) or {}).get("short_label") or gcode or "bez frakce"
+            party = (parties.get(pid) or {}).get("short_label") or "–"
+            fix = v["corrections"].get(str(mid))
+            note = f' <span class="muted">(oprava hlasu po hlasování: {FIX_LABEL[fix]})</span>' if fix else ""
+            items.append(
+                f'<li><a href="p/{mid}">{esc(m["given_name"])} {esc(m["family_name"])}</a> <span class="muted">{esc(party)} · {esc(g)}</span>{note}</li>'
+            )
+        names.append(f"<li><strong>{POS_LABEL[pos]} ({len(rows)})</strong><ul>{''.join(items)}</ul></li>")
+    summary = " · ".join(f"{POS_LABEL[p]} {cz[p]}" for p in POS_ORDER)
+    return f"""<li class="pl-vote">{head}
+  <p class="pl-label">{esc(v["label"] or "")} <span class="small muted">({fmt_date(v["date"])})</span></p>
+  <p class="pl-res"><strong>{RESULT_LABEL[v["result"]]}</strong> <span class="muted">· celý EP: pro {fmt_num(c["for"])}, proti {fmt_num(c["against"])}, zdrželo se {fmt_num(c["abstention"])}</span></p>
+  <p class="pl-cz">Čeští poslanci: {summary}</p>
+  <details class="pl-names"><summary>Jak hlasovali jmenovitě ({len(v["cz"])})</summary><ul class="pl-pos">{"".join(names)}</ul></details>
+</li>"""
+
+
+def preliminary_html(data_dir: Path) -> str:
+    """Blok „Poslední zasedání: předběžně“ (zadání 24. 10. 2026, C3). Prázdný, když nejsou předběžná data novější než HowTheyVote."""
+    from preliminary import HTV_VOTES, check_day, home_items, htv_last_day, pending_days
+    from session_page import session_view
+
+    prelim_dir = data_dir / "preliminary"
+    days = [_read(prelim_dir / f"{d}.json") for d in pending_days(prelim_dir, htv_last_day(data_dir / "votes"))]
+    days = [d for d in days if d]
+    if not days:
+        return ""
+    for d in days:
+        check_day(d)
+    meps = (_read(data_dir / "meps.json") or {}).get("meps", [])
+    people = {m["id"]: m for m in meps}
+    parties = {int(p["id"]): p for p in _read(data_dir / "parties.json") or [] if str(p.get("id", "")).isdigit()}
+    groups = {g["code"]: g for g in _read(data_dir / "groups.json") or []}
+    radar = _read(data_dir / "radar.json")
+    s = (radar or {}).get("session") or {}
+    picks = []
+    if s and any(s["from"] <= d["date"] <= s["to"] for d in days):
+        view = session_view(radar, _read(data_dir / "proposals.json"), [], people, None)
+        picks = (view or {}).get("picks", [])
+    picked, rest = home_items(days, radar, picks)
+    if not picked and not rest:
+        return ""
+    blocks = "".join(
+        f'<li class="pl-item"><h3>{esc(it["title"])}</h3><ul class="pl-votes">'
+        + "".join(_prelim_vote(dict(v, title=None), people, parties, groups, False) for v in it["votes"])
+        + "</ul></li>"
+        for it in picked
+    )
+    others = ""
+    if rest:
+        inner = "".join(_prelim_vote(v, people, parties, groups, True) for v in rest)
+        label = "Další hlasování o celých textech" if picked else "Hlasování o celých textech"
+        others = f'<details class="pl-more"{"" if picked else " open"}><summary>{label} ({len(rest)})</summary><ul class="pl-votes">{inner}</ul></details>'
+    when = ", ".join(fmt_date(d["date"]) for d in days)
+    sources = ", ".join(f'<a href="{esc(d["source"])}">{fmt_date(d["date"])}</a>' for d in days)
+    fetched = max(d["fetched"] for d in days)
+    return f"""<section class="pt-wrap pl" aria-labelledby="h-prelim">
+  <div class="pt-head"><h2 id="h-prelim">Poslední zasedání: <strong>předběžně</strong></h2><p>Jmenovitá hlasování {when} · staženo {fmt_date(fetched)} {esc(fetched[11:16])}</p></div>
+  <p class="pl-note" role="note"><span class="tag pl-tag">Předběžné</span> Předběžné výsledky z dokumentů EP, ještě neověřené.
+    Do statistik se započítají po zveřejnění exportu HowTheyVote (obvykle do týdne).</p>
+  {f'<ul class="pl-items">{blocks}</ul>' if blocks else ""}
+  {others}
+  <p class="small muted pl-src">Zdroj: EP Open Data API ({sources}). Ověřená data: <a href="{HTV_VOTES}">howtheyvote.eu/votes</a>.
+    Hlas = zaznamenaný hlas; opravy hlasu jen uvádíme, výsledek nemění. <a href="o-projektu#predbezne">Co znamená předběžné</a>.</p>
+</section>"""
+
+
 def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     home = _read(data_dir / "home.json")
     if not home or not home.get("votes"):
@@ -304,6 +385,7 @@ def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   <script type="application/json" id="portal-data">{data_json}</script>
 </section>"""
     body = f"""{hero}
+{preliminary_html(data_dir)}
 {tasks_html(len(active_meps(overview)))}
 <section class="pt-wrap" aria-labelledby="h-tiles">
   <div class="pt-head"><h2 id="h-tiles">Novinky a <strong>přehledy</strong></h2><p>Data: HowTheyVote.eu a EP Open Data · aktualizace každý týden</p></div>

@@ -580,18 +580,29 @@ export function fillCountdowns(root = document) {
   });
 }
 
+// Jedna věta o zdroji (zadání 24. 10. 2026, C3) pro patičku i pruh „neaktuální“: datum exportu HowTheyVote a kde je novější.
+// where: „above“/„below“ = blok předběžných výsledků je na téže stránce nad/pod větou, jinak odkaz na úvod.
+export function sourceSentence(fresh, where = "") {
+  if (!fresh?.release) return "";
+  const prelim = (fresh.preliminary || []).length > 0;
+  const tail = !prelim ? "" : where === "above" ? ", nebo předběžně výše" : where === "below" ? ", nebo předběžně níže"
+    : `, nebo předběžně <a href="${ROOT || "./"}#h-prelim">na úvodu</a>`;
+  return `Data z exportu HowTheyVote k ${fmtDate(fresh.release)}. Nejnovější hlasování najdete na <a href="${HTV_SOURCE}/votes">howtheyvote.eu</a>${tail}.`;
+}
+
 export async function staleNotice() {
   const main = document.getElementById("main");
-  if (!main) return;
+  const foot = document.querySelector("[data-asof]");
+  if (!main && !foot) return;
   let fresh;
   try { fresh = await getJSON("freshness.json"); } catch (e) { return; }
-  if (!isStale(fresh)) return;
+  const onHome = Boolean(document.getElementById("h-prelim"));
+  if (foot) foot.innerHTML = `${sourceSentence(fresh, onHome ? "above" : "")} `;
+  if (!main || !isStale(fresh)) return;
   const p = document.createElement("p");
   p.className = "stale-note";
   p.setAttribute("role", "status");
-  p.innerHTML = `Data mohou být neaktuální: poslední export hlasování je z ${fmtDate(fresh.release)} a od té doby už zasedal
-    Evropský parlament. Nová data přibudou po zveřejnění na <a href="${HTV_SOURCE}">HowTheyVote.eu</a>
-    (<a href="${ROOT}o-projektu#zdroje">jak to funguje</a>).`;
+  p.innerHTML = `${sourceSentence(fresh, onHome ? "below" : "")} <a href="${ROOT}o-projektu#predbezne">Proč se data zpožďují</a>.`;
   main.prepend(p);
 }
 

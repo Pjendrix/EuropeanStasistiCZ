@@ -1946,6 +1946,28 @@ details.ab-def:target > summary b, details.ab-def.is-hit > summary b { backgroun
 .pt-head h2 { margin: 0; font-size: 1.5rem; font-weight: 400; letter-spacing: -.02em; }
 .pt-head h2 strong { font-weight: 800; }
 .pt-head p { margin: 0; color: var(--muted); font-size: .88rem; }
+/* Předběžné výsledky po zasedání (portal.py preliminary_html, zadání 24. 10. 2026 C3) */
+.pl-note { margin: 0 0 14px; padding: 8px 12px; border-left: 3px solid var(--gold); background: var(--surface); max-width: 75ch; }
+.pl-tag { background: color-mix(in srgb, var(--gold) 22%, var(--surface)); border-color: var(--gold); }
+.pl-items, .pl-votes, .pl-pos, .pl-pos ul { list-style: none; margin: 0; padding: 0; }
+.pl-items { display: grid; gap: 14px; margin-bottom: 14px; }
+.pl-item { padding: 14px 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+.pl-item h3 { margin: 0 0 6px; font-size: 1.05rem; line-height: 1.3; }
+.pl-vote { padding: 8px 0; border-top: 1px solid var(--border); }
+.pl-vote:first-child { border-top: 0; }
+.pl-vote p { margin: 2px 0; overflow-wrap: anywhere; }
+.pl-t { font-weight: 700; }
+.pl-label { color: var(--muted); font-size: .9rem; }
+.pl-names summary, .pl-more > summary { cursor: pointer; color: var(--link); font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.pl-pos { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.pl-pos ul li { padding: 2px 0; }
+.pl-more { margin: 0 0 10px; }
+.pl-more .pl-votes { padding: 4px 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+.pl-src { max-width: 75ch; }
+.ab-pre { margin-top: 1.25rem; max-width: 68ch; }
+.ab-pre h3 { margin: 0 0 .5rem; }
+.data-asof { display: block; margin-bottom: .35rem; }
+.data-asof:empty { display: none; }
 .pt-bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
 .pt-tile { grid-column: span 2; position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 18px 20px; border-radius: 22px;
   background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); color: var(--text); text-decoration: none; }

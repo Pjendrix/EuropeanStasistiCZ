@@ -235,7 +235,7 @@ def header(root: str = "", current: str | None = None, skip_href: str = "#main")
 def footer(root: str = "") -> str:
     return (
         f'<footer class="site-footer"><div class="inner">\n'
-        f'  Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a '
+        f'  <span class="data-asof" data-asof></span>Data: <a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) a '
         f'<a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0).\n'
         f"  Portréty © European Union – Source: EP. Čísla počítá otevřený skript, ne AI.\n"
         f"  Nezávislý projekt, není oficiálně spojen s žádnou stranou, frakcí ani institucí.\n"
