@@ -62,6 +62,7 @@
       <option value="attendance:-1">podle účasti na hlasování</option>
       <option value="motions_signed:-1">podle podepsaných návrhů usnesení</option>
       <option value="speeches:-1">podle projevů v plénu</option>
+      <option value="amendments:-1">podle pozměňovacích návrhů ve výborech</option>
       <option value="presence:-1">podle prezence na zasedání</option>
     </select></label>
     <p class="tier-legend small muted" aria-hidden="true">
@@ -74,7 +75,7 @@
           <th rowspan="2" data-key="name"><button>Poslanec</button></th>
           <th colspan="2" class="group grp-start" title="Zpravodaj/ka: píše zprávu nebo stanovisko za výbor">Vede text</th>
           <th colspan="2" class="group grp-start" title="Stínový/á zpravodaj/ka: vyjednává text za svou frakci">Za frakci</th>
-          <th colspan="4" class="group grp-start secondary-group" title="Jen počty bez třetin: snadno se nafouknou a vypovídají hlavně o stylu práce a velikosti frakce">Další aktivita</th>
+          <th colspan="5" class="group grp-start secondary-group" title="Jen počty bez třetin: snadno se nafouknou a vypovídají hlavně o stylu práce a velikosti frakce">Další aktivita</th>
         </tr>
         <tr>
           <th data-key="lead_reports" class="num tiercol grp-start"><button>Zprávy</button></th>
@@ -85,6 +86,7 @@
           <th data-key="presence" class="num secondary"><button title="Dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP. Jiná metrika než účast na hlasování.">Prezence</button></th>
           <th data-key="motions_signed" class="num secondary"><button title="Vlastní i společné návrhy usnesení, které poslanec podepsal. Nevstupují do srovnání.">Návrhy</button></th>
           <th data-key="speeches" class="num secondary"><button title="Ústní projevy v rozpravách v plénu v době mandátu podle EP. Písemná prohlášení se nesčítají. Počet projevů nevypovídá o kvalitě ani vlivu.">Projevy</button></th>
+          <th data-key="amendments" class="num secondary"><button title="Pozměňovací návrhy ve výborech, pod kterými je poslanec mezi autory (z dokumentů EP). Pod tím spolupodepsané hromadné PN v plénu. Nevstupují do srovnání.">PN</button></th>
         </tr>
       </thead>
       <tbody><tr><td colspan="9" class="loading">Načítám…</td></tr></tbody>
@@ -102,6 +104,6 @@
 </div></footer>
 
 <script type="module" src="app.js?v=33dfa080"></script>
-<script type="module" src="pages/prace-poslanci.js?v=fa85637c"></script>
+<script type="module" src="pages/prace-poslanci.js?v=c5930baa"></script>
 </body>
 </html>

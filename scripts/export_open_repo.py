@@ -21,6 +21,7 @@ PUBLIC_SCRIPTS = [
     "activity.py",
     "adopted_texts.py",
     "agenda.py",
+    "amendments.py",
     "attendance.py",
     "benchmarks.py",
     "build_home.py",
@@ -31,6 +32,7 @@ PUBLIC_SCRIPTS = [
     "compute_stats.py",
     "delegations.py",
     "fetch_agenda.py",
+    "fetch_amendments.py",
     "fetch_attendance.py",
     "fetch_group_chairs.py",
     "fetch_group_web.py",
@@ -56,6 +58,7 @@ PUBLIC_SCRIPTS = [
 PUBLIC_TESTS = [
     "test_activity.py",
     "test_agenda.py",
+    "test_amendments.py",
     "test_attendance.py",
     "test_benchmarks.py",
     "test_build_home.py",
