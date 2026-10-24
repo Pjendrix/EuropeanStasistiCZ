@@ -90,7 +90,7 @@ setNav("work-table");
     const rowHtml = (m) => html`<tr><th scope="row" class="wk-name">${who(m)}</th>${cellsFor(m, state.view, false).map((c) => html`<td class="${c.axis ? "wk-axis-td" : "num"}">${c.body}</td>`)}</tr>`;
     const cardHtml = (m) => html`<li class="wk-card"><a class="wk-card-link" href="${mepUrl(m.id)}" aria-label="${displayName(m)}, profil"></a>
       <div class="wk-card-head">${trusted(avatar(m, 40))}<div><strong>${displayName(m)}</strong><div class="wk-meta">${gchip(m)}${partyText(m) ? html` <span class="muted">${partyText(m)}</span>` : ""} ${since(m)}</div></div><span class="wk-go" aria-hidden="true">›</span></div>
-      <dl class="wk-grid${state.view === "ucast" ? " two" : ""}">${cellsFor(m, state.view, true).map((c) => (c.axis ? html`<div class="wk-g-axis">${c.body}</div>` : html`<div><dt>${c.label}</dt><dd>${c.body}</dd></div>`))}</dl></li>`;
+      <dl class="wk-grid${state.view === "ucast" ? " two" : ""}">${cellsFor(m, state.view, true).map((c) => html`<div class="${c.axis ? "wk-g-axis" : ""}"><dt${c.axis ? html` class="sr-only"` : ""}>${c.label}</dt><dd>${c.body}</dd></div>`)}</dl></li>`;
 
     const render = () => {
       const rows = sortRows(current, state.sort.key, state.sort.dir);

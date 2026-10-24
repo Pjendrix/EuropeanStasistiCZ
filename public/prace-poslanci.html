@@ -15,7 +15,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=ef1cdb2e"></script>
-<link rel="stylesheet" href="style.css?v=591a30ec">
+<link rel="stylesheet" href="style.css?v=0a03b07b">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -43,7 +43,10 @@
     <a href="prace-poslanci" data-page="work-table">Tabulka po poslancích</a>
   </nav>
   <h1>Práce na textech po poslancích</h1>
-  <p class="lead">Kolik zpráv a stanovisek čeští poslanci vedou nebo vyjednávají za frakci, jak se účastní a kolik toho navrhují.</p>
+  <div class="lead-row"><p class="lead">Kolik zpráv a stanovisek čeští poslanci vedou nebo vyjednávají za frakci, jak se účastní a kolik toho navrhují.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-work" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-work" class="info-pop" role="note">
+    <p>Čísla ukazují, kolik práce kdo má přidělené, ne jak kvalitní je. Proužek = hodnota proti nejvyšší hodnotě v delegaci. Celkové pořadí ani skóre nepočítáme.
+      Podrobnosti v „Jak číst čísla“ pod tabulkou a v <a href="o-projektu#metodika">metodice</a>.</p>
+  </div></span></div>
   <div class="wk-toolbar">
     <div class="wk-tabs" role="tablist" aria-label="Pohled tabulky">
       <button type="button" role="tab" id="tab-texty" data-view="texty" aria-controls="work-panel" aria-selected="true">Práce na textech</button>
@@ -76,6 +79,6 @@
 </div></footer>
 
 <script type="module" src="app.js?v=33dfa080"></script>
-<script type="module" src="pages/prace-poslanci.js?v=871e845f"></script>
+<script type="module" src="pages/prace-poslanci.js?v=fc294c9a"></script>
 </body>
 </html>

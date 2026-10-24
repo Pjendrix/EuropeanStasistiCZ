@@ -2186,7 +2186,7 @@ tr.cb-cz td { font-weight: 700; }
 /* Práce poslanců – tabulka se třemi pohledy (prace-poslanci.js, hromadné zadání 24. 10. 2026, úkol 0) */
 .wk-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; margin: .5rem 0 .9rem; }
 .wk-tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--chip); border: 1px solid var(--border); }
-.wk-tabs [role=tab] { min-height: 40px; padding: 0 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; }
+.wk-tabs [role=tab] { min-height: 40px; padding: 0 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--data); font: inherit; font-weight: 600; cursor: pointer; }
 .wk-tabs [role=tab][aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(15, 23, 42, .1); }
 .wk-tools { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .wk-sort { display: none; }
@@ -2237,7 +2237,9 @@ tr.cb-cz td { font-weight: 700; }
 .wk-help-grid p { margin: 0; font-size: .9rem; }
 @media (max-width: 760px) {
   .wk-wrap { display: none; }
-  .wk-sort { display: inline-flex; align-items: center; gap: .4rem; }
+  .wk-sort { display: flex; align-items: center; gap: .4rem; min-width: 0; max-width: 100%; }
+  .wk-sort select { min-width: 0; max-width: 100%; flex: 1; }
+  .wk-tools { width: 100%; }
   .wk-cards { display: grid; gap: .6rem; }
   .wk-card { position: relative; padding: .8rem .9rem; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
   .wk-card-link { position: absolute; inset: 0; border-radius: 14px; z-index: 1; }
@@ -2246,6 +2248,7 @@ tr.cb-cz td { font-weight: 700; }
   .wk-card-head > div { flex: 1; min-width: 0; }
   .wk-go { font-size: 1.4rem; color: var(--muted); }
   .wk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .9rem; margin: .7rem 0 0; }
+  .wk-grid > div { min-width: 0; overflow-wrap: anywhere; }
   .wk-grid dt { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
   .wk-grid dd { margin: .1rem 0 0; }
   .wk-g-axis { grid-column: 1 / -1; }
