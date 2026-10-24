@@ -15,6 +15,7 @@ from pathlib import Path
 from build_pages import esc, fmt_date, fmt_num, og_meta, page
 from categories import LABEL, icon_svg
 from hub import (
+    _range,
     POS_TXT,
     _ARROW,
     _SEARCH_ICON,
@@ -111,14 +112,24 @@ def tiles_html(data_dir: Path, home: dict, overview: dict, groups: list[dict]) -
     rows = []
     if session.get("from"):
         rows.append(
-            f'<div><span class="pt-l">Poslední zasedání</span><span class="pt-v">{fmt_date(session["from"])[:-5]}–{fmt_date(session["to"])}</span>'
+            f'<div><span class="pt-l">Poslední zasedání</span><span class="pt-v">{_range(session["from"], session["to"])}</span>'
             f'<span class="pt-s">{fmt_num(session.get("main") or 0)} závěrečných hlasování</span></div>'
         )
+    from agenda import effective, heading, today_cz
+
+    agenda = effective(agenda or None, today_cz()) or {}
     if agenda.get("from"):
         n = agenda.get("votes") or 0
+        what = (
+            f"{fmt_num(n)} {'bod' if n == 1 else 'body' if 1 < n < 5 else 'bodů'} k hlasování v programu"
+            if n
+            else "program zatím nezveřejněn"
+        )
+        nb = agenda.get("following")
+        after = f' data-after-from="{nb["from"]}" data-after-to="{nb["to"]}"' if nb else ""
         rows.append(
-            f'<div><span class="pt-l">Další zasedání</span><span class="pt-v">{fmt_date(agenda["from"])[:-5]}–{fmt_date(agenda["to"])}</span>'
-            f'<span class="pt-s">{fmt_num(n)} {"bod" if n == 1 else "body" if 1 < n < 5 else "bodů"} k hlasování v programu</span></div>'
+            f'<div class="pt-next" data-from="{agenda["from"]}" data-to="{agenda["to"]}"{after}><span class="pt-l">{heading(agenda)}</span>'
+            f'<span class="pt-v">{_range(agenda["from"], agenda["to"])}</span><span class="pt-s">{what}</span></div>'
         )
     tiles.append(
         f'<a class="pt-tile pt-now" href="aktualne"><span class="pt-k">Aktuálně {days_badge(agenda.get("from"))}</span>'

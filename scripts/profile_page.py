@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 
+from ep_groups import short_group
 from web_ui import (
     COMMITTEE_TYPE,
     CZ_GROUP_LABEL,
@@ -97,6 +98,14 @@ QUESTION_KIND = {"question_written": "písemná", "question_priority": "přednos
 TIER_TEXT = {"top": "▲ horní třetina delegace", "mid": "● střední třetina delegace", "low": "▼ dolní třetina delegace"}
 # Šířka časové osy: široká verze pro desktop, úzká pro mobil (CSS ukáže jednu), aby text v SVG zůstal čitelný.
 TIMELINE_WIDTHS = ((1000, 90, "tl-wide"), (318, 56, "tl-narrow"))
+
+
+def short_group_text(sg: dict | None) -> str:
+    """Poznámka k „Hlasuje s frakcí“ z malého vzorku (ep_groups.short_group)."""
+    if not sg:
+        return ""
+    since = f"od {fmt_date(sg['since'])} · " if sg.get("since") else ""
+    return f"{since}ve frakci krátce, číslo se bude měnit"
 
 
 def text_on(hex_: str | None) -> str:
@@ -1015,6 +1024,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             cite("hlasuje s frakcí", t["group_loyalty"]),
             "metric:group_loyalty",
             defn("group_loyalty"),
+            extra=short_group_text(short_group(mep, t["group_loyalty"])),
             na_text="nezařazení nemají frakci, nepočítá se" if is_ni else "nepočítá se",
         )
     }

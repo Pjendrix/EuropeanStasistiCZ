@@ -162,6 +162,26 @@ for (const scheme of ["light", "dark"]) {
   if ((await page.getAttribute("#tab-texty", "aria-selected")) !== "true") problems.push("práce: šipka v přepínači pohledů nefunguje");
   await ctx.close();
 }
+// Zasedání (úkol 3, 24. 10. 2026): se zmrazeným datem den po posledním dni zasedání z programu ukáže dlaždice na úvodu
+// a blok na Hlasování další blok z kalendáře („program zatím nezveřejněn“), ne skončené zasedání.
+{
+  const ag = read("data/home.json").agenda;
+  if (ag?.following) {
+    const after = new Date(Date.parse(ag.to) + 864e5).toISOString().slice(0, 10);
+    const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+    const page = await ctx.newPage();
+    await page.clock.setFixedTime(new Date(`${after}T12:00:00+01:00`));
+    const fmt = (a, b) => { const d = (x) => `${Number(x.slice(8))}. ${Number(x.slice(5, 7))}. ${x.slice(0, 4)}`; return a.slice(0, 7) === b.slice(0, 7) ? `${Number(a.slice(8))}.–${d(b)}` : `${d(a).slice(0, -5)} – ${d(b)}`; };
+    const want = fmt(ag.following.from, ag.following.to);
+    await page.goto(base, { waitUntil: "networkidle" });
+    const tile = await page.evaluate(() => [...document.querySelectorAll(".pt-next")].filter((x) => !x.hidden).map((x) => x.textContent));
+    if (!tile.length || !tile[0].includes(want) || !tile[0].includes("Další zasedání")) problems.push(`zasedání: dlaždice k ${after} ukazuje ${JSON.stringify(tile)}, čekám ${want}`);
+    await page.goto(base + "hlasovani", { waitUntil: "networkidle" });
+    const block = await page.evaluate(() => document.querySelector("#dalsi-zasedani:not([hidden])")?.textContent || "");
+    if (!block.includes(want) || !block.includes("program zatím nezveřejněn")) problems.push(`zasedání: blok na Hlasování k ${after} neukazuje ${want}`);
+    await ctx.close();
+  }
+}
 // Duel (B5): prohození pořadí, neplatné ID = výběr (ne chyba), „Porovnat s…“ z profilu předvyplní poslance.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

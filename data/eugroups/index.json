@@ -11,6 +11,16 @@
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ],
   "group_web": {
    "name": "Wikidata (vlastnost P856, oficiální web)",
    "url": "https://www.wikidata.org",

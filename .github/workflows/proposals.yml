@@ -84,9 +84,11 @@ jobs:
           if [ "$rc" -ne 0 ]; then echo "::warning::fetch_amendments: EP API neodpovídá, zůstává předchozí stav"; fi
 
       - name: Program příštího zasedání (EP Open Data API)
-        # Program je doplněk: při výpadku API zůstane předchozí soubor a vlastní práce se commitnou.
-        continue-on-error: true
-        run: python scripts/fetch_agenda.py
+        # Program je doplněk: při výpadku API zůstane předchozí soubor a vlastní práce se commitnou. Selhání ale musí být vidět
+        # (23. 10. 2026 tiše spadl na 404 a web ukazoval skončené zasedání jako další): varování v souhrnu běhu.
+        run: |
+          rc=0; python scripts/fetch_agenda.py || rc=$?
+          if [ "$rc" -ne 0 ]; then echo "::warning title=Program zasedání::fetch_agenda.py skončil kódem $rc, zůstává předchozí agenda.json"; fi
 
       - name: Statistiky a soubory pro web
         run: |
