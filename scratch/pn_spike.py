@@ -103,8 +103,9 @@ def plenary_parltrack(dl: Path) -> dict:
     return {"records_term10": n, "with_meps": with_meps, "with_date": with_date, "src_type": dict(sources)}
 
 
-REF = re.compile(r"^[A-Z]+\d+-\d+/\d+$")  # "A10-0031/2"
-GROUP = re.compile(r"^za skupinu (?P<g>.+)$")
+AM = re.compile(r"^(Pozměňovací(ch)? návrh|Amendment)")
+GROUP = re.compile(r"^(za skupinu|on behalf of the) (?P<g>.+?)( Group)?$")
+GROUP_ALIASES = {"Pfe": "PfE", "Patrioti": "PfE", "EPP": "PPE", "Verts/ALE Group": "Verts/ALE"}
 
 
 def classify(title: str) -> tuple[str, list[str], str | None]:
@@ -115,13 +116,17 @@ def classify(title: str) -> tuple[str, list[str], str | None]:
     'Pozměňovací návrh 001-005 - Zpravodaj - Zpráva …'                            → committee (PN výboru)
     """
     parts = title.split(" - ")
-    if len(parts) >= 4 and REF.match(parts[0]) and parts[1].startswith("Pozměňovací návrh"):
+    # reference bývá i "A10-0170/2025/9", "A10-0063/34/rev", "423/423"; EP občas píše "Pozměňovacích návrh"
+    if len(parts) >= 4 and AM.match(parts[1]) and not AM.match(parts[0]):
         people = [p.strip() for p in parts[2].split(",") if p.strip()]
-        g = GROUP.match(parts[3].strip())
+        nxt = parts[3].strip()
+        g = GROUP.match(nxt)
         if g:
-            return "group", people, g.group("g").strip()
+            return "group", people, GROUP_ALIASES.get(g.group("g").strip(), g.group("g").strip())
+        if re.match(r"^(za |on behalf of the )?(Výbor|Committee)", nxt):  # předkládá zpravodaj/předseda za výbor
+            return "committee", people, None
         return "members", people, None
-    if parts and parts[0].startswith("Pozměňovací návrh"):
+    if parts and AM.match(parts[0]):
         return "committee", [], None
     return "unknown", [], None
 
@@ -144,7 +149,7 @@ def plenary_ep(ep_dir: Path, meps: dict[int, dict]) -> dict:
         reports += 1
         failed += r["status"] != 200
         for d in r["amendments"]:
-            kind, people, group = classify(d.get("title_cs") or "")
+            kind, people, group = classify(d.get("title_cs") or d.get("title_en") or "")  # pár PN nemá český titulek
             b, e = d.get("begin"), d.get("end")
             n_items = e - b + 1 if b and e else 1
             kinds_docs[kind] += 1
