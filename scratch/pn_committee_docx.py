@@ -22,13 +22,13 @@ from pn_docx import FormatError, download, parse  # noqa: E402
 from pn_probe import records  # noqa: E402
 from pn_spike import fold, in_mandate, load_meps  # noqa: E402
 
-COMMITTEE_DOC = re.compile(r"^[A-Z]{4}-AM-\d+$")
+COMMITTEE_DOC = re.compile(r"^[A-Z0-9]{4}-AM-\d+$")  # výbory (AGRI) i společné výbory (CJ71)
 
 
 def parltrack_docs(dump: Path) -> set[str]:
     out = set()
     for r in records(dump):
-        m = re.search(r"/([A-Z]+-AM-\d+)_", r.get("src") or "")
+        m = re.search(r"/([A-Z0-9]+-AM-\d+)_", r.get("src") or "")
         if m:
             out.add(m.group(1))
     return out
