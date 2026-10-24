@@ -43,19 +43,20 @@ def text(path: Path) -> str:
 
 
 TAG = lambda name: re.compile(rf"<{name}>(.*?)</{name}>", re.S)  # noqa: E731
-NUM, MEMBERS, ONBEHALF = TAG("NumAm"), TAG("Members"), TAG("AuNomDe")
+NUM, MEMBERS, ONBEHALF = re.compile(r"<NumAm[AB]?>(.*?)</NumAm[AB]?>", re.S), TAG("Members"), TAG("AuNomDe")
 HEAD = {"committee": TAG("Commission"), "date": TAG("Date"), "range": TAG("RangeAM"), "procedure": TAG("RefProc")}
 
 
 def parse(path: Path) -> dict:
     t = text(path)
     head = {k: (m.group(1).strip() if (m := rx.search(t)) else None) for k, rx in HEAD.items()}
-    if "<RepeatBlock-Amend>" not in t or not head["range"]:
-        raise FormatError(f"{path.name}: chybí <RepeatBlock-Amend> nebo <RangeAM>, formát DOCX se změnil")
+    # Šablony EP: <RepeatBlock-Amend>/<Amend>/<NumAm>, u dvousloupcových zpráv i varianty …A a …B
+    if not re.search(r"<RepeatBlock-Amend[AB]?>", t) or not head["range"]:
+        raise FormatError(f"{path.name}: chybí <RepeatBlock-Amend…> nebo <RangeAM>, formát DOCX se změnil")
     head = {k: re.sub(r"^\{[^}]*\}", "", v) if v else v for k, v in head.items()}  # "{REGI}Committee…" → "Committee…"
     amendments = []
-    for block in t.split("<RepeatBlock-Amend>")[1:]:
-        for am in block.split("<Amend>")[1:]:
+    for block in re.split(r"<RepeatBlock-Amend[AB]?>", t)[1:]:
+        for am in re.split(r"<Amend[AB]?>", block)[1:]:
             num = NUM.search(am)
             by = am.split("</RepeatBlock-By>")[0]
             members = [n.strip() for m in MEMBERS.findall(by) for n in re.split(r",|\n", m) if n.strip()]
