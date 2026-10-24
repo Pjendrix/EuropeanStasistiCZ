@@ -54,7 +54,11 @@ def test_pair_topics_counts_both_voted_including_abstention():
 
 def test_mep_metrics_null_when_source_missing_and_for_non_attached():
     prof = {
-        "total": {"attendance": [8, 10], "group_loyalty": [0, 0], "positions": {"FOR": 5, "AGAINST": 3, "ABSTENTION": 0, "DID_NOT_VOTE": 2}},
+        "total": {
+            "attendance": [8, 10],
+            "group_loyalty": [0, 0],
+            "positions": {"FOR": 5, "AGAINST": 3, "ABSTENTION": 0, "DID_NOT_VOTE": 2},
+        },
         "against_group": {"count": 0},
         "decisive": [{"id": 1}],
         "own_work": None,

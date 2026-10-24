@@ -136,6 +136,7 @@ SHEET = [
             ("rozkol", "Kde se Češi rozdělili"),
             ("rozhodujici", "Kde rozhodly české hlasy"),
             ("shoda", "Kdo s kým hlasuje"),
+            ("duel", "Duel poslanců"),
         ],
     ),
     (

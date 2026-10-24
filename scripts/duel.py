@@ -13,6 +13,11 @@ from itertools import combinations
 from compute_stats import VOTED, active_positions, topic_codes
 
 DIVERGED_KEY = 10  # nejvýš tolik hlasování z key_votes, kde se rozešli (od nejnovějších)
+AMENDMENTS_DEF = (
+    "Pozměňovací návrhy ve výborech: PN, pod kterými je poslanec mezi autory, z oficiálních dokumentů PN v registru EP "
+    "(PN s více autory se počítá každému, kompromisní PN a PN frakcí se nepočítají). Spolupodepsané PN v plénu: hromadné "
+    "návrhy poslanců ke zprávám s nejméně 36 podpisy. Počet nevypovídá o kvalitě ani úspěchu."
+)
 
 
 def pair_key(a: int, b: int) -> str:
@@ -51,6 +56,15 @@ def mep_metrics(prof: dict) -> dict:
         "amendments": amd["committee"]["total"] if amd else None,
         "amendments_cosigned": amd["plenary"]["cosigned"] if amd else None,
     }
+
+
+def current_committees(mep: dict, day: str) -> list[dict]:
+    """Výbory k danému dni bez náhradnictví (stejně jako hlavička profilu), seřazené podle kódu."""
+    now = [c for c in mep.get("committees", []) if (not c.get("end") or c["end"] >= day) and c["role"] != "MEMBER_SUBSTITUTE"]
+    return [
+        {"code": c["code"], "name": c.get("name_cs") or c.get("name_en") or "", "role": c["role"]}
+        for c in sorted(now, key=lambda c: c["code"])
+    ]
 
 
 def pair_topics(votes: list[dict], by_id: dict, topics: list[str]) -> dict[str, dict[str, list[int]]]:
@@ -93,6 +107,7 @@ def build_duel(
     key_ids: list[int],
     topic_labels: dict,
     vote_summary,
+    day: str,
 ) -> dict:
     """data/duel.json: metriky poslanců, shoda a témata všech dvojic, rozchody v klíčových hlasováních (nejvýš DIVERGED_KEY)."""
     by_id = {m["id"]: m for m in meps}
@@ -117,11 +132,15 @@ def build_duel(
     return {
         "sources": stats["sources"],
         "definitions": {
-            k: stats["definitions"].get(k) for k in ("attendance", "pairwise", "against_group", "decisive_votes", "own_work", "speeches")
+            **{
+                k: stats["definitions"].get(k)
+                for k in ("attendance", "pairwise", "against_group", "decisive_votes", "own_work", "speeches")
+            },
+            "amendments": AMENDMENTS_DEF,
         },
         "topics": [{"code": t["code"], "label": topic_labels.get(t["code"]) or t["label"]} for t in stats.get("topics", [])],
         "meps": [
-            {**summaries[m["id"]], "metrics": mep_metrics(profiles[m["id"]])}
+            {**summaries[m["id"]], "committees": current_committees(m, day), "metrics": mep_metrics(profiles[m["id"]])}
             for m in sorted(meps, key=lambda m: m.get("sort_label") or m["name"])
         ],
         "pairs": pairs,

@@ -870,6 +870,7 @@ def run(data_dir: Path, day: str) -> dict:
             [int(i) for i in key["votes"]],
             topic_labels,
             lambda v: vote_summary(v, by_id),
+            day,
         ),
         compact=True,
     )

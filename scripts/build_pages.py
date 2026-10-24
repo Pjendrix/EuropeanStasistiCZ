@@ -618,6 +618,7 @@ STATIC_PAGES = [
     "rozkol.html",
     "rozhodujici.html",
     "shoda.html",
+    "duel.html",
     "kviz.html",
     "prace.html",
     "prace-poslanci.html",
