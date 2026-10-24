@@ -467,7 +467,7 @@ def amendments_block(ui: Ui, a: dict | None) -> str:
         f'<div class="small muted">{fmt_date(r["date"])}{" · " + esc(r["procedure"]) if r.get("procedure") else ""} · {fmt_num(r["count"])} PN</div></li>'
         for r in c["recent"]
     )
-    lst = f'<div class="card"><h4>Poslední dokumenty PN ve výborech, kde je mezi autory</h4><ul class="plain">{recent}</ul></div>' if recent else ""
+    lst = f'<div class="card pn-docs"><h4>Poslední dokumenty PN ve výborech, kde je mezi autory</h4><ul class="plain">{recent}</ul></div>' if recent else ""
     src = a.get("source") or {}
     links = " a ".join(f'<a href="{esc(s["url"])}">{esc(s["name"])}</a>' for s in (src.get("committee"), src.get("plenary")) if s)
     return f'<h3 class="own-sub">Pozměňovací návrhy</h3><div class="metrics">{cards}</div>{lst}' + ui.note_line(

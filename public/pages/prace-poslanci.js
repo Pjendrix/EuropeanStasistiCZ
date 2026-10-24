@@ -42,7 +42,7 @@ setNav("work-table");
         <td class="num secondary" data-label="Docházka na zasedání">${r.m.presence && r.m.presence.days ? `${fmtPct(r.m.presence.present / r.m.presence.days)}<div class="small muted">${fmtNum(r.m.presence.present)} z ${fmtNum(r.m.presence.days)} dnů</div>` : "–"}</td>
         <td class="num secondary" data-label="Podepsané návrhy">${fmtNum(r.m.motions_signed)}</td>
         <td class="num secondary" data-label="Projevy v plénu">${r.m.speeches == null ? "–" : `${fmtNum(r.m.speeches)}<div class="small muted">${fmtNum(Math.round(r.m.speeches_minutes))} min</div>`}</td>
-        <td class="num secondary" data-label="Pozměňovací návrhy">${r.m.amendments == null ? "–" : `${fmtNum(r.m.amendments)}<div class="small muted">v plénu spolupodepsáno ${fmtNum(r.m.amendments_cosigned)}</div>`}</td></tr>`).join("");
+        <td class="num secondary" data-label="Pozměňovací návrhy">${r.m.amendments == null ? "–" : `${fmtNum(r.m.amendments)}<div class="small muted">plénum ${fmtNum(r.m.amendments_cosigned)}</div>`}</td></tr>`).join("");
     };
     const table = sortable(document.getElementById("work"), columns, () => current, render, { key: "name", dir: 1 });
     const sortSel = document.getElementById("sort");

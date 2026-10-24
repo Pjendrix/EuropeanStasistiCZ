@@ -2087,6 +2087,8 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 .zs-bar .split { flex: 0 0 120px; }
 .zs-res { padding: .5rem .7rem; border-radius: 10px; background: var(--accent-soft); }
 .zs-res .zs-h { color: var(--data); } /* --muted na --accent-soft má ve světlém tématu jen 4,37:1 */
+.pn-docs { margin-top: 12px; }
+.pn-docs h4 { margin: 0 0 .4rem; }
 .zs-day { margin: 1.2rem 0 0; font-size: 1rem; }
 .zs-steps summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
 .zs-steps[open] summary { margin-bottom: .2rem; }
