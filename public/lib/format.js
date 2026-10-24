@@ -320,6 +320,24 @@ export function adoptedTextHtmlUrl(ref) {
 }
 
 // Odpočet do příštího zasedání (blok „Další zasedání“): počítá prohlížeč z data, web se kvůli tomu nepřestavuje.
+// „19.–22. 10. 2026“, přes měsíc „30. 9. – 2. 10. 2026“ (dvojče _range v scripts/hub.py).
+export function fmtRange(a, b) {
+  if (a === b) return fmtDate(a);
+  if (a.slice(0, 7) === b.slice(0, 7)) return `${Number(a.slice(8))}.–${fmtDate(b)}`;
+  if (a.slice(0, 4) !== b.slice(0, 4)) return `${fmtDate(a)} – ${fmtDate(b)}`;
+  return `${fmtDate(a).slice(0, -5)} – ${fmtDate(b)}`;
+}
+
+// Které zasedání ukázat k dnešku (úkol 3, 24. 10. 2026; dvojče agenda.effective v Pythonu). Stránky se nepřestavují denně:
+// skončil-li blok z programu, přepne se na další blok z kalendáře (after*), bez něj „gone“ (blok se skryje).
+export function rollSession(from, to, afterFrom, afterTo, today = todayCZ()) {
+  if (today > to) {
+    if (!afterFrom || today > afterTo) return { state: "gone" };
+    return { state: today >= afterFrom ? "current" : "upcoming", from: afterFrom, to: afterTo, switched: true };
+  }
+  return { state: today >= from ? "current" : "upcoming", from, to, switched: false };
+}
+
 export function sessionCountdown(from, to, today = todayCZ()) {
   const days = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
   if (today > to) return "zasedání skončilo, výsledky budou po zveřejnění dat";

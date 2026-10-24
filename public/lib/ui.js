@@ -1,6 +1,6 @@
 // Stavební bloky stránek (HTML řetězce, tabulky, ⓘ, sdílení čísel, CSV, toast).
 import { CATEGORY_META, ROOT, getJSON } from "./data.js";
-import { COUNTRY_CS, CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, INDEPENDENT_NOTE, KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_NOTE, VOTE_MEANING, adoptedTextHtmlUrl, byGender, czCountsText, displayName, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, isStale, logoHeight, pct, positionPhrase, resultText, sessionCountdown, voteSubtitle, voteTitle } from "./format.js";
+import { COUNTRY_CS, CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, INDEPENDENT_NOTE, KIND_LABEL, KIND_NOTE, POSITION_LABEL, RESULT_NOTE, VOTE_MEANING, adoptedTextHtmlUrl, byGender, czCountsText, displayName, epDocUrl, esc, fmtDate, fmtNum, fmtPct, groupColor, isStale, logoHeight, pct, positionPhrase, resultText, fmtRange, rollSession, sessionCountdown, todayCZ, voteSubtitle, voteTitle } from "./format.js";
 
 export function logoTile(entity, size = 28) {
   if (!entity || !entity.logo) return "";
@@ -574,10 +574,39 @@ export function czGeoTag(v) {
 }
 
 export function fillCountdowns(root = document) {
+  rollSessions(root);
   root.querySelectorAll(".ns-when[data-from]").forEach((el) => {
     const out = el.querySelector(".ns-count");
     if (out) out.textContent = ` · ${sessionCountdown(el.dataset.from, el.dataset.to)}`;
   });
+}
+
+// Blok „Další / Probíhá zasedání“ a dlaždice na úvodu k dnešku (rollSession): skončené zasedání → další blok z kalendáře
+// (data-after-*), bez něj se blok skryje. Program dalšího bloku web nezná, proto „program zatím nezveřejněn“.
+function rollSessions(root) {
+  const title = (st) => (st === "current" ? "Probíhá zasedání" : "Další zasedání");
+  root.querySelectorAll(".ns-when[data-to]").forEach((el) => {
+    const r = rollSession(el.dataset.from, el.dataset.to, el.dataset.afterFrom, el.dataset.afterTo);
+    const card = el.closest(".next-session");
+    if (r.state === "gone") { if (card) card.hidden = true; return; }
+    const h = card?.querySelector("h2");
+    if (h) h.textContent = title(r.state);
+    if (!r.switched) return;
+    Object.assign(el.dataset, { from: r.from, to: r.to });
+    delete el.dataset.afterFrom;
+    delete el.dataset.afterTo;
+    el.innerHTML = `<strong>${esc(fmtRange(r.from, r.to))}</strong><span class="ns-count" aria-live="polite"></span> · program zatím nezveřejněn`;
+    card?.querySelectorAll(".ns-list, .ns-rest, .ns-all").forEach((x) => { x.hidden = true; });
+  });
+  root.querySelectorAll(".pt-next[data-to]").forEach((el) => {
+    const r = rollSession(el.dataset.from, el.dataset.to, el.dataset.afterFrom, el.dataset.afterTo);
+    if (r.state === "gone") { el.hidden = true; return; }
+    el.querySelector(".pt-l").textContent = title(r.state);
+    if (!r.switched) return;
+    el.querySelector(".pt-v").textContent = fmtRange(r.from, r.to);
+    el.querySelector(".pt-s").textContent = "program zatím nezveřejněn";
+  });
+  root.querySelectorAll(".hm-nx[data-to]").forEach((el) => { if (todayCZ() > el.dataset.to) el.hidden = true; });
 }
 
 // Jedna věta o zdroji (zadání 24. 10. 2026, C3) pro patičku i pruh „neaktuální“: datum exportu HowTheyVote a kde je novější.

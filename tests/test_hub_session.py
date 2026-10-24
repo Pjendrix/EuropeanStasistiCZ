@@ -8,6 +8,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import hub  # noqa: E402
 
 
+def ag_view(following=("2026-11-11", "2026-11-12")):
+    f = {"from": following[0], "to": following[1], "days": list(following)}
+    return {
+        "from": "2026-10-19",
+        "to": "2026-10-22",
+        "days": ["2026-10-19", "2026-10-22"],
+        "votes": 28,
+        "items": [],
+        "picks": [],
+        "status": "upcoming",
+        "following": f,
+    }
+
+
 def v(vid, date, kind):
     return {"id": vid, "date": date, "vote_kind": kind, "title": f"MOCK {vid}"}
 
@@ -68,3 +82,11 @@ def test_session_people_rule_alphabetical_with_dated_activity(tmp_path):
     assert novak["questions"] == 1 and novak["reports"][0]["role"] == "shadow"
     html = hub.session_people_html(sp, meps, [], "")
     assert html.index("ADAM") < html.index("NOVÁK") and "1 projev v plénu" in html and "1 otázka" in html
+
+
+def test_next_session_html_after_session_shows_calendar_block():
+    html = hub.next_session_html(ag_view(), today="2026-10-24")
+    assert "Další zasedání" in html and "11.–12. 11. 2026" in html and "program zatím nezveřejněn" in html
+    assert "Celý program" not in html and "Návrh programu" not in html
+    assert "Probíhá zasedání" in hub.next_session_html(ag_view(), today="2026-10-20")
+    assert 'data-after-from="2026-11-11"' in hub.next_session_html(ag_view(), today="2026-10-20")

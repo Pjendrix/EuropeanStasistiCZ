@@ -222,9 +222,21 @@ def agenda_item_html(it: dict, root: str = "", procs: dict[str, str] | None = No
     )
 
 
-def next_session_html(agenda: dict | None, full: bool = False, root: str = "", procs: dict[str, str] | None = None) -> str:
+def after_attrs(agenda: dict) -> str:
+    """Další blok z kalendáře pro prohlížeč: po skončení zasedání přepne blok bez přestavění webu (lib/ui.js fillCountdowns)."""
+    f = agenda.get("following")
+    return f' data-after-from="{f["from"]}" data-after-to="{f["to"]}"' if f else ""
+
+
+def next_session_html(
+    agenda: dict | None, full: bool = False, root: str = "", procs: dict[str, str] | None = None, today: str | None = None
+) -> str:
     """Blok „Další zasedání“: datum, odpočet (počítá prohlížeč z data-from/data-to, bez JS jen datum), počet hlasování
-    a body programu (na úvodu výběr podle pravidla, na stránce Hlasování všechny). Bez programu prázdný řetězec."""
+    a body programu (na úvodu výběr podle pravidla, na stránce Hlasování všechny). Bez programu prázdný řetězec.
+    Skončilo-li zasedání z programu, ukáže další blok z kalendáře (agenda.effective); během zasedání „Probíhá zasedání“."""
+    from agenda import effective, heading, today_cz
+
+    agenda = effective(agenda, today or today_cz())
     if not agenda:
         return ""
     picks = [i for i in agenda["items"] if i["id"] in agenda["picks"]]
@@ -241,14 +253,15 @@ def next_session_html(agenda: dict | None, full: bool = False, root: str = "", p
             f'<ol class="ns-list" start="{len(head) + 1}">{"".join(agenda_item_html(i, root, procs) for i in tail)}</ol></details>'
         )
     as_of = f" k {fmt_date(agenda['fetched'])}" if agenda.get("fetched") else ""
-    more = f'<a class="ns-all" href="{root}zasedani">Celý program ({fmt_num(n)}) a co se rozhoduje {_ARROW}</a>' if not full else ""
+    more = f'<a class="ns-all" href="{root}zasedani">Celý program ({fmt_num(n)}) a co se rozhoduje {_ARROW}</a>' if n and not full else ""
+    what = f"Návrh programu EP{as_of}, může se změnit. {rule}" if n else "Termín z kalendáře zasedání EP. "
     return (
         f'<section class="card next-session" id="{"program" if full else "dalsi-zasedani"}" aria-labelledby="ns-h{"-full" if full else ""}">'
-        f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">Další zasedání</h2>'
-        f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"><strong>{_range(agenda["from"], agenda["to"])}</strong>'
+        f'<div class="ns-head"><h2 id="ns-h{"-full" if full else ""}">{heading(agenda)}</h2>'
+        f'<p class="ns-when" data-from="{agenda["from"]}" data-to="{agenda["to"]}"{after_attrs(agenda)}><strong>{_range(agenda["from"], agenda["to"])}</strong>'
         f'<span class="ns-count" aria-live="polite"></span> · {count}</p></div>'
         f"{lst}{more}"
-        f'<p class="source">Návrh programu EP{as_of}, může se změnit. {rule}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
+        f'<p class="source">{what}Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> '
         f'(CC BY 4.0) · <a href="{root}o-projektu#program-ep">výběr a česká stopa</a></p>'
         "</section>"
     )
@@ -866,6 +879,9 @@ def legend_html(vote: dict) -> str:
 def next_vote_html(agenda: dict | None) -> str:
     """Štítek „Další hlasování“ v hlavičce úvodu: první a poslední den s hlasováním v programu (agenda.json),
     odpočet dopočítá hub.js. Bez programu, nebo když je program starý, prázdný řetězec."""
+    from agenda import effective, today_cz
+
+    agenda = effective(agenda, today_cz())
     if not agenda or not agenda.get("items"):
         return ""
     days = sorted({i["date"] for i in agenda["items"]})
