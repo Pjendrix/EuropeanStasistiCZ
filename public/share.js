@@ -1090,6 +1090,101 @@ async function photoDataUrl(url) {
 
 // Story verze 2. a 3. obrázku detailu: stejné rozložení jako 4 : 5, vystředěné na výšku 9 : 16 (hlavička nahoře,
 // patička dole, obsah uprostřed). Jedna logika pro všechny karty, žádné zvláštní rozložení.
+// --- duel poslanců (hromadné zadání 24. 10. 2026, úkol 4) ------------------------------------------
+// Čísla vedle sebe bez vítěze: žádné zvýraznění vyšší hodnoty, stejná barva obou stran, proužky od středu na stejné škále.
+// Data připraví pages/duel.js z data/duel.json (stejná čísla jako stránka duelu). Barva frakce jen jako tónovaný podklad.
+const tint = (hex, a) => (/^#[0-9a-f]{6}$/i.test(hex || "") ? `${hex}${a}` : SC.chip);
+const DUEL_FOOT = (d) => `Zdroj: HowTheyVote.eu, EP Open Data · frakce k datu hlasování · data k ${fmtDate(d.dataDay)}`;
+
+function duelSideOps(m, x, w, y0, tintA) {
+  const ops = [RECT(x - 16, y0 - 24, w + 32, 760, 28, tint(m.group?.color, tintA))];
+  const pw = 300, ph = 375, px = x + (w - pw) / 2;
+  if (m.photo) ops.push({ k: "image", img: m.photo, x: px, y: y0, w: pw, h: ph, r: 22 }, T(x + w / 2, y0 + ph + 30, "© European Union – Source: EP", 18, 500, SC.muted, "center"));
+  else ops.push(...neutralAvatarOps(px, y0, pw, ph, 22));
+  let y = y0 + ph + 92;
+  wrapText(m.name, 44, 800, w, 2).forEach((l, i) => ops.push(T(x + w / 2, y + i * 52, l, 44, 800, SC.text, "center")));
+  y += Math.min(2, wrapText(m.name, 44, 800, w, 2).length) * 52 + 10;
+  const g = chipOps(0, 0, m.group?.label || "bez frakce", m.group?.color);
+  ops.push(...shift(g.ops.map((o) => ({ ...o, ...("x" in o ? { x: o.x + x + (w - g.w) / 2 } : {}) })), y));
+  y += 78;
+  if (m.party?.logoImg && m.party.aspect) {
+    const lh = Math.min(48, 220 / m.party.aspect), lw = lh * m.party.aspect;
+    ops.push(RECT(x + (w - lw) / 2 - 14, y - 6, lw + 28, lh + 12 + 6, 12, "#FFFFFF", SC.chipLine, 2), { k: "image", img: m.party.logoImg, x: x + (w - lw) / 2, y: y + 3, w: lw, h: lh, r: 0 });
+  } else if (m.party?.label) ops.push(T(x + w / 2, y + 30, fitText(m.party.label, 28, 600, w), 28, 600, SC.soft, "center"));
+  return ops;
+}
+
+// 1/3 Tale of the tape: dva portréty stejně velké proti sobě, jména, frakce a strana, pod tím shoda a počet společných hlasování.
+export function duelCardOps(d, f) {
+  const ops = [...duelSideOps(d.a, 88, 420, 40, "2E"), ...duelSideOps(d.b, 572, 420, 40, d.sameGroup ? "17" : "2E"),
+    T(540, 330, "vs", 40, 800, SC.muted, "center")];
+  let y = 860;
+  const [same, total] = d.agreement || [0, 0];
+  if (total) {
+    ops.push(T(540, y + 70, fmtPct(same / total), 96, 800, SC.text, "center"),
+      T(540, y + 118, `stejně hlasovali ve ${fmtNum(same)} z ${fmtNum(total)} společných hlasování`, 30, 600, SC.soft, "center"));
+  } else ops.push(T(540, y + 70, "Neměli žádné společné hlasování", 40, 800, SC.text, "center"));
+  ops.push(T(540, y + 170, "Čísla vedle sebe, bez hodnocení a bez vítěze.", 26, 500, SC.muted, "center"));
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y + 190, f.h), ...shareFooter(f.h, DUEL_FOOT(d), d.urlShort)];
+}
+
+function duelMiniHead(d, n) {
+  const ops = [];
+  [[d.a, 72], [d.b, 160]].forEach(([m, x]) => {
+    if (m.photo) ops.push({ k: "image", img: m.photo, x, y: 190, w: 80, h: 80, r: 40 });
+    else ops.push(...neutralAvatarOps(x, 190, 80, 80, 40));
+  });
+  const title = measureText(`${d.a.name} vs ${d.b.name}`, 40, 800) <= 640 ? `${d.a.name} vs ${d.b.name}` : `${d.a.short} vs ${d.b.short}`;
+  ops.push(T(264, 228, fitText(title, 40, 800, 640), 40, 800, SC.text),
+    T(264, 268, fitText("Čísla vedle sebe, ne kvalita práce", 26, 500, 640), 26, 500, SC.soft), T(1008, 240, `${n} / 3`, 30, 500, SC.muted, "right"));
+  return ops;
+}
+
+// 2/3 Čísla proti sobě: metrika uprostřed, hodnoty po stranách, proužky od středu ven na stejné škále. null = „–“.
+function duelNumbersOps(d, f) {
+  const ops = [...duelMiniHead(d, 2), T(72, 340, fitText(d.a.name, 26, 700, 420), 26, 700, SC.soft), T(1008, 340, fitText(d.b.name, 26, 700, 420), 26, 700, SC.soft, "right")];
+  const rows = (d.metrics || []).slice(0, 8);
+  const rh = Math.min(118, Math.floor((f.h - 150 - 390) / Math.max(rows.length, 1)));
+  rows.forEach((r, i) => {
+    const y = 390 + i * rh;
+    ops.push(T(540, y + 30, fitText(r.label, 28, 700, 520), 28, 700, SC.text, "center"),
+      T(72, y + 34, r.a.text, 40, 800, r.a.text === "–" ? SC.muted : SC.text), T(1008, y + 34, r.b.text, 40, 800, r.b.text === "–" ? SC.muted : SC.text, "right"),
+      RECT(72, y + 54, 936, 12, 6, SC.track));
+    const half = 452;
+    if (r.a.w) ops.push(RECT(540 - 6 - half * r.a.w, y + 54, half * r.a.w, 12, 6, SC.soft));
+    if (r.b.w) ops.push(RECT(546, y + 54, half * r.b.w, 12, 6, SC.soft));
+    if (r.a.sub || r.b.sub) ops.push(T(72, y + 92, fitText(r.a.sub || "", 22, 500, 420), 22, 500, SC.muted), T(1008, y + 92, fitText(r.b.sub || "", 22, 500, 420), 22, 500, SC.muted, "right"));
+  });
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, DUEL_FOOT(d), d.urlShort)];
+}
+
+// 3/3 Kde se rozešli: až 4 klíčová hlasování, kde jeden PRO a druhý PROTI; jinak věta a shoda podle 3 témat.
+function duelDivergedOps(d, f) {
+  const ops = [...duelMiniHead(d, 3)];
+  const rows = (d.diverged || []).slice(0, 4);
+  if (rows.length) {
+    ops.push(sectionTitle(360, "KDE SE ROZEŠLI · KLÍČOVÁ HLASOVÁNÍ"),
+      T(830, 410, fitText(d.a.short, 22, 700, 120), 22, 700, SC.soft, "center"), T(950, 410, fitText(d.b.short, 22, 700, 120), 22, 700, SC.soft, "center"));
+    rows.forEach((r, i) => {
+      const y = 440 + i * 170;
+      wrapText(r.title, 32, 700, 680, 2).forEach((l, j) => ops.push(T(72, y + 38 + j * 42, l, 32, 700, SC.text)));
+      ops.push(T(72, y + 128, fitText(r.meta, 24, 500, 680), 24, 500, SC.muted), ...POSDOT(830, y + 60, 26, r.a), ...POSDOT(950, y + 60, 26, r.b),
+        LINE(72, y + 156, 1008, y + 156, SC.line, 2));
+    });
+    ops.push(T(72, 440 + rows.length * 170 + 40, "✓ pro · ✕ proti · frakce k datu hlasování", 24, 500, SC.muted));
+  } else {
+    ops.push(T(72, 420, "V klíčových hlasováních se nerozešli", 44, 800, SC.text));
+    const topics = (d.topics || []).slice(0, 3);
+    if (topics.length) ops.push(sectionTitle(510, "SHODA PODLE TÉMAT"));
+    topics.forEach((t, i) => {
+      const y = 560 + i * 110;
+      ops.push(T(72, y + 30, fitText(t.label, 30, 700, 760), 30, 700, SC.text), T(1008, y + 30, fmtPct(t.share), 34, 800, SC.text, "right"),
+        RECT(72, y + 52, 936, 12, 6, SC.track), RECT(72, y + 52, 936 * t.share, 12, 6, SC.soft));
+    });
+  }
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, DUEL_FOOT(d), d.urlShort)];
+}
+
 function storyOps(ops, from = 1350, to = 1920) {
   const extra = to - from, mid = Math.round(extra / 2), footY = from - 140;
   const yOf = (o) => ("y" in o ? o.y : o.y1);
@@ -1110,6 +1205,7 @@ export function cardOps(kind, data, f, formatKey) {
   if (kind === "vote" && formatKey === "slide3") return voteContextOps(data, f);
   if (kind === "party") return formatKey === "slide2" ? partyMembersOps(data, f) : formatKey === "slide3" ? partyVotesOps(data, f) : partyCardOps(data, f);
   if (kind === "group") return formatKey === "slide2" ? groupMembersOps(data, f) : formatKey === "slide3" ? groupEuropeOps(data, f) : groupCardOps(data, f);
+  if (kind === "duel") return formatKey === "slide2" ? duelNumbersOps(data, f) : formatKey === "slide3" ? duelDivergedOps(data, f) : duelCardOps(data, f);
   const draw = { vote: voteCardOps, metric: metricCardOps, split: splitCardOps, quiz: quizCardOps, "quiz-groups": quizGroupsCardOps, session: sessionCardOps, law: lawCardOps }[kind];
   return draw ? draw(data, f) : formatKey === "slide2" ? mepVotingOps(data, f) : formatKey === "slide3" ? mepWorkOps(data, f) : mepBasicOps(data, f);
 }
@@ -1133,6 +1229,14 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
     const withImg = async (e) => (e && e.logo ? { ...e, logoImg: await loadImage(`${SHARE_ROOT}${e.logo}`) } : e);
     Object.assign(data, await withImg(data));
     for (const key of ["groups", "members", "former"]) if (Array.isArray(data[key])) data[key] = await Promise.all(data[key].map(withImg));
+  }
+  if (ctx.kind === "duel") {
+    for (const side of ["a", "b"]) {
+      const m = { ...data[side] };
+      m.photo = m.photoUrl ? await loadImage(await photoDataUrl(m.photoUrl)).catch(() => null) : null;
+      if (m.party?.logo) m.party = { ...m.party, logoImg: await loadImage(`${SHARE_ROOT}${m.party.logo}`).catch(() => null) };
+      data[side] = m;
+    }
   }
   if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
@@ -1217,7 +1321,7 @@ const SD_ICON = {
 // Detail mají poslanec, strana, frakce a závěrečné hlasování (data.detail); u hlasování bez kontextu jen 2 obrázky.
 export function shareFormats(kind, data = {}) {
   const out = [{ key: "post", content: "single", size: "post", slides: ["post"] }, { key: "story", content: "single", size: "story", slides: ["story"] }];
-  const n = kind === "vote" ? (data?.detail ? (voteHasContext(data.detail) ? 3 : 2) : 0) : ["mep", "party", "group"].includes(kind) ? 3 : 0;
+  const n = kind === "vote" ? (data?.detail ? (voteHasContext(data.detail) ? 3 : 2) : 0) : ["mep", "party", "group", "duel"].includes(kind) ? 3 : 0;
   if (n) {
     out.push({ key: "detail", content: "detail", size: "post", slides: ["post", "slide2", "slide3"].slice(0, n) },
       { key: "detail-story", content: "detail", size: "story", slides: ["story", "story2", "story3"].slice(0, n) });
@@ -1330,7 +1434,7 @@ async function openSharePanel(trigger) {
           <a href="https://www.facebook.com/sharer/sharer.php?u=${enc(ctx.url)}" target="_blank" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.fb}</span>Facebook</a>
           <a href="mailto:?subject=${enc(ctx.data?.title || ctx.data?.name || "EP Watch CZ")}&amp;body=${enc(`${ctx.text}\n\n${ctx.url}`)}" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.mail}</span>E-mail</a>
         </div>
-        <p class="sd-trust">${SD_ICON.shield}<span>${esc(ctx.trust || SD_TRUST)}${ctx.kind === "mep" && ctx.data?.avatar !== "neutral" && ctx.data?.photoUrl ? " Portrét © European Union – Source: EP." : ""}</span></p>
+        <p class="sd-trust">${SD_ICON.shield}<span>${esc(ctx.trust || SD_TRUST)}${(ctx.kind === "mep" && ctx.data?.avatar !== "neutral" && ctx.data?.photoUrl) || ctx.kind === "duel" ? " Portrét © European Union – Source: EP." : ""}</span></p>
       </div>
     </div>
     <div class="sd-toast" role="status" aria-live="polite"></div>`;

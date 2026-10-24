@@ -819,6 +819,54 @@ for (const width of [1366, 390]) {
   if (!(await page.textContent("main")).includes("Poslanců / zemí")) problems.push("frakce: v tabulce chybí sloupec Poslanců / zemí");
   await ctx.close();
 }
+// Sdílení duelu (úkol 4): všechny formáty v obou vzhledech pro dvojici ze stejné frakce (Knotek–Nagyová) a z různých
+// (Konečná–Zdechovský); nic nepřetéká, patička se zdrojem a adresou, portrét s © EP, žádný prvek neoznačuje vítěze.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "duel", { waitUntil: "networkidle" });
+  if (await page.$("#duel [data-share]")) problems.push("sdílení duelu: tlačítko Sdílet je i bez vybrané dvojice");
+  for (const [a, b] of [["197528", "256843"], ["23699", "124713"]]) {
+    await page.goto(base + `duel?a=${a}&b=${b}`, { waitUntil: "networkidle" });
+    const r = await page.evaluate(async () => {
+      const src = document.querySelector('script[src*="share.js"]').src;
+      const m = await import(src);
+      for (let i = 0; i < 50 && typeof window.shareContext !== "function"; i++) await new Promise((res) => setTimeout(res, 100));
+      const out = [];
+      if (!document.querySelector("#duel [data-share]")) out.push("chybí tlačítko Sdílet");
+      const sc = await window.shareContext("");
+      if (!sc || sc.kind !== "duel") return [...out, "chybí shareContext duelu"];
+      if (!/\/d\/\d+-\d+$/.test(sc.url)) out.push(`odkaz není kanonický: ${sc.url}`);
+      if (m.shareFormats("duel").find((x) => x.key === "detail")?.slides.length !== 3) out.push("detail nemá 3 obrázky");
+      await document.fonts.ready;
+      for (const theme of m.CARD_THEMES) {
+        for (const slide of ["post", "story", "slide2", "slide3", "story2", "story3"]) {
+          const blob = await m.renderCardPng(sc, slide, theme);
+          if (!blob || blob.size < 1000) out.push(`${theme} ${slide}: obrázek se nevykreslil`);
+          m.useCardTheme(theme);
+          const f = m.SHARE_FORMATS[slide], ops = m.cardOps("duel", { ...sc.data, a: { ...sc.data.a, photo: {} }, b: { ...sc.data.b, photo: {} } }, f, slide), footY = f.h - 128;
+          const texts = ops.filter((o) => o.k === "text");
+          texts.forEach((o) => {
+            const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
+            if (x0 < 50 || x0 + w > 1030) out.push(`${theme} ${slide}: text „${o.s.slice(0, 30)}“ přetéká do stran`);
+            if (/vítěz|vyhrál|lepší/i.test(o.s) && !/bez vítěze/.test(o.s)) out.push(`${theme} ${slide}: text označuje vítěze: ${o.s}`);
+          });
+          const body = ops.filter((o) => o.k !== "band" && !(o.k === "line" && o.y1 === footY) && !(o.k === "text" && o.y > footY));
+          const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
+          if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
+          const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
+          if (!foot.some((t) => t.startsWith("epwatch.cz/d/"))) out.push(`${theme} ${slide}: chybí adresa`);
+          if ((slide === "post" || slide === "story") && texts.filter((o) => o.s === "© European Union – Source: EP").length !== 2) out.push(`${theme} ${slide}: portréty bez © EP`);
+        }
+      }
+      m.useCardTheme("dark");
+      return out;
+    });
+    r.forEach((x) => problems.push(`sdílení duelu ${a}-${b}: ${x}`));
+  }
+  await ctx.close();
+}
 // Audit B1: parametry m (vote) a od (votes) nesmí dostat HTML do stránky.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

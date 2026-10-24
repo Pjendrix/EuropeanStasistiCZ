@@ -1,5 +1,5 @@
 // Čisté funkce stránky duel.html (bez DOM, testuje node --test). Data: data/duel.json (scripts/duel.py).
-import { pct } from "./format.js";
+import { fmtNum, fmtPct, pct } from "./format.js";
 
 export const ID_RE = /^\d{1,7}$/;
 export const SAMPLE_MIN_SHARED = 500;
@@ -19,6 +19,8 @@ export function pickPair(a, b, meps) {
 // Řádky „čísla proti sobě“: hodnota je číslo, nebo null = zdroj neuvádí / nepočítá se. pair = [čitatel, jmenovatel] u podílů.
 export const METRICS = [
   { key: "attendance", label: "Účast na hlasování", pair: (m) => m.attendance, def: "attendance", src: "htv", group: "Hlasování" },
+  { key: "presence", label: "Docházka na zasedání", pair: (m) => m.presence, def: "presence", src: "ep", group: "Hlasování" },
+  { key: "group_loyalty", label: "Hlasuje s frakcí", pair: (m) => m.group_loyalty, def: "group_loyalty", src: "htv", group: "Hlasování" },
   { key: "votes_in_mandate", label: "Hlasování v době mandátu", value: (m) => m.votes_in_mandate, def: "attendance", src: "htv", group: "Hlasování", count: true },
   ...["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].map((p) => ({
     key: `pos_${p}`, label: { FOR: "Pro", AGAINST: "Proti", ABSTENTION: "Zdržel/a se", DID_NOT_VOTE: "Nehlasoval/a" }[p], pos: p,
@@ -94,3 +96,19 @@ export const POS_GLYPH = { FOR: "✓", AGAINST: "✕", ABSTENTION: "–", DID_NO
 
 // Odkaz na hlasování: závěrečná mají statickou stránku v/{id}, ostatní interaktivní detail.
 export const voteHref = (v) => (v.is_main ? `v/${v.id}` : `vote?id=${v.id}`);
+
+// Metriky karty ke sdílení (2/3, úkol 4): 7 čísel jako na stránce, proužek na stejné škále (barWidths), null = „–“.
+export const SHARE_METRICS = ["attendance", "presence", "group_loyalty", "reports", "shadow_reports", "speeches", "amendments"];
+const SHARE_LABEL = { reports: "Zprávy – vede text", shadow_reports: "Zprávy – za frakci", amendments: "PN ve výborech" };
+
+export function shareMetricRows(a, b) {
+  return SHARE_METRICS.map((key) => {
+    const metric = METRICS.find((x) => x.key === key);
+    const va = metricValue(metric, a.metrics), vb = metricValue(metric, b.metrics);
+    const isShare = Boolean(metric.pair) && !metric.count;
+    const [wa, wb] = barWidths(isShare ? va.share : va.n, isShare ? vb.share : vb.n, isShare);
+    const side = (v, w) => (v.n === null ? { text: "–", w: 0, sub: "zdroj neuvádí" }
+      : { text: isShare ? fmtPct(v.share) : fmtNum(v.n), w: w / 100, sub: isShare ? `${fmtNum(v.n)} z ${fmtNum(v.total)}` : "" });
+    return { key, label: SHARE_LABEL[key] || metric.label, a: side(va, wa), b: side(vb, wb) };
+  });
+}
