@@ -4549,6 +4549,90 @@
   },
   "updated": "2026-10-24"
  },
+ "amendments": {
+  "committee": {
+   "total": 1805,
+   "sole": 318,
+   "on_behalf": 390,
+   "dossiers": 53,
+   "docs": 117,
+   "recent": [
+    {
+     "doc": "ENVI-AM-796499",
+     "date": "2026-10-21",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796499/ENVI-AM-796499_en.pdf"
+    },
+    {
+     "doc": "ENVI-AM-796497",
+     "date": "2026-10-21",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 18,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796497/ENVI-AM-796497_en.pdf"
+    },
+    {
+     "doc": "ENVI-AM-796250",
+     "date": "2026-10-21",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 9,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796250/ENVI-AM-796250_en.pdf"
+    },
+    {
+     "doc": "ENVI-AM-796496",
+     "date": "2026-10-20",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 31,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796496/ENVI-AM-796496_en.pdf"
+    },
+    {
+     "doc": "ENVI-AM-796495",
+     "date": "2026-10-20",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 22,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796495/ENVI-AM-796495_en.pdf"
+    }
+   ]
+  },
+  "plenary": {
+   "cosigned": 12
+  },
+  "source": {
+   "committee": {
+    "name": "EP Open Data API v2 (seznam dokumentů) + DOCX z registru EP (autoři ze značek šablony)",
+    "url": "https://data.europarl.europa.eu/api/v2/documents?work-type=AMENDMENT_LIST",
+    "license": "CC BY 4.0"
+   },
+   "plenary": {
+    "name": "EP Open Data API v2, plenary-documents (PN ke zprávám A10)",
+    "url": "https://data.europarl.europa.eu/api/v2/plenary-documents",
+    "license": "CC BY 4.0"
+   }
+  },
+  "coverage": {
+   "committee_to": "2026-10-21",
+   "plenary_to": "2026-10-20",
+   "committee_docs": 1424,
+   "committee_compromise": 34,
+   "committee_pending": 25
+  },
+  "updated": "2026-10-24"
+ },
  "own_work": {
   "source": {
    "name": "EP Open Data API v2",

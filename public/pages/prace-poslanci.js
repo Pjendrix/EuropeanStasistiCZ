@@ -13,7 +13,7 @@ setNav("work-table");
     const rows = w.meps.map((m) => ({ m, d: m.delegation }));
     const current = rows.filter((r) => r.d);
     const former = rows.filter((r) => !r.d && !isActive(r.m) && (KEYS.some((k) => r.m[k]) || r.m.motions_signed));
-    const columns = { name: (r) => r.m.sort_label || r.m.name, motions_signed: (r) => r.m.motions_signed, attendance: (r) => pct(r.m.attendance), speeches: (r) => r.m.speeches ?? -1, presence: (r) => (r.m.presence && r.m.presence.days ? r.m.presence.present / r.m.presence.days : -1) };
+    const columns = { name: (r) => r.m.sort_label || r.m.name, motions_signed: (r) => r.m.motions_signed, attendance: (r) => pct(r.m.attendance), speeches: (r) => r.m.speeches ?? -1, amendments: (r) => r.m.amendments ?? -1, presence: (r) => (r.m.presence && r.m.presence.days ? r.m.presence.present / r.m.presence.days : -1) };
     const FN = { committee: { CHAIR: ["předseda", "předsedkyně"], CHAIR_VICE: ["místopředseda", "místopředsedkyně"] },
       group: { CHAIR: ["předseda", "předsedkyně"], CHAIR_VICE: ["místopředseda", "místopředsedkyně"], MEMBER_BUREAU: ["člen předsednictva", "členka předsednictva"] } };
     const fnLabel = (m, f) => `${byGender(m, ...FN[f.kind][f.role])} ${f.kind === "committee" ? `výboru <abbr title="${esc(f.name_cs || "")}">${esc(f.code)}</abbr>` : "frakce"}`;
@@ -41,7 +41,8 @@ setNav("work-table");
         <td class="num secondary grp-start" data-label="Účast na hlasování">${fmtPct(pct(r.m.attendance))}${epMedian ? `<div class="small muted">medián EP ${fmtPct(epMedian)}</div>` : ""}</td>
         <td class="num secondary" data-label="Docházka na zasedání">${r.m.presence && r.m.presence.days ? `${fmtPct(r.m.presence.present / r.m.presence.days)}<div class="small muted">${fmtNum(r.m.presence.present)} z ${fmtNum(r.m.presence.days)} dnů</div>` : "–"}</td>
         <td class="num secondary" data-label="Podepsané návrhy">${fmtNum(r.m.motions_signed)}</td>
-        <td class="num secondary" data-label="Projevy v plénu">${r.m.speeches == null ? "–" : `${fmtNum(r.m.speeches)}<div class="small muted">${fmtNum(Math.round(r.m.speeches_minutes))} min</div>`}</td></tr>`).join("");
+        <td class="num secondary" data-label="Projevy v plénu">${r.m.speeches == null ? "–" : `${fmtNum(r.m.speeches)}<div class="small muted">${fmtNum(Math.round(r.m.speeches_minutes))} min</div>`}</td>
+        <td class="num secondary" data-label="Pozměňovací návrhy">${r.m.amendments == null ? "–" : `${fmtNum(r.m.amendments)}<div class="small muted">plénum ${fmtNum(r.m.amendments_cosigned)}</div>`}</td></tr>`).join("");
     };
     const table = sortable(document.getElementById("work"), columns, () => current, render, { key: "name", dir: 1 });
     const sortSel = document.getElementById("sort");
@@ -60,7 +61,9 @@ setNav("work-table");
       <strong>Docházka na zasedání</strong> = dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP (jen dny, ke kterým už listina existuje);
       jiná metrika než účast na hlasování, bez mediánu EP. <strong>Projevy v plénu</strong> jsou ústní projevy v rozpravách v době mandátu podle EP (zdroj: EP Open Data, endpoint speeches); minuty jsou součet
       délek z časových značek zdroje. Písemná prohlášení se do projevů nesčítají (dají se psát hromadně). Počet projevů neříká nic o kvalitě ani vlivu a nevstupuje do třetin.
-      Pozměňovací návrhy ve výborech tu nejsou: strojově čitelná data (Parltrack) jsou naposledy z února 2026, takže by byla za část období; otázky najdete na profilu každého poslance.` : "";
+      <strong>Pozměňovací návrhy (PN)</strong> ve výborech = PN, pod kterými je poslanec mezi autory, z oficiálních dokumentů PN v registru EP${w.amendments_source ? ` (do ${fmtDate(w.amendments_source.coverage.committee_to)})` : ""};
+      PN s více autory se počítá každému, kompromisní PN a PN frakcí se nepočítají. Pod tím spolupodepsané PN v plénu: hromadné návrhy s nejméně 36 podpisy.
+      Počet PN závisí hlavně na tom, ve kterých výborech poslanec sedí, nevypovídá o úspěchu a nevstupuje do třetin. Otázky najdete na profilu každého poslance.` : "";
     document.getElementById("former").innerHTML = former.length ? `<details class="card own-list"><summary><strong>Bývalí poslanci</strong> (bez srovnání)</summary>
       <ul class="plain">${former.map((r) => `<li><a href="${mepUrl(r.m.id)}">${esc(displayName(r.m))}</a>
         <span class="small muted">zpravodaj/ka: zprávy ${fmtNum(r.m.lead_reports)}, stanoviska ${fmtNum(r.m.lead_opinions)} ·
@@ -73,13 +76,13 @@ setNav("work-table");
     document.getElementById("source").before(csvButton("vlastni-prace.csv", () => [
       ["poslanec_id", "poslanec", "frakce", "strana", "zpravy_zpravodaj", "zpravy_zpravodaj_prijate", "zpravy_zpravodaj_tretina",
         "stanoviska_zpravodaj", "stanoviska_zpravodaj_tretina", "zpravy_stinovy", "zpravy_stinovy_prijate", "zpravy_stinovy_tretina",
-        "stanoviska_stinovy", "stanoviska_stinovy_tretina", "ucast_na_hlasovani", "podepsane_navrhy_usneseni", "prezence_dny", "prezence_z_dnu", "prezence_omluven", "projevy_v_plenu", "projevy_minuty", "pisemna_prohlaseni", "funkce", "mandat_od"],
+        "stanoviska_stinovy", "stanoviska_stinovy_tretina", "ucast_na_hlasovani", "podepsane_navrhy_usneseni", "prezence_dny", "prezence_z_dnu", "prezence_omluven", "projevy_v_plenu", "projevy_minuty", "pisemna_prohlaseni", "pn_vybory", "pn_plenum_spolupodepsane", "funkce", "mandat_od"],
       ...current.map((r) => [r.m.id, displayName(r.m), r.m.group?.short_label || "", r.m.party?.short_label || "",
         r.m.lead_reports, r.m.lead_adopted, tierLabel(r.d.tiers.lead_reports), r.m.lead_opinions, tierLabel(r.d.tiers.lead_opinions),
         r.m.shadow_reports, r.m.shadow_adopted, tierLabel(r.d.tiers.shadow_reports), r.m.shadow_opinions, tierLabel(r.d.tiers.shadow_opinions),
         pct(r.m.attendance) === null ? "" : pct(r.m.attendance).toFixed(4), r.m.motions_signed,
         r.m.presence?.present ?? "", r.m.presence?.days ?? "", r.m.presence?.excused ?? "",
-        r.m.speeches ?? "", r.m.speeches_minutes ?? "", r.m.written_statements ?? "",
+        r.m.speeches ?? "", r.m.speeches_minutes ?? "", r.m.written_statements ?? "", r.m.amendments ?? "", r.m.amendments_cosigned ?? "",
         (r.m.functions || []).map((f) => `${f.role} ${f.kind === "committee" ? f.code : "frakce"}`).join("; "), r.d.mandate_from || ""]),
     ], "Stáhnout tabulku (CSV)"));
   } catch (e) {

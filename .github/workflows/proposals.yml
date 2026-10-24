@@ -69,8 +69,19 @@ jobs:
       - name: Instalace závislostí
         run: pip install --require-hashes -r requirements.txt
 
-      - name: Stažení (nejvýš 300 minut, pak pokračuje příští běh)
-        run: python scripts/fetch_proposals.py --max-minutes 300
+      - name: Záloha předchozího stavu
+        run: cp -r data "$RUNNER_TEMP/data-prev"
+
+      - name: Stažení (nejvýš 240 minut, pak pokračuje příští běh)
+        run: python scripts/fetch_proposals.py --max-minutes 240
+
+      - name: Pozměňovací návrhy (EP Open Data API + DOCX z registru EP)
+        # Ve výborech z DOCX registru EP (jen značky šablony, CLAUDE.md), v plénu ke zprávám A10. Běžně minuty, první běh déle
+        # (nedokončené dožene příští běh). Výpadek EP API jen varuje a zůstane předchozí stav; změna šablony (kód 2) běh zastaví.
+        run: |
+          rc=0; timeout 50m python scripts/fetch_amendments.py --max-minutes 45 || rc=$?
+          if [ "$rc" -eq 2 ]; then exit 2; fi
+          if [ "$rc" -ne 0 ]; then echo "::warning::fetch_amendments: EP API neodpovídá, zůstává předchozí stav"; fi
 
       - name: Program příštího zasedání (EP Open Data API)
         # Program je doplněk: při výpadku API zůstane předchozí soubor a vlastní práce se commitnou.
@@ -83,11 +94,14 @@ jobs:
           python scripts/build_web.py
           python scripts/build_pages.py
 
+      - name: Kontrola rozumnosti dat
+        run: python scripts/check_data.py --prev "$RUNNER_TEMP/data-prev"
+
       - name: Commit
         # Odloží stažené soubory, srovná se s aktuálním main, přepočítá odvozené a commitne.
         run: |
           scripts/commit_data.sh "data: vlastní práce poslanců $(date -u +%Y-%m-%d)" \
-            data/proposals.json data/proposals_state.json data/agenda.json
+            data/proposals.json data/proposals_state.json data/agenda.json data/amendments.json data/amendments_state.json
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

@@ -448,6 +448,43 @@ def activity_block(ui: Ui, a: dict | None) -> str:
     )
 
 
+def amendments_block(ui: Ui, a: dict | None) -> str:
+    """Pozměňovací návrhy (data/amendments.json): ve výborech z DOCX registru EP, v plénu spolupodepsané PN ke zprávám A10."""
+    if not a:
+        return ""
+    c, cov = a["committee"], a.get("coverage") or {}
+    details = [
+        f"z toho {fmt_num(c['sole'])} jako jediný autor" if c["total"] else "",
+        f"{fmt_num(c['on_behalf'])} za frakci" if c["on_behalf"] else "",
+        f"v {fmt_num(c['dossiers'])} procedurách" if c["dossiers"] else "",
+        "jen počet, bez srovnání s kolegy",
+    ]
+    cards = passed_card("Pozměňovací návrhy ve výborech", c["total"], details) + passed_card(
+        "Spolupodepsané PN v plénu",
+        a["plenary"]["cosigned"],
+        ["hromadné návrhy s nejméně 36 podpisy ke zprávám", "jen podpis, ne vlastní návrh"],
+    )
+    recent = "".join(
+        f'<li><a href="{esc(r["url"])}">{esc(r["doc"])}</a> · {esc(", ".join(r["committees"]))}'
+        f'<div class="small muted">{fmt_date(r["date"])}{" · " + esc(r["procedure"]) if r.get("procedure") else ""} · {fmt_num(r["count"])} PN</div></li>'
+        for r in c["recent"]
+    )
+    lst = (
+        f'<div class="card pn-docs"><h4>Poslední dokumenty PN ve výborech, kde je mezi autory</h4><ul class="plain">{recent}</ul></div>'
+        if recent
+        else ""
+    )
+    src = a.get("source") or {}
+    links = " a ".join(f'<a href="{esc(s["url"])}">{esc(s["name"])}</a>' for s in (src.get("committee"), src.get("plenary")) if s)
+    return f'<h3 class="own-sub">Pozměňovací návrhy</h3><div class="metrics">{cards}</div>{lst}' + ui.note_line(
+        f"Zdroj: {links or 'EP Open Data'} (CC BY 4.0) · výbory do {fmt_date(cov.get('committee_to'))}, plénum do {fmt_date(cov.get('plenary_to'))}",
+        "Počty v době mandátu. PN s více autory se počítá každému z nich. Kompromisní PN, PN frakcí a PN výborů se jednotlivým "
+        "poslancům nepřipisují. Počet PN nevypovídá o kvalitě ani úspěchu (hlasování ve výborech nejsou strojově dostupná) a závisí "
+        "na tom, ve kterých výborech poslanec sedí.",
+        "source",
+    )
+
+
 def presence_card(pr: dict | None, mep: dict) -> str:
     if not pr or not pr.get("days"):
         return ""
@@ -1116,6 +1153,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
     }</p><p class="part-note">Zprávy, otázky a projevy, členství a výbory s odkazy na zdroje.</p>
 {own_section}
 {activity_block(ui, prof.get("activity"))}
+{amendments_block(ui, prof.get("amendments"))}
 
 <div class="grid-2">
   <section>

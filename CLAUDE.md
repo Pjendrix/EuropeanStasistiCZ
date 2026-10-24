@@ -7,6 +7,7 @@ Celý koncept je v `docs/KONCEPT.md`. Před každou fází si přečti relevantn
 ## Tvrdá pravidla
 
 - **Žádný scraping HTML.** Data jen z oficiálních API a exportů: HowTheyVote CSV export (GitHub releases, stabilní odkazy `latest/download/*.csv.gz`), EP Open Data API v2 (`https://data.europarl.europa.eu/api/v2`), případně Parltrack dumpy.
+  Výjimka pro pozměňovací návrhy: pipeline smí číst oficiální DOCX z registru EP, na který odkazuje EP Open Data API (`distribution/reds_iCmDoc_Amd/…`), a to jen ze strojových značek šablony EP (`<NumAm>`, `<Members>`, `<AuNomDe>`, `<RangeAM>` …). HTML se dál nescrapuje; při změně šablony skript skončí čitelnou chybou (`scripts/amendments.py`).
 - **Žádná vymyšlená data.** Co zdroj nemá, je `null`. Nikdy neodhaduj, nedoplňuj z paměti, nepoužívej mock data mimo testy (testovací data mají prefix `MOCK_` nebo leží v `tests/fixtures/`).
 - **Čísla počítá kód, ne AI.** Statistiky jsou čisté, deterministické funkce s testy. AI (Claude Haiku) jen shrnuje a překládá obsah hlasování do češtiny a nikdy nevkládá čísla, která nespočítal kód.
 - **Validace vstupů.** Každý skript ověří očekávané sloupce a pole. Při změně formátu skončí čitelnou chybou, nikdy tiše nepočítá dál.
