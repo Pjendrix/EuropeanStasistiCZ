@@ -4,7 +4,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -13,7 +13,7 @@
   }
  },
  "close_margin": 21,
- "close_count": 153,
+ "close_count": 158,
  "close_count_main": 4,
  "decisive_final": 0,
  "definition": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
@@ -31,11 +31,331 @@
  },
  "votes": [
   {
+   "id": 199339,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 298,
+    "against": 307,
+    "abstention": 51,
+    "did_not_vote": 64
+   },
+   "cz": [
+    3,
+    16,
+    1,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 3. část",
+   "alternative_result": "ADOPTED",
+   "positions": [
+    {
+     "member_id": 23699,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 6769
+    },
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 124713,
+     "position": "DID_NOT_VOTE",
+     "group_code": "EPP",
+     "national_party_id": 6770
+    },
+    {
+     "member_id": 197528,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197549,
+     "position": "FOR",
+     "group_code": "GREEN_EFA",
+     "national_party_id": 6862
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197556,
+     "position": "FOR",
+     "group_code": "ESN",
+     "national_party_id": 6864
+    },
+    {
+     "member_id": 220840,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256843,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256844,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256846,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256851,
+     "position": "ABSTENTION",
+     "group_code": "NI",
+     "national_party_id": 6843
+    },
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6843
+    },
+    {
+     "member_id": 256853,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 261038,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 270261,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7034
+    }
+   ]
+  },
+  {
+   "id": 199338,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 314,
+    "against": 317,
+    "abstention": 20,
+    "did_not_vote": 69
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 2. část",
+   "alternative_result": "ADOPTED",
+   "positions": [
+    {
+     "member_id": 23699,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 6769
+    },
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 124713,
+     "position": "DID_NOT_VOTE",
+     "group_code": "EPP",
+     "national_party_id": 6770
+    },
+    {
+     "member_id": 197528,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197549,
+     "position": "FOR",
+     "group_code": "GREEN_EFA",
+     "national_party_id": 6862
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197556,
+     "position": "FOR",
+     "group_code": "ESN",
+     "national_party_id": 6864
+    },
+    {
+     "member_id": 220840,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256843,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256844,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256846,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256851,
+     "position": "FOR",
+     "group_code": "NI",
+     "national_party_id": 6843
+    },
+    {
+     "member_id": 256852,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6843
+    },
+    {
+     "member_id": 256853,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 261038,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 270261,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 272024,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 7034
+    }
+   ]
+  },
+  {
    "id": 195767,
    "date": "2026-07-09",
    "month": "2026-07",
    "title": "Hrozba válečných zločinů, stupňující se porušování mezinárodního humanitárního práva a situace v oblasti lidských práv v súdánském El-Obeidu",
-   "reference": "B10-0357/2026",
+   "reference": "RC-B10-0357/2026",
    "description": "§ 7/2",
    "result": "REJECTED",
    "is_main": false,

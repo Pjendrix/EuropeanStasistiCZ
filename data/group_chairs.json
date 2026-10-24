@@ -4,7 +4,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-20"
+  "updated": "2026-10-24"
  },
  "groups": {
   "ECR": [
@@ -94,9 +94,17 @@
     "mep_id": 131580,
     "name": "Jordan Bardella",
     "country": "FR",
-    "role": "CHAIR",
+    "role": "CHAIR_CO",
     "gender": "M",
-    "start": "2024-07-16"
+    "start": "2026-10-20"
+   },
+   {
+    "mep_id": 28150,
+    "name": "Kinga Gál",
+    "country": "HU",
+    "role": "CHAIR_CO",
+    "gender": "F",
+    "start": "2026-10-20"
    }
   ],
   "RENEW": [

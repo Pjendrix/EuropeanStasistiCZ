@@ -83,13 +83,13 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 830,
+ "mandate_days": 831,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -121,50 +121,50 @@
  },
  "total": {
   "attendance": [
-   5749,
-   6154
+   6005,
+   6411
   ],
   "attendance_main": [
-   599,
-   641
+   623,
+   665
   ],
   "group_loyalty": [
-   4711,
-   5732
+   4928,
+   5988
   ],
   "group_loyalty_main": [
-   445,
-   594
+   466,
+   618
   ],
   "cz_agreement": [
-   4294,
-   5543
+   4497,
+   5790
   ],
   "outcome": [
-   3043,
-   5211
+   3173,
+   5446
   ],
   "outcome_main": [
-   400,
-   514
+   417,
+   536
   ],
   "outcome_close": [
-   64,
-   128
+   68,
+   133
   ],
   "group_outcome": [
-   183520,
-   344288
+   191554,
+   359067
   ],
   "group_outcome_main": [
-   26613,
-   32920
+   27865,
+   34388
   ],
   "positions": {
-   "FOR": 2934,
-   "AGAINST": 2277,
-   "ABSTENTION": 538,
-   "DID_NOT_VOTE": 405
+   "FOR": 3066,
+   "AGAINST": 2380,
+   "ABSTENTION": 559,
+   "DID_NOT_VOTE": 406
   }
  },
  "monthly": {
@@ -1322,50 +1322,50 @@
   },
   "2026-10": {
    "attendance": [
-    224,
-    227
+    480,
+    484
    ],
    "attendance_main": [
-    25,
-    25
+    49,
+    49
    ],
    "group_loyalty": [
-    202,
-    224
+    419,
+    480
    ],
    "group_loyalty_main": [
-    19,
-    25
+    40,
+    49
    ],
    "cz_agreement": [
-    199,
-    221
+    402,
+    468
    ],
    "outcome": [
-    133,
-    214
+    263,
+    449
    ],
    "outcome_main": [
-    15,
-    24
+    32,
+    46
    ],
    "outcome_close": [
-    2,
-    4
+    6,
+    9
    ],
    "group_outcome": [
-    9485,
-    15147
+    17519,
+    29926
    ],
    "group_outcome_main": [
-    1101,
-    1620
+    2353,
+    3088
    ],
    "positions": {
-    "FOR": 118,
-    "AGAINST": 96,
-    "ABSTENTION": 10,
-    "DID_NOT_VOTE": 3
+    "FOR": 250,
+    "AGAINST": 199,
+    "ABSTENTION": 31,
+    "DID_NOT_VOTE": 4
    }
   }
  },
@@ -1394,8 +1394,8 @@
     "id": 6768,
     "short_label": "ODS"
    },
-   "same": 5487,
-   "total": 5612
+   "same": 5733,
+   "total": 5868
   },
   {
    "id": 197537,
@@ -1421,8 +1421,8 @@
     "id": 6768,
     "short_label": "ODS"
    },
-   "same": 5078,
-   "total": 5434
+   "same": 5321,
+   "total": 5690
   },
   {
    "id": 256852,
@@ -1448,8 +1448,8 @@
     "id": 6843,
     "short_label": "Ind."
    },
-   "same": 4142,
-   "total": 5528
+   "same": 4357,
+   "total": 5771
   },
   {
    "id": 118949,
@@ -1502,8 +1502,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 2048,
-   "total": 2961
+   "same": 2237,
+   "total": 3214
   },
   {
    "id": 261038,
@@ -1529,8 +1529,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3743,
-   "total": 5426
+   "same": 3931,
+   "total": 5679
   },
   {
    "id": 256853,
@@ -1556,8 +1556,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3126,
-   "total": 4538
+   "same": 3314,
+   "total": 4792
   },
   {
    "id": 220840,
@@ -1583,8 +1583,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3667,
-   "total": 5341
+   "same": 3857,
+   "total": 5597
   },
   {
    "id": 256843,
@@ -1610,8 +1610,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3435,
-   "total": 5004
+   "same": 3566,
+   "total": 5184
   },
   {
    "id": 197528,
@@ -1637,8 +1637,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3426,
-   "total": 5014
+   "same": 3614,
+   "total": 5266
   },
   {
    "id": 272024,
@@ -1664,8 +1664,8 @@
     "id": 7034,
     "short_label": "Motoristé"
    },
-   "same": 2290,
-   "total": 3382
+   "same": 2479,
+   "total": 3638
   },
   {
    "id": 256844,
@@ -1691,8 +1691,8 @@
     "id": 6794,
     "short_label": "ANO"
    },
-   "same": 3279,
-   "total": 4852
+   "same": 3468,
+   "total": 5107
   },
   {
    "id": 256850,
@@ -1745,8 +1745,8 @@
     "id": 6770,
     "short_label": "KDU-ČSL"
    },
-   "same": 2898,
-   "total": 5181
+   "same": 2915,
+   "total": 5209
   },
   {
    "id": 256840,
@@ -1772,8 +1772,8 @@
     "id": 6835,
     "short_label": "STAN"
    },
-   "same": 3002,
-   "total": 5436
+   "same": 3140,
+   "total": 5691
   },
   {
    "id": 256847,
@@ -1799,8 +1799,8 @@
     "id": 6835,
     "short_label": "STAN"
    },
-   "same": 3007,
-   "total": 5482
+   "same": 3148,
+   "total": 5735
   },
   {
    "id": 256846,
@@ -1826,8 +1826,8 @@
     "id": 6793,
     "short_label": "TOP 09"
    },
-   "same": 2988,
-   "total": 5503
+   "same": 3121,
+   "total": 5753
   },
   {
    "id": 124701,
@@ -1853,8 +1853,8 @@
     "id": 6793,
     "short_label": "TOP 09"
    },
-   "same": 2838,
-   "total": 5521
+   "same": 2964,
+   "total": 5774
   },
   {
    "id": 197556,
@@ -1880,8 +1880,8 @@
     "id": 6864,
     "short_label": "SPD"
    },
-   "same": 2484,
-   "total": 5249
+   "same": 2597,
+   "total": 5429
   },
   {
    "id": 23699,
@@ -1900,15 +1900,15 @@
    ],
    "short_mandate": false,
    "group": {
-    "code": "NI",
-    "short_label": "nezařazení"
+    "code": "PFE",
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6769,
     "short_label": "KSČM"
    },
-   "same": 2373,
-   "total": 5215
+   "same": 2498,
+   "total": 5462
   },
   {
    "id": 256851,
@@ -1934,8 +1934,8 @@
     "id": 6843,
     "short_label": "Ind."
    },
-   "same": 2325,
-   "total": 5257
+   "same": 2455,
+   "total": 5503
   },
   {
    "id": 197549,
@@ -1961,17 +1961,17 @@
     "id": 6862,
     "short_label": "Piráti"
    },
-   "same": 1683,
-   "total": 5217
+   "same": 1783,
+   "total": 5473
   }
  ],
  "recent_main_votes": [
   {
-   "id": 198051,
-   "date": "2026-10-08",
+   "id": 199517,
+   "date": "2026-10-22",
    "month": "2026-10",
-   "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-   "reference": "B10-0424/2026",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "position": "FOR",
@@ -1982,41 +1982,11 @@
    "description_cs": "Návrh usnesení (celý text)"
   },
   {
-   "id": 198216,
-   "date": "2026-10-08",
+   "id": 198292,
+   "date": "2026-10-22",
    "month": "2026-10",
-   "title": "Nedemokratické volby do ruské Státní dumy v roce 2026 a důsledky pro občanskou společnost",
-   "reference": "RC-B10-0441/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 198204,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Pilotní projekt týkající se Evropské školní aliance",
-   "reference": "B10-0436/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 198252,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Případy Aliho Karimliho, Anara Mammadliho a dalších politických vězňů v Ázerbájdžánu",
-   "reference": "RC-B10-0438/2026",
+   "title": "Cohesion policy in the EU’s eastern border regions: strengthening territorial resilience and cross‑border cooperation",
+   "reference": "A10-0264/2026",
    "description": "Proposition de résolution",
    "result": "ADOPTED",
    "position": "FOR",
@@ -2027,161 +1997,11 @@
    "description_cs": "Návrh usnesení"
   },
   {
-   "id": 198251,
-   "date": "2026-10-08",
+   "id": 199470,
+   "date": "2026-10-22",
    "month": "2026-10",
-   "title": "Snahy vládnoucí strany Gruzínský sen zakázat v Gruzii opoziční strany",
-   "reference": "RC-B10-0443/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 198261,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Stav lidských práv v Íránu, zejména případy Taráne Rahímíové a Lejly Abolhasaníové",
-   "reference": "RC-B10-0452/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 198176,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Nařízení Komise, kterým se mění [příloha III] nařízení Evropského parlamentu a Rady (ES) č. 1925/2006, pokud jde o monakoliny z červené fermentované rýže",
-   "reference": "B10-0466/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení"
-  },
-  {
-   "id": 198175,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Nařízení Komise, kterým se mění příloha III nařízení Evropského parlamentu a Rady (ES) č. 1925/2006, pokud jde o určité botanické druhy obsahující deriváty hydroxyanthracenu",
-   "reference": "B10-0465/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení"
-  },
-  {
-   "id": 198194,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Nařízení Komise, kterým se mění příloha XVII nařízení Evropského parlamentu a Rady (ES) č. 1907/2006 o registraci, hodnocení, povolování a omezování chemických látek, pokud jde o olovo v brokových střelách",
-   "reference": "B10-0432/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení"
-  },
-  {
-   "id": 198193,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Nařízení Komise, kterým se mění příloha XVII nařízení Evropského parlamentu a Rady (ES) č. 1907/2006 o registraci, hodnocení, povolování a omezování chemických látek, pokud jde o olovo v brokových střelách",
-   "reference": "B10-0431/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení"
-  },
-  {
-   "id": 197457,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Doporučení Radě, Komisi a místopředsedkyni Komise, vysoké představitelce Unie pro zahraniční věci a bezpečnostní politiku k politickým vztahům mezi EU a Čínou",
-   "reference": "A10-0237/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "FOR",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 197497,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Uvolnění prostředků z Evropského fondu pro přizpůsobení se globalizaci ve prospěch propuštěných pracovníků na základě žádosti Belgie – EGF/2026/001 BE/Cora",
-   "reference": "A10-0241/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "AGAINST",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 197501,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Uvolnění prostředků z Evropského fondu pro přizpůsobení se globalizaci ve prospěch propuštěných pracovníků na základě žádosti Finska – EGF/2026/003 FI/Valmet Automotive",
-   "reference": "A10-0243/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "AGAINST",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 197464,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Uvolnění prostředků z Evropského fondu pro přizpůsobení se globalizaci ve prospěch propuštěných pracovníků na základě žádosti Španělska – EGF/2026/002 ES/Galicia automotive ancillary",
-   "reference": "A10-0242/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "position": "AGAINST",
-   "group_code": "ECR",
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)"
-  },
-  {
-   "id": 197509,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Opatření k usnadnění konzulární ochrany nezastoupených občanů Unie ve třetích zemích",
-   "reference": "A10-0254/2026",
+   "title": "Revised heat and fuel benchmark values for 2026-2030",
+   "reference": "A10-0276/2026",
    "description": "Proposition de la Commission",
    "result": "ADOPTED",
    "position": "FOR",
@@ -2190,304 +2010,312 @@
    "is_final": true,
    "inverted": false,
    "description_cs": "Návrh Komise"
+  },
+  {
+   "id": 198430,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Změna nařízení (ES) č. 1272/2008, (ES) č. 1223/2009 a (EU) 2019/1009, pokud jde o zjednodušení některých požadavků a postupů týkajících se chemických výrobků",
+   "reference": "A10-0104/2026",
+   "description": "Accord provisoire - Am 118",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 118"
+  },
+  {
+   "id": 198405,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Zavedení programu Erasmus+ na období 2028–2034 a zrušení nařízení (EU) 2021/817 a (EU) 2021/888",
+   "reference": "A10-0257/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise"
+  },
+  {
+   "id": 199592,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Reduction of methane emissions in the energy sector: postponement of certain obligations",
+   "reference": "C10-0258/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise"
+  },
+  {
+   "id": 198947,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+   "reference": "B10-0469/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "AGAINST",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198302,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Boosting skills in the Union – opportunities for vocational education and training in times of transition",
+   "reference": "A10-0259/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "ABSTENTION",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198386,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Proposition de la Commission au Conseil",
+   "result": "ADOPTED",
+   "position": "AGAINST",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise Radě"
+  },
+  {
+   "id": 198325,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Zřízení programu výměny, pomoci a odborného vzdělávání za účelem ochrany eura proti padělání na období 2028–2034 (program „Pericles V“) a zrušení nařízení (EU) 2021/840",
+   "reference": "A10-0256/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise"
+  },
+  {
+   "id": 198409,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+   "reference": "A10-0273/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "AGAINST",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198299,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Union Solidarity Fund: assistance to Malta, Italy, Portugal and Spain with regard to storms in 2026",
+   "reference": "A10-0274/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198357,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Udělení absolutoria za rok 2024: souhrnný rozpočet EU – Evropská rada a Rada",
+   "reference": "A10-0258/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "AGAINST",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198774,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "position": "ABSTENTION",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)"
+  },
+  {
+   "id": 198885,
+   "date": "2026-10-20",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 114(3): Certification methodologies for carbon farming activities",
+   "reference": "B10-0471/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "position": "FOR",
+   "group_code": "ECR",
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení"
   }
  ],
  "benchmarks": {
   "source": {
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
   "min_votes": 100,
   "ep": {
-   "meps": 742,
-   "attendance": 0.8991,
-   "attendance_main": 0.9056,
-   "group_loyalty": 0.9322
+   "meps": 743,
+   "attendance": 0.8997,
+   "attendance_main": 0.9053,
+   "group_loyalty": 0.9325
   },
   "group_code": "ECR",
   "group": {
    "meps": 85,
-   "attendance": 0.9166,
-   "attendance_main": 0.9173,
-   "group_loyalty": 0.9115
+   "attendance": 0.9151,
+   "attendance_main": 0.9188,
+   "group_loyalty": 0.9086
   },
   "window": null
  },
  "against_group": {
-  "count": 1021,
-  "count_main": 149,
-  "party_known": 773,
-  "with_party": 698,
-  "party_known_main": 129,
-  "with_party_main": 121,
+  "count": 1060,
+  "count_main": 152,
+  "party_known": 811,
+  "with_party": 728,
+  "party_known_main": 132,
+  "with_party_main": 124,
   "recent": [
    {
-    "id": 198023,
-    "date": "2026-10-08",
+    "id": 199350,
+    "date": "2026-10-22",
     "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "Après le considérant A - Am 118",
-    "result": "REJECTED",
+    "title": "UN Climate Change Conference 2026 in Antalya, Türkiye (COP31)",
+    "reference": "B10-0468/2026",
+    "description": "Après le § 14 - Am 33",
+    "result": "ADOPTED",
     "is_main": false,
     "counts": {
-     "for": 254,
-     "against": 302,
-     "abstention": 12,
-     "did_not_vote": 151
+     "for": 301,
+     "against": 199,
+     "abstention": 60,
+     "did_not_vote": 160
     },
     "cz": [
      5,
-     9,
-     4,
-     3
-    ],
-    "amendment_number": "118",
-    "texts_adopted_reference": null,
-    "cats": [
-     "def"
-    ],
-    "vote_kind": "amendment",
-    "is_final": false,
-    "inverted": false,
-    "description_cs": "Za bodem odůvodnění A - PN 118",
-    "position": "FOR",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": null
-   },
-   {
-    "id": 198022,
-    "date": "2026-10-08",
-    "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "Après le considérant A - Am 117",
-    "result": "REJECTED",
-    "is_main": false,
-    "counts": {
-     "for": 260,
-     "against": 283,
-     "abstention": 31,
-     "did_not_vote": 145
-    },
-    "cz": [
-     6,
-     10,
-     2,
-     3
-    ],
-    "amendment_number": "117",
-    "texts_adopted_reference": null,
-    "cats": [
-     "def"
-    ],
-    "vote_kind": "amendment",
-    "is_final": false,
-    "inverted": false,
-    "description_cs": "Za bodem odůvodnění A - PN 117",
-    "position": "FOR",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": null
-   },
-   {
-    "id": 197979,
-    "date": "2026-10-08",
-    "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "Après le § 9 - Am 39",
-    "result": "REJECTED",
-    "is_main": false,
-    "counts": {
-     "for": 241,
-     "against": 272,
-     "abstention": 68,
-     "did_not_vote": 138
-    },
-    "cz": [
-     10,
-     7,
      1,
+     12,
      3
     ],
-    "amendment_number": "39",
+    "amendment_number": "33",
     "texts_adopted_reference": null,
     "cats": [
-     "def"
+     "env"
     ],
     "vote_kind": "amendment",
     "is_final": false,
     "inverted": false,
-    "description_cs": "Za odst. 9 - PN 39",
-    "position": "FOR",
+    "description_cs": "Za odst. 14 - PN 33",
+    "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "AGAINST",
-    "party_majority": "FOR"
+    "party_majority": "ABSTENTION"
    },
    {
-    "id": 197943,
-    "date": "2026-10-08",
+    "id": 199495,
+    "date": "2026-10-22",
     "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "§ 1 - Am 31/3",
+    "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+    "reference": "RC-B10-0476/2026",
+    "description": "§ 5/1",
     "result": "ADOPTED",
     "is_main": false,
     "counts": {
-     "for": 348,
-     "against": 169,
+     "for": 516,
+     "against": 21,
      "abstention": 41,
-     "did_not_vote": 161
+     "did_not_vote": 142
     },
     "cz": [
-     5,
-     9,
-     3,
-     4
-    ],
-    "amendment_number": "31",
-    "texts_adopted_reference": null,
-    "cats": [
-     "def"
-    ],
-    "vote_kind": "amendment",
-    "is_final": false,
-    "inverted": false,
-    "description_cs": "Odst. 1 - PN 31, 3. část",
-    "position": "FOR",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": null
-   },
-   {
-    "id": 197942,
-    "date": "2026-10-08",
-    "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "§ 1 - Am 31/2",
-    "result": "ADOPTED",
-    "is_main": false,
-    "counts": {
-     "for": 366,
-     "against": 178,
-     "abstention": 32,
-     "did_not_vote": 143
-    },
-    "cz": [
-     8,
-     8,
-     2,
-     3
-    ],
-    "amendment_number": "31",
-    "texts_adopted_reference": null,
-    "cats": [
-     "def"
-    ],
-    "vote_kind": "amendment",
-    "is_final": false,
-    "inverted": false,
-    "description_cs": "Odst. 1 - PN 31, 2. část",
-    "position": "FOR",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": null
-   },
-   {
-    "id": 197941,
-    "date": "2026-10-08",
-    "month": "2026-10",
-    "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-    "reference": "B10-0424/2026",
-    "description": "§ 1 - Am 31/1",
-    "result": "ADOPTED",
-    "is_main": false,
-    "counts": {
-     "for": 352,
-     "against": 218,
-     "abstention": 9,
-     "did_not_vote": 140
-    },
-    "cz": [
-     11,
-     7,
-     0,
-     3
-    ],
-    "amendment_number": "31",
-    "texts_adopted_reference": null,
-    "cats": [
-     "def"
-    ],
-    "vote_kind": "amendment",
-    "is_final": false,
-    "inverted": false,
-    "description_cs": "Odst. 1 - PN 31, 1. část",
-    "position": "FOR",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": "FOR"
-   },
-   {
-    "id": 197876,
-    "date": "2026-10-08",
-    "month": "2026-10",
-    "title": "Připravovaná protikorupční strategie EU",
-    "reference": "B10-0423/2026",
-    "description": "§ 7 - Am 9",
-    "result": "REJECTED",
-    "is_main": false,
-    "counts": {
-     "for": 83,
-     "against": 427,
-     "abstention": 71,
-     "did_not_vote": 138
-    },
-    "cz": [
-     2,
      15,
      1,
+     2,
      3
     ],
-    "amendment_number": "9",
+    "amendment_number": "§",
     "texts_adopted_reference": null,
     "cats": [
-     "jus"
+     "def",
+     "abr",
+     "jus",
+     "fin"
     ],
-    "vote_kind": "amendment",
+    "vote_kind": "split_part",
     "is_final": false,
     "inverted": false,
-    "description_cs": "Odst. 7 - PN 9",
+    "description_cs": "Odst. 5, 1. část",
     "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR",
-    "party_majority": "AGAINST"
+    "party_majority": "FOR"
    },
    {
-    "id": 198202,
-    "date": "2026-10-08",
+    "id": 199379,
+    "date": "2026-10-22",
     "month": "2026-10",
-    "title": "Pilotní projekt týkající se Evropské školní aliance",
-    "reference": "B10-0436/2026",
-    "description": "Après le considérant I - Am 2",
+    "title": "Zavedení programu Erasmus+ na období 2028–2034 a zrušení nařízení (EU) 2021/817 a (EU) 2021/888",
+    "reference": "A10-0257/2026",
+    "description": "Considérant 27 - Am 173",
     "result": "REJECTED",
     "is_main": false,
     "counts": {
-     "for": 181,
-     "against": 394,
-     "abstention": 10,
-     "did_not_vote": 134
+     "for": 180,
+     "against": 393,
+     "abstention": 4,
+     "did_not_vote": 143
     },
     "cz": [
-     10,
+     12,
      5,
-     3,
+     1,
      3
     ],
-    "amendment_number": "2",
+    "amendment_number": "173",
     "texts_adopted_reference": null,
     "cats": [
      "soc"
@@ -2495,34 +2323,34 @@
     "vote_kind": "amendment",
     "is_final": false,
     "inverted": false,
-    "description_cs": "Za bodem odůvodnění I - PN 2",
+    "description_cs": "Bod odůvodnění 27 - PN 173",
     "position": "ABSTENTION",
     "group_code": "ECR",
     "group_majority": "FOR",
-    "party_majority": null
+    "party_majority": "FOR"
    },
    {
-    "id": 198198,
-    "date": "2026-10-08",
+    "id": 199360,
+    "date": "2026-10-22",
     "month": "2026-10",
-    "title": "Pilotní projekt týkající se Evropské školní aliance",
-    "reference": "B10-0436/2026",
-    "description": "Après le § 6 - Am 7",
-    "result": "REJECTED",
+    "title": "Zavedení programu Erasmus+ na období 2028–2034 a zrušení nařízení (EU) 2021/817 a (EU) 2021/888",
+    "reference": "A10-0257/2026",
+    "description": "Amendements de la commission compétente - vote séparé - Am 4/2",
+    "result": "ADOPTED",
     "is_main": false,
     "counts": {
-     "for": 137,
-     "against": 399,
-     "abstention": 53,
-     "did_not_vote": 130
+     "for": 423,
+     "against": 125,
+     "abstention": 32,
+     "did_not_vote": 140
     },
     "cz": [
+     10,
      8,
-     5,
-     5,
+     0,
      3
     ],
-    "amendment_number": "7",
+    "amendment_number": "4",
     "texts_adopted_reference": null,
     "cats": [
      "soc"
@@ -2530,34 +2358,67 @@
     "vote_kind": "amendment",
     "is_final": false,
     "inverted": false,
-    "description_cs": "Za odst. 6 - PN 7",
+    "description_cs": "Pozměňovací návrhy příslušného výboru - oddělené hlasování - PN 4, 2. část",
     "position": "FOR",
     "group_code": "ECR",
     "group_majority": "ABSTENTION",
     "party_majority": "FOR"
    },
    {
-    "id": 198196,
-    "date": "2026-10-08",
+    "id": 198947,
+    "date": "2026-10-21",
     "month": "2026-10",
-    "title": "Pilotní projekt týkající se Evropské školní aliance",
-    "reference": "B10-0436/2026",
-    "description": "Après le § 3 - Am 5",
-    "result": "REJECTED",
-    "is_main": false,
+    "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+    "reference": "B10-0469/2026",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
     "counts": {
-     "for": 176,
-     "against": 391,
-     "abstention": 11,
-     "did_not_vote": 141
+     "for": 442,
+     "against": 196,
+     "abstention": 9,
+     "did_not_vote": 73
     },
     "cz": [
-     9,
-     5,
-     3,
-     4
+     2,
+     15,
+     2,
+     2
     ],
-    "amendment_number": "5",
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "cats": [],
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
+    "position": "AGAINST",
+    "group_code": "ECR",
+    "group_majority": "FOR",
+    "party_majority": "AGAINST"
+   },
+   {
+    "id": 199335,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Guidelines for the employment policies of the Member States",
+    "reference": "A10-0260/2026",
+    "description": "Amendements de la commission compétente - votes séparés - Am 18/2",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 337,
+     "against": 169,
+     "abstention": 133,
+     "did_not_vote": 81
+    },
+    "cz": [
+     10,
+     5,
+     4,
+     2
+    ],
+    "amendment_number": "18",
     "texts_adopted_reference": null,
     "cats": [
      "soc"
@@ -2565,14 +2426,261 @@
     "vote_kind": "amendment",
     "is_final": false,
     "inverted": false,
-    "description_cs": "Za odst. 3 - PN 5",
-    "position": "ABSTENTION",
+    "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 18, 2. část",
+    "position": "AGAINST",
+    "group_code": "ECR",
+    "group_majority": "ABSTENTION",
+    "party_majority": "ABSTENTION"
+   },
+   {
+    "id": 198937,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Zřízení programu výměny, pomoci a odborného vzdělávání za účelem ochrany eura proti padělání na období 2028–2034 (program „Pericles V“) a zrušení nařízení (EU) 2021/840",
+    "reference": "A10-0256/2026",
+    "description": "Après le considérant 8 - Am 7",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 476,
+     "against": 147,
+     "abstention": 41,
+     "did_not_vote": 56
+    },
+    "cz": [
+     9,
+     10,
+     1,
+     1
+    ],
+    "amendment_number": "7",
+    "texts_adopted_reference": null,
+    "cats": [
+     "jus",
+     "fin"
+    ],
+    "vote_kind": "amendment",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Za bodem odůvodnění 8 - PN 7",
+    "position": "FOR",
+    "group_code": "ECR",
+    "group_majority": "ABSTENTION",
+    "party_majority": "FOR"
+   },
+   {
+    "id": 198409,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+    "reference": "A10-0273/2026",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 609,
+     "against": 51,
+     "abstention": 14,
+     "did_not_vote": 46
+    },
+    "cz": [
+     14,
+     4,
+     2,
+     1
+    ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "cats": [
+     "soc",
+     "fin"
+    ],
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
+    "position": "AGAINST",
     "group_code": "ECR",
     "group_majority": "FOR",
-    "party_majority": null
+    "party_majority": "AGAINST"
+   },
+   {
+    "id": 199071,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+    "reference": "A10-0272/2026",
+    "description": "Visa 10",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 426,
+     "against": 182,
+     "abstention": 60,
+     "did_not_vote": 52
+    },
+    "cz": [
+     7,
+     12,
+     0,
+     2
+    ],
+    "amendment_number": "§",
+    "texts_adopted_reference": null,
+    "cats": [
+     "fin"
+    ],
+    "vote_kind": "split_part",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Právní východisko 10",
+    "position": "FOR",
+    "group_code": "ECR",
+    "group_majority": "AGAINST",
+    "party_majority": "AGAINST"
+   },
+   {
+    "id": 199068,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+    "reference": "A10-0272/2026",
+    "description": "§ 49, point c",
+    "result": "ADOPTED",
+    "is_main": false,
+    "counts": {
+     "for": 438,
+     "against": 143,
+     "abstention": 89,
+     "did_not_vote": 50
+    },
+    "cz": [
+     7,
+     12,
+     0,
+     2
+    ],
+    "amendment_number": "§",
+    "texts_adopted_reference": null,
+    "cats": [
+     "fin"
+    ],
+    "vote_kind": "split_part",
+    "is_final": false,
+    "inverted": false,
+    "description_cs": "Odst. 49, písm. c",
+    "position": "FOR",
+    "group_code": "ECR",
+    "group_majority": "ABSTENTION",
+    "party_majority": "AGAINST"
    }
   ],
   "recent_main": [
+   {
+    "id": 198947,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+    "reference": "B10-0469/2026",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 442,
+     "against": 196,
+     "abstention": 9,
+     "did_not_vote": 73
+    },
+    "cz": [
+     2,
+     15,
+     2,
+     2
+    ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "cats": [],
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
+    "position": "AGAINST",
+    "group_code": "ECR",
+    "group_majority": "FOR",
+    "party_majority": "AGAINST"
+   },
+   {
+    "id": 198409,
+    "date": "2026-10-21",
+    "month": "2026-10",
+    "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+    "reference": "A10-0273/2026",
+    "description": "Proposition de résolution (ensemble du texte)",
+    "result": "ADOPTED",
+    "is_main": true,
+    "counts": {
+     "for": 609,
+     "against": 51,
+     "abstention": 14,
+     "did_not_vote": 46
+    },
+    "cz": [
+     14,
+     4,
+     2,
+     1
+    ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "cats": [
+     "soc",
+     "fin"
+    ],
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení (celý text)",
+    "position": "AGAINST",
+    "group_code": "ECR",
+    "group_majority": "FOR",
+    "party_majority": "AGAINST"
+   },
+   {
+    "id": 198885,
+    "date": "2026-10-20",
+    "month": "2026-10",
+    "title": "Objection pursuant to Rule 114(3): Certification methodologies for carbon farming activities",
+    "reference": "B10-0471/2026",
+    "description": "Proposition de résolution",
+    "result": "REJECTED",
+    "is_main": true,
+    "counts": {
+     "for": 199,
+     "against": 407,
+     "abstention": 45,
+     "did_not_vote": 69
+    },
+    "cz": [
+     5,
+     16,
+     0,
+     0
+    ],
+    "amendment_number": null,
+    "texts_adopted_reference": null,
+    "cats": [
+     "env",
+     "eco"
+    ],
+    "vote_kind": "final",
+    "is_final": true,
+    "inverted": false,
+    "description_cs": "Návrh usnesení",
+    "position": "FOR",
+    "group_code": "ECR",
+    "group_majority": "AGAINST",
+    "party_majority": "FOR"
+   },
    {
     "id": 197497,
     "date": "2026-10-07",
@@ -2822,122 +2930,80 @@
     "group_code": "ECR",
     "group_majority": "AGAINST",
     "party_majority": null
-   },
-   {
-    "id": 196147,
-    "date": "2026-09-17",
-    "month": "2026-09",
-    "title": "Dopad sociálních médií a online prostředí na mladé lidi",
-    "reference": "A10-0220/2026",
-    "description": "Proposition de résolution (ensemble du texte)",
-    "result": "ADOPTED",
-    "is_main": true,
-    "counts": {
-     "for": 395,
-     "against": 136,
-     "abstention": 80,
-     "did_not_vote": 106
-    },
-    "cz": [
-     6,
-     1,
-     8,
-     6
-    ],
-    "amendment_number": null,
-    "texts_adopted_reference": "P10_TA(2026)0313",
-    "cats": [
-     "dig",
-     "soc"
-    ],
-    "vote_kind": "final",
-    "is_final": true,
-    "inverted": false,
-    "description_cs": "Návrh usnesení (celý text)",
-    "position": "ABSTENTION",
-    "group_code": "ECR",
-    "group_majority": "AGAINST",
-    "party_majority": null
-   },
-   {
-    "id": 196483,
-    "date": "2026-09-16",
-    "month": "2026-09",
-    "title": "Námitka podle čl. 115 odst. 2 a 3 jednacího řádu týkající se obnovení povolení uvedení produktů, které obsahují geneticky modifikovanou kukuřici MON 87460, sestávají z ní nebo jsou z ní vyrobeny, na trh podle nařízení Evropského parlamentu a Rady (ES) č. 1829/2003 – D115874",
-    "reference": "B10-0381/2026",
-    "description": "Proposition de résolution",
-    "result": "ADOPTED",
-    "is_main": true,
-    "counts": {
-     "for": 433,
-     "against": 159,
-     "abstention": 10,
-     "did_not_vote": 115
-    },
-    "cz": [
-     3,
-     12,
-     0,
-     6
-    ],
-    "amendment_number": null,
-    "texts_adopted_reference": "P10_TA(2026)0308",
-    "cats": [
-     "agr"
-    ],
-    "vote_kind": "final",
-    "is_final": true,
-    "inverted": false,
-    "description_cs": "Návrh usnesení",
-    "position": "AGAINST",
-    "group_code": "ECR",
-    "group_majority": "FOR",
-    "party_majority": "AGAINST"
-   },
-   {
-    "id": 196510,
-    "date": "2026-09-16",
-    "month": "2026-09",
-    "title": "Námitka podle čl. 115 odst. 2 a 3 jednacího řádu týkající se povolení uvedení produktů, které obsahují geneticky modifikovanou sóju MON 94313, sestávají z ní nebo jsou z ní vyrobeny, na trh podle nařízení Evropského parlamentu a Rady (ES) č. 1829/2003 – D115872",
-    "reference": "B10-0379/2026",
-    "description": "Proposition de résolution",
-    "result": "ADOPTED",
-    "is_main": true,
-    "counts": {
-     "for": 457,
-     "against": 184,
-     "abstention": 10,
-     "did_not_vote": 66
-    },
-    "cz": [
-     3,
-     12,
-     0,
-     6
-    ],
-    "amendment_number": null,
-    "texts_adopted_reference": "P10_TA(2026)0307",
-    "cats": [
-     "agr"
-    ],
-    "vote_kind": "final",
-    "is_final": true,
-    "inverted": false,
-    "description_cs": "Návrh usnesení",
-    "position": "AGAINST",
-    "group_code": "ECR",
-    "group_majority": "FOR",
-    "party_majority": "AGAINST"
    }
   ]
  },
  "decisive": [
   {
+   "id": 199339,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 298,
+    "against": 307,
+    "abstention": 51,
+    "did_not_vote": 64
+   },
+   "cz": [
+    3,
+    16,
+    1,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 3. část",
+   "position": "AGAINST"
+  },
+  {
+   "id": 199338,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 314,
+    "against": 317,
+    "abstention": 20,
+    "did_not_vote": 69
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 2. část",
+   "position": "AGAINST"
+  },
+  {
    "id": 195767,
    "date": "2026-07-09",
    "month": "2026-07",
    "title": "Hrozba válečných zločinů, stupňující se porušování mezinárodního humanitárního práva a situace v oblasti lidských práv v súdánském El-Obeidu",
-   "reference": "B10-0357/2026",
+   "reference": "RC-B10-0357/2026",
    "description": "§ 7/2",
    "result": "REJECTED",
    "is_main": false,
@@ -3957,48 +4023,48 @@
    "label": "Common foreign and security policy (CFSP)",
    "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)",
    "attendance": [
-    1479,
-    1562
+    1506,
+    1589
    ],
    "attendance_main": [
-    117,
-    121
+    119,
+    123
    ],
    "group_loyalty": [
-    1329,
-    1476
+    1355,
+    1503
    ],
    "group_loyalty_main": [
-    106,
-    115
+    108,
+    117
    ],
    "cz_agreement": [
-    1121,
-    1412
+    1141,
+    1438
    ],
    "outcome": [
-    942,
-    1352
+    966,
+    1379
    ],
    "outcome_main": [
-    99,
-    100
+    101,
+    102
    ],
    "outcome_close": [
-    10,
-    24
+    11,
+    25
    ],
    "group_outcome": [
-    58059,
-    87603
+    59544,
+    89257
    ],
    "group_outcome_main": [
-    5713,
-    5972
+    5838,
+    6099
    ],
    "positions": {
-    "FOR": 772,
-    "AGAINST": 580,
+    "FOR": 783,
+    "AGAINST": 596,
     "ABSTENTION": 127,
     "DID_NOT_VOTE": 83
    }
@@ -4008,50 +4074,50 @@
    "label": "Budget of the Union",
    "label_cs": "Rozpočet Unie",
    "attendance": [
-    901,
-    922
+    1011,
+    1033
    ],
    "attendance_main": [
-    89,
-    91
+    92,
+    94
    ],
    "group_loyalty": [
-    721,
-    898
+    804,
+    1008
    ],
    "group_loyalty_main": [
-    51,
-    88
+    53,
+    91
    ],
    "cz_agreement": [
-    664,
-    876
+    746,
+    981
    ],
    "outcome": [
-    353,
-    808
+    399,
+    905
    ],
    "outcome_main": [
     40,
-    72
+    74
    ],
    "outcome_close": [
     13,
     20
    ],
    "group_outcome": [
-    21945,
-    53427
+    24746,
+    59558
    ],
    "group_outcome_main": [
-    3288,
-    4497
+    3372,
+    4656
    ],
    "positions": {
-    "FOR": 451,
-    "AGAINST": 357,
-    "ABSTENTION": 93,
-    "DID_NOT_VOTE": 21
+    "FOR": 499,
+    "AGAINST": 406,
+    "ABSTENTION": 106,
+    "DID_NOT_VOTE": 22
    }
   },
   {
@@ -4059,49 +4125,49 @@
    "label": "Social policy, social charter and protocol",
    "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
-    670,
-    709
+    679,
+    718
    ],
    "attendance_main": [
-    32,
-    34
+    33,
+    35
    ],
    "group_loyalty": [
-    491,
-    669
+    498,
+    678
    ],
    "group_loyalty_main": [
-    23,
-    32
+    24,
+    33
    ],
    "cz_agreement": [
-    480,
-    645
+    488,
+    654
    ],
    "outcome": [
-    352,
-    590
+    354,
+    598
    ],
    "outcome_main": [
-    11,
-    28
+    12,
+    29
    ],
    "outcome_close": [
     11,
     30
    ],
    "group_outcome": [
-    18822,
-    37259
+    18864,
+    37693
    ],
    "group_outcome_main": [
-    705,
-    1596
+    734,
+    1632
    ],
    "positions": {
-    "FOR": 274,
-    "AGAINST": 316,
-    "ABSTENTION": 80,
+    "FOR": 281,
+    "AGAINST": 317,
+    "ABSTENTION": 81,
     "DID_NOT_VOTE": 39
    }
   },
@@ -4110,49 +4176,49 @@
    "label": "Environmental policy",
    "label_cs": "Politika životního prostředí",
    "attendance": [
-    523,
-    553
+    583,
+    613
    ],
    "attendance_main": [
-    53,
-    60
+    61,
+    68
    ],
    "group_loyalty": [
-    473,
-    523
+    531,
+    583
    ],
    "group_loyalty_main": [
-    43,
-    53
+    50,
+    61
    ],
    "cz_agreement": [
-    443,
-    509
+    493,
+    569
    ],
    "outcome": [
-    248,
-    500
+    276,
+    558
    ],
    "outcome_main": [
-    35,
-    45
+    42,
+    53
    ],
    "outcome_close": [
-    2,
-    5
+    3,
+    7
    ],
    "group_outcome": [
-    15330,
-    34698
+    17362,
+    38582
    ],
    "group_outcome_main": [
-    2141,
-    2987
+    2678,
+    3546
    ],
    "positions": {
-    "FOR": 338,
-    "AGAINST": 162,
-    "ABSTENTION": 23,
+    "FOR": 383,
+    "AGAINST": 175,
+    "ABSTENTION": 25,
     "DID_NOT_VOTE": 30
    }
   },
@@ -4161,48 +4227,48 @@
    "label": "Relations with third countries",
    "label_cs": "Vztahy se třetími zeměmi",
    "attendance": [
-    438,
-    487
+    454,
+    503
    ],
    "attendance_main": [
-    46,
-    50
+    47,
+    51
    ],
    "group_loyalty": [
-    331,
-    436
+    346,
+    452
    ],
    "group_loyalty_main": [
-    39,
-    44
+    40,
+    45
    ],
    "cz_agreement": [
-    310,
-    428
+    320,
+    443
    ],
    "outcome": [
-    244,
-    391
+    258,
+    407
    ],
    "outcome_main": [
-    36,
-    42
+    37,
+    43
    ],
    "outcome_close": [
     11,
     18
    ],
    "group_outcome": [
-    13330,
-    25786
+    14194,
+    26750
    ],
    "group_outcome_main": [
-    2308,
-    2698
+    2366,
+    2758
    ],
    "positions": {
-    "FOR": 248,
-    "AGAINST": 143,
+    "FOR": 255,
+    "AGAINST": 152,
     "ABSTENTION": 47,
     "DID_NOT_VOTE": 49
    }
@@ -4314,47 +4380,47 @@
    "label": "Institutions of the Union",
    "label_cs": "Orgány Unie",
    "attendance": [
-    259,
-    287
+    258,
+    286
    ],
    "attendance_main": [
-    35,
-    39
+    34,
+    38
    ],
    "group_loyalty": [
-    203,
-    259
+    202,
+    258
    ],
    "group_loyalty_main": [
-    26,
-    35
+    25,
+    34
    ],
    "cz_agreement": [
-    188,
-    248
+    187,
+    247
    ],
    "outcome": [
-    105,
-    227
+    104,
+    226
    ],
    "outcome_main": [
-    20,
-    27
+    19,
+    26
    ],
    "outcome_close": [
     0,
     2
    ],
    "group_outcome": [
-    5674,
-    15829
+    5607,
+    15762
    ],
    "group_outcome_main": [
-    1313,
-    1810
+    1246,
+    1743
    ],
    "positions": {
-    "FOR": 133,
+    "FOR": 132,
     "AGAINST": 94,
     "ABSTENTION": 32,
     "DID_NOT_VOTE": 28
@@ -4416,76 +4482,76 @@
    "label": "Enterprise policy, inter-company cooperation",
    "label_cs": "Podniková politika, spolupráce podniků",
    "attendance": [
-    224,
-    225
+    226,
+    227
    ],
    "attendance_main": [
-    16,
-    16
+    17,
+    17
    ],
    "group_loyalty": [
-    217,
-    223
+    219,
+    225
    ],
    "group_loyalty_main": [
-    15,
-    16
+    16,
+    17
    ],
    "cz_agreement": [
-    202,
-    222
+    204,
+    224
    ],
    "outcome": [
-    150,
-    219
+    152,
+    221
    ],
    "outcome_main": [
-    13,
-    15
+    14,
+    16
    ],
    "outcome_close": [
     2,
     3
    ],
    "group_outcome": [
-    10838,
-    15741
+    10964,
+    15867
    ],
    "group_outcome_main": [
-    835,
-    950
+    898,
+    1013
    ],
    "positions": {
-    "FOR": 127,
-    "AGAINST": 92,
+    "FOR": 128,
+    "AGAINST": 93,
     "ABSTENTION": 5,
     "DID_NOT_VOTE": 1
    }
   }
  ],
  "activity": {
-  "speeches": 40,
-  "speeches_minutes": 46.0,
-  "speeches_timed": 40,
-  "speech_items": 38,
+  "speeches": 42,
+  "speeches_minutes": 48.2,
+  "speeches_timed": 42,
+  "speech_items": 40,
   "written_statements": 1,
   "source": {
    "name": "EP Open Data API v2, /speeches",
    "url": "https://data.europarl.europa.eu/api/v2/speeches",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-19"
+  "updated": "2026-10-24"
  },
  "presence": {
-  "present": 111,
+  "present": 115,
   "excused": 1,
-  "days": 120,
+  "days": 124,
   "source": {
    "name": "EP Open Data API v2, /meetings (prezenční listiny)",
    "url": "https://data.europarl.europa.eu/api/v2/meetings",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-19"
+  "updated": "2026-10-24"
  },
  "own_work": {
   "source": {
@@ -4529,15 +4595,15 @@
     "count": 99,
     "voted": 0,
     "adopted": 0,
-    "no_vote": 27,
+    "no_vote": 26,
     "other": 0,
-    "superseded": 72
+    "superseded": 73
    },
    "joint_motion": {
     "count": 75,
-    "voted": 55,
-    "adopted": 55,
-    "no_vote": 20,
+    "voted": 56,
+    "adopted": 56,
+    "no_vote": 19,
     "other": 0
    },
    "question": {
@@ -4552,7 +4618,7 @@
    "shadow_adopted": 1,
    "shadow_adopted_legislative": 1,
    "shadow_pending": 2,
-   "resolutions_adopted": 55
+   "resolutions_adopted": 56
   },
   "roles": {
    "lead_reports": 11,
@@ -4600,9 +4666,9 @@
     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
     "type": "joint_motion",
     "role": "AUTHOR",
-    "status": "no_vote",
-    "vote_id": null,
-    "vote_date": null,
+    "status": "ADOPTED",
+    "vote_id": 199517,
+    "vote_date": "2026-10-22",
     "signatories_total": 77
    },
    {
@@ -4632,10 +4698,13 @@
     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
     "type": "motion",
     "role": "AUTHOR",
-    "status": "no_vote",
+    "status": "superseded",
     "vote_id": null,
     "vote_date": null,
-    "signatories_total": 30
+    "signatories_total": 30,
+    "joint_motion": "RC-10-2026-0476",
+    "joint_result": "ADOPTED",
+    "joint_vote_id": 199517
    },
    {
     "id": "RC-10-2026-0452",

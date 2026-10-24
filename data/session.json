@@ -4,7 +4,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -12,355 +12,426 @@
    "license": "CC BY 4.0"
   }
  },
- "from": "2026-10-05",
- "to": "2026-10-08",
- "votes": 227,
- "main": 25,
- "adopted_main": 21,
- "split_count": 219,
+ "from": "2026-10-19",
+ "to": "2026-10-22",
+ "votes": 257,
+ "main": 24,
+ "adopted_main": 23,
+ "split_count": 234,
  "unity": {
-  "united": 8,
-  "considered": 227,
-  "strong_split": 48
+  "united": 23,
+  "considered": 257,
+  "strong_split": 52
  },
  "unity_all": {
-  "united": 472,
-  "considered": 6154,
-  "strong_split": 2308,
-  "united_final": 141,
-  "considered_final": 641,
+  "united": 495,
+  "considered": 6411,
+  "strong_split": 2360,
+  "united_final": 150,
+  "considered_final": 665,
   "strong_threshold": 0.3
  },
  "decisive_final": 0,
- "close_count": 4,
+ "close_count": 5,
  "top_splits": [
   {
-   "id": 197942,
-   "date": "2026-10-08",
+   "id": 199038,
+   "date": "2026-10-21",
    "month": "2026-10",
-   "title": "Potřeba vypracovat strategii EU pro boj proti islamistickému entrismu a vlivu sítě Muslimského bratrstva",
-   "reference": "B10-0424/2026",
-   "description": "§ 1 - Am 31/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 366,
-    "against": 178,
-    "abstention": 32,
-    "did_not_vote": 143
-   },
-   "cz": [
-    8,
-    8,
-    2,
-    3
-   ],
-   "amendment_number": "31",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 1 - PN 31, 2. část",
-   "split": 0.5
-  },
-  {
-   "id": 197467,
-   "date": "2026-10-06",
-   "month": "2026-10",
-   "title": "Změna nařízení 2007/2/ES, pokud jde o zjednodušení některých požadavků na zřízení infrastruktury pro prostorové informace v Unii",
-   "reference": "A10-0233/2026",
-   "description": "Proposition de la Commission",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 515,
-    "against": 108,
-    "abstention": 35,
-    "did_not_vote": 61
-   },
-   "cz": [
-    10,
-    9,
-    1,
-    1
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0325",
-   "cats": [
-    "env",
-    "eco",
-    "civ"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh Komise",
-   "split": 0.4737
-  },
-  {
-   "id": 198197,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Pilotní projekt týkající se Evropské školní aliance",
-   "reference": "B10-0436/2026",
-   "description": "§ 6 - Am 6",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Après le § 32 - Am 48",
    "result": "REJECTED",
    "is_main": false,
    "counts": {
-    "for": 112,
-    "against": 447,
-    "abstention": 30,
-    "did_not_vote": 130
+    "for": 129,
+    "against": 480,
+    "abstention": 49,
+    "did_not_vote": 62
    },
    "cz": [
-    8,
-    9,
-    1,
-    3
+    10,
+    10,
+    0,
+    1
    ],
-   "amendment_number": "6",
+   "amendment_number": "48",
    "texts_adopted_reference": null,
    "cats": [
-    "soc"
+    "fin"
    ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
-   "description_cs": "Odst. 6 - PN 6",
-   "split": 0.4706
+   "description_cs": "Za odst. 32 - PN 48",
+   "split": 0.5
   },
   {
-   "id": 197630,
-   "date": "2026-10-06",
+   "id": 198974,
+   "date": "2026-10-21",
    "month": "2026-10",
-   "title": "Psychosociální rizika, stres a duševní zdraví na pracovišti",
-   "reference": "A10-0225/2026",
-   "description": "Annexe",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Après le § 1 - Am 24",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 124,
+    "against": 450,
+    "abstention": 83,
+    "did_not_vote": 63
+   },
+   "cz": [
+    9,
+    9,
+    1,
+    2
+   ],
+   "amendment_number": "24",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 1 - PN 24",
+   "split": 0.5
+  },
+  {
+   "id": 199491,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
+   "description": "Après le § 4 - Am 3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 128,
+    "against": 425,
+    "abstention": 27,
+    "did_not_vote": 140
+   },
+   "cz": [
+    9,
+    9,
+    0,
+    3
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 4 - PN 3",
+   "split": 0.5
+  },
+  {
+   "id": 199492,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
+   "description": "Après le § 4 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 116,
+    "against": 441,
+    "abstention": 16,
+    "did_not_vote": 147
+   },
+   "cz": [
+    9,
+    9,
+    0,
+    3
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 4 - PN 1",
+   "split": 0.5
+  },
+  {
+   "id": 199502,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
+   "description": "§ 7/1",
    "result": "ADOPTED",
    "is_main": false,
    "counts": {
-    "for": 434,
-    "against": 137,
-    "abstention": 84,
-    "did_not_vote": 64
+    "for": 384,
+    "against": 138,
+    "abstention": 48,
+    "did_not_vote": 150
    },
    "cz": [
-    7,
-    8,
-    5,
-    1
+    9,
+    9,
+    0,
+    3
    ],
    "amendment_number": "§",
    "texts_adopted_reference": null,
    "cats": [
-    "soc"
+    "def",
+    "abr",
+    "jus",
+    "fin"
    ],
    "vote_kind": "split_part",
    "is_final": false,
    "inverted": false,
-   "description_cs": "Příloha",
-   "split": 0.4667
-  },
-  {
-   "id": 197878,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Připravovaná protikorupční strategie EU",
-   "reference": "B10-0423/2026",
-   "description": "Après le § 7 - Am 11",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 171,
-    "against": 278,
-    "abstention": 138,
-    "did_not_vote": 132
-   },
-   "cz": [
-    7,
-    8,
-    2,
-    4
-   ],
-   "amendment_number": "11",
-   "texts_adopted_reference": null,
-   "cats": [
-    "jus"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 7 - PN 11",
-   "split": 0.4667
+   "description_cs": "Odst. 7, 1. část",
+   "split": 0.5
   }
  ],
  "top_splits_main": [
   {
-   "id": 197467,
-   "date": "2026-10-06",
+   "id": 198774,
+   "date": "2026-10-21",
    "month": "2026-10",
-   "title": "Změna nařízení 2007/2/ES, pokud jde o zjednodušení některých požadavků na zřízení infrastruktury pro prostorové informace v Unii",
-   "reference": "A10-0233/2026",
-   "description": "Proposition de la Commission",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 515,
-    "against": 108,
-    "abstention": 35,
-    "did_not_vote": 61
-   },
-   "cz": [
-    10,
-    9,
-    1,
-    1
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0325",
-   "cats": [
-    "env",
-    "eco",
-    "civ"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh Komise",
-   "split": 0.4737
-  },
-  {
-   "id": 197484,
-   "date": "2026-10-06",
-   "month": "2026-10",
-   "title": "Psychosociální rizika, stres a duševní zdraví na pracovišti",
-   "reference": "A10-0225/2026",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "is_main": true,
    "counts": {
-    "for": 413,
-    "against": 210,
-    "abstention": 29,
-    "did_not_vote": 67
+    "for": 400,
+    "against": 189,
+    "abstention": 84,
+    "did_not_vote": 47
    },
    "cz": [
-    8,
-    6,
-    6,
-    1
+    4,
+    4,
+    11,
+    2
    ],
    "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0326",
+   "texts_adopted_reference": null,
    "cats": [
-    "soc"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)",
-   "split": 0.4286
-  },
-  {
-   "id": 197472,
-   "date": "2026-10-06",
-   "month": "2026-10",
-   "title": "Změna nařízení Rady (ES) č. 332/2002, pokud jde o finanční ujednání a použití diverzifikované strategie financování",
-   "reference": "A10-0206/2026",
-   "description": "Projet de règlement du Conseil",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 462,
-    "against": 121,
-    "abstention": 75,
-    "did_not_vote": 61
-   },
-   "cz": [
-    12,
-    7,
-    1,
-    1
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0324",
-   "cats": [
-    "abr",
     "fin"
    ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
-   "description_cs": "Návrh nařízení Rady",
-   "split": 0.3684
+   "description_cs": "Návrh usnesení (celý text)",
+   "split": 0.5
   },
   {
-   "id": 198193,
-   "date": "2026-10-08",
+   "id": 198386,
+   "date": "2026-10-21",
    "month": "2026-10",
-   "title": "Nařízení Komise, kterým se mění příloha XVII nařízení Evropského parlamentu a Rady (ES) č. 1907/2006 o registraci, hodnocení, povolování a omezování chemických látek, pokud jde o olovo v brokových střelách",
-   "reference": "B10-0431/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Proposition de la Commission au Conseil",
+   "result": "ADOPTED",
    "is_main": true,
    "counts": {
-    "for": 166,
-    "against": 346,
-    "abstention": 21,
-    "did_not_vote": 186
+    "for": 434,
+    "against": 212,
+    "abstention": 23,
+    "did_not_vote": 51
    },
    "cz": [
-    11,
     5,
-    1,
-    4
+    8,
+    7,
+    1
    ],
    "amendment_number": null,
    "texts_adopted_reference": null,
    "cats": [
-    "env"
+    "soc"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise Radě",
+   "split": 0.3846
+  },
+  {
+   "id": 198357,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Udělení absolutoria za rok 2024: souhrnný rozpočet EU – Evropská rada a Rada",
+   "reference": "A10-0258/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 434,
+    "against": 203,
+    "abstention": 21,
+    "did_not_vote": 62
+   },
+   "cz": [
+    5,
+    15,
+    0,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "split": 0.25
+  },
+  {
+   "id": 198885,
+   "date": "2026-10-20",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 114(3): Certification methodologies for carbon farming activities",
+   "reference": "B10-0471/2026",
+   "description": "Proposition de résolution",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 199,
+    "against": 407,
+    "abstention": 45,
+    "did_not_vote": 69
+   },
+   "cz": [
+    5,
+    16,
+    0,
+    0
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "eco"
    ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
    "description_cs": "Návrh usnesení",
-   "split": 0.3125
+   "split": 0.2381
   },
   {
-   "id": 197509,
-   "date": "2026-10-07",
+   "id": 198409,
+   "date": "2026-10-21",
    "month": "2026-10",
-   "title": "Opatření k usnadnění konzulární ochrany nezastoupených občanů Unie ve třetích zemích",
-   "reference": "A10-0254/2026",
-   "description": "Proposition de la Commission",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+   "reference": "A10-0273/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "is_main": true,
    "counts": {
-    "for": 470,
-    "against": 180,
-    "abstention": 18,
-    "did_not_vote": 51
+    "for": 609,
+    "against": 51,
+    "abstention": 14,
+    "did_not_vote": 46
    },
    "cz": [
-    10,
+    14,
     4,
-    6,
+    2,
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0330",
+   "texts_adopted_reference": null,
    "cats": [
-    "civ"
+    "soc",
+    "fin"
    ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
-   "description_cs": "Návrh Komise",
-   "split": 0.2857
+   "description_cs": "Návrh usnesení (celý text)",
+   "split": 0.2222
   }
  ],
- "decisive": []
+ "decisive": [
+  {
+   "id": 199339,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 298,
+    "against": 307,
+    "abstention": 51,
+    "did_not_vote": 64
+   },
+   "cz": [
+    3,
+    16,
+    1,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 3. část",
+   "alternative_result": "ADOPTED"
+  },
+  {
+   "id": 199338,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Guidelines for the employment policies of the Member States",
+   "reference": "A10-0260/2026",
+   "description": "Amendements de la commission compétente - votes séparés - Am 17/2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 314,
+    "against": 317,
+    "abstention": 20,
+    "did_not_vote": 69
+   },
+   "cz": [
+    4,
+    16,
+    0,
+    1
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 2. část",
+   "alternative_result": "ADOPTED"
+  }
+ ]
 }

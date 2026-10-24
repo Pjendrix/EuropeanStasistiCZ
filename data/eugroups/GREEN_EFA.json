@@ -12,31 +12,31 @@
  "seats": 53,
  "n_countries": 17,
  "attendance": [
-  292704,
-  326162
+  304457,
+  339783
  ],
  "attendance_main": [
-  30446,
-  33973
+  31570,
+  35245
  ],
  "majority": [
-  273052,
-  279170
+  284198,
+  290728
  ],
  "majority_main": [
-  28138,
-  28738
+  29217,
+  29836
  ],
- "splits": 88,
- "considered": 6043,
+ "splits": 89,
+ "considered": 6298,
  "splits_main": 15,
- "considered_main": 624,
+ "considered_main": 648,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -73,57 +73,57 @@
    "end": null,
    "total": {
     "attendance": [
-     5604,
-     6154
+     5861,
+     6411
     ],
     "attendance_main": [
-     581,
-     641
+     605,
+     665
     ],
     "group_loyalty": [
-     5405,
-     5603
+     5657,
+     5860
     ],
     "group_loyalty_main": [
-     552,
-     581
+     575,
+     605
     ],
     "cz_agreement": [
-     1597,
-     5449
+     1684,
+     5697
     ],
     "outcome": [
-     4101,
-     5337
+     4324,
+     5589
     ],
     "outcome_main": [
-     495,
-     556
+     514,
+     579
     ],
     "outcome_close": [
-     70,
-     131
+     71,
+     136
     ],
     "group_outcome": [
-     189643,
-     249854
+     199394,
+     261260
     ],
     "group_outcome_main": [
-     22359,
-     25566
+     23221,
+     26620
     ],
     "positions": {
-     "FOR": 2928,
-     "AGAINST": 2410,
-     "ABSTENTION": 266,
+     "FOR": 3003,
+     "AGAINST": 2587,
+     "ABSTENTION": 271,
      "DID_NOT_VOTE": 550
     }
    }
   }
  ],
  "countries": {
-  "as_of": "2026-10-08",
-  "vote_id": 198051,
+  "as_of": "2026-10-22",
+  "vote_id": 199356,
   "seats": 53,
   "n_countries": 17,
   "by_country": [
@@ -218,7 +218,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-17"
+  "release": "2026-10-24"
  },
  "chairs": [
   {
@@ -244,7 +244,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-20"
+  "updated": "2026-10-24"
  },
  "splits_list": [
   {
@@ -1743,13 +1743,13 @@
     "for": 71,
     "against": 460,
     "abstention": 80,
-    "did_not_vote": 106
+    "did_not_vote": 107
    },
    "cz": [
     0,
     12,
     4,
-    4
+    5
    ],
    "amendment_number": "23",
    "texts_adopted_reference": "P10_TA(2024)0012",

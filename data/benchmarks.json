@@ -2,65 +2,65 @@
  "min_votes": 100,
  "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
  "ep": {
-  "meps": 742,
-  "attendance": 0.8991,
-  "attendance_main": 0.9056,
-  "group_loyalty": 0.9322
+  "meps": 743,
+  "attendance": 0.8997,
+  "attendance_main": 0.9053,
+  "group_loyalty": 0.9325
  },
  "groups": {
   "ECR": {
    "meps": 85,
-   "attendance": 0.9166,
-   "attendance_main": 0.9173,
-   "group_loyalty": 0.9115
+   "attendance": 0.9151,
+   "attendance_main": 0.9188,
+   "group_loyalty": 0.9086
   },
   "EPP": {
-   "meps": 197,
-   "attendance": 0.898,
-   "attendance_main": 0.908,
-   "group_loyalty": 0.9365
+   "meps": 198,
+   "attendance": 0.8978,
+   "attendance_main": 0.9053,
+   "group_loyalty": 0.9367
   },
   "ESN": {
    "meps": 28,
-   "attendance": 0.9144,
-   "attendance_main": 0.915,
-   "group_loyalty": 0.9392
+   "attendance": 0.913,
+   "attendance_main": 0.9105,
+   "group_loyalty": 0.9382
   },
   "GREEN_EFA": {
    "meps": 54,
-   "attendance": 0.9192,
-   "attendance_main": 0.9212,
-   "group_loyalty": 0.9714
+   "attendance": 0.9203,
+   "attendance_main": 0.9195,
+   "group_loyalty": 0.9724
   },
   "GUE_NGL": {
    "meps": 48,
-   "attendance": 0.8823,
-   "attendance_main": 0.8744,
-   "group_loyalty": 0.926
+   "attendance": 0.884,
+   "attendance_main": 0.8789,
+   "group_loyalty": 0.9262
   },
   "NI": {
    "meps": 40,
-   "attendance": 0.9076,
-   "attendance_main": 0.9148,
+   "attendance": 0.9087,
+   "attendance_main": 0.9128,
    "group_loyalty": null
   },
   "PFE": {
    "meps": 95,
-   "attendance": 0.8887,
-   "attendance_main": 0.895,
-   "group_loyalty": 0.8311
+   "attendance": 0.8897,
+   "attendance_main": 0.9008,
+   "group_loyalty": 0.8272
   },
   "RENEW": {
    "meps": 81,
-   "attendance": 0.8988,
-   "attendance_main": 0.9095,
-   "group_loyalty": 0.9549
+   "attendance": 0.9019,
+   "attendance_main": 0.9113,
+   "group_loyalty": 0.9552
   },
   "SD": {
    "meps": 139,
-   "attendance": 0.8906,
-   "attendance_main": 0.8924,
-   "group_loyalty": 0.9627
+   "attendance": 0.893,
+   "attendance_main": 0.8932,
+   "group_loyalty": 0.9626
   }
  },
  "windows": {
@@ -114,8 +114,8 @@
     },
     "PFE": {
      "meps": 88,
-     "attendance": 0.9255,
-     "attendance_main": 0.9209,
+     "attendance": 0.9207,
+     "attendance_main": 0.9186,
      "group_loyalty": 0.8001
     },
     "RENEW": {
@@ -207,7 +207,7 @@
    "min_votes": 100,
    "ep": {
     "meps": 728,
-    "attendance": 0.9139,
+    "attendance": 0.9137,
     "attendance_main": 0.918,
     "group_loyalty": 0.9366
    },
@@ -250,7 +250,7 @@
     },
     "PFE": {
      "meps": 89,
-     "attendance": 0.9282,
+     "attendance": 0.9265,
      "attendance_main": 0.9221,
      "group_loyalty": 0.8053
     },
@@ -271,112 +271,112 @@
   "2024-08-01_": {
    "from": "2024-08-01",
    "to": null,
-   "votes": 6130,
+   "votes": 6387,
    "min_votes": 100,
    "ep": {
-    "meps": 739,
-    "attendance": 0.8988,
-    "attendance_main": 0.9062,
-    "group_loyalty": 0.9319
+    "meps": 740,
+    "attendance": 0.8995,
+    "attendance_main": 0.9051,
+    "group_loyalty": 0.9323
    },
    "groups": {
     "ECR": {
      "meps": 85,
-     "attendance": 0.9163,
-     "attendance_main": 0.9172,
-     "group_loyalty": 0.9113
+     "attendance": 0.9156,
+     "attendance_main": 0.9187,
+     "group_loyalty": 0.9085
     },
     "EPP": {
-     "meps": 196,
-     "attendance": 0.8975,
-     "attendance_main": 0.907,
+     "meps": 197,
+     "attendance": 0.8973,
+     "attendance_main": 0.9051,
      "group_loyalty": 0.9363
     },
     "ESN": {
      "meps": 28,
-     "attendance": 0.9144,
-     "attendance_main": 0.9148,
-     "group_loyalty": 0.939
+     "attendance": 0.9133,
+     "attendance_main": 0.9104,
+     "group_loyalty": 0.9381
     },
     "GREEN_EFA": {
      "meps": 54,
-     "attendance": 0.919,
-     "attendance_main": 0.9211,
-     "group_loyalty": 0.9715
+     "attendance": 0.9201,
+     "attendance_main": 0.9194,
+     "group_loyalty": 0.9724
     },
     "GUE_NGL": {
      "meps": 48,
-     "attendance": 0.8825,
-     "attendance_main": 0.8742,
-     "group_loyalty": 0.9276
+     "attendance": 0.8842,
+     "attendance_main": 0.8788,
+     "group_loyalty": 0.9279
     },
     "NI": {
      "meps": 38,
-     "attendance": 0.8954,
-     "attendance_main": 0.9076,
+     "attendance": 0.8964,
+     "attendance_main": 0.9093,
      "group_loyalty": null
     },
     "PFE": {
      "meps": 93,
-     "attendance": 0.8925,
-     "attendance_main": 0.8984,
-     "group_loyalty": 0.8315
+     "attendance": 0.8915,
+     "attendance_main": 0.9019,
+     "group_loyalty": 0.828
     },
     "RENEW": {
      "meps": 81,
-     "attendance": 0.8987,
-     "attendance_main": 0.9109,
-     "group_loyalty": 0.9545
+     "attendance": 0.9018,
+     "attendance_main": 0.9111,
+     "group_loyalty": 0.9552
     },
     "SD": {
      "meps": 139,
-     "attendance": 0.8904,
-     "attendance_main": 0.8922,
-     "group_loyalty": 0.9632
+     "attendance": 0.8926,
+     "attendance_main": 0.8931,
+     "group_loyalty": 0.9639
     }
    }
   },
   "2025-07-31_": {
    "from": "2025-07-31",
    "to": null,
-   "votes": 4060,
+   "votes": 4317,
    "min_votes": 100,
    "ep": {
-    "meps": 733,
-    "attendance": 0.9022,
-    "attendance_main": 0.9061,
-    "group_loyalty": 0.9328
+    "meps": 734,
+    "attendance": 0.9013,
+    "attendance_main": 0.9067,
+    "group_loyalty": 0.9335
    },
    "groups": {
     "ECR": {
      "meps": 84,
-     "attendance": 0.917,
-     "attendance_main": 0.919,
-     "group_loyalty": 0.9088
+     "attendance": 0.9137,
+     "attendance_main": 0.9167,
+     "group_loyalty": 0.9053
     },
     "EPP": {
-     "meps": 193,
-     "attendance": 0.9108,
-     "attendance_main": 0.9131,
-     "group_loyalty": 0.9341
+     "meps": 194,
+     "attendance": 0.9065,
+     "attendance_main": 0.9156,
+     "group_loyalty": 0.9337
     },
     "ESN": {
      "meps": 28,
-     "attendance": 0.9271,
-     "attendance_main": 0.919,
-     "group_loyalty": 0.938
+     "attendance": 0.926,
+     "attendance_main": 0.9189,
+     "group_loyalty": 0.9366
     },
     "GREEN_EFA": {
      "meps": 54,
      "attendance": 0.9197,
-     "attendance_main": 0.9108,
-     "group_loyalty": 0.975
+     "attendance_main": 0.9122,
+     "group_loyalty": 0.9755
     },
     "GUE_NGL": {
      "meps": 48,
-     "attendance": 0.8691,
-     "attendance_main": 0.8638,
-     "group_loyalty": 0.9371
+     "attendance": 0.8762,
+     "attendance_main": 0.8711,
+     "group_loyalty": 0.9374
     },
     "NI": {
      "meps": 33,
@@ -386,65 +386,65 @@
     },
     "PFE": {
      "meps": 91,
-     "attendance": 0.8988,
-     "attendance_main": 0.9038,
-     "group_loyalty": 0.8477
+     "attendance": 0.9032,
+     "attendance_main": 0.9044,
+     "group_loyalty": 0.8428
     },
     "RENEW": {
      "meps": 79,
-     "attendance": 0.8943,
-     "attendance_main": 0.9038,
-     "group_loyalty": 0.9523
+     "attendance": 0.8995,
+     "attendance_main": 0.9089,
+     "group_loyalty": 0.9534
     },
     "SD": {
      "meps": 138,
-     "attendance": 0.8954,
-     "attendance_main": 0.8908,
-     "group_loyalty": 0.9643
+     "attendance": 0.8985,
+     "attendance_main": 0.8944,
+     "group_loyalty": 0.9635
     }
    }
   },
   "2025-10-04_": {
    "from": "2025-10-04",
    "to": null,
-   "votes": 3855,
+   "votes": 4112,
    "min_votes": 100,
    "ep": {
-    "meps": 731,
-    "attendance": 0.9004,
-    "attendance_main": 0.9068,
-    "group_loyalty": 0.933
+    "meps": 732,
+    "attendance": 0.9019,
+    "attendance_main": 0.9026,
+    "group_loyalty": 0.9337
    },
    "groups": {
     "ECR": {
      "meps": 84,
-     "attendance": 0.9208,
-     "attendance_main": 0.9257,
-     "group_loyalty": 0.9067
+     "attendance": 0.9117,
+     "attendance_main": 0.9133,
+     "group_loyalty": 0.9032
     },
     "EPP": {
-     "meps": 193,
-     "attendance": 0.9139,
-     "attendance_main": 0.9169,
-     "group_loyalty": 0.9333
+     "meps": 194,
+     "attendance": 0.9101,
+     "attendance_main": 0.9157,
+     "group_loyalty": 0.9343
     },
     "ESN": {
      "meps": 28,
-     "attendance": 0.9244,
-     "attendance_main": 0.9144,
-     "group_loyalty": 0.9384
+     "attendance": 0.924,
+     "attendance_main": 0.9145,
+     "group_loyalty": 0.9369
     },
     "GREEN_EFA": {
      "meps": 54,
-     "attendance": 0.9337,
-     "attendance_main": 0.9194,
-     "group_loyalty": 0.9765
+     "attendance": 0.9287,
+     "attendance_main": 0.9228,
+     "group_loyalty": 0.9778
     },
     "GUE_NGL": {
      "meps": 47,
-     "attendance": 0.8742,
-     "attendance_main": 0.8791,
-     "group_loyalty": 0.9348
+     "attendance": 0.8808,
+     "attendance_main": 0.886,
+     "group_loyalty": 0.9351
     },
     "NI": {
      "meps": 33,
@@ -454,26 +454,26 @@
     },
     "PFE": {
      "meps": 90,
-     "attendance": 0.8938,
-     "attendance_main": 0.8959,
-     "group_loyalty": 0.8471
+     "attendance": 0.8966,
+     "attendance_main": 0.9001,
+     "group_loyalty": 0.8427
     },
     "RENEW": {
      "meps": 79,
-     "attendance": 0.8892,
-     "attendance_main": 0.8992,
-     "group_loyalty": 0.9529
+     "attendance": 0.8949,
+     "attendance_main": 0.9026,
+     "group_loyalty": 0.9531
     },
     "SD": {
      "meps": 138,
-     "attendance": 0.8918,
-     "attendance_main": 0.8904,
-     "group_loyalty": 0.9633
+     "attendance": 0.8955,
+     "attendance_main": 0.8907,
+     "group_loyalty": 0.9628
     }
    }
   }
  },
  "source": {
-  "release": "2026-10-17"
+  "release": "2026-10-24"
  }
 }

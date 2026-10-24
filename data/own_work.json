@@ -3185,9 +3185,9 @@
     },
     "shadow_report": {
      "count": 9,
-     "voted": 3,
-     "adopted": 2,
-     "no_vote": 6,
+     "voted": 4,
+     "adopted": 3,
+     "no_vote": 5,
      "other": 0
     },
     "opinion": {
@@ -3200,15 +3200,15 @@
      "count": 69,
      "voted": 2,
      "adopted": 0,
-     "no_vote": 22,
+     "no_vote": 21,
      "other": 0,
-     "superseded": 45
+     "superseded": 46
     },
     "joint_motion": {
      "count": 66,
-     "voted": 46,
-     "adopted": 46,
-     "no_vote": 20,
+     "voted": 47,
+     "adopted": 47,
+     "no_vote": 19,
      "other": 0
     },
     "question": {
@@ -3220,10 +3220,10 @@
     "lead_adopted": 1,
     "lead_adopted_legislative": 0,
     "lead_pending": 5,
-    "shadow_adopted": 2,
+    "shadow_adopted": 3,
     "shadow_adopted_legislative": 0,
-    "shadow_pending": 6,
-    "resolutions_adopted": 46
+    "shadow_pending": 5,
+    "resolutions_adopted": 47
    },
    "roles": {
     "lead_reports": 6,
@@ -3677,9 +3677,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0357_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 195769,
+     "vote_date": "2026-07-09",
      "signatories_total": 50
     },
     {
@@ -3745,10 +3745,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0362_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 26
+     "signatories_total": 26,
+     "joint_motion": "RC-10-2026-0357",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 195769
     },
     {
      "id": "B-10-2026-0355",
@@ -6015,9 +6018,9 @@
      "role": "RAPPORTEUR_SHADOW",
      "group": "PPE",
      "committee": null,
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 198309,
+     "vote_date": "2026-10-20",
      "report": "A10-0213/2026",
      "process_type": "INI",
      "legislative": false
@@ -8001,9 +8004,9 @@
    "summary": {
     "report": {
      "count": 5,
-     "voted": 2,
-     "adopted": 2,
-     "no_vote": 3,
+     "voted": 3,
+     "adopted": 3,
+     "no_vote": 2,
      "other": 0
     },
     "shadow_report": {
@@ -8040,9 +8043,9 @@
     }
    },
    "passed": {
-    "lead_adopted": 2,
+    "lead_adopted": 3,
     "lead_adopted_legislative": 1,
-    "lead_pending": 3,
+    "lead_pending": 2,
     "shadow_adopted": 14,
     "shadow_adopted_legislative": 4,
     "shadow_pending": 9,
@@ -8186,9 +8189,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/A-10-2026-0213_EN.html",
      "type": "report",
      "role": "RAPPORTEUR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 198309,
+     "vote_date": "2026-10-20",
      "signatories_total": null,
      "process_type": "INI",
      "legislative": false
@@ -10366,15 +10369,15 @@
      "count": 100,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 31,
+     "no_vote": 30,
      "other": 0,
-     "superseded": 69
+     "superseded": 70
     },
     "joint_motion": {
      "count": 85,
-     "voted": 64,
-     "adopted": 64,
-     "no_vote": 21,
+     "voted": 65,
+     "adopted": 65,
+     "no_vote": 20,
      "other": 0
     },
     "question": {
@@ -10389,7 +10392,7 @@
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 5,
     "shadow_pending": 4,
-    "resolutions_adopted": 64
+    "resolutions_adopted": 65
    },
    "roles": {
     "lead_reports": 0,
@@ -10437,9 +10440,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 199517,
+     "vote_date": "2026-10-22",
      "signatories_total": 77
     },
     {
@@ -10469,10 +10472,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 30
+     "signatories_total": 30,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0452",
@@ -16653,15 +16659,15 @@
      "count": 99,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 27,
+     "no_vote": 26,
      "other": 0,
-     "superseded": 72
+     "superseded": 73
     },
     "joint_motion": {
      "count": 75,
-     "voted": 55,
-     "adopted": 55,
-     "no_vote": 20,
+     "voted": 56,
+     "adopted": 56,
+     "no_vote": 19,
      "other": 0
     },
     "question": {
@@ -16676,7 +16682,7 @@
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 2,
-    "resolutions_adopted": 55
+    "resolutions_adopted": 56
    },
    "roles": {
     "lead_reports": 11,
@@ -16724,9 +16730,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 199517,
+     "vote_date": "2026-10-22",
      "signatories_total": 77
     },
     {
@@ -16756,10 +16762,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 30
+     "signatories_total": 30,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0452",
@@ -22480,15 +22489,15 @@
      "count": 58,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 13,
+     "no_vote": 11,
      "other": 0,
-     "superseded": 44
+     "superseded": 46
     },
     "joint_motion": {
      "count": 57,
-     "voted": 45,
-     "adopted": 45,
-     "no_vote": 12,
+     "voted": 47,
+     "adopted": 47,
+     "no_vote": 10,
      "other": 0
     },
     "question": {
@@ -22503,7 +22512,7 @@
     "shadow_adopted": 2,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 0,
-    "resolutions_adopted": 45
+    "resolutions_adopted": 47
    },
    "roles": {
     "lead_reports": 0,
@@ -22535,9 +22544,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 199517,
+     "vote_date": "2026-10-22",
      "signatories_total": 77
     },
     {
@@ -22551,10 +22560,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0478_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 41
+     "signatories_total": 41,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0452",
@@ -22825,9 +22837,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0357_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 195769,
+     "vote_date": "2026-07-09",
      "signatories_total": 50
     },
     {
@@ -22873,10 +22885,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0362_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 26
+     "signatories_total": 26,
+     "joint_motion": "RC-10-2026-0357",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 195769
     },
     {
      "id": "B-10-2026-0355",
@@ -27426,15 +27441,15 @@
      "count": 108,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 34,
+     "no_vote": 33,
      "other": 0,
-     "superseded": 73
+     "superseded": 74
     },
     "joint_motion": {
      "count": 77,
-     "voted": 55,
-     "adopted": 55,
-     "no_vote": 22,
+     "voted": 56,
+     "adopted": 56,
+     "no_vote": 21,
      "other": 0
     },
     "question": {
@@ -27449,7 +27464,7 @@
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 7,
-    "resolutions_adopted": 55
+    "resolutions_adopted": 56
    },
    "roles": {
     "lead_reports": 1,
@@ -27497,9 +27512,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 199517,
+     "vote_date": "2026-10-22",
      "signatories_total": 77
     },
     {
@@ -27529,10 +27544,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 30
+     "signatories_total": 30,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0452",
@@ -32301,15 +32319,15 @@
      "count": 33,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 8,
+     "no_vote": 6,
      "other": 0,
-     "superseded": 24
+     "superseded": 26
     },
     "joint_motion": {
      "count": 33,
-     "voted": 24,
-     "adopted": 24,
-     "no_vote": 9,
+     "voted": 26,
+     "adopted": 26,
+     "no_vote": 7,
      "other": 0
     },
     "question": {
@@ -32324,7 +32342,7 @@
     "shadow_adopted": 0,
     "shadow_adopted_legislative": 0,
     "shadow_pending": 1,
-    "resolutions_adopted": 24
+    "resolutions_adopted": 26
    },
    "roles": {
     "lead_reports": 2,
@@ -32356,9 +32374,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0476_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 199517,
+     "vote_date": "2026-10-22",
      "signatories_total": 77
     },
     {
@@ -32372,10 +32390,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0478_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 41
+     "signatories_total": 41,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0404",
@@ -32493,9 +32514,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0357_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 195769,
+     "vote_date": "2026-07-09",
      "signatories_total": 50
     },
     {
@@ -32541,10 +32562,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0362_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 26
+     "signatories_total": 26,
+     "joint_motion": "RC-10-2026-0357",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 195769
     },
     {
      "id": "B-10-2026-0355",
@@ -33657,15 +33681,15 @@
      "count": 68,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 18,
+     "no_vote": 17,
      "other": 0,
-     "superseded": 49
+     "superseded": 50
     },
     "joint_motion": {
      "count": 69,
-     "voted": 52,
-     "adopted": 52,
-     "no_vote": 17,
+     "voted": 53,
+     "adopted": 53,
+     "no_vote": 16,
      "other": 0
     },
     "question": {
@@ -33680,7 +33704,7 @@
     "shadow_adopted": 1,
     "shadow_adopted_legislative": 1,
     "shadow_pending": 0,
-    "resolutions_adopted": 52
+    "resolutions_adopted": 53
    },
    "roles": {
     "lead_reports": 2,
@@ -34002,9 +34026,9 @@
      "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0357_EN.html",
      "type": "joint_motion",
      "role": "AUTHOR",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
+     "status": "ADOPTED",
+     "vote_id": 195769,
+     "vote_date": "2026-07-09",
      "signatories_total": 50
     },
     {
@@ -34050,10 +34074,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0362_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 26
+     "signatories_total": 26,
+     "joint_motion": "RC-10-2026-0357",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 195769
     },
     {
      "id": "B-10-2026-0355",
@@ -38216,9 +38243,9 @@
      "count": 61,
      "voted": 5,
      "adopted": 0,
-     "no_vote": 49,
+     "no_vote": 48,
      "other": 0,
-     "superseded": 7
+     "superseded": 8
     },
     "joint_motion": {
      "count": 9,
@@ -38287,10 +38314,13 @@
      "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0484_EN.html",
      "type": "motion",
      "role": "AUTHOR",
-     "status": "no_vote",
+     "status": "superseded",
      "vote_id": null,
      "vote_date": null,
-     "signatories_total": 30
+     "signatories_total": 30,
+     "joint_motion": "RC-10-2026-0476",
+     "joint_result": "ADOPTED",
+     "joint_vote_id": 199517
     },
     {
      "id": "RC-10-2026-0452",

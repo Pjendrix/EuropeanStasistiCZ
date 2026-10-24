@@ -13,68 +13,68 @@
  "members": 2,
  "total": {
   "attendance": [
-   11710,
-   12308
+   12220,
+   12822
   ],
   "attendance_main": [
-   1227,
-   1282
+   1273,
+   1330
   ],
   "group_loyalty": [
-   10486,
-   11710
+   10940,
+   12220
   ],
   "group_loyalty_main": [
-   1189,
-   1227
+   1234,
+   1273
   ],
   "cz_agreement": [
-   5898,
-   11364
+   6153,
+   11855
   ],
   "outcome": [
-   10251,
-   11146
+   10709,
+   11635
   ],
   "outcome_main": [
-   1140,
-   1202
+   1183,
+   1248
   ],
   "outcome_close": [
-   129,
-   242
+   136,
+   252
   ],
   "group_outcome": [
-   1625801,
-   1774912
+   1698760,
+   1851813
   ],
   "group_outcome_main": [
-   182578,
-   194077
+   189640,
+   201446
   ],
   "positions": {
-   "FOR": 5227,
-   "AGAINST": 5921,
-   "ABSTENTION": 562,
-   "DID_NOT_VOTE": 598
+   "FOR": 5390,
+   "AGAINST": 6247,
+   "ABSTENTION": 583,
+   "DID_NOT_VOTE": 602
   }
  },
  "cohesion": [
-  5376,
-  5564
+  5624,
+  5817
  ],
  "cohesion_main": [
-  580,
-  587
+  601,
+  609
  ],
- "splits_count": 81,
- "splits_count_main": 2,
+ "splits_count": 85,
+ "splits_count_main": 3,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -139,50 +139,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5832,
-     6154
+     6088,
+     6411
     ],
     "attendance_main": [
-     615,
-     641
+     638,
+     665
     ],
     "group_loyalty": [
-     5225,
-     5832
+     5453,
+     6088
     ],
     "group_loyalty_main": [
-     595,
-     615
+     618,
+     638
     ],
     "cz_agreement": [
-     2947,
-     5661
+     3075,
+     5907
     ],
     "outcome": [
-     5094,
-     5549
+     5324,
+     5795
     ],
     "outcome_main": [
-     569,
-     600
+     591,
+     623
     ],
     "outcome_close": [
-     63,
-     120
+     66,
+     125
     ],
     "group_outcome": [
-     808970,
-     882350
+     845694,
+     921049
     ],
     "group_outcome_main": [
-     91266,
-     96776
+     94794,
+     100459
     ],
     "positions": {
-     "FOR": 2615,
-     "AGAINST": 2935,
-     "ABSTENTION": 282,
-     "DID_NOT_VOTE": 322
+     "FOR": 2697,
+     "AGAINST": 3099,
+     "ABSTENTION": 292,
+     "DID_NOT_VOTE": 323
     }
    }
   },
@@ -220,50 +220,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5878,
-     6154
+     6132,
+     6411
     ],
     "attendance_main": [
-     612,
-     641
+     635,
+     665
     ],
     "group_loyalty": [
-     5261,
-     5878
+     5487,
+     6132
     ],
     "group_loyalty_main": [
-     594,
-     612
+     616,
+     635
     ],
     "cz_agreement": [
-     2951,
-     5703
+     3078,
+     5948
     ],
     "outcome": [
-     5157,
-     5597
+     5385,
+     5840
     ],
     "outcome_main": [
-     571,
-     602
+     592,
+     625
     ],
     "outcome_close": [
-     66,
-     122
+     70,
+     127
     ],
     "group_outcome": [
-     816831,
-     892562
+     853066,
+     930764
     ],
     "group_outcome_main": [
-     91312,
-     97301
+     94846,
+     100987
     ],
     "positions": {
-     "FOR": 2612,
-     "AGAINST": 2986,
-     "ABSTENTION": 280,
-     "DID_NOT_VOTE": 276
+     "FOR": 2693,
+     "AGAINST": 3148,
+     "ABSTENTION": 291,
+     "DID_NOT_VOTE": 279
     }
    }
   }
@@ -303,6 +303,187 @@
   "updated": "2026-10-23"
  },
  "splits": [
+  {
+   "id": 199482,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Houthi attacks and implications for regional security",
+   "reference": "RC-B10-0482/2026",
+   "description": "Après le § 25 - Am 2/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 291,
+    "against": 271,
+    "abstention": 8,
+    "did_not_vote": 150
+   },
+   "cz": [
+    14,
+    2,
+    1,
+    4
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 25 - PN 2, 1. část",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 199590,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Reduction of methane emissions in the energy sector: postponement of certain obligations",
+   "reference": "C10-0258/2026",
+   "description": "Considérant 7 - Am 25",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 176,
+    "against": 400,
+    "abstention": 2,
+    "did_not_vote": 142
+   },
+   "cz": [
+    14,
+    4,
+    0,
+    3
+   ],
+   "amendment_number": "25",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění 7 - PN 25",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 198409,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+   "reference": "A10-0273/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 609,
+    "against": 51,
+    "abstention": 14,
+    "did_not_vote": 46
+   },
+   "cz": [
+    14,
+    4,
+    2,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc",
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 198922,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Union Solidarity Fund: assistance to Malta, Italy, Portugal and Spain with regard to storms in 2026",
+   "reference": "A10-0274/2026",
+   "description": "Après le § 2 - Am 1",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 158,
+    "against": 476,
+    "abstention": 38,
+    "did_not_vote": 48
+   },
+   "cz": [
+    4,
+    8,
+    8,
+    1
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 2 - PN 1",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
   {
    "id": 197093,
    "date": "2026-09-17",
@@ -1025,189 +1206,55 @@
      "national_party_id": 6835
     }
    ]
-  },
-  {
-   "id": 190212,
-   "date": "2026-04-28",
-   "month": "2026-04",
-   "title": "Ochrana finančních zájmů Evropské unie: boj proti podvodům – výroční zpráva za rok 2024",
-   "reference": "A10-0080/2026",
-   "description": "Après le § 2 - Am 4/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 413,
-    "against": 210,
-    "abstention": 18,
-    "did_not_vote": 78
-   },
-   "cz": [
-    4,
-    16,
-    0,
-    1
-   ],
-   "amendment_number": "4",
-   "texts_adopted_reference": null,
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 2 - PN 4, 2. část",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
-  },
-  {
-   "id": 191185,
-   "date": "2026-04-28",
-   "month": "2026-04",
-   "title": "Pokyny pro rozpočet na rok 2027 – oddíl III",
-   "reference": "A10-0044/2026",
-   "description": "Après le § 24 - Am 13",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 142,
-    "against": 441,
-    "abstention": 65,
-    "did_not_vote": 71
-   },
-   "cz": [
-    11,
-    5,
-    3,
-    2
-   ],
-   "amendment_number": "13",
-   "texts_adopted_reference": "P10_TA(2026)0112",
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 24 - PN 13",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
-  },
-  {
-   "id": 190529,
-   "date": "2026-04-28",
-   "month": "2026-04",
-   "title": "Interim report on the proposal for the multiannual financial framework for 2028-2034",
-   "reference": "A10-0105/2026",
-   "description": "§ 124",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 359,
-    "against": 256,
-    "abstention": 37,
-    "did_not_vote": 67
-   },
-   "cz": [
-    4,
-    15,
-    1,
-    1
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": "P10_TA(2026)0111",
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 124",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
-  },
-  {
-   "id": 188921,
-   "date": "2026-03-12",
-   "month": "2026-03",
-   "title": "Činnost evropského veřejného ochránce práv – výroční zpráva za rok 2024",
-   "reference": "A10-0015/2026",
-   "description": "§ 17",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 290,
-    "against": 258,
-    "abstention": 15,
-    "did_not_vote": 155
-   },
-   "cz": [
-    18,
-    2,
-    0,
-    1
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "civ"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 17",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
   }
  ],
  "splits_main": [
+  {
+   "id": 198409,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Mobilisation of the European Globalisation Adjustment Fund for Displaced Workers: application EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper – Finland",
+   "reference": "A10-0273/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 609,
+    "against": 51,
+    "abstention": 14,
+    "did_not_vote": 46
+   },
+   "cz": [
+    14,
+    4,
+    2,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc",
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
   {
    "id": 182713,
    "date": "2025-12-17",

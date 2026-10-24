@@ -12,31 +12,31 @@
  "seats": 78,
  "n_countries": 21,
  "attendance": [
-  412116,
-  467957
+  430279,
+  488003
  ],
  "attendance_main": [
-  43099,
-  48768
+  44810,
+  50640
  ],
  "majority": [
-  387705,
-  405646
+  404902,
+  423617
  ],
  "majority_main": [
-  40002,
-  42053
+  41573,
+  43742
  ],
- "splits": 169,
- "considered": 6149,
- "splits_main": 41,
- "considered_main": 638,
+ "splits": 175,
+ "considered": 6406,
+ "splits_main": 43,
+ "considered_main": 662,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -46,8 +46,8 @@
  },
  "member_list": [],
  "countries": {
-  "as_of": "2026-10-08",
-  "vote_id": 198051,
+  "as_of": "2026-10-22",
+  "vote_id": 199356,
   "seats": 78,
   "n_countries": 21,
   "by_country": [
@@ -162,7 +162,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-17"
+  "release": "2026-10-24"
  },
  "chairs": [
   {
@@ -179,7 +179,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-20"
+  "updated": "2026-10-24"
  },
  "splits_list": [
   {
@@ -924,6 +924,41 @@
     13,
     32,
     16
+   ]
+  },
+  {
+   "id": 198947,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+   "reference": "B10-0469/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 442,
+    "against": 196,
+    "abstention": 9,
+    "did_not_vote": 73
+   },
+   "cz": [
+    2,
+    15,
+    2,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    38,
+    35,
+    1,
+    4
    ]
   },
   {
@@ -1677,7 +1712,7 @@
    "date": "2026-07-09",
    "month": "2026-07",
    "title": "Hrozba válečných zločinů, stupňující se porušování mezinárodního humanitárního práva a situace v oblasti lidských práv v súdánském El-Obeidu",
-   "reference": "B10-0357/2026",
+   "reference": "RC-B10-0357/2026",
    "description": "Après le § 6 - Am 5",
    "result": "REJECTED",
    "is_main": false,
@@ -2003,43 +2038,6 @@
     29,
     2,
     12
-   ]
-  },
-  {
-   "id": 172925,
-   "date": "2025-03-13",
-   "month": "2025-03",
-   "title": "Sociální aspekty a aspekty zaměstnanosti v souvislosti s procesy restrukturalizace: potřeba ochrany pracovních míst a práv pracovníků",
-   "reference": "B10-0143/2025",
-   "description": "§ 16/4",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 322,
-    "against": 218,
-    "abstention": 77,
-    "did_not_vote": 102
-   },
-   "cz": [
-    4,
-    13,
-    3,
-    1
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": "P10_TA(2025)0039",
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 16, 4. část",
-   "gc": [
-    35,
-    29,
-    2,
-    9
    ]
   }
  ],
@@ -2487,6 +2485,41 @@
     28,
     9,
     8
+   ]
+  },
+  {
+   "id": 198947,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+   "reference": "B10-0469/2026",
+   "description": "Proposition de résolution (ensemble du texte)",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 442,
+    "against": 196,
+    "abstention": 9,
+    "did_not_vote": 73
+   },
+   "cz": [
+    2,
+    15,
+    2,
+    2
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh usnesení (celý text)",
+   "gc": [
+    38,
+    35,
+    1,
+    4
    ]
   },
   {
@@ -3381,6 +3414,43 @@
    ]
   },
   {
+   "id": 199592,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Reduction of methane emissions in the energy sector: postponement of certain obligations",
+   "reference": "C10-0258/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 341,
+    "against": 225,
+    "abstention": 6,
+    "did_not_vote": 148
+   },
+   "cz": [
+    17,
+    1,
+    0,
+    3
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    25,
+    40,
+    2,
+    11
+   ]
+  },
+  {
    "id": 179275,
    "date": "2025-10-08",
    "month": "2025-10",
@@ -3504,7 +3574,7 @@
     "for": 396,
     "against": 226,
     "abstention": 30,
-    "did_not_vote": 67
+    "did_not_vote": 66
    },
    "cz": [
     17,
