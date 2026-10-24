@@ -107,7 +107,17 @@
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
-  }
+  },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ]
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -141,8 +151,8 @@
    665
   ],
   "group_loyalty": [
-   4448,
-   5973
+   4447,
+   5972
   ],
   "group_loyalty_main": [
    371,
@@ -165,12 +175,12 @@
    111
   ],
   "group_outcome": [
-   147209,
-   342484
+   147241,
+   342661
   ],
   "group_outcome_main": [
-   19687,
-   32098
+   19694,
+   32107
   ],
   "positions": {
    "FOR": 3031,
@@ -1342,8 +1352,8 @@
     49
    ],
    "group_loyalty": [
-    400,
-    482
+    399,
+    481
    ],
    "group_loyalty_main": [
     31,
@@ -1366,12 +1376,12 @@
     9
    ],
    "group_outcome": [
-    13786,
-    28702
+    13818,
+    28879
    ],
    "group_outcome_main": [
-    1632,
-    2515
+    1639,
+    2524
    ],
    "positions": {
     "FOR": 249,
@@ -4074,12 +4084,12 @@
     21
    ],
    "group_outcome": [
-    40913,
-    79458
+    40915,
+    79477
    ],
    "group_outcome_main": [
     3543,
-    4895
+    4896
    ],
    "positions": {
     "FOR": 699,
@@ -4101,8 +4111,8 @@
     94
    ],
    "group_loyalty": [
-    810,
-    1023
+    809,
+    1022
    ],
    "group_loyalty_main": [
     48,
@@ -4125,12 +4135,12 @@
     15
    ],
    "group_outcome": [
-    19687,
-    63713
+    19693,
+    63801
    ],
    "group_outcome_main": [
-    2207,
-    4818
+    2208,
+    4820
    ],
    "positions": {
     "FOR": 585,
@@ -4177,7 +4187,7 @@
    ],
    "group_outcome": [
     17186,
-    33445
+    33450
    ],
    "group_outcome_main": [
     717,
@@ -4227,12 +4237,12 @@
     3
    ],
    "group_outcome": [
-    15360,
-    37059
+    15376,
+    37096
    ],
    "group_outcome_main": [
-    2213,
-    3630
+    2216,
+    3633
    ],
    "positions": {
     "FOR": 370,
@@ -4278,12 +4288,12 @@
     14
    ],
    "group_outcome": [
-    11793,
-    28241
+    11795,
+    28254
    ],
    "group_outcome_main": [
     1568,
-    2167
+    2168
    ],
    "positions": {
     "FOR": 290,
@@ -4533,12 +4543,12 @@
     0
    ],
    "group_outcome": [
-    9930,
-    15370
+    9932,
+    15372
    ],
    "group_outcome_main": [
-    786,
-    881
+    787,
+    882
    ],
    "positions": {
     "FOR": 132,

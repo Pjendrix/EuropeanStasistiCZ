@@ -127,7 +127,17 @@
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
-  }
+  },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ]
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -161,8 +171,8 @@
    665
   ],
   "group_loyalty": [
-   4136,
-   5546
+   4135,
+   5545
   ],
   "group_loyalty_main": [
    352,
@@ -185,12 +195,12 @@
    109
   ],
   "group_outcome": [
-   138370,
-   320075
+   138383,
+   320192
   ],
   "group_outcome_main": [
-   18402,
-   30103
+   18406,
+   30108
   ],
   "positions": {
    "FOR": 2830,
@@ -1362,8 +1372,8 @@
     49
    ],
    "group_loyalty": [
-    339,
-    406
+    338,
+    405
    ],
    "group_loyalty_main": [
     30,
@@ -1386,12 +1396,12 @@
     6
    ],
    "group_outcome": [
-    11929,
-    24323
+    11942,
+    24440
    ],
    "group_outcome_main": [
-    1421,
-    2390
+    1425,
+    2395
    ],
    "positions": {
     "FOR": 203,
@@ -4109,8 +4119,8 @@
     94
    ],
    "group_loyalty": [
-    554,
-    716
+    553,
+    715
    ],
    "group_loyalty_main": [
     39,
@@ -4133,12 +4143,12 @@
     11
    ],
    "group_outcome": [
-    14018,
-    45408
+    14024,
+    45497
    ],
    "group_outcome_main": [
-    1800,
-    3609
+    1801,
+    3611
    ],
    "positions": {
     "FOR": 432,
@@ -4235,12 +4245,12 @@
     1
    ],
    "group_outcome": [
-    15014,
-    36619
+    15015,
+    36620
    ],
    "group_outcome_main": [
-    2063,
-    3471
+    2064,
+    3472
    ],
    "positions": {
     "FOR": 365,

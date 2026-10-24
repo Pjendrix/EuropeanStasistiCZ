@@ -119,6 +119,7 @@ const ALL_PAGE = 50;
             </div>`;
           })}
         </div>
+        ${gname === "Hlasování" ? [a, b].filter((m) => m.group_short).map((m) => html`<p class="small muted dm-period">${displayName(m)}: ve frakci ${m.group_short.since ? `od ${fmtDate(m.group_short.since)}` : "krátce"} (${fmtNum(m.group_short.votes)} hlasování), „proti většině frakce“ se bude měnit.</p>`) : ""}
         ${diffMandate ? html`<p class="small muted dm-period">Počty jsou za dobu mandátu: ${displayName(a)} ${periodText(a)}, ${displayName(b)} ${periodText(b)}. Nepřepočítáváme je na měsíc.</p>` : ""}`)}
       </section>`;
     }
