@@ -141,7 +141,10 @@ jobs:
 
       - name: Balíček (jen pro nový export dat)
         id: ig
-        run: python scripts/build_instagram.py --only-new >> "$GITHUB_OUTPUT"
+        # Karty se kreslí ze stránek p/ a v/; ty nejsou v gitu (vznikají při sestavení), job je proto musí vygenerovat sám.
+        run: |
+          python scripts/build_pages.py
+          python scripts/build_instagram.py --only-new >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: steps.ig.outputs.built == 'true'
