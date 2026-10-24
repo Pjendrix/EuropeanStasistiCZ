@@ -719,6 +719,8 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .back-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .9rem; min-height: 44px; }
 .back-row > p { margin: 0; }
 .back-row .share-btn { margin-left: auto; }
+.back-row .compare-btn + .share-btn { margin-left: 0; }
+.compare-btn { text-decoration: none; }
 .share-btn { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 1.15rem; border-radius: 999px; border: 1px solid var(--text);
   background: var(--text); color: var(--surface); font: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; flex: none; }
 .share-btn:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 55%, transparent); }

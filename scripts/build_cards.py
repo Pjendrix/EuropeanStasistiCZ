@@ -1,6 +1,7 @@
 """Karty ke sdílení (X12): náhledy odkazů 1200 × 630 pro poslance a závěrečná hlasování.
 
-Výstup: public/og/p/{id}.png (poslanci), public/og/v/{id}.png (závěrečná hlasování za posledních 12 měsíců
+Výstup: public/og/p/{id}.png (poslanci), public/og/duel/{a}-{b}.png (duel dvojice, data/duel.json),
+public/og/v/{id}.png (závěrečná hlasování za posledních 12 měsíců
 od posledního hlasování v datech), (obecný náhled s logem je public/assets/brand/og-default.png). Stránky p/ a v/ je mají v og:image
 (scripts/build_pages.py). Starší hlasování mají obecný obrázek, aby repo nenarůstalo.
 
@@ -348,6 +349,49 @@ def mep_card(
     return to_png(img)
 
 
+def duel_card(a: dict, b: dict, chips: dict, agreement: list[int], photos: dict, data_day: str, base_url: str | None) -> bytes:
+    """OG náhled duelu 1200 × 630: dva portréty proti sobě, jména, frakce · strana (tečka a zkratka, bez log), % shody
+    z data/duel.json. Žádné skóre a žádný vítěz: obě strany stejně velké, stejná barva textu."""
+    from PIL import Image, ImageDraw
+
+    img, d = new_card()
+    header(img, d, f"data k {fmt_date(data_day)}")
+    pw, ph, top = 180, 225, 92
+    for m, cx in ((a, 300), (b, 900)):
+        photo = photos.get(m["id"])
+        if photo and photo.exists():
+            im = Image.open(photo).convert("RGB")
+            scale = max(pw / im.width, ph / im.height)
+            im = im.resize((max(pw, round(im.width * scale)), max(ph, round(im.height * scale))), Image.LANCZOS)
+            im = im.crop((max((im.width - pw) // 2, 0), 0, max((im.width - pw) // 2, 0) + pw, ph))
+            mask = Image.new("L", (pw, ph), 0)
+            ImageDraw.Draw(mask).rounded_rectangle([0, 0, pw - 1, ph - 1], radius=18, fill=255)
+            img.paste(im, (cx - pw // 2, top), mask)
+            d.rounded_rectangle([cx - pw // 2 - 3, top - 3, cx + pw // 2 + 2, top + ph + 2], radius=20, outline=GOLD, width=3)
+        name = " ".join(x for x in (m.get("given_name"), m.get("family_name")) if x) or m["name"]
+        d.text((cx, top + ph + 30), fit(d, name, font(36, 800), 470), font=font(36, 800), fill=WHITE, anchor="mm")
+        line = " · ".join(lbl for lbl, _ in chips.get(m["id"], []))
+        d.text((cx, top + ph + 70), fit(d, line, font(22, 600), 470), font=font(22, 600), fill=SOFT, anchor="mm")
+    d.text((600, top + ph // 2), "vs", font=font(44, 800), fill=MUTED, anchor="mm")
+    same, total = agreement
+    if total:
+        d.text((600, 470), f"Hlasovali stejně v {fmt_pct(same / total)} hlasování", font=font(34, 800), fill=WHITE, anchor="mm")
+        d.text(
+            (600, 512),
+            f"{fmt_num(same)} z {fmt_num(total)} společných hlasování · čísla, ne hodnocení",
+            font=font(20, 500),
+            fill=SOFT,
+            anchor="mm",
+        )
+    else:
+        d.text((600, 480), "Neměli společné hlasování", font=font(30, 700), fill=WHITE, anchor="mm")
+    d.text((600, 545), "Portréty © European Union – Source: EP", font=font(15, 500), fill=MUTED, anchor="mm")
+    lo, hi = sorted((a["id"], b["id"]))
+    url = f"{base_url.rstrip('/').split('://', 1)[-1]}/d/{lo}-{hi}" if base_url else None
+    footer(d, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", url)
+    return to_png(img)
+
+
 # --- celek ----------------------------------------------------------------------------
 
 
@@ -399,6 +443,25 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
             chips.append((party_text, (party or {}).get("chart_color")))
         photo = public / "assets" / "photos" / f"{mid}.jpg"
         put(f"p/{mid}.png", mep_card(prof, chips, f"v mandátu od {fmt_date(mandate)}" if mandate else "", photo, data_day, base_url))
+    duel_path = data_dir / "duel.json"
+    if duel_path.exists():
+        duel = read(duel_path)
+        require(duel, ["meps", "pairs"], "duel.json")
+        dm = {m["id"]: m for m in duel["meps"]}
+        chips = {}
+        for m in duel["meps"]:
+            g, p = m.get("group"), m.get("party")
+            party = next((x for x in parties if p and str(x["id"]) == str(p["id"])), None)
+            party_text = (
+                "" if not p else ("nezávislý/á" if p["short_label"] == "Ind." or (party or {}).get("independent") else p["short_label"])
+            )
+            chips[m["id"]] = [(group_label(g["code"], groups), None)] if g else []
+            if party_text:
+                chips[m["id"]].append((party_text, None))
+        photos = {mid: public / "assets" / "photos" / f"{mid}.jpg" for mid in dm}
+        for key, pair in sorted(duel["pairs"].items()):
+            lo, hi = (int(x) for x in key.split("-"))
+            put(f"duel/{key}.png", duel_card(dm[lo], dm[hi], chips, pair["agreement"], photos, data_day, base_url))
     _, votes = load_votes(data_dir / "votes")
     wanted = card_vote_ids(votes)
     for v in votes:
@@ -409,7 +472,13 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
         if int(f.stem) not in wanted:
             f.unlink()
             removed += 1
-    return {"meps": len(ov), "votes": len(wanted), "written": written, "removed": removed}
+    return {
+        "meps": len(ov),
+        "votes": len(wanted),
+        "duel": len(duel["pairs"]) if duel_path.exists() else 0,
+        "written": written,
+        "removed": removed,
+    }
 
 
 def main(argv=None) -> int:

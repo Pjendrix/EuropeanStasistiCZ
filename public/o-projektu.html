@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=ef1cdb2e"></script>
-<link rel="stylesheet" href="style.css?v=0f43925b">
+<link rel="stylesheet" href="style.css?v=674e8fa8">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -168,6 +168,17 @@
             s porovnáním otázka po otázce a vaše odpovědi s tím, kdo jak hlasoval. <strong>Obrázek ke sdílení</strong> (tři nejvyšší shody, počet
             odpovědí, datum) vzniká jen ve vašem prohlížeči a nic se při tom neodesílá.</p>
           <a class="ab-def-link" href="#moje-shoda">odkaz na pravidlo</a></div></details>
+        <details class="ab-def" id="duel"><summary><b>Duel poslanců</b></summary><div class="ab-def-body">
+          <p>Duel poslanců (<a href="duel">duel</a>) ukazuje dva české poslance vedle sebe. Čísla jsou stejná jako na jejich profilech
+            (skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/duel.py">duel.py</a> je bere z dat profilu), počty
+            jsou vždy za dobu mandátu a nepřepočítávají se na měsíc. Proužky obou stran mají stejnou škálu; vyšší hodnota se nijak nezvýrazňuje,
+            nic se nesčítá do skóre a nikdo „nevyhrává“. <strong>Srovnání ukazuje čísla, ne kvalitu práce</strong>: počty závisí na délce mandátu,
+            výborech a velikosti frakce.</p>
+          <p>Shoda dvojice je stejná jako na stránce <a href="shoda">Kdo s kým hlasuje</a>, navíc rozdělená podle deseti nejčastějších témat.
+            „Kde se rozešli“ = klíčová hlasování (stejný výběr jako na stránce Hlasování), kde jeden hlasoval pro a druhý proti, nejvýš 10
+            od nejnovějších; zdržení se nepočítá. Frakce u hlasování je k jeho datu. Ukázkové dvojice na úvodu duelu vybírá pravidlo:
+            mezi současnými poslanci s aspoň 500 společnými hlasováními dvě s nejvyšší a dvě s nejnižší shodou.</p>
+          <a class="ab-def-link" href="#duel">odkaz na pravidlo</a></div></details>
         <details class="ab-def" id="kviz-frakce"><summary><b>Kvíz Evropské frakce</b></summary><div class="ab-def-body">
           <p>Kvíz Evropské frakce (<a href="kviz#frakce">kvíz</a>): otázky vybírá pravidlo
             (<a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/quiz_groups.py">quiz_groups.py</a>) ze závěrečných hlasování

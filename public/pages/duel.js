@@ -28,14 +28,19 @@ const ALL_PAGE = 50;
     for (const sel of [selA, selB]) sel.insertAdjacentHTML("beforeend", String(html`${options}`));
     document.getElementById("pick").addEventListener("submit", (e) => {
       e.preventDefault();
-      if (selA.value && selB.value && selA.value !== selB.value) location.search = `?a=${selA.value}&b=${selB.value}`;
+      if (selA.value && selB.value && selA.value !== selB.value) location.href = `duel?a=${selA.value}&b=${selB.value}`;
     });
 
     document.getElementById("source").innerHTML = String(html`Zdroj: ${SRC.htv} a ${SRC.ep}${fresh?.release ? html` · hlasování k ${fmtDate(fresh.release)}` : ""}.
       Srovnání ukazuje čísla, ne kvalitu práce. <a href="o-projektu#metodika">Jak počítáme</a>.`);
 
-    const pair = pickPair(param("a"), param("b"), d.meps);
+    // Sdílená stránka d/{a}-{b} (build_pages.py) nemá parametry: dvojice je v data-pair, pořadí kanonické.
+    const fromPath = (document.getElementById("main").dataset.pair || "").split("-");
+    const pair = pickPair(param("a") ?? fromPath[0], param("b") ?? fromPath[1], d.meps);
     if (!pair) {
+      // „Porovnat s…“ z profilu: ?a= předvyplní prvního poslance, druhého vybere uživatel.
+      const pre = param("a");
+      if (pre && d.meps.some((m) => String(m.id) === pre)) { selA.value = pre; selB.focus(); }
       root.classList.remove("loading");
       root.innerHTML = String(pickerView(d));
       return;
@@ -60,7 +65,7 @@ const ALL_PAGE = 50;
         <div class="duel-vs" aria-hidden="true">vs</div>
         ${side(B, "b", stripe(B))}
       </section>
-      <p class="duel-actions"><a class="link-btn" href="?a=${pair.b}&amp;b=${pair.a}">Prohodit strany</a>
+      <p class="duel-actions"><a class="link-btn" href="duel?a=${pair.b}&amp;b=${pair.a}">Prohodit strany</a>
         · <a class="link-btn" href="duel">Vybrat jinou dvojici</a></p>
       ${metricsView(A, B)}
       ${agreementView(A, B, P)}
@@ -184,7 +189,7 @@ const ALL_PAGE = 50;
 
     function pickerView(dd) {
       const s = samplePairs(dd, isActive);
-      const link = (row) => { const [x, y] = row.key.split("-").map(Number); return html`<li><a href="?a=${x}&amp;b=${y}">${displayName(byId.get(x))} vs ${displayName(byId.get(y))}</a> <span class="small muted">shoda ${fmtPct(row.share)}</span></li>`; };
+      const link = (row) => { const [x, y] = row.key.split("-").map(Number); return html`<li><a href="duel?a=${x}&amp;b=${y}">${displayName(byId.get(x))} vs ${displayName(byId.get(y))}</a> <span class="small muted">shoda ${fmtPct(row.share)}</span></li>`; };
       return html`<p>Vyberte dva poslance nahoře, nebo začněte jednou z dvojic níže.</p>
         <p class="small muted">Dvojice vybírá pravidlo, ne redakce: mezi současnými poslanci s aspoň 500 společnými hlasováními
           dvě s nejvyšší a dvě s nejnižší shodou.</p>
