@@ -52,7 +52,17 @@ def _tag(name: str) -> re.Pattern:
     return re.compile(rf"<{name}>(.*?)</{name}>", re.S)
 
 
-_HEAD = {k: _tag(t) for k, t in {"commission": "Commission", "date": "Date", "range": "RangeAM", "type": "TypeAM", "proc": "RefProc", "proc_type": "RefTypeProc"}.items()}
+_HEAD = {
+    k: _tag(t)
+    for k, t in {
+        "commission": "Commission",
+        "date": "Date",
+        "range": "RangeAM",
+        "type": "TypeAM",
+        "proc": "RefProc",
+        "proc_type": "RefTypeProc",
+    }.items()
+}
 _NUM = re.compile(r"<NumAm[AB]?>(.*?)</NumAm[AB]?>", re.S)
 _MEMBERS, _ON_BEHALF = _tag("Members"), _tag("AuNomDe")
 
@@ -153,7 +163,16 @@ def summarize(state: dict, meps: list[dict]) -> dict:
             r["committee"].update(total=n, sole=sole, on_behalf=behalf)
             if d.get("procedure"):
                 r["dossiers"].add(d["procedure"])
-            r["docs"].append({"doc": doc_id, "date": d["date"], "committees": d["committees"], "procedure": d.get("procedure"), "count": n, "url": PDF_URL.format(id=doc_id)})
+            r["docs"].append(
+                {
+                    "doc": doc_id,
+                    "date": d["date"],
+                    "committees": d["committees"],
+                    "procedure": d.get("procedure"),
+                    "count": n,
+                    "url": PDF_URL.format(id=doc_id),
+                }
+            )
     plen = state.get("plenary", {})
     for rep in plen.values():
         for a in rep.get("amendments", []):

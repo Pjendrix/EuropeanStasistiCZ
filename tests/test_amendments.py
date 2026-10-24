@@ -28,7 +28,11 @@ def docx(paragraphs: list[str]) -> bytes:
 
 
 def amend(num: int, members: str, behalf: str | None = None, suffix: str = "") -> list[str]:
-    by = [f"<RepeatBlock-By><Members>{members}</Members>"] + ([f"<AuNomDe>{{X}}{behalf}</AuNomDe>"] if behalf else []) + ["</RepeatBlock-By>"]
+    by = (
+        [f"<RepeatBlock-By><Members>{members}</Members>"]
+        + ([f"<AuNomDe>{{X}}{behalf}</AuNomDe>"] if behalf else [])
+        + ["</RepeatBlock-By>"]
+    )
     return [f"<Amend{suffix}>Amendment<NumAm{suffix}>{num}</NumAm{suffix}>", *by, "<Article>Recital 1</Article>", "MOCK text PN"]
 
 
@@ -50,7 +54,12 @@ def test_parse_committee_docx_counts_authors_sole_and_on_behalf():
 
 
 def test_parse_two_column_template_a_b():
-    t = text([HEAD.replace("{range}", "1 - 2"), "<RepeatBlock-AmendA>"] + amend(1, "MOCK Jana Nováková", suffix="A") + ["<RepeatBlock-AmendB>"] + amend(2, "MOCK Jana Nováková", suffix="B"))
+    t = text(
+        [HEAD.replace("{range}", "1 - 2"), "<RepeatBlock-AmendA>"]
+        + amend(1, "MOCK Jana Nováková", suffix="A")
+        + ["<RepeatBlock-AmendB>"]
+        + amend(2, "MOCK Jana Nováková", suffix="B")
+    )
     assert am.parse_committee_docx(t)["authors"] == {"MOCK Jana Nováková": [2, 2, 0]}
 
 
@@ -75,7 +84,13 @@ def test_date_with_single_digit_day():
 
 
 def test_compromise_amendments_have_no_authors():
-    t = text([HEAD.replace("{range}", "1 - 3").replace("AMENDMENTS", "COMPROMISE AMENDMENTS"), "<RepeatBlock-AmCompr>", "<SupportedBy>MOCK</SupportedBy>"])
+    t = text(
+        [
+            HEAD.replace("{range}", "1 - 3").replace("AMENDMENTS", "COMPROMISE AMENDMENTS"),
+            "<RepeatBlock-AmCompr>",
+            "<SupportedBy>MOCK</SupportedBy>",
+        ]
+    )
     d = am.parse_committee_docx(t)
     assert d["kind"] == "compromise" and d["authors"] == {} and d["n"] is None
 
@@ -83,12 +98,24 @@ def test_compromise_amendments_have_no_authors():
 @pytest.mark.parametrize(
     "title, expected",
     [
-        ("A10-0259/1 - Pozměňovací návrh 1 - MOCK Jana Nováková, MOCK Petr Dvořák - Zpráva A10-0259/2026 - MOCK", ("members", ["MOCK Jana Nováková", "MOCK Petr Dvořák"], None)),
-        ("A10-0031/2 - Pozměňovací návrh 2 - MOCK Jana Nováková - za skupinu The Left - Zpráva A10-0031/2024 - MOCK", ("group", ["MOCK Jana Nováková"], "The Left")),
-        ("A10-0076/1 - Pozměňovací návrh 1 - MOCK Jana Nováková - Výbor pro zemědělství a rozvoj venkova - Zpráva A10-0076/2025", ("committee", ["MOCK Jana Nováková"], None)),
+        (
+            "A10-0259/1 - Pozměňovací návrh 1 - MOCK Jana Nováková, MOCK Petr Dvořák - Zpráva A10-0259/2026 - MOCK",
+            ("members", ["MOCK Jana Nováková", "MOCK Petr Dvořák"], None),
+        ),
+        (
+            "A10-0031/2 - Pozměňovací návrh 2 - MOCK Jana Nováková - za skupinu The Left - Zpráva A10-0031/2024 - MOCK",
+            ("group", ["MOCK Jana Nováková"], "The Left"),
+        ),
+        (
+            "A10-0076/1 - Pozměňovací návrh 1 - MOCK Jana Nováková - Výbor pro zemědělství a rozvoj venkova - Zpráva A10-0076/2025",
+            ("committee", ["MOCK Jana Nováková"], None),
+        ),
         ("Pozměňovací návrh 001-005 - MOCK Zpravodaj - Zpráva A10-0276/2026 - MOCK", ("committee", [], None)),
         ("A10-0213/4 - Pozměňovacích návrh 4 - MOCK Jana Nováková - Zpráva A10-0213/2025", ("members", ["MOCK Jana Nováková"], None)),
-        ("A10-0063/34/rev - Pozměňovací návrh 34/rev - MOCK Jana Nováková - za skupinu PfE - Zpráva A10-0063/2025", ("group", ["MOCK Jana Nováková"], "PfE")),
+        (
+            "A10-0063/34/rev - Pozměňovací návrh 34/rev - MOCK Jana Nováková - za skupinu PfE - Zpráva A10-0063/2025",
+            ("group", ["MOCK Jana Nováková"], "PfE"),
+        ),
         ("Návrh usnesení MOCK", ("unknown", [], None)),
     ],
 )
@@ -105,15 +132,42 @@ MEPS = [
 def test_summarize_counts_only_in_mandate_and_matches_without_diacritics():
     state = {
         "committee": {
-            "AGRI-AM-000001": {"kind": "amendments", "date": "2025-03-01", "committees": ["AGRI"], "procedure": "P1", "n": 3, "authors": {"MOCK JANA NOVAKOVA": [2, 1, 0], "MOCK Petr Dvořák": [1, 0, 1]}},
-            "AGRI-AM-000002": {"kind": "amendments", "date": "2026-01-10", "committees": ["AGRI"], "procedure": "P1", "n": 1, "authors": {"MOCK Jana Nováková": [1, 1, 0], "MOCK Petr Dvořák": [1, 1, 0]}},
-            "DEVE-AM-000003": {"kind": "compromise", "date": "2026-02-01", "committees": ["DEVE"], "procedure": "P2", "n": None, "authors": {}},
+            "AGRI-AM-000001": {
+                "kind": "amendments",
+                "date": "2025-03-01",
+                "committees": ["AGRI"],
+                "procedure": "P1",
+                "n": 3,
+                "authors": {"MOCK JANA NOVAKOVA": [2, 1, 0], "MOCK Petr Dvořák": [1, 0, 1]},
+            },
+            "AGRI-AM-000002": {
+                "kind": "amendments",
+                "date": "2026-01-10",
+                "committees": ["AGRI"],
+                "procedure": "P1",
+                "n": 1,
+                "authors": {"MOCK Jana Nováková": [1, 1, 0], "MOCK Petr Dvořák": [1, 1, 0]},
+            },
+            "DEVE-AM-000003": {
+                "kind": "compromise",
+                "date": "2026-02-01",
+                "committees": ["DEVE"],
+                "procedure": "P2",
+                "n": None,
+                "authors": {},
+            },
             "ENVI-AM-000004": {"kind": "missing"},
         },
         "plenary": {
             "A-10-2025-0001": {
                 "amendments": [
-                    {"id": "A-10-2025-0001-AM-001-003", "date": "2025-05-01", "n": 3, "kind": "members", "people": ["MOCK Jana Nováková", "MOCK Petr Dvořák"]},
+                    {
+                        "id": "A-10-2025-0001-AM-001-003",
+                        "date": "2025-05-01",
+                        "n": 3,
+                        "kind": "members",
+                        "people": ["MOCK Jana Nováková", "MOCK Petr Dvořák"],
+                    },
                     {"id": "A-10-2025-0001-AM-004-004", "date": "2025-05-01", "n": 1, "kind": "group", "group": "PfE"},
                 ]
             }

@@ -138,7 +138,10 @@ def test_attendance_checked(tmp_path):
 def test_amendments_must_not_drop(tmp_path):
     prev, new = tmp_path / "prev", tmp_path / "new"
     prev.mkdir(), new.mkdir()
-    doc = lambda docs, total, cos: {"coverage": {"committee_docs": docs}, "meps": {"1": {"committee": {"total": total}, "plenary": {"cosigned": cos}}}}  # noqa: E731
+    doc = lambda docs, total, cos: {
+        "coverage": {"committee_docs": docs},
+        "meps": {"1": {"committee": {"total": total}, "plenary": {"cosigned": cos}}},
+    }  # noqa: E731
     assert cd.check_amendments(prev, new) == []  # soubory chybí
     (prev / "amendments.json").write_text(json.dumps(doc(10, 5, 2)))
     (new / "amendments.json").write_text(json.dumps(doc(11, 6, 2)))

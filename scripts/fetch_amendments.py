@@ -58,7 +58,14 @@ class Budget(Exception):
 
 class Fetcher:
     def __init__(self, client: EPClient, state: dict, state_path: Path, deadline: float | None, cache_dir: Path | None, log=print):
-        self.client, self.state, self.state_path, self.deadline, self.cache_dir, self.log = client, state, state_path, deadline, cache_dir, log
+        self.client, self.state, self.state_path, self.deadline, self.cache_dir, self.log = (
+            client,
+            state,
+            state_path,
+            deadline,
+            cache_dir,
+            log,
+        )
         self.session = requests.Session()
         self._last_docx = 0.0
         self.changed = 0
@@ -170,14 +177,16 @@ class Fetcher:
                 title = next(iter((a.get("title_dcterms") or {}).values()), "")
                 kind, people, group = classify_plenary(title)
                 b, e = a.get("itemNumberBegin"), a.get("itemNumberEnd")
-                ams.append({
-                    "id": a.get("identifier"),
-                    "date": a.get("document_date"),
-                    "n": e - b + 1 if isinstance(b, int) and isinstance(e, int) and e >= b else 1,
-                    "kind": kind,
-                    **({"people": people} if kind == "members" else {}),
-                    **({"group": group} if group else {}),
-                })
+                ams.append(
+                    {
+                        "id": a.get("identifier"),
+                        "date": a.get("document_date"),
+                        "n": e - b + 1 if isinstance(b, int) and isinstance(e, int) and e >= b else 1,
+                        "kind": kind,
+                        **({"people": people} if kind == "members" else {}),
+                        **({"group": group} if group else {}),
+                    }
+                )
             plen[rep] = {"fetched": today.isoformat(), "amendments": sorted(ams, key=lambda x: x["id"] or "")}
             self.touched()
 
