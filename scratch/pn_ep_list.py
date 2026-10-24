@@ -48,18 +48,23 @@ def main(out: Path, details: bool) -> None:
             ids = json.loads(lst.read_text())
         else:
             # API při stránce nad ~10 položek padá na 500 (OutOfMemory v SPARQL), proto po letech a po 10
-            ids = []
+            # průběžný stav (rok → stažená ID), ať jde přerušený výpis navázat
+            part = out / "am_list.partial.json"
+            prog = json.loads(part.read_text()) if part.exists() else {}
             for year in YEARS:
-                off = 0
+                got = prog.setdefault(str(year), [])
+                off = len(got)
                 while True:
                     d = get(s, "documents", {"work-type": "AMENDMENT_LIST", "year": year, "limit": PAGE, "offset": off})
                     page = [x["identifier"] for x in (d or {}).get("data", [])]
-                    ids += page
+                    got += page
+                    part.write_text(json.dumps(prog))
                     if off % 100 == 0:
-                        print(year, off, len(ids), file=sys.stderr, flush=True)
+                        print(year, off, len(got), file=sys.stderr, flush=True)
                     if len(page) < PAGE:
                         break
                     off += PAGE
+            ids = [i for year in YEARS for i in prog[str(year)]]
             lst.write_text(json.dumps(ids))
         print("AMENDMENT_LIST celkem", len(ids), file=sys.stderr)
         if not details:
