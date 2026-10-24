@@ -47,13 +47,19 @@ jobs:
         run: python scripts/fetch_votes.py
 
       - name: Projevy v plénu a prezenční listiny (EP Open Data API)
+        # Výpadek EP API (opakované 5xx) nesmí zastavit aktualizaci hlasování: zůstane předchozí soubor a běh jen varuje.
+        # Změna formátu (návratový kód 2) běh zastaví dál. Každý skript nejvýš 8 minut (běžně 1–2), ať se vejde celý běh.
         run: |
-          python scripts/fetch_speeches.py
-          python scripts/fetch_attendance.py
+          for s in fetch_speeches fetch_attendance; do
+            rc=0; timeout 8m python "scripts/$s.py" || rc=$?
+            if [ "$rc" -eq 2 ]; then exit 2; fi
+            if [ "$rc" -ne 0 ]; then echo "::warning::$s: EP API neodpovídá, zůstává předchozí soubor"; fi
+          done
 
       - name: Předsedové politických skupin (EP Open Data API)
         # Asi 10 dotazů týdně. Při výpadku nebo změně formátu zůstane předchozí soubor (stránka a karta frakce ho jen ukazují).
         continue-on-error: true
+        timeout-minutes: 3
         run: python scripts/fetch_group_chairs.py
 
       - name: Weby politických skupin (Wikidata)
@@ -64,6 +70,8 @@ jobs:
       - name: Přijaté texty (EP Open Data API)
         # Párování hlasování → přijatý text (TA). Při výpadku API zůstane předchozí soubor; odkazy pak berou HowTheyVote.
         continue-on-error: true
+        # Při výpadku API opakuje dotazy desítky minut; nedokončené párování dožene příští běh (stav se ukládá průběžně).
+        timeout-minutes: 8
         run: python scripts/adopted_texts.py
 
       - name: Statistiky
@@ -133,7 +141,10 @@ jobs:
 
       - name: Balíček (jen pro nový export dat)
         id: ig
-        run: python scripts/build_instagram.py --only-new >> "$GITHUB_OUTPUT"
+        # Karty se kreslí ze stránek p/ a v/; ty nejsou v gitu (vznikají při sestavení), job je proto musí vygenerovat sám.
+        run: |
+          python scripts/build_pages.py
+          python scripts/build_instagram.py --only-new >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: steps.ig.outputs.built == 'true'

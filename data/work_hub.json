@@ -10,15 +10,15 @@
   "meps": 24,
   "reports_lead": 40,
   "reports_shadow": 142,
-  "reports_adopted": 85,
+  "reports_adopted": 87,
   "opinions": 74,
   "questions": 458,
-  "speeches": 796,
-  "speeches_minutes": 987,
+  "speeches": 811,
+  "speeches_minutes": 1007,
   "written_statements": 15,
   "presence": [
-   2269,
-   2520
+   2351,
+   2604
   ]
  },
  "timeline": [
@@ -79,12 +79,12 @@
   },
   {
    "month": "2025-06",
-   "speeches": 15,
+   "speeches": 14,
    "questions": 16
   },
   {
    "month": "2025-07",
-   "speeches": 23,
+   "speeches": 22,
    "questions": 9
   },
   {
@@ -129,7 +129,7 @@
   },
   {
    "month": "2026-04",
-   "speeches": 34,
+   "speeches": 33,
    "questions": 32
   },
   {
@@ -159,7 +159,7 @@
   },
   {
    "month": "2026-10",
-   "speeches": 27,
+   "speeches": 45,
    "questions": 5
   }
  ],
@@ -176,7 +176,7 @@
    "process_type": "INI",
    "reports_lead": 6,
    "reports_shadow": 36,
-   "adopted": 24,
+   "adopted": 26,
    "legislative": false,
    "label": "z vlastního podnětu"
   },
@@ -225,12 +225,12 @@
   {
    "code": "PFE",
    "short_label": "Patrioti",
-   "meps": 11,
+   "meps": 12,
    "reports_lead": 16,
    "reports_shadow": 89,
-   "opinions": 44,
-   "questions": 346,
-   "speeches": 196
+   "opinions": 48,
+   "questions": 391,
+   "speeches": 275
   },
   {
    "code": "PPE",
@@ -240,7 +240,7 @@
    "reports_shadow": 18,
    "opinions": 29,
    "questions": 185,
-   "speeches": 211
+   "speeches": 214
   },
   {
    "code": "ECR",
@@ -250,17 +250,7 @@
    "reports_shadow": 31,
    "opinions": 32,
    "questions": 203,
-   "speeches": 166
-  },
-  {
-   "code": "NI",
-   "short_label": "nezařazení",
-   "meps": 2,
-   "reports_lead": 0,
-   "reports_shadow": 0,
-   "opinions": 4,
-   "questions": 62,
-   "speeches": 140
+   "speeches": 171
   },
   {
    "code": "ESN",
@@ -280,10 +270,34 @@
    "reports_shadow": 18,
    "opinions": 6,
    "questions": 44,
-   "speeches": 51
+   "speeches": 52
+  },
+  {
+   "code": "NI",
+   "short_label": "nezařazení",
+   "meps": 1,
+   "reports_lead": 0,
+   "reports_shadow": 0,
+   "opinions": 0,
+   "questions": 17,
+   "speeches": 67
   }
  ],
  "recent_adopted": [
+  {
+   "vote_id": 198309,
+   "date": "2026-10-20",
+   "report": "A10-0213/2026",
+   "title": "ZPRÁVA o boji proti podvodům v oblasti DPH – účinnost přeshraniční spolupráce v oblasti podvodů v oblasti DPH a její dopad na rozpočet EU",
+   "process_type": "INI",
+   "legislative": false,
+   "lead": [
+    197528
+   ],
+   "shadow": [
+    124713
+   ]
+  },
   {
    "vote_id": 197360,
    "date": "2026-10-06",
@@ -396,21 +410,9 @@
    "shadow": [
     256843
    ]
-  },
-  {
-   "vote_id": 195987,
-   "date": "2026-09-15",
-   "report": "2025/2069(INI)",
-   "title": "Zjištění a doporučení zvláštního výboru pro Evropský štít pro demokracii",
-   "process_type": "INI",
-   "legislative": false,
-   "lead": [],
-   "shadow": [
-    220840
-   ]
   }
  ],
- "adopted_with_vote": 83,
+ "adopted_with_vote": 84,
  "sources": {
   "own_work": {
    "name": "EP Open Data API v2",

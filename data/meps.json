@@ -30,12 +30,24 @@
     {
      "org_id": "6561",
      "code": "NI",
-     "short_label": "NI",
+     "short_label": "nezařazení",
      "name_cs": "Nezařazení poslanci",
      "name_en": "Non-attached Members",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": "2026-10-20",
+     "short_label_ep": "NI"
+    },
+    {
+     "org_id": "7150",
+     "code": "PFE",
+     "short_label": "Patrioti",
+     "name_cs": "skupina Patrioti pro Evropu",
+     "name_en": "Patriots for Europe Group",
+     "role": "MEMBER",
+     "start": "2026-10-21",
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
@@ -77,7 +89,7 @@
      "name_en": "Committee on the Internal Market and Consumer Protection",
      "role": "MEMBER",
      "start": "2024-07-19",
-     "end": null
+     "end": "2026-10-20"
     },
     {
      "org_id": "7913",
@@ -87,7 +99,7 @@
      "name_en": "Committee on the Environment, Climate and Food Safety",
      "role": "MEMBER_SUBSTITUTE",
      "start": "2025-01-20",
-     "end": null
+     "end": "2026-10-20"
     },
     {
      "org_id": "7912",
@@ -97,7 +109,7 @@
      "name_en": "Committee on Public Health",
      "role": "MEMBER_SUBSTITUTE",
      "start": "2025-01-23",
-     "end": null
+     "end": "2026-10-20"
     },
     {
      "org_id": "6582",
@@ -117,7 +129,7 @@
      "name_en": "Committee on International Trade",
      "role": "MEMBER_SUBSTITUTE",
      "start": "2026-05-20",
-     "end": null
+     "end": "2026-10-20"
     }
    ]
   },
@@ -143,22 +155,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2025-07-30"
+     "end": "2025-07-30",
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2025-07-30"
+     "end": "2025-07-30",
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -226,22 +240,24 @@
     {
      "org_id": "7018",
      "code": "PPE",
-     "short_label": "PPE",
+     "short_label": "EPP",
      "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
      "name_en": "Group of the European People's Party (Christian Democrats)",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PPE"
     }
    ],
    "parties": [
     {
      "org_id": "6793",
-     "short_label": "TOP09/STAN",
+     "short_label": "TOP 09",
      "name": "Czechia – TOP 09",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "TOP09/STAN"
     }
    ],
    "committees": [
@@ -329,12 +345,13 @@
     {
      "org_id": "7018",
      "code": "PPE",
-     "short_label": "PPE",
+     "short_label": "EPP",
      "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
      "name_en": "Group of the European People's Party (Christian Democrats)",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PPE"
     }
    ],
    "parties": [
@@ -422,12 +439,13 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2024-07-31"
+     "end": "2024-07-31",
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [],
@@ -486,22 +504,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER_BUREAU",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -672,22 +692,24 @@
     {
      "org_id": "7028",
      "code": "VERTS-ALE",
-     "short_label": "Verts/ALE",
+     "short_label": "Zelení",
      "name_cs": "skupina Zelených / Evropské svobodné aliance",
      "name_en": "Group of the Greens/European Free Alliance",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "Verts/ALE"
     }
    ],
    "parties": [
     {
      "org_id": "6862",
-     "short_label": "PIR",
+     "short_label": "Piráti",
      "name": "PIRÁTI",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PIR"
     }
    ],
    "committees": [
@@ -951,22 +973,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -1044,12 +1068,13 @@
     {
      "org_id": "7018",
      "code": "PPE",
-     "short_label": "PPE",
+     "short_label": "EPP",
      "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
      "name_en": "Group of the European People's Party (Christian Democrats)",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PPE"
     }
    ],
    "parties": [
@@ -1117,22 +1142,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -1230,22 +1257,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -1416,22 +1445,24 @@
     {
      "org_id": "7018",
      "code": "PPE",
-     "short_label": "PPE",
+     "short_label": "EPP",
      "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
      "name_en": "Group of the European People's Party (Christian Democrats)",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PPE"
     }
    ],
    "parties": [
     {
      "org_id": "6793",
-     "short_label": "TOP09/STAN",
+     "short_label": "TOP 09",
      "name": "Czechia – TOP 09",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "TOP09/STAN"
     }
    ],
    "committees": [
@@ -1529,12 +1560,13 @@
     {
      "org_id": "7018",
      "code": "PPE",
-     "short_label": "PPE",
+     "short_label": "EPP",
      "name_cs": "poslanecký klub Evropské lidové strany (Křesťanských demokratů)",
      "name_en": "Group of the European People's Party (Christian Democrats)",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PPE"
     }
    ],
    "parties": [
@@ -1632,22 +1664,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER_BUREAU",
      "start": "2024-07-16",
-     "end": "2025-10-03"
+     "end": "2025-10-03",
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "7034",
-     "short_label": "AUTO",
+     "short_label": "Motoristé",
      "name": "Motoristé sobě",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2025-10-03"
+     "end": "2025-10-03",
+     "short_label_ep": "AUTO"
     }
    ],
    "committees": [
@@ -1715,12 +1749,13 @@
     {
      "org_id": "6561",
      "code": "NI",
-     "short_label": "NI",
+     "short_label": "nezařazení",
      "name_cs": "Nezařazení poslanci",
      "name_en": "Non-attached Members",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "NI"
     }
    ],
    "parties": [
@@ -1808,22 +1843,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2026-02-03"
+     "end": "2026-02-03",
+     "short_label_ep": "PfE"
     },
     {
      "org_id": "6561",
      "code": "NI",
-     "short_label": "NI",
+     "short_label": "nezařazení",
      "name_cs": "Nezařazení poslanci",
      "name_en": "Non-attached Members",
      "role": "MEMBER",
      "start": "2026-02-04",
-     "end": "2026-06-16"
+     "end": "2026-06-16",
+     "short_label_ep": "NI"
     },
     {
      "org_id": "7037",
@@ -1839,11 +1876,12 @@
    "parties": [
     {
      "org_id": "7033",
-     "short_label": "PSH",
+     "short_label": "Přísaha",
      "name": "Přísaha",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": "2026-04-22"
+     "end": "2026-04-22",
+     "short_label_ep": "PSH"
     },
     {
      "org_id": "6843",
@@ -1959,22 +1997,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "CHAIR_VICE",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-07-16",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -2043,22 +2083,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2024-08-01",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2024-08-01",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -2166,22 +2208,24 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2025-07-31",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "6794",
-     "short_label": "ANO 2011",
+     "short_label": "ANO",
      "name": "ANO 2011",
      "role": "MEMBER",
      "start": "2025-07-31",
-     "end": null
+     "end": null,
+     "short_label_ep": "ANO 2011"
     }
    ],
    "committees": [
@@ -2249,30 +2293,33 @@
     {
      "org_id": "7150",
      "code": "PFE",
-     "short_label": "PfE",
+     "short_label": "Patrioti",
      "name_cs": "skupina Patrioti pro Evropu",
      "name_en": "Patriots for Europe Group",
      "role": "MEMBER",
      "start": "2025-10-04",
-     "end": null
+     "end": null,
+     "short_label_ep": "PfE"
     }
    ],
    "parties": [
     {
      "org_id": "7033",
-     "short_label": "PSH",
+     "short_label": "Přísaha",
      "name": "Přísaha",
      "role": "MEMBER",
      "start": "2025-10-04",
-     "end": "2026-05-19"
+     "end": "2026-05-19",
+     "short_label_ep": "PSH"
     },
     {
      "org_id": "7034",
-     "short_label": "AUTO",
+     "short_label": "Motoristé",
      "name": "Motoristé sobě",
      "role": "MEMBER",
      "start": "2026-05-20",
-     "end": null
+     "end": null,
+     "short_label_ep": "AUTO"
     }
    ],
    "committees": [

@@ -13,12 +13,12 @@
  "members": 1,
  "total": {
   "attendance": [
-   5592,
-   6154
+   5840,
+   6411
   ],
   "attendance_main": [
-   576,
-   641
+   600,
+   665
   ],
   "group_loyalty": [
    0,
@@ -29,20 +29,20 @@
    0
   ],
   "cz_agreement": [
-   2867,
-   5394
+   3011,
+   5634
   ],
   "outcome": [
-   1551,
-   4984
+   1604,
+   5215
   ],
   "outcome_main": [
-   222,
-   474
+   237,
+   494
   ],
   "outcome_close": [
-   60,
-   109
+   61,
+   113
   ],
   "group_outcome": [
    0,
@@ -53,10 +53,10 @@
    0
   ],
   "positions": {
-   "FOR": 3378,
-   "AGAINST": 1606,
-   "ABSTENTION": 608,
-   "DID_NOT_VOTE": 562
+   "FOR": 3566,
+   "AGAINST": 1649,
+   "ABSTENTION": 625,
+   "DID_NOT_VOTE": 571
   }
  },
  "cohesion": [
@@ -74,7 +74,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -122,8 +122,8 @@
    ],
    "short_mandate": false,
    "group": {
-    "code": "NI",
-    "short_label": "nezařazení"
+    "code": "PFE",
+    "short_label": "Patrioti"
    },
    "party": {
     "id": 6769,
@@ -139,12 +139,12 @@
    "end": null,
    "total": {
     "attendance": [
-     5592,
-     6154
+     5840,
+     6411
     ],
     "attendance_main": [
-     576,
-     641
+     600,
+     665
     ],
     "group_loyalty": [
      0,
@@ -155,20 +155,20 @@
      0
     ],
     "cz_agreement": [
-     2867,
-     5394
+     3011,
+     5634
     ],
     "outcome": [
-     1551,
-     4984
+     1604,
+     5215
     ],
     "outcome_main": [
-     222,
-     474
+     237,
+     494
     ],
     "outcome_close": [
-     60,
-     109
+     61,
+     113
     ],
     "group_outcome": [
      0,
@@ -179,15 +179,17 @@
      0
     ],
     "positions": {
-     "FOR": 3378,
-     "AGAINST": 1606,
-     "ABSTENTION": 608,
-     "DID_NOT_VOTE": 562
+     "FOR": 3566,
+     "AGAINST": 1649,
+     "ABSTENTION": 625,
+     "DID_NOT_VOTE": 571
     }
    }
   }
  ],
- "groups": [],
+ "groups": [
+  "PFE"
+ ],
  "reports": {
   "items": [],
   "shadow_count": 0,

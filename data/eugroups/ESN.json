@@ -12,31 +12,31 @@
  "seats": 27,
  "n_countries": 9,
  "attendance": [
-  146593,
-  164485
+  152307,
+  171424
  ],
  "attendance_main": [
-  15241,
-  17122
+  15767,
+  17770
  ],
  "majority": [
-  123383,
-  128435
+  128007,
+  133170
  ],
  "majority_main": [
-  11858,
-  12234
+  12252,
+  12636
  ],
- "splits": 112,
- "considered": 5692,
+ "splits": 113,
+ "considered": 5911,
  "splits_main": 4,
- "considered_main": 546,
+ "considered_main": 565,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -73,57 +73,57 @@
    "end": null,
    "total": {
     "attendance": [
-     5644,
-     6154
+     5825,
+     6411
     ],
     "attendance_main": [
-     606,
-     641
+     624,
+     665
     ],
     "group_loyalty": [
-     3973,
-     5635
+     4115,
+     5816
     ],
     "group_loyalty_main": [
-     479,
-     605
+     495,
+     623
     ],
     "cz_agreement": [
-     2882,
-     5439
+     2992,
+     5613
     ],
     "outcome": [
-     1207,
-     4652
+     1264,
+     4806
     ],
     "outcome_main": [
-     153,
-     475
+     160,
+     488
     ],
     "outcome_close": [
      49,
-     103
+     105
     ],
     "group_outcome": [
-     30940,
-     102836
+     32216,
+     106068
     ],
     "group_outcome_main": [
-     3390,
-     10287
+     3541,
+     10566
     ],
     "positions": {
-     "FOR": 2722,
-     "AGAINST": 1931,
-     "ABSTENTION": 991,
-     "DID_NOT_VOTE": 510
+     "FOR": 2808,
+     "AGAINST": 1999,
+     "ABSTENTION": 1018,
+     "DID_NOT_VOTE": 586
     }
    }
   }
  ],
  "countries": {
-  "as_of": "2026-10-08",
-  "vote_id": 198051,
+  "as_of": "2026-10-22",
+  "vote_id": 199356,
   "seats": 27,
   "n_countries": 9,
   "by_country": [
@@ -178,7 +178,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-17"
+  "release": "2026-10-24"
  },
  "chairs": [
   {
@@ -204,7 +204,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-20"
+  "updated": "2026-10-24"
  },
  "splits_list": [
   {
@@ -668,7 +668,7 @@
     "for": 621,
     "against": 20,
     "abstention": 12,
-    "did_not_vote": 66
+    "did_not_vote": 65
    },
    "cz": [
     17,
@@ -888,7 +888,7 @@
     "for": 59,
     "against": 561,
     "abstention": 28,
-    "did_not_vote": 71
+    "did_not_vote": 70
    },
    "cz": [
     3,
@@ -999,7 +999,7 @@
     "for": 438,
     "against": 158,
     "abstention": 44,
-    "did_not_vote": 79
+    "did_not_vote": 78
    },
    "cz": [
     5,
@@ -1207,6 +1207,46 @@
     9,
     0,
     5
+   ]
+  },
+  {
+   "id": 199497,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
+   "description": "Après le § 5 - Am 5",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 131,
+    "against": 433,
+    "abstention": 15,
+    "did_not_vote": 141
+   },
+   "cz": [
+    3,
+    14,
+    1,
+    3
+   ],
+   "amendment_number": "5",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 5 - PN 5",
+   "gc": [
+    8,
+    12,
+    1,
+    6
    ]
   },
   {
@@ -1445,7 +1485,7 @@
     "for": 534,
     "against": 29,
     "abstention": 18,
-    "did_not_vote": 138
+    "did_not_vote": 137
    },
    "cz": [
     16,
@@ -1482,7 +1522,7 @@
     "for": 328,
     "against": 281,
     "abstention": 40,
-    "did_not_vote": 70
+    "did_not_vote": 69
    },
    "cz": [
     5,
@@ -1926,7 +1966,7 @@
     "for": 626,
     "against": 18,
     "abstention": 10,
-    "did_not_vote": 65
+    "did_not_vote": 64
    },
    "cz": [
     18,
@@ -2022,43 +2062,6 @@
     15,
     2,
     1
-   ]
-  },
-  {
-   "id": 174381,
-   "date": "2025-04-02",
-   "month": "2025-04",
-   "title": "Provádění společné zahraniční a bezpečnostní politiky – výroční zpráva 2024",
-   "reference": "A10-0010/2025",
-   "description": "Après le § 28 - Am 36",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 114,
-    "against": 532,
-    "abstention": 28,
-    "did_not_vote": 44
-   },
-   "cz": [
-    4,
-    15,
-    2,
-    0
-   ],
-   "amendment_number": "36",
-   "texts_adopted_reference": "P10_TA(2025)0057",
-   "cats": [
-    "def"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 28 - PN 36",
-   "gc": [
-    9,
-    15,
-    0,
-    2
    ]
   }
  ],

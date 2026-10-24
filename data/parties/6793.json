@@ -13,68 +13,68 @@
  "members": 2,
  "total": {
   "attendance": [
-   11802,
-   12308
+   12307,
+   12822
   ],
   "attendance_main": [
-   1244,
-   1282
+   1291,
+   1330
   ],
   "group_loyalty": [
-   10592,
-   11802
+   11070,
+   12307
   ],
   "group_loyalty_main": [
-   1202,
-   1244
+   1249,
+   1291
   ],
   "cz_agreement": [
-   5692,
-   11461
+   5925,
+   11951
   ],
   "outcome": [
-   10295,
-   10975
+   10775,
+   11468
   ],
   "outcome_main": [
-   1147,
-   1215
+   1193,
+   1262
   ],
   "outcome_close": [
-   115,
-   215
+   121,
+   223
   ],
   "group_outcome": [
-   1602483,
-   1743682
+   1676536,
+   1821518
   ],
   "group_outcome_main": [
-   184264,
-   195489
+   191615,
+   203032
   ],
   "positions": {
-   "FOR": 4882,
-   "AGAINST": 6095,
-   "ABSTENTION": 825,
-   "DID_NOT_VOTE": 506
+   "FOR": 5019,
+   "AGAINST": 6451,
+   "ABSTENTION": 837,
+   "DID_NOT_VOTE": 515
   }
  },
  "cohesion": [
-  4945,
-  5667
+  5177,
+  5915
  ],
  "cohesion_main": [
-  572,
-  604
+  595,
+  627
  ],
- "splits_count": 190,
+ "splits_count": 197,
  "splits_count_main": 7,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -139,50 +139,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5916,
-     6154
+     6170,
+     6411
     ],
     "attendance_main": [
-     630,
-     641
+     653,
+     665
     ],
     "group_loyalty": [
-     5326,
-     5916
+     5568,
+     6170
     ],
     "group_loyalty_main": [
-     609,
-     630
+     632,
+     653
     ],
     "cz_agreement": [
-     2757,
-     5745
+     2870,
+     5991
     ],
     "outcome": [
-     5223,
-     5521
+     5467,
+     5769
     ],
     "outcome_main": [
-     580,
-     619
+     603,
+     642
     ],
     "outcome_close": [
-     57,
-     105
+     60,
+     109
     ],
     "group_outcome": [
-     804045,
-     874998
+     841276,
+     914028
     ],
     "group_outcome_main": [
-     93548,
-     99662
+     97202,
+     103353
     ],
     "positions": {
-     "FOR": 2441,
-     "AGAINST": 3081,
-     "ABSTENTION": 394,
-     "DID_NOT_VOTE": 238
+     "FOR": 2505,
+     "AGAINST": 3265,
+     "ABSTENTION": 400,
+     "DID_NOT_VOTE": 241
     }
    }
   },
@@ -220,50 +220,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5886,
-     6154
+     6137,
+     6411
     ],
     "attendance_main": [
-     614,
-     641
+     638,
+     665
     ],
     "group_loyalty": [
-     5266,
-     5886
+     5502,
+     6137
     ],
     "group_loyalty_main": [
-     593,
-     614
+     617,
+     638
     ],
     "cz_agreement": [
-     2935,
-     5716
+     3055,
+     5960
     ],
     "outcome": [
-     5072,
-     5454
+     5308,
+     5699
     ],
     "outcome_main": [
-     567,
-     596
+     590,
+     620
     ],
     "outcome_close": [
-     58,
-     110
+     61,
+     114
     ],
     "group_outcome": [
-     798438,
-     868684
+     835260,
+     907490
     ],
     "group_outcome_main": [
-     90716,
-     95827
+     94413,
+     99679
     ],
     "positions": {
-     "FOR": 2441,
-     "AGAINST": 3014,
-     "ABSTENTION": 431,
-     "DID_NOT_VOTE": 268
+     "FOR": 2514,
+     "AGAINST": 3186,
+     "ABSTENTION": 437,
+     "DID_NOT_VOTE": 274
     }
    }
   }
@@ -313,6 +313,321 @@
   "updated": "2026-10-23"
  },
  "splits": [
+  {
+   "id": 199356,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "UN Climate Change Conference 2026 in Antalya, Türkiye (COP31)",
+   "reference": "B10-0468/2026",
+   "description": "Considérant G - Am 15",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 128,
+    "against": 362,
+    "abstention": 56,
+    "did_not_vote": 174
+   },
+   "cz": [
+    13,
+    2,
+    1,
+    5
+   ],
+   "amendment_number": "15",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění G - PN 15",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 199352,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "UN Climate Change Conference 2026 in Antalya, Türkiye (COP31)",
+   "reference": "B10-0468/2026",
+   "description": "§ 48 - Am 17",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 181,
+    "against": 366,
+    "abstention": 17,
+    "did_not_vote": 156
+   },
+   "cz": [
+    16,
+    2,
+    0,
+    3
+   ],
+   "amendment_number": "17",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 48 - PN 17",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 199346,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "UN Climate Change Conference 2026 in Antalya, Türkiye (COP31)",
+   "reference": "B10-0468/2026",
+   "description": "Après le § 1 - Am 11",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 249,
+    "against": 302,
+    "abstention": 20,
+    "did_not_vote": 149
+   },
+   "cz": [
+    16,
+    1,
+    1,
+    3
+   ],
+   "amendment_number": "11",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 1 - PN 11",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 199573,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Reduction of methane emissions in the energy sector: postponement of certain obligations",
+   "reference": "C10-0258/2026",
+   "description": "Article 1, alinéa 1, point 1, point a - Am 7",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 326,
+    "against": 244,
+    "abstention": 8,
+    "did_not_vote": 142
+   },
+   "cz": [
+    16,
+    2,
+    0,
+    3
+   ],
+   "amendment_number": "7",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, pododstavec 1, bod 1, písm. a - PN 7",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 199072,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Après le visa 12 - Am 124",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 238,
+    "against": 404,
+    "abstention": 21,
+    "did_not_vote": 57
+   },
+   "cz": [
+    17,
+    2,
+    0,
+    2
+   ],
+   "amendment_number": "124",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za právním východiskem 12 - PN 124",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 199035,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Après le § 27 - Am 94",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 221,
+    "against": 431,
+    "abstention": 8,
+    "did_not_vote": 60
+   },
+   "cz": [
+    15,
+    2,
+    2,
+    2
+   ],
+   "amendment_number": "94",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 27 - PN 94",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 198875,
+   "date": "2026-10-20",
+   "month": "2026-10",
+   "title": "Suspending the application of the rules on extended producer responsibility for waste, waste electrical and electronical equipment and single use plastic waste (Omnibus VIII on environmental legislation)",
+   "reference": "A10-0267/2026",
+   "description": "Après l'article 1 - Am 18",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 395,
+    "against": 249,
+    "abstention": 17,
+    "did_not_vote": 59
+   },
+   "cz": [
+    18,
+    3,
+    0,
+    0
+   ],
+   "amendment_number": "18",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za článkem 1 - PN 18",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
   {
    "id": 198046,
    "date": "2026-10-08",
@@ -897,334 +1212,6 @@
      "national_party_id": 6793
     }
    ]
-  },
-  {
-   "id": 197818,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Opatření k usnadnění konzulární ochrany nezastoupených občanů Unie ve třetích zemích",
-   "reference": "A10-0254/2026",
-   "description": "Après le considérant 1 - Am 41",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 289,
-    "against": 365,
-    "abstention": 3,
-    "did_not_vote": 62
-   },
-   "cz": [
-    2,
-    17,
-    1,
-    1
-   ],
-   "amendment_number": "41",
-   "texts_adopted_reference": null,
-   "cats": [
-    "civ"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za bodem odůvodnění 1 - PN 41",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197815,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Opatření k usnadnění konzulární ochrany nezastoupených občanů Unie ve třetích zemích",
-   "reference": "A10-0254/2026",
-   "description": "Article 1 - alinéa 1 - point 1; Directive (UE) 2015/637 - Article 7 - après le paragraphe 4 - Am 39",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 122,
-    "against": 337,
-    "abstention": 200,
-    "did_not_vote": 60
-   },
-   "cz": [
-    16,
-    2,
-    2,
-    1
-   ],
-   "amendment_number": "39",
-   "texts_adopted_reference": null,
-   "cats": [
-    "civ"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Článek 1 - pododstavec 1 - bod 1; směrnice (EU) 2015/637 - článek 7 - za odstavcem 4 - PN 39",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197674,
-   "date": "2026-10-06",
-   "month": "2026-10",
-   "title": "Přístup EU k politice v oblasti daně z příjmů právnických osob v měnícím se mezinárodním prostředí",
-   "reference": "A10-0238/2026",
-   "description": "Après le § 30 - Am 1",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 247,
-    "against": 347,
-    "abstention": 38,
-    "did_not_vote": 87
-   },
-   "cz": [
-    4,
-    13,
-    2,
-    2
-   ],
-   "amendment_number": "1",
-   "texts_adopted_reference": null,
-   "cats": [
-    "eco",
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 30 - PN 1",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197194,
-   "date": "2026-09-17",
-   "month": "2026-09",
-   "title": "Nedávné hybridní útoky a účelové využívání migrantů v Ceutě a potřeba koordinované reakce na ochranu vnějších hranic EU",
-   "reference": "B10-0406/2026",
-   "description": "Après le considérant G - Am 16",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 252,
-    "against": 326,
-    "abstention": 8,
-    "did_not_vote": 131
-   },
-   "cz": [
-    2,
-    13,
-    0,
-    6
-   ],
-   "amendment_number": "16",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za bodem odůvodnění G - PN 16",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197185,
-   "date": "2026-09-17",
-   "month": "2026-09",
-   "title": "Nedávné hybridní útoky a účelové využívání migrantů v Ceutě a potřeba koordinované reakce na ochranu vnějších hranic EU",
-   "reference": "B10-0406/2026",
-   "description": "Considérant E - Am 58",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 84,
-    "against": 484,
-    "abstention": 8,
-    "did_not_vote": 141
-   },
-   "cz": [
-    4,
-    10,
-    0,
-    7
-   ],
-   "amendment_number": "58",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Bod odůvodnění E - PN 58",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197135,
-   "date": "2026-09-17",
-   "month": "2026-09",
-   "title": "Nedávné hybridní útoky a účelové využívání migrantů v Ceutě a potřeba koordinované reakce na ochranu vnějších hranic EU",
-   "reference": "B10-0406/2026",
-   "description": "Après le § 10 - Am 51",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 277,
-    "against": 321,
-    "abstention": 5,
-    "did_not_vote": 114
-   },
-   "cz": [
-    4,
-    11,
-    0,
-    6
-   ],
-   "amendment_number": "51",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 10 - PN 51",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197120,
-   "date": "2026-09-17",
-   "month": "2026-09",
-   "title": "Nedávné hybridní útoky a účelové využívání migrantů v Ceutě a potřeba koordinované reakce na ochranu vnějších hranic EU",
-   "reference": "B10-0406/2026",
-   "description": "Après le § 7 - Am 78",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 395,
-    "against": 204,
-    "abstention": 5,
-    "did_not_vote": 113
-   },
-   "cz": [
-    13,
-    2,
-    0,
-    6
-   ],
-   "amendment_number": "78",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 7 - PN 78",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
   }
  ],
  "splits_main": [
@@ -1233,7 +1220,7 @@
    "date": "2026-07-09",
    "month": "2026-07",
    "title": "Hrozba válečných zločinů, stupňující se porušování mezinárodního humanitárního práva a situace v oblasti lidských práv v súdánském El-Obeidu",
-   "reference": "B10-0357/2026",
+   "reference": "RC-B10-0357/2026",
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "is_main": true,

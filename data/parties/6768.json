@@ -13,68 +13,68 @@
  "members": 3,
  "total": {
   "attendance": [
-   17289,
-   18462
+   18059,
+   19233
   ],
   "attendance_main": [
-   1806,
-   1923
+   1878,
+   1995
   ],
   "group_loyalty": [
-   14392,
-   17238
+   15050,
+   18008
   ],
   "group_loyalty_main": [
-   1364,
-   1791
+   1427,
+   1863
   ],
   "cz_agreement": [
-   12905,
-   16673
+   13523,
+   17415
   ],
   "outcome": [
-   9012,
-   15725
+   9402,
+   16430
   ],
   "outcome_main": [
-   1195,
-   1559
+   1246,
+   1625
   ],
   "outcome_close": [
-   199,
-   394
+   211,
+   409
   ],
   "group_outcome": [
-   550221,
-   1038385
+   574349,
+   1082693
   ],
   "group_outcome_main": [
-   80085,
-   99909
+   83841,
+   104313
   ],
   "positions": {
-   "FOR": 8750,
-   "AGAINST": 6976,
-   "ABSTENTION": 1563,
-   "DID_NOT_VOTE": 1173
+   "FOR": 9148,
+   "AGAINST": 7283,
+   "ABSTENTION": 1628,
+   "DID_NOT_VOTE": 1174
   }
  },
  "cohesion": [
-  5334,
-  5721
+  5577,
+  5978
  ],
  "cohesion_main": [
-  565,
-  597
+  589,
+  621
  ],
- "splits_count": 199,
+ "splits_count": 204,
  "splits_count_main": 6,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-17"
+   "release": "2026-10-24"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -139,49 +139,49 @@
    "end": null,
    "total": {
     "attendance": [
-     5533,
-     6154
+     5790,
+     6411
     ],
     "attendance_main": [
-     581,
-     641
+     605,
+     665
     ],
     "group_loyalty": [
-     4735,
-     5516
+     4955,
+     5773
     ],
     "group_loyalty_main": [
-     448,
-     576
+     469,
+     600
     ],
     "cz_agreement": [
-     4137,
-     5333
+     4343,
+     5581
     ],
     "outcome": [
-     2789,
-     5052
+     2920,
+     5288
     ],
     "outcome_main": [
-     379,
-     506
+     396,
+     528
     ],
     "outcome_close": [
-     64,
-     129
+     68,
+     134
     ],
     "group_outcome": [
-     176357,
-     334771
+     184452,
+     349560
     ],
     "group_outcome_main": [
-     25829,
-     32615
+     27081,
+     34083
     ],
     "positions": {
-     "FOR": 2733,
-     "AGAINST": 2320,
-     "ABSTENTION": 480,
+     "FOR": 2866,
+     "AGAINST": 2423,
+     "ABSTENTION": 501,
      "DID_NOT_VOTE": 621
     }
    }
@@ -220,50 +220,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5749,
-     6154
+     6005,
+     6411
     ],
     "attendance_main": [
-     599,
-     641
+     623,
+     665
     ],
     "group_loyalty": [
-     4711,
-     5732
+     4928,
+     5988
     ],
     "group_loyalty_main": [
-     445,
-     594
+     466,
+     618
     ],
     "cz_agreement": [
-     4294,
-     5543
+     4497,
+     5790
     ],
     "outcome": [
-     3043,
-     5211
+     3173,
+     5446
     ],
     "outcome_main": [
-     400,
-     514
+     417,
+     536
     ],
     "outcome_close": [
-     64,
-     128
+     68,
+     133
     ],
     "group_outcome": [
-     183520,
-     344288
+     191554,
+     359067
     ],
     "group_outcome_main": [
-     26613,
-     32920
+     27865,
+     34388
     ],
     "positions": {
-     "FOR": 2934,
-     "AGAINST": 2277,
-     "ABSTENTION": 538,
-     "DID_NOT_VOTE": 405
+     "FOR": 3066,
+     "AGAINST": 2380,
+     "ABSTENTION": 559,
+     "DID_NOT_VOTE": 406
     }
    }
   },
@@ -301,49 +301,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6007,
-     6154
+     6264,
+     6411
     ],
     "attendance_main": [
-     626,
-     641
+     650,
+     665
     ],
     "group_loyalty": [
-     4946,
-     5990
+     5167,
+     6247
     ],
     "group_loyalty_main": [
-     471,
-     621
+     492,
+     645
     ],
     "cz_agreement": [
-     4474,
-     5797
+     4683,
+     6044
     ],
     "outcome": [
-     3180,
-     5462
+     3309,
+     5696
     ],
     "outcome_main": [
-     416,
-     539
+     433,
+     561
     ],
     "outcome_close": [
-     71,
-     137
+     75,
+     142
     ],
     "group_outcome": [
-     190344,
-     359326
+     198343,
+     374066
     ],
     "group_outcome_main": [
-     27643,
-     34374
+     28895,
+     35842
     ],
     "positions": {
-     "FOR": 3083,
-     "AGAINST": 2379,
-     "ABSTENTION": 545,
+     "FOR": 3216,
+     "AGAINST": 2480,
+     "ABSTENTION": 568,
      "DID_NOT_VOTE": 147
     }
    }
@@ -484,6 +484,264 @@
   "updated": "2026-10-23"
  },
  "splits": [
+  {
+   "id": 199495,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Escalation of Russian strikes in the EU, particularly on Black Sea shipping, threatening human life, regional stability and food security",
+   "reference": "RC-B10-0476/2026",
+   "description": "§ 5/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 516,
+    "against": 21,
+    "abstention": 41,
+    "did_not_vote": 142
+   },
+   "cz": [
+    15,
+    1,
+    2,
+    3
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "abr",
+    "jus",
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 5, 1. část",
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 199585,
+   "date": "2026-10-22",
+   "month": "2026-10",
+   "title": "Reduction of methane emissions in the energy sector: postponement of certain obligations",
+   "reference": "C10-0258/2026",
+   "description": "Article 1, alinéa 1, point 2, point b - Am 23S",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 125,
+    "against": 383,
+    "abstention": 68,
+    "did_not_vote": 144
+   },
+   "cz": [
+    2,
+    16,
+    0,
+    3
+   ],
+   "amendment_number": "23D",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 1, pododstavec 1, bod 2, písm. b - PN 23S",
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 199071,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "Visa 10",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 426,
+    "against": 182,
+    "abstention": 60,
+    "did_not_vote": 52
+   },
+   "cz": [
+    7,
+    12,
+    0,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Právní východisko 10",
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 199068,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "§ 49, point c",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 438,
+    "against": 143,
+    "abstention": 89,
+    "did_not_vote": 50
+   },
+   "cz": [
+    7,
+    12,
+    0,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 49, písm. c",
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
+  {
+   "id": 199013,
+   "date": "2026-10-21",
+   "month": "2026-10",
+   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
+   "reference": "A10-0272/2026",
+   "description": "§ 21, point a",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 598,
+    "against": 57,
+    "abstention": 14,
+    "did_not_vote": 51
+   },
+   "cz": [
+    18,
+    2,
+    0,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 21, písm. a",
+   "positions": [
+    {
+     "member_id": 197537,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 197552,
+     "position": "AGAINST",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    },
+    {
+     "member_id": 256845,
+     "position": "FOR",
+     "group_code": "ECR",
+     "national_party_id": 6768
+    }
+   ]
+  },
   {
    "id": 198023,
    "date": "2026-10-08",
@@ -1228,261 +1486,6 @@
    "is_final": false,
    "inverted": false,
    "description_cs": "Odst. 45, 3. část",
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
-   "id": 196591,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Nerovnosti mezi ženami a muži v oblasti zdraví a genderově specifické podmínky",
-   "reference": "A10-0200/2026",
-   "description": "§ 45/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 327,
-    "against": 272,
-    "abstention": 42,
-    "did_not_vote": 76
-   },
-   "cz": [
-    6,
-    9,
-    1,
-    5
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 45, 2. část",
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
-   "id": 196588,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Nerovnosti mezi ženami a muži v oblasti zdraví a genderově specifické podmínky",
-   "reference": "A10-0200/2026",
-   "description": "§ 44",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 349,
-    "against": 228,
-    "abstention": 79,
-    "did_not_vote": 61
-   },
-   "cz": [
-    7,
-    4,
-    5,
-    5
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 44",
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
-   "id": 196586,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Nerovnosti mezi ženami a muži v oblasti zdraví a genderově specifické podmínky",
-   "reference": "A10-0200/2026",
-   "description": "§ 43/1",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 358,
-    "against": 210,
-    "abstention": 81,
-    "did_not_vote": 68
-   },
-   "cz": [
-    8,
-    3,
-    5,
-    5
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 43, 1. část",
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
-   "id": 196581,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Nerovnosti mezi ženami a muži v oblasti zdraví a genderově specifické podmínky",
-   "reference": "A10-0200/2026",
-   "description": "§ 41",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 362,
-    "against": 214,
-    "abstention": 75,
-    "did_not_vote": 66
-   },
-   "cz": [
-    7,
-    5,
-    4,
-    5
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 41",
-   "positions": [
-    {
-     "member_id": 197537,
-     "position": "AGAINST",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 197552,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    },
-    {
-     "member_id": 256845,
-     "position": "FOR",
-     "group_code": "ECR",
-     "national_party_id": 6768
-    }
-   ]
-  },
-  {
-   "id": 196570,
-   "date": "2026-09-16",
-   "month": "2026-09",
-   "title": "Nerovnosti mezi ženami a muži v oblasti zdraví a genderově specifické podmínky",
-   "reference": "A10-0200/2026",
-   "description": "§ 21/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 433,
-    "against": 135,
-    "abstention": 65,
-    "did_not_vote": 84
-   },
-   "cz": [
-    9,
-    2,
-    6,
-    4
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 21, 2. část",
    "positions": [
     {
      "member_id": 197537,
