@@ -69,6 +69,11 @@ def test_single_amendment_without_range_and_missing_date():
         am.parse_committee_docx(text([HEAD.replace("{range}", "1 - 1"), "MOCK bez bloků"]))
 
 
+def test_date_with_single_digit_day():
+    head = HEAD.replace("{22/07/2026}22.7.2026", "{2/02/2024}2.2.2024").replace("{range}", "1 - 1")
+    assert am.parse_committee_docx(text([head, "<RepeatBlock-Amend>"] + amend(1, "MOCK Jana Nováková")))["date"] == "2024-02-02"
+
+
 def test_compromise_amendments_have_no_authors():
     t = text([HEAD.replace("{range}", "1 - 3").replace("AMENDMENTS", "COMPROMISE AMENDMENTS"), "<RepeatBlock-AmCompr>", "<SupportedBy>MOCK</SupportedBy>"])
     d = am.parse_committee_docx(t)

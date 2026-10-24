@@ -66,11 +66,11 @@ def parse_committee_docx(text: str, doc_id: str = "") -> dict:
     Kompromisní PN (TypeAM COMPROMISE AMENDMENTS) mají jinou šablonu bez autorů: vrací kind="compromise" bez PN.
     Počet PN musí sedět s rozsahem <RangeAM> (např. "483 - 491"), jinak FormatError. Jediný PN (TypeAM AMENDMENT) rozsah nemá."""
     head = {k: (m.group(1).strip() if (m := rx.search(text)) else None) for k, rx in _HEAD.items()}
-    date = re.match(r"^\{(\d{2})/(\d{2})/(\d{4})\}", head["date"] or "")  # strojová část „{20/01/2026}20.1.2026“
+    date = re.match(r"^\{(\d{1,2})/(\d{1,2})/(\d{4})\}", head["date"] or "")  # strojová část „{20/01/2026}20.1.2026“, i „{2/02/2024}“
     if not date:
         raise FormatError(f"{doc_id}: chybí <Date>, šablona DOCX se změnila")
     out = {
-        "date": f"{date.group(3)}-{date.group(2)}-{date.group(1)}",
+        "date": f"{date.group(3)}-{int(date.group(2)):02d}-{int(date.group(1)):02d}",
         "committees": re.findall(r"\{([A-Z0-9]+)\}", head["commission"] or ""),
         "procedure": f"{head['proc']}{head['proc_type'] or ''}" if head["proc"] else None,
         "range": head["range"],
