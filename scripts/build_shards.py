@@ -6,8 +6,11 @@ do gitu nejdou (audit A6): obsah je jen jiný řez dat, která v gitu jsou.
 
 Každý soubor: {"vote": hlasování s českým názvem a měsícem, "final_vote": závěrečné hlasování téže reference nebo null}.
 
+Duel (část B): {duel_out}/{a}-{b}.json se všemi hlasováními, kde se dvojice rozešla (PRO / PROTI), pro odkaz
+„všechna hlasování, kde se rozešli“ na duel.html (duel.pair_shards).
+
 Použití:
-    python scripts/build_shards.py                       # → public/data/votes/id/
+    python scripts/build_shards.py                       # → public/data/votes/id/ a public/data/duel/
     python scripts/build_shards.py --out cesta/k/adresari
 """
 
@@ -19,6 +22,7 @@ import sys
 from pathlib import Path
 
 from compute_stats import load_votes
+from duel import pair_shards
 from vote_kinds import is_final
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -53,10 +57,14 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--data-dir", type=Path, default=ROOT / "data")
     p.add_argument("--out", type=Path, default=ROOT / "public" / "data" / "votes" / "id")
+    p.add_argument("--duel-out", type=Path, default=ROOT / "public" / "data" / "duel")
     args = p.parse_args(argv)
     _, votes = load_votes(args.data_dir / "votes")
     n = write(shards(votes), args.out)
     print(f"hlasování po jednom: {n} souborů v {args.out}", file=sys.stderr)
+    meps = json.loads((args.data_dir / "meps.json").read_text(encoding="utf-8"))["meps"]
+    n = write(pair_shards(votes, meps), args.duel_out)
+    print(f"duel: {n} dvojic v {args.duel_out}", file=sys.stderr)
     return 0
 
 
