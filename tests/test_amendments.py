@@ -128,3 +128,31 @@ def test_summarize_counts_only_in_mandate_and_matches_without_diacritics():
         "committee_compromise": 1,
         "committee_pending": 1,
     }
+
+
+def test_listing_resumes_after_budget(tmp_path):
+    """Výpis dokumentů po 10: když vyprší čas, rozpracovaný rok zůstane ve stavu a příští běh naváže bez ztráty ID."""
+    import datetime as dt
+
+    import fetch_amendments as fa
+
+    ids = [f"AGRI-AM-{i:06d}" for i in range(23)]
+
+    class Client:
+        calls = 0
+
+        def get(self, path, params):
+            Client.calls += 1
+            off, lim = params["offset"], params["limit"]
+            return {"data": [{"identifier": i} for i in ids[off : off + lim]] if params["year"] == 2026 else []}
+
+    state = {"years_complete": [2024, 2025]}
+    f = fa.Fetcher(Client(), state, tmp_path / "state.json", None, None, log=lambda m: None)
+    budget = iter([False, False, True])  # třetí stránka už nestihne
+    f.check_budget = lambda: (_ for _ in ()).throw(fa.Budget()) if next(budget) else None
+    with pytest.raises(fa.Budget):
+        f.listing(dt.date(2026, 10, 24))
+    assert state["listing"]["2026"]["offset"] == 20 and len(state["listing"]["2026"]["ids"]) == 20
+    f.check_budget = lambda: None
+    assert f.listing(dt.date(2026, 10, 24)) == ids
+    assert "2026" not in state["listing"] and state["years_complete"] == [2024, 2025]  # letošní rok se vypisuje znovu

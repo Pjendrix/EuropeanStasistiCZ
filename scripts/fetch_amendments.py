@@ -80,32 +80,36 @@ class Fetcher:
 
     # 1. seznam dokumentů
     def list_year(self, year: int) -> list[str]:
-        ids, offset = [], 0
+        """Všechna ID dokumentů PN roku. Rozpracovaný výpis (vypršel čas) je ve stavu a příští běh na něj naváže."""
+        part = self.state.setdefault("listing", {}).setdefault(str(year), {"offset": 0, "ids": []})
         while True:
             self.check_budget()
-            payload = self.client.get("documents", {"work-type": "AMENDMENT_LIST", "year": year, "offset": offset, "limit": PAGE})
+            payload = self.client.get("documents", {"work-type": "AMENDMENT_LIST", "year": year, "offset": part["offset"], "limit": PAGE})
             require(payload, ["data"], f"GET /documents?work-type=AMENDMENT_LIST&year={year}")
             batch = payload["data"]
             for x in batch:
                 require(x, ["identifier"], "GET /documents položka")
-                ids.append(x["identifier"])
+                part["ids"].append(x["identifier"])
+            part["offset"] += PAGE
+            self.touched()
             if len(batch) < PAGE:
-                return ids
-            offset += PAGE
+                return self.state["listing"].pop(str(year))["ids"]
 
     def listing(self, today: dt.date) -> list[str]:
+        """Vypíše neuzavřené roky a vrátí všechna dosud vypsaná ID (i z uzavřených let, kde se DOCX nemusely stihnout)."""
         done = set(self.state.setdefault("years_complete", []))
-        ids = []
+        listed = set(self.state.setdefault("listed", []))
         for year in range(FIRST_YEAR, today.year + 1):
             if year in done:
                 continue
             got = self.list_year(year)
             self.log(f"{year}: {len(got)} dokumentů PN")
-            ids += got
+            listed.update(got)
+            self.state["listed"] = sorted(listed)
             if year < today.year - 1 or (year == today.year - 1 and today.month > 1):
                 done.add(year)  # loňské dokumenty (s rokem v ID) se dovypisují jen v lednu
-        self.state["years_complete"] = sorted(done)
-        return ids
+            self.state["years_complete"] = sorted(done)
+        return self.state["listed"]
 
     # 2. výborové PN z DOCX
     def docx(self, doc_id: str) -> bytes | None:
