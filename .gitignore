@@ -26,3 +26,6 @@ public/robots.txt
 # balíček pro Instagram (scripts/build_instagram.py), jen artifact v GitHub Actions
 out/
 node_modules
+
+# rozepsaný zápis přerušený časovým limitem (scripts/adopted_texts.py write_atomic)
+data/*.tmp
