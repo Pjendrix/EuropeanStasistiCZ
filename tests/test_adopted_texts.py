@@ -90,3 +90,12 @@ def test_docx_text_and_excerpt_is_deterministic_and_capped():
     long = ["x" * 1000] * 100
     cut = at.excerpt(long, limit=5000)
     assert len(cut) <= 5000 and cut == at.excerpt(long, limit=5000)
+
+
+def test_write_atomic_replaces_whole_file(tmp_path):
+    """Průběžné ukládání přes dočasný soubor: po zápisu zůstane jen platný JSON, žádný .tmp."""
+    path = tmp_path / "adopted_texts.json"
+    path.write_text('{"MOCK": "starý"}', encoding="utf-8")
+    at.write_atomic(path, {"MOCK": "nový"})
+    assert json.loads(path.read_text(encoding="utf-8")) == {"MOCK": "nový"}
+    assert not path.with_suffix(".tmp").exists()
