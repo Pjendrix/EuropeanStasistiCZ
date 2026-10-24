@@ -142,7 +142,8 @@ for (const scheme of ["light", "dark"]) {
   }
   await page.goto(base + `p/${duelA}`, { waitUntil: "networkidle" });
   await page.click(".compare-btn");
-  await page.waitForSelector("#pick-a");
+  // #pick-a je ve statickém HTML; čekat až skript doplní seznam poslanců (#duel ztratí .loading).
+  await page.waitForSelector("#duel:not(.loading)");
   if ((await page.inputValue("#pick-a")) !== duelA) problems.push("duel: Porovnat s… z profilu nepředvyplnilo poslance");
   errors.forEach((e) => problems.push(`duel: chyba ${e}`));
   await ctx.close();
