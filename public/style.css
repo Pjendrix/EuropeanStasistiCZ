@@ -716,7 +716,7 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .strong-line { font-weight: 600; color: var(--text); max-width: 46rem; }
 
 /* Sdílení (share.js, N1–N2): tlačítko v hlavičce stránky a panel s náhledem karty */
-.back-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .9rem; min-height: 44px; }
+.back-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .9rem; min-height: 44px; }
 .back-row > p { margin: 0; }
 .back-row .share-btn { margin-left: auto; }
 .back-row .compare-btn + .share-btn { margin-left: 0; }
