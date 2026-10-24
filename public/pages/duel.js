@@ -75,7 +75,7 @@ const ALL_PAGE = 50;
     root.querySelector("#all-diverged")?.addEventListener("click", (e) => showAll(e.currentTarget, A, B, key));
 
     function side(m, cls, stripeColor) {
-      const g = group(m), p = party(m);
+      const g = group(m);
       const span = mandateSpan(m);
       const mandate = isActive(m) ? html`v mandátu od ${fmtDate(span.from)}` : html`mandát ${fmtDate(span.from)} – ${fmtDate(span.to)} (skončil)`;
       const committees = m.committees.length
