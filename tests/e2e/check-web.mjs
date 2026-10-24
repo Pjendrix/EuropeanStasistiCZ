@@ -60,7 +60,7 @@ const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_
 const duelPair = Object.entries(read("data/duel.json").pairs).find(([, p]) => p.agreement[1] && p.diverged_key.length)[0];
 const [duelA, duelB] = duelPair.split("-");
 const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "party?c=SD", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
-  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage, "duel", `duel?a=${duelB}&b=${duelA}`, `d/${duelPair}`, "predbezne-e2e"];
+  "prace", "prace-poslanci", "prace-poslanci?pohled=ucast", "prace-poslanci?pohled=aktivita", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage, "duel", `duel?a=${duelB}&b=${duelA}`, `d/${duelPair}`, "predbezne-e2e"];
 
 const problems = [];
 const browser = await chromium.launch();
@@ -137,6 +137,29 @@ for (const scheme of ["light", "dark"]) {
   await page.goto(base, { waitUntil: "networkidle" });
   const freshPrelim = read("data/freshness.json").preliminary || [];
   if (!freshPrelim.length && (await page.$("#h-prelim"))) problems.push("předběžné: blok je na úvodu bez předběžných dat");
+  await ctx.close();
+}
+// Tabulka práce poslanců (úkol 0): přepnutí pohledů a URL, řazení kliknutím na záhlaví, seskupení podle frakce.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "prace-poslanci", { waitUntil: "networkidle" });
+  await page.click("#tab-ucast");
+  if (!page.url().includes("pohled=ucast")) problems.push("práce: přepnutí na Účast nezměnilo URL");
+  if ((await page.getAttribute("#tab-ucast", "aria-selected")) !== "true" || !(await page.$("#work .wk-axis"))) problems.push("práce: pohled Účast nemá osu");
+  await page.click('#work thead button[data-key="presence"]');
+  if ((await page.getAttribute('#work thead th:has(button[data-key="presence"])', "aria-sort")) !== "descending") problems.push("práce: první klik na Docházku neřadí sestupně");
+  const pres = await page.$$eval("#work tbody tr:not(.wk-gh) td:nth-child(3) .wk-num", (xs) => xs.map((x) => parseFloat(x.textContent.replace(",", "."))).filter((x) => !Number.isNaN(x)));
+  if (pres.some((v, i) => i && v > pres[i - 1])) problems.push("práce: řazení podle docházky neodpovídá");
+  await page.click('#work thead button[data-key="name"]');
+  if ((await page.getAttribute('#work thead th:has(button[data-key="name"])', "aria-sort")) !== "ascending") problems.push("práce: první klik na jméno neřadí vzestupně");
+  await page.click("#group-toggle");
+  if ((await page.getAttribute("#group-toggle", "aria-pressed")) !== "true" || !(await page.$$("#work .wk-gh")).length) problems.push("práce: seskupení podle frakce nefunguje");
+  await page.goto(base + "prace-poslanci?pohled=aktivita", { waitUntil: "networkidle" });
+  if ((await page.getAttribute("#tab-aktivita", "aria-selected")) !== "true") problems.push("práce: ?pohled=aktivita neotevřel pohled Aktivita");
+  await page.focus("#tab-aktivita");
+  await page.keyboard.press("ArrowRight");
+  if ((await page.getAttribute("#tab-texty", "aria-selected")) !== "true") problems.push("práce: šipka v přepínači pohledů nefunguje");
   await ctx.close();
 }
 // Zasedání (úkol 3, 24. 10. 2026): se zmrazeným datem den po posledním dni zasedání z programu ukáže dlaždice na úvodu

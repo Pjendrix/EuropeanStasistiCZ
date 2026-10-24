@@ -15,7 +15,7 @@
 <link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="feed.xml">
 <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script src="theme.js?v=ef1cdb2e"></script>
-<link rel="stylesheet" href="style.css?v=7474c91b">
+<link rel="stylesheet" href="style.css?v=a3c27756">
 </head>
 <body>
 <a class="skip-link" href="#main">Přejít na obsah</a>
@@ -43,55 +43,30 @@
     <a href="prace-poslanci" data-page="work-table">Tabulka po poslancích</a>
   </nav>
   <h1>Práce na textech po poslancích</h1>
-  <div class="lead-row"><p class="lead">Kolik zpráv a stanovisek čeští poslanci vedou nebo vyjednávají za frakci.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-work" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-work" class="info-pop" role="note">
-    <p>Hlasování je jen část práce poslance. Kromě něj poslanci vedou zprávy a stanoviska výborů, vyjednávají je za frakci, kladou otázky Komisi a vystupují v rozpravách. Čísla ukazují, kolik takové práce kdo má přidělené, ne jak kvalitní je.</p>
-    <p><strong>Zpravodaj/ka</strong> píše text za výbor: <em>zprávu</em> výboru, který věc vede, nebo <em>stanovisko</em>
-      dalšího výboru. <strong>Stínový/á zpravodaj/ka</strong> ten text vyjednává za svou frakci.
-      U každé kategorie je vidět, ve které třetině delegace poslanec je (▲ horní, ● střední, ▼ dolní, – žádný text nebo kratší mandát, méně než 75 % období, nesrovnává se).
-      Celkové pořadí záměrně nepočítáme: zpráva a stanovisko nejsou stejná práce a žádné body by nebyly podložené.
-      <a href="o-projektu#metodika">Jak počítáme</a>.</p>
-    <p class="small" id="notes"></p>
+  <div class="lead-row"><p class="lead">Kolik zpráv a stanovisek čeští poslanci vedou nebo vyjednávají za frakci, jak se účastní a kolik toho navrhují.</p><span class="info-wrap"><button type="button" class="info-btn" popovertarget="i-work" aria-label="Jak to číst, definice a zdroj" aria-expanded="false">ⓘ</button><div popover id="i-work" class="info-pop" role="note">
+    <p>Čísla ukazují, kolik práce kdo má přidělené, ne jak kvalitní je. Proužek = hodnota proti nejvyšší hodnotě v delegaci. Celkové pořadí ani skóre nepočítáme.
+      Podrobnosti v „Jak číst čísla“ pod tabulkou a v <a href="o-projektu#metodika">metodice</a>.</p>
   </div></span></div>
-  <div class="controls">
-    <label>Řadit <select id="sort">
-      <option value="name:1">abecedně</option>
-      <option value="lead_reports:-1">podle zpráv (zpravodaj/ka)</option>
-      <option value="lead_opinions:-1">podle stanovisek (zpravodaj/ka)</option>
-      <option value="shadow_reports:-1">podle zpráv (stínový/á)</option>
-      <option value="shadow_opinions:-1">podle stanovisek (stínový/á)</option>
-      <option value="attendance:-1">podle účasti na hlasování</option>
-      <option value="motions_signed:-1">podle podepsaných návrhů usnesení</option>
-      <option value="speeches:-1">podle projevů v plénu</option>
-      <option value="amendments:-1">podle pozměňovacích návrhů ve výborech</option>
-      <option value="presence:-1">podle prezence na zasedání</option>
-    </select></label>
-    <p class="tier-legend small muted" aria-hidden="true">
-      <span class="tier tier-top">▲</span> horní <span class="tier tier-mid">●</span> střední <span class="tier tier-low">▼</span> dolní třetina delegace</p>
+  <div class="wk-toolbar">
+    <div class="wk-tabs" role="tablist" aria-label="Pohled tabulky">
+      <button type="button" role="tab" id="tab-texty" data-view="texty" aria-controls="work-panel" aria-selected="true">Práce na textech</button>
+      <button type="button" role="tab" id="tab-ucast" data-view="ucast" aria-controls="work-panel" aria-selected="false" tabindex="-1">Účast</button>
+      <button type="button" role="tab" id="tab-aktivita" data-view="aktivita" aria-controls="work-panel" aria-selected="false" tabindex="-1">Aktivita a návrhy</button>
+    </div>
+    <div class="wk-tools">
+      <label class="wk-sort">Řadit <select id="sort"></select></label>
+      <button type="button" class="chip-btn" id="group-toggle" aria-pressed="false">Seskupit podle frakce</button>
+    </div>
   </div>
-  <div class="table-wrap">
-    <table id="work" class="compact work-cards">
-      <thead>
-        <tr class="group-row">
-          <th rowspan="2" data-key="name"><button>Poslanec</button></th>
-          <th colspan="2" class="group grp-start" title="Zpravodaj/ka: píše zprávu nebo stanovisko za výbor">Vede text</th>
-          <th colspan="2" class="group grp-start" title="Stínový/á zpravodaj/ka: vyjednává text za svou frakci">Za frakci</th>
-          <th colspan="5" class="group grp-start secondary-group" title="Jen počty bez třetin: snadno se nafouknou a vypovídají hlavně o stylu práce a velikosti frakce">Další aktivita</th>
-        </tr>
-        <tr>
-          <th data-key="lead_reports" class="num tiercol grp-start"><button>Zprávy</button></th>
-          <th data-key="lead_opinions" class="num tiercol"><button>Stanoviska</button></th>
-          <th data-key="shadow_reports" class="num tiercol grp-start"><button>Zprávy</button></th>
-          <th data-key="shadow_opinions" class="num tiercol"><button>Stanoviska</button></th>
-          <th data-key="attendance" class="num secondary grp-start"><button title="Podíl jmenovitých hlasování v plénu, kterých se zúčastnil(a), z hlasování v době mandátu. Medián EP je u každého řádku pod hodnotou.">Účast</button></th>
-          <th data-key="presence" class="num secondary"><button title="Dny jednání v plénu v době mandátu, ve kterých byl poslanec v prezenční listině EP. Jiná metrika než účast na hlasování.">Prezence</button></th>
-          <th data-key="motions_signed" class="num secondary"><button title="Vlastní i společné návrhy usnesení, které poslanec podepsal. Nevstupují do srovnání.">Návrhy</button></th>
-          <th data-key="speeches" class="num secondary"><button title="Ústní projevy v rozpravách v plénu v době mandátu podle EP. Písemná prohlášení se nesčítají. Počet projevů nevypovídá o kvalitě ani vlivu.">Projevy</button></th>
-          <th data-key="amendments" class="num secondary"><button title="Pozměňovací návrhy ve výborech, pod kterými je poslanec mezi autory (z dokumentů EP). Pod tím spolupodepsané hromadné PN v plénu. Nevstupují do srovnání.">PN</button></th>
-        </tr>
-      </thead>
-      <tbody><tr><td colspan="9" class="loading">Načítám…</td></tr></tbody>
-    </table>
+  <div id="work-panel" role="tabpanel" aria-labelledby="tab-texty">
+    <div class="table-wrap wk-wrap"><table id="work" class="compact wk-table"><thead></thead><tbody><tr><td class="loading">Načítám…</td></tr></tbody></table></div>
+    <ul class="wk-cards plain" id="work-cards" aria-label="Poslanci"></ul>
+    <p class="small muted wk-axis-note" id="axis-note" hidden></p>
   </div>
+  <details class="card wk-help" id="notes-box">
+    <summary><strong>Jak číst čísla</strong></summary>
+    <div class="wk-help-grid" id="notes"></div>
+  </details>
   <div id="former"></div>
   <p class="source" id="source"></p>
 </main>
@@ -104,6 +79,6 @@
 </div></footer>
 
 <script type="module" src="app.js?v=33dfa080"></script>
-<script type="module" src="pages/prace-poslanci.js?v=83768f86"></script>
+<script type="module" src="pages/prace-poslanci.js?v=fc294c9a"></script>
 </body>
 </html>

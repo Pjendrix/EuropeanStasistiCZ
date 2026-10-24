@@ -2183,3 +2183,77 @@ tr.cb-cz td { font-weight: 700; }
   .dm-label { font-size: .78rem; }
   .duel-pick { flex-wrap: wrap; }
 }
+
+/* Práce poslanců – tabulka se třemi pohledy (prace-poslanci.js, hromadné zadání 24. 10. 2026, úkol 0) */
+.wk-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; margin: .5rem 0 .9rem; }
+.wk-tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--chip); border: 1px solid var(--border); }
+.wk-tabs [role=tab] { min-height: 40px; padding: 0 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--data); font: inherit; font-weight: 600; cursor: pointer; }
+.wk-tabs [role=tab][aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(15, 23, 42, .1); }
+.wk-tools { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.wk-sort { display: none; }
+.chip-btn { min-height: 40px; padding: 0 .9rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.chip-btn[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+.wk-table th button { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--text); cursor: pointer; min-height: 32px; }
+.wk-table th[aria-sort="ascending"] button::after { content: " ↑"; }
+.wk-table th[aria-sort="descending"] button::after { content: " ↓"; }
+.wk-table .group-row th { text-align: left; color: var(--muted); font-size: .78rem; font-weight: 600; border-bottom: 0; }
+.wk-table th.soft button, .wk-cell.soft .wk-num { color: var(--muted); }
+.wk-table .wk-name, .wk-table .wk-name-h { position: sticky; left: 0; z-index: 1; background: var(--surface); text-align: left; font-weight: 400; min-width: 15rem; width: 19rem; }
+.wk-table .wk-name { text-transform: none; letter-spacing: normal; font-size: inherit; color: var(--text); vertical-align: top; }
+.wk-table thead th { white-space: normal; vertical-align: bottom; }
+.wk-table thead th button { text-align: left; line-height: 1.25; }
+.wk-table th small { display: block; font-weight: 400; text-transform: none; letter-spacing: normal; color: var(--muted); }
+.wk-table td.num { min-width: 7.5rem; vertical-align: top; }
+.wk-who { display: flex; gap: .6rem; align-items: flex-start; }
+.wk-who img, .wk-card-head img { border-radius: 50%; flex: none; object-fit: cover; object-position: top; }
+.wk-who-t a { font-weight: 600; }
+.wk-meta { display: flex; flex-wrap: wrap; gap: .25rem .4rem; align-items: center; font-size: .82rem; margin-top: .15rem; }
+.gchip { display: inline-flex; align-items: center; gap: .3rem; padding: 0 .45rem; border-radius: 999px; font-weight: 600; font-size: .78rem;
+  background: color-mix(in srgb, var(--gc) 16%, transparent); color: var(--text); }
+.gchip i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--gc); }
+.since-chip { padding: 0 .45rem; border-radius: 999px; font-size: .75rem; font-weight: 600; background: color-mix(in srgb, var(--gold) 22%, transparent); color: var(--text); }
+.wk-cell { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; text-align: left; }
+.wk-num { font-weight: 700; font-variant-numeric: tabular-nums; }
+.wk-cell.zero .wk-num { color: var(--muted); font-weight: 400; }
+.wk-sub { line-height: 1.2; }
+.wk-bar { position: relative; display: block; width: 100%; max-width: 8rem; height: 8px; border-radius: 4px; background: var(--chip); overflow: hidden; }
+.wk-bar.thin { height: 6px; }
+.wk-bar i, .wk-bar b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+.wk-bar i { background: color-mix(in srgb, var(--data) 35%, var(--track)); }
+.wk-bar b { background: var(--data); }
+.wk-cell.soft .wk-bar i { background: var(--track); }
+.wk-axis { position: relative; height: 22px; min-width: 12rem; border-radius: 4px; background: linear-gradient(var(--track), var(--track)) center / 100% 2px no-repeat; }
+.wk-dot, .wk-ring, .wk-med { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.wk-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--link); }
+.wk-ring { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bench); background: transparent; }
+.wk-med { width: 2px; height: 20px; background: var(--data); }
+.wk-dot.static, .wk-ring.static, .wk-med.static { position: static; display: inline-block; transform: none; vertical-align: middle; }
+.wk-med.static { height: 12px; }
+.wk-key { white-space: nowrap; margin-right: .6rem; }
+.wk-gh th { text-align: left; background: var(--chip); font-weight: 700; }
+.wk-cards { display: none; }
+.wk-help { margin-top: 1rem; }
+.wk-help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .5rem 1.25rem; }
+.wk-help-grid h3 { font-size: .95rem; margin: .75rem 0 .25rem; }
+.wk-help-grid p { margin: 0; font-size: .9rem; }
+@media (max-width: 760px) {
+  .wk-wrap { display: none; }
+  .wk-sort { display: flex; align-items: center; gap: .4rem; min-width: 0; max-width: 100%; }
+  .wk-sort select { min-width: 0; max-width: 100%; flex: 1; }
+  .wk-tools { width: 100%; }
+  .wk-cards { display: grid; gap: .6rem; }
+  .wk-card { position: relative; padding: .8rem .9rem; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
+  .wk-card-link { position: absolute; inset: 0; border-radius: 14px; z-index: 1; }
+  .wk-card-link:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+  .wk-card-head { display: flex; gap: .6rem; align-items: center; }
+  .wk-card-head > div { flex: 1; min-width: 0; }
+  .wk-go { font-size: 1.4rem; color: var(--muted); }
+  .wk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .9rem; margin: .7rem 0 0; }
+  .wk-grid > div { min-width: 0; overflow-wrap: anywhere; }
+  .wk-grid dt { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .wk-grid dd { margin: .1rem 0 0; }
+  .wk-g-axis { grid-column: 1 / -1; }
+  .wk-card-gh { font-weight: 700; margin-top: .4rem; }
+  .wk-tabs { width: 100%; }
+  .wk-tabs [role=tab] { flex: 1; padding: 0 .4rem; font-size: .88rem; }
+}
