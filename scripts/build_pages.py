@@ -244,6 +244,51 @@ def mep_page(prof: dict, groups: list[dict], parties: list[dict], base_url: str 
     )
 
 
+# --- duel (sdílené stránky d/{a}-{b}) ---------------------------------------------------
+
+
+def duel_pages(data_dir: Path, base_url: str | None) -> dict[str, str]:
+    """Stránky ke sdílení d/{a}-{b}.html pro každou dvojici z data/duel.json: stejná kostra jako duel.html (vezme se
+    z public/duel.html), vlastní titulek, popis a og:image og/duel/{a}-{b}.png. duel.js dvojici čte z data-pair.
+    Vznikají při sestavení (do gitu nejdou), v sitemap je jen duel.html."""
+    path = data_dir / "duel.json"
+    shell = data_dir.parent / "public" / "duel.html"
+    if not path.exists() or not shell.exists():
+        return {}
+    duel = read(path)
+    require(duel, ["meps", "pairs"], "duel.json")
+    html_src = shell.read_text(encoding="utf-8")
+    m = re.search(r'<main id="main">\n(.*)\n</main>', html_src, re.S)
+    if not m:
+        raise FormatError('public/duel.html: chybí <main id="main">')
+    body = m.group(1)
+    names = {x["id"]: " ".join(y for y in (x.get("given_name"), x.get("family_name")) if y) or x["name"] for x in duel["meps"]}
+    out = {}
+    for key, pair in duel["pairs"].items():
+        lo, hi = (int(x) for x in key.split("-"))
+        same, total = pair["agreement"]
+        title = f"{names[lo]} vs {names[hi]} – Duel poslanců – EP Watch CZ"
+        share = (
+            f"hlasovali stejně v {fmt_pct(same / total)} z {fmt_num(total)} společných hlasování" if total else "neměli společné hlasování"
+        )
+        desc = f"{names[lo]} a {names[hi]}: {share}. Čísla vedle sebe, bez hodnocení. Data z HowTheyVote.eu a EP."
+        rel = f"d/{key}.html"
+        meta = og_meta(title, desc, rel, base_url, f"og/duel/{key}.png", desc, card=True)
+        out[rel] = page(
+            title,
+            body,
+            root="",
+            base="../",
+            path=rel,
+            current="analyses",
+            description=desc,
+            meta=meta,
+            main_attrs=f'data-pair="{key}"',
+            scripts=MODULES.format(root="", page="pages/duel.js"),
+        )
+    return out
+
+
 # --- strana --------------------------------------------------------------------------
 
 
@@ -586,6 +631,7 @@ def build(data_dir: Path) -> dict[str, str]:
     from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
 
     out.update(procedure_pages(data_dir, votes, meps_by_id, base_url))
+    out.update(duel_pages(data_dir, base_url))
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
 
     if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
@@ -601,7 +647,8 @@ def build(data_dir: Path) -> dict[str, str]:
         out[res[0]] = res[1]
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
-        out.update(sitemap(base_url, sorted(out), lastmod, data_day))
+        # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
+        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/")), lastmod, data_day))
         out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
     return out
 
@@ -618,6 +665,7 @@ STATIC_PAGES = [
     "rozkol.html",
     "rozhodujici.html",
     "shoda.html",
+    "duel.html",
     "kviz.html",
     "prace.html",
     "prace-poslanci.html",
@@ -867,9 +915,9 @@ def sync_heads(public: Path, data_dir: Path) -> int:
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
-    """Zapíše stránky; soubory v p/, s/, v/, z/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    """Zapíše stránky; soubory v p/, s/, v/, z/, d/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
-    for sub in ("p", "s", "v", "z"):
+    for sub in ("p", "s", "v", "z", "d"):
         d = public / sub
         d.mkdir(parents=True, exist_ok=True)
         for f in d.glob("*.html"):

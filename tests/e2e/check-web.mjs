@@ -53,8 +53,11 @@ const procPage = `z/${readdirSync(join(root, "public", "z")).sort()[0].replace(/
 // Dílčí hlasování nemá statickou stránku: interaktivní detail z hlasování po jednom (data/votes/id/, build_shards.py).
 const lastMonth = read("data/votes/index.json").months.at(-1).month;
 const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_kind === "amendment" && v.reference).id;
+// Duel (B5): dvojice s aspoň jedním rozchodem v klíčových hlasováních, ať se vykreslí všechny části stránky.
+const duelPair = Object.entries(read("data/duel.json").pairs).find(([, p]) => p.agreement[1] && p.diverged_key.length)[0];
+const [duelA, duelB] = duelPair.split("-");
 const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "party?c=SD", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
-  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage];
+  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage, "duel", `duel?a=${duelB}&b=${duelA}`, `d/${duelPair}`];
 
 const problems = [];
 const browser = await chromium.launch();
@@ -117,6 +120,33 @@ for (const scheme of ["light", "dark"]) {
     }
     await ctx.close();
   }
+}
+// Duel (B5): prohození pořadí, neplatné ID = výběr (ne chyba), „Porovnat s…“ z profilu předvyplní poslance.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(base + `duel?a=${duelA}&b=${duelB}`, { waitUntil: "networkidle" });
+  const left = (await page.textContent(".duel-a .duel-name")).trim();
+  const rows = await page.locator(".dm-row").count();
+  await page.click("text=Prohodit strany");
+  await page.waitForSelector(".duel-b .duel-name");
+  if ((await page.textContent(".duel-b .duel-name")).trim() !== left) problems.push("duel: Prohodit strany neprohodilo poslance");
+  if ((await page.locator(".dm-row").count()) !== rows || !rows) problems.push(`duel: po prohození jiný počet řádků čísel (${rows})`);
+  for (const bad of [`duel?a=${duelA}&b=${duelA}`, `duel?a=${duelA}&b=9999999`, `duel?a=${duelA}&b=%3Cx%3E`, "duel?a=1%20OR%201&b=2"]) {
+    await page.goto(base + bad, { waitUntil: "networkidle" });
+    if ((await page.$(".duel-head")) || !(await page.$("#pick")) || !(await page.textContent("#duel")).includes("Vyberte dva poslance")) {
+      problems.push(`${bad}: neplatné ID neukázalo výběr`);
+    }
+  }
+  await page.goto(base + `p/${duelA}`, { waitUntil: "networkidle" });
+  await page.click(".compare-btn");
+  // #pick-a je ve statickém HTML; čekat až skript doplní seznam poslanců (#duel ztratí .loading).
+  await page.waitForSelector("#duel:not(.loading)");
+  if ((await page.inputValue("#pick-a")) !== duelA) problems.push("duel: Porovnat s… z profilu nepředvyplnilo poslance");
+  errors.forEach((e) => problems.push(`duel: chyba ${e}`));
+  await ctx.close();
 }
 // S1: ⓘ se otevře klikem i klávesou a zavře Esc.
 {

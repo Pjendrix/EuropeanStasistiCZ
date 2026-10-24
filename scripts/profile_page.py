@@ -937,7 +937,12 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         else ""
     )
 
-    body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{share_button}</div>
+    compare = (
+        f'<a class="share-btn outline compare-btn" href="duel?a={mep["id"]}">'
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        'stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg><span>Porovnat s…</span></a>'
+    )
+    body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{compare}{share_button}</div>
 <div class="profile-head">
   <figure class="portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
   <div>
