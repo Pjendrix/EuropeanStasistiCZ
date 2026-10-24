@@ -84,3 +84,28 @@ def test_portal_arc_free_middle():
             assert math.dist(a, b) > 2 * r
         assert r <= a[0] <= portal.PORTAL_VB[0] - r and r <= a[1] <= portal.PORTAL_VB[1] - r
         assert math.dist(a, (portal.PORTAL_CX, portal.PORTAL_CY)) - r >= 220  # volný střed
+
+
+def test_preliminary_block_only_with_pending_data(tmp_path, monkeypatch):
+    """Blok „Poslední zasedání: předběžně“ (C3): jen s předběžnými daty novějšími než HowTheyVote, po novém exportu zmizí."""
+    import shutil
+
+    import preliminary
+
+    data = tmp_path / "data"
+    shutil.copytree(ROOT / "data", data, ignore=shutil.ignore_patterns("preliminary"))
+    assert portal.preliminary_html(data) == ""
+    raw = json.loads((ROOT / "tests" / "fixtures" / "ep" / "decisions_MTG-PL-2026-10-22.json").read_text(encoding="utf-8"))
+    meps = json.loads((data / "meps.json").read_text(encoding="utf-8"))["meps"]
+    day = preliminary.day_file("2026-10-22", preliminary.parse_decisions(raw, "2026-10-22"), meps, {"PPE": "EPP"}, "2026-10-22T23:37+02:00")
+    (data / "preliminary").mkdir()
+    (data / "preliminary" / "2026-10-22.json").write_text(json.dumps(day, ensure_ascii=False), encoding="utf-8")
+    assert portal.preliminary_html(data) == ""  # den už je v datech HowTheyVote
+    monkeypatch.setattr(preliminary, "htv_last_day", lambda _: "2026-10-21")
+    html = portal.preliminary_html(data)
+    assert "Předběžné výsledky z dokumentů EP, ještě neověřené" in html
+    assert "howtheyvote.eu/votes" in html and preliminary.source_url("2026-10-22") in html
+    assert html.count('class="pl-vote"') == sum(v["main"] for v in day["votes"])
+    assert html.count('<a href="p/') == 21 * sum(v["main"] for v in day["votes"])  # rozbalení na 21 jmen
+    page = portal.portal_page(data, None)[1]
+    assert page.index('id="h-prelim"') < page.index("pt-bento")

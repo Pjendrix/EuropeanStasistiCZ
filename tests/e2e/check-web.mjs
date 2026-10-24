@@ -2,6 +2,7 @@
 // (WCAG 2 A/AA, 2.1 AA) bez porušení ve světlém i tmavém režimu. Spouští se v CI (.github/workflows/web-check.yml) a lokálně:
 //   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
+import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
 import { createServer } from "node:http";
@@ -17,6 +18,8 @@ const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
 const site = mkdtempSync(join(tmpdir(), "epwatch-"));
 cpSync(join(root, "public"), site, { recursive: true });
 cpSync(join(root, "data"), join(site, "data"), { recursive: true });
+// Úvod s blokem předběžných výsledků z fixture (C4): ve skutečných datech je jen pár dní po zasedání.
+execFileSync("python3", [join(root, "tests", "e2e", "preliminary_page.py"), site], { stdio: "inherit" });
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml",
   ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".ico": "image/x-icon", ".webmanifest": "application/manifest+json" };
 // Stejná CSP jako na Vercelu (vercel.json): porušení se v prohlížeči hlásí jako chyba v konzoli a test selže.
@@ -57,7 +60,7 @@ const partialId = read(`data/votes/${lastMonth}.json`).votes.find((v) => v.vote_
 const duelPair = Object.entries(read("data/duel.json").pairs).find(([, p]) => p.agreement[1] && p.diverged_key.length)[0];
 const [duelA, duelB] = duelPair.split("-");
 const pages = ["", "aktualne", "poslanci", "party", "party?v=eu", "party?c=EPP", "party?c=SD", "hlasovani", "votes", "temata", "radar", `vote?id=${voteId}&m=${month}`, `vote?id=${partialId}`, "zasedani", "analyzy", "rozkol", "rozhodujici", "shoda", "kviz",
-  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage, "duel", `duel?a=${duelB}&b=${duelA}`, `d/${duelPair}`];
+  "prace", "prace-poslanci", "o-projektu", `p/${mepId}`, `s/${partyId}`, `v/${voteId}`, procPage, "duel", `duel?a=${duelB}&b=${duelA}`, `d/${duelPair}`, "predbezne-e2e"];
 
 const problems = [];
 const browser = await chromium.launch();
@@ -120,6 +123,21 @@ for (const scheme of ["light", "dark"]) {
     }
     await ctx.close();
   }
+}
+// Předběžné výsledky (C4): blok se štítkem jen s daty; jména se rozbalí; bez dat (skutečný úvod) blok není.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "predbezne-e2e", { waitUntil: "networkidle" });
+  const tag = await page.locator(".pl-note .pl-tag").isVisible();
+  if (!tag) problems.push("předběžné: štítek „Předběžné“ není vidět");
+  const det = page.locator(".pl-names").first();
+  await det.locator("summary").click();
+  if ((await det.locator("a[href^='p/']").count()) !== 21) problems.push("předběžné: rozbalení neukazuje 21 jmen");
+  await page.goto(base, { waitUntil: "networkidle" });
+  const freshPrelim = read("data/freshness.json").preliminary || [];
+  if (!freshPrelim.length && (await page.$("#h-prelim"))) problems.push("předběžné: blok je na úvodu bez předběžných dat");
+  await ctx.close();
 }
 // Duel (B5): prohození pořadí, neplatné ID = výběr (ne chyba), „Porovnat s…“ z profilu předvyplní poslance.
 {

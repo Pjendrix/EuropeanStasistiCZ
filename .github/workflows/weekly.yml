@@ -46,6 +46,9 @@ jobs:
       - name: Hlasování (HowTheyVote export)
         run: python scripts/fetch_votes.py
 
+      - name: Předběžné výsledky, které už má HowTheyVote, smazat
+        run: python scripts/fetch_preliminary.py --prune
+
       - name: Projevy v plénu a prezenční listiny (EP Open Data API)
         # Výpadek EP API (opakované 5xx) nesmí zastavit aktualizaci hlasování: zůstane předchozí soubor a běh jen varuje.
         # Změna formátu (návratový kód 2) běh zastaví dál. Každý skript nejvýš 8 minut (běžně 1–2), ať se vejde celý běh.
@@ -112,7 +115,7 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/adopted_texts.json public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/adopted_texts.json data/preliminary public/assets/photos
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

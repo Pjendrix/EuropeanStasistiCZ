@@ -23,6 +23,7 @@ LINKED_ANCHORS = {
     "ai",  # shrnutí hlasování na úvodu
     "z-posledniho-zasedani",  # úvod
     "zasedani",  # stránka Zasedání pléna
+    "predbezne",  # blok předběžných výsledků na úvodu, věta o zdroji (lib/ui.js)
 }
 # Sekce a aliasy sloučených sekcí (dřívější adresy): sledujte → kontakt, corrections/opravy → zmeny.
 ALIASES = {
