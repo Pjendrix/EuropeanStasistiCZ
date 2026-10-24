@@ -364,12 +364,12 @@ def test_next_session_block():
             },
         ],
     }
-    html = hub.next_session_html(agenda)
+    html = hub.next_session_html(agenda, today="2026-10-16")
     assert 'data-from="2026-10-19"' in html and 'data-to="2026-10-22"' in html
     assert "MOCK DPH" in html and "MOCK jiný" not in html  # na úvodu jen výběr
     assert html.count('class="cz-badge"') == 1 and 'href="p/1"' in html
     assert "data.europarl.europa.eu" in html  # zdroj
-    full = hub.next_session_html(agenda, full=True)
+    full = hub.next_session_html(agenda, full=True, today="2026-10-16")
     assert "MOCK jiný" in full
     assert hub.next_session_html(None) == ""
 

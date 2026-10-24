@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   esc, fmtDate, fmtMonth, fmtPct, highlight, isStale, matchesAll, mepsCount, norm, pagePath, pct, procedureUrl, resultSentence,
-  resultText, searchTerms, sessionCountdown, siteUrl,
+  resultText, searchTerms, sessionCountdown, siteUrl, rollSession, fmtRange,
 } from "../../public/lib/format.js";
 
 test("esc escapuje HTML a null je prázdný text", () => {
@@ -83,4 +83,22 @@ test("isStale: starý export a mezitím zasedání", () => {
   assert.equal(isStale(fresh, "2026-10-20"), true);
   assert.equal(isStale({ ...fresh, sittings_after: [] }, "2026-10-20"), false);
   assert.equal(isStale(null, "2026-10-20"), false);
+});
+
+test("rollSession: před, během, po zasedání a den po posledním dni (úkol 3)", () => {
+  const r = (today) => rollSession("2026-10-19", "2026-10-22", "2026-11-11", "2026-11-12", today);
+  assert.deepEqual(r("2026-10-16"), { state: "upcoming", from: "2026-10-19", to: "2026-10-22", switched: false });
+  assert.equal(r("2026-10-21").state, "current");
+  assert.equal(r("2026-10-22").state, "current");
+  assert.deepEqual(r("2026-10-23"), { state: "upcoming", from: "2026-11-11", to: "2026-11-12", switched: true });
+  assert.deepEqual(r("2026-10-24"), { state: "upcoming", from: "2026-11-11", to: "2026-11-12", switched: true });
+  assert.equal(r("2026-11-11").state, "current");
+  assert.equal(r("2026-11-13").state, "gone");
+  assert.equal(rollSession("2026-10-19", "2026-10-22", undefined, undefined, "2026-10-23").state, "gone");
+});
+
+test("fmtRange jako _range v hub.py", () => {
+  assert.equal(fmtRange("2026-11-11", "2026-11-12"), "11.–12. 11. 2026");
+  assert.equal(fmtRange("2026-09-30", "2026-10-02"), "30. 9. – 2. 10. 2026");
+  assert.equal(fmtRange("2026-11-11", "2026-11-11"), "11. 11. 2026");
 });

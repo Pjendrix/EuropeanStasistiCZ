@@ -10,7 +10,17 @@
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
-  }
+  },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ]
  },
  "parties": [
   {
@@ -108,12 +118,12 @@
      665
     ],
     "group_loyalty": [
-     0,
-     0
+     143,
+     218
     ],
     "group_loyalty_main": [
-     0,
-     0
+     11,
+     14
     ],
     "cz_agreement": [
      3011,
@@ -132,12 +142,12 @@
      113
     ],
     "group_outcome": [
-     0,
-     0
+     4756,
+     13508
     ],
     "group_outcome_main": [
-     0,
-     0
+     403,
+     687
     ],
     "positions": {
      "FOR": 3566,
@@ -324,8 +334,8 @@
      4652
     ],
     "group_loyalty": [
-     28863,
-     38496
+     28856,
+     38489
     ],
     "group_loyalty_main": [
      2412,
@@ -348,12 +358,12 @@
      740
     ],
     "group_outcome": [
-     943193,
-     2227040
+     943393,
+     2228215
     ],
     "group_outcome_main": [
-     126198,
-     207565
+     126242,
+     207622
     ],
     "positions": {
      "FOR": 19671,
@@ -685,7 +695,7 @@
     ],
     "group_loyalty": [
      2907,
-     3646
+     3645
     ],
     "group_loyalty_main": [
      273,
@@ -708,12 +718,12 @@
      93
     ],
     "group_outcome": [
-     90772,
-     222891
+     90802,
+     223073
     ],
     "group_outcome_main": [
-     12219,
-     21926
+     12225,
+     21936
     ],
     "positions": {
      "FOR": 1899,

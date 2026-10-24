@@ -10,7 +10,17 @@
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
-  }
+  },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ]
  },
  "period": {
   "from": "2024-07-17",
@@ -51,12 +61,12 @@
      665
     ],
     "group_loyalty": [
-     0,
-     0
+     143,
+     218
     ],
     "group_loyalty_main": [
-     0,
-     0
+     11,
+     14
     ],
     "cz_agreement": [
      3011,
@@ -75,12 +85,12 @@
      113
     ],
     "group_outcome": [
-     0,
-     0
+     4756,
+     13508
     ],
     "group_outcome_main": [
-     0,
-     0
+     403,
+     687
     ],
     "positions": {
      "FOR": 3566,
@@ -1252,12 +1262,12 @@
       49
      ],
      "group_loyalty": [
-      0,
-      0
+      143,
+      218
      ],
      "group_loyalty_main": [
-      0,
-      0
+      11,
+      14
      ],
      "cz_agreement": [
       240,
@@ -1276,12 +1286,12 @@
       6
      ],
      "group_outcome": [
-      0,
-      0
+      4756,
+      13508
      ],
      "group_outcome_main": [
-      0,
-      0
+      403,
+      687
      ],
      "positions": {
       "FOR": 296,
@@ -1392,12 +1402,12 @@
       123
      ],
      "group_loyalty": [
-      0,
-      0
+      11,
+      22
      ],
      "group_loyalty_main": [
       0,
-      0
+      1
      ],
      "cz_agreement": [
       540,
@@ -1416,12 +1426,12 @@
       21
      ],
      "group_outcome": [
-      0,
-      0
+      591,
+      1134
      ],
      "group_outcome_main": [
-      0,
-      0
+      9,
+      16
      ],
      "positions": {
       "FOR": 733,
@@ -1440,12 +1450,12 @@
       94
      ],
      "group_loyalty": [
-      0,
-      0
+      72,
+      106
      ],
      "group_loyalty_main": [
-      0,
-      0
+      3,
+      3
      ],
      "cz_agreement": [
       626,
@@ -1464,12 +1474,12 @@
       19
      ],
      "group_outcome": [
-      0,
-      0
+      2018,
+      7219
      ],
      "group_outcome_main": [
-      0,
-      0
+      66,
+      222
      ],
      "positions": {
       "FOR": 747,
@@ -1488,12 +1498,12 @@
       35
      ],
      "group_loyalty": [
-      0,
-      0
+      6,
+      7
      ],
      "group_loyalty_main": [
-      0,
-      0
+      1,
+      1
      ],
      "cz_agreement": [
       251,
@@ -1512,8 +1522,8 @@
       20
      ],
      "group_outcome": [
-      0,
-      0
+      4,
+      365
      ],
      "group_outcome_main": [
       0,
@@ -1536,12 +1546,12 @@
       68
      ],
      "group_loyalty": [
-      0,
-      0
+      37,
+      41
      ],
      "group_loyalty_main": [
-      0,
-      0
+      3,
+      3
      ],
      "cz_agreement": [
       468,
@@ -1560,12 +1570,12 @@
       5
      ],
      "group_outcome": [
-      0,
-      0
+      1095,
+      2547
      ],
      "group_outcome_main": [
-      0,
-      0
+      202,
+      208
      ],
      "positions": {
       "FOR": 375,
@@ -1584,12 +1594,12 @@
       51
      ],
      "group_loyalty": [
-      0,
-      0
+      11,
+      16
      ],
      "group_loyalty_main": [
       0,
-      0
+      1
      ],
      "cz_agreement": [
       157,
@@ -1608,12 +1618,12 @@
       12
      ],
      "group_outcome": [
-      0,
-      0
+      324,
+      841
      ],
      "group_outcome_main": [
-      0,
-      0
+      9,
+      16
      ],
      "positions": {
       "FOR": 214,
@@ -1824,12 +1834,12 @@
       17
      ],
      "group_loyalty": [
-      0,
-      0
+      2,
+      2
      ],
      "group_loyalty_main": [
-      0,
-      0
+      1,
+      1
      ],
      "cz_agreement": [
       172,
@@ -1848,12 +1858,12 @@
       2
      ],
      "group_outcome": [
-      0,
-      0
+      128,
+      128
      ],
      "group_outcome_main": [
-      0,
-      0
+      56,
+      56
      ],
      "positions": {
       "FOR": 147,
@@ -1864,14 +1874,120 @@
     }
    },
    "against_group": {
-    "count": 0,
-    "count_main": 0,
+    "count": 75,
+    "count_main": 3,
     "party_known": 0,
     "with_party": 0,
     "party_known_main": 0,
     "with_party_main": 0,
-    "recent": [],
-    "recent_main": []
+    "recent": [
+     {
+      "id": 199355,
+      "is_final": false,
+      "position": "ABSTENTION",
+      "group_code": "PFE",
+      "group_majority": "FOR",
+      "party_majority": null
+     },
+     {
+      "id": 199350,
+      "is_final": false,
+      "position": "ABSTENTION",
+      "group_code": "PFE",
+      "group_majority": "FOR",
+      "party_majority": null
+     },
+     {
+      "id": 199486,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 199485,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "AGAINST",
+      "party_majority": null
+     },
+     {
+      "id": 199480,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 199479,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "AGAINST",
+      "party_majority": null
+     },
+     {
+      "id": 199478,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 199477,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "AGAINST",
+      "party_majority": null
+     },
+     {
+      "id": 199517,
+      "is_final": true,
+      "position": "AGAINST",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 199515,
+      "is_final": false,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "AGAINST",
+      "party_majority": null
+     }
+    ],
+    "recent_main": [
+     {
+      "id": 199517,
+      "is_final": true,
+      "position": "AGAINST",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 198302,
+      "is_final": true,
+      "position": "FOR",
+      "group_code": "PFE",
+      "group_majority": "ABSTENTION",
+      "party_majority": null
+     },
+     {
+      "id": 198325,
+      "is_final": true,
+      "position": "ABSTENTION",
+      "group_code": "PFE",
+      "group_majority": "FOR",
+      "party_majority": null
+     }
+    ]
    },
    "decisive": [
     {
@@ -8319,8 +8435,8 @@
      665
     ],
     "group_loyalty": [
-     4191,
-     5644
+     4190,
+     5643
     ],
     "group_loyalty_main": [
      346,
@@ -8343,12 +8459,12 @@
      111
     ],
     "group_outcome": [
-     132912,
-     325782
+     132943,
+     325956
     ],
     "group_outcome_main": [
-     17946,
-     30138
+     17952,
+     30146
     ],
     "positions": {
      "FOR": 2891,
@@ -9520,8 +9636,8 @@
       49
      ],
      "group_loyalty": [
-      202,
-      253
+      201,
+      252
      ],
      "group_loyalty_main": [
       15,
@@ -9544,12 +9660,12 @@
       5
      ],
      "group_outcome": [
-      5966,
-      15309
+      5997,
+      15483
      ],
      "group_outcome_main": [
-      989,
-      1295
+      995,
+      1303
      ],
      "positions": {
       "FOR": 139,
@@ -9684,12 +9800,12 @@
       18
      ],
      "group_outcome": [
-      31224,
-      65705
+      31226,
+      65723
      ],
      "group_outcome_main": [
       2855,
-      4223
+      4224
      ],
      "positions": {
       "FOR": 602,
@@ -9708,8 +9824,8 @@
       94
      ],
      "group_loyalty": [
-      799,
-      1010
+      798,
+      1009
      ],
      "group_loyalty_main": [
       45,
@@ -9732,12 +9848,12 @@
       15
      ],
      "group_outcome": [
-      19375,
-      63379
+      19381,
+      63465
      ],
      "group_outcome_main": [
-      2017,
-      4530
+      2018,
+      4532
      ],
      "positions": {
       "FOR": 584,
@@ -9781,7 +9897,7 @@
      ],
      "group_outcome": [
       17054,
-      33174
+      33179
      ],
      "group_outcome_main": [
       600,
@@ -9828,12 +9944,12 @@
       6
      ],
      "group_outcome": [
-      15538,
-      37266
+      15554,
+      37303
      ],
      "group_outcome_main": [
-      2329,
-      3716
+      2332,
+      3719
      ],
      "positions": {
       "FOR": 377,
@@ -9876,12 +9992,12 @@
       14
      ],
      "group_outcome": [
-      9974,
-      24849
+      9976,
+      24861
      ],
      "group_outcome_main": [
       1278,
-      1881
+      1882
      ],
      "positions": {
       "FOR": 249,
@@ -10116,12 +10232,12 @@
       0
      ],
      "group_outcome": [
-      9682,
-      14860
+      9684,
+      14862
      ],
      "group_outcome_main": [
-      729,
-      793
+      730,
+      794
      ],
      "positions": {
       "FOR": 126,
@@ -18989,8 +19105,8 @@
      665
     ],
     "group_loyalty": [
-     4448,
-     5973
+     4447,
+     5972
     ],
     "group_loyalty_main": [
      371,
@@ -19013,12 +19129,12 @@
      111
     ],
     "group_outcome": [
-     147209,
-     342484
+     147241,
+     342661
     ],
     "group_outcome_main": [
-     19687,
-     32098
+     19694,
+     32107
     ],
     "positions": {
      "FOR": 3031,
@@ -20190,8 +20306,8 @@
       49
      ],
      "group_loyalty": [
-      400,
-      482
+      399,
+      481
      ],
      "group_loyalty_main": [
       31,
@@ -20214,12 +20330,12 @@
       9
      ],
      "group_outcome": [
-      13786,
-      28702
+      13818,
+      28879
      ],
      "group_outcome_main": [
-      1632,
-      2515
+      1639,
+      2524
      ],
      "positions": {
       "FOR": 249,
@@ -20354,12 +20470,12 @@
       21
      ],
      "group_outcome": [
-      40913,
-      79458
+      40915,
+      79477
      ],
      "group_outcome_main": [
       3543,
-      4895
+      4896
      ],
      "positions": {
       "FOR": 699,
@@ -20378,8 +20494,8 @@
       94
      ],
      "group_loyalty": [
-      810,
-      1023
+      809,
+      1022
      ],
      "group_loyalty_main": [
       48,
@@ -20402,12 +20518,12 @@
       15
      ],
      "group_outcome": [
-      19687,
-      63713
+      19693,
+      63801
      ],
      "group_outcome_main": [
-      2207,
-      4818
+      2208,
+      4820
      ],
      "positions": {
       "FOR": 585,
@@ -20451,7 +20567,7 @@
      ],
      "group_outcome": [
       17186,
-      33445
+      33450
      ],
      "group_outcome_main": [
       717,
@@ -20498,12 +20614,12 @@
       3
      ],
      "group_outcome": [
-      15360,
-      37059
+      15376,
+      37096
      ],
      "group_outcome_main": [
-      2213,
-      3630
+      2216,
+      3633
      ],
      "positions": {
       "FOR": 370,
@@ -20546,12 +20662,12 @@
       14
      ],
      "group_outcome": [
-      11793,
-      28241
+      11795,
+      28254
      ],
      "group_outcome_main": [
       1568,
-      2167
+      2168
      ],
      "positions": {
       "FOR": 290,
@@ -20786,12 +20902,12 @@
       0
      ],
      "group_outcome": [
-      9930,
-      15370
+      9932,
+      15372
      ],
      "group_outcome_main": [
-      786,
-      881
+      787,
+      882
      ],
      "positions": {
       "FOR": 132,
@@ -23257,8 +23373,8 @@
      665
     ],
     "group_loyalty": [
-     4136,
-     5546
+     4135,
+     5545
     ],
     "group_loyalty_main": [
      352,
@@ -23281,12 +23397,12 @@
      109
     ],
     "group_outcome": [
-     138370,
-     320075
+     138383,
+     320192
     ],
     "group_outcome_main": [
-     18402,
-     30103
+     18406,
+     30108
     ],
     "positions": {
      "FOR": 2830,
@@ -24458,8 +24574,8 @@
       49
      ],
      "group_loyalty": [
-      339,
-      406
+      338,
+      405
      ],
      "group_loyalty_main": [
       30,
@@ -24482,12 +24598,12 @@
       6
      ],
      "group_outcome": [
-      11929,
-      24323
+      11942,
+      24440
      ],
      "group_outcome_main": [
-      1421,
-      2390
+      1425,
+      2395
      ],
      "positions": {
       "FOR": 203,
@@ -24646,8 +24762,8 @@
       94
      ],
      "group_loyalty": [
-      554,
-      716
+      553,
+      715
      ],
      "group_loyalty_main": [
       39,
@@ -24670,12 +24786,12 @@
       11
      ],
      "group_outcome": [
-      14018,
-      45408
+      14024,
+      45497
      ],
      "group_outcome_main": [
-      1800,
-      3609
+      1801,
+      3611
      ],
      "positions": {
       "FOR": 432,
@@ -24766,12 +24882,12 @@
       1
      ],
      "group_outcome": [
-      15014,
-      36619
+      15015,
+      36620
      ],
      "group_outcome_main": [
-      2063,
-      3471
+      2064,
+      3472
      ],
      "positions": {
       "FOR": 365,
@@ -25391,8 +25507,8 @@
      665
     ],
     "group_loyalty": [
-     4093,
-     5470
+     4092,
+     5469
     ],
     "group_loyalty_main": [
      350,
@@ -25415,12 +25531,12 @@
      109
     ],
     "group_outcome": [
-     134272,
-     312516
+     134304,
+     312692
     ],
     "group_outcome_main": [
-     18765,
-     30133
+     18772,
+     30142
     ],
     "positions": {
      "FOR": 2762,
@@ -26592,8 +26708,8 @@
       49
      ],
      "group_loyalty": [
-      271,
-      337
+      270,
+      336
      ],
      "group_loyalty_main": [
       23,
@@ -26616,12 +26732,12 @@
       6
      ],
      "group_outcome": [
-      8295,
-      20044
+      8327,
+      20220
      ],
      "group_outcome_main": [
-      1425,
-      2118
+      1432,
+      2127
      ],
      "positions": {
       "FOR": 190,
@@ -26756,12 +26872,12 @@
       19
      ],
      "group_outcome": [
-      35566,
-      72029
+      35568,
+      72047
      ],
      "group_outcome_main": [
       3359,
-      4658
+      4659
      ],
      "positions": {
       "FOR": 640,
@@ -26780,8 +26896,8 @@
       94
      ],
      "group_loyalty": [
-      662,
-      833
+      661,
+      832
      ],
      "group_loyalty_main": [
       41,
@@ -26804,12 +26920,12 @@
       11
      ],
      "group_outcome": [
-      16047,
-      52014
+      16053,
+      52101
      ],
      "group_outcome_main": [
-      2104,
-      4309
+      2105,
+      4311
      ],
      "positions": {
       "FOR": 486,
@@ -26853,7 +26969,7 @@
      ],
      "group_outcome": [
       16960,
-      33267
+      33272
      ],
      "group_outcome_main": [
       614,
@@ -26900,12 +27016,12 @@
       6
      ],
      "group_outcome": [
-      15256,
-      34732
+      15272,
+      34769
      ],
      "group_outcome_main": [
-      2165,
-      3442
+      2168,
+      3445
      ],
      "positions": {
       "FOR": 353,
@@ -26948,12 +27064,12 @@
       14
      ],
      "group_outcome": [
-      10691,
-      26037
+      10693,
+      26049
      ],
      "group_outcome_main": [
       1468,
-      2015
+      2016
      ],
      "positions": {
       "FOR": 256,
@@ -27188,12 +27304,12 @@
       0
      ],
      "group_outcome": [
-      9837,
-      15344
+      9839,
+      15346
      ],
      "group_outcome_main": [
-      769,
-      856
+      770,
+      857
      ],
      "positions": {
       "FOR": 134,
@@ -39519,8 +39635,8 @@
      665
     ],
     "group_loyalty": [
-     3909,
-     5162
+     3908,
+     5161
     ],
     "group_loyalty_main": [
      324,
@@ -39543,12 +39659,12 @@
      99
     ],
     "group_outcome": [
-     127153,
-     303912
+     127185,
+     304090
     ],
     "group_outcome_main": [
-     16912,
-     27567
+     16919,
+     27576
     ],
     "positions": {
      "FOR": 2667,
@@ -40720,8 +40836,8 @@
       49
      ],
      "group_loyalty": [
-      401,
-      479
+      400,
+      478
      ],
      "group_loyalty_main": [
       30,
@@ -40744,12 +40860,12 @@
       9
      ],
      "group_outcome": [
-      13745,
-      28818
+      13777,
+      28996
      ],
      "group_outcome_main": [
-      1637,
-      2576
+      1644,
+      2585
      ],
      "positions": {
       "FOR": 250,
@@ -40884,12 +41000,12 @@
       18
      ],
      "group_outcome": [
-      29775,
-      56667
+      29777,
+      56686
      ],
      "group_outcome_main": [
       2734,
-      3700
+      3701
      ],
      "positions": {
       "FOR": 493,
@@ -40908,8 +41024,8 @@
       94
      ],
      "group_loyalty": [
-      800,
-      1004
+      799,
+      1003
      ],
      "group_loyalty_main": [
       44,
@@ -40932,12 +41048,12 @@
       15
      ],
      "group_outcome": [
-      19414,
-      63327
+      19420,
+      63416
      ],
      "group_outcome_main": [
-      1995,
-      4511
+      1996,
+      4513
      ],
      "positions": {
       "FOR": 580,
@@ -40981,7 +41097,7 @@
      ],
      "group_outcome": [
       14634,
-      28045
+      28050
      ],
      "group_outcome_main": [
       643,
@@ -41028,12 +41144,12 @@
       3
      ],
      "group_outcome": [
-      15380,
-      37251
+      15396,
+      37288
      ],
      "group_outcome_main": [
-      2206,
-      3392
+      2209,
+      3395
      ],
      "positions": {
       "FOR": 381,
@@ -41076,12 +41192,12 @@
       11
      ],
      "group_outcome": [
-      10349,
-      23824
+      10351,
+      23837
      ],
      "group_outcome_main": [
       1346,
-      1725
+      1726
      ],
      "positions": {
       "FOR": 241,
@@ -41316,12 +41432,12 @@
       0
      ],
      "group_outcome": [
-      9803,
-      15069
+      9805,
+      15071
      ],
      "group_outcome_main": [
-      711,
-      787
+      712,
+      788
      ],
      "positions": {
       "FOR": 127,
@@ -41653,8 +41769,8 @@
      662
     ],
     "group_loyalty": [
-     4543,
-     5992
+     4542,
+     5991
     ],
     "group_loyalty_main": [
      375,
@@ -41677,12 +41793,12 @@
      110
     ],
     "group_outcome": [
-     147664,
-     346780
+     147693,
+     346956
     ],
     "group_outcome_main": [
-     19349,
-     32062
+     19355,
+     32070
     ],
     "positions": {
      "FOR": 3073,
@@ -42806,8 +42922,8 @@
       49
      ],
      "group_loyalty": [
-      397,
-      476
+      396,
+      475
      ],
      "group_loyalty_main": [
       32,
@@ -42830,12 +42946,12 @@
       8
      ],
      "group_outcome": [
-      13663,
-      28475
+      13692,
+      28651
      ],
      "group_outcome_main": [
-      1631,
-      2484
+      1637,
+      2492
      ],
      "positions": {
       "FOR": 248,
@@ -42970,12 +43086,12 @@
       17
      ],
      "group_outcome": [
-      38974,
-      75270
+      38976,
+      75289
      ],
      "group_outcome_main": [
       3286,
-      4661
+      4662
      ],
      "positions": {
       "FOR": 644,
@@ -42994,8 +43110,8 @@
       94
      ],
      "group_loyalty": [
-      800,
-      1008
+      799,
+      1007
      ],
      "group_loyalty_main": [
       47,
@@ -43018,12 +43134,12 @@
       15
      ],
      "group_outcome": [
-      19763,
-      63423
+      19769,
+      63511
      ],
      "group_outcome_main": [
-      2137,
-      4740
+      2138,
+      4742
      ],
      "positions": {
       "FOR": 585,
@@ -43067,7 +43183,7 @@
      ],
      "group_outcome": [
       17340,
-      33501
+      33506
      ],
      "group_outcome_main": [
       633,
@@ -43114,12 +43230,12 @@
       6
      ],
      "group_outcome": [
-      15856,
-      38218
+      15871,
+      38254
      ],
      "group_outcome_main": [
-      2169,
-      3730
+      2172,
+      3733
      ],
      "positions": {
       "FOR": 384,
@@ -43162,12 +43278,12 @@
       14
      ],
      "group_outcome": [
-      11310,
-      27360
+      11312,
+      27373
      ],
      "group_outcome_main": [
       1539,
-      2139
+      2140
      ],
      "positions": {
       "FOR": 277,
@@ -43402,12 +43518,12 @@
       0
      ],
      "group_outcome": [
-      9849,
-      15222
+      9851,
+      15224
      ],
      "group_outcome_main": [
-      786,
-      881
+      787,
+      882
      ],
      "positions": {
       "FOR": 130,
@@ -43739,8 +43855,8 @@
      450
     ],
     "group_loyalty": [
-     2684,
-     3525
+     2683,
+     3524
     ],
     "group_loyalty_main": [
      225,
@@ -43763,12 +43879,12 @@
      63
     ],
     "group_outcome": [
-     89409,
-     204893
+     89440,
+     205070
     ],
     "group_outcome_main": [
-     11706,
-     19142
+     11713,
+     19151
     ],
     "positions": {
      "FOR": 1775,
@@ -44364,8 +44480,8 @@
       49
      ],
      "group_loyalty": [
-      397,
-      478
+      396,
+      477
      ],
      "group_loyalty_main": [
       31,
@@ -44388,12 +44504,12 @@
       9
      ],
      "group_outcome": [
-      13770,
-      28599
+      13801,
+      28776
      ],
      "group_outcome_main": [
-      1634,
-      2573
+      1641,
+      2582
      ],
      "positions": {
       "FOR": 250,
@@ -44524,12 +44640,12 @@
       10
      ],
      "group_outcome": [
-      23569,
-      38132
+      23570,
+      38150
      ],
      "group_outcome_main": [
       1858,
-      2613
+      2614
      ],
      "positions": {
       "FOR": 320,
@@ -44548,8 +44664,8 @@
       53
      ],
      "group_loyalty": [
-      475,
-      581
+      474,
+      580
      ],
      "group_loyalty_main": [
       30,
@@ -44572,12 +44688,12 @@
       4
      ],
      "group_outcome": [
-      11133,
-      36955
+      11139,
+      37043
      ],
      "group_outcome_main": [
-      1435,
-      2875
+      1436,
+      2877
      ],
      "positions": {
       "FOR": 330,
@@ -44621,7 +44737,7 @@
      ],
      "group_outcome": [
       8594,
-      17215
+      17220
      ],
      "group_outcome_main": [
       306,
@@ -44668,12 +44784,12 @@
       4
      ],
      "group_outcome": [
-      13303,
-      29475
+      13319,
+      29512
      ],
      "group_outcome_main": [
-      1571,
-      2790
+      1574,
+      2793
      ],
      "positions": {
       "FOR": 289,
@@ -44716,12 +44832,12 @@
       12
      ],
      "group_outcome": [
-      9834,
-      22484
+      9835,
+      22496
      ],
      "group_outcome_main": [
       860,
-      1281
+      1282
      ],
      "positions": {
       "FOR": 224,
@@ -44956,12 +45072,12 @@
       1
      ],
      "group_outcome": [
-      9742,
-      14634
+      9744,
+      14636
      ],
      "group_outcome_main": [
-      710,
-      786
+      711,
+      787
      ],
      "positions": {
       "FOR": 124,
@@ -45226,7 +45342,7 @@
     ],
     "group_loyalty": [
      3369,
-     3949
+     3948
     ],
     "group_loyalty_main": [
      254,
@@ -45249,12 +45365,12 @@
      75
     ],
     "group_outcome": [
-     95829,
-     232477
+     95859,
+     232659
     ],
     "group_outcome_main": [
-     11348,
-     18862
+     11354,
+     18872
     ],
     "positions": {
      "FOR": 1966,
@@ -45803,7 +45919,7 @@
      ],
      "group_loyalty": [
       444,
-      483
+      482
      ],
      "group_loyalty_main": [
       37,
@@ -45826,12 +45942,12 @@
       9
      ],
      "group_outcome": [
-      13741,
-      29434
+      13771,
+      29616
      ],
      "group_outcome_main": [
-      1598,
-      2446
+      1604,
+      2456
      ],
      "positions": {
       "FOR": 250,
@@ -45958,12 +46074,12 @@
       11
      ],
      "group_outcome": [
-      25002,
-      45547
+      25005,
+      45567
      ],
      "group_outcome_main": [
       1892,
-      2668
+      2669
      ],
      "positions": {
       "FOR": 388,
@@ -45983,7 +46099,7 @@
      ],
      "group_loyalty": [
       520,
-      605
+      604
      ],
      "group_loyalty_main": [
       33,
@@ -46006,12 +46122,12 @@
       5
      ],
      "group_outcome": [
-      10347,
-      37694
+      10354,
+      37786
      ],
      "group_outcome_main": [
-      1287,
-      2711
+      1288,
+      2714
      ],
      "positions": {
       "FOR": 339,
@@ -46055,7 +46171,7 @@
      ],
      "group_outcome": [
       13517,
-      28229
+      28234
      ],
      "group_outcome_main": [
       161,
@@ -46102,12 +46218,12 @@
       5
      ],
      "group_outcome": [
-      13170,
-      29686
+      13185,
+      29723
      ],
      "group_outcome_main": [
-      1556,
-      2837
+      1559,
+      2840
      ],
      "positions": {
       "FOR": 277,
@@ -46150,12 +46266,12 @@
       13
      ],
      "group_outcome": [
-      9412,
-      22227
+      9415,
+      22241
      ],
      "group_outcome_main": [
       824,
-      1200
+      1201
      ],
      "positions": {
       "FOR": 197,
@@ -46390,12 +46506,12 @@
       1
      ],
      "group_outcome": [
-      9070,
-      14119
+      9072,
+      14121
      ],
      "group_outcome_main": [
-      470,
-      557
+      471,
+      558
      ],
      "positions": {
       "FOR": 115,
@@ -46406,7 +46522,7 @@
     }
    },
    "against_group": {
-    "count": 580,
+    "count": 579,
     "count_main": 139,
     "party_known": 257,
     "with_party": 122,
@@ -46753,12 +46869,12 @@
      665
     ],
     "group_loyalty": [
-     0,
-     0
+     143,
+     218
     ],
     "group_loyalty_main": [
-     0,
-     0
+     11,
+     14
     ],
     "cz_agreement": [
      3011,
@@ -46777,12 +46893,12 @@
      113
     ],
     "group_outcome": [
-     0,
-     0
+     4756,
+     13508
     ],
     "group_outcome_main": [
-     0,
-     0
+     403,
+     687
     ],
     "positions": {
      "FOR": 3566,
@@ -46974,8 +47090,8 @@
      4652
     ],
     "group_loyalty": [
-     28863,
-     38496
+     28856,
+     38489
     ],
     "group_loyalty_main": [
      2412,
@@ -46998,12 +47114,12 @@
      740
     ],
     "group_outcome": [
-     943193,
-     2227040
+     943393,
+     2228215
     ],
     "group_outcome_main": [
-     126198,
-     207565
+     126242,
+     207622
     ],
     "positions": {
      "FOR": 19671,
@@ -47373,7 +47489,7 @@
     ],
     "group_loyalty": [
      2907,
-     3646
+     3645
     ],
     "group_loyalty_main": [
      273,
@@ -47396,12 +47512,12 @@
      93
     ],
     "group_outcome": [
-     90772,
-     222891
+     90802,
+     223073
     ],
     "group_outcome_main": [
-     12219,
-     21926
+     12225,
+     21936
     ],
     "positions": {
      "FOR": 1899,

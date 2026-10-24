@@ -42,7 +42,17 @@
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
-  }
+  },
+  "group_conflicts": [
+   {
+    "member_id": 23699,
+    "from": "2026-10-21",
+    "to": "2026-10-22",
+    "htv": "NI",
+    "ep": "PFE",
+    "votes": 228
+   }
+  ]
  },
  "member_list": [
   {
@@ -81,8 +91,8 @@
      665
     ],
     "group_loyalty": [
-     4448,
-     5973
+     4447,
+     5972
     ],
     "group_loyalty_main": [
      371,
@@ -105,12 +115,12 @@
      111
     ],
     "group_outcome": [
-     147209,
-     342484
+     147241,
+     342661
     ],
     "group_outcome_main": [
-     19687,
-     32098
+     19694,
+     32107
     ],
     "positions": {
      "FOR": 3031,
@@ -156,8 +166,8 @@
      665
     ],
     "group_loyalty": [
-     3909,
-     5162
+     3908,
+     5161
     ],
     "group_loyalty_main": [
      324,
@@ -180,12 +190,12 @@
      99
     ],
     "group_outcome": [
-     127153,
-     303912
+     127185,
+     304090
     ],
     "group_outcome_main": [
-     16912,
-     27567
+     16919,
+     27576
     ],
     "positions": {
      "FOR": 2667,
@@ -231,8 +241,8 @@
      665
     ],
     "group_loyalty": [
-     4191,
-     5644
+     4190,
+     5643
     ],
     "group_loyalty_main": [
      346,
@@ -255,12 +265,12 @@
      111
     ],
     "group_outcome": [
-     132912,
-     325782
+     132943,
+     325956
     ],
     "group_outcome_main": [
-     17946,
-     30138
+     17952,
+     30146
     ],
     "positions": {
      "FOR": 2891,
@@ -306,8 +316,8 @@
      450
     ],
     "group_loyalty": [
-     2684,
-     3525
+     2683,
+     3524
     ],
     "group_loyalty_main": [
      225,
@@ -330,12 +340,12 @@
      63
     ],
     "group_outcome": [
-     89409,
-     204893
+     89440,
+     205070
     ],
     "group_outcome_main": [
-     11706,
-     19142
+     11713,
+     19151
     ],
     "positions": {
      "FOR": 1775,
@@ -381,12 +391,12 @@
      665
     ],
     "group_loyalty": [
-     0,
-     0
+     143,
+     218
     ],
     "group_loyalty_main": [
-     0,
-     0
+     11,
+     14
     ],
     "cz_agreement": [
      3011,
@@ -405,12 +415,12 @@
      113
     ],
     "group_outcome": [
-     0,
-     0
+     4756,
+     13508
     ],
     "group_outcome_main": [
-     0,
-     0
+     403,
+     687
     ],
     "positions": {
      "FOR": 3566,
@@ -456,8 +466,8 @@
      662
     ],
     "group_loyalty": [
-     4543,
-     5992
+     4542,
+     5991
     ],
     "group_loyalty_main": [
      375,
@@ -480,12 +490,12 @@
      110
     ],
     "group_outcome": [
-     147664,
-     346780
+     147693,
+     346956
     ],
     "group_outcome_main": [
-     19349,
-     32062
+     19355,
+     32070
     ],
     "positions": {
      "FOR": 3073,
@@ -531,8 +541,8 @@
      665
     ],
     "group_loyalty": [
-     4136,
-     5546
+     4135,
+     5545
     ],
     "group_loyalty_main": [
      352,
@@ -555,12 +565,12 @@
      109
     ],
     "group_outcome": [
-     138370,
-     320075
+     138383,
+     320192
     ],
     "group_outcome_main": [
-     18402,
-     30103
+     18406,
+     30108
     ],
     "positions": {
      "FOR": 2830,
@@ -606,8 +616,8 @@
      665
     ],
     "group_loyalty": [
-     4093,
-     5470
+     4092,
+     5469
     ],
     "group_loyalty_main": [
      350,
@@ -630,12 +640,12 @@
      109
     ],
     "group_outcome": [
-     134272,
-     312516
+     134304,
+     312692
     ],
     "group_outcome_main": [
-     18765,
-     30133
+     18772,
+     30142
     ],
     "positions": {
      "FOR": 2762,
@@ -682,7 +692,7 @@
     ],
     "group_loyalty": [
      3369,
-     3949
+     3948
     ],
     "group_loyalty_main": [
      254,
@@ -705,12 +715,12 @@
      75
     ],
     "group_outcome": [
-     95829,
-     232477
+     95859,
+     232659
     ],
     "group_outcome_main": [
-     11348,
-     18862
+     11354,
+     18872
     ],
     "positions": {
      "FOR": 1966,
