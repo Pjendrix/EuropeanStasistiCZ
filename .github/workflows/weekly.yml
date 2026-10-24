@@ -47,9 +47,14 @@ jobs:
         run: python scripts/fetch_votes.py
 
       - name: Projevy v plénu a prezenční listiny (EP Open Data API)
+        # Výpadek EP API (opakované 5xx) nesmí zastavit aktualizaci hlasování: zůstane předchozí soubor a běh jen varuje.
+        # Změna formátu (návratový kód 2) běh zastaví dál.
         run: |
-          python scripts/fetch_speeches.py
-          python scripts/fetch_attendance.py
+          for s in fetch_speeches fetch_attendance; do
+            rc=0; python "scripts/$s.py" || rc=$?
+            if [ "$rc" -eq 2 ]; then exit 2; fi
+            if [ "$rc" -ne 0 ]; then echo "::warning::$s: EP API neodpovídá, zůstává předchozí soubor"; fi
+          done
 
       - name: Předsedové politických skupin (EP Open Data API)
         # Asi 10 dotazů týdně. Při výpadku nebo změně formátu zůstane předchozí soubor (stránka a karta frakce ho jen ukazují).
