@@ -53,6 +53,9 @@ def parse(path: Path) -> dict:
     # Šablony EP: <RepeatBlock-Amend>/<Amend>/<NumAm>, u dvousloupcových zpráv i varianty …A a …B
     if not re.search(r"<RepeatBlock-Amend[AB]?>", t) or not head["range"]:
         raise FormatError(f"{path.name}: chybí <RepeatBlock-Amend…> nebo <RangeAM>, formát DOCX se změnil")
+    # datum ze strojové části "{20/01/2026}20.1.2026" (zobrazená část bývá ručně přepsaná, např. ".12.2025")
+    m = re.match(r"^\{(\d{2})/(\d{2})/(\d{4})\}", head["date"] or "")
+    head["date_iso"] = f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else None
     head = {k: re.sub(r"^\{[^}]*\}", "", v) if v else v for k, v in head.items()}  # "{REGI}Committee…" → "Committee…"
     amendments = []
     for block in re.split(r"<RepeatBlock-Amend[AB]?>", t)[1:]:

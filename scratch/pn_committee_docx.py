@@ -70,7 +70,7 @@ def main(am_list: Path, dump: Path, out: Path) -> None:
         finally:
             if not (out / "cache" / f"{doc_id}_en.docx").exists():
                 time.sleep(0.5)
-        day = iso(d["date"])
+        day = d["date_iso"] or iso(d["date"])
         if not day:
             errors.append(f"{doc_id}: datum {d['date']!r}")
             continue
