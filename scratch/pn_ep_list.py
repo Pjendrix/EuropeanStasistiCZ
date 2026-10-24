@@ -2,7 +2,7 @@
 
 Jen průzkum, výstup do adresáře z argumentu (ne do data/). Throttling: nejvýš ~90 dotazů za minutu (limit EP 500/5 min).
 
-    python scratch/pn_ep_list.py OUT_DIR            # seznam ID
+    python scratch/pn_ep_list.py OUT_DIR - 2026     # seznam ID za rok 2026
     python scratch/pn_ep_list.py OUT_DIR --details  # + detail každého dokumentu 10. období (titulek, datum)
 """
 
@@ -19,6 +19,7 @@ API = "https://data.europarl.europa.eu/api/v2"
 FMT = {"format": "application/ld+json"}
 PAUSE = 0.7
 PAGE = 10
+YEARS = [int(a) for a in sys.argv[3:]] or [2024, 2025, 2026]
 
 
 def get(s: requests.Session, path: str, params: dict) -> dict | None:
@@ -48,7 +49,7 @@ def main(out: Path, details: bool) -> None:
         else:
             # API při stránce nad ~10 položek padá na 500 (OutOfMemory v SPARQL), proto po letech a po 10
             ids = []
-            for year in (2024, 2025, 2026):
+            for year in YEARS:
                 off = 0
                 while True:
                     d = get(s, "documents", {"work-type": "AMENDMENT_LIST", "year": year, "limit": PAGE, "offset": off})
@@ -88,4 +89,4 @@ def main(out: Path, details: bool) -> None:
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]), "--details" in sys.argv)
+    main(Path(sys.argv[1]), sys.argv[2:3] == ["--details"])
