@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-10-23",
+ "updated": "2026-10-25",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -8039,7 +8039,7 @@
     },
     "question": {
      "count": 73,
-     "answered": 63
+     "answered": 64
     }
    },
    "passed": {
@@ -8158,8 +8158,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-10-23",
      "authors_total": 23
     },
     {
@@ -14421,7 +14421,7 @@
      "count": 0
     },
     "shadow_opinion": {
-     "count": 6
+     "count": 5
     },
     "motion": {
      "count": 36,
@@ -14456,14 +14456,14 @@
     "lead_reports": 3,
     "lead_opinions": 0,
     "shadow_reports": 18,
-    "shadow_opinions": 6,
+    "shadow_opinions": 5,
     "motions_signed": 52,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
       "lead_opinions": null,
       "shadow_reports": "top",
-      "shadow_opinions": "top"
+      "shadow_opinions": "mid"
      },
      "of": 21,
      "tiers_skipped": false,
@@ -14471,26 +14471,6 @@
     }
    },
    "items": [
-    {
-     "id": "proc-2026-0138",
-     "label": "2026/0138(COD)",
-     "date": "2026-10-01",
-     "title": {
-      "cs": "Akt pro rozvoj cloudu a AI",
-      "en": "Cloud and AI Development Act"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0138(COD)",
-     "type": "shadow_opinion",
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "VERTS-ALE",
-     "committee": null,
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "COD",
-     "legislative": true
-    },
     {
      "id": "proc-2025-0273",
      "label": "2025/0273(NLE)",
@@ -33672,7 +33652,7 @@
      "other": 0
     },
     "opinion": {
-     "count": 6
+     "count": 7
     },
     "shadow_opinion": {
      "count": 4
@@ -33708,7 +33688,7 @@
    },
    "roles": {
     "lead_reports": 2,
-    "lead_opinions": 6,
+    "lead_opinions": 7,
     "shadow_reports": 1,
     "shadow_opinions": 4,
     "motions_signed": 137,
@@ -36407,6 +36387,26 @@
      "joint_motion": "RC-10-2024-0191",
      "joint_result": "ADOPTED",
      "joint_vote_id": 170917
+    },
+    {
+     "id": "proc-2026-0212",
+     "label": "2026/0212(COD)",
+     "date": "2024-11-20",
+     "title": {
+      "cs": "Systém EU pro obchodování s emisemi a rezerva tržní stability: konkurenceschopnost a nákladově efektivní dekarbonizace",
+      "en": "EU Emissions Trading System and market stability reserve: competitiveness and cost-effective decarbonisation"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0212(COD)",
+     "type": "opinion",
+     "role": "RAPPORTEUR_OPINION",
+     "group": "PPE",
+     "committee": "BUDG",
+     "status": null,
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
     },
     {
      "id": "proc-2025-0419",

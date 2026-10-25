@@ -3619,10 +3619,6 @@
      "type": "REFERRAL"
     },
     {
-     "date": "2025-01-08",
-     "type": "COMMITTEE_TABLING_OPINION"
-    },
-    {
      "date": "2025-02-20",
      "type": "COMMITTEE_TABLING_REPORT"
     },
@@ -3667,8 +3663,20 @@
      "type": "TABLING_PLENARY"
     },
     {
-     "date": "2026-10-16",
+     "date": "2026-10-15",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_ADOPT_POSITION"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -7320,6 +7328,58 @@
     {
      "date": "2026-09-15",
      "type": "PLENARY_VOTE_RESULTS"
+    }
+   ]
+  },
+  {
+   "id": "proc-2026-0212",
+   "kind": "procedure",
+   "label": "2026/0212(COD)",
+   "procedure": "2026-0212",
+   "process_type": "COD",
+   "title": {
+    "cs": "Systém EU pro obchodování s emisemi a rezerva tržní stability: konkurenceschopnost a nákladově efektivní dekarbonizace",
+    "en": "EU Emissions Trading System and market stability reserve: competitiveness and cost-effective decarbonisation"
+   },
+   "participants": [
+    {
+     "mep_id": 197537,
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "ECR",
+     "in_name_of": null,
+     "date": "2026-09-08"
+    },
+    {
+     "mep_id": 256847,
+     "role": "RAPPORTEUR_OPINION",
+     "group": "PPE",
+     "in_name_of": "BUDG",
+     "date": "2024-11-20"
+    }
+   ],
+   "date": "2024-11-20",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0212(COD)",
+   "committee": "ENVI",
+   "events": [
+    {
+     "date": "2026-09-15",
+     "type": "COMMITTEE_TABLING_REPORT"
+    },
+    {
+     "date": "2026-09-17",
+     "type": "REFERRAL"
+    },
+    {
+     "date": "2026-10-13",
+     "type": "COMMITTEE_TABLING_AMENDMENT"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "COMMITTEE_TABLING_AMENDMENT"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "COMMITTEE_TABLING_AMENDMENT"
     }
    ]
   },
@@ -19292,6 +19352,14 @@
     {
      "date": "2026-05-21",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-07-02",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION"
     }
    ]
   },
@@ -21859,6 +21927,22 @@
     {
      "date": "2026-10-14",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_ADOPT_POSITION"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_DEBATE"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -22303,6 +22387,14 @@
     {
      "date": "2026-10-14",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -24748,6 +24840,10 @@
     {
      "date": "2026-07-15",
      "type": "COMMITTEE_ADOPTING_OPINION"
+    },
+    {
+     "date": "2026-10-19",
+     "type": "COMMITTEE_ADOPTING_REPORT"
     }
    ]
   },
@@ -26131,6 +26227,10 @@
     {
      "date": "2026-09-16",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "SIGNATURE"
     }
    ]
   },
@@ -26231,6 +26331,10 @@
     {
      "date": "2026-09-16",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "SIGNATURE"
     }
    ]
   },
@@ -30756,6 +30860,10 @@
     {
      "date": "2026-09-16",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "SIGNATURE"
     }
    ]
   },
@@ -32221,6 +32329,10 @@
     {
      "date": "2026-09-15",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "SIGNATURE"
     }
    ]
   },
@@ -33124,8 +33236,28 @@
      "type": "TABLING_PLENARY"
     },
     {
-     "date": "2026-10-16",
+     "date": "2026-10-19",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_DEBATE"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_AMEND"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -34030,8 +34162,24 @@
      "type": "TABLING_PLENARY"
     },
     {
-     "date": "2026-10-16",
+     "date": "2026-10-14",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_AMEND"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -35494,6 +35642,10 @@
     {
      "date": "2026-07-16",
      "type": "INTERINSTITUTIONAL_NEGOTIATION"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION"
     }
    ]
   },
@@ -36651,7 +36803,7 @@
    ],
    "date": "2026-02-26",
    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0196(BUD)",
-   "committee": "BUDG",
+   "committee": "BUDE",
    "events": [
     {
      "date": "2026-07-14",
@@ -36704,6 +36856,26 @@
     {
      "date": "2026-10-12",
      "type": "COMMITTEE_ADOPTING_REPORT"
+    },
+    {
+     "date": "2026-10-12",
+     "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-15",
+     "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_DEBATE"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -36998,6 +37170,10 @@
     {
      "date": "2026-04-27",
      "type": "REFERRAL"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "COMMITTEE_TABLING_REPORT"
     }
    ]
   },
@@ -37402,6 +37578,10 @@
     {
      "date": "2026-09-16",
      "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION"
     }
    ]
   },
@@ -37899,6 +38079,10 @@
     {
      "date": "2026-07-10",
      "type": "COMMITTEE_TABLING_AMENDMENT"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "COMMITTEE_ADOPTING_OPINION"
     }
    ]
   },
@@ -37950,6 +38134,10 @@
     {
      "date": "2026-06-30",
      "type": "COMMITTEE_TABLING_AMENDMENT"
+    },
+    {
+     "date": "2026-10-22",
+     "type": "COMMITTEE_ADOPTING_OPINION"
     }
    ]
   },
@@ -38905,6 +39093,10 @@
     {
      "date": "2026-09-07",
      "type": "COMMITTEE_ADOPTING_OPINION"
+    },
+    {
+     "date": "2026-10-19",
+     "type": "COMMITTEE_ADOPTING_REPORT"
     }
    ]
   },
@@ -40599,6 +40791,14 @@
     {
      "date": "2026-10-05",
      "type": "COMMITTEE_ADOPTING_OPINION"
+    },
+    {
+     "date": "2026-10-13",
+     "type": "COMMITTEE_TABLING_AMENDMENT"
+    },
+    {
+     "date": "2026-10-19",
+     "type": "COMMITTEE_TABLING_AMENDMENT"
     }
    ]
   },
@@ -40709,6 +40909,10 @@
     {
      "date": "2026-10-06",
      "type": "PLENARY_VOTE_RESULTS"
+    },
+    {
+     "date": "2026-10-21",
+     "type": "SIGNATURE"
     }
    ]
   },
@@ -41723,6 +41927,14 @@
     {
      "date": "2026-10-08",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -43495,6 +43707,18 @@
     {
      "date": "2026-10-08",
      "type": "TABLING_PLENARY"
+    },
+    {
+     "date": "2026-10-19",
+     "type": "PLENARY_DEBATE"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE"
+    },
+    {
+     "date": "2026-10-20",
+     "type": "PLENARY_VOTE_RESULTS"
     }
    ]
   },
@@ -44829,7 +45053,7 @@
    "addressee": [
     "COM"
    ],
-   "answer_date": null,
+   "answer_date": "2026-10-23",
    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003350_EN.html"
   },
   {
@@ -45043,43 +45267,6 @@
    ],
    "answer_date": null,
    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003539_EN.html"
-  },
-  {
-   "id": "proc-2026-0212",
-   "kind": "procedure",
-   "label": "2026/0212(COD)",
-   "procedure": "2026-0212",
-   "process_type": "COD",
-   "title": {
-    "cs": "Systém EU pro obchodování s emisemi a rezerva tržní stability: konkurenceschopnost a nákladově efektivní dekarbonizace",
-    "en": "EU Emissions Trading System and market stability reserve: competitiveness and cost-effective decarbonisation"
-   },
-   "participants": [
-    {
-     "mep_id": 197537,
-     "role": "RAPPORTEUR_SHADOW",
-     "group": "ECR",
-     "in_name_of": null,
-     "date": "2026-09-08"
-    }
-   ],
-   "date": "2026-09-08",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0212(COD)",
-   "committee": "ENVI",
-   "events": [
-    {
-     "date": "2026-09-15",
-     "type": "COMMITTEE_TABLING_REPORT"
-    },
-    {
-     "date": "2026-09-17",
-     "type": "REFERRAL"
-    },
-    {
-     "date": "2026-10-13",
-     "type": "COMMITTEE_TABLING_AMENDMENT"
-    }
-   ]
   },
   {
    "id": "E-10-2026-003561",
@@ -46356,35 +46543,6 @@
    ],
    "answer_date": null,
    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-003979_EN.html"
-  },
-  {
-   "id": "proc-2026-0138",
-   "kind": "procedure",
-   "label": "2026/0138(COD)",
-   "procedure": "2026-0138",
-   "process_type": "COD",
-   "title": {
-    "cs": "Akt pro rozvoj cloudu a AI",
-    "en": "Cloud and AI Development Act"
-   },
-   "participants": [
-    {
-     "mep_id": 197549,
-     "role": "RAPPORTEUR_SHADOW_OPINION",
-     "group": "VERTS-ALE",
-     "in_name_of": null,
-     "date": "2026-10-01"
-    }
-   ],
-   "date": "2026-10-01",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0138(COD)",
-   "committee": "ITRE",
-   "events": [
-    {
-     "date": "2026-09-17",
-     "type": "REFERRAL"
-    }
-   ]
   },
   {
    "id": "B-10-2026-0449",
