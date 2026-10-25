@@ -2731,9 +2731,9 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .mx-w-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
   .mx-w { padding: .6rem .65rem; }
   .mx-w b { font-size: 1.45rem; }
-  .mx-w span { font-size: .78rem; line-height: 1.25; }
-  .mx-w small { font-size: .7rem; }
-  .mx-portrait figcaption { position: static; background: none; color: var(--muted); padding: 0; margin-top: .3rem; font-size: .6rem; text-align: left; }
+  .mx-w span { font-size: .82rem; line-height: 1.25; }
+  .mx-w small { font-size: .82rem; }
+  .mx-portrait figcaption { position: static; background: none; color: var(--muted); padding: 0; margin-top: .3rem; font-size: .82rem; line-height: 1.25; text-align: left; }
 
   /* Seznam hlasování: bez tématu, typu a čísla dokumentu (jsou v detailu) */
   #votes .cat-inline, #votes .vt-doc { display: none; }
@@ -2757,7 +2757,7 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .card { padding: 1rem; }
   h2 { margin-top: 1.6rem; margin-bottom: .7rem; }
   .small { font-size: .84rem; }
-  .source { font-size: .78rem; margin-top: .7rem; }
+  .source { margin-top: .7rem; }
 
   /* Česká stopa: role pod jménem, ať se jméno neláme */
   .ns-cz .cz-p { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: .5rem; align-items: center; line-height: 1.25; }
