@@ -317,7 +317,7 @@ def party_page(pp: dict, groups: list[dict], parties: list[dict], base_url: str 
         path=path,
         current="parties",
         description=desc,
-        meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
+        meta=og_meta(title, desc, path, base_url, f"og/s/{pp['id']}.png", desc, card=True),
         main_attrs=f'data-party="{pp["id"]}"',
         scripts=share_script + MODULES.format(root="", page="party.js"),
     )
@@ -580,7 +580,9 @@ def vote_page(
         root=ROOT,
         current="votes",
         description=desc,
-        meta=og_meta(title, desc, f"v/{v['id']}.html", base_url, f"og/v/{v['id']}.png" if has_card else None, desc, card=True),
+        meta=og_meta(
+            title, desc, f"v/{v['id']}.html", base_url, f"og/v/{v['id']}.png" if has_card else "og/hlasovani.png", desc, card=True
+        ),
         scripts=f'<script type="module" src="{ROOT}app.js"></script>\n{share_script}<script type="module" src="{ROOT}share.js"></script>\n',
     )
 

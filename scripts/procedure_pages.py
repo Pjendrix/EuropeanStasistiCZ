@@ -221,7 +221,9 @@ def vote_row(v: dict, meps_by_id: dict, final_pages: set[int]) -> str:
     )
 
 
-def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: set[int], base_url: str | None) -> tuple[str, str]:
+def procedure_page(
+    row: dict, meps_by_id: dict, vote_roles: dict, final_pages: set[int], base_url: str | None, card: bool = False
+) -> tuple[str, str]:
     label = row["label"]
     ptype = LABEL_RE.match(label)[3]
     title = row["title_cs"] or row["title_en"] or label
@@ -353,7 +355,10 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
         root=ROOT,
         current="votes",
         description=desc,
-        meta=og_meta(f"{title} – příběh zákona", desc, path, base_url),
+        # karta z/ jen u procedur se závěrečným hlasováním za 12 měsíců (build_cards.py, V12), jinak obecná karta hlasování
+        meta=og_meta(
+            f"{title} – příběh zákona", desc, path, base_url, f"og/z/{slug(label)}.png" if card else "og/hlasovani.png", desc, card=True
+        ),
         scripts=f'<script type="module" src="{ROOT}app.js"></script>\n<script type="module" src="{ROOT}share.js"></script>\n',
     )
 
@@ -361,7 +366,11 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
 def procedure_pages(data_dir: Path, votes: list[dict], meps_by_id: dict, base_url: str | None) -> dict[str, str]:
     vr = _read(data_dir / "vote_roles.json", {}).get("votes", {})
     final_pages = {v["id"] for v in votes if is_final(v)}
-    return dict(procedure_page(row, meps_by_id, vr, final_pages, base_url) for row in collect(data_dir, votes).values())
+    from build_cards import card_vote_ids, law_cards_wanted
+
+    rows = collect(data_dir, votes)
+    with_card = law_cards_wanted(rows, card_vote_ids(votes))
+    return dict(procedure_page(row, meps_by_id, vr, final_pages, base_url, row["label"] in with_card) for row in rows.values())
 
 
 def motion_signers(data_dir: Path) -> dict[str, list[dict]]:
