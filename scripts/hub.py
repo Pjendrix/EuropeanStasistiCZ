@@ -10,6 +10,7 @@ Všechna čísla jsou z data/*.json (compute_stats.py, build_web.py), nic se tu 
 
 from __future__ import annotations
 
+import functools
 import json
 import math
 from pathlib import Path
@@ -179,7 +180,39 @@ def votes_overview_html(data_dir: Path) -> str:
 
 DOC_URL = "https://www.europarl.europa.eu/doceo/document/{}_CS.html"
 FULL_VISIBLE = 6  # na stránce Hlasování prvních 6 bodů, zbytek pod „Zobrazit dalších“
-_ROLE_CS = {"rapporteur": "zpravodaj/ka", "co": "spoluzpravodaj/ka", "shadow": "stínový/á zpravodaj/ka"}
+# Role v české stopě podle pohlaví poslance (EP Open Data, meps.json → gender); bez údaje tvar s lomítkem.
+_ROLE_G = {
+    "rapporteur": ("zpravodaj", "zpravodajka", "zpravodaj/ka"),
+    "co": ("spoluzpravodaj", "spoluzpravodajka", "spoluzpravodaj/ka"),
+    "shadow": ("stínový zpravodaj", "stínová zpravodajka", "stínový/á zpravodaj/ka"),
+    "opinion": ("zpravodaj stanoviska", "zpravodajka stanoviska", "zpravodaj/ka stanoviska"),
+    "shadow_opinion": ("stínový zpravodaj stanoviska", "stínová zpravodajka stanoviska", "stínový/á zpravodaj/ka stanoviska"),
+}
+_DATA = Path(__file__).resolve().parent.parent / "data"
+
+
+@functools.lru_cache(maxsize=1)
+def _genders() -> dict[int, str]:
+    return {m["id"]: m.get("gender") for m in (_read(_DATA / "meps.json") or {}).get("meps", [])}
+
+
+def cz_role(mep_id: int, role: str) -> str:
+    male, female, both = _ROLE_G.get(role, (role, role, role))
+    g = _genders().get(mep_id)
+    return female if g == "FEMALE" else male if g == "MALE" else both
+
+
+def cz_people_html(cz: list[dict], root: str = "") -> str:
+    """Česká stopa u bodu programu, procedury nebo hlasování: samostatný řádek s portrétem, jménem tučně a rolí.
+    Řádek s českou stopou dostane v CSS zlatý proužek a tónované pozadí (.ns-cz uvnitř položky)."""
+    if not cz:
+        return ""
+    people = "".join(
+        f'<a class="cz-p" href="{root}p/{c["mep_id"]}"><img src="{root}assets/photos/thumbs/{c["mep_id"]}.webp" alt="" width="28" height="28" loading="lazy">'
+        f"<b>{esc(c.get('name') or str(c['mep_id']))}</b><span>{cz_role(c['mep_id'], c['role'])}</span></a>"
+        for c in cz
+    )
+    return f'<span class="ns-cz"><span class="sr-only">Česká stopa: </span>{people}</span>'
 
 
 def _range(a: str, b: str) -> str:
@@ -210,12 +243,9 @@ def agenda_item_html(it: dict, root: str = "", procs: dict[str, str] | None = No
     """Jeden hlasovací bod: český název (jinak anglický originál, s odkazem na Příběh zákona), den, dokumenty a česká stopa."""
     title = _title_link(it.get("title_cs") or it.get("title_en") or it["id"], (procs or {}).get(it["id"]), root)
     docs = " · ".join(f'<a href="{DOC_URL.format(d)}">{esc(d)}</a>' if d[0] in "AB" else esc(d) for d in it["docs"])
-    cz = ", ".join(
-        f'<a href="{root}p/{c["mep_id"]}">{esc(c["name"] or str(c["mep_id"]))}</a> ({_ROLE_CS[c["role"]]})' for c in it.get("cz") or []
-    )
     return (
         f'<li class="ns-item"><span class="ns-day">{fmt_date(it["date"])[:-5]}</span><span class="ns-title">{title}</span>'
-        + (f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {cz}</span>' if cz else "")
+        + cz_people_html(it.get("cz") or [], root)
         + (f'<span class="ns-docs small muted">{docs}</span>' if docs else "")
         + "</li>"
     )
@@ -268,22 +298,9 @@ def next_session_html(
 
 # --- radar „Co se chystá“ (radar.py → data/radar.json) ---------------------------------------------------
 
-_CZ_ROLE_SHORT = {
-    "rapporteur": "zpravodaj/ka",
-    "co": "spoluzpravodaj/ka",
-    "shadow": "stínový/á zpravodaj/ka",
-    "opinion": "zpravodaj/ka stanoviska",
-    "shadow_opinion": "stínový/á zpravodaj/ka stanoviska",
-}
-
 
 def _cz_html(cz: list[dict], root: str) -> str:
-    if not cz:
-        return ""
-    people = ", ".join(
-        f'<a href="{root}p/{c["mep_id"]}">{esc(c["name"] or str(c["mep_id"]))}</a> ({_CZ_ROLE_SHORT[c["role"]]})' for c in cz
-    )
-    return f'<span class="ns-cz"><span class="cz-badge">česká stopa</span> {people}</span>'
+    return cz_people_html(cz, root)
 
 
 def _committee_html(c: dict | None, root: str) -> tuple[str, str]:

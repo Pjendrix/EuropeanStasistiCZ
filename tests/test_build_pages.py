@@ -344,7 +344,7 @@ def test_next_session_block():
     html = hub.next_session_html(agenda, today="2026-10-16")
     assert 'data-from="2026-10-19"' in html and 'data-to="2026-10-22"' in html
     assert "MOCK DPH" in html and "MOCK jiný" not in html  # na úvodu jen výběr
-    assert html.count('class="cz-badge"') == 1 and 'href="p/1"' in html
+    assert html.count('class="cz-p"') == 1 and "zpravodaj" in html and 'href="p/1"' in html
     assert "data.europarl.europa.eu" in html  # zdroj
     full = hub.next_session_html(agenda, full=True, today="2026-10-16")
     assert "MOCK jiný" in full
@@ -412,7 +412,7 @@ def test_radar_page_html():
     assert 'id="rd-cat"' in html and '<option value="env">' in html
     assert 'href="zasedani"' in html and 'data-cat="env" data-leg="1" data-cz="1"' in html  # program je na stránce Zasedání
     assert html.count('aria-current="step"') == 2 and "Datum hlasování v plénu zatím nezveřejněno" in html
-    assert 'href="v/99"' in html and 'class="cz-badge"' in html and "U 3 procedur" in html
+    assert 'href="v/99"' in html and 'class="cz-p"' in html and "U 3 procedur" in html
     assert 'data-from="2026-10-19"' in html and "o-projektu#radar" in html
     assert "zatím nejsou" in hub.radar_html(None)
     empty = hub.radar_html({"categories": [], "session": None, "active": [], "done": [], "without_events": 0})
@@ -560,3 +560,19 @@ def test_vercel_allows_framing_only_for_embed():
     assert emb["Content-Security-Policy"].replace("frame-ancestors *", "") == main["Content-Security-Policy"].replace(
         "frame-ancestors 'none'", ""
     )
+
+
+def test_cz_people_html_photo_bold_name_and_gendered_role(monkeypatch):
+    import hub
+
+    monkeypatch.setattr(hub, "_genders", lambda: {1: "FEMALE", 2: "MALE"})
+    html = hub.cz_people_html(
+        [
+            {"mep_id": 1, "name": "MOCK A", "role": "shadow"},
+            {"mep_id": 2, "name": "MOCK B", "role": "rapporteur"},
+            {"mep_id": 3, "name": "MOCK C", "role": "shadow"},
+        ]
+    )
+    assert html.count('class="cz-p"') == 3 and 'src="assets/photos/thumbs/1.webp"' in html and "<b>MOCK A</b>" in html
+    assert "stínová zpravodajka" in html and "<span>zpravodaj</span>" in html and "stínový/á zpravodaj/ka" in html
+    assert "Česká stopa:" in html and hub.cz_people_html([]) == ""
