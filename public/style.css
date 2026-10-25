@@ -2668,6 +2668,7 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 .nv-event { padding: .7rem .9rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--gold) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--border)); }
 .nv-event::before { background: var(--gold); border-color: var(--gold); }
 .nv-event time { margin-right: .5rem; font-weight: 700; }
+.nv-event .nv-tag, .nv-event .muted { color: var(--text); }  /* kontrast na zlatém podkladu */
 .nv-event p { margin: .2rem 0 0; }
 .nv-between { padding: .5rem .9rem; color: var(--muted); }
 .nv-between .nv-bh { margin: 0; }

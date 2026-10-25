@@ -1,7 +1,6 @@
 """Oblouk hlasování na úvodu (návrh A): tečky a číslo „pro : proti“ v jednom SVG, nic se nepřekrývá."""
 
 import math
-import re
 import sys
 from pathlib import Path
 
