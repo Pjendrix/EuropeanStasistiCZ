@@ -4,11 +4,11 @@ Z design/tokens.json se vygeneruje:
   - blok :root ve public/style.css (mezi značkami tokens:start / tokens:end): barvy světlého a tmavého režimu jako
     light-dark(světlá, tmavá); výchozí je vždy světlý, tmavý jen po přepnutí (html[data-theme="dark"], theme.js), pro hodnoty, které nejsou barvy (stín, sytost tabulky shody), krátký tmavý přepis,
     a záložní blok pro prohlížeče bez light-dark() (před rokem 2024),
-  - řádek konstant SC_THEMES v public/share.js (barvy obrázků ke sdílení: tmavá karta z „card“, světlá z „card_light“).
+  - řádek konstant SC_THEMES v public/lib/share-canvas.js (barvy obrázků ke sdílení: tmavá karta z „card“, světlá z „card_light“).
 build_cards.py čte design/tokens.json přímo (card_rgb).
 
 Použití:
-    python scripts/tokens.py          # přepíše blok v style.css a řádek v share.js
+    python scripts/tokens.py          # přepíše blok v style.css a řádek v lib/share-canvas.js
     python scripts/tokens.py --check  # jen ověří (CI, tests/test_tokens.py)
 """
 
@@ -91,7 +91,7 @@ def sync_css(css: str, t: dict) -> str:
 
 def sync_share(js: str, t: dict) -> str:
     if len(SC_RE.findall(js)) != 1:
-        raise ValueError("share.js nemá právě jeden řádek const SC_THEMES = {…};")
+        raise ValueError("lib/share-canvas.js nemá právě jeden řádek const SC_THEMES = {…};")
     return SC_RE.sub(lambda _: sc_line(t), js)
 
 
@@ -105,7 +105,7 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
     t = load()
     stale = []
-    for path, fn in ((ROOT / "public" / "style.css", sync_css), (ROOT / "public" / "share.js", sync_share)):
+    for path, fn in ((ROOT / "public" / "style.css", sync_css), (ROOT / "public" / "lib" / "share-canvas.js", sync_share)):
         old = path.read_text(encoding="utf-8")
         new = fn(old, t)
         if new != old:

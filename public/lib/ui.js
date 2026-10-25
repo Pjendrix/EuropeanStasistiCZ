@@ -287,7 +287,10 @@ export function sortable(table, columns, rows, render, initial) {
 
 export function sourceLine(stats) {
   const rel = stats?.sources?.votes?.release;
-  const date = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? ` · data k ${fmtDate(rel.slice(0, 10))}` : "";
+  // jednotně „hlasování do … · export …“ (O11): poslední hlasování v datech a den exportu HowTheyVote se liší
+  const exp = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? `export ${fmtDate(rel.slice(0, 10))}` : "";
+  const to = stats?.period?.to ? `hlasování do ${fmtDate(stats.period.to)}` : "";
+  const date = [to, exp].filter(Boolean).map((x) => ` · ${x}`).join("");
   return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
     + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
       Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
@@ -358,7 +361,7 @@ export function benchRow(label, pair, median, refLabel, opts = {}) {
   if (hasMed) {
     const d = Math.round((v - median) * 1000) / 10;
     const abs = Math.abs(d).toLocaleString("cs-CZ", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs} p. b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
+    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs}\u00a0p.\u00a0b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
   }
   const below = v < BENCH_MIN ? ` Hodnota je pod rozsahem osy (${fmtPct(v)}).` : "";
   const aria = `${label} ${fmtPct(v)}${hasMed ? `, ${refLabel} ${fmtPct(median)}` : ""}`;

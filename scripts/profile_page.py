@@ -203,7 +203,8 @@ def month_detail(k: str, a: list[int], mep: dict) -> str:
 
 
 def monthly_chart(monthly: dict, mep: dict) -> str:
-    """Graf po měsících; text pod grafem je předvyplněný pro poslední měsíc, profile.js ho mění podle sloupce (data-detail)."""
+    """Graf po měsících; text pod grafem je předvyplněný pro poslední měsíc, profile.js ho mění podle sloupce: HTML každého
+    měsíce je v <template id="md-{měsíc}"> a klonuje se (cloneNode), ne přes innerHTML z atributu (O13)."""
     months = list(monthly)
     if not months:
         return '<p class="muted">Žádná hlasování v době mandátu.</p>'
@@ -217,14 +218,15 @@ def monthly_chart(monthly: dict, mep: dict) -> str:
         active = " active" if i == len(months) - 1 else ""
         height = num(v * 100) if v else "0"
         cols.append(
-            f'<button type="button" class="col{active}" data-month="{k}" data-detail="{esc(month_detail(k, pair, mep))}">'
+            f'<button type="button" class="col{active}" data-month="{k}">'
             f'<span class="bar-fill {"zero" if v == 0 else ""}" style="height:{height}%"></span>'
             f'<span class="col-label{" col-sparse" if sparse else ""}" aria-hidden="true">{int(m)}{f"<br><b>{y[2:]}</b>" if show_year else ""}</span>'
             f'<span class="sr-only">{fmt_month(k)}: {fmt_pct(v)}, {pair[0]} z {pair[1]} hlasování</span></button>'
         )
     last = months[-1]
+    details = "".join(f'<template id="md-{k}">{month_detail(k, monthly[k]["attendance"], mep)}</template>' for k in months)
     return (
-        '<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>'
+        details + '<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>'
         f'<div class="chart" role="group" aria-label="Účast na hlasování po měsících">{"".join(cols)}</div></div>'
         f'<p class="chart-detail" aria-live="polite">{month_detail(last, monthly[last]["attendance"], mep)}</p>'
         + chart_context(
@@ -409,7 +411,7 @@ def own_passed(ui: Ui, ow: dict, mep: dict) -> str:
         note = (
             f"Třetina = kde poslanec stojí mezi {fmt_num(d['of'])} současnými poslanci delegace v dané kategorii;\n"
             "      celkové pořadí záměrně nepočítáme."
-            + (f" Pozor: mandát má až od {fmt_date(d['mandate_from'])}, ostatní většinou od 16. 7. 2024." if d.get("mandate_from") else "")
+            + (f" Pozor: mandát má až od {fmt_date(d['mandate_from'])}, ostatní většinou od 16. 7. 2024." if d.get("mandate_from") else "")
             + (
                 " Mandát pokrývá méně než 75 % období, proto se třetina neurčuje a počty se s kolegy nesrovnávají."
                 if d.get("tiers_skipped")
@@ -1181,7 +1183,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
     compare = (
         f'<a class="share-btn outline compare-btn" href="duel?a={mep["id"]}">'
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-        'stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg><span>Porovnat s…</span></a>'
+        'stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg><span>Porovnat</span></a>'
     )
 
     # --- vizitka -------------------------------------------------------------------------------------------------
@@ -1371,7 +1373,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 <section class="mx-overview" id="shrnuti" aria-labelledby="dochazka">
 <div class="mx-sec-h"><h2 id="dochazka">Na první pohled</h2>{bench_note}</div>
 <div class="metrics mx-kpis">{kpis}</div>
-<p class="source mx-src">{ui.source_line(release)}</p>
+<p class="source mx-src">{ui.source_line(release, prof.get("votes_to"))}</p>
 {work_strip(prof, mep, a_suffix)}
 </section>
 

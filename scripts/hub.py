@@ -505,7 +505,7 @@ def votes_hero_html(data_dir: Path) -> str:
     <div class="hero-copy">
       <p class="eyebrow">10. volební období · data k {fmt_date(overview["period"]["to"])}</p>
       <h1>Jmenovitá hlasování</h1>
-      <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
+      <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
       <form class="vo-search" action="votes" method="get" role="search">
         <label for="vo-q" class="sr-only">Hledat hlasování</label>
         <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování…" aria-label="Hledat hlasování podle názvu nebo čísla" autocomplete="off">
@@ -1010,7 +1010,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     hero = f"""<section class="hm-hero" aria-labelledby="h1">
   <div class="hm-inner">
     <div class="hm-copy">
-      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
+      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
       <h1 id="h1">Novinky: <strong>co se v Bruselu dělo<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       <p class="hm-lead">Poslední hlasování, zasedání a co se chystá. Z oficiálních dat, bez pořadí a bez hodnocení.</p>
       {session_line_html(session_facts(data_dir))}

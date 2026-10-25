@@ -6,12 +6,14 @@ import { collapseTables, setNav } from "./lib/ui.js";
 setNav("meps");
 const main = document.getElementById("main");
 
-// Graf účasti po měsících: klepnutí, najetí nebo fokus na sloupec ukáže jeho hodnotu (text připravil build v data-detail).
+// Graf účasti po měsících: klepnutí, najetí nebo fokus na sloupec ukáže jeho hodnotu (text připravil build
+// v <template id="md-RRRR-MM">; klonuje se, žádné HTML z atributu).
 const detail = main.querySelector(".chart-detail");
 const cols = [...main.querySelectorAll(".chart .col")];
 const show = (btn) => {
   cols.forEach((c) => c.classList.toggle("active", c === btn));
-  detail.innerHTML = btn.dataset.detail;
+  const tpl = document.getElementById(`md-${btn.dataset.month}`);
+  if (tpl) detail.replaceChildren(tpl.content.cloneNode(true));
 };
 if (detail) cols.forEach((c) => ["click", "mouseenter", "focus"].forEach((ev) => c.addEventListener(ev, () => show(c))));
 

@@ -19,7 +19,7 @@ const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const today = todayCZ(), { from, to } = el.dataset;
   const out = el.querySelector(".hm-nx-c");
   if (today > to) {
-    el.outerHTML = '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>';
+    el.outerHTML = '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>';
     return;
   }
   if (today >= from) {

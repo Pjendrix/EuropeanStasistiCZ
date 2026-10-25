@@ -337,6 +337,7 @@ def build_profile(
         "pairwise": pairwise,
         "recent_main_votes": recent_main_votes(mep, votes),
         "group_periods": st.get("group_periods") or [],
+        "votes_to": max((v["date"] for v in votes), default=None),
         "benchmarks": mep_benchmarks(mep, votes, bench),
         "against_group": {
             "count": ag["count"],

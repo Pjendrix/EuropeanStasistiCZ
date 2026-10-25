@@ -292,7 +292,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
                 if other
                 else ""
             )
-            + f'<p class="source">Jmenovitá hlasování v plénu od 16. 7. 2024. Češi = poslanci v mandátu k datu hlasování. '
+            + f'<p class="source">Jmenovitá hlasování v plénu od 16. 7. 2024. Češi = poslanci v mandátu k datu hlasování. '
             f'Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL).</p>'
         )
     else:

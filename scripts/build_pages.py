@@ -547,7 +547,7 @@ def vote_page(
     share_script = f'<script type="application/json" id="share-context">{json_script(share_ctx)}</script>\n'
     body = f"""{back_row(f"{ROOT}votes?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
-<h1>{esc(title_txt)}</h1>
+<h1{' class="long"' if len(title_txt) > LONG_TITLE else ""}>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 {story}{vote_meaning_html(kind, ROOT)}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
@@ -674,6 +674,9 @@ def with_report_link(html: str, url: str) -> str:
     if html.count("\n</main>") != 1:
         raise FormatError("stránka bez jediného </main>, odkaz na nahlášení chyby nejde vložit")
     return html.replace("\n</main>", f"\n{link}\n</main>")
+
+
+LONG_TITLE = 120  # od kolika znaků je H1 hlasování menší (O11)
 
 
 def not_found_page() -> str:

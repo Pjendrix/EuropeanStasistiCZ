@@ -132,7 +132,7 @@ export function fmtNum(n) {
 export function fmtDate(iso) {
   if (!iso) return "";
   const [y, m, d] = iso.slice(0, 10).split("-");
-  return `${Number(d)}. ${Number(m)}. ${y}`;
+  return `${Number(d)}.\u00a0${Number(m)}.\u00a0${y}`; // pevné mezery: datum se nezalomí (O11)
 }
 
 export function fmtMonth(ym) {
