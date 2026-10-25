@@ -174,7 +174,7 @@ for (const scheme of ["light", "dark"]) {
     const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
     const page = await ctx.newPage();
     await page.clock.setFixedTime(new Date(`${after}T12:00:00+01:00`));
-    const fmt = (a, b) => { const d = (x) => `${Number(x.slice(8))}. ${Number(x.slice(5, 7))}. ${x.slice(0, 4)}`; return a.slice(0, 7) === b.slice(0, 7) ? `${Number(a.slice(8))}.–${d(b)}` : `${d(a).slice(0, -5)} – ${d(b)}`; };
+    const fmt = (a, b) => { const d = (x) => `${Number(x.slice(8))}.\u00a0${Number(x.slice(5, 7))}.\u00a0${x.slice(0, 4)}`; return a.slice(0, 7) === b.slice(0, 7) ? `${Number(a.slice(8))}.–${d(b)}` : `${d(a).slice(0, -5)} – ${d(b)}`; };
     const want = fmt(ag.following.from, ag.following.to);
     await page.goto(base, { waitUntil: "networkidle" });
     const tile = await page.evaluate(() => [...document.querySelectorAll(".pt-next")].filter((x) => !x.hidden).map((x) => x.textContent));
