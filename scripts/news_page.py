@@ -164,12 +164,9 @@ def between_html(b: dict) -> str:
 def upcoming_html(u: dict | None) -> str:
     if not u:
         return '<section class="nv-next card" aria-labelledby="nv-next-h"><h2 id="nv-next-h">Chystá se</h2><p class="muted">Program dalšího zasedání zatím není zveřejněný.</p></section>'
-    trace = "".join(
-        f"<li>{esc(t['title'])}: "
-        + ", ".join(f'<a href="p/{c["mep_id"]}">{esc(c["name"])}</a> ({esc(c.get("role_cs") or "")})' for c in t["cz"])
-        + "</li>"
-        for t in u["trace"]
-    )
+    from hub import cz_people_html
+
+    trace = "".join(f'<li class="nv-tr">{esc(t["title"])}{cz_people_html(t["cz"])}</li>' for t in u["trace"])
     return (
         f'<section class="nv-next card" aria-labelledby="nv-next-h"><p class="nv-kicker">Chystá se</p>'
         f'<h2 id="nv-next-h">Další zasedání {_range(u["from"], u["to"])}</h2>'
