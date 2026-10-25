@@ -33,7 +33,7 @@ def session_item(s: dict | None) -> list[dict]:
     if not s:
         return []
     require(s, ["from", "to", "votes", "main", "adopted_main", "unity"], "session.json")
-    u = s["unity"]
+    u = s["unity"] or {}
     return [
         {
             "date": s["to"],
