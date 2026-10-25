@@ -2498,3 +2498,6 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 .emb-kpis { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
 .emb-kpi { display: grid; } .emb-kpi span { font-size: .8rem; color: var(--muted); } .emb-kpi b { font-size: 1.6rem; } .emb-kpi small { color: var(--muted); }
 .emb-src { margin: .6rem 0 0; font-size: .78rem; color: var(--muted); }
+
+/* V5: referenční řádek „medián EP“ v tabulce poslanců */
+#meps .ref-row td { background: var(--accent-soft); font-weight: 600; }

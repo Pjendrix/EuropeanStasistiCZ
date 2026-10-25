@@ -1250,20 +1250,6 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 
     kpis = (
         metric_card(
-            "Účast na hlasování",
-            t["attendance"],
-            "všechna jmenovitá hlasování v době mandátu",
-            "o-projektu#metodika",
-            ep.get("attendance"),
-            "medián EP",
-            cite("účast na hlasování", t["attendance"]),
-            "metric:attendance",
-            defn("attendance"),
-            f"medián frakce {fmt_pct(grp['attendance'])}" if grp.get("attendance") is not None else "",
-            explain_key="attendance",
-            final_pair=t.get("attendance_main"),
-        )
-        + metric_card(
             "Hlasuje s frakcí",
             t["group_loyalty"],
             "jen informativní",
@@ -1280,7 +1266,6 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             final_pair=t.get("group_loyalty_main"),
             after=group_periods_html(prof.get("group_periods"), groups),
         )
-        + presence_card(prof.get("presence"), mep, ui)
         + metric_card(
             "Shoda s ostatními Čechy",
             t["cz_agreement"],
@@ -1293,6 +1278,21 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             defn("cz_agreement"),
             explain_key="cz_agreement",
         )
+        + metric_card(
+            "Účast na hlasování",
+            t["attendance"],
+            "všechna jmenovitá hlasování v době mandátu",
+            "o-projektu#metodika",
+            ep.get("attendance"),
+            "medián EP",
+            cite("účast na hlasování", t["attendance"]),
+            "metric:attendance",
+            defn("attendance"),
+            f"medián frakce {fmt_pct(grp['attendance'])}" if grp.get("attendance") is not None else "",
+            explain_key="attendance",
+            final_pair=t.get("attendance_main"),
+        )
+        + presence_card(prof.get("presence"), mep, ui)
     )
     attendance_main_card = metric_card(
         "Účast u závěrečných hlasování",
@@ -1373,15 +1373,15 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 {hero}
 
 <section class="mx-overview" id="shrnuti" aria-labelledby="dochazka">
-<div class="mx-sec-h"><h2 id="dochazka">Na první pohled</h2>{bench_note}</div>
+{work_strip(prof, mep, a_suffix)}
+<div class="mx-sec-h"><h2 id="dochazka">Hlasování a účast</h2>{bench_note}</div>
 <div class="metrics mx-kpis">{kpis}</div>
 <p class="source mx-src">{ui.source_line(release, prof.get("votes_to"))}</p>
-{work_strip(prof, mep, a_suffix)}
 </section>
 
 <nav class="subnav profile-nav" aria-label="Části profilu">
-  <a href="{here}#posledni">Hlasování</a><a href="{here}#analyza">Analýza</a><a href="{here}#temata">Témata</a>
-  <a href="{here}#vlastni-prace">Práce</a><a href="{here}#podrobnosti">Výbory a členství</a>
+  <a href="{here}#vlastni-prace">Práce</a><a href="{here}#posledni">Hlasování</a><a href="{here}#analyza">Analýza</a>
+  <a href="{here}#temata">Témata</a><a href="{here}#podrobnosti">Výbory a členství</a>
 </nav>
 
 <section class="profile-part mx-part" id="hlasovani" aria-labelledby="posledni">
