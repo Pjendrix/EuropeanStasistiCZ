@@ -295,6 +295,10 @@ def mep_card(
     mep = prof["mep"]
     img, d = new_card()
     header(img, d, f"data k {fmt_date(data_day)}")
+    # akcent = barva frakce (identita, jako vizitka na webu a karta v share.js); bez barvy zlatá
+    acc_hex = chips[0][1] if chips and chips[0][1] and str(chips[0][1]).startswith("#") and len(chips[0][1]) == 7 else None
+    accent = hex_rgb(acc_hex) if acc_hex else GOLD
+    d.rectangle([8, 84, W, 87], fill=accent)
     name = " ".join(x for x in (mep.get("given_name"), mep.get("family_name")) if x) or mep["name"]
     px, py, pw, ph = 56, 100, 210, 262
     if photo and photo.exists():
@@ -307,7 +311,7 @@ def mep_card(
 
         ImageDraw.Draw(mask).rounded_rectangle([0, 0, pw - 1, ph - 1], radius=18, fill=255)
         img.paste(im, (px, py), mask)
-        d.rounded_rectangle([px - 3, py - 3, px + pw + 2, py + ph + 2], radius=20, outline=GOLD, width=3)
+        d.rounded_rectangle([px - 4, py - 4, px + pw + 3, py + ph + 3], radius=21, outline=accent, width=4)
         d.text((px, py + ph + 12), "© European Union – Source: EP", font=font(15, 500), fill=MUTED)
     x0 = px + pw + 48
     d.text((x0, 96), fit(d, name, font(54, 800), W - x0 - 56), font=font(54, 800), fill=WHITE)

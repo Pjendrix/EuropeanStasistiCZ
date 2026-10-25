@@ -474,6 +474,30 @@ function chipOps(x, y, label, color) {
 
 function sectionTitle(y, s) { return T(72, y, s, 26, 800, SC.accent); }
 
+// Barva frakce jako akcent karty poslance (stejně jako vizitka na webu): rámeček portrétu, linka pod hlavičkou, záře.
+// Jen identita, nic nehodnotí. Nezařazení / neznámá barva → zlatá jako dřív.
+const mepAccent = (d) => { const c = (d.chips || [])[0]?.color; return /^#[0-9a-f]{6}$/i.test(c || "") ? c : SC.gold; };
+const accentBand = (d, y = 150) => [RECT(0, y - 2, 1080, 8, 0, mepAccent(d))];
+
+// Všechny hlasy jako jeden proužek s legendou (ikona hlasu má i tvar).
+function votesSplitOps(d, x, y, w, size = 28) {
+  const pos = d.positions;
+  if (!pos) return { ops: [], h: 0 };
+  const total = SHARE_KEYS.reduce((n, k) => n + (pos[k] || 0), 0);
+  if (!total) return { ops: [], h: 0 };
+  const ops = [T(x, y + 26, `VŠECHNY HLASY · ${fmtNum(total)} HLASOVÁNÍ`, 24, 800, SC.accent), ...barOps(x, y + 44, w, 28, SHARE_KEYS.map((k) => pos[k] || 0))];
+  const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: byG(d, "zdržel se", "zdržela se", "zdržel/a se"), DID_NOT_VOTE: byG(d, "nehlasoval", "nehlasovala", "nehlasoval/a") };
+  const items = SHARE_KEYS.map((k) => ({ k, n: fmtNum(pos[k] || 0), l: lab[k] }));
+  const iw = (it) => 34 + measureText(it.n, size, 800) + 10 + measureText(it.l, size, 500);
+  const gap = Math.max(24, (w - items.reduce((a, it) => a + iw(it), 0)) / 3);
+  let lx = x;
+  items.forEach((it) => {
+    ops.push(...POSDOT(lx + 12, y + 112, 12, it.k), T(lx + 34, y + 122, it.n, size, 800, SC.text), T(lx + 34 + measureText(it.n, size, 800) + 10, y + 122, it.l, size, 500, SC.soft));
+    lx += iw(it) + gap;
+  });
+  return { ops, h: 140 };
+}
+
 // Metrika s posuvníkem 60–100 % (stejná osa jako benchRow na webu), mediánem a „x z y“.
 function metricOps(x, y, w, label, pair, median, medLabel) {
   const share = pair && pair[1] ? pair[0] / pair[1] : null;
@@ -490,10 +514,11 @@ function metricOps(x, y, w, label, pair, median, medLabel) {
 export function mepBasicOps(d, f) {
   const H = f.h, story = f.h > 1500;
   const ops = [];
-  const pw = 380, ph = 475, y0 = 0;
+  const pw = 340, ph = 425, y0 = 0, acc = mepAccent(d);
   const neutral = d.avatar === "neutral";
   if (neutral) ops.push(...neutralAvatarOps(72, y0, pw, ph, 26));
-  else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: y0, w: pw, h: ph, r: 26 }, RECT(70, y0 - 2, pw + 4, ph + 4, 28, null, SC.gold, 4),
+  else if (d.photo) ops.push({ k: "glow", x: 72 + pw / 2, y: y0 + ph * 0.45, r: 520, color: acc, top: 156 }, { k: "image", img: d.photo, x: 72, y: y0, w: pw, h: ph, r: 26 },
+    RECT(68, y0 - 4, pw + 8, ph + 8, 30, null, acc, 5),
     T(72, y0 + ph + 32, "© European Union – Source: EP", 20, 500, SC.muted));
   const nx = d.photo || neutral ? 72 + pw + 50 : 72, nw = 1008 - nx;
   const nameLines = wrapText(d.name, 72, 800, nw, 3);
@@ -532,11 +557,14 @@ export function mepBasicOps(d, f) {
   let y = y0 + ph + (story ? 150 : 96);
   ops.push(...metricOps(72, y, 430, "Účast na hlasování", d.attendance, d.attendanceMedian, "medián EP"));
   if (d.loyalty && d.loyalty[1]) ops.push(...metricOps(578, y, 430, "Hlasuje s frakcí", d.loyalty, d.loyaltyMedian, "medián frakce"));
-  y += 290 + (story ? 50 : 0);
-  ops.push(T(72, y + 30, "Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.", 26, 500, SC.soft));
+  y += 300 + (story ? 50 : 0);
+  const split = votesSplitOps(d, 72, y, 936, 26);
+  ops.push(...split.ops);
+  y += split.h + (story ? 40 : 6);
+  ops.push(T(72, y + 30, "Bez pořadí a hodnocení. Čísla spočítal skript z oficiálních dat.", 24, 500, SC.soft));
   y += 50;
   const top = 172, bottom = H - 150;
-  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...accentBand(d), ...shift(ops, Math.round(top + Math.max((bottom - top - y) / 2, 0))),
     ...shareFooter(H, "Zdroj: HowTheyVote.eu (ODbL), EP Open Data · výpočet EP Watch CZ", d.urlShort)];
 }
 
@@ -545,7 +573,7 @@ function mepMiniHead(d, n) {
   const ops = [];
   const neutral = d.avatar === "neutral";
   if (neutral) ops.push(...neutralAvatarOps(72, 190, 104, 104, 52));
-  else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 54, null, SC.gold, 4));
+  else if (d.photo) ops.push({ k: "image", img: d.photo, x: 72, y: 190, w: 104, h: 104, r: 52 }, CIRC(124, 242, 55, null, mepAccent(d), 5));
   const nx = d.photo || neutral ? 200 : 72;
   ops.push(T(nx, 238, fitText(d.name, 52, 800, 700), 52, 800, SC.text),
     T(nx, 280, fitText((d.chips || []).map((c) => c.label).join(" · "), 28, 500, 700), 28, 500, SC.soft), T(1008, 252, `${n} / 3`, 30, 500, SC.muted, "right"));
@@ -563,31 +591,20 @@ function tileOps(x, y, w, h, label, value, sub) {
 // Tvar podle pohlaví z EP (d.female: true/false); když EP pohlaví neuvádí, obě podoby („hlasoval/a“).
 const byG = (d, male, female, both) => (d.female ? female : d.female === false ? male : both);
 
-// 2/3 Jak hlasuje: rozložení hlasů, soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
+// 2/3 Jak hlasuje (rozložení hlasů je už na 1/3): soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
 function mepVotingOps(d, f) {
   const ops = [...mepMiniHead(d, 2)];
   let y = 384;
-  const pos = d.positions;
-  if (pos) {
-    const total = SHARE_KEYS.reduce((n, k) => n + (pos[k] || 0), 0);
-    ops.push(sectionTitle(y, `${byG(d, "JAK HLASOVAL", "JAK HLASOVALA", "JAK HLASOVAL/A")} · ${fmtNum(total)} HLASOVÁNÍ`), ...barOps(72, y + 28, 936, 34, SHARE_KEYS.map((k) => pos[k] || 0)));
-    let lx = 72;
-    const lab = { FOR: "pro", AGAINST: "proti", ABSTENTION: byG(d, "zdržel se", "zdržela se", "zdržel/a se"), DID_NOT_VOTE: byG(d, "nehlasoval", "nehlasovala", "nehlasoval/a") };
-    SHARE_KEYS.forEach((k) => {
-      const t = `${lab[k]} ${fmtNum(pos[k] || 0)}`;
-      ops.push(...POSDOT(lx + 12, y + 104, 12, k), T(lx + 34, y + 114, t, 30, 600, SC.text));
-      lx += measureText(t, 30, 600) + 48;
-    });
-    y += 200;
-  }
   const tiles = [];
-  if (d.outcome && d.outcome[1]) tiles.push([byG(d, "Hlasoval jako většina EP", "Hlasovala jako většina EP", "Hlasoval/a jako většina EP"), fmtPct(d.outcome[0] / d.outcome[1]),
-    `${fmtNum(d.outcome[0])} z ${fmtNum(d.outcome[1])}${d.groupOutcome && d.groupOutcome[1] ? ` · průměr frakce ${fmtPct(d.groupOutcome[0] / d.groupOutcome[1])}` : ""}`]);
-  if (d.attendanceMain && d.attendanceMain[1]) tiles.push(["Účast u závěrečných hlasování", fmtPct(d.attendanceMain[0] / d.attendanceMain[1]),
-    `${fmtNum(d.attendanceMain[0])} z ${fmtNum(d.attendanceMain[1])}${d.attendanceMainMedian != null ? ` · medián EP ${fmtPct(d.attendanceMainMedian)}` : ""}`]);
+  if (d.outcome && d.outcome[1]) tiles.push(["Jako většina EP", fmtPct(d.outcome[0] / d.outcome[1]),
+    d.groupOutcome && d.groupOutcome[1] ? `průměr frakce ${fmtPct(d.groupOutcome[0] / d.groupOutcome[1])}` : `${fmtNum(d.outcome[0])} z ${fmtNum(d.outcome[1])}`]);
+  if (d.attendanceMain && d.attendanceMain[1]) tiles.push(["Účast – závěrečná", fmtPct(d.attendanceMain[0] / d.attendanceMain[1]),
+    d.attendanceMainMedian != null ? `medián EP ${fmtPct(d.attendanceMainMedian)}` : `${fmtNum(d.attendanceMain[0])} z ${fmtNum(d.attendanceMain[1])}`]);
+  if (d.presence && d.presence.days) tiles.push(["Docházka (EP)", fmtPct(d.presence.present / d.presence.days), `${fmtNum(d.presence.present)} z ${fmtNum(d.presence.days)} dnů jednání`]);
   if (tiles.length) {
     ops.push(sectionTitle(y, "SROVNÁNÍ"));
-    tiles.forEach((t, i) => ops.push(...tileOps(72 + i * 488, y + 28, tiles.length === 1 ? 936 : 448, 200, ...t)));
+    const tw = (936 - 24 * (tiles.length - 1)) / tiles.length;
+    tiles.forEach((t, i) => ops.push(...tileOps(72 + i * (tw + 24), y + 28, tw, 200, ...t)));
     y += 290;
   }
   if (d.pairwiseTop && d.pairwiseTop.length) {
@@ -595,14 +612,13 @@ function mepVotingOps(d, f) {
     d.pairwiseTop.forEach((p, i) => {
       const ry = y + 62 + i * 70;
       ops.push(T(72, ry, fitText(`${p.name}${p.party ? ` · ${p.party}` : ""}`, 32, 600, 780), 32, 600, SC.text), T(1008, ry, fmtPct(p.share), 32, 700, SC.text, "right"),
-        LINE(72, ry + 20, 1008, ry + 20, SC.line, 2));
+        RECT(72, ry + 16, 936, 8, 4, SC.track), RECT(72, ry + 16, Math.max(936 * p.share, 8), 8, 4, SC.soft));
     });
   }
-  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[2], d.urlShort)];
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...accentBand(d), ...ops, ...shareFooter(f.h, SLIDE_FOOT[2], d.urlShort)];
 }
 
 const committeeShort = (n) => { const t = String(n || "").replace(/^(Výbor|Podvýbor) pro /i, ""); return t.charAt(0).toUpperCase() + t.slice(1); };
-const committeeLine = (list) => list.map((c) => `${c.code} ${committeeShort(c.name)}`.trim()).join(" · ");
 
 // 3/3 Práce na textech a v plénu: počty, ne kvalita; chybějící data se vynechají.
 function mepWorkOps(d, f) {
@@ -612,29 +628,44 @@ function mepWorkOps(d, f) {
   if (w) {
     ops.push(sectionTitle(y, "PRÁCE NA TEXTECH"));
     const adoptedNote = (n, adopted) => (n && adopted != null ? (adopted === n ? (n === 1 ? "Parlament přijal" : "všechny Parlament přijal") : `přijato ${fmtNum(adopted)}`) : "");
-    [[byG(d, "Vedl zprávy", "Vedla zprávy", "Vedl/a zprávy"), w.leadReports, adoptedNote(w.leadReports, w.leadAdopted)], ["Stanoviska výborů", w.leadOpinions, d.female ? "jako zpravodajka" : d.female === false ? "jako zpravodaj" : "jako zpravodaj/ka"],
-      ["Stínové zprávy", w.shadowReports, `vyjednáv${d.female ? "ala" : d.female === false ? "al" : "al/a"} za frakci`]].forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, t[0], fmtNum(t[1]), t[2])));
-    y += 300;
+    [[byG(d, "Vedl zprávy", "Vedla zprávy", "Vedl/a zprávy"), w.leadReports, adoptedNote(w.leadReports, w.leadAdopted)],
+      ["Stínové zprávy", w.shadowReports, `vyjednáv${d.female ? "ala" : d.female === false ? "al" : "al/a"} za frakci`],
+      ["Stanoviska", (w.leadOpinions || 0) + (w.shadowOpinions || 0), "zpravodaj + stínový"]].forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, t[0], fmtNum(t[1]), t[2])));
+    y += 280;
   }
   const pl = [];
+  if (d.amendments != null) pl.push(["Návrhy změn", fmtNum(d.amendments), "pozměňovací, ve výborech"]);
   if (d.speeches != null) pl.push(["Projevy", fmtNum(d.speeches), d.speechesMinutes != null ? `celkem ${fmtNum(Math.round(d.speechesMinutes))} min` : ""]);
   if (d.questions != null) pl.push(["Otázky Komisi", fmtNum(d.questions), d.questionsAnswered != null ? (d.questionsAnswered === d.questions && d.questions ? "všechny zodpovězené" : `zodpovězeno ${fmtNum(d.questionsAnswered)}`) : ""]);
-  if (d.presence && d.presence.days) pl.push(["Docházka", fmtPct(d.presence.present / d.presence.days), `${fmtNum(d.presence.present)} ze ${fmtNum(d.presence.days)} dnů (EP)`]);
+  if (d.amendments == null && d.presence && d.presence.days) pl.push(["Docházka", fmtPct(d.presence.present / d.presence.days), `${fmtNum(d.presence.present)} ze ${fmtNum(d.presence.days)} dnů (EP)`]);
   if (pl.length) {
-    ops.push(sectionTitle(y, "V PLÉNU"));
-    pl.forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, ...t)));
-    y += 300;
+    ops.push(sectionTitle(y, "VE VÝBORECH A V PLÉNU"));
+    pl.slice(0, 3).forEach((t, i) => ops.push(...tileOps(72 + i * 320, y + 28, 296, 210, ...t)));
+    y += 280;
   }
   if (d.committees && (d.committees.members.length || d.committees.substitutes.length)) {
     ops.push(sectionTitle(y, byG(d, "VÝBORY (ČLEN)", "VÝBORY (ČLENKA)", "VÝBORY (ČLEN/KA)")));
-    let cy = y + 56;
-    if (d.committees.members.length) {
-      wrapText(committeeLine(d.committees.members), 28, 500, 936, 2).forEach((l, i) => ops.push(T(72, cy + i * 38, l, 28, 500, SC.soft)));
-      cy += 38 * Math.min(2, Math.ceil(measureText(committeeLine(d.committees.members), 28, 500) / 936)) + 8;
+    // štítky jako ve vizitce na webu: kód tučně + krátký název; náhradník jen kód, tlumeně
+    let cx = 72, cy = y + 24;
+    const pill = (code, name, sub) => {
+      const nm = name ? fitText(committeeShort(name), 24, 500, 600) : "";
+      const w = 40 + measureText(code, 26, 800) + (nm ? 12 + measureText(nm, 24, 500) : 0);
+      if (cx + w > 1008 && cx > 72) { cx = 72; cy += 66; }
+      if (cy + 52 > f.h - 150) return;
+      ops.push(RECT(cx, cy, w, 52, 26, sub ? null : SC.chip, sub ? SC.chipLine : SC.chipLine, 2), T(cx + 20, cy + 35, code, 26, 800, sub ? SC.muted : SC.text));
+      if (nm) ops.push(T(cx + 20 + measureText(code, 26, 800) + 12, cy + 35, nm, 24, 500, SC.soft));
+      cx += w + 12;
+    };
+    d.committees.members.forEach((c) => pill(c.code, c.name, false));
+    if (d.committees.substitutes.length) {
+      const lab = `${byG(d, "náhradník", "náhradnice", "náhradník/ice")}:`, lw = measureText(lab, 24, 500) + 16;
+      if (cx + lw + 120 > 1008) { cx = 72; cy += 66; } else if (cx > 72) cx += 12;
+      if (cy + 52 <= f.h - 150) ops.push(T(cx, cy + 35, lab, 24, 500, SC.muted));
+      cx += lw;
+      d.committees.substitutes.forEach((code) => pill(code, "", true));
     }
-    if (d.committees.substitutes.length) ops.push(T(72, cy, fitText(`${byG(d, "náhradník", "náhradnice", "náhradník/ice")}: ${d.committees.substitutes.join(", ")}`, 28, 500, 936), 28, 500, SC.muted));
   }
-  return [...shareHeader(`data k ${fmtDate(d.workDay || d.dataDay)}`), ...ops, ...shareFooter(f.h, SLIDE_FOOT[3], d.urlShort)];
+  return [...shareHeader(`data k ${fmtDate(d.workDay || d.dataDay)}`), ...accentBand(d), ...ops, ...shareFooter(f.h, SLIDE_FOOT[3], d.urlShort)];
 }
 
 // --- karta čísla (metric), přehledu (split) a strany (party) ---------------------------------------
@@ -1319,6 +1350,13 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
       c.strokeStyle = o.stroke;
       c.lineWidth = o.sw;
       c.stroke();
+    } else if (o.k === "glow") {   // měkká záře (akcent karty poslance), průhlednost podle vzhledu
+      const rg = c.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+      rg.addColorStop(0, o.color + (THEME === "dark" ? "55" : "30"));
+      rg.addColorStop(1, o.color + "00");
+      c.fillStyle = rg;
+      const gy = Math.max(o.y - o.r, o.top || 0);
+      c.fillRect(o.x - o.r, gy, o.r * 2, o.y + o.r - gy);
     } else if (o.k === "image" && o.img) {
       c.save();
       roundRectPath(c, o.x, o.y, o.w, o.h, o.r);
