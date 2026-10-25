@@ -2273,6 +2273,35 @@
    "description_cs": "Návrh usnesení"
   }
  ],
+ "group_periods": [
+  {
+   "group_code": "PFE",
+   "from": "2024-07-17",
+   "to": "2026-01-22",
+   "group_loyalty": [
+    2733,
+    3429
+   ]
+  },
+  {
+   "group_code": "NI",
+   "from": "2026-02-09",
+   "to": "2026-06-16",
+   "group_loyalty": [
+    0,
+    0
+   ]
+  },
+  {
+   "group_code": "ECR",
+   "from": "2026-06-17",
+   "to": "2026-10-22",
+   "group_loyalty": [
+    887,
+    1030
+   ]
+  }
+ ],
  "benchmarks": {
   "source": {
    "release": "2026-10-24"

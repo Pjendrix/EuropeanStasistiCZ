@@ -495,6 +495,53 @@ def amendments_block(ui: Ui, a: dict | None) -> str:
     )
 
 
+# Jedna věta pod číslem metriky přímo na stránce (O9), aby se nepletla účast, docházka a hlasování s frakcí.
+def metric_explain(key: str, mep: dict) -> str:
+    voted = by_gender(mep, "hlasoval", "hlasovala")
+    return {
+        "attendance": f"Jak často {voted} (pro, proti nebo se zdržel{by_gender(mep, '', 'a')}). Nehlasovat neznamená nutně chybět.",
+        "group_loyalty": f"Jak často {voted} stejně jako většina {by_gender(mep, 'jeho', 'její')} frakce.",
+        "presence": f"Podepsal{by_gender(mep, '', 'a')} prezenční listinu. I přítomný poslanec může některé hlasování vynechat.",
+        "cz_agreement": f"Jak často {voted} stejně jako ostatní čeští poslanci.",
+    }[key]
+
+
+GAP_PP = 10  # od jakého rozdílu (p. b.) všechna / závěrečná přidat vysvětlující větu
+
+
+def final_gap_sentence(key: str, all_pair, final_pair, mep: dict) -> str:
+    """Věta generovaná kódem, když se závěrečná hlasování liší od všech o víc než GAP_PP p. b. (O9); jinak prázdná."""
+    a, f = pct(all_pair), pct(final_pair)
+    if a is None or f is None or abs(f - a) * 100 <= GAP_PP:
+        return ""
+    diff = fmt_pct(abs(f - a)).replace("\u00a0%", "\u00a0p.\u00a0b.")
+    if key == "attendance":
+        more = "častěji" if f > a else "méně často"
+        return f"U závěrečných hlasování {by_gender(mep, 'hlasoval', 'hlasovala')} {more} než u všech hlasování (rozdíl {diff})."
+    more = "méně často" if f > a else "častěji"
+    return (
+        f"U závěrečných hlasování se od frakce {by_gender(mep, 'odchyloval', 'odchylovala')} {more} než u všech hlasování (rozdíl {diff})."
+    )
+
+
+def group_periods_html(periods: list[dict] | None, groups: list[dict]) -> str:
+    """„Hlasuje s frakcí“ zvlášť pro každé období frakce (O12); jen u poslance, který frakci během období změnil."""
+    if not periods:
+        return ""
+
+    def label(code):
+        go = next((g for g in groups if g.get("ep_code") == code or g["code"] == code), None)
+        return CZ_GROUP_LABEL.get((go or {}).get("code")) or (go or {}).get("short_label") or code
+
+    rows = "".join(
+        f"<li>{esc(label(x['group_code']))} ({fmt_date(x['from'])} – {fmt_date(x['to'])}): "
+        f"<b>{fmt_pct(x['group_loyalty']) if x['group_loyalty'][1] else 'nepočítá se'}</b>"
+        f"{f' <span class="muted">({fmt_num(x["group_loyalty"][0])} z {fmt_num(x["group_loyalty"][1])})</span>' if x['group_loyalty'][1] else ''}</li>"
+        for x in periods
+    )
+    return f'<div class="mx-periods"><p class="small"><b>Po obdobích frakce</b> (frakce se během období změnila):</p><ul class="plain small">{rows}</ul></div>'
+
+
 def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None) -> str:
     if not pr or not pr.get("days"):
         return ""
@@ -511,6 +558,7 @@ def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None) -> str:
     return (
         f'<div class="card metric mx-kpi"><div class="bench"><div class="bench-top"><span class="bench-label">Docházka na zasedání</span>'
         f'<b>{count_pct(pr["present"] / pr["days"])}</b></div><p class="bench-note">podle prezenční listiny EP</p></div>'
+        f'<p class="mx-explain">{metric_explain("presence", mep)}</p>'
         f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání{excused}</div>{info}</div>'
     )
 
@@ -957,6 +1005,9 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         extra="",
         na_text="nepočítá se",
         show_extra=False,
+        explain_key="",
+        final_pair=None,
+        after="",
     ):
         if median is not None and pct(pair) is not None:
             head = bench_row(label, pair, median, ref_label or "", na_text)
@@ -979,7 +1030,15 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         )
         shown_extra = f" · {extra}" if extra and (show_extra or not acts) else ""
         tail = "" if acts else f'<div class="detail">{detail} · <a href="{source_href}">zdroj a metodika</a></div>'
-        return f'<div class="card metric mx-kpi">{head}<div class="detail">{counts}{shown_extra}</div>{tail}{acts}</div>'
+        explain = f'<p class="mx-explain">{metric_explain(explain_key, mep)}</p>' if explain_key else ""
+        final = ""
+        if final_pair and final_pair[1] and pct(pair) is not None:
+            gap = final_gap_sentence(explain_key, pair, final_pair, mep)
+            final = (
+                f'<div class="mx-final"><span>všechna <b>{fmt_pct(pct(pair))}</b></span>'
+                f"<span>závěrečná <b>{fmt_pct(pct(final_pair))}</b></span></div>" + (f'<p class="mx-gap-note">{gap}</p>' if gap else "")
+            )
+        return f'<div class="card metric mx-kpi">{head}{explain}{final}{after}<div class="detail">{counts}{shown_extra}</div>{tail}{acts}</div>'
 
     ep, grp = (b or {}).get("ep") or {}, (b or {}).get("group") or {}
     committees_now = [c for c in mep["committees"] if not c.get("end") or c["end"] >= today]
@@ -1083,7 +1142,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             f'<td class="title"><a class="vote-title" href="{vote_url(v)}">{esc(vote_title(v))}</a>'
             f'<div class="small muted">{kind_tag(v)}{esc(vote_subtitle(v))}</div></td>'
             f'<td class="extra pos pos-{v["position"]}">{position_for(v["position"], mep)}</td>'
-            f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v)}</td></tr>'
+            f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v, ep=True)}</td></tr>'
             for v in recent
         )
         + "</tbody></table></div>"
@@ -1149,7 +1208,25 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         )
     else:
         aff += f'<span class="badge outline" title="{esc(NO_PARTY_NOTE)}">strana neuvedena</span>'
-    prev_html = f'<p class="small muted mx-prev">Dříve: {esc(prev_groups)}</p>' if prev_groups else ""
+
+    # O12: změna frakce v období jako řádek „Frakce: A (od – do) → B (od …)“ (EP Open Data, meps.json → groups)
+    def group_name(x):
+        go = next((y for y in groups if y.get("ep_code") == x["code"] or y["code"] == x["code"]), None)
+        return CZ_GROUP_LABEL.get((go or {}).get("code")) or (go or {}).get("short_label") or x["short_label"]
+
+    seq = sorted(mep["groups"], key=lambda x: x["start"])
+    prev_html = (
+        '<p class="small mx-prev"><span class="muted">Frakce:</span> '
+        + " → ".join(
+            f"{esc(group_name(x))} ({fmt_date(x['start'])} – {fmt_date(x['end'])})"
+            if x.get("end")
+            else f"{esc(group_name(x))} (od {fmt_date(x['start'])})"
+            for x in seq
+        )
+        + "</p>"
+        if prev_groups and len(seq) > 1
+        else ""
+    )
     hero = f"""<header class="card mx-hero" style="--g:{accent}">
   <figure class="portrait mx-portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
   <div class="mx-id">
@@ -1179,6 +1256,8 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "metric:attendance",
             defn("attendance"),
             f"medián frakce {fmt_pct(grp['attendance'])}" if grp.get("attendance") is not None else "",
+            explain_key="attendance",
+            final_pair=t.get("attendance_main"),
         )
         + metric_card(
             "Hlasuje s frakcí",
@@ -1193,6 +1272,9 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             extra=short_group_text(short_group(mep, t["group_loyalty"])),
             show_extra=True,
             na_text="nezařazení nemají frakci, nepočítá se" if is_ni else "nepočítá se",
+            explain_key="group_loyalty",
+            final_pair=t.get("group_loyalty_main"),
+            after=group_periods_html(prof.get("group_periods"), groups),
         )
         + presence_card(prof.get("presence"), mep, ui)
         + metric_card(
@@ -1205,6 +1287,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             cite("shoda s ostatními českými poslanci", t["cz_agreement"]),
             "metric:cz_agreement",
             defn("cz_agreement"),
+            explain_key="cz_agreement",
         )
     )
     attendance_main_card = metric_card(

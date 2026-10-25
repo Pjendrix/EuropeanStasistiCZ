@@ -404,11 +404,12 @@ def kind_tag(v: dict) -> str:
     return '<span class="tag">hlavní</span>' if v.get("is_main") else ""
 
 
-def result_html(v: dict) -> str:
+def result_html(v: dict, ep: bool = False) -> str:
+    """Dvojče resultHtml v public/lib/ui.js; ep = popisek „EP:“ v kartách vedle hlasů Čechů (O10)."""
     icon = {"ADOPTED": "✓", "REJECTED": "✕"}.get(v.get("result"), "–")
     return (
         f'<span class="res-badge res-{v.get("result") or "NONE"}"><i class="res-ic" aria-hidden="true">{icon}</i>'
-        f'<span class="res-txt">{esc(result_text(v))}</span></span>'
+        f'{'<span class="who">EP:</span> ' if ep else ""}<span class="res-txt">{esc(result_text(v))}</span></span>'
     )
 
 
@@ -417,7 +418,7 @@ def vote_row(v: dict, extra: str = "") -> str:
         f'<tr><td class="num date">{fmt_date(v["date"])}</td>'
         f'<td class="title"><a class="vote-title" href="{vote_url(v)}">{esc(vote_title(v))}</a>'
         f'<div class="small muted">{kind_tag(v)}{esc(vote_subtitle(v))}</div></td>{extra}'
-        f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v)}</td></tr>'
+        f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v, ep=True)}</td></tr>'
     )
 
 

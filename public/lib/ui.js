@@ -75,8 +75,9 @@ export function mepUrl(id) {
   return `p/${id}`;
 }
 
+// Hlasy českých poslanců s popiskem „Češi:“, aby se nepletly s výsledkem celého EP (O10).
 export function czCountsHtml(cz) {
-  return `<span class="cz-counts"><b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
+  return `<span class="cz-counts"><span class="who">Češi:</span> <b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
 }
 
 export function photoUrl(mep, thumb = false) {
@@ -223,9 +224,10 @@ export function czPartyRowsHtml(rows) {
 }
 
 // Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
-export function resultHtml(v) {
+// ep = popisek „EP:“ v kartách, kde je vedle i hlasování Čechů (O10).
+export function resultHtml(v, ep = false) {
   const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
-  return `<span class="res-badge res-${v.result || "NONE"}"><i class="res-ic" aria-hidden="true">${icon}</i><span class="res-txt">${esc(resultText(v))}</span></span>`;
+  return `<span class="res-badge res-${v.result || "NONE"}"><i class="res-ic" aria-hidden="true">${icon}</i>${ep ? '<span class="who">EP:</span> ' : ""}<span class="res-txt">${esc(resultText(v))}</span></span>`;
 }
 
 export function setNav(page) {
@@ -301,7 +303,7 @@ export function voteRow(v, extra = "") {
     <td class="title"><a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v, true)}</td>
   </tr>`;
 }
 

@@ -2445,3 +2445,15 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 .nf-search label { flex-basis: 100%; font-weight: 600; }
 .nf-search input { flex: 1 1 14rem; min-height: 44px; padding: 0 .8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; }
 .nf-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; padding: 0; list-style: none; font-weight: 600; }
+
+/* O10: popisky „EP:“ a „Češi:“ v kartách hlasování */
+.res-badge .who, .cz-counts .who { font-weight: 500; color: var(--muted); }
+
+/* O9: věta pod metrikou, všechna / závěrečná vedle sebe */
+.mx-explain { font-size: .84rem; line-height: 1.4; color: var(--muted); margin: .35rem 0 0; }
+.mx-final { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-top: .45rem; font-size: .84rem; color: var(--muted); }
+.mx-final b { color: var(--text); }
+.mx-gap-note { font-size: .84rem; line-height: 1.4; margin: .3rem 0 0; }
+.mx-periods { margin-top: .5rem; }
+.mx-periods p { margin: 0 0 .2rem; }
+.mx-periods li { margin: .1rem 0; }

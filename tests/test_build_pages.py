@@ -535,3 +535,13 @@ def test_report_link_prefills_page_url():
     html = bp.with_report_link("<main>\nx\n</main>\n", "https://epwatch.cz/p/1")
     assert 'href="/o-projektu?stranka=https%3A%2F%2Fepwatch.cz%2Fp%2F1#kontakt"' in html and "Našli jste chybu?" in html
     assert bp.REPORT_PAGES.fullmatch("p/1.html") and bp.REPORT_PAGES.fullmatch("s/7.html") and not bp.REPORT_PAGES.fullmatch("d/1-2.html")
+
+
+def test_final_gap_sentence_only_over_10_pp():
+    import profile_page as pp
+
+    m = {"gender": "M"}
+    assert pp.final_gap_sentence("group_loyalty", [743, 1000], [586, 1000], m).endswith("(rozdíl 15,7 p. b.).")
+    assert "častěji" in pp.final_gap_sentence("group_loyalty", [743, 1000], [586, 1000], m)
+    assert pp.final_gap_sentence("attendance", [883, 1000], [887, 1000], m) == ""
+    assert pp.final_gap_sentence("attendance", [500, 1000], None, m) == ""
