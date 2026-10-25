@@ -3,8 +3,8 @@
 import { getJSON, loadSearch, param } from "../lib/data.js";
 import { CZ_GROUP_LABEL, EP_SOURCE, HTV_SOURCE, displayName, fmtDate, fmtNum, fmtPct, groupColor, isActive, positionFor, voteSubtitle, voteTitle } from "../lib/format.js";
 import { html, trusted } from "../lib/html.js";
-import { METRICS, POS_GLYPH, barWidths, mandateSpan, metricValue, orient, pairKey, pickPair, samplePairs, sameMandate, voteHref } from "../lib/duel.js";
-import { infoButton, mepUrl, partyBadge, photoUrl, setNav, showError } from "../lib/ui.js";
+import { METRICS, POS_GLYPH, barWidths, shareMetricRows, mandateSpan, metricValue, orient, pairKey, pickPair, samplePairs, sameMandate, voteHref } from "../lib/duel.js";
+import { SHARE_BTN_HTML, infoButton, mepUrl, partyBadge, photoUrl, setNav, showError } from "../lib/ui.js";
 setNav("analyses");
 setNav("duel");
 
@@ -19,7 +19,7 @@ const ALL_PAGE = 50;
       getJSON("duel.json"), getJSON("groups.json"), getJSON("parties.json"), getJSON("freshness.json").catch(() => null),
     ]);
     const byId = new Map(d.meps.map((m) => [m.id, m]));
-    const group = (m) => groups.find((g) => g.code === m.group?.code) || null;
+    const group = (m) => groups.find((g) => g.code === m.group?.code || g.ep_code === m.group?.code) || null;
     const groupName = (m) => { const g = group(m); return g ? CZ_GROUP_LABEL[g.code] || g.short_label : m.group?.short_label || "bez frakce"; };
     const party = (m) => parties.find((p) => String(p.id) === String(m.party?.id)) || null;
 
@@ -66,13 +66,34 @@ const ALL_PAGE = 50;
         ${side(B, "b", stripe(B))}
       </section>
       <p class="duel-actions"><a class="link-btn" href="duel?a=${pair.b}&amp;b=${pair.a}">Prohodit strany</a>
-        · <a class="link-btn" href="duel">Vybrat jinou dvojici</a></p>
+        · <a class="link-btn" href="duel">Vybrat jinou dvojici</a> ${trusted(SHARE_BTN_HTML)}</p>
       ${metricsView(A, B)}
       ${agreementView(A, B, P)}
       ${divergedView(A, B, P)}
       <p class="small muted duel-note">Srovnání ukazuje čísla, ne kvalitu práce. Počty závisí na délce mandátu, výborech a velikosti frakce;
         nic se nesčítá do skóre a nikdo „nevyhrává“.</p>`);
     root.querySelector("#all-diverged")?.addEventListener("click", (e) => showAll(e.currentTarget, A, B, key));
+
+    // Sdílení (úkol 4): karty 1/3–3/3 kreslí share.js (duelCardOps…); odkaz je kanonická sdílená stránka d/{menší}-{větší}
+    // (má vlastní náhled odkazu og/duel). Čísla stejná jako na stránce, bez vítěze.
+    const shareUrl = `${BASE}d/${key}`;
+    const cardSide = (m) => {
+      const p = party(m), g = group(m);
+      return { name: displayName(m), short: m.family_name || displayName(m), photoUrl: photoUrl(m),
+        group: { label: groupName(m), color: groupColor(g) }, party: m.party ? { label: m.party.short_label === "Ind." ? "nezávislý/á" : m.party.short_label, logo: p && !p.independent ? p.logo : null, aspect: p?.logo_aspect || null } : null };
+    };
+    const divCard = P.diverged_key.map((r) => orient(r, A.id, B.id)).filter((r) => d.votes[String(r.id)]).slice(0, 4)
+      .map((r) => { const v = d.votes[String(r.id)]; return { title: voteTitle(v), meta: fmtDate(v.date), a: r.a, b: r.b }; });
+    const topicCard = d.topics.filter((t) => P.topics[t.code] && t.label).map((t) => ({ label: t.label, share: P.topics[t.code][0] / P.topics[t.code][1], n: P.topics[t.code][1] }))
+      .sort((x, y) => y.n - x.n).slice(0, 3);
+    window.shareContext = () => ({
+      kind: "duel", url: shareUrl, filename: `ep-watch-duel-${key}`, subtitle: `${displayName(A)} vs ${displayName(B)}`,
+      trust: "Čísla vedle sebe, bez vítěze a hodnocení. Karta má datum dat, zdroj a adresu stránky.",
+      text: P.agreement[1] ? `${displayName(A)} vs. ${displayName(B)}: shoda ${fmtPct(P.agreement[0] / P.agreement[1])} ve ${fmtNum(P.agreement[1])} společných hlasováních. Čísla vedle sebe, bez hodnocení. ${shareUrl}`
+        : `${displayName(A)} vs. ${displayName(B)}: čísla vedle sebe, bez hodnocení. ${shareUrl}`,
+      data: { a: cardSide(A), b: cardSide(B), sameGroup: Boolean(sameGroup), agreement: P.agreement, metrics: shareMetricRows(A, B), diverged: divCard, topics: topicCard,
+        dataDay: fresh?.release || null, urlShort: shareUrl.replace(/^https?:\/\//, "") },
+    });
 
     function side(m, cls, stripeColor) {
       const g = group(m);

@@ -1,7 +1,7 @@
 // Jednotkové testy čistých funkcí duelu (public/lib/duel.js) a escapující šablony (public/lib/html.js): node --test tests/js
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { METRICS, barWidths, metricValue, orient, pairKey, pickPair, samplePairs, sameMandate, sumOrNull } from "../../public/lib/duel.js";
+import { METRICS, barWidths, metricValue, orient, pairKey, pickPair, samplePairs, sameMandate, shareMetricRows, sumOrNull } from "../../public/lib/duel.js";
 import { html, trusted } from "../../public/lib/html.js";
 
 const MEPS = [{ id: 23699 }, { id: 256851 }, { id: 270261 }];
@@ -68,4 +68,19 @@ test("sameMandate porovná začátek i konec mandátu", () => {
   const m = (start, end) => ({ mandates: [{ start, end }] });
   assert.equal(sameMandate(m("2024-07-16", null), m("2024-07-16", null)), true);
   assert.equal(sameMandate(m("2024-07-16", null), m("2025-07-31", null)), false);
+});
+
+test("shareMetricRows: 7 čísel karty, stejná škála, null = „–“, bez vítěze", () => {
+  const a = { metrics: { attendance: [90, 100], presence: null, group_loyalty: [5, 10], reports: 2, shadow_reports: 0, speeches: 10, amendments: null } };
+  const b = { metrics: { attendance: [80, 100], presence: [9, 10], group_loyalty: [8, 10], reports: 4, shadow_reports: 0, speeches: 5, amendments: 3 } };
+  const rows = shareMetricRows(a, b);
+  assert.deepEqual(rows.map((r) => r.key), ["attendance", "presence", "group_loyalty", "reports", "shadow_reports", "speeches", "amendments"]);
+  const by = Object.fromEntries(rows.map((r) => [r.key, r]));
+  assert.equal(by.presence.a.text, "–");
+  assert.equal(by.amendments.a.w, 0);
+  assert.equal(by.reports.a.w, 0.5);
+  assert.equal(by.reports.b.w, 1);
+  assert.equal(by.attendance.a.w, 0.9);
+  assert.equal(by.shadow_reports.a.w, 0);
+  assert.ok(rows.every((r) => !("winner" in r)));
 });
