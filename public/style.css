@@ -2751,6 +2751,13 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .nv-filter { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 1rem; padding: 2px 16px; }
   .nv-filter button { flex: none; }
   .nv-vt a { text-decoration: none; }
+  .nv-vt a { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* Obecně: o něco menší mezery mezi bloky a menší písmo popisků */
+  .card { padding: 1rem; }
+  h2 { margin-top: 1.6rem; margin-bottom: .7rem; }
+  .small { font-size: .84rem; }
+  .source { font-size: .78rem; margin-top: .7rem; }
 
   /* Česká stopa: role pod jménem, ať se jméno neláme */
   .ns-cz .cz-p { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: .5rem; align-items: center; line-height: 1.25; }
