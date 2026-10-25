@@ -31,6 +31,7 @@ PUBLIC_SCRIPTS = [
     "check_data.py",
     "compute_stats.py",
     "statements.py",
+    "golden.py",
     "delegations.py",
     "duel.py",
     "ep_groups.py",
