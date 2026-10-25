@@ -1,7 +1,7 @@
 """Které soubory z data/ jdou na web (V17): whitelist pro public/data při sestavení (scripts/vercel_build.sh)
 i pro kopii webu v e2e testu (tests/e2e/check-web.mjs), aby test viděl totéž co Vercel.
 
-Na web jdou jen soubory, které načítá JavaScript stránek (getJSON v public/), a soubory popsané na /data
+Na web jdou jen soubory, které načítá JavaScript stránek (getJSON v public/), a soubory popsané na /otevrena-data
 (build_pages.DATA_FILES). Ostatní data/ potřebují jen skripty při sestavení. Hlasování po jednom (votes/id/)
 a duel (duel/) vytváří build_shards.py rovnou do public/data.
 

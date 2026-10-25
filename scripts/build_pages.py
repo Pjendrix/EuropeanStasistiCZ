@@ -678,7 +678,7 @@ def build(data_dir: Path) -> dict[str, str]:
         if REPORT_PAGES.match(path):
             out[path] = with_report_link(out[path], page_url(base_url or "https://epwatch.cz", path))
     out["404.html"] = not_found_page()
-    out["data.html"] = data_page(data_dir, base_url)
+    out["otevrena-data.html"] = data_page(data_dir, base_url)
     reg = register_page(data_dir, base_url)
     if reg:
         out["registr.html"] = reg
@@ -753,7 +753,7 @@ DATA_FILES = [
 
 
 def data_page(data_dir: Path, base_url: str | None) -> str:
-    """/data (V4): co si stáhnout, jaká pole soubor má, licence a příklad citace."""
+    """/otevrena-data (V4; /data je složka s JSON soubory): co si stáhnout, jaká pole soubor má, licence a příklad citace."""
     fresh = read(data_dir / "freshness.json") if (data_dir / "freshness.json").exists() else {}
     release = (fresh.get("release") or "")[:10]
     base = (base_url or "https://epwatch.cz").rstrip("/")
@@ -787,7 +787,9 @@ def data_page(data_dir: Path, base_url: str | None) -> str:
 <p class="small">Uvádějte vždy datum dat: čísla se každý týden mění s novými hlasováními.</p>"""
     title = "Otevřená data – EP Watch CZ"
     desc = "Soubory JSON s hlasováním českých europoslanců: popis polí, licence ODbL a CC BY 4.0, příklad citace."
-    return page(title, body, root="", current="about", description=desc, meta=og_meta(title, desc, "data.html", base_url, None, desc))
+    return page(
+        title, body, root="", current="about", description=desc, meta=og_meta(title, desc, "otevrena-data.html", base_url, None, desc)
+    )
 
 
 ROOT_DATA = "data/"

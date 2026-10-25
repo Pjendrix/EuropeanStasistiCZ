@@ -4,7 +4,7 @@
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
-import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join, extname, normalize } from "node:path";
@@ -42,7 +42,7 @@ const server = createServer((req, res) => {
   if (moved) { res.writeHead(301, { location: moved + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
   if (!existsSync(file) && !extname(path) && existsSync(`${file}.html`)) file = `${file}.html`;
-  if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
+  if (!existsSync(file) || statSync(file).isDirectory()) { res.writeHead(404); res.end("not found"); return; }
   res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream", "content-security-policy": CSP });
   res.end(readFileSync(file));
 });
@@ -1014,7 +1014,7 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await ctx.newPage();
-  for (const url of ["", "aktualne", "poslanci", "votes", `p/${mepId}`, `v/${voteId}`, "radar", "data"]) {
+  for (const url of ["", "aktualne", "poslanci", "votes", `p/${mepId}`, `v/${voteId}`, "radar", "otevrena-data"]) {
     await page.goto(base + url, { waitUntil: "networkidle" });
     const tiny = await page.evaluate(() => {
       const skip = ".chart, .chart-y, .tl-svg, .hm-hemi, .vd-legend, .qz-art, .tabbar, svg, [aria-hidden='true'], .sr-only, kbd";
