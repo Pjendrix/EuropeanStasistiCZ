@@ -395,35 +395,72 @@ function voteGroupsOps(d, f) {
     ...shareFooter(f.h, `Zdroj: HowTheyVote.eu (ODbL) · frakce k datu hlasování · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 
+// 3/3 Kontext: o čem se hlasovalo (shrnutí AI), česká stopa a podle druhu procedury buď svislá časová osa (zákony a postupy
+// s událostmi), nebo „CO TO ZNAMENÁ“ (usnesení, zprávy z vlastního podnětu a jednokrokové postupy; texty schválené 25. 10. 2026,
+// PROCESS_EFFECT_CS v procedure_pages.py). Rozložení shora s pevnými mezerami; když se obsah nevejde, zkrátí se shrnutí, stopa a osa.
 function voteContextOps(d, f) {
   const det = d.detail || {};
-  const ops = [];
-  let y = 0;
-  if (det.summary) {
-    ops.push(sectionTitle(y, "O ČEM SE HLASOVALO"));
-    const tl = wrapText(det.summary.text, 32, 600, 936, 7);
-    tl.forEach((l, i) => ops.push(T(72, y + 52 + i * 44, l, 32, 600, SC.text)));
-    y += 52 + tl.length * 44 + 4;
-    wrapText(`Shrnutí napsala AI (Claude)${det.summary.source === "adopted_text" ? " z přijatého textu" : ""}, bez čísel a hodnocení. Plné znění na webu EP.`, 20, 500, 936, 2)
-      .forEach((l, i) => ops.push(T(72, y + 18 + i * 26, l, 20, 500, SC.muted)));
-    y += 80;
-  }
-  if ((det.trace || []).length) {
-    ops.push(sectionTitle(y, "ČESKÁ STOPA"));
-    det.trace.slice(0, 6).forEach((t, i) => ops.push(T(72, y + 50 + i * 42, fitText(t.name, 30, 700, 560), 30, 700, SC.text), T(1008, y + 50 + i * 42, t.role, 24, 500, SC.soft, "right")));
-    y += 50 + Math.min(det.trace.length, 6) * 42 + 30;
-  }
-  if (det.procedure) {
+  const top = 372, bottom = f.h - 168;
+  const layout = (dense) => {
+    const ops = [];
+    let y = top;
+    const sumSize = dense ? 32 : 34, sumLines = dense ? 5 : 7, gap = dense ? 40 : 56;
+    if (det.summary) {
+      ops.push(sectionTitle(y, "O ČEM SE HLASOVALO"));
+      const tl = wrapText(det.summary.text, sumSize, 600, 936, sumLines);
+      tl.forEach((l, i) => ops.push(T(72, y + 52 + i * (sumSize + 12), l, sumSize, 600, SC.text)));
+      y += 52 + tl.length * (sumSize + 12) - 8;
+      wrapText(`Shrnutí napsala AI (Claude)${det.summary.source === "adopted_text" ? " z přijatého textu" : ""}, bez čísel a hodnocení. Plné znění na webu EP.`, 20, 500, 936, 2)
+        .forEach((l, i) => ops.push(T(72, y + 26 + i * 26, l, 20, 500, SC.muted)));
+      y += 60 + gap;
+    }
+    const trace = (det.trace || []).slice(0, dense ? 3 : 6);
+    if (trace.length) {
+      ops.push(sectionTitle(y, "ČESKÁ STOPA"));
+      trace.forEach((t, i) => ops.push(T(72, y + 50 + i * 42, fitText(t.name, 30, 700, 560), 30, 700, SC.text), T(1008, y + 50 + i * 42, fitText(t.role, 24, 500, 360), 24, 500, SC.soft, "right")));
+      y += 50 + trace.length * 42 + gap - 20;
+    }
     const p = det.procedure;
-    ops.push(sectionTitle(y, "PŘÍBĚH ZÁKONA"));
-    ops.push(T(72, y + 50, fitText([p.label, p.kind].filter(Boolean).join(" · "), 28, 700, 936), 28, 700, SC.text));
-    if (p.now) ops.push(T(72, y + 92, fitText(`Naposledy: ${p.now}`, 26, 500, 936), 26, 500, SC.soft));
-    ops.push(T(72, y + (p.now ? 134 : 92), fitText(`Celý průběh: epwatch.cz/${p.path}`, 24, 600, 936), 24, 600, SC.accent));
-    y += p.now ? 160 : 118;
-  }
+    if (p && p.mode === "timeline" && (p.steps || []).length) {
+      ops.push(sectionTitle(y, "PŘÍBĚH ZÁKONA"), T(72, y + 46, fitText([p.label, p.kind].filter(Boolean).join(" · "), 26, 600, 936), 26, 600, SC.soft));
+      let steps = p.steps;
+      if (dense && steps.length > 4) steps = [steps[0], { label: "…", state: "gap" }, ...steps.slice(-2)];
+      const sy = y + 96, rh = 58;
+      steps.forEach((st, i) => {
+        const cy = sy + i * rh;
+        if (i < steps.length - 1) ops.push(LINE(88, cy, 88, cy + rh, st.state === "next" ? SC.line : SC.soft, 4));
+        if (st.state === "gap") { ops.push(T(120, cy + 10, "…", 28, 700, SC.muted)); return; }
+        if (st.state === "now") ops.push(CIRC(88, cy, 14, SC.accent), T(1008, cy + 10, "teď", 24, 800, SC.accent, "right"));
+        else if (st.state === "done") ops.push(CIRC(88, cy, 10, SC.soft));
+        else ops.push(CIRC(88, cy, 10, SC.bg0, SC.line, 3));
+        const col = st.state === "next" ? SC.muted : SC.text, w = st.state === "now" ? 640 : 700;
+        ops.push(T(120, cy + 10, fitText(st.label, 28, st.state === "now" ? 800 : 600, w), 28, st.state === "now" ? 800 : 600, col));
+        if (st.date) ops.push(T(st.state === "now" ? 940 : 1008, cy + 10, st.date, 24, 500, SC.muted, "right"));
+      });
+      y = sy + (steps.length - 1) * rh + 30;
+      if (p.next) { wrapText(p.next, 26, 600, 936, 2).forEach((l, i) => ops.push(T(72, y + 34 + i * 34, l, 26, 600, SC.soft))); y += 34 * Math.min(2, wrapText(p.next, 26, 600, 936, 2).length) + 10; }
+    } else if (p) {
+      ops.push(sectionTitle(y, "CO TO ZNAMENÁ"));
+      const kind = p.kind ? p.kind.charAt(0).toUpperCase() + p.kind.slice(1) : "";
+      if (kind) ops.push(T(72, y + 52, fitText(`${kind}${p.label ? ` · ${p.label}` : ""}`, 30, 800, 936), 30, 800, SC.text));
+      let ey = y + (kind ? 100 : 52);
+      if (p.effect) { const el = wrapText(p.effect, 30, 600, 936, 3); el.forEach((l, i) => ops.push(T(72, ey + i * 42, l, 30, 600, SC.soft))); ey += el.length * 42; }
+      if (!p.effect && p.now) { ops.push(T(72, ey, fitText(`Naposledy: ${p.now}`, 26, 500, 936), 26, 500, SC.soft)); ey += 42; }
+      const signers = p.signers || [];
+      if (signers.length) {
+        const txt = `Čeští spolupodepisující návrhu: ${signers.map((x) => `${x.name}${x.group ? ` (${x.group})` : ""}`).join(", ")}`;
+        const sl = wrapText(txt, 24, 500, 936, dense ? 2 : 3);
+        sl.forEach((l, i) => ops.push(T(72, ey + 26 + i * 32, l, 24, 500, SC.muted)));
+        ey += 26 + sl.length * 32;
+      }
+      y = ey + 10;
+    }
+    return { ops, y };
+  };
+  let out = layout(false);
+  if (out.y > bottom) out = layout(true);
   const src = ["EP Open Data (CC BY 4.0)", ...(det.summary ? ["shrnutí AI"] : [])].join(", ");
-  // obsah vystředěný pod hlavičkou s názvem (karta má jen tolik bloků, kolik je v datech)
-  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...voteMiniHead(d, 3, 3), ...centered(ops, y, f.h, 360),
+  return [...shareHeader(`${fmtDate(d.date)} · ${d.kindLabel}`), ...voteMiniHead(d, 3, 3), ...out.ops,
     ...shareFooter(f.h, `Zdroj: ${src} · data k ${fmtDate(d.dataDay)}`, d.urlShort)];
 }
 

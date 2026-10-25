@@ -44,6 +44,56 @@ PROCESS_TYPE_CS = {
     "RSO": "vnitřní organizace Parlamentu",
     "INS": "institucionální postup",
 }
+# Co text znamená (3. obrázek karty hlasování, blok „CO TO ZNAMENÁ“): jedna věta na typ procedury, ručně psané a schválené
+# autorem 25. 10. 2026 (hromadné zadání 24. 10. 2026, úkol 1). Bez odhadů průběhu, jen co typ postupu znamená.
+PROCESS_EFFECT_CS = {
+    "COD": "Zákon EU: platí, až když ho schválí Parlament i Rada.",
+    "CNS": "O zákonu rozhoduje Rada, Parlament dává jen stanovisko.",
+    "APP": "Parlament návrh schválí, nebo zamítne; měnit ho nemůže. Bez jeho souhlasu akt neplatí.",
+    "NLE": "Stanovisko nebo souhlas Parlamentu k aktu, který přijímá Rada.",
+    "INI": "Nezávazný postoj Parlamentu, nemění zákony.",
+    "RSP": "Nezávazný postoj Parlamentu, nemění zákony.",
+    "DEC": "Parlament rozhoduje, zda schválí, jak instituce EU hospodařila s rozpočtem.",
+    "BUD": "Rozpočet EU platí, když ho schválí Parlament i Rada.",
+    "BUI": "Rozpočet EU platí, když ho schválí Parlament i Rada.",
+    "DEA": "Akt Komise; když proti němu Parlament vznese námitku, nevstoupí v platnost.",
+    "RPS": "Opatření Komise; Parlament ho může námitkou zablokovat.",
+    "INL": "Parlament žádá Komisi o návrh zákona; Komise ho podat nemusí, ale musí odpovědět.",
+    "IMM": "Rozhodnutí o imunitě jednoho poslance; nemění zákony.",
+    "REG": "Změna pravidel jednání Parlamentu; platí jen pro Parlament.",
+    "ACI": "Dohoda institucí EU o tom, jak spolupracují.",
+    "RSO": "Vnitřní organizace Parlamentu (výbory, delegace); nemění zákony.",
+    "INS": "Institucionální otázka EU podle smluv (např. volební pravidla nebo změna smluv).",
+}
+# Typy s časovou osou na kartě; ostatní (jednokrokové nebo nezávazné) mají blok „CO TO ZNAMENÁ“ (rozhodnutí 25. 10. 2026: i INI).
+TIMELINE_TYPES = {"COD", "CNS", "APP", "NLE", "BUD", "BUI", "DEC", "INL"}
+CARD_STEPS = 6
+
+
+def card_steps(steps: list[dict], limit: int = CARD_STEPS) -> list[dict]:
+    """Kroky časové osy pro kartu: hotové s datem, poslední hotový = „teď“, budoucí bez data. Delší osa: první, „…“, posledních limit−2."""
+    done = [x for x in steps if x.get("date")]
+    out = [
+        {
+            "label": x["label"],
+            "date": fmt_date(x.get("date_to") or x["date"]) if x.get("date") else None,
+            "state": ("now" if x is done[-1] else "done") if x.get("date") else "next",
+        }
+        for x in steps
+    ]
+    if len(out) > limit:
+        out = [out[0], {"label": "…", "date": None, "state": "gap"}, *out[-(limit - 2) :]]
+    return out
+
+
+def next_text(steps: list[dict]) -> str | None:
+    """„Co bude dál“ z kroků, které procedura ještě čeká (FUTURE_STEPS v radar.py); bez vlastních odhadů."""
+    rest = [x["label"] for x in steps if not x.get("date")]
+    if not rest:
+        return None
+    return "Co bude dál: " + ", pak ".join([rest[0], *(r[0].lower() + r[1:] for r in rest[1:])]) + "."
+
+
 LABEL_RE = re.compile(r"^(\d{4})/(\d{4})\(([A-Z]{3})\)$")
 EP_API_PROC = "https://data.europarl.europa.eu/api/v2/procedures/{pid}?format=application%2Fld%2Bjson&language=cs"
 
@@ -314,10 +364,44 @@ def procedure_pages(data_dir: Path, votes: list[dict], meps_by_id: dict, base_ur
     return dict(procedure_page(row, meps_by_id, vr, final_pages, base_url) for row in collect(data_dir, votes).values())
 
 
+def motion_signers(data_dir: Path) -> dict[str, list[dict]]:
+    """{číslo procedury: [{name, group}]} čeští podepisující návrhů usnesení (proposals.json, jen česká účast).
+    Přednost má společný návrh (o něm se v plénu hlasuje), jinak vlastní návrhy frakcí. Skupina = „jménem“ (in_name_of)."""
+    meps = {m["id"]: m for m in (_read(data_dir / "meps.json", {}) or {}).get("meps", [])}
+    glabel = {g.get("ep_code") or g["code"]: g["short_label"] for g in _read(data_dir / "groups.json", []) or []}
+    glabel.update({g["code"]: g["short_label"] for g in _read(data_dir / "groups.json", []) or []})
+    by_proc: dict[str, dict[str, list]] = {}
+    for it in _read(data_dir / "proposals.json", {}).get("items", []):
+        if it.get("kind") not in ("motion", "joint_motion") or not it.get("procedure"):
+            continue
+        by_proc.setdefault(it["procedure"], {"motion": [], "joint_motion": []})[it["kind"]].extend(it.get("participants") or [])
+    out = {}
+    for proc, kinds in by_proc.items():
+        people = kinds["joint_motion"] or kinds["motion"]
+        seen, rows = set(), []
+        for p in people:
+            m = meps.get(p.get("mep_id"))
+            if not m or p["mep_id"] in seen:
+                continue
+            seen.add(p["mep_id"])
+            rows.append(
+                {
+                    "name": display_name(m),
+                    "sort": m.get("sort_label") or display_name(m),
+                    "group": glabel.get(p.get("in_name_of"), p.get("in_name_of")),
+                }
+            )
+        y, n = proc.split("-", 1) if "-" in proc else (None, None)
+        if y and rows:
+            out[f"{y}/{n}(RSP)"] = [{"name": r["name"], "group": r["group"]} for r in sorted(rows, key=lambda r: r["sort"])]
+    return out
+
+
 def procedure_briefs(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
     """{číslo procedury: {label, kind, now, path}} pro 3. obrázek detailu karty hlasování: druh procedury a poslední krok
     z událostí EP (stejně jako karta Příběhu zákona). Bez událostí jen číslo, druh a odkaz."""
     out = {}
+    signers = motion_signers(data_dir)
     for label, row in collect(data_dir, votes).items():
         m = LABEL_RE.match(label)
         if not m:
@@ -325,10 +409,18 @@ def procedure_briefs(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
         ptype = m[3]
         done = [x for x in (timeline(row["events"], ptype)["steps"] if row.get("events") else []) if x.get("date")]
         now = done[-1] if done else None
+        all_steps = timeline(row["events"], ptype)["steps"] if row.get("events") else []
+        timeline_mode = ptype in TIMELINE_TYPES
         out[label] = {
             "label": label,
+            "type": ptype,
             "kind": PROCESS_TYPE_CS.get(ptype),
             "now": f"{now['label']} ({fmt_date(now.get('date_to') or now['date'])})" if now else None,
             "path": f"z/{slug(label)}",
+            "mode": "timeline" if timeline_mode and done else "effect",
+            "steps": card_steps(all_steps) if timeline_mode and done else [],
+            "next": next_text(all_steps) if timeline_mode and done else None,
+            "effect": PROCESS_EFFECT_CS.get(ptype),
+            "signers": signers.get(label, []) if not timeline_mode else [],
         }
     return out

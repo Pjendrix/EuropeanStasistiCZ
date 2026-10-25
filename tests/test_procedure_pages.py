@@ -104,3 +104,31 @@ def test_page_without_source_data_says_so(tmp_path):
     _, html = pp.procedure_page(row, meps, {}, set(), None)
     assert "zatím nemáme načtený" in html and "Plénum o ní hlasovalo: 16. 9. 2024" in html
     assert "Role poslanců u této procedury zatím nemáme načtené" in html  # bez dat netvrdíme, že česká stopa není
+
+
+def test_process_effect_covers_every_type_and_timeline_split():
+    """Každý typ procedury má schválenou větu „CO TO ZNAMENÁ“; časovou osu mají jen zákony a postupy s událostmi."""
+    assert set(pp.PROCESS_TYPE_CS) <= set(pp.PROCESS_EFFECT_CS)
+    assert all(t.endswith(".") and len(t) < 140 for t in pp.PROCESS_EFFECT_CS.values())
+    assert pp.TIMELINE_TYPES == {"COD", "CNS", "APP", "NLE", "BUD", "BUI", "DEC", "INL"}
+    assert "INI" not in pp.TIMELINE_TYPES and "RSP" not in pp.TIMELINE_TYPES
+
+
+def test_card_steps_marks_now_and_shortens():
+    steps = [{"label": f"MOCK {i}", "date": f"2026-0{i}-01"} for i in range(1, 8)] + [{"label": "MOCK budoucí", "date": None}]
+    out = pp.card_steps(steps)
+    assert len(out) == pp.CARD_STEPS
+    assert out[0]["label"] == "MOCK 1" and out[1]["state"] == "gap"
+    assert [x["state"] for x in out[-2:]] == ["now", "next"] and out[-1]["date"] is None
+    short = pp.card_steps(steps[:2])
+    assert [x["state"] for x in short] == ["done", "now"]
+
+
+def test_next_text_from_future_steps_only():
+    steps = [
+        {"label": "Přiděleno výboru", "date": "2026-01-01"},
+        {"label": "Hlasování pléna", "date": None},
+        {"label": "Podpis a vyhlášení", "date": None},
+    ]
+    assert pp.next_text(steps) == "Co bude dál: Hlasování pléna, pak podpis a vyhlášení."
+    assert pp.next_text(steps[:1]) is None

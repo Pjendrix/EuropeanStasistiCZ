@@ -721,6 +721,21 @@ for (const width of [1366, 390]) {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
   const vids = readdirSync(join(root, "public", "v")).filter((f) => f.endsWith(".html")).map((f) => f.replace(/\.html$/, "")).sort().slice(-15);
+  // Úkol 1 (karta 3/3): vždy i COD s časovou osou, COD bez událostí, usnesení RSP a hlasování bez procedury.
+  const cases = { codAxis: null, codEmpty: null, rsp: null, noProc: null };
+  for (const f of readdirSync(join(root, "public", "v")).filter((x) => x.endsWith(".html")).sort().reverse()) {
+    const m = /<script type="application\/json" id="share-context">(.*?)<\/script>/s.exec(readFileSync(join(root, "public", "v", f), "utf8"));
+    if (!m) continue;
+    const all = JSON.parse(m[1]), det = (all.kind ? all : all.default)?.data?.detail;
+    if (!det) continue;
+    const p = det.procedure, id = f.replace(/\.html$/, "");
+    if (p?.type === "COD" && p.mode === "timeline" && !cases.codAxis) cases.codAxis = id;
+    else if (p?.type === "COD" && p.mode === "effect" && !cases.codEmpty) cases.codEmpty = id;
+    else if (p?.type === "RSP" && !cases.rsp) cases.rsp = id;
+    else if (!p && (det.summary || (det.trace || []).length) && !cases.noProc) cases.noProc = id;
+    if (Object.values(cases).every(Boolean)) break;
+  }
+  Object.entries(cases).forEach(([k, id]) => { if (id) vids.push(id); else if (k !== "codEmpty") problems.push(`detail hlasování: v datech chybí případ ${k}`); });
   for (const id of vids) {
     await page.goto(base + `v/${id}`, { waitUntil: "networkidle" });
     const out = await page.evaluate(async () => {
@@ -745,6 +760,13 @@ for (const width of [1366, 390]) {
         if (low > f.h - 150) res.push(`${theme} ${key}: obsah zasahuje do patičky (${Math.round(low)})`);
         const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
         if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
+        if (key.endsWith("3")) {
+          if (texts.some((o) => o.s.startsWith("Celý průběh"))) res.push(`${theme} ${key}: zůstal řádek Celý průběh`);
+          // kontrast textu na pozadí karty (pod hlavičkou) aspoň 4,5 : 1
+          const lum = (hex) => { const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+          const bg = m.useCardTheme(theme).bg0;
+          texts.filter((o) => o.y > 340 && /^#[0-9a-f]{6}$/i.test(o.fill)).forEach((o) => { const [a, b] = [lum(o.fill), lum(bg)].sort((x, y) => y - x); if ((a + 0.05) / (b + 0.05) < 4.5) res.push(`${theme} ${key}: nízký kontrast textu „${o.s.slice(0, 20)}“`); });
+        }
       }
       m.useCardTheme("dark");
       return res;
