@@ -27,6 +27,7 @@ from layout import MODULES, json_script
 from radar import READING_1, READING_2, timeline
 from vote_kinds import KIND_LABELS, is_final, kind_of
 from vote_parties import POSITIONS
+from web_ui import fold_note
 
 N_PICKS = 5
 ROLE_SCORE = {"rapporteur": 3, "co": 3, "shadow": 2, "opinion": 1, "shadow_opinion": 1}
@@ -288,8 +289,9 @@ def topics_html(items: list[dict], labels: dict[str, str], root: str = "") -> st
     note = f" · {fmt_num(rest)} bodů bez tématu (bez odpovědného výboru)" if rest else ""
     return (
         '<section class="zs-topics" aria-labelledby="zs-h-topics"><h2 id="zs-h-topics" class="zs-h">O čem se hlasuje</h2>'
-        f'<p class="zs-topic-row">{chips}</p><p class="small muted">Počet bodů programu podle tématu odpovědného výboru{note}. '
-        "Klepnutím vyfiltrujete program.</p></section>"
+        f'<p class="zs-topic-row">{chips}</p><div class="small muted">'
+        + fold_note(f"Počet bodů programu podle tématu odpovědného výboru{note}. Klepnutím vyfiltrujete program.")
+        + "</div></section>"
     )
 
 
@@ -312,8 +314,12 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
     as_of = f" k {fmt_date(view['fetched'])}" if view.get("fetched") else ""
     picks_html = (
         '<section aria-labelledby="zs-h-picks"><h2 id="zs-h-picks">Tento týden se rozhoduje o…</h2>'
-        '<p class="small muted">Výběr pravidlem, ne redakcí: nejdřív body s českým zpravodajem, pak zákony a konečná schválení '
-        f'dohod s Radou (<a href="{root}o-projektu#zasedani">pravidlo</a>).</p>'
+        '<div class="small muted">'
+        + fold_note(
+            "Výběr pravidlem, ne redakcí: nejdřív body s českým zpravodajem, pak zákony a konečná schválení "
+            f'dohod s Radou (<a href="{root}o-projektu#zasedani">pravidlo</a>).'
+        )
+        + "</div>"
         f'<ol class="zs-picks">{"".join(pick_html(i, root) for i in picks)}</ol></section>'
         if picks
         else ""
