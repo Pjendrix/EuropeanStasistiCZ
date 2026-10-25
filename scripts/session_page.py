@@ -290,7 +290,7 @@ def topics_html(items: list[dict], labels: dict[str, str], root: str = "") -> st
     return (
         '<section class="zs-topics" aria-labelledby="zs-h-topics"><h2 id="zs-h-topics" class="zs-h">O čem se hlasuje</h2>'
         f'<p class="zs-topic-row">{chips}</p><div class="small muted">'
-        + fold_note(f"Počet bodů programu podle tématu odpovědného výboru{note}. Klepnutím vyfiltrujete program.")
+        + fold_note(f"Počet bodů programu podle tématu odpovědného výboru{note}. Klepnutím vyfiltrujete program.", "Jak počítáme")
         + "</div></section>"
     )
 
@@ -317,7 +317,8 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
         '<div class="small muted">'
         + fold_note(
             "Výběr pravidlem, ne redakcí: nejdřív body s českým zpravodajem, pak zákony a konečná schválení "
-            f'dohod s Radou (<a href="{root}o-projektu#zasedani">pravidlo</a>).'
+            f'dohod s Radou (<a href="{root}o-projektu#zasedani">pravidlo</a>).',
+            "Jak vybíráme",
         )
         + "</div>"
         f'<ol class="zs-picks">{"".join(pick_html(i, root) for i in picks)}</ol></section>'

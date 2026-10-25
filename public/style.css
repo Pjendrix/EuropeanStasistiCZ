@@ -2712,7 +2712,7 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 
 /* Mobilní zjednodušení: méně textu a kratší stránky na úzkém displeji; desktop beze změny */
 .m-fold { display: none; }
-.m-fold summary { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; cursor: pointer; list-style: none; color: var(--link); font-weight: 700; }
+.m-fold summary { display: inline-flex; align-items: center; gap: .3rem; min-width: 32px; min-height: 32px; cursor: pointer; list-style: none; color: var(--link); font-weight: 700; }
 .m-fold summary::-webkit-details-marker { display: none; }
 .m-fold[open] > span { display: block; margin-top: .2rem; }
 @media (max-width: 560px) {
