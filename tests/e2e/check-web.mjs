@@ -17,7 +17,9 @@ const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
 
 const site = mkdtempSync(join(tmpdir(), "epwatch-"));
 cpSync(join(root, "public"), site, { recursive: true });
-cpSync(join(root, "data"), join(site, "data"), { recursive: true });
+// stejný výběr souborů jako na Vercelu (scripts/public_data.py, V17); hlasování po jednom a duel (build_shards.py)
+// jsou už v public/data zkopírovaném výše
+execFileSync("python3", [join(root, "scripts", "public_data.py"), join(site, "data")], { stdio: "inherit" });
 // Úvod s blokem předběžných výsledků z fixture (C4): ve skutečných datech je jen pár dní po zasedání.
 execFileSync("python3", [join(root, "tests", "e2e", "preliminary_page.py"), site], { stdio: "inherit" });
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml",
