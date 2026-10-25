@@ -27,7 +27,6 @@ export const METRICS = [
     pair: (m) => [m.positions[p] || 0, m.votes_in_mandate], def: "attendance", src: "htv", group: "Hlasování", count: true,
   })),
   { key: "against_group", label: "Proti většině své frakce", pair: (m) => m.against_group, def: "against_group", src: "htv", group: "Hlasování", count: true },
-  { key: "decisive", label: "Rozhodující hlasy", value: (m) => m.decisive, def: "decisive_votes", src: "htv", group: "Hlasování", count: true },
   { key: "reports", label: "Zprávy (zpravodaj/ka)", value: (m) => m.reports, def: "own_work", src: "ep", group: "Vlastní práce", count: true },
   { key: "shadow_reports", label: "Stínové zprávy", value: (m) => m.shadow_reports, def: "own_work", src: "ep", group: "Vlastní práce", count: true },
   { key: "opinions", label: "Stanoviska (zpravodaj/ka)", value: (m) => m.opinions, def: "own_work", src: "ep", group: "Vlastní práce", count: true },
