@@ -30,14 +30,16 @@ def test_vote_page_content(data_dir):
 
 
 def test_share_button_in_head_row_and_no_corner_cite(data_dir):
-    """Revize sdílení N2: „Sdílet“ v řádku se zpět na v/, p/, s/; ❝ v rohu karet už není (citace je v panelu)."""
+    """Revize sdílení N2: „Sdílet“ v řádku se zpět na v/, p/, s/; ❝ v rohu karet už není. Viditelné „Citovat“ s textem
+    (V1, zadání 25. 10. 2026) je u hlasování a metrik profilu, ne na straně."""
     pages = built(data_dir)
     for key in ("v/1.html", "p/1.html", "s/20.html"):
         html = pages[key]
-        assert 'class="cite-btn"' not in html, key
+        assert "❝" not in html, key
         assert html.count('class="share-btn"') == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
         assert "share.js" in html, key
     assert '"cite": "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
+    assert 'class="cite-btn" data-cite="Evropský parlament' in pages["v/1.html"]
 
 
 def test_share_button_same_in_python_and_js():
@@ -545,3 +547,20 @@ def test_final_gap_sentence_only_over_10_pp():
     assert "častěji" in pp.final_gap_sentence("group_loyalty", [743, 1000], [586, 1000], m)
     assert pp.final_gap_sentence("attendance", [883, 1000], [887, 1000], m) == ""
     assert pp.final_gap_sentence("attendance", [500, 1000], None, m) == ""
+
+
+def test_data_page_fields_match_real_files():
+    # /data (V4): popsaná pole musí v souborech opravdu být, jinak by stránka po změně formátu lhala
+    root = Path(__file__).resolve().parent.parent / "data"
+    search = json.loads((root / "votes" / "search.json").read_text(encoding="utf-8"))
+    for f in ("id", "date", "title", "result", "cz", "vote_kind", "description_cs", "topics", "cats"):
+        assert f in search["fields"]
+    overview = json.loads((root / "overview.json").read_text(encoding="utf-8"))
+    for k in ("sources", "period", "votes_total", "definitions", "meps"):
+        assert k in overview
+    meps = json.loads((root / "meps.json").read_text(encoding="utf-8"))["meps"][0]
+    for k in ("id", "name", "gender", "mandates", "groups", "parties", "committees"):
+        assert k in meps
+    html = bp.data_page(root, "https://epwatch.cz")
+    assert "<h1>Otevřená data</h1>" in html and "ODbL" in html and "CC BY 4.0" in html
+    assert 'href="data/votes/search.json"' in html

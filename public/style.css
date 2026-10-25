@@ -2479,3 +2479,11 @@ main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }
 .nw-item p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .92rem; }
 .nw-prelim { border-style: dashed; }
 .nw-prelim .nw-tag { color: var(--text); }
+
+/* V1: viditelné tlačítko Citovat */
+.cite-row { margin: .4rem 0; }
+.cite-btn { display: inline-flex; align-items: center; gap: .35rem; min-height: 32px; padding: 0 .7rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; }
+.cite-btn svg { width: 16px; height: 16px; }
+.cite-btn:hover { border-color: var(--gold); }
+.cite-btn.done { border-color: var(--accent); }
+.mx-kpi .cite-btn { margin-top: .5rem; align-self: flex-start; }

@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 
 from ep_groups import short_group
+from web_ui import cite_button as ui_cite_button
 from web_ui import (
     COMMITTEE_TYPE,
     CZ_GROUP_LABEL,
@@ -1040,7 +1041,8 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
                 f'<div class="mx-final"><span>všechna <b>{fmt_pct(pct(pair))}</b></span>'
                 f"<span>závěrečná <b>{fmt_pct(pct(final_pair))}</b></span></div>" + (f'<p class="mx-gap-note">{gap}</p>' if gap else "")
             )
-        return f'<div class="card metric mx-kpi">{head}{explain}{final}{after}<div class="detail">{counts}{shown_extra}</div>{tail}{acts}</div>'
+        cite_btn = ui_cite_button(cite_text) if pair and pair[1] else ""
+        return f'<div class="card metric mx-kpi">{head}{explain}{final}{after}<div class="detail">{counts}{shown_extra}</div>{tail}{cite_btn}{acts}</div>'
 
     ep, grp = (b or {}).get("ep") or {}, (b or {}).get("group") or {}
     committees_now = [c for c in mep["committees"] if not c.get("end") or c["end"] >= today]

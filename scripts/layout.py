@@ -157,6 +157,7 @@ SHEET = [
         "Projekt",
         [
             ("o-projektu", "O projektu a metodika"),
+            ("data", "Otevřená data"),
             ("o-projektu#kontakt", "Kontakt a nahlášení chyby"),
             (INSTAGRAM, "Instagram @epwatch.cz"),
         ],
@@ -317,7 +318,7 @@ def version_assets(html: str) -> str:
 
 
 # Stránky z build_pages.py (rozcestník, Aktuálně): hlavičku dostávají při generování z page(), ručně se neupravují.
-GENERATED = {"index.html", "aktualne.html", "zasedani.html", "404.html"}
+GENERATED = {"index.html", "aktualne.html", "zasedani.html", "404.html", "data.html"}
 
 
 def main(argv=None) -> int:

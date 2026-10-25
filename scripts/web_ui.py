@@ -496,6 +496,13 @@ class Ui:
         )
 
 
+def cite_button(cite: str | None) -> str:
+    """Viditelné tlačítko „Citovat“ (V1): zkopíruje větu + adresu + datum exportu (citeText v lib/data.js, app.js)."""
+    if not cite:
+        return ""
+    return f'<button type="button" class="cite-btn" data-cite="{esc(cite)}">{CITE_ICON}<span>Citovat</span></button>'
+
+
 def vote_meaning_html(kind: str | None, root: str = "") -> str:
     """Blok „Co znamenal hlas“: o čem se hlasovalo a co znamenal hlas PRO a PROTI (VOTE_MEANING); u typu „ostatní“ nic."""
     if kind not in VOTE_MEANING:
