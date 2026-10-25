@@ -39,7 +39,7 @@ def test_share_button_in_head_row_and_no_corner_cite(data_dir):
         assert html.count('class="share-btn"') == 1 and '<div class="back-row">' in html and bp.SHARE_BUTTON in html, key
         assert "share.js" in html, key
     assert '"cite": "Evropský parlament' in pages["v/1.html"]  # citace pro „Kopírovat jako citaci“
-    assert 'class="cite-btn" data-cite="Evropský parlament' in pages["v/1.html"]
+    assert 'class="cite-chip" data-cite="Evropský parlament' in pages["v/1.html"]
 
 
 def test_share_button_same_in_python_and_js():
