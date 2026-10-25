@@ -551,6 +551,7 @@ def vote_page(
 <h1{' class="long"' if len(title_txt) > LONG_TITLE else ""}>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <p class="cite-row">{cite_button(cite)}</p>
+{(extra or {}).get("statements") or ""}
 {story}{vote_meaning_html(kind, ROOT)}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
@@ -605,8 +606,12 @@ def build(data_dir: Path) -> dict[str, str]:
     release = (overview.get("sources") or {}).get("votes", {}).get("release") or ""
     data_day = release if len(release) == 10 and release[4] == "-" else overview["period"]["to"]  # export HowTheyVote = „data k“
     out = {}
+    import statements as stm
+
+    all_statements = stm.load(data_dir)
     for m in overview["meps"]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
+        prof["statements"] = [x for x in all_statements if x["mep_id"] == m["id"]]
         require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
         apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
         path, html = mep_page(prof, groups, parties, base_url, data_day)
@@ -630,6 +635,7 @@ def build(data_dir: Path) -> dict[str, str]:
     for v in votes:
         if is_final(v):
             extra = {
+                "statements": stm.html(stm.for_scope(all_statements, None, v["id"]), {i: display_name(x) for i, x in meps_by_id.items()}),
                 "summary": sums.get(str(v["id"])),
                 "procedure": briefs.get((v.get("procedure") or {}).get("reference") or ""),
             }

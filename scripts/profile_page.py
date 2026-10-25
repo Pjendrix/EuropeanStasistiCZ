@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 
 from ep_groups import short_group
+import statements as stm
 from web_ui import cite_button as ui_cite_button
 from web_ui import (
     COMMITTEE_TYPE,
@@ -230,6 +231,7 @@ def monthly_chart(monthly: dict, mep: dict) -> str:
         details + '<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>'
         f'<div class="chart" role="group" aria-label="Účast na hlasování po měsících">{"".join(cols)}</div></div>'
         f'<p class="chart-detail" aria-live="polite">{month_detail(last, monthly[last]["attendance"], mep)}</p>'
+        + '<p class="small muted chart-why">Důvody nepřítomnosti (nemoc, mise, rodičovská) EP nezveřejňuje.</p>'
         + chart_context(
             f"{fmt_month(months[0])} – {fmt_month(last)}",
             f"všechna jmenovitá hlasování v daném měsíci v době mandátu ({fmt_num(sum(monthly[k]['attendance'][1] for k in months))} celkem)",
@@ -545,7 +547,7 @@ def group_periods_html(periods: list[dict] | None, groups: list[dict]) -> str:
     return f'<div class="mx-periods"><p class="small"><b>Po obdobích frakce</b> (frakce se během období změnila):</p><ul class="plain small">{rows}</ul></div>'
 
 
-def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None) -> str:
+def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None, extra: str = "") -> str:
     if not pr or not pr.get("days"):
         return ""
     src = f'<a href="{esc(pr["source"]["url"])}">EP Open Data (meetings)</a>' if (pr.get("source") or {}).get("url") else "EP Open Data"
@@ -562,7 +564,7 @@ def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None) -> str:
         f'<div class="card metric mx-kpi"><div class="bench"><div class="bench-top"><span class="bench-label">Docházka na zasedání</span>'
         f'<b>{count_pct(pr["present"] / pr["days"])}</b></div><p class="bench-note">podle prezenční listiny EP</p></div>'
         f'<p class="mx-explain">{metric_explain("presence", mep)}</p>'
-        f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání{excused}</div>{info}</div>'
+        f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání{excused}</div>{extra}{info}</div>'
     )
 
 
@@ -1011,6 +1013,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         explain_key="",
         final_pair=None,
         after="",
+        stmt_key=None,
     ):
         if median is not None and pct(pair) is not None:
             head = bench_row(label, pair, median, ref_label or "", na_text)
@@ -1042,6 +1045,8 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
                 f"<span>závěrečná <b>{fmt_pct(pct(final_pair))}</b></span></div>" + (f'<p class="mx-gap-note">{gap}</p>' if gap else "")
             )
         cite_btn = ui_cite_button(cite_text) if pair and pair[1] else ""
+        key = stmt_key or explain_key
+        after = after + (stm.html(stm.for_scope(prof.get("statements") or [], mep["id"], f"metric:{key}")) if key else "")
         return f'<div class="card metric mx-kpi">{head}{explain}{final}{after}<div class="detail">{counts}{shown_extra}</div>{tail}{cite_btn}{acts}</div>'
 
     ep, grp = (b or {}).get("ep") or {}, (b or {}).get("group") or {}
@@ -1292,7 +1297,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             explain_key="attendance",
             final_pair=t.get("attendance_main"),
         )
-        + presence_card(prof.get("presence"), mep, ui)
+        + presence_card(prof.get("presence"), mep, ui, stm.html(stm.for_scope(prof.get("statements") or [], mep["id"], "metric:presence")))
     )
     attendance_main_card = metric_card(
         "Účast u závěrečných hlasování",
@@ -1305,6 +1310,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         "metric:attendance_main",
         defn("attendance_main"),
         f"medián frakce {fmt_pct(grp['attendance_main'])}" if grp.get("attendance_main") is not None else "",
+        stmt_key="attendance_main",
     )
 
     # --- S kým hlasuje (pravý sloupec) ------------------------------------------------------------------------------

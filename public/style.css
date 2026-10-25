@@ -2501,3 +2501,8 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 
 /* V5: referenční řádek „medián EP“ v tabulce poslanců */
 #meps .ref-row td { background: var(--accent-soft); font-weight: 600; }
+
+/* V7: vyjádření poslance (neověřeno) */
+.stmt { margin: .6rem 0 0; padding: .55rem .75rem; border-left: 3px solid var(--gold); background: var(--surface); font-size: .88rem; }
+.stmt p { margin: .15rem 0; }
+.stmt-tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }

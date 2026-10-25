@@ -30,6 +30,7 @@ PUBLIC_SCRIPTS = [
     "category_stats.py",
     "check_data.py",
     "compute_stats.py",
+    "statements.py",
     "delegations.py",
     "duel.py",
     "ep_groups.py",
