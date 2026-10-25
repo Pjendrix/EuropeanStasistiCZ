@@ -1010,6 +1010,29 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
   await ctx.close();
 }
 
+// V15: na mobilu (390 px) žádný viditelný text v obsahu menší než 13 px; výjimky jsou popisky os grafů a hemicyklu.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  for (const url of ["", "aktualne", "poslanci", "votes", `p/${mepId}`, `v/${voteId}`, "radar", "data"]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const tiny = await page.evaluate(() => {
+      const skip = ".chart, .chart-y, .tl-svg, .hm-hemi, .vd-legend, .qz-art, .tabbar, svg, [aria-hidden='true'], .sr-only, kbd";
+      const out = new Set();
+      const walk = document.createTreeWalker(document.querySelector("main") || document.body, NodeFilter.SHOW_TEXT);
+      for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+        const el = n.parentElement;
+        if (!n.textContent.trim() || !el || el.closest(skip) || !el.offsetParent) continue;
+        const fs = parseFloat(getComputedStyle(el).fontSize);
+        if (fs < 12.95) out.add(`${el.tagName.toLowerCase()}.${[...el.classList].join(".")} ${fs}px`);
+      }
+      return [...out].slice(0, 5);
+    });
+    if (tiny.length) problems.push(`čitelnost ${url || "/"} [390px]: písmo pod 13 px: ${tiny.join(", ")}`);
+  }
+  await ctx.close();
+}
+
 // Radar „Co se chystá“: filtry skrývají položky podle tématu, zákonů a české stopy a zapíšou se do adresy.
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });

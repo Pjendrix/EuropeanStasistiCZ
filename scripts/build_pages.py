@@ -772,7 +772,7 @@ def data_page(data_dir: Path, base_url: str | None) -> str:
 <p class="lead">Všechna čísla na webu jsou ze souborů níže. Stáhněte si je a počítejte sami.</p></section>
 <p>Data se obnovují jednou týdně{f", poslední export HowTheyVote je z {fmt_date(release)}" if release else ""}. Adresy jsou stabilní:
 <code>{esc(base)}/data/…</code>. Soubory jsou JSON v kódování UTF-8.</p>
-<div class="table-wrap"><table class="stack"><thead><tr><th>Soubor</th><th>Co obsahuje (pole)</th><th>Licence</th></tr></thead>
+<div class="table-wrap"><table class="stack data-files"><thead><tr><th>Soubor</th><th>Co obsahuje (pole)</th><th>Licence</th></tr></thead>
 <tbody>{rows}</tbody></table></div>
 <p class="small muted">Místo <code>{{id}}</code> dosaďte číslo hlasování, poslance nebo strany (je v adrese stránky na webu, např. <code>/p/23699</code>).</p>
 <h2 id="licence">Licence</h2>
