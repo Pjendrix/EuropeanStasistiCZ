@@ -37,6 +37,7 @@ from web_ui import (
     fmt_num,
     fmt_pct,
     group_link,
+    group_url,
     group_color,
     is_active,
     kind_tag,
@@ -432,7 +433,7 @@ def own_passed(ui: Ui, ow: dict, mep: dict) -> str:
     return (
         f'<h3 class="own-sub">Práce na textech v delegaci</h3><div class="metrics">{cards}</div>{lst}'
         + ui.note_line("Počítají se všechny přidělené texty bez ohledu na výsledek hlasování.", long)
-        + '<h3 class="own-sub">Všechna práce podle typu</h3>'
+        + '<h3 class="own-sub">Všechno podle typu</h3>'
     )
 
 
@@ -494,16 +495,23 @@ def amendments_block(ui: Ui, a: dict | None) -> str:
     )
 
 
-def presence_card(pr: dict | None, mep: dict) -> str:
+def presence_card(pr: dict | None, mep: dict, ui: Ui | None = None) -> str:
     if not pr or not pr.get("days"):
         return ""
     src = f'<a href="{esc(pr["source"]["url"])}">EP Open Data (meetings)</a>' if (pr.get("source") or {}).get("url") else "EP Open Data"
     excused = f" · {fmt_num(pr['excused'])} omluven{by_gender(mep, '', 'a')}" if pr.get("excused") else ""
+    method = f"Podle prezenční listiny EP, jen dny, ke kterým listina existuje. Zdroj: {src}, stav k {fmt_date(pr.get('updated'))}."
+    info = (
+        ui.info_button(f"<p><strong>Docházka na zasedání</strong>: {method}</p>", "Definice a zdroj").replace(
+            'class="info-wrap"', 'class="info-wrap corner"', 1
+        )
+        if ui
+        else f'<div class="detail">{method}</div>'
+    )
     return (
-        f'<div class="card metric"><div class="label">Docházka na zasedání (podle EP)</div>'
-        f'<div class="value">{count_pct(pr["present"] / pr["days"])}</div>'
-        f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání v době mandátu{excused}</div>'
-        f'<div class="detail">podle prezenční listiny EP, jen dny, ke kterým listina existuje · {src}, stav k {fmt_date(pr.get("updated"))}</div></div>'
+        f'<div class="card metric mx-kpi"><div class="bench"><div class="bench-top"><span class="bench-label">Docházka na zasedání</span>'
+        f'<b>{count_pct(pr["present"] / pr["days"])}</b></div><p class="bench-note">podle prezenční listiny EP</p></div>'
+        f'<div class="detail">{fmt_num(pr["present"])} z {fmt_num(pr["days"])} dnů jednání{excused}</div>{info}</div>'
     )
 
 
@@ -520,8 +528,9 @@ def own_work(ui: Ui, ow: dict | None, mep: dict) -> str:
                 f'<details class="card own-list"><summary><strong>{esc(ow["type_labels"][t])}</strong> ({len(items)})</summary>'
                 f'<ul class="plain">{"".join(own_item(e) for e in items)}</ul></details>'
             )
+    passed = own_passed(ui, ow, mep)
     body = (
-        f'<div class="metrics">{cards}</div>'
+        ("" if passed else f'<div class="metrics">{cards}</div>')
         if cards
         else empty_state(
             "V datech EP není žádná zpráva, usnesení ani otázka.",
@@ -530,7 +539,7 @@ def own_work(ui: Ui, ow: dict | None, mep: dict) -> str:
         )
     )
     return (
-        own_passed(ui, ow, mep)
+        passed
         + body
         + lists
         + ui.note_line(
@@ -542,8 +551,9 @@ def own_work(ui: Ui, ow: dict | None, mep: dict) -> str:
     )
 
 
-def summary_sentence(mep: dict, t: dict, prof: dict) -> str:
-    """Souhrn ve větě ze šablony; všechna čísla jsou spočítaná skriptem (meps/{id}.json)."""
+def summary_sentence(mep: dict, t: dict, prof: dict, split: bool = False) -> str:
+    """Souhrn ve větě ze šablony; všechna čísla jsou spočítaná skriptem (meps/{id}.json).
+    split=True: věty za první v <span class="mx-lead-more"> (na mobilu se schovají, čísla jsou hned pod tím v kartách)."""
     att, loy = pct(t["attendance"]), pct(t["group_loyalty"])
     ow = prof.get("own_work") or {}
     ro, pa = ow.get("roles"), ow.get("passed")
@@ -581,7 +591,10 @@ def summary_sentence(mep: dict, t: dict, prof: dict) -> str:
                 f"{plural(ro['shadow_reports'])}{adopted_of(ro['shadow_reports'], (pa or {}).get('shadow_adopted'))}"
             )
         )
-    return " ".join(s + "." for s in sentences)
+    if split and len(sentences) > 1:
+        rest = " ".join(x + "." for x in sentences[1:])
+        return f'{sentences[0]}.<span class="mx-lead-more"> {rest}</span>'
+    return " ".join(x + "." for x in sentences)
 
 
 def chip_data(label: str, entity: dict | None) -> dict:
@@ -703,10 +716,12 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
                 "leadReports": ro["lead_reports"],
                 "leadAdopted": pas.get("lead_adopted"),
                 "leadOpinions": ro["lead_opinions"],
+                "shadowOpinions": ro.get("shadow_opinions"),
                 "shadowReports": ro["shadow_reports"],
             }
             if ro
             else None,
+            "amendments": ((prof.get("amendments") or {}).get("committee") or {}).get("total"),
             "speeches": act["speeches"] if act else None,
             "speechesMinutes": act["speeches_minutes"] if act else None,
             "questions": ows["question"]["count"] if ows.get("question") else None,
@@ -723,6 +738,165 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
         },
     }
     return out
+
+
+# --- revize profilu 2026-10-25: vizitka, přehled nahoře, vizuální bloky ------------------------------------------------
+POS_KEYS = ("FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE")
+
+
+def committee_short(c: dict) -> str:
+    """Krátký název výboru pro štítek ve vizitce: bez úvodního „Výbor pro“ / „Podvýbor pro“ (jen zkrácení textu z EP)."""
+    n = c.get("name_cs") or c.get("name_en") or ""
+    for pre in ("Výbor pro ", "Podvýbor pro ", "Zvláštní výbor pro ", "Vyšetřovací výbor pro "):
+        if n.startswith(pre):
+            return n[len(pre) :]
+    return n
+
+
+def committee_chips(committees_now: list[dict]) -> str:
+    """Aktuální výbory ve vizitce: člen/funkce plně, náhradník tlumeně. Bez výborů nic."""
+    if not committees_now:
+        return ""
+    order = {"CHAIR": 0, "CHAIR_VICE": 1, "MEMBER": 2, "MEMBER_BUREAU": 2, "MEMBER_SUBSTITUTE": 3}
+    chips = []
+    for c in sorted(committees_now, key=lambda c: (order.get(c["role"], 2), c["code"])):
+        sub = c["role"] == "MEMBER_SUBSTITUTE"
+        role = "" if c["role"] in ("MEMBER", "MEMBER_SUBSTITUTE") else f"<em>{ROLE_LABEL.get(c['role']) or esc(c['role'])}</em>"
+        full = f"{c.get('name_cs') or c.get('name_en') or ''} – {ROLE_LABEL.get(c['role']) or c['role']}"
+        chips.append(
+            f'<li class="mx-cm{" sub" if sub else ""}" title="{esc(full)}"><b>{esc(c["code"])}</b>'
+            f"<span>{esc(committee_short(c))}</span>{role}</li>"
+        )
+    has_sub = any(c["role"] == "MEMBER_SUBSTITUTE" for c in committees_now)
+    legend = '<span class="mx-cm-key">tlumeně = náhradník/ice</span>' if has_sub else ""
+    return f'<div class="mx-cms"><span class="mx-k">Výbory</span><ul>{"".join(chips)}</ul>{legend}</div>'
+
+
+def aff_pill(entity: dict | None, label: str, href: str, sub: str = "") -> str:
+    """Frakce / strana jako jeden prvek: oficiální logo (když je) + název; bez loga barevná tečka."""
+    logo = logo_tile(entity, 26) or f'<span class="dot" style="background:{group_color(entity)}"></span>'
+    inner = (
+        f'<span class="mx-aff-logo">{logo}</span><span class="mx-aff-t"><b>{esc(label)}</b>{f"<small>{sub}</small>" if sub else ""}</span>'
+    )
+    return f'<a class="mx-aff" href="{esc(href)}">{inner}</a>' if href else f'<span class="mx-aff">{inner}</span>'
+
+
+def votes_split(pos: dict, mep: dict, a_suffix: str) -> str:
+    """Rozložení všech hlasů poslance (pro / proti / zdržel se / nehlasoval) jako velký proužek s legendou."""
+    total = sum(pos.get(k, 0) for k in POS_KEYS)
+    if not total:
+        return ""
+    labels = {
+        "FOR": "pro",
+        "AGAINST": "proti",
+        "ABSTENTION": f"zdržel{a_suffix} se",
+        "DID_NOT_VOTE": f"nehlasoval{a_suffix}",
+    }
+    segs = "".join(
+        f'<span class="s-{k}" style="flex-grow:{pos.get(k, 0)}" title="{labels[k]}: {fmt_num(pos.get(k, 0))}"></span>'
+        for k in POS_KEYS
+        if pos.get(k)
+    )
+    legend = "".join(
+        f'<li><i class="k-{k}"></i><b data-count="{pos.get(k, 0)}" data-decimals="0">{fmt_num(pos.get(k, 0))}</b> <span>{labels[k]}</span></li>'
+        for k in POS_KEYS
+    )
+    aria = ", ".join(f"{labels[k]} {pos.get(k, 0)}" for k in POS_KEYS)
+    return (
+        f'<div class="mx-split"><div class="mx-split-h"><span class="mx-k">Všechny hlasy</span>'
+        f'<span class="small muted">{fmt_num(total)} jmenovitých hlasování</span></div>'
+        f'<div class="mx-split-bar grow" role="img" aria-label="{esc(aria)}">{segs}</div><ul class="mx-split-key">{legend}</ul></div>'
+    )
+
+
+def work_strip(prof: dict, mep: dict, a_suffix: str) -> str:
+    """Práce v Parlamentu na první pohled: jen počty, které už jsou v datech (own_work, amendments, activity). Žádné hodnocení."""
+    ow = prof.get("own_work") or {}
+    ro, pa, su = ow.get("roles") or {}, ow.get("passed") or {}, ow.get("summary") or {}
+    am, act = prof.get("amendments"), prof.get("activity")
+    tiles = []
+
+    def tile(n, label, sub="", href="#vlastni-prace"):
+        if n is None:
+            return
+        tiles.append(
+            f'<a class="mx-w" href="{href}"><b data-count="{n}" data-decimals="0">{fmt_num(n)}</b>'
+            f"<span>{label}</span>{f'<small>{sub}</small>' if sub else ''}</a>"
+        )
+
+    def adopted(n):
+        return f"přijato {fmt_num(n)}" if n else ""
+
+    if ro:
+        tile(ro.get("lead_reports"), "zpráv vedl" + a_suffix, adopted(pa.get("lead_adopted")))
+        tile(ro.get("shadow_reports"), "stínových zpráv", adopted(pa.get("shadow_adopted")))
+        tile((ro.get("lead_opinions") or 0) + (ro.get("shadow_opinions") or 0), "stanovisek", "zpravodaj + stínový")
+    if su.get("question"):
+        tile(su["question"]["count"], "otázek Komisi a Radě", f"odpověď u {fmt_num(su['question']['answered'])}")
+    if am:
+        tile(am["committee"]["total"], "pozměňovacích návrhů", "ve výborech", "#pn")
+    if act:
+        tile(
+            act["speeches"],
+            "projevů v plénu",
+            f"{fmt_num(js_round(act['speeches_minutes']))} min" if act.get("speeches_minutes") else "",
+            "#projevy",
+        )
+    if not tiles:
+        return ""
+    return (
+        '<div class="mx-work"><div class="mx-sec-h"><h2 id="prace-prehled">Práce v Parlamentu</h2>'
+        '<a class="small" href="#vlastni-prace">Podrobně ↓</a></div>'
+        f'<div class="mx-w-row">{"".join(tiles)}</div>'
+        '<p class="small muted mx-w-note">Počty, ne hodnocení kvality. Zdroj: EP Open Data, u výsledků HowTheyVote.eu.</p></div>'
+    )
+
+
+def dual_card(label: str, own, group, mep: dict, note: str) -> str:
+    """Soulad s výsledkem: poslanec vs. průměr frakce jako dva proužky 0–100 %."""
+    ov, gv = pct(own), pct(group)
+
+    def bar(cls, who, v, pair):
+        if v is None:
+            return ""
+        cnt = f"{fmt_num(pair[0])} z {fmt_num(pair[1])}" if pair and pair[1] else ""
+        return (
+            f'<div class="mx-dual-r {cls}"><span class="mx-dual-l">{who}</span>'
+            f'<span class="mx-dual-t"><i class="grow" style="width:{fixed(v * 100, 1)}%"></i></span>'
+            f"<b>{count_pct(v) if cls == 'own' else fmt_pct(v)}</b></div>"
+            + (f'<div class="mx-dual-c small muted">{cnt}</div>' if cls == "own" and cnt else "")
+        )
+
+    who = esc(mep.get("family_name") or display_name(mep))
+    grp = bar("grp", "průměr frakce", gv, group) if gv is not None else '<p class="small muted">průměr frakce se nepočítá</p>'
+    return (
+        f'<div class="card mx-dual"><div class="mx-dual-h">{label}</div>{bar("own", who, ov, own) or "<p>–</p>"}{grp}'
+        f'<p class="small muted mx-dual-n">{note}</p></div>'
+    )
+
+
+def pair_bar(x: dict, groups: list[dict]) -> str:
+    v = [x["same"], x["total"]]
+    share = pct(v) or 0
+    return (
+        f'<li class="mx-pair"><div class="mx-pair-t"><a href="{mep_url(x["id"])}">{esc(display_name(x))}</a> '
+        f"{group_link(None, groups, (x.get('group') or {}).get('code'))}<b>{fmt_pct(share)}</b></div>"
+        f'<div class="mx-pair-bar" title="{fmt_num(v[0])} z {fmt_num(v[1])} společných hlasování"><i class="grow" style="width:{fixed(share * 100, 1)}%"></i></div></li>'
+    )
+
+
+def topic_card(x: dict, a_suffix: str) -> str:
+    att, loy = x["attendance"], x["group_loyalty"]
+    ps = x["positions"]
+    name = x.get("label_cs") or x.get("label") or f"téma {x['code']} (zdroj neuvádí název)"
+    return (
+        f'<li class="mx-topic"><a class="mx-topic-n" href="votes?t={esc(x["code"])}&amp;f=final">{esc(name)}</a>'
+        f'<span class="small muted mx-topic-c">{fmt_num(att[1])} hlasování</span>'
+        f"{split_bar([ps[k] for k in POS_KEYS])}"
+        f'<div class="mx-topic-f small"><span><b class="t-for">{fmt_num(ps["FOR"])}</b> pro</span>'
+        f'<span><b class="t-against">{fmt_num(ps["AGAINST"])}</b> proti</span><span><b>{fmt_num(ps["ABSTENTION"])}</b> zdržel{a_suffix} se</span>'
+        f'<span class="mx-topic-m">účast <b>{fmt_pct(pct(att))}</b> · s frakcí <b>{fmt_pct(pct(loy))}</b></span></div></li>'
+    )
 
 
 def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str, share_button: str) -> tuple[str, dict]:
@@ -782,6 +956,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         def_text=None,
         extra="",
         na_text="nepočítá se",
+        show_extra=False,
     ):
         if median is not None and pct(pair) is not None:
             head = bench_row(label, pair, median, ref_label or "", na_text)
@@ -789,16 +964,22 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             head = f'<div class="label">{label}</div><div class="value">{count_pct(pct(pair))}</div>' + (
                 f'<div class="detail">{esc(na_text)}</div>' if pct(pair) is None else ""
             )
+        if pct(pair) is not None:  # číslo se při zobrazení „napočítá“ od nuly (count_pct)
+            head = head.replace(f"<b>{fmt_pct(pct(pair))}</b>", f"<b>{count_pct(pct(pair))}</b>", 1)
         counts = f"{fmt_num(pair[0])} z {fmt_num(pair[1])} hlasování" if pair and pair[1] else ""
         acts = (
-            ui.metric_actions(f"<p><strong>{label}</strong>: {esc(def_text or detail)}</p>", share, cite_text)
+            ui.metric_actions(
+                f"<p><strong>{label}</strong>: {esc(def_text or detail)}</p>"
+                f'<p class="small">{esc(detail)}{f" · {extra}" if extra else ""} · <a href="{source_href}">zdroj a metodika</a></p>',
+                share,
+                cite_text,
+            )
             if cite_text and pair and pair[1]
             else ""
         )
-        return (
-            f'<div class="card metric">{head}<div class="detail">{counts}{f" · {extra}" if extra else ""}</div>'
-            f'<div class="detail">{detail} · <a href="{source_href}">zdroj a metodika</a></div>{acts}</div>'
-        )
+        shown_extra = f" · {extra}" if extra and (show_extra or not acts) else ""
+        tail = "" if acts else f'<div class="detail">{detail} · <a href="{source_href}">zdroj a metodika</a></div>'
+        return f'<div class="card metric mx-kpi">{head}<div class="detail">{counts}{shown_extra}</div>{tail}{acts}</div>'
 
     ep, grp = (b or {}).get("ep") or {}, (b or {}).get("group") or {}
     committees_now = [c for c in mep["committees"] if not c.get("end") or c["end"] >= today]
@@ -810,14 +991,6 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             f'<div class="small muted">{ROLE_LABEL.get(c["role"]) or esc(c["role"])} · {COMMITTEE_TYPE.get(c.get("type")) or esc(c.get("type"))} · {period_text(c)}</div></li>'
         )
 
-    def pair_li(x):
-        v = [x["same"], x["total"]]
-        return (
-            '<li style="display:flex;justify-content:space-between;gap:1rem;align-items:center">'
-            f'<span><a href="{mep_url(x["id"])}">{esc(display_name(x))}</a> {group_link(None, groups, (x.get("group") or {}).get("code"))}</span>'
-            f'<span class="num">{fmt_pct(pct(v))} <span class="small muted">({fmt_num(v[0])} z {fmt_num(v[1])})</span></span></li>'
-        )
-
     pairs = [x for x in prof["pairwise"] if x["total"] >= 50]
     initials = "".join(x[0] for x in (mep.get("given_name"), mep.get("family_name")) if x)
     portrait = (
@@ -825,14 +998,14 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         if mep.get("photo_url")
         else f'<span class="avatar-initials" style="width:160px;height:200px;border-radius:var(--radius);font-size:3rem" aria-hidden="true">{esc(initials)}</span>'
     )
-    gl = logo_tile(g_obj, 32)
-    pl = logo_tile(p_obj, 32) if p else ""
-    party_html = (
+    logo_tile(g_obj, 32)
+    logo_tile(p_obj, 32) if p else ""
+    (
         party_link(p["org_id"], p["short_label"], parties, mep)
         if p
         else f'<span class="badge outline" title="{esc(NO_PARTY_NOTE)}">strana neuvedena</span>'
     )
-    status_badge = (
+    (
         '<span class="badge outline">v mandátu</span>'
         if active
         else f'<span class="badge outline">{by_gender(mep, "bývalý poslanec", "bývalá poslankyně")}</span>'
@@ -883,7 +1056,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         if ag["count"]
         else ""
     )
-    party_known = (
+    (
         f"Z těchto {fmt_num(ag['party_known'])} hlasování, kde měla česká strana jasnou většinu,\n"
         f"            {by_gender(mep, 'hlasoval', 'hlasovala')} {fmt_num(ag['with_party'])}× stejně jako ostatní poslanci {by_gender(mep, 'jeho', 'její')} strany."
         if ag.get("party_known")
@@ -919,7 +1092,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         if recent
         else empty_state("Žádná hlasování v tomto výběru.", "", [(f"votes?mep={mep['id']}", "Všechna hlasování poslance")])
     )
-    topics_rows = "".join(
+    "".join(
         f'<tr><td class="title"><a href="votes?t={esc(x["code"])}&amp;f=final">{esc(x.get("label_cs") or x.get("label") or f"téma {x['code']} (zdroj neuvádí název)")}</a> '
         f'<span class="small muted">{esc(x["code"])}</span></td>'
         f'<td class="num" data-label="Hlasování">{fmt_num(x["attendance"][1])}</td>'
@@ -951,40 +1124,50 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
         'stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg><span>Porovnat s…</span></a>'
     )
-    body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{compare}{share_button}</div>
-<div class="profile-head">
-  <figure class="portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
-  <div>
+
+    # --- vizitka -------------------------------------------------------------------------------------------------
+    accent = group_color(g_obj) if g_obj else "var(--muted)"
+    kicker = f"{by_gender(mep, 'Europoslanec', 'Europoslankyně')} · " + (
+        f"v mandátu od {since}" if active else f"{by_gender(mep, 'bývalý poslanec', 'bývalá poslankyně')} · {mandate_text(mep)}"
+    )
+    group_name = (g_obj or {}).get("name_cs") or (g or {}).get("name_cs") or group_label
+    aff = ""
+    if g:
+        href = "" if is_ni or not g_obj else group_url(g_obj["code"])
+        aff += aff_pill(g_obj, group_label, href, esc(group_name) if group_name != group_label else "frakce")
+    if p:
+        p_full = (p_obj or {}).get("name") or ""
+        aff += aff_pill(
+            None if (p_obj or {}).get("independent") else p_obj,
+            party_label,
+            party_url(p_obj["id"]) if p_obj and not p_obj.get("independent") else "",
+            "bez stranické příslušnosti"
+            if (p_obj or {}).get("independent")
+            else esc(p_full)
+            if p_full and p_full != party_label
+            else "strana",
+        )
+    else:
+        aff += f'<span class="badge outline" title="{esc(NO_PARTY_NOTE)}">strana neuvedena</span>'
+    prev_html = f'<p class="small muted mx-prev">Dříve: {esc(prev_groups)}</p>' if prev_groups else ""
+    hero = f"""<header class="card mx-hero" style="--g:{accent}">
+  <figure class="portrait mx-portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
+  <div class="mx-id">
+    <p class="mx-kicker">{kicker}</p>
     <h1>{esc(name)}</h1>
-    {f'<div class="logo-row">{gl}{pl}</div>' if gl or pl else ""}
-    <div class="facts">
-      {group_link(None, groups, g["code"] if g else None)}{f'<span class="small muted">({esc(prev_groups)})</span>' if prev_groups else ""}
-      {party_html}
-      {status_badge}
-    </div>
-    <p class="muted">Mandát: {mandate_text(mep)}</p>
+    <div class="mx-affs">{aff}</div>{prev_html}
     {f'<p class="small muted">Podoba jména: {esc(mep["name_note"])}</p>' if mep.get("name_note") else ""}
-    {
-        f'<p class="small note">{esc(SHORT_MANDATE_NOTE)} Mandát trval {fmt_num(prof["mandate_days"])} dní.</p>'
-        if prof.get("short_mandate")
-        else ""
-    }
+    {f'<p class="small note">{esc(SHORT_MANDATE_NOTE)} Mandát trval {fmt_num(prof["mandate_days"])} dní.</p>' if prof.get("short_mandate") else ""}
+    {committee_chips(committees_now)}
     <p class="small profile-links head-only">{ext_links}</p>
   </div>
-</div>
+  <div class="mx-hero-side">
+    <p class="mx-lead">{summary_sentence(mep, t, prof, split=True)}</p>
+    {votes_split(pos, mep, a_suffix)}
+  </div>
+</header>"""
 
-<p class="lead" style="margin-top:1.5rem">{summary_sentence(mep, t, prof)}</p>
-<nav class="subnav profile-nav" aria-label="Části profilu">
-  <a href="{here}#shrnuti">Shrnutí</a><a href="{here}#posledni">Poslední hlasování</a>
-  <a href="{here}#analyza">Analýza hlasování</a><a href="{here}#temata">Témata</a><a href="{here}#s-kym">S kým hlasuje</a>
-  <a href="{here}#podrobnosti">{"Práce a podrobnosti" if has_own else "Podrobnosti"}</a>
-</nav>
-
-<section class="profile-part" id="shrnuti" aria-labelledby="shrnuti-h">
-<p class="part-k" id="shrnuti-h">1 · Shrnutí</p><p class="part-note">Základní čísla, příslušnost a poslední hlasování.</p>
-<h2 id="dochazka">Hlasování v číslech</h2>
-<div class="metrics">
-  {
+    kpis = (
         metric_card(
             "Účast na hlasování",
             t["attendance"],
@@ -997,24 +1180,7 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             defn("attendance"),
             f"medián frakce {fmt_pct(grp['attendance'])}" if grp.get("attendance") is not None else "",
         )
-    }
-  {
-        metric_card(
-            "Účast na hlasování – závěrečná",
-            t["attendance_main"],
-            "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise",
-            "o-projektu#metodika",
-            ep.get("attendance_main"),
-            "medián EP",
-            cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]),
-            "metric:attendance_main",
-            defn("attendance_main"),
-            f"medián frakce {fmt_pct(grp['attendance_main'])}" if grp.get("attendance_main") is not None else "",
-        )
-    }
-  {presence_card(prof.get("presence"), mep)}
-  {
-        metric_card(
+        + metric_card(
             "Hlasuje s frakcí",
             t["group_loyalty"],
             "jen informativní",
@@ -1025,11 +1191,11 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "metric:group_loyalty",
             defn("group_loyalty"),
             extra=short_group_text(short_group(mep, t["group_loyalty"])),
+            show_extra=True,
             na_text="nezařazení nemají frakci, nepočítá se" if is_ni else "nepočítá se",
         )
-    }
-  {
-        metric_card(
+        + presence_card(prof.get("presence"), mep, ui)
+        + metric_card(
             "Shoda s ostatními Čechy",
             t["cz_agreement"],
             "jen informativní",
@@ -1040,152 +1206,206 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             "metric:cz_agreement",
             defn("cz_agreement"),
         )
-    }
-</div>
-<div class="source">{by_gender(mep, "Hlasoval", "Hlasovala")} pro {fmt_num(pos["FOR"])}×, proti {fmt_num(pos["AGAINST"])}×,
-  {position_for("ABSTENTION", mep)} {fmt_num(pos["ABSTENTION"])}×, {position_for("DID_NOT_VOTE", mep)} {fmt_num(pos["DID_NOT_VOTE"])}×.{
-        ui.info_button(f"<p>{ui.source_line(release)}</p>", "Zdroj")
-    }</div>
+    )
+    attendance_main_card = metric_card(
+        "Účast u závěrečných hlasování",
+        t["attendance_main"],
+        "o celém textu, o prozatímní dohodě s Radou nebo o námitce proti aktu Komise",
+        "o-projektu#metodika",
+        ep.get("attendance_main"),
+        "medián EP",
+        cite("účast na hlasování u závěrečných hlasování", t["attendance_main"]),
+        "metric:attendance_main",
+        defn("attendance_main"),
+        f"medián frakce {fmt_pct(grp['attendance_main'])}" if grp.get("attendance_main") is not None else "",
+    )
 
-{bench_note}
+    # --- S kým hlasuje (pravý sloupec) ------------------------------------------------------------------------------
+    pairs_html = (
+        f'<h3 class="mx-h3">Nejčastěji stejně</h3><ul class="plain mx-pairs">{"".join(pair_bar(x, groups) for x in pairs[:5])}</ul>'
+        f'<h3 class="mx-h3">Nejméně často stejně</h3><ul class="plain mx-pairs low">{"".join(pair_bar(x, groups) for x in reversed(pairs[-5:]))}</ul>'
+        if pairs
+        else '<p class="muted">Nedostatek společných hlasování.</p>'
+    )
 
-<h2 id="frakce">Frakce a strana</h2>
-<div class="card">{timeline(mep, groups, parties, today)}
-  <p class="source">Příslušnost podle EP Open Data, k datu. Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a>.</p></div>
-
-<h2 id="posledni">Poslední závěrečná hlasování</h2>
-<div id="recent">{recent_html}</div>
-<form class="card mep-search" action="votes" method="get" role="search" aria-label="Hledání v hlasováních poslance">
-  <h3 style="margin-top:0">Jak {by_gender(mep, "hlasoval", "hlasovala")} o…?</h3>
-  <input type="hidden" name="mep" value="{mep["id"]}">
-  <div class="controls">
-    <input type="search" name="q" placeholder="Hledat v názvech hlasování (např. klima, migrace)" aria-label="Hledat v hlasováních">
-    <label>Téma <select name="t"><option value="">všechna témata</option>{topic_options}</select></label>
-    <label>Typ <select name="f"><option value="final">jen závěrečná</option><option value="main">všechna hlavní</option><option value="all">všechna hlasování</option></select></label>
-    <button type="submit" class="more-btn">Hledat</button>
+    # --- Jinak než frakce / kde rozhodli Češi: velké číslo + seznam na rozkliknutí ---------------------------------
+    dec = prof["decisive"]
+    dec_won = sum(1 for v in dec if (v.get("position"), v.get("result")) in (("FOR", "ADOPTED"), ("AGAINST", "REJECTED")))
+    dec_lost = sum(1 for v in dec if (v.get("position"), v.get("result")) in (("FOR", "REJECTED"), ("AGAINST", "ADOPTED")))
+    dec_table = vote_table(
+        dec,
+        "<th>Volba</th><th>Na straně výsledku</th>",
+        lambda v: f'<td class="extra pos pos-{v["position"]}">{position_for(v["position"], mep)}</td>{side_cell(v)}',
+        empty_state(
+            "Žádné takové hlasování v době mandátu.",
+            "České hlasy rozhodují jen výjimečně, u velmi těsných výsledků.",
+            [("rozhodujici", "Všechna hlasování, kde rozhodli Češi")],
+        ),
+    )
+    against_card = f"""<div class="card mx-insight" id="proti-frakce">
+  <div class="mx-ins-head">
+    <div class="mx-big"><b data-count="{ag["count"]}" data-decimals="0" data-suffix="×">{fmt_num(ag["count"])}×</b>
+      <span>jinak než většina frakce</span></div>
+    <ul class="mx-facts">
+      <li><b>{fmt_num(t["group_loyalty"][1])}</b> hlasování, kde se to počítá</li>
+      <li><b>{fmt_num(ag["count_main"])}×</b> z toho v závěrečných hlasováních</li>
+      {f"<li><b>{fmt_num(ag['with_party'])} z {fmt_num(ag['party_known'])}</b> stejně jako {by_gender(mep, 'jeho', 'její')} strana (kde měla jasnou většinu)</li>" if ag.get("party_known") else ""}
+    </ul>
   </div>
-  <p class="small muted">Výsledek ukáže přímo {
-        by_gender(mep, "jeho", "její")
-    } hlas u každého hlasování v době mandátu, s odkazem na detail.</p>
-</form>
-</section>
-
-<section class="profile-part" id="analyza" aria-labelledby="analyza-h">
-<p class="part-k" id="analyza-h">2 · Analýza hlasování</p><p class="part-note">Jak hlasuje ve srovnání s výsledkem, frakcí a ostatními Čechy.</p>
-<h2 id="soulad">Soulad s výsledkem hlasování</h2>
-{
-        ui.note_line(
-            f"Jak často hlasoval{a_suffix} tak, jak hlasování nakonec dopadlo.",
-            "Číslo hlavně odráží velikost a pozici frakce; hlasovat proti většině je legitimní opoziční role. Proto ho vždy srovnáváme s průměrem frakce.",
-        )
-    }
-<div class="metrics">
-  {outcome_card("Všechna hlasování", t["outcome"], t["group_outcome"], "jen informativní", mep)}
-  {outcome_card("Závěrečná hlasování", t["outcome_main"], t["group_outcome_main"], "jen informativní", mep)}
-  {metric_card("Těsná hlasování", t["outcome_close"], "rozdíl pro − proti nejvýš 21 hlasů", "o-projektu#metodika")}
-</div>
-
-<h2 id="mesice">Účast na hlasování po měsících</h2>
-<div class="card">{monthly_chart(prof["monthly"], mep)}
+  {"" if t["group_loyalty"][1] else '<p class="muted">U nezařazených poslanců se nepočítá.</p>'}
+  {f'<details class="mx-more"><summary>Ukázat poslední hlasování ({fmt_num(len(ag["recent"]))})</summary>{against_html}</details>' if ag["count"] else ""}
+</div>"""
+    decisive_card = f"""<div class="card mx-insight" id="rozhodly">
+  <div class="mx-ins-head">
+    <div class="mx-big"><b data-count="{len(dec)}" data-decimals="0">{fmt_num(len(dec))}</b>
+      <span>těsných hlasování, kde rozhodly české hlasy</span></div>
+    <ul class="mx-facts">
+      <li><b class="t-for">{fmt_num(dec_won)}×</b> {by_gender(mep, "hlasoval", "hlasovala")} tak, jak hlasování dopadlo</li>
+      <li><b class="t-against">{fmt_num(dec_lost)}×</b> hlasování dopadlo opačně</li>
+      <li><b>{fmt_num(len(dec) - dec_won - dec_lost)}×</b> {by_gender(mep, "zdržel se nebo nehlasoval", "zdržela se nebo nehlasovala")}</li>
+    </ul>
+  </div>
   {
         ui.note_line(
-            "Sloupec = podíl hlasování v měsíci. Klepnutím ukážete přesné číslo.",
-            f"Sloupec = podíl hlasování v měsíci, ve kterých {by_gender(mep, 'hlasoval', 'hlasovala')}; pod sloupcem číslo měsíce a rok. "
-            f"Nízká čárka = v měsíci {by_gender(mep, 'nehlasoval', 'nehlasovala')} ani jednou. Měsíce bez zasedání (srpen) chybí.",
-        )
-    }</div>
-
-<h2 id="proti-frakci">Kde hlasoval{a_suffix} jinak než frakce</h2>
-<div class="card">
-  <p>{by_gender(mep, "Hlasoval", "Hlasovala")} jinak než většina své frakce {fmt_num(ag["count"])}× ze
-    {fmt_num(t["group_loyalty"][1])} hlasování, ve kterých se to počítá (z toho v závěrečných hlasováních {fmt_num(ag["count_main"])}×).
-    {party_known}
-    {"" if t["group_loyalty"][1] else "U nezařazených poslanců se nepočítá."}</p>
-  {against_html}
-</div>
-
-<h2 id="rozhodly">Kde rozhodly české hlasy</h2>
-<div class="card">
-  {
-        ui.note_line(
-            'Těsná hlasování, která by bez českých hlasů dopadla opačně (<a href="rozhodujici">všechna</a>).',
+            'Bez českých hlasů by dopadla opačně. <a href="rozhodujici">Všechna taková hlasování</a>.',
             f"Většinou pozměňovací návrhy a dílčí hlasování. Ukazuje se, jak {by_gender(mep, 'hlasoval', 'hlasovala')} v těch, která proběhla "
             f"v době {by_gender(mep, 'jeho', 'jejího')} mandátu.",
         )
     }
-  {
-        vote_table(
-            prof["decisive"],
-            "<th>Volba</th><th>Na straně výsledku</th>",
-            lambda v: f'<td class="extra pos pos-{v["position"]}">{position_for(v["position"], mep)}</td>{side_cell(v)}',
-            empty_state(
-                "Žádné takové hlasování v době mandátu.",
-                "České hlasy rozhodují jen výjimečně, u velmi těsných výsledků.",
-                [("rozhodujici", "Všechna hlasování, kde rozhodli Češi")],
-            ),
-        )
-    }
-</div>
+  {f'<details class="mx-more"><summary>Ukázat hlasování ({fmt_num(len(dec))})</summary>{dec_table}</details>' if dec else ""}
+</div>"""
 
-<h2 id="temata">Podle témat</h2>
-<div class="card">
-  {
-        ui.note_line(
-            "Deset témat s nejvíce hlasováními podle Legislativní observatoře EP.",
-            "Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky).",
-        )
-    }
-  <div class="table-wrap"><table class="stack topics">
-    <thead><tr><th>Téma</th><th class="num">Hlasování</th><th class="num">Účast na hlasování</th><th class="num">Pro / proti / zdržel{
-        a_suffix
-    } se</th><th class="num">Hlasuje s frakcí</th></tr></thead>
-    <tbody>{topics_rows}</tbody>
-  </table></div>
-</div>
+    topics_html = (
+        f'<ul class="plain mx-topics">{"".join(topic_card(x, a_suffix) for x in prof["topics"])}</ul>'
+        if prof["topics"]
+        else '<p class="muted">Žádná hlasování s tématem.</p>'
+    )
+    show_timeline = len(mep["groups"]) > 1 or len(mep["parties"]) > 1
 
-<h2 id="s-kym">S kým hlasuje stejně</h2>
-<div class="card">
-  {
+    body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{compare}{share_button}</div>
+{hero}
+
+<section class="mx-overview" id="shrnuti" aria-labelledby="dochazka">
+<div class="mx-sec-h"><h2 id="dochazka">Na první pohled</h2>{bench_note}</div>
+<div class="metrics mx-kpis">{kpis}</div>
+<p class="source mx-src">{ui.source_line(release)}</p>
+{work_strip(prof, mep, a_suffix)}
+</section>
+
+<nav class="subnav profile-nav" aria-label="Části profilu">
+  <a href="{here}#posledni">Hlasování</a><a href="{here}#analyza">Analýza</a><a href="{here}#temata">Témata</a>
+  <a href="{here}#vlastni-prace">Práce</a><a href="{here}#podrobnosti">Výbory a členství</a>
+</nav>
+
+<section class="profile-part mx-part" id="hlasovani" aria-labelledby="posledni">
+<div class="mx-cols">
+  <div>
+    <h2 id="posledni">Poslední závěrečná hlasování</h2>
+    <div id="recent">{recent_html}</div>
+    <form class="card mep-search mx-search" action="votes" method="get" role="search" aria-label="Hledání v hlasováních poslance">
+      <h3>Jak {by_gender(mep, "hlasoval", "hlasovala")} o…?</h3>
+      <input type="hidden" name="mep" value="{mep["id"]}">
+      <div class="controls">
+        <input type="search" name="q" placeholder="např. klima, migrace" aria-label="Hledat v hlasováních">
+        <label>Téma <select name="t"><option value="">všechna</option>{topic_options}</select></label>
+        <label>Typ <select name="f"><option value="final">jen závěrečná</option><option value="main">všechna hlavní</option><option value="all">všechna hlasování</option></select></label>
+        <button type="submit" class="more-btn">Hledat</button>
+      </div>
+    </form>
+  </div>
+  <aside class="card mx-side" aria-labelledby="s-kym">
+    <h2 id="s-kym">S kým hlasuje stejně</h2>
+    {
         ui.note_line(
-            f'Podíl hlasování, kde oba hlasovali stejně. <a href="shoda?id={mep["id"]}">Celá tabulka shody</a>.',
+            f'Podíl hlasování, kde oba hlasovali stejně. <a href="shoda?id={mep["id"]}">Celá tabulka</a>.',
             "Jen dvojice s aspoň 50 společnými hlasováními.",
         )
     }
-  {
-        f'''<div class="grid-2">
-    <div><h3>Nejčastěji stejně</h3><ul class="plain">{"".join(pair_li(x) for x in pairs[:5])}</ul></div>
-    <div><h3>Nejméně často stejně</h3><ul class="plain">{"".join(pair_li(x) for x in reversed(pairs[-5:]))}</ul></div>
-  </div>'''
-        if pairs
-        else '<p class="muted">Nedostatek společných hlasování.</p>'
-    }
+    {pairs_html}
+  </aside>
 </div>
 </section>
 
-<section class="profile-part" id="podrobnosti" aria-labelledby="podrobnosti-h">
-<p class="part-k" id="podrobnosti-h">3 · {
-        "Práce v Parlamentu a podrobnosti" if has_own else "Podrobnosti"
-    }</p><p class="part-note">Zprávy, otázky a projevy, členství a výbory s odkazy na zdroje.</p>
-{own_section}
-{activity_block(ui, prof.get("activity"))}
-{amendments_block(ui, prof.get("amendments"))}
+<section class="profile-part mx-part" id="analyza" aria-labelledby="analyza-h">
+<div class="mx-sec-h"><h2 id="analyza-h">Analýza hlasování</h2><span class="small muted">jak hlasuje ve srovnání s výsledkem a frakcí</span></div>
+<div class="mx-cols wide">
+  <div class="card" id="mesice"><h3 class="mx-h3">Účast na hlasování po měsících</h3>{monthly_chart(prof["monthly"], mep)}
+  {
+        ui.note_line(
+            "Klepnutím na sloupec ukážete přesné číslo.",
+            f"Sloupec = podíl hlasování v měsíci, ve kterých {by_gender(mep, 'hlasoval', 'hlasovala')}; pod sloupcem číslo měsíce a rok. "
+            f"Nízká čárka = v měsíci {by_gender(mep, 'nehlasoval', 'nehlasovala')} ani jednou. Měsíce bez zasedání (srpen) chybí.",
+        )
+    }</div>
+  <div class="mx-stack">{attendance_main_card}{
+        metric_card(
+            "Hlasuje s frakcí – závěrečná",
+            t["group_loyalty_main"],
+            "jen závěrečná hlasování",
+            "o-projektu#metodika",
+            na_text="nezařazení nemají frakci, nepočítá se" if is_ni else "nepočítá se",
+        )
+        if t.get("group_loyalty_main")
+        else ""
+    }</div>
+</div>
 
-<div class="grid-2">
-  <section>
-    <h2>Členství podrobně</h2>
-    <div class="card"><ul class="plain">
-      {"".join(membership_group(x) for x in mep["groups"])}
-      {"".join(membership_party(x) for x in mep["parties"]) or f'<li class="muted">{esc(NO_PARTY_NOTE)}</li>'}
-    </ul>
-    <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p></div>
-  </section>
+<h3 class="mx-h3 mx-gap" id="soulad">Hlasuje tak, jak hlasování dopadne?{
+        ui.info_button(
+            "<p>Číslo hlavně odráží velikost a pozici frakce; hlasovat proti většině je legitimní opoziční role. "
+            'Proto ho vždy srovnáváme s průměrem frakce. <a href="o-projektu#metodika">Jak počítáme</a>.</p>'
+        )
+    }</h3>
+<div class="mx-duals">
+  {dual_card("Všechna hlasování", t["outcome"], t["group_outcome"], mep, "pro/proti, bez zdržení")}
+  {dual_card("Závěrečná hlasování", t["outcome_main"], t["group_outcome_main"], mep, "o celém textu nebo dohodě s Radou")}
+  {dual_card("Těsná hlasování", t["outcome_close"], None, mep, "rozdíl pro − proti nejvýš 21 hlasů")}
+</div>
+
+<div class="mx-cols even mx-gap">
+  {against_card}
+  {decisive_card}
+</div>
+</section>
+
+<section class="profile-part mx-part" id="temata" aria-labelledby="temata-h">
+<div class="mx-sec-h"><h2 id="temata-h">Podle témat</h2>{
+        ui.note_line(
+            "Deset témat s nejvíce hlasováními (Legislativní observatoř EP).",
+            "Názvy témat jsou ruční český překlad (OEIL je jen anglicky a francouzsky). Proužek: pro / proti / zdržel se / nehlasoval.",
+        )
+    }</div>
+{topics_html}
+</section>
+
+<section class="profile-part mx-part" id="podrobnosti" aria-labelledby="vlastni-prace">
+{own_section or '<h2 id="vlastni-prace">Práce v Parlamentu</h2>'}
+<div class="mx-cols even">
+  <div id="projevy">{activity_block(ui, prof.get("activity"))}</div>
+  <div id="pn">{amendments_block(ui, prof.get("amendments"))}</div>
+</div>
+
+<div class="grid-2 mx-gap">
   <section>
     <h2>Výbory</h2>
     <div class="card">
       <ul class="plain">{"".join(committee_li(c) for c in committees_now) or '<li class="muted">Žádný aktuální výbor.</li>'}</ul>
-      {f'<h3>Dříve</h3><ul class="plain">{"".join(committee_li(c) for c in committees_past)}</ul>' if committees_past else ""}
+      {
+        f'<details class="mx-more"><summary>Dřívější výbory ({len(committees_past)})</summary><ul class="plain">{"".join(committee_li(c) for c in committees_past)}</ul></details>'
+        if committees_past
+        else ""
+    }
       <p class="source">Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p>
     </div>
+  </section>
+  <section>
+    <h2 id="frakce">Frakce a strana</h2>
+    <div class="card"><ul class="plain">
+      {"".join(membership_group(x) for x in mep["groups"])}
+      {"".join(membership_party(x) for x in mep["parties"]) or f'<li class="muted">{esc(NO_PARTY_NOTE)}</li>'}
+    </ul>
+    {timeline(mep, groups, parties, today) if show_timeline else ""}
+    <p class="source">Příslušnost k datu. Zdroj: <a href="{esc(mep.get("source_url"))}">EP Open Data</a></p></div>
   </section>
 </div>
 </section>
