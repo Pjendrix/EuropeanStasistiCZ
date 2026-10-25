@@ -132,7 +132,7 @@ def tiles_html(data_dir: Path, home: dict, overview: dict, groups: list[dict]) -
             f'<span class="pt-v">{_range(agenda["from"], agenda["to"])}</span><span class="pt-s">{what}</span></div>'
         )
     tiles.append(
-        f'<a class="pt-tile pt-now" href="aktualne"><span class="pt-k">Aktuálně {days_badge(agenda.get("from"))}</span>'
+        f'<a class="pt-tile pt-now" href="aktualne"><span class="pt-k">Novinky {days_badge(agenda.get("from"))}</span>'
         f"<h3>Co se stalo na posledním zasedání a co se chystá</h3>"
         f'<div class="pt-now-row">{"".join(rows)}</div><span class="pt-go">Otevřít přehled {_ARROW}</span></a>'
     )

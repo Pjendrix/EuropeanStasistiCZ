@@ -663,12 +663,13 @@ def build(data_dir: Path) -> dict[str, str]:
     out.update(duel_pages(data_dir, base_url))
     from hub import hub_page  # až tady: hub.py importuje pomocné funkce z tohoto modulu
 
+    path, html = hub_page(data_dir, base_url)  # Novinky (aktualne.html) z hlasování, poslanců a práce
+    out[path] = html
     if (data_dir / "home.json").exists():  # data/home.json vzniká v build_web.py (build_home.py)
-        from portal import portal_page  # rozcestník na „/“ (index.html), Aktuálně je hub_page (aktualne.html)
+        from portal import portal_page  # rozcestník na „/“ (index.html)
 
-        for fn in (hub_page, portal_page):
-            path, html = fn(data_dir, base_url)
-            out[path] = html
+        path, html = portal_page(data_dir, base_url)
+        out[path] = html
     from session_page import session_page  # stránka Zasedání (zasedani.html) z programu v radar.json
 
     res = session_page(data_dir, base_url)
@@ -686,7 +687,9 @@ def build(data_dir: Path) -> dict[str, str]:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
         out.update(sitemap(base_url, sorted(p for p in out if not p.startswith(("d/", "embed/")) and p != "404.html"), lastmod, data_day))
-        out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
+        from news_page import feed_entries
+
+        out["feed.xml"] = atom_feed(base_url, feed_entries(data_dir, base_url))
     return out
 
 
@@ -925,39 +928,27 @@ def sitemap(base_url: str, paths: list[str], lastmod: dict[str, str] | None = No
 FEED_SIZE = 30
 
 
-def atom_feed(base_url: str, votes: list[dict], meps_by_id: dict) -> str:
-    """Atom feed posledních závěrečných hlasování (public/feed.xml). Jen data hlasování, bez data generování,
-    takže se soubor mění jen s novým hlasováním."""
+def atom_feed(base_url: str, entries: list[dict]) -> str:
+    """Atom feed Novinek (public/feed.xml): položka za zasedání a za událost (změna frakce, strany, mandátu), stejné
+    položky jako časová osa na /aktualne (news_page.feed_entries). Bez data generování: mění se jen s novými daty."""
     base = base_url.rstrip("/") + "/"
-    finals = sorted((v for v in votes if is_final(v)), key=lambda v: (v["date"], v.get("timestamp") or "", v["id"]), reverse=True)[
-        :FEED_SIZE
-    ]
+    entries = sorted(entries, key=lambda e: (e["date"], e["id"]), reverse=True)[:FEED_SIZE]
 
-    def entry(v: dict) -> str:
-        kind, _ = kind_of(v)
-        cz = active_positions(v, meps_by_id)
-        n = [sum(p["position"] == k for p in cz) for k in POSITIONS]
-        topic = topic_text(categories_for(v))
-        url = page_url(base, f"v/{v['id']}.html")
-        summary = (
-            f"{fmt_date(v['date'])}{' · ' + topic if topic else ''} · {KIND_LABELS.get(kind, kind)}: "
-            f"{result_sentence(kind, v.get('result'))}. Čeští poslanci: {n[0]} pro, {n[1]} proti, {n[2]} se zdrželo, {n[3]} nehlasovalo. "
-            f"Zdroj: HowTheyVote.eu (ODbL)."
-        )
+    def entry(e: dict) -> str:
         return (
-            f"  <entry>\n    <id>{esc(url)}</id>\n    <title>{esc(vote_title(v))}</title>\n"
-            f'    <link href="{esc(url)}"/>\n    <updated>{v["date"]}T12:00:00Z</updated>\n'
-            f"    <summary>{esc(summary)}</summary>\n  </entry>\n"
+            f"  <entry>\n    <id>{esc(e['id'])}</id>\n    <title>{esc(e['title'])}</title>\n"
+            f'    <link href="{esc(e["url"])}"/>\n    <updated>{e["date"]}T12:00:00Z</updated>\n'
+            f"    <summary>{esc(e['summary'])}</summary>\n  </entry>\n"
         )
 
-    updated = finals[0]["date"] if finals else "2024-07-16"
+    updated = entries[0]["date"] if entries else "2024-07-16"
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="cs">\n'
-        f"  <id>{esc(base)}</id>\n  <title>EP Watch CZ – závěrečná hlasování</title>\n"
-        f"  <subtitle>Jak hlasovali čeští europoslanci. Data HowTheyVote.eu a EP Open Data.</subtitle>\n"
-        f'  <link href="{esc(base)}"/>\n  <link rel="self" href="{esc(base)}feed.xml"/>\n'
+        f"  <id>{esc(base)}</id>\n  <title>EP Watch CZ – novinky</title>\n"
+        f"  <subtitle>Zasedání Evropského parlamentu a jak hlasovali čeští europoslanci, změny frakcí a mandátů. Data HowTheyVote.eu a EP Open Data.</subtitle>\n"
+        f'  <link href="{esc(page_url(base, "aktualne.html"))}"/>\n  <link rel="self" href="{esc(base)}feed.xml"/>\n'
         f"  <updated>{updated}T12:00:00Z</updated>\n  <author><name>EP Watch CZ</name></author>\n"
-        + "".join(entry(v) for v in finals)
+        + "".join(entry(e) for e in entries)
         + "</feed>\n"
     )
 

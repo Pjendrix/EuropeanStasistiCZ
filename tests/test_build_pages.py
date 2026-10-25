@@ -118,47 +118,21 @@ def test_repo_definitions_in_sync_with_overview(tmp_path):
     assert bp.sync_definitions(tmp_path, root / "data") is False
 
 
-def test_home_hero_hemicycle_facts_and_paths(data_dir):
-    """Revize úvodu: hemicykl z data/home.json (tečka = poslanec, symbol + barva, odkaz na profil), střed F : A,
-    pruh faktů z JSON, tři cesty, další pohledy bez číslování, sdílení napojené na panel."""
-    import build_home as bh
-
-    (data_dir / "groups.json").write_text(json.dumps([{"code": "EPP", "ep_code": "PPE", "short_label": "EPP"}]), encoding="utf-8")
-    bw.run(data_dir, "2024-11-01")
-    (data_dir / "splits.json").write_text(
-        json.dumps({"unity": {"considered": 4, "united_final": 1, "considered_final": 2}}), encoding="utf-8"
-    )
-    (data_dir / "decisive.json").write_text(json.dumps({"votes": [{"id": 1}]}), encoding="utf-8")
-    (data_dir / "work_hub.json").write_text(
-        json.dumps({"updated": "2024-10-20", "totals": {"meps": 2, "speeches": 5, "questions": 3, "reports_lead": 1}}), encoding="utf-8"
-    )
-    home = bh.build(data_dir)
-    (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
-    pages = bp.build(data_dir)
-    html = pages["aktualne.html"]  # dřívější úvod je na /aktualne, „/“ je rozcestník (test_portal.py)
-    assert "<title>Novinky – EP Watch CZ</title>" in html and 'src="hub.js?v=' in html
-    assert 'id="hub-q"' not in html  # pole hledání v heru má jen rozcestník, tady jen tlačítko v liště
+def test_news_page_structure(data_dir):
+    """/aktualne = Novinky: vlastní H1 a titulek, filtr, Chystá se jen jednou, časová osa po zasedáních s popisky EP/Češi,
+    bez hemicyklu a karuselu (ty jsou na „/“)."""
+    pages = built(data_dir)
+    html = pages["aktualne.html"]
+    assert "<title>Novinky – EP Watch CZ</title>" in html and "<h1>Novinky</h1>" in html and 'src="hub.js?v=' in html
     assert 'data-page="now" aria-current="page"' in html
-    first = home["votes"][0]
-    assert html.count('class="hm-seat"') == len(first["ppl"])
-    big = f'id="hm-big" x="200" y="221" font-size="68" font-weight="300">{first["counts"]["F"]}<tspan class="hm-num-c"'
-    assert big in html  # střed = počet teček pro : proti, v jednom SVG s tečkami
-    assert 'href="p/1"' in html and 'data-share="hero"' in html and 'src="share.js?v=' in html
-    assert "<dt>4</dt><dd>jmenovitých hlasování od" in html and "1 z 2 jednotně" in html and "1 hlasování" in html
-    assert "Z posledního zasedání" in html and 'id="hm-mosaic"' in html  # B6 místo „Tři cesty do dat“
-    for href in (
-        "poslanci",
-        "hlasovani",
-        "prace",
-        "party",
-        "temata",
-        "rozkol",
-        "rozhodujici",
-        "shoda",
-        "o-projektu#metodika",
-    ):
-        assert f'href="{href}"' in html
-    assert "row-no" not in html and "home-door" not in html  # bez číslování a bez starých dveří
+    assert html.count('class="nv-next card"') == 1 and html.count("Další zasedání") <= 1
+    assert "hm-seat" not in html and "hm-hemi" not in html and 'id="hm-next"' not in html  # žádný půlkruh ani karusel
+    assert "Zajímavé" not in html and "Každé číslo má" not in html
+    for typ in ("", "hlasovani", "zpravy", "zmeny"):
+        assert f'data-typ="{typ}"' in html
+    assert 'id="zasedani-2024-10-16"' in html and 'data-type="hlasovani"' in html
+    assert '<span class="who">EP:</span>' in html and '<span class="who">Češi</span>' in html
+    assert 'role="img" aria-label="Čeští poslanci:' in html and 'href="o-projektu#novinky"' in html
 
 
 def test_blocks_for_manual_pages(data_dir, tmp_path):
@@ -275,15 +249,16 @@ def test_static_pages_do_not_change_with_new_data_export(data_dir):
 
 
 def test_feed_and_sitemap_lastmod(data_dir):
-    """Blok G: Atom feed se závěrečnými hlasováními (bez data generování) a lastmod v sitemap."""
+    """Atom feed Novinek: položka za zasedání (kotva na /aktualne) a za událost, bez data generování; lastmod v sitemap."""
     built(data_dir)
     (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": "https://example.test"}), encoding="utf-8")
     pages = bp.build(data_dir)
     feed = pages["feed.xml"]
     assert feed.startswith("<?xml") and 'xmlns="http://www.w3.org/2005/Atom"' in feed
-    assert feed.count("<entry>") == 2 and "<id>https://example.test/v/3</id>" in feed  # závěrečná 1 a 3, nejnovější první
-    assert feed.index("v/3<") < feed.index("v/1<") and "<updated>2024-10-16T12:00:00Z</updated>" in feed
-    assert "Zdroj: HowTheyVote.eu" in feed
+    # zasedání 16.–17. 10. (závěrečné hlasování 3) a 16.–17. 9. (závěrečné 1), nejnovější první
+    assert "<id>https://example.test/aktualne#zasedani-2024-10-16</id>" in feed and "aktualne#zasedani-2024-09-16" in feed
+    assert feed.index("zasedani-2024-10-16") < feed.index("zasedani-2024-09-16")
+    assert "1 závěrečných hlasování" in feed and "Zdroj: HowTheyVote.eu" in feed
     assert "<loc>https://example.test/v/1</loc><lastmod>2024-09-16</lastmod>" in pages["sitemap.xml"]
     assert bp.build(data_dir)["feed.xml"] == feed  # deterministický
 

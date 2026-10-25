@@ -1,126 +1,34 @@
-// Stránka Aktuálně (aktualne.html, generuje scripts/hub.py z data/home.json). Statický obsah funguje i bez tohoto skriptu:
-// hemicykl ukazuje poslední závěrečné hlasování. Skript přidá přepínání pěti nejnovějších závěrečných hlasování,
-// tooltip u teček a sdílení hlasování z hera. Hledání je v liště (app.js), pole v heru má jen rozcestník (portal.js).
-import { esc, fmtDate, todayCZ, withShareUrl } from "./lib/format.js";
-import { paintSeats, rovingSeats } from "./lib/hemi.js";
+// Stránka Novinky (aktualne.html, generuje scripts/news_page.py). Statický obsah funguje i bez tohoto skriptu (vidět je vše);
+// skript přidá filtr typu (Vše / Hlasování / Zprávy / Změny frakcí) nad bloky s data-type a uloží ho do adresy (?typ=…).
 import { setNav } from "./lib/ui.js";
 
 setNav("now");
 
-const HOME = JSON.parse(document.getElementById("home-data")?.textContent || "null");
-const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// --- hemicykl: přepínání hlasování -------------------------------------------------------
-// Štítek „Další hlasování“ v hlavičce: odpočet počítá prohlížeč (web se kvůli tomu nepřestavuje).
-// Po posledním dni hlasování štítek zmizí a vrátí se běžný nadpis (program je starý, nový přijde s další aktualizací).
-(function nextVote() {
-  const el = document.querySelector(".hm-nx[data-from]");
-  if (!el) return;
-  const today = todayCZ(), { from, to } = el.dataset;
-  const out = el.querySelector(".hm-nx-c");
-  if (today > to) {
-    el.outerHTML = '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>';
-    return;
-  }
-  if (today >= from) {
-    el.classList.add("live");
-    el.querySelector(".hm-nx-l").textContent = "Právě se hlasuje";
-    el.querySelector("strong").textContent = today === to ? "poslední den" : `do ${fmtDate(to).slice(0, -5)}`;
-    return;
-  }
-  const n = Math.round((Date.parse(from) - Date.parse(today)) / 864e5);
-  out.textContent = n === 1 ? "· zítra" : `· za ${n} ${n < 5 ? "dny" : "dní"}`;
-})();
-
-let vi = 0;
-const hemi = document.getElementById("hm-hemi");
-const seats = hemi ? [...hemi.querySelectorAll(".hm-seat")] : [];
-
-function renderVote(i) {
-  if (!HOME) return;
-  vi = i;
-  const v = HOME.votes[i];
-  paintSeats(seats, v, { names: HOME.names, posTxt: HOME.pos_txt, party: v.party });
-  // Číslo „pro : proti“ je <text> ve stejném SVG jako tečky (hub.py hemi_number), obsah i velikost připravil build.
-  const big = document.getElementById("hm-big");
-  big.innerHTML = v.num[0];
-  big.setAttribute("font-size", v.num[1]);
-  document.getElementById("hm-svg").setAttribute("aria-label", v.aria);
-  const cap = document.getElementById("hm-cap");
-  const leg = document.getElementById("hm-leg");
-  const upd = () => {
-    cap.innerHTML = v.cap;
-    sumToggle();
-    leg.innerHTML = v.leg;
-    document.getElementById("hm-idx").textContent = `${i + 1} / ${HOME.votes.length}`;
-    const more = document.getElementById("hm-more");
-    more.href = `v/${v.id}`;
-    more.setAttribute("aria-label", `Detail hlasování: ${v.title}`);
-    document.getElementById("hm-prev").disabled = i === 0;
-    document.getElementById("hm-next").disabled = i === HOME.votes.length - 1;
+const filter = document.querySelector(".nv-filter");
+const blocks = [...document.querySelectorAll("#nv-timeline [data-type]")];
+const empty = document.querySelector(".nv-empty");
+if (filter) {
+  const buttons = [...filter.querySelectorAll("button[data-typ]")];
+  const apply = (typ, push) => {
+    if (!buttons.some((b) => b.dataset.typ === typ)) typ = "";
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.typ === typ)));
+    let shown = 0;
+    blocks.forEach((el) => { el.hidden = Boolean(typ) && el.dataset.type !== typ; shown += !el.hidden; });
+    if (empty) empty.hidden = shown > 0;
+    if (push) {
+      const qs = new URLSearchParams(location.search);
+      if (typ) qs.set("typ", typ); else qs.delete("typ");
+      history.replaceState(null, "", `${location.pathname}${qs.toString() ? `?${qs}` : ""}${location.hash}`);
+    }
   };
-  if (REDUCED) upd();
-  else { cap.classList.add("swap"); leg.classList.add("swap"); setTimeout(() => { upd(); cap.classList.remove("swap"); leg.classList.remove("swap"); }, 170); }
-}
-
-// Shrnutí AI má nejvýš 2 řádky; „víc“ ho rozbalí. Když se vejde, tlačítko zmizí (řádek s odkazem na přijatý text
-// má pevnou výšku, takže se nic neposune).
-function sumToggle() {
-  const sum = document.getElementById("hm-sum");
-  const btn = document.querySelector("#hm-cap .hm-sum-more");
-  if (!sum || !btn) return;
-  btn.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
-  btn.addEventListener("click", () => {
-    const open = sum.classList.toggle("open");
-    btn.setAttribute("aria-expanded", String(open));
-    btn.textContent = open ? "méně" : "víc";
+  filter.hidden = false;
+  filter.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button[data-typ]");
+    if (b) apply(b.dataset.typ, true);
   });
-}
-sumToggle();
-window.addEventListener("resize", () => {
-  const sum = document.getElementById("hm-sum");
-  if (sum && !sum.classList.contains("open")) document.querySelector("#hm-cap .hm-sum-more")?.classList.toggle("idle", sum.scrollHeight <= sum.clientHeight + 1);
-}, { passive: true });
-
-if (HOME && hemi) {
-  document.getElementById("hm-prev").addEventListener("click", () => renderVote(Math.max(0, vi - 1)));
-  document.getElementById("hm-next").addEventListener("click", () => renderVote(Math.min(HOME.votes.length - 1, vi + 1)));
-  document.querySelector(".hm-step").addEventListener("keydown", (ev) => {
-    if (ev.key === "ArrowLeft") { ev.preventDefault(); if (vi > 0) renderVote(vi - 1); }
-    if (ev.key === "ArrowRight") { ev.preventDefault(); if (vi < HOME.votes.length - 1) renderVote(vi + 1); }
-  });
-  // Tooltip: jméno, strana a hlas; tečky stejné strany zůstanou, ostatní zesvětlí.
-  const tip = document.getElementById("hm-tip");
-  const show = (a) => {
-    const pos = HOME.votes[vi].pos[a.dataset.id] || "X";
-    tip.innerHTML = `<b>${esc(HOME.names[a.dataset.id] || "")}</b><span>${esc(a.dataset.party)} · ${esc(HOME.pos_txt[pos])}</span>`;
-    const r = a.getBoundingClientRect(), h = hemi.getBoundingClientRect();
-    tip.style.left = `${r.left + r.width / 2 - h.left}px`;
-    tip.style.top = `${r.top - h.top}px`;
-    tip.classList.add("on");
-    hemi.classList.add("dim");
-    seats.forEach((s) => s.classList.toggle("mate", s.dataset.party === a.dataset.party));
-  };
-  const hide = () => { tip.classList.remove("on"); hemi.classList.remove("dim"); };
-  rovingSeats(hemi, seats);
-  seats.forEach((a) => {
-    a.addEventListener("pointerenter", () => show(a));
-    a.addEventListener("pointerleave", hide);
-    a.addEventListener("focus", () => show(a));
-    a.addEventListener("blur", hide);
-  });
+  apply(new URLSearchParams(location.search).get("typ") || "", false);
 }
 
-// Sdílení z hera: stejná karta jako na detailu hlasování (data připravená při buildu, share.js).
-window.shareContext = (kind) => (kind === "hero" && HOME ? withShareUrl(HOME.votes[vi].share) : null);
-
-// --- mozaika poslanců: jméno a strana pod mozaikou ----------------------------------------
-const mosaic = document.getElementById("hm-mosaic");
-if (mosaic) {
-  const mcap = document.getElementById("hm-mcap");
-  const set = (ev) => { const a = ev.target.closest("a"); mcap.textContent = a ? a.dataset.n : ""; };
-  mosaic.addEventListener("pointerover", set);
-  mosaic.addEventListener("focusin", set);
-  mosaic.addEventListener("pointerleave", () => { mcap.textContent = ""; });
-  mosaic.addEventListener("focusout", () => { mcap.textContent = ""; });
-}
+// Odkaz na kotvu sbaleného zasedání (#zasedani-RRRR-MM-DD) ho rovnou rozbalí.
+const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+target?.querySelector("details")?.setAttribute("open", "");
