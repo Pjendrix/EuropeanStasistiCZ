@@ -144,6 +144,8 @@ function run(quizzes, overview, ai, groups, parties) {
   }
 
   // --- úvod ------------------------------------------------------------------------------------
+  // Volba varianty a délky je sbalená (výchozí Čeští poslanci + Rychlý), aby „Začít“ bylo na mobilu na první obrazovce (O3).
+  let optsOpen = false;
   function renderIntro() {
     const qs = list(), done = answeredCount(qs, st.answers);
     const resume = done > 0 && done < qs.length, finished = done === qs.length;
@@ -159,9 +161,11 @@ function run(quizzes, overview, ai, groups, parties) {
         <p class="qz-eyebrow">Kvíz · Moje shoda</p>
         <h1 tabindex="-1">Jak byste <b>hlasovali vy?</b></h1>
         <p class="qz-lead">${VARIANT[variant].lead}</p>
+        <details class="qz-opts"${optsOpen ? " open" : ""}><summary>Nastavení: <b>${VARIANT[variant].name} · ${st.len === "long" ? "Delší" : "Rychlý"}</b> (${qs.length} otázek)</summary>
         <div class="qz-var" role="radiogroup" aria-label="Varianta kvízu">${vcard("poslanci")}${vcard("frakce")}</div>
         <div class="qz-len" role="radiogroup" aria-label="Délka kvízu">${len("short", "Rychlý", Math.max(1, Math.round(quiz.short.length / 4)))}${len("long", "Delší", Math.max(1, Math.round(quiz.long.length / 4)))}</div>
         <label class="qz-sw"><input type="checkbox" id="qz-rev"${st.reveal ? " checked" : ""}> ${VARIANT[variant].reveal}</label>
+        </details>
         <div class="qz-go">${resume
           ? `<button type="button" class="qz-btn gold" id="qz-resume">Pokračovat · ${done} z ${qs.length} ${IC.arrow}</button><button type="button" class="qz-btn" id="qz-new">Začít znovu</button>`
           : finished
@@ -177,6 +181,7 @@ function run(quizzes, overview, ai, groups, parties) {
       </div>
       <div class="qz-art" aria-hidden="true">${pv.map((q, i) => `<div class="qz-pc"><div class="qz-pc-m">${esc(topic(q))}${topic(q) ? " · " : ""}${fmtDate(q.date)}</div><p class="qz-pc-h">${esc(title(q))}</p>${i === pv.length - 1 ? `<p class="qz-pc-s">${esc(summary(q))}</p><div class="qz-pc-o"><span class="sel">Pro</span><span>Proti</span><span>Zdržet se</span></div>` : ""}</div>`).join("")}</div>
     </div>`;
+    root.querySelector(".qz-opts").addEventListener("toggle", (e) => { optsOpen = e.target.open; });
     root.querySelectorAll('input[name="qz-var"]').forEach((r) => r.addEventListener("change", () => {
       setVariant(r.value);
       toHash(false);

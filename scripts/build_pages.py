@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from urllib.parse import quote
 import sys
 from html import escape
 from pathlib import Path
@@ -649,12 +650,56 @@ def build(data_dir: Path) -> dict[str, str]:
     res = session_page(data_dir, base_url)
     if res:
         out[res[0]] = res[1]
+    for path in out:
+        if REPORT_PAGES.match(path):
+            out[path] = with_report_link(out[path], page_url(base_url or "https://epwatch.cz", path))
+    out["404.html"] = not_found_page()
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
-        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/")), lastmod, data_day))
+        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/") and p != "404.html"), lastmod, data_day))
         out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
     return out
+
+
+# Odkaz „Našli jste chybu?“ na profilu, hlasování a straně (O5): formulář na /o-projektu s předvyplněnou adresou stránky.
+REPORT_PAGES = re.compile(r"(p|v|s)/[^/]+\.html")
+
+
+def with_report_link(html: str, url: str) -> str:
+    link = (
+        f'<p class="report-link small"><a href="/o-projektu?stranka={quote(url, safe="")}#kontakt">Našli jste chybu?</a> '
+        "Napište nám, ověříme ji proti zdroji a opravu zveřejníme.</p>"
+    )
+    if html.count("\n</main>") != 1:
+        raise FormatError("stránka bez jediného </main>, odkaz na nahlášení chyby nejde vložit")
+    return html.replace("\n</main>", f"\n{link}\n</main>")
+
+
+def not_found_page() -> str:
+    """public/404.html (Vercel ji vrátí sám u neexistující adresy, O4). Odkazy od kořene webu, protože se ukáže na libovolné
+    adrese (/p/x/y); hledání bez JS odešle dotaz na Poslance, s JS ho doplní našeptávač z app.js."""
+    body = """<section class="page-head">
+  <h1>Stránka nenalezena</h1>
+  <p class="lead">Adresa neexistuje nebo se změnila (např. dřívější <code>/mep?id=…</code> je dnes <code>/p/…</code>).</p>
+</section>
+<form class="nf-search" role="search" action="/poslanci" method="get">
+  <label for="nf-q">Najít poslance, stranu nebo hlasování</label>
+  <input id="nf-q" name="q" type="search" autocomplete="off" placeholder="Jméno, strana nebo téma…">
+  <button type="submit" class="btn">Hledat</button>
+</form>
+<ul class="nf-links">
+  <li><a href="/poslanci">Poslanci</a></li>
+  <li><a href="/hlasovani">Hlasování</a></li>
+  <li><a href="/">Úvod</a></li>
+</ul>"""
+    return page(
+        "Stránka nenalezena – EP Watch CZ",
+        body,
+        root="/",
+        meta='<meta name="robots" content="noindex">\n',
+        scripts='<script type="module" src="/app.js"></script>\n',
+    )
 
 
 STATIC_PAGES = [

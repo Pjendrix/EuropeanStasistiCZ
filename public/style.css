@@ -1343,13 +1343,6 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
   .tabbar [aria-current="page"] { color: var(--text); }
   .tabbar [aria-current="page"] svg { background: var(--accent-soft); color: var(--accent); }
   .tabbar a:active svg, .tabbar .tab-more:active svg { transform: scale(.94); }
-  /* Kvíz uprostřed lišty: kulaté zlaté tlačítko přesahující lištu nahoru */
-  .tabbar .tab-quiz { color: var(--bench); }
-  .tabbar .tab-quiz i { display: grid; place-items: center; width: 54px; height: 54px; margin-top: -24px; border-radius: 50%; background: var(--gold); color: var(--navy);
-    box-shadow: 0 0 0 5px var(--surface), 0 10px 22px -10px rgba(245, 158, 11, .8); transition: transform .2s ease; }
-  .tabbar .tab-quiz svg, .tabbar .tab-quiz[aria-current="page"] svg { width: 26px; height: 26px; padding: 0; background: none; color: var(--navy); }
-  .tabbar .tab-quiz:active i { transform: scale(.94); }
-  .tabbar .tab-quiz[aria-current="page"] { color: var(--text); }
 
   .sheet {
     position: fixed; inset: auto 0 0 0; margin: 0; width: 100%; max-width: none; max-height: 82vh; overflow: auto;
@@ -1563,6 +1556,10 @@ main.qz-page { max-width: 1080px; }
 .qz-intro h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; font-weight: 300; letter-spacing: -.03em; margin: .5rem 0 .75rem; }
 .qz-intro h1 b, .qz-rs-head h1 b { font-weight: 800; }
 .qz-lead { font-size: 1.06rem; color: var(--muted); margin: 0 0 1.3rem; max-width: 34em; }
+.qz-opts { margin-bottom: .9rem; }
+.qz-opts > summary { cursor: pointer; padding: .5rem 0; color: var(--muted); }
+.qz-opts > summary b { color: var(--text); }
+.qz-opts[open] > summary { margin-bottom: .6rem; }
 .qz-len { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: .9rem; }
 .qz-len-opt { position: relative; cursor: pointer; }
 .qz-len-opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
@@ -2442,3 +2439,9 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 }
 @media (prefers-reduced-motion: reduce) { .js .in .mx-kpi .bench-dot { animation: none; } }
 }
+
+/* Stránka 404 (O4) */
+.nf-search { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; margin: 1rem 0; }
+.nf-search label { flex-basis: 100%; font-weight: 600; }
+.nf-search input { flex: 1 1 14rem; min-height: 44px; padding: 0 .8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; }
+.nf-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; padding: 0; list-style: none; font-weight: 600; }

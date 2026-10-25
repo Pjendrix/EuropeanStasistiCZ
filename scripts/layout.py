@@ -35,6 +35,8 @@ ICON = (
 
 # Režim a příznak JS (public/theme.js): klasický skript v <head>, ne vložený (CSP bez 'unsafe-inline').
 THEME_SCRIPT = '<script src="{root}theme.js"></script>'
+# Vercel Web Analytics (O6): anonymní počty návštěv bez cookies; skript z vlastní domény, projde CSP 'self'.
+ANALYTICS_SCRIPT = '<script defer src="/_vercel/insights/script.js"></script>'
 # Skripty stránek jsou ES moduly (audit A2): app.js, share.js a skript stránky; navzájem se neimportují, jen lib/*.js.
 MODULES = (
     '<script type="module" src="{root}app.js"></script>\n<script type="module" src="{root}share.js"></script>\n'
@@ -109,17 +111,20 @@ TAB_ICONS = {
     "parties": _I.format('<path d="M5 21V4"/><path d="M5 4.5c4.5-2 8.5 2 14 0v9c-5.5 2-9.5-2-14 0"/>'),
     "votes": _I.format('<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/>'),
     "work": _I.format('<path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5z"/><path d="M14 3.5V8h4M10 12.5h5M10 16h5"/>'),
+    "search": _I.format('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/>'),
     "more": _I.format('<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>'),
 }
-# Mobilní spodní lišta: Aktuálně · Poslanci · Kvíz (uprostřed, zvýrazněný) · Hlasování · Více.
+# Mobilní spodní lišta: pět stejných položek Aktuálně · Poslanci · Hledat · Hlasování · Více (zadání 25. 10. 2026, O3).
+# „Hledat“ bez JS vede na Poslance, s JS otevře stejný dialog jako lupa v hlavičce (app.js). Kvíz je v „Více“.
 TABS = [
     ("aktualne", "now", "Aktuálně"),
     ("poslanci", "meps", "Poslanci"),
-    (QUIZ_HREF, "quiz", "Kvíz"),
+    ("poslanci", "search", "Hledat"),
     ("hlasovani", "votes", "Hlasování"),
 ]
-MORE_PAGES = ("parties", "work", "analyses", "about")
+MORE_PAGES = ("parties", "work", "analyses", "about", "quiz")
 SHEET = [
+    ("Kvíz", [(QUIZ_HREF, "Kvíz: jak byste hlasovali vy")]),
     (
         "Strany a práce poslanců",
         [
@@ -162,8 +167,8 @@ SHEET = [
 def tabbar(root: str = "", current: str | None = None) -> str:
     cur = lambda page: ' aria-current="page"' if page == current else ""
     tabs = "".join(
-        f'<a class="tab-quiz" href="{root}{href}" data-page="{page}"{cur(page)}><i>{QUIZ_ICON}</i><span>{label}</span></a>'
-        if page == "quiz"
+        f'<a class="tab-search" href="{root}{href}" aria-haspopup="dialog">{TAB_ICONS[page]}<span>{label}</span></a>'
+        if page == "search"
         else f'<a href="{root}{href}" data-page="{page}"{cur(page)}>{TAB_ICONS[page]}<span>{label}</span></a>'
         for href, page, label in TABS
     )
@@ -205,6 +210,7 @@ def head_assets(root: str = "") -> str:
             f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="{root}feed.xml">',
             f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
             THEME_SCRIPT.format(root=root),
+            ANALYTICS_SCRIPT,
             f'<link rel="stylesheet" href="{root}style.css">',
         ]
     )

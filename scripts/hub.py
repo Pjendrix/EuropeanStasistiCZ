@@ -975,8 +975,8 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
   <div class="hm-inner">
     <div class="hm-copy">
       {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
-      <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
-      <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
+      <h1 id="h1">Novinky: <strong>co se v Bruselu dělo<span class="hm-stop" aria-hidden="true"></span></strong></h1>
+      <p class="hm-lead">Poslední hlasování, zasedání a co se chystá. Z oficiálních dat, bez pořadí a bez hodnocení.</p>
       {session_line_html(session_facts(data_dir))}
       <ul class="hm-quick" aria-label="Rychlý přístup">{quick}</ul>
     </div>
@@ -1043,9 +1043,10 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     nxt = next_session_html(home.get("agenda"), procs=agenda_procedures(data_dir))
     body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
-    title = "Aktuálně – EP Watch CZ"
+    title = "Novinky – EP Watch CZ"
     desc = "Poslední hlasování, zasedání a co se chystá: jak hlasují čeští europoslanci. Jen ověřená data z oficiálních zdrojů."
-    meta = og_meta(title, desc, "aktualne.html", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
+    # vlastní titulek a canonical na /aktualne: úvod „/“ (portal.py) je jiná stránka, ne duplicita
+    meta = og_meta(title, desc, "aktualne.html", base_url, None, "EP Watch CZ – novinky z Evropského parlamentu")
     html = page(
         title,
         body,

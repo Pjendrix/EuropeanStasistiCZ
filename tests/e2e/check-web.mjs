@@ -34,6 +34,8 @@ const server = createServer((req, res) => {
   const path = normalize(decodeURIComponent(u.pathname)).replace(/^(\.\.[/\\])+/, "");
   const clean = path.replace(/(^|\/)index(\.html)?$/, "$1").replace(/\.html$/, "");
   if (clean !== path) { redirects.push(req.url); res.writeHead(308, { location: clean + u.search }); res.end(); return; }
+  // Vercel Web Analytics obsluhuje Vercel sám (/_vercel/insights/…); lokálně prázdný skript, ať v konzoli není 404.
+  if (path.startsWith("/_vercel/")) { res.writeHead(200, { "content-type": "text/javascript" }); res.end(""); return; }
   const moved = SIMPLE_REDIRECTS.get(clean);
   if (moved) { res.writeHead(301, { location: moved + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
@@ -82,9 +84,10 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
-      // R1: nové menu (Aktuálně + zlaté tlačítko Kvíz, na mobilu Kvíz uprostřed lišty), logo vede na rozcestník „/“.
+      // R1: menu (Aktuálně + zlaté tlačítko Kvíz v hlavičce; mobilní lišta pět stejných položek s Hledat, kvíz ve „Více“, O3), logo vede na rozcestník „/“.
       const nav = await page.evaluate(() => ({ now: !!document.querySelector('.site-header nav a[data-page="now"]'), quiz: !!document.querySelector(".site-header .quiz-btn"),
-        tab: !!document.querySelector(".tabbar .tab-quiz"), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
+        tab: [...document.querySelectorAll(".tabbar > a, .tabbar > button")].map((a) => a.textContent.trim()).join(" · ") === "Aktuálně · Poslanci · Hledat · Hlasování · Více"
+          && !!document.querySelector('#more-sheet a[href$="kviz"]'), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
         about: !!document.querySelector('.site-header nav a[data-page="about"]') }));
       if (!nav.now || !nav.quiz || !nav.tab || nav.about) problems.push(`${where}: menu neodpovídá (Aktuálně ${nav.now}, Kvíz ${nav.quiz}, lišta ${nav.tab}, O projektu v liště ${nav.about})`);
       if (nav.logo !== "/") problems.push(`${where}: logo vede na ${nav.logo}, čekám /`);
@@ -937,6 +940,12 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
     v.forEach((x) => problems.push(`${tag} ${label}: axe ${x}`));
   };
   await page.goto(base + "kviz", { waitUntil: "networkidle" });
+  // O3: „Začít“ na první obrazovce, nad horním okrajem mobilní lišty (výběr varianty a délky je sbalený)
+  if (w === 390) {
+    const fit = await page.evaluate(() => ({ btn: document.querySelector("#qz-start")?.getBoundingClientRect().bottom,
+      bar: document.querySelector(".tabbar")?.getBoundingClientRect().top ?? innerHeight }));
+    if (!(fit.btn <= fit.bar)) problems.push(`${tag}: „Začít“ je pod lištou nebo mimo první obrazovku (${JSON.stringify(fit)})`);
+  }
   await page.click("#qz-start");
   await page.waitForSelector(".qz-card");
   if (!page.url().endsWith("#otazka-1")) problems.push(`${tag}: adresa otázky ${page.url()}`);
