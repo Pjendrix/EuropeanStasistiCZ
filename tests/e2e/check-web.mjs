@@ -88,7 +88,7 @@ for (const scheme of ["light", "dark"]) {
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
       // R1: menu (Aktuálně + zlaté tlačítko Kvíz v hlavičce; mobilní lišta pět stejných položek s Hledat, kvíz ve „Více“, O3), logo vede na rozcestník „/“.
       const nav = await page.evaluate(() => ({ now: !!document.querySelector('.site-header nav a[data-page="now"]'), quiz: !!document.querySelector(".site-header .quiz-btn"),
-        tab: [...document.querySelectorAll(".tabbar > a, .tabbar > button")].map((a) => a.textContent.trim()).join(" · ") === "Aktuálně · Poslanci · Hledat · Hlasování · Více"
+        tab: [...document.querySelectorAll(".tabbar > a, .tabbar > button")].map((a) => a.textContent.trim()).join(" · ") === "Novinky · Poslanci · Hledat · Hlasování · Více"
           && !!document.querySelector('#more-sheet a[href$="kviz"]'), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
         about: !!document.querySelector('.site-header nav a[data-page="about"]') }));
       if (!nav.now || !nav.quiz || !nav.tab || nav.about) problems.push(`${where}: menu neodpovídá (Aktuálně ${nav.now}, Kvíz ${nav.quiz}, lišta ${nav.tab}, O projektu v liště ${nav.about})`);
@@ -366,37 +366,48 @@ for (const scheme of ["light", "dark"]) {
   if (!(await page.locator('.info-pop [data-cite]').count())) problems.push("profil: v ⓘ u čísla chybí „Citovat“");
   await ctx.close();
 }
-// Aktuálně (dřívější úvod): hemicykl a přepínač 1/5 → 5/5, střed F : A = počet teček, ⓘ. Rozcestník: „/“ zaměří
+// Novinky (/aktualne): H1, „Další zasedání“ právě jednou, žádný půlkruh ani karusel, popisky EP/Češi u hlasování,
+// kotva zasedání, filtr typu (tlačítka s aria-pressed, stav v ?typ=), první zasedání do 1,5 obrazovky. Rozcestník: „/“ zaměří
 // hledání v heru, šipky + Enter otevřou položku, Esc smaže.
-for (const width of [1440, 400]) {
-  const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+for (const width of [1440, 390]) {
+  const ctx = await browser.newContext({ viewport: { width, height: width > 500 ? 900 : 844 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
   await page.goto(base + "aktualne", { waitUntil: "networkidle" });
-  const where = `aktualne [karta hlasování, ${width}px]`;
-  const sw = await page.evaluate(() => document.documentElement.scrollWidth);
-  if (sw > width) problems.push(`${where}: přetéká (${sw})`);
-  const n = await page.evaluate(() => JSON.parse(document.getElementById("home-data").textContent).votes.length);
-  for (let i = 0; i < n; i++) {
-    const st = await page.evaluate(() => {
-      const seats = [...document.querySelectorAll(".hm-seat")];
-      const big = document.getElementById("hm-big").textContent.split(":").map(Number);
-      return { idx: document.getElementById("hm-idx").textContent, big, f: seats.filter((x) => x.dataset.pos === "F").length, a: seats.filter((x) => x.dataset.pos === "A").length,
-        prev: document.getElementById("hm-prev").disabled, next: document.getElementById("hm-next").disabled, seats: seats.length };
-    });
-    if (st.idx !== `${i + 1} / ${n}`) problems.push(`${where}: přepínač ukazuje ${st.idx}, čekám ${i + 1} / ${n}`);
-    if (st.big[0] !== st.f || st.big[1] !== st.a) problems.push(`${where}: střed ${st.big.join(":")} nesedí s tečkami ${st.f}:${st.a}`);
-    if (st.prev !== (i === 0) || st.next !== (i === n - 1)) problems.push(`${where}: tlačítka přepínače na kraji nejsou vypnutá (${i + 1}/${n})`);
-    if (i < n - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
-  }
-  // ⓘ u karty: vysvětlivka v popoveru webu, bez porušení axe (odkazy a štítek AI na světlém podkladu)
-  await page.click(".hm-info .info-btn");
-  if (!(await page.locator("#hm-about:popover-open").count())) problems.push(`${where}: ⓘ neotevřel vysvětlivku`);
-  else {
-    await page.evaluate(axeSource);
-    const v = await page.evaluate(async () => (await axe.run(document.getElementById("hm-about"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×)`));
-    v.forEach((x) => problems.push(`${where}: axe ve vysvětlivce ⓘ ${x}`));
-    await page.keyboard.press("Escape");
-  }
+  const where = `novinky [${width}px]`;
+  const st = await page.evaluate(() => ({
+    sw: document.documentElement.scrollWidth,
+    h1: document.querySelector("main h1")?.textContent.trim(),
+    title: document.title,
+    next: (document.querySelector("main").textContent.match(/Další zasedání/g) || []).length,
+    hemi: document.querySelectorAll(".hm-seat, #hm-next, #hm-hemi").length,
+    votes: [...document.querySelectorAll(".nv-vote")].map((li) => /EP:/.test(li.textContent) && /Češi/.test(li.textContent)),
+    anchor: document.querySelector('[id^="zasedani-"]')?.id || "",
+    firstTop: document.querySelector(".nv-session")?.getBoundingClientRect().top ?? 1e9,
+    canon: document.querySelector('link[rel="canonical"]')?.href || "",
+  }));
+  if (st.sw > width) problems.push(`${where}: přetéká (${st.sw})`);
+  if (st.h1 !== "Novinky" || !st.title.startsWith("Novinky")) problems.push(`${where}: H1/titulek ${st.h1} / ${st.title}`);
+  if (st.canon && !st.canon.endsWith("/aktualne")) problems.push(`${where}: canonical ${st.canon}`);
+  if (st.next !== 1) problems.push(`${where}: „Další zasedání“ je na stránce ${st.next}×, čekám 1×`);
+  if (st.hemi) problems.push(`${where}: na Novinkách zůstal půlkruh nebo karusel`);
+  if (!st.votes.length || st.votes.some((ok) => !ok)) problems.push(`${where}: u hlasování chybí popisky EP:/Češi (${st.votes.length} řádků)`);
+  if (!/^zasedani-\d{4}-\d{2}-\d{2}$/.test(st.anchor)) problems.push(`${where}: chybí kotva zasedání (${st.anchor})`);
+  if (width === 390 && st.firstTop > 844 * 1.5) problems.push(`${where}: první zasedání začíná až na ${Math.round(st.firstTop)} px`);
+  // filtr Hlasování skryje zprávy a události, stav jde do adresy; po načtení s ?typ= se filtr obnoví
+  await page.click('.nv-filter [data-typ="hlasovani"]');
+  const f = await page.evaluate(() => ({
+    pressed: document.querySelector('.nv-filter [data-typ="hlasovani"]').getAttribute("aria-pressed"),
+    others: [...document.querySelectorAll('#nv-timeline [data-type]:not([data-type="hlasovani"])')].filter((el) => el.offsetParent).length,
+    sessions: [...document.querySelectorAll('#nv-timeline [data-type="hlasovani"]')].filter((el) => el.offsetParent).length,
+    url: location.search,
+  }));
+  if (f.pressed !== "true" || f.others || !f.sessions || !f.url.includes("typ=hlasovani")) problems.push(`${where}: filtr Hlasování ${JSON.stringify(f)}`);
+  await page.goto(base + "aktualne?typ=zmeny", { waitUntil: "networkidle" });
+  const z = await page.evaluate(() => [...document.querySelectorAll("#nv-timeline [data-type]")].filter((el) => el.offsetParent).map((el) => el.dataset.type));
+  if (z.some((t) => t !== "zmeny")) problems.push(`${where}: ?typ=zmeny ukazuje i ${[...new Set(z)].join(", ")}`);
+  await page.evaluate(axeSource);
+  const ax = await page.evaluate(async () => (await axe.run(document.querySelector("main"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×)`));
+  ax.forEach((x) => problems.push(`${where}: axe ${x}`));
   // hledání v heru je jen na rozcestníku; chvíli počkat, než IntersectionObserver (app.js) zjistí, že pole je vidět
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
@@ -528,17 +539,6 @@ for (const width of [1366, 390]) {
     if (!href?.includes(`c=${c}`) || !applied) problems.push(`${where}: čip nevede na použitý filtr (${href})`);
     await ctx.close();
   }
-  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
-  const page = await ctx.newPage();
-  await page.goto(base + "aktualne", { waitUntil: "networkidle" });
-  const home = read("data/home.json");
-  for (let i = 0; i < home.votes.length; i++) {
-    const got = await page.evaluate(() => [...document.querySelectorAll("#hm-cap .hm-topic .topic-chips > .topic-chip")].map((a) => a.getAttribute("href")));
-    const exp = home.votes[i].topics.slice(0, 1).map((t) => `votes?c=${t.slug}`);
-    if (JSON.stringify(got) !== JSON.stringify(exp)) problems.push(`aktualne: čip tématu u hlasování ${i + 1}/5 je ${got}, čekám ${exp}`);
-    if (i < home.votes.length - 1) { await page.click("#hm-next"); await page.waitForTimeout(250); }
-  }
-  await ctx.close();
 }
 // Sdílení bez úložiště (soukromé okno, zakázané cookies): localStorage hází výjimku, panel funguje s výchozím vzhledem.
 {

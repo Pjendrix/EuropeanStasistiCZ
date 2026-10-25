@@ -2469,17 +2469,6 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 /* O11: dlouhé názvy hlasování (nad 120 znaků) menším písmem */
 main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }
 
-/* V3: Novinky na /aktualne */
-.nw-head-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }
-.nw-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .75rem; }
-.nw-item { display: grid; grid-template-columns: auto 1fr; gap: .15rem .75rem; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
-.nw-item time { color: var(--muted); font-size: .85rem; white-space: nowrap; }
-.nw-tag { justify-self: start; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-.nw-head { grid-column: 1 / -1; font-weight: 700; }
-.nw-item p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .92rem; }
-.nw-prelim { border-style: dashed; }
-.nw-prelim .nw-tag { color: var(--text); }
-
 /* V1: viditelné tlačítko Citovat */
 .cite-row { margin: .4rem 0; }
 .cite-chip { display: inline-flex; align-items: center; gap: .35rem; min-height: 32px; padding: 0 .7rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; }
@@ -2629,7 +2618,6 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .mx-search .controls label,
   .mx-kpi .bench-label,
   .mx-kpi .bench-note,
-  .nw-tag,
   .emb-meta,
   .emb-kpi span,
   .emb-src,
@@ -2643,4 +2631,54 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .data-files thead { display: none; }
   .data-files tr { display: block; padding: .6rem 0; border-bottom: 1px solid var(--border); }
   .data-files td { display: block; padding: .15rem 0; border: 0; }
+}
+
+/* Novinky (/aktualne): časová osa po zasedáních, scripts/news_page.py */
+.nv-wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 40px; }
+.nv-head h1 { margin: 0 0 .3rem; }
+.nv-meta { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+.nv-filter { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1rem; }
+.nv-f { min-height: 40px; padding: 0 .9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+.nv-f[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #F8FAFC; }
+.nv-f:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.nv-next { margin: 0 0 1.5rem; }
+.nv-next h2 { margin: .1rem 0 .4rem; font-size: 1.25rem; }
+.nv-kicker, .nv-tag { margin: 0; font-size: .8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.nv-trace { margin: .3rem 0 .6rem; padding-left: 1.1rem; }
+.nv-timeline { display: grid; gap: 1rem; border-left: 2px solid var(--border); padding-left: 14px; }
+.nv-block { position: relative; }
+.nv-block::before { content: ""; position: absolute; left: -21px; top: .55rem; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); }
+.nv-session { padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.nv-session::before { background: var(--gold); border-color: var(--gold); }
+.nv-session h2 { margin: 0 0 .3rem; font-size: 1.35rem; }
+.nv-session .nv-h-sm { font-size: 1.1rem; }
+.nv-anchor { color: inherit; text-decoration: none; }
+.nv-anchor:hover { text-decoration: underline; }
+.nv-nums { margin: 0 0 .6rem; }
+.nv-sub { margin: .6rem 0 .3rem; font-weight: 700; }
+.nv-votes { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.nv-vote { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 220px); gap: .3rem 1rem; padding: .6rem 0; border-top: 1px solid var(--border); }
+.nv-vt a, .nv-vt > span { font-weight: 600; }
+.nv-res, .nv-cz p { margin: .15rem 0; font-size: .875rem; }
+.nv-tags { margin: .25rem 0 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+.nv-vote .nv-tag { padding: 0 .45rem; border: 1px solid var(--border); border-radius: 999px; text-transform: none; letter-spacing: 0; font-weight: 600; }
+.nv-tag.spl { border-color: var(--gold); color: var(--text); }
+.nv-links { margin: .6rem 0 0; }
+.nv-old details summary { cursor: pointer; font-weight: 600; }
+.nv-event { padding: .7rem .9rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--gold) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--border)); }
+.nv-event::before { background: var(--gold); border-color: var(--gold); }
+.nv-event time { margin-right: .5rem; font-weight: 700; }
+.nv-event .nv-tag, .nv-event .muted { color: var(--text); }  /* kontrast na zlatém podkladu */
+.nv-event p { margin: .2rem 0 0; }
+.nv-between { padding: .5rem .9rem; color: var(--muted); }
+.nv-between .nv-bh { margin: 0; }
+.nv-between summary { cursor: pointer; color: var(--text); font-weight: 600; }
+.nv-main { margin: .2rem 0 .4rem; padding-left: 1.1rem; color: var(--text); }
+.nv-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin: .4rem 0; }
+.nv-chip { padding: .1rem .55rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); font-size: .875rem; }
+.nv-prelim { border-style: dashed; }
+@media (max-width: 560px) {
+  /* na mobilu název přes celou šířku a proužek pod ním (ve dvou sloupcích by dlouhé názvy měly deset řádků) */
+  .nv-vote { grid-template-columns: minmax(0, 1fr); gap: .2rem; }
+  .nv-session { padding: .8rem; }
 }

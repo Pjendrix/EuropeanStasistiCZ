@@ -1,7 +1,6 @@
 """Oblouk hlasování na úvodu (návrh A): tečky a číslo „pro : proti“ v jednom SVG, nic se nepřekrývá."""
 
 import math
-import re
 import sys
 from pathlib import Path
 
@@ -49,16 +48,3 @@ def test_number_and_label():
     assert hub.hemi_number({"F": 10, "A": 11})[1] < 68  # pětimístné číslo menší, aby zůstalo v obdélníku
     c = {"F": 15, "A": 3, "B": 0, "N": 3}
     assert hub.hemi_label(c).startswith("Čeští poslanci: 15 pro, 3 proti, 3 nehlasovalo.")
-
-
-def test_hemi_html_one_svg_with_number():
-    vote = {
-        "ppl": [{"id": i, "name": f"MOCK {i}", "party": "MOCK", "pos": "F"} for i in range(21)],
-        "counts": {"F": 21, "A": 0, "B": 0, "N": 0},
-    }
-    html = hub.hemi_html(vote)
-    assert html.count("<svg") == 1 and 'id="hm-big"' in html and "PRO : PROTI" in html
-    assert 'aria-label="Čeští poslanci: 21 pro.' in html
-    assert html.count('class="hm-seat"') == 21 and html.count('class="hm-star"') == 5
-    assert "hm-center" not in html
-    assert re.search(r'<svg viewBox="0 0 400 250"', html)

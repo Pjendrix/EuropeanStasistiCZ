@@ -12,6 +12,7 @@ import build_pages as bp  # noqa: E402
 # Kotvy, na které odkazuje web (scripts/*.py, public/**/*.js, ruční stránky) nebo zvenku (Instagram „Opravy“, starší odkazy).
 # Nový odkaz na o-projektu#… = přidat sem; test níže hlídá, že seznam odpovídá zdrojům.
 LINKED_ANCHORS = {
+    "novinky",
     "kontakt",  # patička, panel Více, karty
     "metodika",  # ⓘ v kartách (infoButton), profily, rozcestník
     "zdroje",  # pruh se stářím dat (lib/ui.js)

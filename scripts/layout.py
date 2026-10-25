@@ -59,7 +59,7 @@ BRAND_MARK = (
 )
 
 NAV = [
-    ("aktualne", "now", "Aktuálně"),
+    ("aktualne", "now", "Novinky"),
     ("poslanci", "meps", "Poslanci"),
     ("party", "parties", "Strany"),
     ("hlasovani", "votes", "Hlasování"),
@@ -114,10 +114,10 @@ TAB_ICONS = {
     "search": _I.format('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/>'),
     "more": _I.format('<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>'),
 }
-# Mobilní spodní lišta: pět stejných položek Aktuálně · Poslanci · Hledat · Hlasování · Více (zadání 25. 10. 2026, O3).
+# Mobilní spodní lišta: pět stejných položek Novinky · Poslanci · Hledat · Hlasování · Více (zadání 25. 10. 2026, O3).
 # „Hledat“ bez JS vede na Poslance, s JS otevře stejný dialog jako lupa v hlavičce (app.js). Kvíz je v „Více“.
 TABS = [
-    ("aktualne", "now", "Aktuálně"),
+    ("aktualne", "now", "Novinky"),
     ("poslanci", "meps", "Poslanci"),
     ("poslanci", "search", "Hledat"),
     ("hlasovani", "votes", "Hlasování"),
@@ -209,7 +209,7 @@ def head_assets(root: str = "") -> str:
         [
             ICON.format(root=root),
             '<meta property="og:site_name" content="EP Watch CZ">',
-            f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – nová závěrečná hlasování" href="{root}feed.xml">',
+            f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – novinky" href="{root}feed.xml">',
             f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
             THEME_SCRIPT.format(root=root),
             ANALYTICS_SCRIPT,
@@ -318,7 +318,7 @@ def version_assets(html: str) -> str:
     return _ASSET_RE.sub(sub, html)
 
 
-# Stránky z build_pages.py (rozcestník, Aktuálně): hlavičku dostávají při generování z page(), ručně se neupravují.
+# Stránky z build_pages.py (rozcestník, Novinky): hlavičku dostávají při generování z page(), ručně se neupravují.
 GENERATED = {"index.html", "aktualne.html", "zasedani.html", "404.html", "otevrena-data.html", "registr.html"}
 
 

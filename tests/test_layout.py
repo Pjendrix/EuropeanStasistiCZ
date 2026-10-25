@@ -62,7 +62,7 @@ def test_all_pages_reference_versioned_assets():
 def test_tabbar_five_equal_items_quiz_in_more():
     bar = layout.tabbar()
     labels = re.findall(r"<span>([^<]+)</span></(?:a|button)>", bar.split("</nav>")[0])
-    assert labels == ["Aktuálně", "Poslanci", "Hledat", "Hlasování", "Více"]
+    assert labels == ["Novinky", "Poslanci", "Hledat", "Hlasování", "Více"]
     assert "tab-quiz" not in bar and 'href="kviz"' in bar.split("</nav>")[1]
 
 
