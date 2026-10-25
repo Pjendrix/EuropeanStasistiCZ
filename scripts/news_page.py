@@ -228,7 +228,7 @@ def news_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     )
     body = f"""<div class="nv-wrap">
 <header class="nv-head"><h1>Novinky</h1>
-<p class="nv-meta">Export dat {fmt_date(release)} · sestaveno kódem z <a href="https://howtheyvote.eu">HowTheyVote.eu</a> a <a href="https://data.europarl.europa.eu">EP Open Data</a> · posledních 60 dní</p></header>
+<p class="nv-meta">Data k {fmt_date(release)} z <a href="https://howtheyvote.eu">HowTheyVote.eu</a> a <a href="https://data.europarl.europa.eu">EP Open Data</a> · posledních 60 dní</p></header>
 <div class="nv-filter" role="group" aria-label="Typ novinek" hidden>{chips}</div>
 {upcoming_html(up)}
 <div class="nv-timeline" id="nv-timeline">{"".join(html_blocks)}</div>

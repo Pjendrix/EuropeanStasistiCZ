@@ -236,6 +236,16 @@ def num(x: float) -> str:
     return str(int(x)) if float(x).is_integer() else repr(float(x))
 
 
+def fold_note(text: str, label: str = "") -> str:
+    """Vysvětlivka, která je na desktopu vidět celá a na mobilu se sbalí pod ⓘ (CSS .m-x / .m-fold).
+    label = krátký text před ⓘ, když vysvětlivka stojí samostatně. Obal musí být blokový prvek (div), ne <p>."""
+    summary = f"{label} ⓘ" if label else "ⓘ"
+    return (
+        f'<span class="m-x">{text}</span><details class="m-fold"><summary aria-label="{label or "Vysvětlení"}">{summary}</summary>'
+        f"<span>{text}</span></details>"
+    )
+
+
 def vote_title(v: dict) -> str:
     return v.get("title_cs") or v.get("title") or (v.get("procedure") or {}).get("title") or v.get("reference") or f"Hlasování {v['id']}"
 

@@ -12,6 +12,7 @@ from ep_groups import short_group
 import statements as stm
 from web_ui import cite_button as ui_cite_button
 from web_ui import correction_tag as ui_correction_tag
+from web_ui import fold_note
 from web_ui import (
     COMMITTEE_TYPE,
     CZ_GROUP_LABEL,
@@ -902,7 +903,7 @@ def work_strip(prof: dict, mep: dict, a_suffix: str) -> str:
         '<div class="mx-work"><div class="mx-sec-h"><h2 id="prace-prehled">Práce v Parlamentu</h2>'
         '<a class="small" href="#vlastni-prace">Podrobně ↓</a></div>'
         f'<div class="mx-w-row">{"".join(tiles)}</div>'
-        '<p class="small muted mx-w-note">Počty, ne hodnocení kvality. Zdroj: EP Open Data, u výsledků HowTheyVote.eu.</p></div>'
+        f'<div class="small muted mx-w-note">Zdroj: EP Open Data, u výsledků HowTheyVote.eu. {fold_note("Počty, ne hodnocení kvality.")}</div></div>'
     )
 
 
@@ -1380,17 +1381,19 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
     body = f"""<div class="back-row"><p class="small"><a href="poslanci">← Všichni poslanci</a></p>{compare}{share_button}</div>
 {hero}
 
+<nav class="subnav profile-nav" aria-label="Části profilu">
+  <a href="{here}#shrnuti">Přehled</a><a href="{here}#vlastni-prace">Práce</a><a href="{here}#posledni">Hlasování</a><a href="{
+        here
+    }#analyza">Analýza</a>
+  <a href="{here}#temata">Témata</a><a href="{here}#podrobnosti">Výbory a členství</a>
+</nav>
+
 <section class="mx-overview" id="shrnuti" aria-labelledby="dochazka">
 {work_strip(prof, mep, a_suffix)}
 <div class="mx-sec-h"><h2 id="dochazka">Hlasování a účast</h2>{bench_note}</div>
 <div class="metrics mx-kpis">{kpis}</div>
 <p class="source mx-src">{ui.source_line(release, prof.get("votes_to"))}</p>
 </section>
-
-<nav class="subnav profile-nav" aria-label="Části profilu">
-  <a href="{here}#vlastni-prace">Práce</a><a href="{here}#posledni">Hlasování</a><a href="{here}#analyza">Analýza</a>
-  <a href="{here}#temata">Témata</a><a href="{here}#podrobnosti">Výbory a členství</a>
-</nav>
 
 <section class="profile-part mx-part" id="hlasovani" aria-labelledby="posledni">
 <div class="mx-cols">

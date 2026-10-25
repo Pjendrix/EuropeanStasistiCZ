@@ -2709,3 +2709,59 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .ns-cz .cz-p img { width: 40px; height: 40px; grid-row: 1 / span 2; }
   .ns-cz .cz-p span { font-size: .85rem; }
 }
+
+/* Mobilní zjednodušení: méně textu a kratší stránky na úzkém displeji; desktop beze změny */
+.m-fold { display: none; }
+.m-fold summary { display: inline-flex; align-items: center; gap: .3rem; min-width: 32px; min-height: 32px; cursor: pointer; list-style: none; color: var(--link); font-weight: 700; }
+.m-fold summary::-webkit-details-marker { display: none; }
+.m-fold[open] > span { display: block; margin-top: .2rem; }
+@media (max-width: 560px) {
+  .m-x { display: none; }
+  .m-fold { display: inline-block; vertical-align: middle; }
+  .m-fold[open] { display: block; }
+
+  /* Úvod: hero bez půlkruhu, úkoly jen nadpis a odkazy */
+  #pt-svg { display: none; }
+  .pt-task > p:not(.pt-task-links) { display: none; }
+  .pt-task { gap: 4px; }
+
+  /* Profil: statistiky v jednom sloupci, definice pod ⓘ, popisek fotky pod fotkou */
+  .mx-kpis { grid-template-columns: minmax(0, 1fr); }
+  .mx-explain, .mx-gap-note { display: none; }
+  .mx-w-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+  .mx-w { padding: .6rem .65rem; }
+  .mx-w b { font-size: 1.45rem; }
+  .mx-w span { font-size: .82rem; line-height: 1.25; }
+  .mx-w small { font-size: .82rem; }
+  .mx-portrait figcaption { position: static; background: none; color: var(--muted); padding: 0; margin-top: .3rem; font-size: .82rem; line-height: 1.25; text-align: left; }
+
+  /* Seznam hlasování: bez tématu, typu a čísla dokumentu (jsou v detailu) */
+  #votes .cat-inline, #votes .vt-doc { display: none; }
+
+  /* Rozcestník Hlasování: témata ve dvou posuvných řádcích, bez mřížky teček (počty zůstávají) */
+  .tp-grid { grid-auto-flow: column; grid-template-columns: none; grid-template-rows: repeat(2, auto); grid-auto-columns: 72%;
+    overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding-bottom: .2rem; }
+  .tp-tile { scroll-snap-align: start; }
+  .vd-row { display: none; }
+
+  /* Poslanci: jen fotky po frakcích, půlkruh je na desktopu */
+  .del-panel { display: none; }
+
+  /* Novinky: filtr v jednom posuvném řádku, názvy hlasování bez podtržení */
+  .nv-filter { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 1rem; padding: 2px 16px; }
+  .nv-filter button { flex: none; }
+  .nv-vt a { text-decoration: none; }
+  .nv-vt a { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* Obecně: o něco menší mezery mezi bloky a menší písmo popisků */
+  .card { padding: 1rem; }
+  h2 { margin-top: 1.6rem; margin-bottom: .7rem; }
+  .small { font-size: .84rem; }
+  .source { margin-top: .7rem; }
+
+  /* Česká stopa: role pod jménem, ať se jméno neláme */
+  .ns-cz .cz-p { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: .5rem; align-items: center; line-height: 1.25; }
+  .ns-cz .cz-p img { grid-row: 1 / span 2; }
+  .ns-cz .cz-p span { font-size: .82rem; }
+}
+@media (max-width: 360px) { .tp-grid { grid-template-columns: none; } }
