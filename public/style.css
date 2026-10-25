@@ -2691,6 +2691,7 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 .cz-p span { color: var(--muted); }
 .ns-item:has(.ns-cz), .rd-proc:has(.ns-cz), .zs-pick:has(.ns-cz), .nv-tr:has(.ns-cz) {
   box-shadow: inset 4px 0 0 var(--gold); background: color-mix(in srgb, var(--gold) 9%, var(--surface)); padding-left: 12px; border-radius: var(--radius-sm);
+  --muted: color-mix(in srgb, var(--text) 72%, var(--surface)); /* šedý text na tónovaném pozadí s kontrastem ≥ 4,5:1 */
 }
 .nv-trace { list-style: none; padding-left: 0; }
 .nv-tr { padding: .4rem .6rem; margin: .3rem 0; }
