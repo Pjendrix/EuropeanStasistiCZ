@@ -2468,3 +2468,14 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 
 /* O11: dlouhé názvy hlasování (nad 120 znaků) menším písmem */
 main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }
+
+/* V3: Novinky na /aktualne */
+.nw-head-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }
+.nw-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .75rem; }
+.nw-item { display: grid; grid-template-columns: auto 1fr; gap: .15rem .75rem; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
+.nw-item time { color: var(--muted); font-size: .85rem; white-space: nowrap; }
+.nw-tag { justify-self: start; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.nw-head { grid-column: 1 / -1; font-weight: 700; }
+.nw-item p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .92rem; }
+.nw-prelim { border-style: dashed; }
+.nw-prelim .nw-tag { color: var(--text); }

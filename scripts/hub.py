@@ -21,6 +21,7 @@ from procedure_pages import procedure_url
 from compute_stats import ai_titles, apply_titles, procedure_titles
 from layout import MODULES
 from vote_kinds import KIND_LABELS, is_final
+from web_ui import CZ_GROUP_LABEL
 
 LIST_TITLES = {
     "laws": ("Nejnovější zákony", "Poslední závěrečná hlasování nebo prozatímní dohody v legislativním postupu."),
@@ -938,6 +939,80 @@ def hero_topic(vote: dict) -> str:
     return f'<span class="hm-topic">{chips}</span>' if chips else ""
 
 
+def news_item_html(x: dict) -> str:
+    """Jedna novinka (news.py): text skládá kód z hotových čísel, každá položka má odkaz."""
+    k = x["kind"]
+    href = esc(x["href"])
+    if k == "session":
+        united = (
+            f" Čeští poslanci hlasovali jednotně ve {fmt_num(x['united'])} z {fmt_num(x['considered'])}." if x.get("considered") else ""
+        )
+        head = f"Zasedání {_range(x['from'], x['date'])}"
+        text = (
+            f"{fmt_num(x['votes'])} jmenovitých hlasování, z toho {fmt_num(x['main'])} závěrečných "
+            f"({fmt_num(x['adopted_main'])} přijato).{united}"
+        )
+        tag = "zasedání"
+    elif k == "group_change":
+        head = f"{esc(x['name'])}: {'přešla' if x['female'] else 'přešel'} do frakce {esc(x['to_group'])}"
+        text = f"Dříve {esc(x['from_group'])}. Podle EP Open Data, od {fmt_date(x['date'])}."
+        tag = "změna frakce"
+    elif k in ("report", "shadow_report"):
+        role = "zpravodajka" if x["female"] else "zpravodaj"
+        role = f"stínová {role}" if x["female"] and k == "shadow_report" else f"stínový {role}" if k == "shadow_report" else role
+        head = f"{esc(x['name'])} ({role})"
+        text = esc(x.get("title") or x.get("label") or "")
+        tag = "stínová zpráva" if k == "shadow_report" else "nová zpráva"
+    elif k == "preliminary":
+        head = f"Předběžné výsledky {fmt_date(x['date'])}"
+        text = f"{fmt_num(x['votes'])} hlasování z EP Open Data, budou potvrzena exportem HowTheyVote. Do statistik se nepočítají."
+        tag = "předběžné"
+    elif k == "agenda":
+        head = f"Na programu: zasedání {_range(x['date'], x['to'] or x['date'])}"
+        text = f"{fmt_num(x['items'])} bodů k hlasování v návrhu programu EP." if x.get("items") else "Návrh programu EP."
+        tag = "chystá se"
+    else:
+        return ""
+    cls = " nw-prelim" if x.get("preliminary") else ""
+    return (
+        f'<li class="nw-item{cls}"><time datetime="{x["date"]}">{fmt_date(x["date"])}</time>'
+        f'<span class="nw-tag">{tag}</span><a class="nw-head" href="{href}">{head}</a><p>{text}</p></li>'
+    )
+
+
+def news_html(data_dir: Path) -> str:
+    """Sekce Novinky na /aktualne (V3): časová osa z news.py; bez položek prázdná."""
+    import datetime as _dt
+
+    from news import build_news, validate
+    from preliminary import check_day, htv_last_day, pending_days
+
+    meps = (_read(data_dir / "meps.json") or {}).get("meps", [])
+    groups = _read(data_dir / "groups.json") or []
+
+    def group_label(g):
+        go = next((y for y in groups if y.get("ep_code") == g["code"] or y["code"] == g["code"]), None)
+        return CZ_GROUP_LABEL.get((go or {}).get("code")) or (go or {}).get("short_label") or g.get("short_label") or g["code"]
+
+    prelim_dir = data_dir / "preliminary"
+    days = [d for d in (_read(prelim_dir / f"{x}.json") for x in pending_days(prelim_dir, htv_last_day(data_dir / "votes"))) if d]
+    for d in days:
+        check_day(d)
+    fresh = _read(data_dir / "freshness.json") or {}
+    today = (fresh.get("release") or _dt.date.today().isoformat())[:10]
+    items = build_news(
+        _read(data_dir / "session.json"), meps, _read(data_dir / "own_work.json"), _read(data_dir / "agenda.json"), days, today, group_label
+    )
+    validate(items)
+    if not items:
+        return ""
+    return (
+        '<section class="hm-wrap nw" aria-labelledby="h-news"><div class="nw-head-row"><h2 id="h-news">Co se <strong>dělo</strong></h2>'
+        f'<p class="small muted">Posledních {fmt_num(60)} dní, sestaveno kódem z dat HowTheyVote.eu a EP Open Data (CC BY 4.0), k {fmt_date(today)}.</p></div>'
+        f'<ol class="nw-list">{"".join(news_item_html(x) for x in items)}</ol></section>'
+    )
+
+
 def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     """Úvodní stránka: hero s hemicyklem posledních závěrečných hlasování (data/home.json, build_home.py), hledání,
     pruh faktů, tři cesty do dat, další pohledy a pás zásad. Všechna čísla z JSON; funguje i bez JavaScriptu."""
@@ -1078,7 +1153,7 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 </section>"""
 
     nxt = next_session_html(home.get("agenda"), procs=agenda_procedures(data_dir))
-    body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
+    body = hero + news_html(data_dir) + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
     title = "Novinky – EP Watch CZ"
     desc = "Poslední hlasování, zasedání a co se chystá: jak hlasují čeští europoslanci. Jen ověřená data z oficiálních zdrojů."
     # vlastní titulek a canonical na /aktualne: úvod „/“ (portal.py) je jiná stránka, ne duplicita
