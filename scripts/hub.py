@@ -18,7 +18,7 @@ from build_pages import RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_p
 from categories import LABEL, icon_svg
 from hero_art import STARS
 from procedure_pages import procedure_url
-from compute_stats import apply_titles, procedure_titles
+from compute_stats import ai_titles, apply_titles, procedure_titles
 from layout import MODULES
 from vote_kinds import KIND_LABELS, is_final
 
@@ -352,7 +352,10 @@ def radar_steps(steps: list[dict], reached: str | None) -> str:
 
 def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     title = r.get("title_cs") or r.get("title_en") or r["label"] or r["procedure"]
-    comm, chip = _committee_html(r.get("committee"), root)
+    comm, _ = _committee_html(r.get("committee"), root)
+    # čip tématu bez ikony: na radaru je přes sto karet a ikony by zdvojnásobily počet uzlů DOM (O8)
+    cat_key = (r.get("committee") or {}).get("category")
+    chip = f'<a class="topic-chip" href="{root}votes?c={cat_key}">{esc(LABEL[cat_key])}</a> ' if cat_key in LABEL else ""
     # číslo procedury vede na stránku Příběh zákona (z/, procedure_pages.py), ta odkazuje dál na Legislativní observatoř
     story = procedure_url(r.get("label"), root)
     label = (
@@ -391,7 +394,18 @@ def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     return (
         f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
         f'<h3 class="rd-title">{_title_link(title, r.get("label"), root)}</h3><p class="rd-meta small">{chip}{head}</p>'
-        f"{_cz_html(r['cz'], root)}{radar_steps(r['steps'], r['reached'])}{tail}</li>"
+        f"{_cz_html(r['cz'], root)}{tail}{radar_steps_details(r['steps'], r['reached'])}</li>"
+    )
+
+
+def radar_steps_details(steps: list[dict], reached: str | None) -> str:
+    """Celá osa procedury sbalená (O8): na kartě je jen poslední krok a příští termín. Kroky jsou v <template>, takže
+    stránka nemá v DOM tisíce uzlů; radar.js je vloží při rozbalení."""
+    if not steps:
+        return ""
+    return (
+        f'<details class="rd-tl"><summary>Celý průběh ({fmt_num(sum(1 for x in steps if x.get("date")))} z {fmt_num(len(steps))} kroků)</summary>'
+        f"<template>{radar_steps(steps, reached)}</template></details>"
     )
 
 
@@ -425,7 +439,24 @@ def radar_html(radar: dict | None, root: str = "") -> str:
         sess = (
             '<section class="card" id="zasedani"><h2>Nejbližší zasedání</h2><p class="muted">Program zatím není zveřejněný.</p></section>'
         )
-    active = "".join(radar_proc_card(r, root) for r in radar.get("active", []))
+
+    # O8: rozpracované po stavu, nejblíž hlasování nahoře (pořadí uvnitř skupiny zůstává z radar.py)
+    def stage(r):
+        return "program" if r.get("next_vote") else "trilogue" if r.get("reached") == "trilogue" else "committee"
+
+    stages = [
+        ("program", "Na programu pléna"),
+        ("trilogue", "Jednání s Radou (trialog)"),
+        ("committee", "Ve výboru"),
+    ]
+    act = radar.get("active", [])
+    active = "".join(
+        f'<h3 class="rd-stage">{label} <span class="muted">({fmt_num(len(rs))})</span></h3><ol class="rd-procs">'
+        + "".join(radar_proc_card(r, root) for r in rs)
+        + "</ol>"
+        for key, label in stages
+        if (rs := [r for r in act if stage(r) == key])
+    )
     done = "".join(radar_proc_card(r, root, True) for r in radar.get("done", []))
     pending = (
         f'<p class="small muted">U {fmt_num(radar["without_events"])} procedur se průběh ještě stahuje, doplní se při další aktualizaci.</p>'
@@ -437,10 +468,15 @@ def radar_html(radar: dict | None, root: str = "") -> str:
         f'<section class="rd-block" id="rozpracovane" aria-labelledby="rd-h2"><h2 id="rd-h2">Rozpracované zákony s českou stopou</h2>'
         f'<p class="muted">Legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem a o kterých plénum ještě '
         f"nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}"
-        + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
+        + (active or '<p class="muted">Žádné takové procedury.</p>')
         + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
         '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
-        + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
+        + (
+            f'<details class="rd-tl rd-done"><summary>Zobrazit {fmt_num(len(radar.get("done", [])))} odhlasovaných procedur</summary>'
+            f'<template><ol class="rd-procs">{done}</ol></template></details>'
+            if done
+            else '<p class="muted">Za poslední rok nic.</p>'
+        )
         + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
         '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
         f'<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) · <a href="{root}o-projektu#radar">jak radar funguje</a></p>'
@@ -469,7 +505,7 @@ def votes_hero_html(data_dir: Path) -> str:
     <div class="hero-copy">
       <p class="eyebrow">10. volební období · data k {fmt_date(overview["period"]["to"])}</p>
       <h1>Jmenovitá hlasování</h1>
-      <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
+      <p class="lead">Všechna jmenovitá hlasování v plénu od 16. 7. 2024 a jak v nich hlasovali čeští poslanci.</p>
       <form class="vo-search" action="votes" method="get" role="search">
         <label for="vo-q" class="sr-only">Hledat hlasování</label>
         <input id="vo-q" name="q" type="search" placeholder="Hledat hlasování…" aria-label="Hledat hlasování podle názvu nebo čísla" autocomplete="off">
@@ -718,7 +754,7 @@ def session_people(data_dir: Path, meps_by_id: dict) -> dict | None:
     a, b = session["from"], session["to"]
     roles = (_read(data_dir / "vote_roles.json") or {}).get("votes") or {}
     votes = [v for m in sorted({a[:7], b[:7]}) for v in (_read(data_dir / "votes" / f"{m}.json") or {"votes": []})["votes"]]
-    apply_titles(votes, procedure_titles(data_dir))
+    apply_titles(votes, procedure_titles(data_dir), ai_titles(data_dir))
     speeches = (_read(data_dir / "speeches.json") or {}).get("meps") or {}
     own = (_read(data_dir / "own_work.json") or {}).get("meps") or {}
     people: dict[int, dict] = {}
@@ -927,12 +963,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
     month_cache: dict[str, list[dict]] = {}
-    titles = procedure_titles(data_dir)  # české názvy procedur jako jinde na webu
+    titles, ai = procedure_titles(data_dir), ai_titles(data_dir)  # české názvy procedur jako jinde na webu
     share = {}
     for x in votes:
         if x["month"] not in month_cache:
             month_cache[x["month"]] = (_read(data_dir / "votes" / f"{x['month']}.json") or {"votes": []})["votes"]
-            apply_titles(month_cache[x["month"]], titles)
+            apply_titles(month_cache[x["month"]], titles, ai)
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))
@@ -974,9 +1010,9 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     hero = f"""<section class="hm-hero" aria-labelledby="h1">
   <div class="hm-inner">
     <div class="hm-copy">
-      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
-      <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
-      <p class="hm-lead">Hlasování, účast a práce na textech z oficiálních dat. Bez pořadí a bez hodnocení.</p>
+      {next_vote_html(home.get("agenda")) or '<p class="hm-eyebrow"><i aria-hidden="true"></i>10. volební období · od 16. 7. 2024</p>'}
+      <h1 id="h1">Novinky: <strong>co se v Bruselu dělo<span class="hm-stop" aria-hidden="true"></span></strong></h1>
+      <p class="hm-lead">Poslední hlasování, zasedání a co se chystá. Z oficiálních dat, bez pořadí a bez hodnocení.</p>
       {session_line_html(session_facts(data_dir))}
       <ul class="hm-quick" aria-label="Rychlý přístup">{quick}</ul>
     </div>
@@ -1043,9 +1079,10 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     nxt = next_session_html(home.get("agenda"), procs=agenda_procedures(data_dir))
     body = hero + (f'<div class="hm-wrap hm-next">{nxt}</div>' if nxt else "") + bento + more + band
-    title = "Aktuálně – EP Watch CZ"
+    title = "Novinky – EP Watch CZ"
     desc = "Poslední hlasování, zasedání a co se chystá: jak hlasují čeští europoslanci. Jen ověřená data z oficiálních zdrojů."
-    meta = og_meta(title, desc, "aktualne.html", base_url, None, "EP Watch CZ – fakta a data o českých europoslancích")
+    # vlastní titulek a canonical na /aktualne: úvod „/“ (portal.py) je jiná stránka, ne duplicita
+    meta = og_meta(title, desc, "aktualne.html", base_url, None, "EP Watch CZ – novinky z Evropského parlamentu")
     html = page(
         title,
         body,

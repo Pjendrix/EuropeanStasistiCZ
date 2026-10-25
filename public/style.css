@@ -225,7 +225,7 @@ main.home { max-width: none; padding: 0; }
 .muted { color: var(--muted); }
 .small { font-size: .875rem; }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 1.25rem; }
-.split-panels { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: .5rem; }
+.split-panels { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem; margin-top: .5rem; } /* karty nahoru, bez prázdna pod kratší (O11) */
 .split-panels > * { flex: 1 1 440px; min-width: 0; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: .75rem 1.5rem; margin: 2.5rem 0 1rem; }
 .section-head h2 { margin: 0; font-size: 1.7rem; letter-spacing: -.02em; }
@@ -1343,13 +1343,6 @@ section.hm-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0,
   .tabbar [aria-current="page"] { color: var(--text); }
   .tabbar [aria-current="page"] svg { background: var(--accent-soft); color: var(--accent); }
   .tabbar a:active svg, .tabbar .tab-more:active svg { transform: scale(.94); }
-  /* Kvíz uprostřed lišty: kulaté zlaté tlačítko přesahující lištu nahoru */
-  .tabbar .tab-quiz { color: var(--bench); }
-  .tabbar .tab-quiz i { display: grid; place-items: center; width: 54px; height: 54px; margin-top: -24px; border-radius: 50%; background: var(--gold); color: var(--navy);
-    box-shadow: 0 0 0 5px var(--surface), 0 10px 22px -10px rgba(245, 158, 11, .8); transition: transform .2s ease; }
-  .tabbar .tab-quiz svg, .tabbar .tab-quiz[aria-current="page"] svg { width: 26px; height: 26px; padding: 0; background: none; color: var(--navy); }
-  .tabbar .tab-quiz:active i { transform: scale(.94); }
-  .tabbar .tab-quiz[aria-current="page"] { color: var(--text); }
 
   .sheet {
     position: fixed; inset: auto 0 0 0; margin: 0; width: 100%; max-width: none; max-height: 82vh; overflow: auto;
@@ -1563,6 +1556,10 @@ main.qz-page { max-width: 1080px; }
 .qz-intro h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; font-weight: 300; letter-spacing: -.03em; margin: .5rem 0 .75rem; }
 .qz-intro h1 b, .qz-rs-head h1 b { font-weight: 800; }
 .qz-lead { font-size: 1.06rem; color: var(--muted); margin: 0 0 1.3rem; max-width: 34em; }
+.qz-opts { margin-bottom: .9rem; }
+.qz-opts > summary { cursor: pointer; padding: .5rem 0; color: var(--muted); }
+.qz-opts > summary b { color: var(--text); }
+.qz-opts[open] > summary { margin-bottom: .6rem; }
 .qz-len { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: .9rem; }
 .qz-len-opt { position: relative; cursor: pointer; }
 .qz-len-opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
@@ -2002,9 +1999,7 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
 .pt-qcard:nth-child(2) { transform: translateY(-11px) scale(.95); opacity: .6; }
 .pt-qcard:empty { min-height: 60px; }
 .pt-qcard { position: relative; } .pt-qcard:last-child { z-index: 1; }   /* přední karta nad zadními (ty mají transform) */
-.pt-ops { display: flex; gap: 6px; margin-top: 8px; font-size: .74rem; font-weight: 700; }
-.pt-ops > * { padding: .15rem .55rem; border-radius: 99px; background: rgba(248, 250, 252, .1); color: #CBD5E1; }
-.pt-ops b { background: #5BE49B; color: #0A1226; }
+.pt-ops { display: block; margin-top: 8px; font-size: .8rem; font-weight: 600; color: #CBD5E1; }
 .pt-cta { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: .75rem 1.25rem; border-radius: 999px;
   background: var(--gold); color: var(--navy); font-weight: 800; }
 .pt-quiz:hover .pt-cta { background: #FBBF24; }
@@ -2058,6 +2053,11 @@ a.pt-tile:hover, .pt-tile:has(a:hover) { border-color: color-mix(in srgb, var(--
   .pt-mosaic a:nth-child(n + 16) { display: none; }
   .pt-stats { grid-template-columns: minmax(0, 1fr); }
   .pt-big { font-size: 1.8rem; }
+}
+@media (max-width: 560px) {
+  /* O11: dlaždice úvodu na úzkém mobilu (dohodnutý zlom 560 px) v jednom sloupci (ve dvou sloupcích se texty lámaly po dvou slovech) */
+  .pt-bento { grid-template-columns: minmax(0, 1fr); }
+  .pt-tile, .pt-now, .pt-quiz, .pt-an, .pt-topics, .pt-about { grid-column: span 1; }
 }
 @media (prefers-reduced-motion: reduce) { .pt-logo, .pt-d::before { transition: none; } }
 
@@ -2442,3 +2442,29 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 }
 @media (prefers-reduced-motion: reduce) { .js .in .mx-kpi .bench-dot { animation: none; } }
 }
+
+/* Stránka 404 (O4) */
+.nf-search { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; margin: 1rem 0; }
+.nf-search label { flex-basis: 100%; font-weight: 600; }
+.nf-search input { flex: 1 1 14rem; min-height: 44px; padding: 0 .8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; }
+.nf-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; padding: 0; list-style: none; font-weight: 600; }
+
+/* O10: popisky „EP:“ a „Češi:“ v kartách hlasování */
+.res-badge .who, .cz-counts .who { font-weight: 500; color: var(--muted); }
+
+/* O9: věta pod metrikou, všechna / závěrečná vedle sebe */
+.mx-explain { font-size: .84rem; line-height: 1.4; color: var(--muted); margin: .35rem 0 0; }
+.mx-final { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-top: .45rem; font-size: .84rem; color: var(--muted); }
+.mx-final b { color: var(--text); }
+.mx-gap-note { font-size: .84rem; line-height: 1.4; margin: .3rem 0 0; }
+.mx-periods { margin-top: .5rem; }
+.mx-periods p { margin: 0 0 .2rem; }
+.mx-periods li { margin: .1rem 0; }
+
+/* O8: radar po stavech, osa procedury sbalená */
+.rd-stage { margin: 1.25rem 0 .5rem; font-size: 1.05rem; }
+.rd-tl { margin-top: .5rem; }
+.rd-tl > summary { cursor: pointer; font-size: .875rem; color: var(--muted); }
+
+/* O11: dlouhé názvy hlasování (nad 120 znaků) menším písmem */
+main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }

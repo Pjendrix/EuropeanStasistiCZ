@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from urllib.parse import quote
 import sys
 from html import escape
 from pathlib import Path
@@ -389,12 +390,16 @@ def topic_text(cats: list[str] | None) -> str:
     return f"{CAT_LABEL[known[0]]}{f' (+{len(known) - 1})' if len(known) > 1 else ''}" if known else ""
 
 
+OFFICIAL_TITLE_NOTE = "Český název je oficiální název procedury z EP Open Data."
+AI_TITLE_NOTE = "EP k tomuto hlasování český název nevede, jde o překlad AI (Claude Haiku)."
+
+
 def original_title_html(v: dict) -> str:
     """Původní anglický název z HowTheyVote, když web ukazuje oficiální český název procedury z EP Open Data."""
     if not v.get("title_cs") or not v.get("title") or v["title"] == v["title_cs"]:
         return ""
     return (
-        f'<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování '
+        f'<p class="small muted">{AI_TITLE_NOTE if v.get("title_cs_ai") else OFFICIAL_TITLE_NOTE} Původní název hlasování '
         f"(HowTheyVote.eu): {esc(v['title'])}</p>"
     )
 
@@ -412,7 +417,7 @@ def vote_share_data(
     Strany se jmény poslanců (card_items); rows zůstává kvůli volajícím, karta ho nepotřebuje."""
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
-    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    desc_cs = v.get("description_cs") or translate(v.get("description"))
     c = v["counts"]
     return {
         "title": title_txt,
@@ -446,7 +451,7 @@ def vote_page(
 ) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
-    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    desc_cs = v.get("description_cs") or translate(v.get("description"))
     c = v["counts"]
     total = [c["for"], c["against"], c["abstention"], c["did_not_vote"]]
     cz = active_positions(v, meps_by_id)
@@ -542,7 +547,7 @@ def vote_page(
     share_script = f'<script type="application/json" id="share-context">{json_script(share_ctx)}</script>\n'
     body = f"""{back_row(f"{ROOT}votes?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
-<h1>{esc(title_txt)}</h1>
+<h1{' class="long"' if len(title_txt) > LONG_TITLE else ""}>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 {story}{vote_meaning_html(kind, ROOT)}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
@@ -645,12 +650,59 @@ def build(data_dir: Path) -> dict[str, str]:
     res = session_page(data_dir, base_url)
     if res:
         out[res[0]] = res[1]
+    for path in out:
+        if REPORT_PAGES.match(path):
+            out[path] = with_report_link(out[path], page_url(base_url or "https://epwatch.cz", path))
+    out["404.html"] = not_found_page()
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
-        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/")), lastmod, data_day))
+        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/") and p != "404.html"), lastmod, data_day))
         out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
     return out
+
+
+# Odkaz „Našli jste chybu?“ na profilu, hlasování a straně (O5): formulář na /o-projektu s předvyplněnou adresou stránky.
+REPORT_PAGES = re.compile(r"(p|v|s)/[^/]+\.html")
+
+
+def with_report_link(html: str, url: str) -> str:
+    link = (
+        f'<p class="report-link small"><a href="/o-projektu?stranka={quote(url, safe="")}#kontakt">Našli jste chybu?</a> '
+        "Napište nám, ověříme ji proti zdroji a opravu zveřejníme.</p>"
+    )
+    if html.count("\n</main>") != 1:
+        raise FormatError("stránka bez jediného </main>, odkaz na nahlášení chyby nejde vložit")
+    return html.replace("\n</main>", f"\n{link}\n</main>")
+
+
+LONG_TITLE = 120  # od kolika znaků je H1 hlasování menší (O11)
+
+
+def not_found_page() -> str:
+    """public/404.html (Vercel ji vrátí sám u neexistující adresy, O4). Odkazy od kořene webu, protože se ukáže na libovolné
+    adrese (/p/x/y); hledání bez JS odešle dotaz na Poslance, s JS ho doplní našeptávač z app.js."""
+    body = """<section class="page-head">
+  <h1>Stránka nenalezena</h1>
+  <p class="lead">Adresa neexistuje nebo se změnila (např. dřívější <code>/mep?id=…</code> je dnes <code>/p/…</code>).</p>
+</section>
+<form class="nf-search" role="search" action="/poslanci" method="get">
+  <label for="nf-q">Najít poslance, stranu nebo hlasování</label>
+  <input id="nf-q" name="q" type="search" autocomplete="off" placeholder="Jméno, strana nebo téma…">
+  <button type="submit" class="btn">Hledat</button>
+</form>
+<ul class="nf-links">
+  <li><a href="/poslanci">Poslanci</a></li>
+  <li><a href="/hlasovani">Hlasování</a></li>
+  <li><a href="/">Úvod</a></li>
+</ul>"""
+    return page(
+        "Stránka nenalezena – EP Watch CZ",
+        body,
+        root="/",
+        meta='<meta name="robots" content="noindex">\n',
+        scripts='<script type="module" src="/app.js"></script>\n',
+    )
 
 
 STATIC_PAGES = [

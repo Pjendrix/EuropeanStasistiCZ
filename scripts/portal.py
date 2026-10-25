@@ -144,7 +144,8 @@ def tiles_html(data_dir: Path, home: dict, overview: dict, groups: list[dict]) -
     cards = (
         '<span class="pt-qcard"></span><span class="pt-qcard"></span>'
         + f'<span class="pt-qcard">{esc((sums.get(short[0].get("procedure") or "") or {}).get("nazev") or short[0]["title"])}'
-        + '<span class="pt-ops"><b>Pro</b><span>Proti</span><span>Zdržel/a</span></span></span>'
+        # možnosti jako prostý text, ne tlačítka: v náhledu se neklikají (O11)
+        + '<span class="pt-ops">Odpovíte: pro · proti · zdržel/a se</span></span>'
         if short
         else ""
     )
@@ -375,7 +376,7 @@ def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     )
     hero = f"""<section class="pt-hero" aria-labelledby="h1">
   <div class="pt-inner">
-    <p class="pt-eyebrow">Nezávislý přehled z oficiálních dat · od 16. 7. 2024</p>
+    <p class="pt-eyebrow">Nezávislý přehled z oficiálních dat · od 16. 7. 2024</p>
     <div class="pt-art" id="pt-art">
       <h1 id="h1">Co dělají v Bruselu <strong>čeští europoslanci<span class="hm-stop" aria-hidden="true"></span></strong></h1>
       {hero_svg(first, colors)}

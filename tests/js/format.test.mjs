@@ -21,9 +21,11 @@ test("pct a fmtPct: bez jmenovatele null a pomlčka", () => {
 });
 
 test("datum a měsíc česky", () => {
-  assert.equal(fmtDate("2025-07-09"), "9. 7. 2025");
-  assert.equal(fmtDate("2025-07-09T10:00:00Z"), "9. 7. 2025");
+  assert.equal(fmtDate("2025-07-09"), "9.\u00a07.\u00a02025");
+  assert.equal(fmtDate("2025-07-09T10:00:00Z"), "9.\u00a07.\u00a02025");
   assert.equal(fmtDate(null), "");
+  // pevné mezery: datum se na konci řádku nerozdělí (O11)
+  assert.ok(!/ /.test(fmtDate("2024-07-16")));
   assert.equal(fmtMonth("2024-12"), "prosinec 2024");
 });
 
@@ -98,7 +100,7 @@ test("rollSession: před, během, po zasedání a den po posledním dni (úkol 3
 });
 
 test("fmtRange jako _range v hub.py", () => {
-  assert.equal(fmtRange("2026-11-11", "2026-11-12"), "11.–12. 11. 2026");
-  assert.equal(fmtRange("2026-09-30", "2026-10-02"), "30. 9. – 2. 10. 2026");
-  assert.equal(fmtRange("2026-11-11", "2026-11-11"), "11. 11. 2026");
+  assert.equal(fmtRange("2026-11-11", "2026-11-12"), "11.–12.\u00a011.\u00a02026");
+  assert.equal(fmtRange("2026-09-30", "2026-10-02"), "30.\u00a09. – 2.\u00a010.\u00a02026");
+  assert.equal(fmtRange("2026-11-11", "2026-11-11"), "11.\u00a011.\u00a02026");
 });

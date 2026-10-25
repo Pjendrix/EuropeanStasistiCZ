@@ -147,7 +147,7 @@ function openSearch() {
   searchDlg.showModal();
   searchDlg.querySelector("#site-q").focus();
 }
-searchBtn?.addEventListener("click", (ev) => { ev.preventDefault(); openSearch(); });
+document.querySelectorAll(".search-btn, .tab-search").forEach((el) => el.addEventListener("click", (ev) => { ev.preventDefault(); openSearch(); }));
 document.addEventListener("keydown", (ev) => {
   const inField = /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable;
   const slash = ev.key === "/" && !ev.ctrlKey && !ev.metaKey && !ev.altKey && !inField;

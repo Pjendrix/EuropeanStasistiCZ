@@ -134,7 +134,7 @@ def test_home_hero_hemicycle_facts_and_paths(data_dir):
     (data_dir / "home.json").write_text(json.dumps(home), encoding="utf-8")
     pages = bp.build(data_dir)
     html = pages["aktualne.html"]  # dřívější úvod je na /aktualne, „/“ je rozcestník (test_portal.py)
-    assert "<title>Aktuálně – EP Watch CZ</title>" in html and 'src="hub.js?v=' in html
+    assert "<title>Novinky – EP Watch CZ</title>" in html and 'src="hub.js?v=' in html
     assert 'id="hub-q"' not in html  # pole hledání v heru má jen rozcestník, tady jen tlačítko v liště
     assert 'data-page="now" aria-current="page"' in html
     first = home["votes"][0]
@@ -522,3 +522,26 @@ def test_titles_link_to_procedure_story():
     assert 'href="z/2026-2079-DEC"' in profile_page.own_item(own)
     question = {"id": "E-10-2026-000001", "label": "E-001/2026", "url": "https://ep.example/q", "title": {"cs": "MOCK"}, "type": "question"}
     assert 'href="https://ep.example/q"' in profile_page.own_item(question)
+
+
+def test_not_found_page_links_from_root():
+    html = bp.not_found_page()
+    assert "<h1>Stránka nenalezena</h1>" in html and 'name="robots" content="noindex"' in html
+    for href in ('href="/poslanci"', 'href="/hlasovani"', 'href="/"', 'action="/poslanci"', 'href="/style.css'):
+        assert href in html
+
+
+def test_report_link_prefills_page_url():
+    html = bp.with_report_link("<main>\nx\n</main>\n", "https://epwatch.cz/p/1")
+    assert 'href="/o-projektu?stranka=https%3A%2F%2Fepwatch.cz%2Fp%2F1#kontakt"' in html and "Našli jste chybu?" in html
+    assert bp.REPORT_PAGES.fullmatch("p/1.html") and bp.REPORT_PAGES.fullmatch("s/7.html") and not bp.REPORT_PAGES.fullmatch("d/1-2.html")
+
+
+def test_final_gap_sentence_only_over_10_pp():
+    import profile_page as pp
+
+    m = {"gender": "M"}
+    assert pp.final_gap_sentence("group_loyalty", [743, 1000], [586, 1000], m).endswith("(rozdíl 15,7 p. b.).")
+    assert "častěji" in pp.final_gap_sentence("group_loyalty", [743, 1000], [586, 1000], m)
+    assert pp.final_gap_sentence("attendance", [883, 1000], [887, 1000], m) == ""
+    assert pp.final_gap_sentence("attendance", [500, 1000], None, m) == ""

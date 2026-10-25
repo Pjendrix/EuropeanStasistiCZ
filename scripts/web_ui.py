@@ -162,7 +162,7 @@ def fmt_date(iso: str | None) -> str:
     if not iso:
         return ""
     y, m, d = iso[:10].split("-")
-    return f"{int(d)}. {int(m)}. {y}"
+    return f"{int(d)}.{NBSP}{int(m)}.{NBSP}{y}"  # pevné mezery: datum se nezalomí (O11); dvojče fmtDate ve format.js
 
 
 def fmt_month(ym: str) -> str:
@@ -404,11 +404,12 @@ def kind_tag(v: dict) -> str:
     return '<span class="tag">hlavní</span>' if v.get("is_main") else ""
 
 
-def result_html(v: dict) -> str:
+def result_html(v: dict, ep: bool = False) -> str:
+    """Dvojče resultHtml v public/lib/ui.js; ep = popisek „EP:“ v kartách vedle hlasů Čechů (O10)."""
     icon = {"ADOPTED": "✓", "REJECTED": "✕"}.get(v.get("result"), "–")
     return (
         f'<span class="res-badge res-{v.get("result") or "NONE"}"><i class="res-ic" aria-hidden="true">{icon}</i>'
-        f'<span class="res-txt">{esc(result_text(v))}</span></span>'
+        f'{'<span class="who">EP:</span> ' if ep else ""}<span class="res-txt">{esc(result_text(v))}</span></span>'
     )
 
 
@@ -417,7 +418,7 @@ def vote_row(v: dict, extra: str = "") -> str:
         f'<tr><td class="num date">{fmt_date(v["date"])}</td>'
         f'<td class="title"><a class="vote-title" href="{vote_url(v)}">{esc(vote_title(v))}</a>'
         f'<div class="small muted">{kind_tag(v)}{esc(vote_subtitle(v))}</div></td>{extra}'
-        f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v)}</td></tr>'
+        f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v, ep=True)}</td></tr>'
     )
 
 
@@ -440,7 +441,7 @@ def bench_row(label: str, pair, median: float | None, ref_label: str, na_text: s
         note = (
             f"stejně jako {ref_label} ({fmt_pct(median)})"
             if d == 0
-            else f"o {a} p. b. {'víc' if d > 0 else 'méně'} než {ref_label} ({fmt_pct(median)})"
+            else f"o {a}{NBSP}p.{NBSP}b. {'víc' if d > 0 else 'méně'} než {ref_label} ({fmt_pct(median)})"
         )
     below = f" Hodnota je pod rozsahem osy ({fmt_pct(v)})." if v < BENCH_MIN else ""
     aria = f"{label} {fmt_pct(v)}{f', {ref_label} {fmt_pct(median)}' if has_med else ''}"
@@ -481,8 +482,12 @@ class Ui:
         out = self.info_button(f'{html}<div class="pop-acts">{share}{cite_btn}</div>', "Definice, sdílení a citace")
         return out.replace('class="info-wrap"', 'class="info-wrap corner"', 1)
 
-    def source_line(self, release: str | None) -> str:
-        date = f" · data k {fmt_date(release[:10])}" if release and re.match(r"\d{4}-\d{2}-\d{2}", release) else ""
+    def source_line(self, release: str | None, votes_to: str | None = None) -> str:
+        """Dvojče sourceLine v ui.js: jednotně „hlasování do … · export …“ (O11)."""
+        parts = ([f"hlasování do {fmt_date(votes_to)}"] if votes_to else []) + (
+            [f"export {fmt_date(release[:10])}"] if release and re.match(r"\d{4}-\d{2}-\d{2}", release) else []
+        )
+        date = "".join(f" · {x}" for x in parts)
         return f'Zdroj: <a href="{HTV_SOURCE}">HowTheyVote.eu</a> · <a href="{EP_SOURCE}">EP Open Data</a>{date}' + self.info_button(
             f'<p><a href="{HTV_SOURCE}">HowTheyVote.eu</a> (export {esc(release or "")}, licence ODbL) a <a href="{EP_SOURCE}">EP Open Data</a> (CC BY 4.0).\n'
             f'      Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.\n'

@@ -75,8 +75,9 @@ export function mepUrl(id) {
   return `p/${id}`;
 }
 
+// Hlasy českých poslanců s popiskem „Češi:“, aby se nepletly s výsledkem celého EP (O10).
 export function czCountsHtml(cz) {
-  return `<span class="cz-counts"><b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
+  return `<span class="cz-counts"><span class="who">Češi:</span> <b>${cz[0]} pro</b> · <b>${cz[1]} proti</b> <small>· ${cz[2]} zdrž. · ${cz[3]} nehl.</small></span>`;
 }
 
 export function photoUrl(mep, thumb = false) {
@@ -223,9 +224,10 @@ export function czPartyRowsHtml(rows) {
 }
 
 // Výsledek s ikonou (✓ přijato, ✕ zamítnuto); ikona je jen doplněk textu, barvy pro/proti se nepoužívají.
-export function resultHtml(v) {
+// ep = popisek „EP:“ v kartách, kde je vedle i hlasování Čechů (O10).
+export function resultHtml(v, ep = false) {
   const icon = { ADOPTED: "✓", REJECTED: "✕" }[v.result] || "–";
-  return `<span class="res-badge res-${v.result || "NONE"}"><i class="res-ic" aria-hidden="true">${icon}</i><span class="res-txt">${esc(resultText(v))}</span></span>`;
+  return `<span class="res-badge res-${v.result || "NONE"}"><i class="res-ic" aria-hidden="true">${icon}</i>${ep ? '<span class="who">EP:</span> ' : ""}<span class="res-txt">${esc(resultText(v))}</span></span>`;
 }
 
 export function setNav(page) {
@@ -285,7 +287,10 @@ export function sortable(table, columns, rows, render, initial) {
 
 export function sourceLine(stats) {
   const rel = stats?.sources?.votes?.release;
-  const date = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? ` · data k ${fmtDate(rel.slice(0, 10))}` : "";
+  // jednotně „hlasování do … · export …“ (O11): poslední hlasování v datech a den exportu HowTheyVote se liší
+  const exp = rel && /^\d{4}-\d{2}-\d{2}/.test(rel) ? `export ${fmtDate(rel.slice(0, 10))}` : "";
+  const to = stats?.period?.to ? `hlasování do ${fmtDate(stats.period.to)}` : "";
+  const date = [to, exp].filter(Boolean).map((x) => ` · ${x}`).join("");
   return `Zdroj: <a href="${HTV_SOURCE}">HowTheyVote.eu</a> · <a href="${EP_SOURCE}">EP Open Data</a>${date}`
     + infoButton(`<p><a href="${HTV_SOURCE}">HowTheyVote.eu</a> (export ${esc(rel || "")}, licence ODbL) a <a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0).
       Čísla počítá skript <a href="https://github.com/Pjendrix/ep-watch-cz-open/blob/main/scripts/compute_stats.py">compute_stats.py</a>, ne AI.
@@ -301,7 +306,7 @@ export function voteRow(v, extra = "") {
     <td class="title"><a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${esc(voteTitle(v))}</a>
       <div class="small muted">${kindTag(v)}${esc(voteSubtitle(v))}</div></td>
     ${extra}
-    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+    <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v, true)}</td>
   </tr>`;
 }
 
@@ -356,7 +361,7 @@ export function benchRow(label, pair, median, refLabel, opts = {}) {
   if (hasMed) {
     const d = Math.round((v - median) * 1000) / 10;
     const abs = Math.abs(d).toLocaleString("cs-CZ", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs} p. b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
+    note = d === 0 ? `stejně jako ${refLabel} (${fmtPct(median)})` : `o ${abs}\u00a0p.\u00a0b. ${d > 0 ? "víc" : "méně"} než ${refLabel} (${fmtPct(median)})`;
   }
   const below = v < BENCH_MIN ? ` Hodnota je pod rozsahem osy (${fmtPct(v)}).` : "";
   const aria = `${label} ${fmtPct(v)}${hasMed ? `, ${refLabel} ${fmtPct(median)}` : ""}`;

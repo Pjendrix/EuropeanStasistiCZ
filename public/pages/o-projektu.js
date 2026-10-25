@@ -17,6 +17,13 @@ setNav("about");
   }
 })();
 
+// Odkaz „Našli jste chybu?“ z profilu, hlasování nebo strany (?stranka=…#kontakt) předvyplní adresu stránky ve formuláři.
+{
+  const from = new URLSearchParams(location.search).get("stranka");
+  const field = document.querySelector('.contact-form input[name="stranka"]');
+  if (from && field && /^https:\/\/epwatch\.cz\//.test(from)) field.value = from;
+}
+
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fold = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 

@@ -34,6 +34,8 @@ const server = createServer((req, res) => {
   const path = normalize(decodeURIComponent(u.pathname)).replace(/^(\.\.[/\\])+/, "");
   const clean = path.replace(/(^|\/)index(\.html)?$/, "$1").replace(/\.html$/, "");
   if (clean !== path) { redirects.push(req.url); res.writeHead(308, { location: clean + u.search }); res.end(); return; }
+  // Vercel Web Analytics obsluhuje Vercel sám (/_vercel/insights/…); lokálně prázdný skript, ať v konzoli není 404.
+  if (path.startsWith("/_vercel/")) { res.writeHead(200, { "content-type": "text/javascript" }); res.end(""); return; }
   const moved = SIMPLE_REDIRECTS.get(clean);
   if (moved) { res.writeHead(301, { location: moved + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
@@ -82,9 +84,10 @@ for (const scheme of ["light", "dark"]) {
       errors.forEach((e) => problems.push(`${where}: chyba v konzoli: ${e}`));
       const sw = await page.evaluate(() => document.documentElement.scrollWidth);
       if (sw > width) problems.push(`${where}: stránka přetéká (scrollWidth ${sw} > ${width})`);
-      // R1: nové menu (Aktuálně + zlaté tlačítko Kvíz, na mobilu Kvíz uprostřed lišty), logo vede na rozcestník „/“.
+      // R1: menu (Aktuálně + zlaté tlačítko Kvíz v hlavičce; mobilní lišta pět stejných položek s Hledat, kvíz ve „Více“, O3), logo vede na rozcestník „/“.
       const nav = await page.evaluate(() => ({ now: !!document.querySelector('.site-header nav a[data-page="now"]'), quiz: !!document.querySelector(".site-header .quiz-btn"),
-        tab: !!document.querySelector(".tabbar .tab-quiz"), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
+        tab: [...document.querySelectorAll(".tabbar > a, .tabbar > button")].map((a) => a.textContent.trim()).join(" · ") === "Aktuálně · Poslanci · Hledat · Hlasování · Více"
+          && !!document.querySelector('#more-sheet a[href$="kviz"]'), logo: new URL(document.querySelector(".site-header .brand").getAttribute("href"), document.baseURI).pathname,
         about: !!document.querySelector('.site-header nav a[data-page="about"]') }));
       if (!nav.now || !nav.quiz || !nav.tab || nav.about) problems.push(`${where}: menu neodpovídá (Aktuálně ${nav.now}, Kvíz ${nav.quiz}, lišta ${nav.tab}, O projektu v liště ${nav.about})`);
       if (nav.logo !== "/") problems.push(`${where}: logo vede na ${nav.logo}, čekám /`);
@@ -171,7 +174,7 @@ for (const scheme of ["light", "dark"]) {
     const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
     const page = await ctx.newPage();
     await page.clock.setFixedTime(new Date(`${after}T12:00:00+01:00`));
-    const fmt = (a, b) => { const d = (x) => `${Number(x.slice(8))}. ${Number(x.slice(5, 7))}. ${x.slice(0, 4)}`; return a.slice(0, 7) === b.slice(0, 7) ? `${Number(a.slice(8))}.–${d(b)}` : `${d(a).slice(0, -5)} – ${d(b)}`; };
+    const fmt = (a, b) => { const d = (x) => `${Number(x.slice(8))}.\u00a0${Number(x.slice(5, 7))}.\u00a0${x.slice(0, 4)}`; return a.slice(0, 7) === b.slice(0, 7) ? `${Number(a.slice(8))}.–${d(b)}` : `${d(a).slice(0, -5)} – ${d(b)}`; };
     const want = fmt(ag.following.from, ag.following.to);
     await page.goto(base, { waitUntil: "networkidle" });
     const tile = await page.evaluate(() => [...document.querySelectorAll(".pt-next")].filter((x) => !x.hidden).map((x) => x.textContent));
@@ -759,7 +762,7 @@ for (const width of [1366, 390]) {
         const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) + (o.k === "circ" ? o.r : 0) : o.y2 || 0)));
         if (low > f.h - 150) res.push(`${theme} ${key}: obsah zasahuje do patičky (${Math.round(low)})`);
         const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
+        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
         if (key.endsWith("3")) {
           if (texts.some((o) => o.s.startsWith("Celý průběh"))) res.push(`${theme} ${key}: zůstal řádek Celý průběh`);
           // kontrast textu na pozadí karty (pod hlavičkou) aspoň 4,5 : 1
@@ -817,7 +820,7 @@ for (const width of [1366, 390]) {
           const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
           if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
           const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data (nebo zkrácená): ${foot.join(" | ")}`);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data (nebo zkrácená): ${foot.join(" | ")}`);
           if (!foot.some((t) => t.startsWith("epwatch.cz/"))) out.push(`${theme} ${slide}: chybí adresa`);
           if (slide === "post" && data.logoImg) {
             const img = ops.findIndex((o) => o.k === "image" && o.img === data.logoImg);
@@ -877,7 +880,7 @@ for (const width of [1366, 390]) {
           const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
           if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
           const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
           if (!foot.some((t) => t.startsWith("epwatch.cz/d/"))) out.push(`${theme} ${slide}: chybí adresa`);
           if ((slide === "post" || slide === "story") && texts.filter((o) => o.s === "© European Union – Source: EP").length !== 2) out.push(`${theme} ${slide}: portréty bez © EP`);
         }
@@ -937,6 +940,12 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
     v.forEach((x) => problems.push(`${tag} ${label}: axe ${x}`));
   };
   await page.goto(base + "kviz", { waitUntil: "networkidle" });
+  // O3: „Začít“ na první obrazovce, nad horním okrajem mobilní lišty (výběr varianty a délky je sbalený)
+  if (w === 390) {
+    const fit = await page.evaluate(() => ({ btn: document.querySelector("#qz-start")?.getBoundingClientRect().bottom,
+      bar: document.querySelector(".tabbar")?.getBoundingClientRect().top ?? innerHeight }));
+    if (!(fit.btn <= fit.bar)) problems.push(`${tag}: „Začít“ je pod lištou nebo mimo první obrazovku (${JSON.stringify(fit)})`);
+  }
   await page.click("#qz-start");
   await page.waitForSelector(".qz-card");
   if (!page.url().endsWith("#otazka-1")) problems.push(`${tag}: adresa otázky ${page.url()}`);
@@ -1025,6 +1034,13 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
     return out;
   });
   r.forEach((x) => problems.push(`radar: ${x}`));
+  // O8: na mobilu pod 1 500 uzlů DOM (osa procedury a odhlasované jsou v <template>, vloží se po rozbalení)
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: "networkidle" });
+  const dom = await page.evaluate(() => document.querySelectorAll("*").length);
+  if (dom >= 1500) problems.push(`radar: ${dom} uzlů DOM (limit 1 500)`);
+  await page.click(".rd-procs .rd-tl > summary");
+  await page.waitForSelector(".rd-procs .rd-tl[open] .rd-steps", { timeout: 3000 }).catch(() => problems.push("radar: rozbalení průběhu neukázalo kroky"));
   await ctx.close();
 }
 

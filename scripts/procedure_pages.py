@@ -217,7 +217,7 @@ def vote_row(v: dict, meps_by_id: dict, final_pages: set[int]) -> str:
         f'<td class="title"><a class="vote-title" href="{href}">{esc(what)}</a>'
         + (f'<div class="small muted">{esc(sub)}</div>' if sub else "")
         + f'</td><td class="result result-{res or ""}">{esc(RESULT_LABEL.get(res, "neuveden"))}</td>'
-        f'<td class="extra cz">{split_bar(n)}<div class="small">{n[0]} pro · {n[1]} proti · {n[2]} zdrž. · {n[3]} nehl.</div></td></tr>'
+        f'<td class="extra cz">{split_bar(n)}<div class="small"><span class="who">Češi:</span> {n[0]} pro · {n[1]} proti · {n[2]} zdrž. · {n[3]} nehl.</div></td></tr>'
     )
 
 
@@ -292,7 +292,7 @@ def procedure_page(row: dict, meps_by_id: dict, vote_roles: dict, final_pages: s
                 if other
                 else ""
             )
-            + f'<p class="source">Jmenovitá hlasování v plénu od 16. 7. 2024. Češi = poslanci v mandátu k datu hlasování. '
+            + f'<p class="source">Jmenovitá hlasování v plénu od 16. 7. 2024. Češi = poslanci v mandátu k datu hlasování. '
             f'Zdroj: <a href="{HTV}">HowTheyVote.eu</a> (ODbL).</p>'
         )
     else:

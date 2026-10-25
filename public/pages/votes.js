@@ -7,14 +7,20 @@ setNav("votes-list");
 (async () => {
   const tbody = document.querySelector("#votes tbody");
   try {
-    const [index, all, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(), getJSON("overview.json"), getJSON("vote_roles.json").catch(soft(null))]);
+    // Výchozí pohled (jen závěrečná) stačí s malým search-final.json; celý search.json (1,7 MB) se stáhne, až když je
+    // potřeba typ „hlavní“ nebo „všechna“ (O7).
+    const wantsAll = () => ["all", "main"].includes(new URLSearchParams(location.search).get("f")) || new URLSearchParams(location.search).get("all") === "1";
+    const FINAL_FILE = "votes/search-final.json", FULL_FILE = "votes/search.json";
+    const [index, rows0, overview, roles] = await Promise.all([getJSON("votes/index.json"), loadSearch(wantsAll() ? FULL_FILE : FINAL_FILE), getJSON("overview.json"), getJSON("vote_roles.json").catch(soft(null))]);
+    let all = rows0, full = wantsAll() ? rows0 : null;
+    const finalRows = full ? null : rows0;
     // Česká stopa: český poslanec byl zpravodajem nebo stínovým zpravodajem zprávy, o které se hlasovalo (vote_roles.json z own_work).
     const trace = new Set(Object.keys(roles?.votes || {}).map(Number));
     const stopa = document.getElementById("stopa");
     stopa.closest("label").hidden = !trace.size;
     all.reverse(); // nejnovější nahoře
     await loadCategories();
-    const doc = await getJSON("votes/search.json");
+    const doc = await getJSON(full ? FULL_FILE : FINAL_FILE);
     const monthSel = document.getElementById("month");
     const kindSel = document.getElementById("kind");
     const topicSel = document.getElementById("topic");
@@ -61,15 +67,23 @@ setNav("votes-list");
 
     // Hledaný text se normalizuje jednou (bez diakritiky, malá písmena), ne při každém stisku klávesy. Hledá se i v názvech
     // témat a v ručních synonymech (stejně jako našeptávač v liště, lib/search.js).
-    const topicText = await loadTopicText();
-    for (const v of all) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" ")) + " " + topicText(v);
+    const topicText = await loadTopicText(full ? FULL_FILE : FINAL_FILE);
+    const prep = (rows) => { for (const v of rows) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" ")) + " " + topicText(v); return rows; };
+    prep(all);
+    // Typ jiný než „závěrečná“ potřebuje celý seznam: stáhne se jednou, pak se jen přepíná.
+    const ensureRows = async () => {
+      if (kindSel.value === "final") { all = finalRows || full; return; }
+      if (!full) { full = prep((await loadSearch(FULL_FILE)).reverse()); }
+      all = full;
+    };
     const filters = document.getElementById("filters");
     if (matchMedia("(max-width: 760px)").matches) filters.open = false;
     const chips = document.getElementById("chips");
     const kindOk = (v) => kindSel.value === "all" || (kindSel.value === "final" ? isFinal(v) : v.is_main);
     const LIMIT = 300;
     let current = [];
-    const render = () => {
+    const render = () => { ensureRows().then(draw).catch((e) => showError(tbody.closest(".table-wrap"), e)); };
+    const draw = () => {
       const month = monthSel.value;
       const terms = searchTerms(q.value);
       const needle = terms.length > 0;
@@ -105,7 +119,7 @@ setNav("votes-list");
           <td class="num date">${fmtDate(v.date)}</td>
           <td class="title">${catChip(v)}<a class="vote-title" href="vote?id=${v.id}&m=${v.month}">${highlight(voteTitle(v), terms)}</a>
             <div class="small muted">${trace.has(v.id) ? '<span class="cz-badge" title="Český poslanec byl zpravodajem nebo stínovým zpravodajem">česká stopa</span> ' : ""}${kindSel.value === "final" && v.vote_kind === "final" ? "" : kindTag(v)}${esc(voteSubtitle(v))}</div></td>
-          <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v)}</td>
+          <td class="result result-${v.result || ""}" title="${esc(RESULT_NOTE[v.result ?? null] || "")}">${resultHtml(v, true)}</td>
           ${mepVotes ? (() => { const pos = LETTER[mepVotes.get(v.id)];
             return `<td class="extra pos pos-${pos}">${positionFor(pos, mp)}</td>`; })()
             : `<td class="extra cz">${splitBar(counts)}<div class="small">${czCountsHtml(counts)}</div></td>`}

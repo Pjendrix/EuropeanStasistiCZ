@@ -31,15 +31,16 @@ export function soft(fallback) {
 }
 
 // Odlehčený seznam všech hlasování (data/votes/search.json) jako pole objektů.
-export async function loadSearch() {
-  const doc = await getJSON("votes/search.json");
+// file = votes/search-final.json pro jen závěrečná hlasování (stejný formát, O7).
+export async function loadSearch(file = "votes/search.json") {
+  const doc = await getJSON(file);
   return doc.rows.map((r) => Object.fromEntries(doc.fields.map((f, i) => [f, r[i]])));
 }
 
 // Text témat hlasování pro hledání (audit UX P1): české názvy kategorií webu a podtémat Legislativní observatoře EP
 // a ručně ověřená synonyma k nim (data/manual/search_synonyms.json). Vrací funkci hlasování -> normalizovaný text.
-export async function loadTopicText() {
-  const [doc, cats, syn] = await Promise.all([getJSON("votes/search.json"), getJSON("categories.json").catch(soft({})),
+export async function loadTopicText(file = "votes/search.json") {
+  const [doc, cats, syn] = await Promise.all([getJSON(file), getJSON("categories.json").catch(soft({})),
     getJSON("manual/search_synonyms.json").catch(soft({}))]);
   const topicLabels = doc.topic_labels || {};
   const words = (label, extra) => [label || "", ...(extra || [])].join(" ");
