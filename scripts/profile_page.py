@@ -675,7 +675,7 @@ def share_context(prof: dict, groups: list[dict], parties: list[dict], ctx: dict
             if x["total"] >= 100
         ),
         key=lambda x: -x["share"],
-    )[:3]
+    )[:5]
     act, pres = prof.get("activity"), prof.get("presence")
     work_day = ow.get("updated") or (act or {}).get("updated")
     out["default"] = {

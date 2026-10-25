@@ -720,6 +720,12 @@ td.loading::before, li.loading::before { height: 2.5rem; }
 .back-row > p { margin: 0; }
 .back-row .share-btn { margin-left: auto; }
 .back-row .compare-btn + .share-btn { margin-left: 0; }
+/* Mobil: zpět na vlastním řádku, Porovnat a Sdílet vedle sebe stejně široké s odstupem */
+@media (max-width: 560px) {
+  .back-row:has(.compare-btn) { gap: .75rem 1rem; }
+  .back-row:has(.compare-btn) > p { flex-basis: 100%; }
+  .back-row:has(.compare-btn) > .share-btn { flex: 1 1 0; justify-content: center; margin-left: 0; min-height: 44px; }
+}
 .compare-btn { text-decoration: none; }
 .share-btn { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 1.15rem; border-radius: 999px; border: 1px solid var(--text);
   background: var(--text); color: var(--surface); font: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; flex: none; }

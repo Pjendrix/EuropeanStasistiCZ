@@ -591,12 +591,10 @@ function tileOps(x, y, w, h, label, value, sub) {
 // Tvar podle pohlaví z EP (d.female: true/false); když EP pohlaví neuvádí, obě podoby („hlasoval/a“).
 const byG = (d, male, female, both) => (d.female ? female : d.female === false ? male : both);
 
-// 2/3 Jak hlasuje: rozložení hlasů, soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
+// 2/3 Jak hlasuje (rozložení hlasů je už na 1/3): soulad s výsledkem, účast u závěrečných, s kým hlasuje nejčastěji stejně.
 function mepVotingOps(d, f) {
   const ops = [...mepMiniHead(d, 2)];
   let y = 384;
-  const split = votesSplitOps(d, 72, y - 26, 936, 28);
-  if (split.h) { ops.push(...split.ops); y += split.h + 50; }
   const tiles = [];
   if (d.outcome && d.outcome[1]) tiles.push(["Jako většina EP", fmtPct(d.outcome[0] / d.outcome[1]),
     d.groupOutcome && d.groupOutcome[1] ? `průměr frakce ${fmtPct(d.groupOutcome[0] / d.groupOutcome[1])}` : `${fmtNum(d.outcome[0])} z ${fmtNum(d.outcome[1])}`]);
