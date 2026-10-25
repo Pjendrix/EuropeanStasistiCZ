@@ -83,6 +83,17 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/title_translations.py --backend api || echo "::warning::překlad názvů hlasování se nepodařil"
 
+      - name: Opravy hlasů (EP Open Data, jen nové dny)
+        # při výpadku API zůstane předchozí soubor; nedokončené dny dožene příští běh (ukládá se průběžně)
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python scripts/fetch_vote_corrections.py
+
+      - name: Registr transparentnosti EU (organizace se sídlem v ČR)
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python scripts/fetch_register.py
+
       - name: Statistiky
         run: python scripts/compute_stats.py
 
@@ -121,7 +132,7 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/title_translations.json data/adopted_texts.json data/preliminary public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/title_translations.json data/vote_corrections.json data/register_cz.json data/adopted_texts.json data/preliminary public/assets/photos
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

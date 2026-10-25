@@ -40,7 +40,7 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
-from web_ui import cite_button, page_url, vote_meaning_html
+from web_ui import cite_button, correction_tag, page_url, vote_meaning_html
 from embed_pages import embed_mep, embed_vote
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -552,6 +552,7 @@ def vote_page(
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <p class="cite-row">{cite_button(cite)}</p>
 {(extra or {}).get("statements") or ""}
+{f'<div class="fix-list"><p class="small"><b>Opravy hlasů</b> (oznámené po hlasování, zdroj <a href="https://data.europarl.europa.eu">EP Open Data</a>):</p><ul class="plain small">{extra["corrections"]}</ul></div>' if (extra or {}).get("corrections") else ""}
 {story}{vote_meaning_html(kind, ROOT)}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
@@ -611,9 +612,12 @@ def build(data_dir: Path) -> dict[str, str]:
     import statements as stm
 
     all_statements = stm.load(data_dir)
+    corr_path = data_dir / "vote_corrections.json"
+    corrections = read(corr_path)["votes"] if corr_path.exists() else {}
     for m in overview["meps"]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
         prof["statements"] = [x for x in all_statements if x["mep_id"] == m["id"]]
+        prof["corrections"] = {vid: c[str(m["id"])] for vid, c in corrections.items() if str(m["id"]) in c}
         require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
         apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
         path, html = mep_page(prof, groups, parties, base_url, data_day)
@@ -636,7 +640,13 @@ def build(data_dir: Path) -> dict[str, str]:
     sums = read(sums_path).get("items", {}) if sums_path.exists() else {}
     for v in votes:
         if is_final(v):
+            fixes = corrections.get(str(v["id"])) or {}
             extra = {
+                "corrections": "".join(
+                    f'<li><a href="{ROOT}p/{mid}">{esc(display_name(meps_by_id[int(mid)]))}</a> {correction_tag(meps_by_id[int(mid)], pos)}</li>'
+                    for mid, pos in fixes.items()
+                    if int(mid) in meps_by_id
+                ),
                 "statements": stm.html(stm.for_scope(all_statements, None, v["id"]), {i: display_name(x) for i, x in meps_by_id.items()}),
                 "summary": sums.get(str(v["id"])),
                 "procedure": briefs.get((v.get("procedure") or {}).get("reference") or ""),
@@ -669,6 +679,9 @@ def build(data_dir: Path) -> dict[str, str]:
             out[path] = with_report_link(out[path], page_url(base_url or "https://epwatch.cz", path))
     out["404.html"] = not_found_page()
     out["data.html"] = data_page(data_dir, base_url)
+    reg = register_page(data_dir, base_url)
+    if reg:
+        out["registr.html"] = reg
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
@@ -778,6 +791,54 @@ def data_page(data_dir: Path, base_url: str | None) -> str:
 
 
 ROOT_DATA = "data/"
+
+
+def register_page(data_dir: Path, base_url: str | None) -> str | None:
+    """/registr (V10): organizace se sídlem v ČR z Registru transparentnosti EU, po kategoriích. Bez kontaktů
+    a bez vazby na poslance; jen co registr uvádí (data/register_cz.json, scripts/fetch_register.py)."""
+    path = data_dir / "register_cz.json"
+    if not path.exists():
+        return None
+    doc = read(path)
+    require(doc, ["export_date", "total_register", "organisations", "source"], "register_cz.json")
+    by_cat: dict[str, list[dict]] = {}
+    for o in doc["organisations"]:
+        require(o, ["id", "url", "name", "category", "category_cs", "registered"], "register_cz.json organizace")
+        by_cat.setdefault(o["category_cs"], []).append(o)
+
+    def row(o):
+        web = o.get("web") or ""
+        href = web if web.startswith(("http://", "https://")) else f"https://{web}" if web else ""
+        return (
+            f'<tr><td class="title"><a href="{esc(o["url"])}" rel="noopener">{esc(o["name"])}</a>'
+            + (f' <span class="small muted">({esc(o["acronym"])})</span>' if o.get("acronym") else "")
+            + "</td>"
+            + (f'<td class="small"><a href="{esc(href)}" rel="nofollow noopener">{esc(web)}</a></td>' if href else "<td>–</td>")
+            + f'<td class="num date">{fmt_date(o["registered"])}</td></tr>'
+        )
+
+    sections = "".join(
+        f'<h2 id="k{i}">{esc(cat)} <span class="muted">({fmt_num(len(items))})</span></h2>'
+        f'<p class="small muted">Kategorie v registru: {esc(items[0]["category"])}</p>'
+        '<div class="table-wrap"><table class="stack"><thead><tr><th>Organizace (záznam v registru)</th><th>Web</th><th>Registrace</th></tr></thead>'
+        f"<tbody>{''.join(row(o) for o in items)}</tbody></table></div>"
+        for i, (cat, items) in enumerate(sorted(by_cat.items(), key=lambda x: (-len(x[1]), x[0])))
+    )
+    n = len(doc["organisations"])
+    body = f"""<section class="page-head"><h1>Zájmové skupiny z ČR v registru EU</h1>
+<p class="lead">{fmt_num(n)} organizací se sídlem v Česku zapsaných v Registru transparentnosti EU, tedy těch, které se snaží
+ovlivňovat právo a politiku EU.</p></section>
+<p class="small">Seznam je převzatý z oficiálního registru bez úprav a bez hodnocení. Zápis v registru neznamená nic špatného:
+registrovat se musí každý, kdo chce jednat s institucemi EU. Neukazujeme kontakty ani schůzky a organizace nespojujeme
+s poslanci. Podrobnosti (cíle, zájmy, rozpočet) jsou v záznamu každé organizace v registru.</p>
+{sections}
+<p class="source">Zdroj: <a href="https://transparency-register.europa.eu">Registr transparentnosti EU</a>
+(<a href="{esc(doc["source"])}">denní export</a>, {fmt_num(doc["total_register"])} organizací celkem), export {fmt_date(doc["export_date"])}.
+© European Union, licence CC BY 4.0. České názvy kategorií jsou náš překlad.</p>"""
+    title = "Zájmové skupiny z ČR v registru EU – EP Watch CZ"
+    desc = f"{n} organizací se sídlem v ČR v Registru transparentnosti EU, po kategoriích, s odkazem na oficiální záznam."
+    return page(title, body, root="", current="analyses", description=desc, meta=og_meta(title, desc, "registr.html", base_url, None, desc))
+
 
 # Odkaz „Našli jste chybu?“ na profilu, hlasování a straně (O5): formulář na /o-projektu s předvyplněnou adresou stránky.
 REPORT_PAGES = re.compile(r"(p|v|s)/[^/]+\.html")

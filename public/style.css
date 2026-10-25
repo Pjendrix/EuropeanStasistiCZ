@@ -2506,3 +2506,7 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 .stmt { margin: .6rem 0 0; padding: .55rem .75rem; border-left: 3px solid var(--gold); background: var(--surface); font-size: .88rem; }
 .stmt p { margin: .15rem 0; }
 .stmt-tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+
+/* V9: oprava hlasu (nemění výsledek) */
+.fix-tag { display: inline-block; margin-left: .35rem; padding: 0 .45rem; border: 1px dashed var(--border); border-radius: 999px; font-size: .75rem; font-weight: 600; color: var(--muted); white-space: normal; }
+.fix-list { margin: .75rem 0; }
