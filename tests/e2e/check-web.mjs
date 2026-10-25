@@ -4,7 +4,7 @@
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
-import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join, extname, normalize } from "node:path";
@@ -17,7 +17,9 @@ const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
 
 const site = mkdtempSync(join(tmpdir(), "epwatch-"));
 cpSync(join(root, "public"), site, { recursive: true });
-cpSync(join(root, "data"), join(site, "data"), { recursive: true });
+// stejný výběr souborů jako na Vercelu (scripts/public_data.py, V17); hlasování po jednom a duel (build_shards.py)
+// jsou už v public/data zkopírovaném výše
+execFileSync("python3", [join(root, "scripts", "public_data.py"), join(site, "data")], { stdio: "inherit" });
 // Úvod s blokem předběžných výsledků z fixture (C4): ve skutečných datech je jen pár dní po zasedání.
 execFileSync("python3", [join(root, "tests", "e2e", "preliminary_page.py"), site], { stdio: "inherit" });
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml",
@@ -40,7 +42,7 @@ const server = createServer((req, res) => {
   if (moved) { res.writeHead(301, { location: moved + u.search }); res.end(); return; }
   let file = join(site, path.endsWith("/") ? `${path}index.html` : path);
   if (!existsSync(file) && !extname(path) && existsSync(`${file}.html`)) file = `${file}.html`;
-  if (!existsSync(file)) { res.writeHead(404); res.end("not found"); return; }
+  if (!existsSync(file) || statSync(file).isDirectory()) { res.writeHead(404); res.end("not found"); return; }
   res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream", "content-security-policy": CSP });
   res.end(readFileSync(file));
 });
@@ -1005,6 +1007,29 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
   await axeOn("vaše odpovědi");
   await page.click("#qz-share");
   await page.waitForSelector(".sd-preview img", { timeout: 15000 }).catch(() => problems.push(`${tag}: náhled obrázku ke sdílení se nevytvořil`));
+  await ctx.close();
+}
+
+// V15: na mobilu (390 px) žádný viditelný text v obsahu menší než 13 px; výjimky jsou popisky os grafů a hemicyklu.
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  for (const url of ["", "aktualne", "poslanci", "votes", `p/${mepId}`, `v/${voteId}`, "radar", "otevrena-data"]) {
+    await page.goto(base + url, { waitUntil: "networkidle" });
+    const tiny = await page.evaluate(() => {
+      const skip = ".chart, .chart-y, .tl-svg, .hm-hemi, .vd-legend, .qz-art, .tabbar, svg, [aria-hidden='true'], .sr-only, kbd";
+      const out = new Set();
+      const walk = document.createTreeWalker(document.querySelector("main") || document.body, NodeFilter.SHOW_TEXT);
+      for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+        const el = n.parentElement;
+        if (!n.textContent.trim() || !el || el.closest(skip) || !el.offsetParent) continue;
+        const fs = parseFloat(getComputedStyle(el).fontSize);
+        if (fs < 12.95) out.add(`${el.tagName.toLowerCase()}.${[...el.classList].join(".")} ${fs}px`);
+      }
+      return [...out].slice(0, 5);
+    });
+    if (tiny.length) problems.push(`čitelnost ${url || "/"} [390px]: písmo pod 13 px: ${tiny.join(", ")}`);
+  }
   await ctx.close();
 }
 

@@ -1,0 +1,46 @@
+# Denní kontrola nasazeného webu (V16): když jsou data starší než stale_days nebo web neodpovídá, založí issue
+# (nebo do otevřeného přidá komentář); když je vše v pořádku, otevřené issue zavře. Logika: scripts/check_freshness.py.
+name: Kontrola čerstvosti webu
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+
+      - name: Kontrola
+        id: check
+        run: python scripts/check_freshness.py >> "$GITHUB_OUTPUT"
+
+      - name: Issue
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          PROBLEM: ${{ steps.check.outputs.problem }}
+        with:
+          script: |
+            const title = "Web: stará data nebo nedostupný";
+            const open = await github.paginate(github.rest.issues.listForRepo, { ...context.repo, state: "open", creator: "github-actions[bot]" });
+            const hit = open.find((i) => i.title === title && !i.pull_request);
+            const p = process.env.PROBLEM || "";
+            if (p) {
+              const body = `${p}\n\nZkontroluj běh „Týdenní aktualizace dat“ a nasazení na Vercelu. Kontrola: https://epwatch.cz/data/freshness.json`;
+              if (hit) await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body });
+              else await github.rest.issues.create({ ...context.repo, title, body });
+            } else if (hit) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: hit.number, body: "Web odpovídá a data jsou čerstvá, zavírám." });
+              await github.rest.issues.update({ ...context.repo, issue_number: hit.number, state: "closed", state_reason: "completed" });
+            }

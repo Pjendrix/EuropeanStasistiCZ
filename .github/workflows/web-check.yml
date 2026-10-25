@@ -15,7 +15,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45  # instalace Playwrightu občas trvá i 10 min, kontrola webu ~10 min
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -39,6 +39,7 @@ jobs:
           node-version: "22"
 
       - name: Playwright a axe-core (jen pro tuto kontrolu, nic se nepřidává do repa)
+        timeout-minutes: 15
         run: |
           mkdir "$RUNNER_TEMP/e2e" && cd "$RUNNER_TEMP/e2e"
           npm init -y >/dev/null
@@ -46,4 +47,5 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Kontrola webu
+        timeout-minutes: 25
         run: NODE_PATH="$RUNNER_TEMP/e2e/node_modules" node tests/e2e/check-web.mjs

@@ -496,6 +496,19 @@ class Ui:
         )
 
 
+INTENDED = {"FOR": "pro", "AGAINST": "proti", "ABSTENTION": "zdržet se"}
+
+
+def correction_tag(mep: dict, intended: str | None) -> str:
+    """Štítek opravy hlasu (V9, EP Open Data had_voter_intended_*): co poslanec podle oznámení zamýšlel. Nemění výsledek."""
+    if intended not in INTENDED:
+        return ""
+    return (
+        f'<span class="fix-tag" title="Poslanec po hlasování oznámil, že chtěl hlasovat jinak. Oficiální výsledek i statistiky '
+        f'počítají zaznamenaný hlas.">oprava: {by_gender(mep, "chtěl", "chtěla")} hlasovat {INTENDED[intended]} · nemění výsledek</span>'
+    )
+
+
 def cite_button(cite: str | None) -> str:
     """Viditelné tlačítko „Citovat“ (V1): zkopíruje větu + adresu + datum exportu (citeText v lib/data.js, app.js)."""
     if not cite:

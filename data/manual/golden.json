@@ -1,0 +1,4 @@
+{
+ "note": "Zlaté kontroly (V18): 10–15 ručně ověřených faktů z oficiálních zdrojů EP. Doplňuje a ověřuje JEN správce, nikdy skript ani AI. check_data.py je porovná s daty; nesoulad = chyba. Formát: scripts/golden.py. Příklad: {\"kind\": \"vote\", \"vote_id\": 170611, \"result\": \"ADOPTED\", \"for\": …, \"against\": …, \"abstention\": …, \"source\": \"https://www.europarl.europa.eu/doceo/document/PV-10-2024-11-27-RCV_CS.html\", \"verified_by\": \"jméno\", \"verified_on\": \"2026-10-26\"} nebo {\"kind\": \"committee\", \"mep_id\": …, \"code\": \"ENVI\", \"role\": \"MEMBER\", \"date\": \"2025-03-01\", \"source\": \"https://www.europarl.europa.eu/meps/cs/…\", \"verified_by\": …, \"verified_on\": …}.",
+ "facts": []
+}

@@ -11,6 +11,7 @@ import json
 from ep_groups import short_group
 import statements as stm
 from web_ui import cite_button as ui_cite_button
+from web_ui import correction_tag as ui_correction_tag
 from web_ui import (
     COMMITTEE_TYPE,
     CZ_GROUP_LABEL,
@@ -1150,7 +1151,8 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
             f'<tr><td class="num date">{fmt_date(v["date"])}</td>'
             f'<td class="title"><a class="vote-title" href="{vote_url(v)}">{esc(vote_title(v))}</a>'
             f'<div class="small muted">{kind_tag(v)}{esc(vote_subtitle(v))}</div></td>'
-            f'<td class="extra pos pos-{v["position"]}">{position_for(v["position"], mep)}</td>'
+            f'<td class="extra pos pos-{v["position"]}">{position_for(v["position"], mep)}'
+            f"{ui_correction_tag(mep, (prof.get('corrections') or {}).get(str(v['id'])))}</td>"
             f'<td class="result result-{v.get("result") or ""}" title="{esc(RESULT_NOTE.get(v.get("result"), ""))}">{result_html(v, ep=True)}</td></tr>'
             for v in recent
         )

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Sestavení webu na Vercelu (audit A6): v gitu jsou jen data/ a ruční stránky, odvozené výstupy vznikají tady.
-#   public/data/        kopie data/ (bez měsíčních souborů hlasování, web je nepotřebuje)
+#   public/data/        jen soubory, které web načítá (scripts/public_data.py, V17)
 #   public/data/votes/id/  hlasování po jednom pro vote.html (build_shards.py, audit A4)
 #   public/p, s, v, z/  statické stránky, index.html (rozcestník), aktualne.html, sitemap.xml, feed.xml (build_pages.py)
 #   public/og/          obrázky ke sdílení (build_cards.py)
@@ -14,8 +14,7 @@ python3 -m pip install --quiet --disable-pip-version-check --require-hashes --ta
 export PYTHONPATH="$PWD/.pydeps${PYTHONPATH:+:$PYTHONPATH}"
 
 rm -rf public/data && mkdir -p public/data
-cp -r data/. public/data/
-rm -f public/data/votes/20*.json
+python3 scripts/public_data.py public/data   # jen soubory, které web načítá (V17, whitelist)
 python3 scripts/build_shards.py
 python3 scripts/build_pages.py
 python3 scripts/build_cards.py
