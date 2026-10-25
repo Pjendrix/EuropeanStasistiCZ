@@ -41,6 +41,7 @@ from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
 from web_ui import cite_button, page_url, vote_meaning_html
+from embed_pages import embed_mep, embed_vote
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -610,6 +611,8 @@ def build(data_dir: Path) -> dict[str, str]:
         apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
         path, html = mep_page(prof, groups, parties, base_url, data_day)
         out[path] = html
+        path, html = embed_mep(prof, groups, base_url, data_day)
+        out[path] = html
     idx_path = data_dir / "parties" / "index.json"
     if idx_path.exists():
         for p in read(idx_path)["parties"]:
@@ -633,6 +636,8 @@ def build(data_dir: Path) -> dict[str, str]:
             path, html = vote_page(
                 v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day, extra
             )
+            out[path] = html
+            path, html = embed_vote(v, meps_by_id, base_url, data_day)
             out[path] = html
     from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
 
@@ -659,7 +664,7 @@ def build(data_dir: Path) -> dict[str, str]:
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
-        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/") and p != "404.html"), lastmod, data_day))
+        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith(("d/", "embed/")) and p != "404.html"), lastmod, data_day))
         out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
     return out
 
@@ -1071,9 +1076,9 @@ def sync_heads(public: Path, data_dir: Path) -> int:
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
-    """Zapíše stránky; soubory v p/, s/, v/, z/, d/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    """Zapíše stránky; soubory v p/, s/, v/, z/, d/, embed/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
-    for sub in ("p", "s", "v", "z", "d"):
+    for sub in ("p", "s", "v", "z", "d", "embed/v", "embed/p"):
         d = public / sub
         d.mkdir(parents=True, exist_ok=True)
         for f in d.glob("*.html"):

@@ -2487,3 +2487,14 @@ main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }
 .cite-btn:hover { border-color: var(--gold); }
 .cite-btn.done { border-color: var(--accent); }
 .mx-kpi .cite-btn { margin-top: .5rem; align-self: flex-start; }
+
+/* V2: karta pro vložení do článku (/embed/…) */
+body.embed { margin: 0; padding: 0; background: var(--surface); }
+.emb { max-width: 640px; padding: 14px 16px; }
+.emb-meta { margin: 0; font-size: .8rem; color: var(--muted); }
+.emb-title { margin: .25rem 0 .5rem; font-size: 1.1rem; line-height: 1.3; }
+.emb-title a { color: inherit; }
+.emb-res, .emb-cz { margin: .4rem 0; font-size: .9rem; }
+.emb-kpis { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+.emb-kpi { display: grid; } .emb-kpi span { font-size: .8rem; color: var(--muted); } .emb-kpi b { font-size: 1.6rem; } .emb-kpi small { color: var(--muted); }
+.emb-src { margin: .6rem 0 0; font-size: .78rem; color: var(--muted); }

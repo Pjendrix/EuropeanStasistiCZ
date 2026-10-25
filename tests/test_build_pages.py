@@ -564,3 +564,24 @@ def test_data_page_fields_match_real_files():
     html = bp.data_page(root, "https://epwatch.cz")
     assert "<h1>Otevřená data</h1>" in html and "ODbL" in html and "CC BY 4.0" in html
     assert 'href="data/votes/search.json"' in html
+
+
+def test_embed_pages_have_source_date_and_link(data_dir):
+    pages = built(data_dir)
+    v = pages["embed/v/1.html"]
+    assert "Zdroj:" in v and "data k" in v and '<link rel="canonical"' in v and "/v/1" in v
+    assert "Čeští poslanci:" in v and "EP:" in v and 'name="robots" content="noindex"' in v
+    p = pages["embed/p/1.html"]
+    assert "Účast na hlasování" in p and "Zdroj:" in p and "data k" in p
+
+
+def test_vercel_allows_framing_only_for_embed():
+    cfg = json.loads((Path(__file__).resolve().parent.parent / "vercel.json").read_text(encoding="utf-8"))
+    by_src = {h["source"]: {x["key"]: x["value"] for x in h["headers"]} for h in cfg["headers"]}
+    main = by_src["/((?!embed/).*)"]
+    emb = by_src["/embed/(.*)"]
+    assert "frame-ancestors 'none'" in main["Content-Security-Policy"] and main["X-Frame-Options"] == "DENY"
+    assert "frame-ancestors *" in emb["Content-Security-Policy"] and "X-Frame-Options" not in emb
+    assert emb["Content-Security-Policy"].replace("frame-ancestors *", "") == main["Content-Security-Policy"].replace(
+        "frame-ancestors 'none'", ""
+    )

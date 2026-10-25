@@ -69,7 +69,7 @@ def test_generated_pages_canonical_sitemap_and_links(data_dir):
     (data_dir / "manual" / "site.json").write_text(json.dumps({"base_url": BASE}), encoding="utf-8")
     pages = bp.build(data_dir)
     for rel, html in pages.items():
-        if not rel.endswith(".html") or rel == "404.html":  # 404 nemá kanonickou adresu (noindex)
+        if not rel.endswith(".html") or rel == "404.html" or rel.startswith("embed/"):  # 404 bez canonical; embed odkazuje na plnou stránku
             continue
         m = re.search(r'<link rel="canonical" href="([^"]+)">', html)
         assert m and m[1] == f"{BASE}/{page_path(rel)}", rel
