@@ -60,7 +60,6 @@ def test_all_pages_reference_versioned_assets():
 
 
 def test_tabbar_five_equal_items_quiz_in_more():
-
     bar = layout.tabbar()
     labels = re.findall(r"<span>([^<]+)</span></(?:a|button)>", bar.split("</nav>")[0])
     assert labels == ["Aktuálně", "Poslanci", "Hledat", "Hlasování", "Více"]
@@ -68,5 +67,4 @@ def test_tabbar_five_equal_items_quiz_in_more():
 
 
 def test_analytics_script_in_head():
-
     assert '<script defer src="/_vercel/insights/script.js"></script>' in layout.head_assets()

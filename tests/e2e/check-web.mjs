@@ -762,7 +762,7 @@ for (const width of [1366, 390]) {
         const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) + (o.k === "circ" ? o.r : 0) : o.y2 || 0)));
         if (low > f.h - 150) res.push(`${theme} ${key}: obsah zasahuje do patičky (${Math.round(low)})`);
         const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
+        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t))) res.push(`${theme} ${key}: patička bez zdroje a data`);
         if (key.endsWith("3")) {
           if (texts.some((o) => o.s.startsWith("Celý průběh"))) res.push(`${theme} ${key}: zůstal řádek Celý průběh`);
           // kontrast textu na pozadí karty (pod hlavičkou) aspoň 4,5 : 1
@@ -820,7 +820,7 @@ for (const width of [1366, 390]) {
           const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
           if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
           const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data (nebo zkrácená): ${foot.join(" | ")}`);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data (nebo zkrácená): ${foot.join(" | ")}`);
           if (!foot.some((t) => t.startsWith("epwatch.cz/"))) out.push(`${theme} ${slide}: chybí adresa`);
           if (slide === "post" && data.logoImg) {
             const img = ops.findIndex((o) => o.k === "image" && o.img === data.logoImg);
@@ -880,7 +880,7 @@ for (const width of [1366, 390]) {
           const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
           if (low > footY) out.push(`${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
           const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
-          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\. \d{1,2}\. \d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
+          if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t) && !t.endsWith("…"))) out.push(`${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
           if (!foot.some((t) => t.startsWith("epwatch.cz/d/"))) out.push(`${theme} ${slide}: chybí adresa`);
           if ((slide === "post" || slide === "story") && texts.filter((o) => o.s === "© European Union – Source: EP").length !== 2) out.push(`${theme} ${slide}: portréty bez © EP`);
         }
@@ -1040,7 +1040,7 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
   const dom = await page.evaluate(() => document.querySelectorAll("*").length);
   if (dom >= 1500) problems.push(`radar: ${dom} uzlů DOM (limit 1 500)`);
   await page.click(".rd-procs .rd-tl > summary");
-  if (!(await page.locator(".rd-procs .rd-tl[open] .rd-steps").count())) problems.push("radar: rozbalení průběhu neukázalo kroky");
+  await page.waitForSelector(".rd-procs .rd-tl[open] .rd-steps", { timeout: 3000 }).catch(() => problems.push("radar: rozbalení průběhu neukázalo kroky"));
   await ctx.close();
 }
 
