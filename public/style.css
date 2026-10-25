@@ -2694,3 +2694,17 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 }
 .nv-trace { list-style: none; padding-left: 0; }
 .nv-tr { padding: .4rem .6rem; margin: .3rem 0; }
+/* Na širší obrazovce česká stopa do pravého sloupce karty (portrét větší, jméno nad rolí); na mobilu zůstává pod názvem */
+@media (min-width: 761px) {
+  .zs-pick:has(.ns-cz), .rd-proc:has(.ns-cz) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem); column-gap: 1.4rem; row-gap: 0; align-content: start; }
+  .zs-pick:has(.ns-cz) > *, .rd-proc:has(.ns-cz) > * { grid-column: 1; }
+  .zs-pick:has(.ns-cz) > :not(.ns-cz) { margin-bottom: .45rem; }
+  .ns-item:has(.ns-cz) { grid-template-columns: 4.2rem minmax(0, 1fr) minmax(11rem, 15rem); padding-right: 12px; }
+  .zs-pick > .ns-cz, .rd-proc > .ns-cz, .ns-item > .ns-cz { grid-column: 2; grid-row: 1 / span 4; align-self: start; flex-direction: column; gap: .55rem; margin: 0; }
+  .ns-item > .ns-cz { grid-column: 3; }
+  .nv-tr:has(.ns-cz) { display: flex; justify-content: space-between; align-items: center; gap: 1.4rem; }
+  .nv-tr > .ns-cz { flex-direction: column; gap: .55rem; margin: 0; flex: 0 0 15rem; }
+  .ns-cz .cz-p { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: .6rem; align-items: center; line-height: 1.25; }
+  .ns-cz .cz-p img { width: 40px; height: 40px; grid-row: 1 / span 2; }
+  .ns-cz .cz-p span { font-size: .85rem; }
+}
