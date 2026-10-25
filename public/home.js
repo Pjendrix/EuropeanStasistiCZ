@@ -268,7 +268,12 @@ function groupedCards(list, groups, parties, bench) {
         "";
       if (!list.length) cards.innerHTML = `<div class="empty-state"><p><strong>Nikoho jsme nenašli.</strong> Zkuste jen část jména nebo zkratku strany${former.checked ? "" : ", případně zahrňte i bývalé poslance"}.</p>
         <button type="button" class="more-btn" data-clear-search>Zrušit hledání</button></div>`;
-      tbody.innerHTML = list.map(({ m, s, g, p, active }) => {
+      // Referenční řádek „medián EP“ (V5): řazení podle čísla nesmí vypadat jako žebříček bez kontextu; neřadí se.
+      const ep = bench?.ep;
+      const med = (x) => (typeof x === "number" ? fmtPct(x) : "–");
+      const ref = ep ? `<tr class="ref-row"><td class="sticky-col"><b>Medián EP</b><div class="small muted">všichni poslanci EP, celé období</div></td>
+        <td>–</td><td>–</td><td class="num">${med(ep.attendance)}</td><td class="num">${med(ep.attendance_main)}</td><td class="num">${med(ep.group_loyalty)}</td><td class="num">–</td></tr>` : "";
+      tbody.innerHTML = ref + list.map(({ m, s, g, p, active }) => {
         const isNI = htvCode(m, groups) === "NI";
         return `<tr class="${active ? "" : "former"}">
           <td class="sticky-col"><div class="mep-cell">${avatar(m, 40)}

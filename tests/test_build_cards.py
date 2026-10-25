@@ -90,3 +90,25 @@ def test_vote_card_text_fits_and_is_png(data_dir):
     png = bc.vote_card(v, meps, [], "https://example.org", [])
     im = Image.open(io.BytesIO(png))
     assert im.size == (bc.W, bc.H)
+
+
+def test_text_cards_party_law_generic():
+    import build_cards as bc
+
+    pp = {
+        "id": 7,
+        "short_label": "MOCK",
+        "name": "MOCK strana",
+        "members": 2,
+        "cohesion": [9, 10],
+        "cohesion_main": [4, 5],
+        "splits_count_main": 1,
+    }
+    for png in (bc.party_card(pp, "2026-10-24", "https://epwatch.cz"), bc.generic_vote_card("https://epwatch.cz")):
+        assert png[:8] == b"\x89PNG\r\n\x1a\n"
+    assert bc.party_card(pp, "2026-10-24", None) == bc.party_card(pp, "2026-10-24", None)  # deterministické
+    rows = {
+        "2026/0001(COD)": {"votes": [{"id": 1, "vote_kind": "final"}, {"id": 2, "vote_kind": "final"}]},
+        "2026/0002(COD)": {"votes": [{"id": 3, "vote_kind": "final"}]},
+    }
+    assert {k: v["id"] for k, v in bc.law_cards_wanted(rows, {1, 2}).items()} == {"2026/0001(COD)": 2}

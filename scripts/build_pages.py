@@ -40,7 +40,8 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
-from web_ui import page_url, vote_meaning_html
+from web_ui import cite_button, page_url, vote_meaning_html
+from embed_pages import embed_mep, embed_vote
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
 
@@ -316,7 +317,7 @@ def party_page(pp: dict, groups: list[dict], parties: list[dict], base_url: str 
         path=path,
         current="parties",
         description=desc,
-        meta=og_meta(title, desc, path, base_url, None, "EP Watch CZ – fakta a data o českých europoslancích"),
+        meta=og_meta(title, desc, path, base_url, f"og/s/{pp['id']}.png", desc, card=True),
         main_attrs=f'data-party="{pp["id"]}"',
         scripts=share_script + MODULES.format(root="", page="party.js"),
     )
@@ -549,6 +550,8 @@ def vote_page(
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
 <h1{' class="long"' if len(title_txt) > LONG_TITLE else ""}>{esc(title_txt)}</h1>
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
+<p class="cite-row">{cite_button(cite)}</p>
+{(extra or {}).get("statements") or ""}
 {story}{vote_meaning_html(kind, ROOT)}<details class="links-more"><summary>zdroje a odkazy</summary><p class="small">{" · ".join(links)}</p>{original_title_html(v)}</details>
 <div class="metrics">
   <div class="card metric"><div class="label">Výsledek</div><div class="value-sentence">{esc(result_sentence(kind, v.get("result")))}</div>
@@ -577,7 +580,9 @@ def vote_page(
         root=ROOT,
         current="votes",
         description=desc,
-        meta=og_meta(title, desc, f"v/{v['id']}.html", base_url, f"og/v/{v['id']}.png" if has_card else None, desc, card=True),
+        meta=og_meta(
+            title, desc, f"v/{v['id']}.html", base_url, f"og/v/{v['id']}.png" if has_card else "og/hlasovani.png", desc, card=True
+        ),
         scripts=f'<script type="module" src="{ROOT}app.js"></script>\n{share_script}<script type="module" src="{ROOT}share.js"></script>\n',
     )
 
@@ -603,11 +608,17 @@ def build(data_dir: Path) -> dict[str, str]:
     release = (overview.get("sources") or {}).get("votes", {}).get("release") or ""
     data_day = release if len(release) == 10 and release[4] == "-" else overview["period"]["to"]  # export HowTheyVote = „data k“
     out = {}
+    import statements as stm
+
+    all_statements = stm.load(data_dir)
     for m in overview["meps"]:
         prof = read(data_dir / "meps" / f"{m['id']}.json")
+        prof["statements"] = [x for x in all_statements if x["mep_id"] == m["id"]]
         require(prof, ["mep", "total", "recent_main_votes"], f"meps/{m['id']}.json")
         apply_name_overrides([prof["mep"]], data_dir / "manual" / "overrides.json")
         path, html = mep_page(prof, groups, parties, base_url, data_day)
+        out[path] = html
+        path, html = embed_mep(prof, groups, base_url, data_day)
         out[path] = html
     idx_path = data_dir / "parties" / "index.json"
     if idx_path.exists():
@@ -626,12 +637,15 @@ def build(data_dir: Path) -> dict[str, str]:
     for v in votes:
         if is_final(v):
             extra = {
+                "statements": stm.html(stm.for_scope(all_statements, None, v["id"]), {i: display_name(x) for i, x in meps_by_id.items()}),
                 "summary": sums.get(str(v["id"])),
                 "procedure": briefs.get((v.get("procedure") or {}).get("reference") or ""),
             }
             path, html = vote_page(
                 v, meps_by_id, groups, base_url, v["id"] in with_card, vote_roles.get(str(v["id"])), parties, data_day, extra
             )
+            out[path] = html
+            path, html = embed_vote(v, meps_by_id, base_url, data_day)
             out[path] = html
     from procedure_pages import procedure_pages  # až tady: importuje pomocné funkce z tohoto modulu
 
@@ -654,13 +668,116 @@ def build(data_dir: Path) -> dict[str, str]:
         if REPORT_PAGES.match(path):
             out[path] = with_report_link(out[path], page_url(base_url or "https://epwatch.cz", path))
     out["404.html"] = not_found_page()
+    out["data.html"] = data_page(data_dir, base_url)
     if base_url:
         lastmod = {f"v/{v['id']}.html": v["date"] for v in votes if is_final(v)}
         # sdílené stránky duelu (d/) do sitemap nejdou, jen duel.html (zadání 24. 10. 2026, B4)
-        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith("d/") and p != "404.html"), lastmod, data_day))
+        out.update(sitemap(base_url, sorted(p for p in out if not p.startswith(("d/", "embed/")) and p != "404.html"), lastmod, data_day))
         out["feed.xml"] = atom_feed(base_url, votes, meps_by_id)
     return out
 
+
+# Stránka /data (V4): soubory, které web zveřejňuje, s popisem polí a licencí. Popisy jsou ruční, pole ověří test
+# (tests/test_build_pages.py) proti skutečným souborům, aby stránka nelhala po změně formátu.
+DATA_FILES = [
+    (
+        "votes/search.json",
+        "Všechna jmenovitá hlasování 10. období v jednom souboru (seznam na stránce Hlasování).",
+        "fields + rows: id, date, month, title (český název, jinak anglický), reference, description, result, is_main, "
+        "cz (Češi: pro, proti, zdrželo, nehlasovalo), vote_kind, description_cs, topics, cats",
+        "ODbL 1.0 (HowTheyVote.eu)",
+    ),
+    (
+        "votes/search-final.json",
+        "Jen závěrečná hlasování, stejný formát jako search.json.",
+        "stejná pole jako search.json",
+        "ODbL 1.0 (HowTheyVote.eu)",
+    ),
+    (
+        "votes/id/{id}.json",
+        "Jedno hlasování se všemi údaji: počty celého EP, frakce a hlas každého českého poslance k datu hlasování.",
+        "vote (id, date, title, counts, group_counts, cz_positions, source_url …), final_vote",
+        "ODbL 1.0 (HowTheyVote.eu)",
+    ),
+    (
+        "overview.json",
+        "Přehled poslanců s hlavními čísly a definicemi metrik.",
+        "sources, period, votes_total, definitions, meps[] (id, jméno, mandáty, frakce, strana, total)",
+        "ODbL 1.0 (HowTheyVote.eu), CC BY 4.0 (EP)",
+    ),
+    (
+        "meps.json",
+        "Čeští poslanci 10. období: mandáty, frakce a strany s daty od–do, výbory.",
+        "meps[] (id, name, gender, mandates, groups, parties, committees)",
+        "CC BY 4.0 (EP Open Data)",
+    ),
+    (
+        "meps/{id}.json",
+        "Profil poslance: všechna čísla z profilu včetně měsíců, témat a srovnání s EP.",
+        "mep, total, monthly, pairwise, topics, benchmarks, against_group, presence, own_work …",
+        "ODbL 1.0 (HowTheyVote.eu), CC BY 4.0 (EP)",
+    ),
+    (
+        "parties/{id}.json",
+        "České strany: členové, soudržnost a rozdělená hlasování.",
+        "members, total, cohesion, splits, reports …",
+        "ODbL 1.0 (HowTheyVote.eu), CC BY 4.0 (EP)",
+    ),
+    (
+        "session.json",
+        "Poslední zasedání pléna: počty hlasování, jednota Čechů, rozhodující hlasování.",
+        "from, to, votes, main, adopted_main, unity, top_splits …",
+        "ODbL 1.0 (HowTheyVote.eu)",
+    ),
+    ("agenda.json", "Návrh programu příštího zasedání.", "sittings, next, following, docs", "CC BY 4.0 (EP Open Data)"),
+    (
+        "freshness.json",
+        "Stáří dat: den exportu HowTheyVote a dny s předběžnými výsledky.",
+        "release, stale_days, sittings_after, preliminary",
+        "—",
+    ),
+]
+
+
+def data_page(data_dir: Path, base_url: str | None) -> str:
+    """/data (V4): co si stáhnout, jaká pole soubor má, licence a příklad citace."""
+    fresh = read(data_dir / "freshness.json") if (data_dir / "freshness.json").exists() else {}
+    release = (fresh.get("release") or "")[:10]
+    base = (base_url or "https://epwatch.cz").rstrip("/")
+    rows = "".join(
+        f'<tr><td class="title"><a href="{ROOT_DATA}{esc(f)}">{esc(f)}</a></td><td>{esc(desc)}<div class="small muted">{esc(fields)}</div></td>'
+        f'<td class="small">{esc(lic)}</td></tr>'
+        if "{" not in f
+        else f'<tr><td class="title"><code>{esc(f)}</code></td><td>{esc(desc)}<div class="small muted">{esc(fields)}</div></td><td class="small">{esc(lic)}</td></tr>'
+        for f, desc, fields, lic in DATA_FILES
+    )
+    # šablona, ne skutečné číslo: konkrétní větu s čísly dá tlačítko Citovat na stránce
+    example = (
+        f"[věta s číslem z webu] Zdroj: EP Watch CZ, {base}/p/[číslo poslance], data: export HowTheyVote [datum] (citováno [dnešní datum])."
+    )
+    body = f"""<section class="page-head"><h1>Otevřená data</h1>
+<p class="lead">Všechna čísla na webu jsou ze souborů níže. Stáhněte si je a počítejte sami.</p></section>
+<p>Data se obnovují jednou týdně{f", poslední export HowTheyVote je z {fmt_date(release)}" if release else ""}. Adresy jsou stabilní:
+<code>{esc(base)}/data/…</code>. Soubory jsou JSON v kódování UTF-8.</p>
+<div class="table-wrap"><table class="stack"><thead><tr><th>Soubor</th><th>Co obsahuje (pole)</th><th>Licence</th></tr></thead>
+<tbody>{rows}</tbody></table></div>
+<p class="small muted">Místo <code>{{id}}</code> dosaďte číslo hlasování, poslance nebo strany (je v adrese stránky na webu, např. <code>/p/23699</code>).</p>
+<h2 id="licence">Licence</h2>
+<ul><li><strong>Hlasování a vše z nich spočítané:</strong> <a href="https://howtheyvote.eu">HowTheyVote.eu</a>,
+<a href="https://opendatacommons.org/licenses/odbl/1-0/">Open Database License (ODbL) 1.0</a>. Při dalším šíření uveďte zdroj a sdílejte za stejných podmínek.</li>
+<li><strong>Poslanci, frakce, výbory, práce poslanců, program:</strong> <a href="https://data.europarl.europa.eu">EP Open Data</a>,
+<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (© European Union, Source: EP).</li>
+<li><strong>Výpočty:</strong> otevřené skripty <a href="https://github.com/Pjendrix/ep-watch-cz-open">ep-watch-cz-open</a> (GNU AGPL-3.0).</li></ul>
+<h2 id="citace">Jak citovat</h2>
+<p>U každého čísla a hlasování je tlačítko <strong>Citovat</strong>: zkopíruje větu, adresu stránky a datum exportu dat. Příklad:</p>
+<blockquote class="small">{esc(example)}</blockquote>
+<p class="small">Uvádějte vždy datum dat: čísla se každý týden mění s novými hlasováními.</p>"""
+    title = "Otevřená data – EP Watch CZ"
+    desc = "Soubory JSON s hlasováním českých europoslanců: popis polí, licence ODbL a CC BY 4.0, příklad citace."
+    return page(title, body, root="", current="about", description=desc, meta=og_meta(title, desc, "data.html", base_url, None, desc))
+
+
+ROOT_DATA = "data/"
 
 # Odkaz „Našli jste chybu?“ na profilu, hlasování a straně (O5): formulář na /o-projektu s předvyplněnou adresou stránky.
 REPORT_PAGES = re.compile(r"(p|v|s)/[^/]+\.html")
@@ -967,9 +1084,9 @@ def sync_heads(public: Path, data_dir: Path) -> int:
 
 
 def write(pages: dict[str, str], public: Path) -> dict[str, int]:
-    """Zapíše stránky; soubory v p/, s/, v/, z/, d/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
+    """Zapíše stránky; soubory v p/, s/, v/, z/, d/, embed/, které už nevznikly, smaže. Nezměněné nepřepisuje."""
     written = removed = 0
-    for sub in ("p", "s", "v", "z", "d"):
+    for sub in ("p", "s", "v", "z", "d", "embed/v", "embed/p"):
         d = public / sub
         d.mkdir(parents=True, exist_ok=True)
         for f in d.glob("*.html"):

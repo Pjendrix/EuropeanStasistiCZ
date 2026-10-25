@@ -279,6 +279,90 @@ def vote_card(v: dict, meps_by_id: dict, groups: list[dict], base_url: str | Non
     return to_png(img)
 
 
+def text_card(right: str, kicker: str, title: str, lines: list[str], foot: str, url: str | None) -> bytes:
+    """Jednoduchá textová karta (strana, příběh zákona, obecné hlasování, V12): nadpis a pár řádků čísel."""
+    img, d = new_card()
+    header(img, d, right)
+    d.text((56, 104), fit(d, kicker, font(22, 700), W - 112), font=font(22, 700), fill=SOFT)
+    rows = wrap(d, title, font(50, 700), W - 112, 3)
+    for i, line in enumerate(rows):
+        d.text((56, 142 + i * 62), line, font=font(50, 700), fill=WHITE)
+    y = 142 + len(rows) * 62 + 24
+    for line in lines:
+        if y > H - 120:
+            break
+        d.text((56, y), fit(d, line, font(28, 600), W - 112), font=font(28, 600), fill=WHITE)
+        y += 46
+    footer(d, foot, url)
+    return to_png(img)
+
+
+def party_card(pp: dict, data_day: str, base_url: str | None) -> bytes:
+    """OG náhled strany (s/{id}): počet poslanců, soudržnost a rozdělená závěrečná hlasování (čísla z data/parties)."""
+    n = pp["members"] if isinstance(pp["members"], int) else len(pp["members"])
+    coh = pp.get("cohesion") or [0, 0]
+    coh_m = pp.get("cohesion_main") or [0, 0]
+    lines = [f"{fmt_num(n)} {'poslanec' if n == 1 else 'poslanci' if 2 <= n <= 4 else 'poslanců'} v EP"]
+    if coh[1]:
+        lines.append(
+            f"Jednotnost: {fmt_pct(coh[0] / coh[1])} hlasování" + (f" · závěrečná {fmt_pct(coh_m[0] / coh_m[1])}" if coh_m[1] else "")
+        )
+    if coh_m[1] and pp.get("splits_count_main") is not None:
+        lines.append(f"Poslanci strany hlasovali pro i proti: {fmt_num(pp['splits_count_main'])} závěrečných hlasování")
+    url = f"{base_url.rstrip('/').split('://', 1)[-1]}/s/{pp['id']}" if base_url else None
+    return text_card(
+        f"data k {fmt_date(data_day)}",
+        "Česká strana v Evropském parlamentu",
+        f"{pp['short_label']} · {pp.get('name') or ''}".strip(" ·"),
+        lines,
+        "Zdroj: HowTheyVote.eu (ODbL), EP Open Data (CC BY 4.0) · strana k datu hlasování",
+        url,
+    )
+
+
+def law_card(row: dict, v: dict, meps_by_id: dict, base_url: str | None, slug_: str) -> bytes:
+    """OG náhled příběhu zákona (z/{slug}): název, číslo procedury, poslední závěrečné hlasování a hlasy Čechů."""
+    cnt = Counter(p["position"] for p in active_positions(v, meps_by_id))
+    c = v["counts"]
+    lines = [
+        f"{fmt_date(v['date'])}: {RESULT_LABEL.get(v.get('result'), 'výsledek neuveden')} · {fmt_num(c['for'])} pro, {fmt_num(c['against'])} proti",
+        "Češi: " + (" · ".join(f"{cnt[p]} {POS_LABEL[p]}" for p in POSITIONS if cnt[p]) or "žádný poslanec v mandátu"),
+    ]
+    url = f"{base_url.rstrip('/').split('://', 1)[-1]}/z/{slug_}" if base_url else None
+    return text_card(
+        row["label"],
+        "Příběh zákona",
+        row.get("title_cs") or row.get("title_en") or row["label"],
+        lines,
+        f"Zdroj: EP Open Data (CC BY 4.0), HowTheyVote.eu (ODbL) · hlasování {fmt_date(v['date'])}",
+        url,
+    )
+
+
+GENERIC_VOTE = "hlasovani.png"  # og/hlasovani.png: obecná karta pro starší hlasování bez vlastní karty (V12)
+
+
+def generic_vote_card(base_url: str | None) -> bytes:
+    return text_card(
+        "jmenovité hlasování",
+        "Evropský parlament",
+        "Jak hlasovali čeští europoslanci",
+        ["Výsledek celého EP a hlas každého českého poslance", "k datu hlasování, s odkazem na zdroj."],
+        "Zdroj: HowTheyVote.eu (ODbL)",
+        base_url.rstrip("/").split("://", 1)[-1] if base_url else None,
+    )
+
+
+def law_cards_wanted(rows: dict, wanted: set[int]) -> dict[str, dict]:
+    """{číslo procedury: poslední závěrečné hlasování} pro procedury, jejichž závěrečné hlasování má kartu (12 měsíců)."""
+    out = {}
+    for label, row in rows.items():
+        finals = [v for v in row["votes"] if is_final(v) and v["id"] in wanted]
+        if finals:
+            out[label] = finals[-1]
+    return out
+
+
 def hex_rgb(c: str | None) -> tuple[int, int, int]:
     if c and len(c) == 7 and c.startswith("#"):
         return tuple(int(c[i : i + 2], 16) for i in (1, 3, 5))
@@ -474,6 +558,21 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
     d = public / "og" / "v"
     for f in d.glob("*.png"):
         if int(f.stem) not in wanted:
+            f.unlink()
+            removed += 1
+    put(GENERIC_VOTE, generic_vote_card(base_url))
+    idx = data_dir / "parties" / "index.json"
+    for p in read(idx)["parties"] if idx.exists() else []:
+        put(f"s/{p['id']}.png", party_card(read(data_dir / "parties" / f"{p['id']}.json"), data_day, base_url))
+    from procedure_pages import collect, slug  # až tady: procedure_pages importuje build_pages
+
+    rows = collect(data_dir, votes)
+    laws = law_cards_wanted(rows, wanted)
+    for label, v in sorted(laws.items()):
+        put(f"z/{slug(label)}.png", law_card(rows[label], v, meps_by_id, base_url, slug(label)))
+    keep = {f"{slug(lb)}.png" for lb in laws}
+    for f in (public / "og" / "z").glob("*.png") if (public / "og" / "z").exists() else []:
+        if f.name not in keep:
             f.unlink()
             removed += 1
     return {

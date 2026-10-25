@@ -16,6 +16,13 @@ export { useCardTheme, measureText, balanceRows } from "./lib/share-canvas.js";
 export { voteCardOps, mepBasicOps, metricCardOps, splitRowsFor, splitCardOps, partyCardOps, groupCardOps, lawCardOps, sessionCardOps, quizCardOps, quizGroupsCardOps, duelCardOps, cardOps } from "./lib/share-cards.js";
 export { SHARE_FORMATS, CARD_THEMES, voteHasContext, renderCardPng };
 
+// Kód pro vložení do článku (V2): jen u stránky hlasování (v/) a poslance (p/); karta /embed/… nese zdroj a datum.
+export function embedCode(url, title = "") {
+  const m = /^(https?:\/\/[^/]+)\/(v|p)\/(\d+)$/.exec(url || "");
+  if (!m) return "";
+  return `<iframe src="${m[1]}/embed/${m[2]}/${m[3]}" title="${esc(title || "EP Watch CZ")}" width="100%" height="${m[2] === "v" ? 240 : 200}" style="border:0;max-width:640px" loading="lazy"></iframe>`;
+}
+
 // --- tlačítko a panel sdílení (N1) -------------------------------------------------------
 // Jedno tlačítko „Sdílet“ otevře <dialog> s živým náhledem PNG. Co je v náhledu, to se stáhne nebo odešle (stejný blob).
 // Stránka nastaví window.shareContext(kind) → { kind, url, text, filename, data, title?, subtitle?, cite?, trust? } (i jako Promise);
@@ -146,6 +153,7 @@ async function openSharePanel(trigger) {
         <p class="sd-lab"><label for="sd-url">Odkaz</label></p>
         <div class="sd-link"><input id="sd-url" type="text" readonly value="${esc(urlShort)}"><button type="button" class="sd-btn" data-act="link">${SD_ICON.copy}<span>Kopírovat</span></button></div>
         ${ctx.cite ? `<button type="button" class="sd-textbtn" data-act="cite">${SD_ICON.quote}<span>Kopírovat jako citaci</span></button>` : ""}
+        ${embedCode(ctx.url, ctx.title) ? `<button type="button" class="sd-textbtn" data-act="embed">${SD_ICON.copy}<span>Kopírovat kód pro vložení na web</span></button>` : ""}
         <p class="sd-lab">Sdílet na</p>
         <div class="sd-nets">
           <a href="https://wa.me/?text=${enc(`${ctx.text} ${ctx.url}`)}" target="_blank" rel="noopener noreferrer"><span class="sd-ni">${SD_ICON.wa}</span>WhatsApp</a>
@@ -293,6 +301,9 @@ async function openSharePanel(trigger) {
       } else if (a === "cite") {
         await navigator.clipboard.writeText(await citeText(ctx.cite));
         toast("Citace zkopírována");
+      } else if (a === "embed") {
+        await navigator.clipboard.writeText(embedCode(ctx.url, ctx.title));
+        toast("Kód <iframe> zkopírován");
       }
     } catch (e) {
       if (e?.name === "AbortError") return;   // uživatel zavřel systémové sdílení
