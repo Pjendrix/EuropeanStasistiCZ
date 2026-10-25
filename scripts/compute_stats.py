@@ -679,12 +679,28 @@ def procedure_titles(data_dir: Path) -> dict[str, str]:
     return out
 
 
-def apply_titles(votes: list[dict], titles: dict[str, str]) -> None:
-    """Doplní k hlasování title_cs: oficiální český název procedury, o kterou jde (HowTheyVote má jen angličtinu)."""
+def ai_titles(data_dir: Path) -> dict[str, dict]:
+    """{id hlasování: {title_cs, title}} z data/title_translations.json (překlad AI u závěrečných hlasování bez
+    oficiálního českého názvu, scripts/title_translations.py). Bez souboru prázdný slovník."""
+    path = data_dir / "title_translations.json"
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    require(doc, ["items"], path.name)
+    for key, it in doc["items"].items():
+        require(it, ["title_cs", "title"], f"{path.name} {key}")
+    return doc["items"]
+
+
+def apply_titles(votes: list[dict], titles: dict[str, str], ai: dict[str, dict] | None = None) -> None:
+    """Doplní k hlasování title_cs: oficiální český název procedury, o kterou jde (HowTheyVote má jen angličtinu).
+    Když oficiální chybí, použije překlad AI (title_cs_ai: true), ale jen pokud se anglický originál nezměnil."""
     for v in votes:
         cs = titles.get((v.get("procedure") or {}).get("reference") or "")
         if cs:
             v["title_cs"] = cs
+        elif ai and (t := ai.get(str(v.get("id")))) and t["title"] == v.get("title"):
+            v["title_cs"], v["title_cs_ai"] = t["title_cs"], True
 
 
 def load_votes(votes_dir: Path) -> tuple[dict, list[dict]]:
@@ -698,7 +714,13 @@ def load_votes(votes_dir: Path) -> tuple[dict, list[dict]]:
         data = json.loads((votes_dir / f"{m['month']}.json").read_text(encoding="utf-8"))
         require(data, ["votes"], f"votes/{m['month']}.json")
         votes.extend(data["votes"])
-    apply_titles(votes, procedure_titles(votes_dir.parent))
+    apply_titles(votes, procedure_titles(votes_dir.parent), ai_titles(votes_dir.parent))
+    # český popis podle aktuálních pravidel labels_cs.py (starší soubory mají None u vzorů doplněných později)
+    from labels_cs import translate
+
+    for v in votes:
+        if not v.get("description_cs") and v.get("description"):
+            v["description_cs"] = translate(v["description"])
     # přijatý text podle EP Open Data (adopted_texts.py) má přednost před polem z HowTheyVote
     from adopted_texts import apply as apply_adopted
 

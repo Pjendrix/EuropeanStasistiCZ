@@ -18,7 +18,7 @@ from build_pages import RESULT_LABEL, esc, topic_chips, fmt_date, fmt_num, fmt_p
 from categories import LABEL, icon_svg
 from hero_art import STARS
 from procedure_pages import procedure_url
-from compute_stats import apply_titles, procedure_titles
+from compute_stats import ai_titles, apply_titles, procedure_titles
 from layout import MODULES
 from vote_kinds import KIND_LABELS, is_final
 
@@ -718,7 +718,7 @@ def session_people(data_dir: Path, meps_by_id: dict) -> dict | None:
     a, b = session["from"], session["to"]
     roles = (_read(data_dir / "vote_roles.json") or {}).get("votes") or {}
     votes = [v for m in sorted({a[:7], b[:7]}) for v in (_read(data_dir / "votes" / f"{m}.json") or {"votes": []})["votes"]]
-    apply_titles(votes, procedure_titles(data_dir))
+    apply_titles(votes, procedure_titles(data_dir), ai_titles(data_dir))
     speeches = (_read(data_dir / "speeches.json") or {}).get("meps") or {}
     own = (_read(data_dir / "own_work.json") or {}).get("meps") or {}
     people: dict[int, dict] = {}
@@ -927,12 +927,12 @@ def hub_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 
     # Data pro přepínání hlasování a kartu ke sdílení (stejná karta jako na detailu hlasování).
     month_cache: dict[str, list[dict]] = {}
-    titles = procedure_titles(data_dir)  # české názvy procedur jako jinde na webu
+    titles, ai = procedure_titles(data_dir), ai_titles(data_dir)  # české názvy procedur jako jinde na webu
     share = {}
     for x in votes:
         if x["month"] not in month_cache:
             month_cache[x["month"]] = (_read(data_dir / "votes" / f"{x['month']}.json") or {"votes": []})["votes"]
-            apply_titles(month_cache[x["month"]], titles)
+            apply_titles(month_cache[x["month"]], titles, ai)
         full = next((y for y in month_cache[x["month"]] if y["id"] == x["id"]), None)
         if full:
             share[str(x["id"])] = vote_share_data(full, meps_by_id, groups, parties, None, trace=bool(x.get("trace")))

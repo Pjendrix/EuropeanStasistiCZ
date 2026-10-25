@@ -1,0 +1,140 @@
+{
+ "note": "Překlad anglického názvu závěrečných hlasování bez oficiálního českého názvu procedury od Claude Haiku (scripts/title_translations.py). Web ho označí jako překlad AI a ukáže původní název.",
+ "model": "claude-haiku-5-5",
+ "prompt_version": 2,
+ "prompt": "Překládáš úřední názvy hlasování Evropského parlamentu z angličtiny do češtiny pro český nezávislý web.\nVrať \"nazev\": věrný český překlad názvu, jak by ho uvedl úřední český dokument EP.\n\nPravidla:\n- Překládej jen název, nic nepřidávej, nevysvětluj a nehodnoť.\n- Zachovej čísla, označení předpisů, kódy a vlastní jména přesně jako ve vstupu (např. MON 87769, (EU) 2022/2464).\n- „Rule“ jednacího řádu překládej jako „článek“ (Rule 115(2) → článek 115 odst. 2).\n- „Amending …“ na začátku názvu → „Změna …“ (Amending Regulation (EU) No 228/2013 → Změna nařízení (EU) č. 228/2013).\n- „Objection pursuant to Rule …“ → „Námitka podle článku … jednacího řádu: …“.\n- Spisovná čeština, bez uvozovek kolem celého názvu.",
+ "items": {
+  "170398": {
+   "title_cs": "Nařízení o odlesňování: ustanovení týkající se data použitelnosti",
+   "title": "Deforestation Regulation: provisions relating to the date of application",
+   "fingerprint": "b2d6d567905554fc",
+   "generated": "2026-10-25"
+  },
+  "170611": {
+   "title_cs": "Volba Komise",
+   "title": "Election of the Commission",
+   "fingerprint": "e9a8f534c681b18e",
+   "generated": "2026-10-25"
+  },
+  "170721": {
+   "title_cs": "Námitka podle článku 114 odst. 3 jednacího řádu: Opatření ke snížení náhodného úlovku delfína obecného (Delphinus delphis) a dalších malých kytovců v Biskajském zálivu",
+   "title": "Objection pursuant to Rule 114(3): Measures to reduce incidental catches of common dolphin (Delphinus delphis) and other small cetaceans in the Bay of Biscay",
+   "fingerprint": "7aae9b901a69adbc",
+   "generated": "2026-10-25"
+  },
+  "173903": {
+   "title_cs": "Protokol o provádění Dohody o rybolovném partnerství mezi Evropským společenstvím a Guinejsko-Bissavskou republikou (2024–2029) (usnesení)",
+   "title": "Protocol on the Implementation of the Fisheries Partnership Agreement between the European Community and the Republic of Guinea-Bissau (2024-2029) (Resolution)",
+   "fingerprint": "717427268471f0f5",
+   "generated": "2026-10-25"
+  },
+  "174288": {
+   "title_cs": "Změna směrnic (EU) 2022/2464 a (EU) 2024/1760, pokud jde o data, od nichž mají členské státy uplatňovat určité požadavky na podávání zpráv o udržitelnosti podniků a na náležitou péči",
+   "title": "Amending Directives (EU) 2022/2464 and (EU) 2024/1760 as regards the dates from which Member States are to apply certain corporate sustainability reporting and due diligence requirements",
+   "fingerprint": "c7a8f36325a5209c",
+   "generated": "2026-10-25"
+  },
+  "174971": {
+   "title_cs": "Změna směrnic (EU) 2022/2464 a (EU) 2024/1760, pokud jde o data, od nichž mají členské státy uplatňovat určité požadavky v oblasti podávání zpráv o udržitelnosti podniků a náležité péče",
+   "title": "Amending Directives (EU) 2022/2464 and (EU) 2024/1760 as regards the dates from which Member States are to apply certain corporate sustainability reporting and due diligence requirements",
+   "fingerprint": "18d28baafd20a034",
+   "generated": "2026-10-25"
+  },
+  "176090": {
+   "title_cs": "Změna nařízení o EFRR, Fondu soudržnosti a Fondu pro spravedlivou transformaci, pokud jde o zvláštní opatření k řešení strategických výzev v kontextu střednědobého přezkumu",
+   "title": "Amending of the ERDF, Cohesion Fund and Just Transition Fund as regards specific measures to address strategic challenges in the context of the mid-term review",
+   "fingerprint": "475ef84b5b30e9f5",
+   "generated": "2026-10-25"
+  },
+  "176091": {
+   "title_cs": "Změna nařízení (EU) 2021/1057, kterým se zřizuje Evropský sociální fond plus (ESF+), pokud jde o zvláštní opatření k řešení strategických výzev",
+   "title": "Amending of Regulation (EU) 2021/1057 establishing the European Social Fund + (ESF+) as regards specific measures to address strategic challenges",
+   "fingerprint": "02ef77a3775fdfe6",
+   "generated": "2026-10-25"
+  },
+  "176241": {
+   "title_cs": "Stav ochrany vlka (Canis lupus)",
+   "title": "The protection status of the wolf (Canis lupus)",
+   "fingerprint": "b9eed1a7d5e56a81",
+   "generated": "2026-10-25"
+  },
+  "176302": {
+   "title_cs": "Normy emisní výkonnosti CO2 pro nové osobní automobily a nová lehká užitková vozidla pro roky 2025 až 2027",
+   "title": "CO2 emission performance standards for new passenger cars and new light commercial vehicles for 2025 to 2027",
+   "fingerprint": "8ba3cab4a3932783",
+   "generated": "2026-10-25"
+  },
+  "176743": {
+   "title_cs": "Změny nařízení o kapitálových požadavcích, pokud jde o transakce financování cenných papírů v rámci poměrového ukazatele čistého stabilního financování",
+   "title": "Amendments to the Capital Requirements Regulation as regards securities financing transactions under the net stable funding ratio",
+   "fingerprint": "275310c4a1bbf5c2",
+   "generated": "2026-10-25"
+  },
+  "176982": {
+   "title_cs": "Změna nařízení (EU) č. 228/2013, pokud jde o dodatečnou pomoc a další flexibilitu pro nejvzdálenější regiony postižené závažnými přírodními katastrofami a v souvislosti s cyklónem Chido, který zpustošil Mayotte",
+   "title": "Amending Regulation (EU) No 228/2013 as regards additional assistance and further flexibility to outermost regions affected by severe natural disasters and in the context of cyclone Chido devastating Mayotte",
+   "fingerprint": "d568c81a830cdb44",
+   "generated": "2026-10-25"
+  },
+  "177334": {
+   "title_cs": "Ukončení Dohody o dobrovolném partnerství mezi Evropskou unií a Kamerunskou republikou o správě a vymáhání předpisů v oblasti lesního hospodářství a obchodu se dřevem a dřevěnými výrobky do Unie",
+   "title": "Termination of the Voluntary Partnership Agreement between the European Union and the Republic of Cameroon on forest law enforcement governance and trade in timber and derived products to the Union.",
+   "fingerprint": "888b833d96f0dd38",
+   "generated": "2026-10-25"
+  },
+  "178111": {
+   "title_cs": "Evropský klimatický zákon",
+   "title": "European Climate Law",
+   "fingerprint": "e78926da0a696bb0",
+   "generated": "2026-10-25"
+  },
+  "178424": {
+   "title_cs": "Dohoda o posíleném partnerství a spolupráci mezi EU a Kyrgyzskou republikou (usnesení)",
+   "title": "EU-Kyrgyz Republic Enhanced Partnership and Cooperation Agreement (Resolution)",
+   "fingerprint": "0e43cfaf4a27b847",
+   "generated": "2026-10-25"
+  },
+  "180622": {
+   "title_cs": "Dohoda o digitálním obchodu mezi Evropskou unií a Singapurskou republikou (usnesení)",
+   "title": "Digital Trade Agreement between the European Union and the Republic of Singapore (Resolution)",
+   "fingerprint": "6b604bb5760e8570",
+   "generated": "2026-10-25"
+  },
+  "181511": {
+   "title_cs": "Existence zřejmého rizika závažného porušení ze strany Maďarska hodnot, na nichž je Unie založena",
+   "title": "Existence of a clear risk of a serious breach by Hungary of the values on which the Union is founded",
+   "fingerprint": "4bfb3c348b3a435a",
+   "generated": "2026-10-25"
+  },
+  "184117": {
+   "title_cs": "Mezitimní zpráva v souvislosti s postupem udělení souhlasu s Dohodou o zřízení přidružení mezi EU a Andorrským knížectvím a Republikou San Marino",
+   "title": "Interim report in view of the consent procedure on the Agreement establishing an association between the EU and the Principality of Andorra and the Republic of San Marino",
+   "fingerprint": "bd18689902af6a61",
+   "generated": "2026-10-25"
+  },
+  "190026": {
+   "title_cs": "Průběžná zpráva o návrhu víceletého finančního rámce na období 2028-2034",
+   "title": "Interim report on the proposal for the multiannual financial framework for 2028-2034",
+   "fingerprint": "2d49b1693c1aaf0b",
+   "generated": "2026-10-25"
+  },
+  "192473": {
+   "title_cs": "Dohoda o posíleném partnerství a spolupráci mezi EU a Uzbekistánem (usnesení)",
+   "title": "EU-Uzbekistan Enhanced Partnership and Cooperation Agreement (resolution)",
+   "fingerprint": "f5a44c96a57e95f1",
+   "generated": "2026-10-25"
+  },
+  "194991": {
+   "title_cs": "Dohoda o strategickém partnerství EU–Mexiko v oblasti politické, hospodářské a kooperační (průběžná zpráva)",
+   "title": "EU–Mexico Political, Economic and Cooperation Strategic Partnership Agreement (Interim report)",
+   "fingerprint": "05dd111c28c388bd",
+   "generated": "2026-10-25"
+  },
+  "198947": {
+   "title_cs": "Námitka podle článku 115 odst. 2 a 3 jednacího řádu: Geneticky modifikovaná sója MON 87769",
+   "title": "Objection pursuant to Rule 115(2) and (3): Genetically modified soybean MON 87769",
+   "fingerprint": "ac72f7d03f4008c1",
+   "generated": "2026-10-25"
+  }
+ }
+}

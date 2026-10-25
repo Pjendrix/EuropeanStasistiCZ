@@ -77,6 +77,12 @@ jobs:
         timeout-minutes: 8
         run: python scripts/adopted_texts.py
 
+      - name: České názvy závěrečných hlasování bez oficiálního názvu (Claude Haiku)
+        # jen nová hlasování; bez klíče zůstanou uložené překlady a check_data.py vypíše varování
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/title_translations.py --backend api || echo "::warning::překlad názvů hlasování se nepodařil"
+
       - name: Statistiky
         run: python scripts/compute_stats.py
 
@@ -115,7 +121,7 @@ jobs:
         run: |
           day=$(date -u +%Y-%m-%d)
           scripts/commit_data.sh "data: týdenní aktualizace $day" --tag "data-$day" \
-            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/adopted_texts.json data/preliminary public/assets/photos
+            data/meps.json data/votes data/benchmarks.json data/delegations.json data/group_countries.json data/group_chairs.json data/speeches.json data/attendance.json data/group_web.json data/vote_summaries.json data/title_translations.json data/adopted_texts.json data/preliminary public/assets/photos
 
       - name: Issue při selhání
         if: failure() && (github.event_name == 'schedule' || github.triggering_actor == 'github-actions[bot]')

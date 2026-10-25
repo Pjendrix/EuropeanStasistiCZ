@@ -99,7 +99,7 @@ def vote_title(v: dict) -> str:
 def kind_fields(v: dict) -> dict:
     """Typ hlasování a český popis; starší měsíční soubory pole nemají, dopočítají se stejnými pravidly."""
     kind, inverted = (v["vote_kind"], v.get("inverted", False)) if v.get("vote_kind") else classify(v)
-    desc_cs = v["description_cs"] if "description_cs" in v else translate(v.get("description"))
+    desc_cs = v.get("description_cs") or translate(v.get("description"))
     return {"vote_kind": kind, "is_final": is_final(v), "inverted": inverted, "description_cs": desc_cs}
 
 
@@ -943,7 +943,7 @@ def run(data_dir: Path, day: str) -> dict:
                     {
                         ref: v["title_cs"]
                         for v in votes
-                        if v.get("title_cs")
+                        if v.get("title_cs") and not v.get("title_cs_ai")
                         for ref in [(v.get("procedure") or {}).get("reference")]
                         if ref
                     }.items()

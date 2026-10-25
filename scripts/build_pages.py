@@ -389,12 +389,16 @@ def topic_text(cats: list[str] | None) -> str:
     return f"{CAT_LABEL[known[0]]}{f' (+{len(known) - 1})' if len(known) > 1 else ''}" if known else ""
 
 
+OFFICIAL_TITLE_NOTE = "Český název je oficiální název procedury z EP Open Data."
+AI_TITLE_NOTE = "EP k tomuto hlasování český název nevede, jde o překlad AI (Claude Haiku)."
+
+
 def original_title_html(v: dict) -> str:
     """Původní anglický název z HowTheyVote, když web ukazuje oficiální český název procedury z EP Open Data."""
     if not v.get("title_cs") or not v.get("title") or v["title"] == v["title_cs"]:
         return ""
     return (
-        f'<p class="small muted">Český název je oficiální název procedury z EP Open Data. Původní název hlasování '
+        f'<p class="small muted">{AI_TITLE_NOTE if v.get("title_cs_ai") else OFFICIAL_TITLE_NOTE} Původní název hlasování '
         f"(HowTheyVote.eu): {esc(v['title'])}</p>"
     )
 
@@ -412,7 +416,7 @@ def vote_share_data(
     Strany se jmény poslanců (card_items); rows zůstává kvůli volajícím, karta ho nepotřebuje."""
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
-    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    desc_cs = v.get("description_cs") or translate(v.get("description"))
     c = v["counts"]
     return {
         "title": title_txt,
@@ -446,7 +450,7 @@ def vote_page(
 ) -> tuple[str, str]:
     kind, _ = kind_of(v)
     title_txt = vote_title(v)
-    desc_cs = v.get("description_cs") if "description_cs" in v else translate(v.get("description"))
+    desc_cs = v.get("description_cs") or translate(v.get("description"))
     c = v["counts"]
     total = [c["for"], c["against"], c["abstention"], c["did_not_vote"]]
     cz = active_positions(v, meps_by_id)
