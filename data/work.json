@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-10-23",
+ "updated": "2026-10-25",
  "complete": true,
  "meps": [
   {
@@ -480,14 +480,14 @@
    "lead_reports": 3,
    "lead_opinions": 0,
    "shadow_reports": 18,
-   "shadow_opinions": 6,
+   "shadow_opinions": 5,
    "motions_signed": 52,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
      "lead_opinions": null,
      "shadow_reports": "top",
-     "shadow_opinions": "top"
+     "shadow_opinions": "mid"
     },
     "of": 21,
     "tiers_skipped": false,
@@ -1058,7 +1058,7 @@
    "shadow_pending": 0,
    "resolutions_adopted": 53,
    "lead_reports": 2,
-   "lead_opinions": 6,
+   "lead_opinions": 7,
    "shadow_reports": 1,
    "shadow_opinions": 4,
    "motions_signed": 137,
