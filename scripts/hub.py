@@ -352,7 +352,10 @@ def radar_steps(steps: list[dict], reached: str | None) -> str:
 
 def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     title = r.get("title_cs") or r.get("title_en") or r["label"] or r["procedure"]
-    comm, chip = _committee_html(r.get("committee"), root)
+    comm, _ = _committee_html(r.get("committee"), root)
+    # čip tématu bez ikony: na radaru je přes sto karet a ikony by zdvojnásobily počet uzlů DOM (O8)
+    cat_key = (r.get("committee") or {}).get("category")
+    chip = f'<a class="topic-chip" href="{root}votes?c={cat_key}">{esc(LABEL[cat_key])}</a> ' if cat_key in LABEL else ""
     # číslo procedury vede na stránku Příběh zákona (z/, procedure_pages.py), ta odkazuje dál na Legislativní observatoř
     story = procedure_url(r.get("label"), root)
     label = (
@@ -391,7 +394,18 @@ def radar_proc_card(r: dict, root: str, done: bool = False) -> str:
     return (
         f'<li class="card rd-proc"{_filter_attrs(cat, True, True)}>'
         f'<h3 class="rd-title">{_title_link(title, r.get("label"), root)}</h3><p class="rd-meta small">{chip}{head}</p>'
-        f"{_cz_html(r['cz'], root)}{radar_steps(r['steps'], r['reached'])}{tail}</li>"
+        f"{_cz_html(r['cz'], root)}{tail}{radar_steps_details(r['steps'], r['reached'])}</li>"
+    )
+
+
+def radar_steps_details(steps: list[dict], reached: str | None) -> str:
+    """Celá osa procedury sbalená (O8): na kartě je jen poslední krok a příští termín. Kroky jsou v <template>, takže
+    stránka nemá v DOM tisíce uzlů; radar.js je vloží při rozbalení."""
+    if not steps:
+        return ""
+    return (
+        f'<details class="rd-tl"><summary>Celý průběh ({fmt_num(sum(1 for x in steps if x.get("date")))} z {fmt_num(len(steps))} kroků)</summary>'
+        f"<template>{radar_steps(steps, reached)}</template></details>"
     )
 
 
@@ -425,7 +439,24 @@ def radar_html(radar: dict | None, root: str = "") -> str:
         sess = (
             '<section class="card" id="zasedani"><h2>Nejbližší zasedání</h2><p class="muted">Program zatím není zveřejněný.</p></section>'
         )
-    active = "".join(radar_proc_card(r, root) for r in radar.get("active", []))
+
+    # O8: rozpracované po stavu, nejblíž hlasování nahoře (pořadí uvnitř skupiny zůstává z radar.py)
+    def stage(r):
+        return "program" if r.get("next_vote") else "trilogue" if r.get("reached") == "trilogue" else "committee"
+
+    stages = [
+        ("program", "Na programu pléna"),
+        ("trilogue", "Jednání s Radou (trialog)"),
+        ("committee", "Ve výboru"),
+    ]
+    act = radar.get("active", [])
+    active = "".join(
+        f'<h3 class="rd-stage">{label} <span class="muted">({fmt_num(len(rs))})</span></h3><ol class="rd-procs">'
+        + "".join(radar_proc_card(r, root) for r in rs)
+        + "</ol>"
+        for key, label in stages
+        if (rs := [r for r in act if stage(r) == key])
+    )
     done = "".join(radar_proc_card(r, root, True) for r in radar.get("done", []))
     pending = (
         f'<p class="small muted">U {fmt_num(radar["without_events"])} procedur se průběh ještě stahuje, doplní se při další aktualizaci.</p>'
@@ -437,10 +468,15 @@ def radar_html(radar: dict | None, root: str = "") -> str:
         f'<section class="rd-block" id="rozpracovane" aria-labelledby="rd-h2"><h2 id="rd-h2">Rozpracované zákony s českou stopou</h2>'
         f'<p class="muted">Legislativní procedury, ve kterých je český poslanec zpravodajem nebo stínovým zpravodajem a o kterých plénum ještě '
         f"nehlasovalo. Nahoře ty, které jsou nejblíž hlasování.</p>{pending}"
-        + (f'<ol class="rd-procs">{active}</ol>' if active else '<p class="muted">Žádné takové procedury.</p>')
+        + (active or '<p class="muted">Žádné takové procedury.</p>')
         + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
         '<section class="rd-block" id="odhlasovano" aria-labelledby="rd-h3"><h2 id="rd-h3">Odhlasováno za poslední rok</h2>'
-        + (f'<ol class="rd-procs">{done}</ol>' if done else '<p class="muted">Za poslední rok nic.</p>')
+        + (
+            f'<details class="rd-tl rd-done"><summary>Zobrazit {fmt_num(len(radar.get("done", [])))} odhlasovaných procedur</summary>'
+            f'<template><ol class="rd-procs">{done}</ol></template></details>'
+            if done
+            else '<p class="muted">Za poslední rok nic.</p>'
+        )
         + '<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p></section>'
         '<p class="source">Zdroj: <a href="https://data.europarl.europa.eu">EP Open Data</a> (CC BY 4.0) a '
         f'<a href="https://howtheyvote.eu">HowTheyVote.eu</a> (ODbL) · <a href="{root}o-projektu#radar">jak radar funguje</a></p>'

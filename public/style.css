@@ -2457,3 +2457,8 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 .mx-periods { margin-top: .5rem; }
 .mx-periods p { margin: 0 0 .2rem; }
 .mx-periods li { margin: .1rem 0; }
+
+/* O8: radar po stavech, osa procedury sbalená */
+.rd-stage { margin: 1.25rem 0 .5rem; font-size: 1.05rem; }
+.rd-tl { margin-top: .5rem; }
+.rd-tl > summary { cursor: pointer; font-size: .875rem; color: var(--muted); }

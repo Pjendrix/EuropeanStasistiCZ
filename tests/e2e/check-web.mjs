@@ -1034,6 +1034,13 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
     return out;
   });
   r.forEach((x) => problems.push(`radar: ${x}`));
+  // O8: na mobilu pod 1 500 uzlů DOM (osa procedury a odhlasované jsou v <template>, vloží se po rozbalení)
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: "networkidle" });
+  const dom = await page.evaluate(() => document.querySelectorAll("*").length);
+  if (dom >= 1500) problems.push(`radar: ${dom} uzlů DOM (limit 1 500)`);
+  await page.click(".rd-procs .rd-tl > summary");
+  if (!(await page.locator(".rd-procs .rd-tl[open] .rd-steps").count())) problems.push("radar: rozbalení průběhu neukázalo kroky");
   await ctx.close();
 }
 
