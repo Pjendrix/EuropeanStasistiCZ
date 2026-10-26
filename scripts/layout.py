@@ -189,7 +189,7 @@ def tabbar(root: str = "", current: str | None = None) -> str:
     return (
         f'<nav class="tabbar" aria-label="Hlavní navigace (mobil)">{tabs}'
         f'<button type="button" class="tab-more" popovertarget="more-sheet" data-pages="{" ".join(MORE_PAGES)}"{more_cur}>{TAB_ICONS["more"]}<span>Více</span></button></nav>\n'
-        f'<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><div class="sheet-grip" aria-hidden="true"></div>{groups}'
+        f'<div popover id="more-sheet" class="sheet" role="dialog" aria-label="Další stránky"><button type="button" class="sheet-grip" popovertarget="more-sheet" popovertargetaction="hide" aria-label="Zavřít panel"></button>{groups}'
         f'<p class="sheet-foot"><a href="{REPO}">Výpočty na GitHubu</a></p></div><!--/tabbar-->'
     )
 
