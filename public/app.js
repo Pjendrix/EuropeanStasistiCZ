@@ -29,6 +29,34 @@ document.addEventListener("click", (ev) => {
   if (!ev.target.closest("#more-sheet")) sheet.classList.remove("open");
 });
 
+// Panel „Více“ jde zavřít i stažením dolů (táhlo nahoře nebo celý panel, když je odscrollovaný nahoru).
+{
+  const sheet = document.getElementById("more-sheet");
+  const close = () => { if (sheet.matches(":popover-open")) sheet.hidePopover(); sheet.classList.remove("open"); };
+  let y0 = null, dy = 0, t0 = 0;
+  sheet?.addEventListener("click", (ev) => { if (ev.target.closest(".sheet-grip") && !sheet.showPopover) close(); });
+  sheet?.addEventListener("touchstart", (ev) => {
+    if (sheet.scrollTop > 0 && !ev.target.closest(".sheet-grip")) return;
+    y0 = ev.touches[0].clientY; dy = 0; t0 = ev.timeStamp;
+    sheet.style.transition = "none";
+  }, { passive: true });
+  sheet?.addEventListener("touchmove", (ev) => {
+    if (y0 === null) return;
+    dy = Math.max(0, ev.touches[0].clientY - y0);
+    sheet.style.transform = dy ? `translateY(${dy}px)` : "";
+  }, { passive: true });
+  const end = () => {
+    if (y0 === null) return;
+    const fast = dy > 30 && dy / Math.max(1, performance.now() - t0) > 0.5;
+    y0 = null;
+    sheet.style.transition = "transform .2s ease";
+    if (dy > 90 || fast) { close(); }
+    sheet.style.transform = "";
+  };
+  sheet?.addEventListener("touchend", end);
+  sheet?.addEventListener("touchcancel", end);
+}
+
 document.addEventListener("click", async (ev) => {
   const el = ev.target.closest("[data-copy-prompt]");
   if (!el) return;
