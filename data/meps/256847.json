@@ -104,7 +104,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 833,
+ "mandate_days": 834,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4583,11 +4583,11 @@
  },
  "amendments": {
   "committee": {
-   "total": 418,
-   "sole": 257,
+   "total": 419,
+   "sole": 258,
    "on_behalf": 0,
    "dossiers": 41,
-   "docs": 77,
+   "docs": 78,
    "recent": [
     {
      "doc": "ENVI-AM-796499",
@@ -4610,6 +4610,16 @@
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796495/ENVI-AM-796495_en.pdf"
     },
     {
+     "doc": "ENVI-AM-796494",
+     "date": "2026-10-20",
+     "committees": [
+      "ENVI"
+     ],
+     "procedure": "2026/0212(COD)",
+     "count": 1,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796494/ENVI-AM-796494_en.pdf"
+    },
+    {
      "doc": "ENVI-AM-796493",
      "date": "2026-10-20",
      "committees": [
@@ -4628,16 +4638,6 @@
      "procedure": "2026/0212(COD)",
      "count": 5,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796491/ENVI-AM-796491_en.pdf"
-    },
-    {
-     "doc": "ENVI-AM-796488",
-     "date": "2026-10-13",
-     "committees": [
-      "ENVI"
-     ],
-     "procedure": "2026/0212(COD)",
-     "count": 2,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796488/ENVI-AM-796488_en.pdf"
     }
    ]
   },
@@ -4659,11 +4659,11 @@
   "coverage": {
    "committee_to": "2026-10-21",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1428,
+   "committee_docs": 1440,
    "committee_compromise": 34,
-   "committee_pending": 21
+   "committee_pending": 13
   },
-  "updated": "2026-10-26"
+  "updated": "2026-10-27"
  },
  "own_work": {
   "source": {
@@ -4671,7 +4671,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
