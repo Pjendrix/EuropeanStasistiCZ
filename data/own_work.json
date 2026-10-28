@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-10-27",
+ "updated": "2026-10-28",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -16651,7 +16651,7 @@
      "other": 0
     },
     "question": {
-     "count": 20,
+     "count": 21,
      "answered": 19
     }
    },
@@ -16714,6 +16714,22 @@
      "vote_id": 199517,
      "vote_date": "2026-10-22",
      "signatories_total": 77
+    },
+    {
+     "id": "E-10-2026-004276",
+     "label": "E-004276/2026",
+     "date": "2026-10-19",
+     "title": {
+      "cs": "Vyjasnění čl. 50 odst. 2 aktu o umělé inteligenci a Pokynů k transparentnosti",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004276_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 1
     },
     {
      "id": "B-10-2026-0488",
@@ -20599,7 +20615,7 @@
     },
     "question": {
      "count": 13,
-     "answered": 8
+     "answered": 9
     }
    },
    "passed": {
@@ -20846,8 +20862,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-10-27",
      "authors_total": 21
     },
     {
@@ -38256,7 +38272,7 @@
     },
     "question": {
      "count": 73,
-     "answered": 63
+     "answered": 64
     }
    },
    "passed": {
@@ -39115,8 +39131,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-10-27",
      "authors_total": 21
     },
     {

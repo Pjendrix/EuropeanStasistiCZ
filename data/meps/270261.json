@@ -85,7 +85,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 454,
+ "mandate_days": 455,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -3443,12 +3443,22 @@
  },
  "amendments": {
   "committee": {
-   "total": 465,
+   "total": 473,
    "sole": 0,
    "on_behalf": 0,
-   "dossiers": 13,
-   "docs": 44,
+   "dossiers": 14,
+   "docs": 45,
    "recent": [
+    {
+     "doc": "JURI-AM-797365",
+     "date": "2026-10-20",
+     "committees": [
+      "JURI"
+     ],
+     "procedure": "2026/2103(INI)",
+     "count": 8,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/JURI-AM-797365/JURI-AM-797365_en.pdf"
+    },
     {
      "doc": "CJ80-AM-796455",
      "date": "2026-10-19",
@@ -3488,16 +3498,6 @@
      "procedure": "2026/0068(COD)",
      "count": 1,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796451/CJ80-AM-796451_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796450",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 9,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796450/CJ80-AM-796450_en.pdf"
     }
    ]
   },
@@ -3519,11 +3519,11 @@
   "coverage": {
    "committee_to": "2026-10-21",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1440,
+   "committee_docs": 1443,
    "committee_compromise": 34,
-   "committee_pending": 13
+   "committee_pending": 10
   },
-  "updated": "2026-10-27"
+  "updated": "2026-10-28"
  },
  "own_work": {
   "source": {
@@ -3531,7 +3531,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
