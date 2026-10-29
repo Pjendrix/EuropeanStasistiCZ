@@ -125,7 +125,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 819,
+ "mandate_days": 820,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4648,11 +4648,11 @@
   "coverage": {
    "committee_to": "2026-10-21",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1443,
+   "committee_docs": 1444,
    "committee_compromise": 34,
-   "committee_pending": 10
+   "committee_pending": 11
   },
-  "updated": "2026-10-28"
+  "updated": "2026-10-29"
  },
  "own_work": {
   "source": {
@@ -4660,7 +4660,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4708,7 +4708,7 @@
     "other": 0
    },
    "question": {
-    "count": 50,
+    "count": 51,
     "answered": 49
    }
   },
@@ -4740,6 +4740,22 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-004311",
+    "label": "E-004311/2026",
+    "date": "2026-10-21",
+    "title": {
+     "cs": "Dovoz thajské drůbeže a dodržování hygienických norem",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004311_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 9
+   },
    {
     "id": "proc-2026-2112",
     "label": "2026/2112(INI)",

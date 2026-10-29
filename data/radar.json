@@ -7,7 +7,7 @@
    "license": "CC BY 4.0"
   }
  ],
- "updated": "2026-10-25",
+ "updated": "2026-10-29",
  "session": {
   "from": "2026-11-11",
   "to": "2026-11-12",
@@ -176,7 +176,11 @@
     "stage": null,
     "stage_cs": null,
     "procedure": null,
-    "committee": null,
+    "committee": {
+     "code": "DEVE",
+     "name": "Rozvoj",
+     "category": "abr"
+    },
     "cz": []
    },
    {
@@ -235,7 +239,7 @@
     "cz": []
    }
   ],
-  "fetched": "2026-10-25"
+  "fetched": "2026-10-29"
  },
  "active": [
   {

@@ -115,7 +115,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 835,
+ "mandate_days": 836,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4670,11 +4670,11 @@
   "coverage": {
    "committee_to": "2026-10-21",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1443,
+   "committee_docs": 1444,
    "committee_compromise": 34,
-   "committee_pending": 10
+   "committee_pending": 11
   },
-  "updated": "2026-10-28"
+  "updated": "2026-10-29"
  },
  "own_work": {
   "source": {
@@ -4682,7 +4682,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4731,7 +4731,7 @@
    },
    "question": {
     "count": 41,
-    "answered": 38
+    "answered": 39
    }
   },
   "passed": {
@@ -4794,8 +4794,8 @@
     "type": "question",
     "subtype": "question_priority",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-10-28",
     "authors_total": 18
    },
    {
