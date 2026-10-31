@@ -11,6 +11,7 @@ setNav("duel");
 const BASE = "https://epwatch.cz/";
 const SRC = { htv: html`<a href="${HTV_SOURCE}">HowTheyVote.eu</a> (ODbL)`, ep: html`<a href="${EP_SOURCE}">EP Open Data</a> (CC BY 4.0)` };
 const ALL_PAGE = 50;
+const CARD_MAX = 4;
 
 (async () => {
   const root = document.getElementById("duel");
@@ -73,6 +74,7 @@ const ALL_PAGE = 50;
       <p class="small muted duel-note">Srovnání ukazuje čísla, ne kvalitu práce. Počty závisí na délce mandátu, výborech a velikosti frakce;
         nic se nesčítá do skóre a nikdo „nevyhrává“.</p>`);
     root.querySelector("#all-diverged")?.addEventListener("click", (e) => showAll(e.currentTarget, A, B, key));
+    root.querySelector("#card-pick")?.addEventListener("click", () => openPicker());
 
     // Sdílení (úkol 4): karty 1/3–3/3 kreslí share.js (duelCardOps…); odkaz je kanonická sdílená stránka d/{menší}-{větší}
     // (má vlastní náhled odkazu og/duel). Čísla stejná jako na stránce, bez vítěze.
@@ -82,8 +84,12 @@ const ALL_PAGE = 50;
       return { name: displayName(m), short: m.family_name || displayName(m), photoUrl: photoUrl(m),
         group: { label: groupName(m), color: groupColor(g) }, party: m.party ? { label: m.party.short_label === "Ind." ? "nezávislý/á" : m.party.short_label, logo: p && !p.independent ? p.logo : null, aspect: p?.logo_aspect || null } : null };
     };
-    const divCard = P.diverged_key.map((r) => orient(r, A.id, B.id)).filter((r) => d.votes[String(r.id)]).slice(0, 4)
-      .map((r) => { const v = d.votes[String(r.id)]; return { title: voteTitle(v), meta: fmtDate(v.date), a: r.a, b: r.b }; });
+    // Karta 3/3: výchozí = prvních CARD_MAX klíčových hlasování (pravidlo). Volitelně vlastní výběr v panelu „Vybrat
+    // hlasování na kartu“ (openPicker); stránka sama se výběrem nemění.
+    const cardRow = (r, v) => ({ title: voteTitle(v), meta: [voteSubtitle(v), fmtDate(v.date)].filter(Boolean).join(" · "), a: r.a, b: r.b });
+    const keyRows = P.diverged_key.map((r) => orient(r, A.id, B.id)).filter((r) => d.votes[String(r.id)]);
+    const divDefault = keyRows.slice(0, CARD_MAX).map((r) => { const v = d.votes[String(r.id)]; return { title: voteTitle(v), meta: fmtDate(v.date), a: r.a, b: r.b }; });
+    let divCustom = null; // Map id → řádek karty, nebo null = výchozí výběr
     const topicCard = d.topics.filter((t) => P.topics[t.code] && t.label).map((t) => ({ label: t.label, share: P.topics[t.code][0] / P.topics[t.code][1], n: P.topics[t.code][1] }))
       .sort((x, y) => y.n - x.n).slice(0, 3);
     window.shareContext = () => ({
@@ -91,7 +97,7 @@ const ALL_PAGE = 50;
       trust: "Čísla vedle sebe, bez vítěze a hodnocení. Karta má datum dat, zdroj a adresu stránky.",
       text: P.agreement[1] ? `${displayName(A)} vs. ${displayName(B)}: shoda ${fmtPct(P.agreement[0] / P.agreement[1])} ve ${fmtNum(P.agreement[1])} společných hlasováních. Čísla vedle sebe, bez hodnocení. ${shareUrl}`
         : `${displayName(A)} vs. ${displayName(B)}: čísla vedle sebe, bez hodnocení. ${shareUrl}`,
-      data: { a: cardSide(A), b: cardSide(B), sameGroup: Boolean(sameGroup), agreement: P.agreement, metrics: shareMetricRows(A, B), diverged: divCard, topics: topicCard,
+      data: { a: cardSide(A), b: cardSide(B), sameGroup: Boolean(sameGroup), agreement: P.agreement, metrics: shareMetricRows(A, B), diverged: divCustom ? [...divCustom.values()] : divDefault, divergedCustom: Boolean(divCustom), topics: topicCard,
         dataDay: fresh?.release || null, urlShort: shareUrl.replace(/^https?:\/\//, "") },
     });
 
@@ -184,7 +190,9 @@ const ALL_PAGE = 50;
       return html`<section class="duel-div-sec" aria-labelledby="dd-h"><h2 id="dd-h">Kde se rozešli</h2>
         <p class="small muted">Klíčová hlasování (výběr pravidlem, <a href="hlasovani">jak vybíráme</a>), kde jeden hlasoval pro a druhý proti. Nejvýš 10, od nejnovějších; frakce k datu hlasování.</p>
         ${rows.length ? divRows(rows, a, b, (id) => d.votes[String(id)]) : html`<p class="muted">V klíčových hlasováních se pro a proti nerozešli.</p>`}
-        ${all}</section>`;
+        ${all}
+        ${p.diverged_all ? html`<p class="small"><button type="button" class="link-btn" id="card-pick" aria-haspopup="dialog">Vybrat hlasování na kartu ke sdílení</button>
+          <span class="muted" id="card-pick-state"></span></p>` : ""}</section>`;
     }
 
     async function showAll(btn, a, b, k) {
@@ -207,6 +215,77 @@ const ALL_PAGE = 50;
       } catch (e) {
         showError(box, e, () => showAll(btn, a, b, k));
       }
+    }
+
+    // Volitelný panel: výběr nejvýš CARD_MAX hlasování (z klíčových, případně ze všech rozchodů) pro kartu 3/3.
+    let allRows = null; // řádky ze shardu duel/{key}.json, načtené až na požádání
+    let allShown = ALL_PAGE;
+    async function openPicker() {
+      let dlg = document.getElementById("duel-pick-dlg");
+      if (!dlg) {
+        dlg = document.createElement("dialog");
+        dlg.id = "duel-pick-dlg";
+        dlg.className = "qz-dlg";
+        dlg.setAttribute("aria-labelledby", "duel-pick-h");
+        document.body.append(dlg);
+        dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+      }
+      const sel = new Map(divCustom || []);
+      if (!divCustom) keyRows.slice(0, CARD_MAX).forEach((r) => sel.set(r.id, cardRow(r, d.votes[String(r.id)])));
+      const render = () => {
+        // Vybraná hlasování vždy nahoře (i když v aktuálně zobrazené části seznamu nejsou), aby šla odškrtnout.
+        const picked = [...sel].map(([id, c]) => ({ r: { id, a: c.a, b: c.b }, v: null, c }));
+        const base = (allRows ? allRows.slice(0, allShown) : keyRows.map((r) => ({ r, v: d.votes[String(r.id)] }))).filter((x) => !sel.has(x.r.id));
+        const rows = [...picked, ...base];
+        dlg.innerHTML = String(html`<form method="dialog" class="qz-dlg-in">
+          <button type="button" class="qz-icon qz-dlg-x" aria-label="Zavřít" value="close">✕</button>
+          <h2 id="duel-pick-h">Hlasování na kartu ke sdílení</h2>
+          <p class="small muted">Vyberte nejvýš ${CARD_MAX} hlasování, kde jeden hlasoval pro a druhý proti. Výběr se projeví jen na kartě 3/3;
+            karta pak místo „klíčová hlasování“ uvede „vybraná hlasování“.</p>
+          <p class="small" aria-live="polite" id="duel-pick-n">Vybráno ${sel.size} z ${CARD_MAX}.</p>
+          <ul class="plain duel-pick-list">${rows.map(({ r, v, c }) => html`<li><label><input type="checkbox" value="${r.id}"${sel.has(r.id) ? " checked" : ""}>
+            <span>${v ? voteTitle(v) : c.title}<span class="small muted"> · ${v ? [voteSubtitle(v), fmtDate(v.date)].filter(Boolean).join(" · ") : c.meta} · ${displayName(A)} ${positionFor(r.a, A)}, ${displayName(B)} ${positionFor(r.b, B)}</span></span></label></li>`)}</ul>
+          ${allRows && allShown < allRows.length ? html`<p><button type="button" class="link-btn" id="duel-pick-more">Zobrazit dalších ${fmtNum(Math.min(ALL_PAGE, allRows.length - allShown))}</button>
+            <span class="small muted">(${fmtNum(allShown)} z ${fmtNum(allRows.length)}, od nejnovějších)</span></p>` : ""}
+          ${allRows ? "" : html`<p><button type="button" class="link-btn" id="duel-pick-all">Zobrazit všechna hlasování, kde se rozešli (${fmtNum(P.diverged_all)})</button></p>`}
+          <p class="duel-pick-act"><button type="button" class="btn" id="duel-pick-ok">Použít a sdílet</button>
+            <button type="button" class="link-btn" id="duel-pick-reset">Vrátit výchozí výběr</button></p>
+        </form>`);
+        const lookup = new Map(rows.map((x) => [x.r.id, x]));
+        dlg.querySelector(".qz-dlg-x").addEventListener("click", () => dlg.close());
+        dlg.querySelectorAll("input[type=checkbox]").forEach((box) => box.addEventListener("change", () => {
+          const id = Number(box.value);
+          if (box.checked && sel.size >= CARD_MAX) { box.checked = false; dlg.querySelector("#duel-pick-n").textContent = `Na kartu se vejdou nejvýš ${CARD_MAX} hlasování.`; return; }
+          if (box.checked) { const x = lookup.get(id); sel.set(id, x.c || cardRow(x.r, x.v)); } else sel.delete(id);
+          dlg.querySelector("#duel-pick-n").textContent = `Vybráno ${sel.size} z ${CARD_MAX}.`;
+        }));
+        dlg.querySelector("#duel-pick-all")?.addEventListener("click", async (e) => {
+          e.currentTarget.disabled = true;
+          try {
+            const [shard, search] = await Promise.all([getJSON(`duel/${key}.json`), loadSearch()]);
+            const votes = new Map(search.map((v) => [v.id, v]));
+            allRows = shard.rows.map((x) => orient(x, A.id, B.id)).filter((x) => votes.has(x.id)).map((x) => ({ r: x, v: votes.get(x.id) }));
+            render();
+          } catch (err) { showError(dlg.querySelector(".qz-dlg-in"), err); }
+        });
+        dlg.querySelector("#duel-pick-more")?.addEventListener("click", () => {
+          const y = dlg.scrollTop; allShown += ALL_PAGE; render(); dlg.scrollTop = y;
+        });
+        dlg.querySelector("#duel-pick-reset").addEventListener("click", () => { divCustom = null; pickState(); dlg.close(); });
+        dlg.querySelector("#duel-pick-ok").addEventListener("click", () => {
+          const same = sel.size === divDefault.length && keyRows.slice(0, CARD_MAX).every((r) => sel.has(r.id));
+          divCustom = same ? null : new Map(sel);
+          pickState();
+          dlg.close();
+          root.querySelector("[data-share]")?.click();
+        });
+      };
+      render();
+      if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+    }
+    function pickState() {
+      const el = document.getElementById("card-pick-state");
+      if (el) el.textContent = divCustom ? ` · na kartě váš výběr (${divCustom.size})` : "";
     }
 
     function pickerView(dd) {
