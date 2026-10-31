@@ -1,13 +1,17 @@
 # Kontrola webu v prohlížeči: žádná chyba v konzoli, nic nepřetéká při 320–1366 px, axe-core bez porušení (WCAG 2 A/AA).
-# Běží u pull requestů a po každé změně v main; týdenní data a testy mají vlastní workflow.
+# Běží jen u pull requestů, které mění web (po merge do main se neopakuje – stejný kód už prošel v PR;
+# týdenní aktualizace dat ji spouští sama před commitem). Úspora minut GitHub Actions.
 name: Kontrola webu
 
 on:
   pull_request:
-  push:
-    branches: [main]
     paths: ["public/**", "scripts/**", "tests/e2e/**", ".github/workflows/web-check.yml"]
   workflow_dispatch: {}
+
+# Nový push do stejného PR zruší rozběhnutou starší kontrolu.
+concurrency:
+  group: web-check-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -38,13 +42,27 @@ jobs:
         with:
           node-version: "22"
 
+      # Prohlížeč a npm balíčky z cache (klíč = verze); bez cache trvala instalace až 10 min.
+      - name: Cache Playwrightu
+        id: pwcache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ${{ runner.temp }}/e2e
+          key: pw-1.63.0-axe-4.13.0-${{ runner.os }}
+
       - name: Playwright a axe-core (jen pro tuto kontrolu, nic se nepřidává do repa)
         timeout-minutes: 15
         run: |
-          mkdir "$RUNNER_TEMP/e2e" && cd "$RUNNER_TEMP/e2e"
-          npm init -y >/dev/null
-          npm install playwright@1.63.0 axe-core@4.13.0
-          npx playwright install --with-deps chromium
+          if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then
+            cd "$RUNNER_TEMP/e2e" && npx playwright install-deps chromium
+          else
+            mkdir -p "$RUNNER_TEMP/e2e" && cd "$RUNNER_TEMP/e2e"
+            npm init -y >/dev/null
+            npm install playwright@1.63.0 axe-core@4.13.0
+            npx playwright install --with-deps chromium
+          fi
 
       - name: Kontrola webu
         timeout-minutes: 25
