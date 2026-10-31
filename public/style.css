@@ -2766,3 +2766,9 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .ns-cz .cz-p span { font-size: .82rem; }
 }
 @media (max-width: 360px) { .tp-grid { grid-template-columns: none; } }
+
+/* duel: volitelný panel „Vybrat hlasování na kartu“ (vzhled panelu = .qz-dlg z kvízu) */
+.duel-pick-list { display: grid; gap: 2px; }
+.duel-pick-list label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; padding: 8px 0; border-top: 1px solid var(--border); cursor: pointer; font-size: .9rem; }
+.duel-pick-list input { width: 18px; height: 18px; margin-top: 2px; }
+.duel-pick-act { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; position: sticky; bottom: 0; background: var(--surface); padding: 10px 0; margin: 0; }
