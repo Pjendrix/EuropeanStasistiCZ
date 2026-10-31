@@ -1055,7 +1055,7 @@ export function duelDivergedOps(d, f) {
   const ops = [...duelMiniHead(d, 3)];
   const rows = (d.diverged || []).slice(0, 4);
   if (rows.length) {
-    ops.push(sectionTitle(360, "KDE SE ROZEŠLI · KLÍČOVÁ HLASOVÁNÍ"),
+    ops.push(sectionTitle(360, d.divergedCustom ? "KDE SE ROZEŠLI · VYBRANÁ HLASOVÁNÍ" : "KDE SE ROZEŠLI · KLÍČOVÁ HLASOVÁNÍ"),
       T(830, 410, fitText(d.a.short, 22, 700, 120), 22, 700, SC.soft, "center"), T(950, 410, fitText(d.b.short, 22, 700, 120), 22, 700, SC.soft, "center"));
     rows.forEach((r, i) => {
       const y = 440 + i * 170;
