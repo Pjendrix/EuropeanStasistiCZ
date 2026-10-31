@@ -1,14 +1,15 @@
 # Předběžné výsledky po zasedání (zadání 24. 10. 2026, část C): ve dnech zasedání stáhne jmenovitá hlasování
 # z EP Open Data API (meetings/{id}/decisions) do data/preliminary/{datum}.json a commitne je; Vercel web nasadí sám.
-# Běží v 8:07, 14:07, 20:07 a 23:37 pražského času, ale jen ve dnech zasedání a den po posledním dni
-# (fetch_preliminary.py --due). Cron je v UTC, proto obě varianty (zimní i letní čas) a kontrola pražské hodiny.
+# Běží 4× denně (cron v UTC: v zimě 7:07, 13:07, 19:07, 22:37, v létě o hodinu později pražského času), ale jen
+# ve dnech zasedání a den po posledním dni (fetch_preliminary.py --due). Dřív byly crony zdvojené kvůli letnímu času
+# a polovina běhů jen skončila – každý ale stál nejméně 1 účtovanou minutu, proto jen jedna varianta.
 # Dny, které už má HowTheyVote, se smažou (i v týdenní aktualizaci). Do statistik nic nevstupuje.
 name: Předběžné výsledky zasedání
 
 on:
   schedule:
-    - cron: "7 6,7,12,13,18,19 * * *"
-    - cron: "37 21,22 * * *"
+    - cron: "7 6,12,18 * * *"
+    - cron: "37 21 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -31,7 +32,7 @@ jobs:
         id: clock
         run: |
           h=$(TZ=Europe/Prague date +%H)
-          if [ "${{ github.event_name }}" != "schedule" ] || [[ " 08 14 20 23 " == *" $h "* ]]; then echo "run=true" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" != "schedule" ] || [[ " 07 08 13 14 19 20 22 23 " == *" $h "* ]]; then echo "run=true" >> "$GITHUB_OUTPUT"
           else echo "run=false" >> "$GITHUB_OUTPUT"; echo "V Praze je $h h, tento cron patří druhé variantě času."; fi
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
