@@ -672,6 +672,79 @@
    "next_vote": null
   },
   {
+   "procedure": "2025-0419",
+   "label": "2025/0419(COD)",
+   "type": "COD",
+   "title_cs": "Změna nařízení (EU) 2023/956, pokud jde o rozšíření jeho působnosti na navazující výrobky a opatření proti obcházení",
+   "title_en": "Amending Regulation (EU) 2023/956 as regards the extension of its scope to downstream goods and anti-circumvention measures",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0419(COD)",
+   "committee": {
+    "code": "ENVI",
+    "name": "Životní prostředí, klima a bezpečnost potravin",
+    "category": "env"
+   },
+   "cz": [
+    {
+     "mep_id": 256847,
+     "name": "Danuše Nerudová",
+     "role": "shadow_opinion",
+     "role_cs": "stínový/á zpravodaj/ka stanoviska"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-07-06"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-09",
+     "date_to": "2026-09-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
+     "date": "2026-09-15"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-10-20"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "trilogue",
+   "last_event": {
+    "date": "2026-10-20",
+    "type": "INTERINSTITUTIONAL_NEGOTIATION",
+    "label": "jednání s Radou (trialog)"
+   },
+   "next_vote": null
+  },
+  {
    "procedure": "2025-0847",
    "label": "2025/0847(COD)",
    "type": "COD",
@@ -1242,73 +1315,6 @@
      "label": "Zpráva předložena plénu",
      "date": "2026-07-15",
      "date_to": "2026-09-15"
-    },
-    {
-     "key": "trilogue",
-     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
-     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
-     "date": "2026-09-15"
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "trilogue",
-   "last_event": {
-    "date": "2026-09-15",
-    "type": "PLENARY_AMEND",
-    "label": "plénum přijalo pozměňovací návrhy"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0419",
-   "label": "2025/0419(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení (EU) 2023/956, pokud jde o rozšíření jeho působnosti na navazující výrobky a opatření proti obcházení",
-   "title_en": "Amending Regulation (EU) 2023/956 as regards the extension of its scope to downstream goods and anti-circumvention measures",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0419(COD)",
-   "committee": {
-    "code": "ENVI",
-    "name": "Životní prostředí, klima a bezpečnost potravin",
-    "category": "env"
-   },
-   "cz": [
-    {
-     "mep_id": 256847,
-     "name": "Danuše Nerudová",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-02-12"
-    },
-    {
-     "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
-     "label": "Hlasování ve výboru",
-     "date": "2026-07-06"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2026-07-09",
-     "date_to": "2026-09-11"
     },
     {
      "key": "trilogue",
@@ -2087,6 +2093,12 @@
      "date": "2026-10-01"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-12"
+    },
+    {
      "key": "plenary",
      "type": null,
      "label": "Hlasování pléna",
@@ -2101,9 +2113,9 @@
    ],
    "reached": "report",
    "last_event": {
-    "date": "2026-10-01",
-    "type": "COMMITTEE_ADOPTING_REPORT",
-    "label": "výbor přijal zprávu"
+    "date": "2026-10-12",
+    "type": "TABLING_PLENARY",
+    "label": "zpráva předložena plénu"
    },
    "next_vote": null
   },

@@ -94,7 +94,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 836,
+ "mandate_days": 841,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4572,12 +4572,23 @@
  },
  "amendments": {
   "committee": {
-   "total": 1316,
-   "sole": 639,
+   "total": 1362,
+   "sole": 640,
    "on_behalf": 29,
-   "dossiers": 66,
-   "docs": 119,
+   "dossiers": 67,
+   "docs": 120,
    "recent": [
+    {
+     "doc": "CJ09-AM-797458",
+     "date": "2026-10-30",
+     "committees": [
+      "CONT",
+      "LIBE"
+     ],
+     "procedure": "2026/2125(INL)",
+     "count": 46,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ09-AM-797458/CJ09-AM-797458_en.pdf"
+    },
     {
      "doc": "CJ80-AM-796455",
      "date": "2026-10-19",
@@ -4617,16 +4628,6 @@
      "procedure": "2026/0068(COD)",
      "count": 4,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796448/CJ80-AM-796448_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796447",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796447/CJ80-AM-796447_en.pdf"
     }
    ]
   },
@@ -4646,13 +4647,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-10-21",
+   "committee_to": "2026-10-30",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1444,
+   "committee_docs": 1445,
    "committee_compromise": 34,
    "committee_pending": 11
   },
-  "updated": "2026-10-29"
+  "updated": "2026-11-03"
  },
  "own_work": {
   "source": {
@@ -4660,7 +4661,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-29",
+  "updated": "2026-11-03",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4708,8 +4709,8 @@
     "other": 0
    },
    "question": {
-    "count": 114,
-    "answered": 101
+    "count": 116,
+    "answered": 102
    }
   },
   "passed": {
@@ -4740,6 +4741,38 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-004306",
+    "label": "E-004306/2026",
+    "date": "2026-10-20",
+    "title": {
+     "cs": "Riziko nepřímého financování ruských zájmů prostřednictvím finanční pomoci EU africkým zemím",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004306_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 1
+   },
+   {
+    "id": "E-10-2026-004305",
+    "label": "E-004305/2026",
+    "date": "2026-10-20",
+    "title": {
+     "cs": "Jazyková bariéra a dostupnost evropského čísla tísňového volání 112",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004305_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 2
+   },
    {
     "id": "RC-10-2026-0452",
     "label": null,
@@ -5094,8 +5127,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-10-30",
     "authors_total": 1
    },
    {

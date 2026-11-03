@@ -83,7 +83,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 836,
+ "mandate_days": 841,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4642,13 +4642,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-10-21",
+   "committee_to": "2026-10-30",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1444,
+   "committee_docs": 1445,
    "committee_compromise": 34,
    "committee_pending": 11
   },
-  "updated": "2026-10-29"
+  "updated": "2026-11-03"
  },
  "own_work": {
   "source": {
@@ -4656,7 +4656,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-29",
+  "updated": "2026-11-03",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4683,7 +4683,7 @@
     "other": 0
    },
    "opinion": {
-    "count": 14
+    "count": 15
    },
    "shadow_opinion": {
     "count": 0
@@ -4719,7 +4719,7 @@
   },
   "roles": {
    "lead_reports": 11,
-   "lead_opinions": 14,
+   "lead_opinions": 15,
    "shadow_reports": 3,
    "shadow_opinions": 0,
    "motions_signed": 174,
@@ -4882,6 +4882,26 @@
     "vote_id": 198252,
     "vote_date": "2026-10-08",
     "signatories_total": 51
+   },
+   {
+    "id": "proc-2026-2079",
+    "label": "2026/2079(DEC)",
+    "date": "2026-10-05",
+    "title": {
+     "cs": "Udělení absolutoria za rok 2025: souhrnný rozpočet EU – Komise",
+     "en": "Discharge 2025: General budget of the EU - Commission"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2079(DEC)",
+    "type": "opinion",
+    "role": "RAPPORTEUR_OPINION",
+    "group": "ECR",
+    "committee": "AGRI",
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "DEC",
+    "legislative": false
    },
    {
     "id": "B-10-2026-0464",

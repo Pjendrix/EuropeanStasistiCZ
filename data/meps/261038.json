@@ -125,7 +125,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 820,
+ "mandate_days": 825,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4646,13 +4646,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-10-21",
+   "committee_to": "2026-10-30",
    "plenary_to": "2026-10-20",
-   "committee_docs": 1444,
+   "committee_docs": 1445,
    "committee_compromise": 34,
    "committee_pending": 11
   },
-  "updated": "2026-10-29"
+  "updated": "2026-11-03"
  },
  "own_work": {
   "source": {
@@ -4660,7 +4660,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-29",
+  "updated": "2026-11-03",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4708,7 +4708,7 @@
     "other": 0
    },
    "question": {
-    "count": 51,
+    "count": 52,
     "answered": 49
    }
   },
@@ -4755,6 +4755,22 @@
     "status": "unanswered",
     "answer_date": null,
     "authors_total": 9
+   },
+   {
+    "id": "E-10-2026-004303",
+    "label": "E-004303/2026",
+    "date": "2026-10-20",
+    "title": {
+     "cs": "Závažná autoritářská opatření v Maďarsku",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004303_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 22
    },
    {
     "id": "proc-2026-2112",
