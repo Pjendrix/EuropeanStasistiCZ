@@ -566,9 +566,9 @@ for (const width of [1366, 390]) {
   const r = await page.evaluate(async () => {
     const lib = (f) => import(new URL(`lib/${f}`, document.querySelector('script[src*="app.js"]').src).href);
     const { isStale, sessionCountdown } = await lib("format.js");
-    // share.js se stejnou adresou (s ?v=) jako na stránce: stejná instance modulu, nespustí se podruhé
+    // share.js se stejnou adresou (s ?v=) jako na stránce: stejná instance modulu, šablony z lib/share-panel.js přes loadSharePanel()
     const { SHARE_FORMATS, measureText, metricCardOps, splitCardOps, splitRowsFor, partyCardOps, voteCardOps, mepBasicOps, useCardTheme, CARD_THEMES } =
-      await import(document.querySelector('script[src*="share.js"]').src);
+      await (await import(document.querySelector('script[src*="share.js"]').src)).loadSharePanel();
     await document.fonts.ready;
     const out = [];
     const fits = (name, ops) => ops.filter((o) => o.k === "text").forEach((o) => {
@@ -675,7 +675,7 @@ for (const width of [1366, 390]) {
     await page.goto(base + `vote?id=${v.id}&m=${v.month}`, { waitUntil: "networkidle" });
     const r = await page.evaluate(async (isOld) => {
       const src = document.querySelector('script[src*="share.js"]').src;
-      const m = await import(src);
+      const m = await (await import(src)).loadSharePanel();
       for (let i = 0; i < 50 && typeof window.shareContext !== "function"; i++) await new Promise((res) => setTimeout(res, 100));
       const sc = await window.shareContext("");
       await document.fonts.ready;
@@ -711,7 +711,7 @@ for (const width of [1366, 390]) {
     fallbacks += r.dots;
   }
   const bal = await page.evaluate(async () => {
-    const m = await import(document.querySelector('script[src*="share.js"]').src);
+    const m = await (await import(document.querySelector('script[src*="share.js"]').src)).loadSharePanel();
     return [m.balanceRows(Array(7).fill(100), 316, 8), m.balanceRows(Array(7).fill(100), 424, 8), m.balanceRows([100, 100, 100], 1000, 8)];
   });
   if (bal[0].at(-1) === 1 || bal[0].length !== 3) problems.push(`balanceRows: 7 jmen po 3 na řádek dalo ${bal[0].join("+")}, čekám 3 řádky bez osamoceného jména`);
@@ -750,7 +750,7 @@ for (const width of [1366, 390]) {
     await page.goto(base + `v/${id}`, { waitUntil: "networkidle" });
     const out = await page.evaluate(async () => {
       const src = document.querySelector('script[src*="share.js"]').src;
-      const m = await import(src), fmt = await import(new URL("lib/format.js", src).href);
+      const m = await (await import(src)).loadSharePanel(), fmt = await import(new URL("lib/format.js", src).href);
       const all = JSON.parse(document.getElementById("share-context").textContent);
       const sc = fmt.withShareUrl(all.kind ? all : all.default);
       await document.fonts.ready;
@@ -797,7 +797,7 @@ for (const width of [1366, 390]) {
     await page.goto(base + url, { waitUntil: "networkidle" });
     const r = await page.evaluate(async () => {
       const src = document.querySelector('script[src*="share.js"]').src;
-      const m = await import(src), fmt = await import(new URL("lib/format.js", src).href);
+      const m = await (await import(src)).loadSharePanel(), fmt = await import(new URL("lib/format.js", src).href);
       for (let i = 0; i < 50 && typeof window.shareContext !== "function" && !document.getElementById("share-context"); i++) await new Promise((res) => setTimeout(res, 100));
       let sc = typeof window.shareContext === "function" ? await window.shareContext("") : null;
       if (!sc) { const all = JSON.parse(document.getElementById("share-context").textContent); sc = fmt.withShareUrl(all.kind ? all : all.default); }
@@ -862,7 +862,7 @@ for (const width of [1366, 390]) {
     await page.goto(base + `duel?a=${a}&b=${b}`, { waitUntil: "networkidle" });
     const r = await page.evaluate(async () => {
       const src = document.querySelector('script[src*="share.js"]').src;
-      const m = await import(src);
+      const m = await (await import(src)).loadSharePanel();
       for (let i = 0; i < 50 && typeof window.shareContext !== "function"; i++) await new Promise((res) => setTimeout(res, 100));
       const out = [];
       if (!document.querySelector("#duel [data-share]")) out.push("chybí tlačítko Sdílet");
