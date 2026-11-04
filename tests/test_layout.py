@@ -68,3 +68,36 @@ def test_tabbar_five_equal_items_quiz_in_more():
 
 def test_analytics_script_in_head():
     assert '<script defer src="/_vercel/insights/script.js"></script>' in layout.head_assets()
+
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_hand_pages_have_description_and_share_preview():
+    """Revize 3. 11. 2026: každá ruční stránka má popis (nejvýš 160 znaků) a náhled pro sdílení (og:image),
+    kromě šablon s noindex (vote.html, mep.html)."""
+    for f in sorted((ROOT / "public").glob("*.html")):
+        if f.name in layout.GENERATED:
+            continue
+        html = f.read_text(encoding="utf-8")
+        if 'name="robots" content="noindex' in html:
+            continue
+        d = re.search(r'<meta name="description" content="([^"]*)"', html)
+        assert d and len(d[1]) <= 160, f.name
+        assert html.count('property="og:image"') == 1 and html.count('property="og:title"') == 1, f.name
+
+
+def test_short_title_keeps_brand():
+    long = "MOCK " + "velmi dlouhý úřední název nařízení " * 6 + "– EP Watch CZ"
+    t = layout.short_title(long)
+    assert t.endswith(" – EP Watch CZ") and len(t) <= layout.TITLE_MAX + len(layout.SUFFIX) and "…" in t
+    assert layout.short_title("MOCK krátký – EP Watch CZ") == "MOCK krátký – EP Watch CZ"
+    assert layout.clip("MOCK slovo " * 40, 155).endswith("…") and len(layout.clip("MOCK slovo " * 40, 155)) <= 155
+
+
+def test_long_title_shortened_in_page_but_not_h1():
+    title = "MOCK " + "dlouhý název hlasování " * 8 + "– EP Watch CZ"
+    html = layout.page(title, "<h1>MOCK plný nadpis</h1>", description="MOCK " + "popis " * 60)
+    t = re.search(r"<title>(.*?)</title>", html)[1]
+    assert len(t) <= 75 and "<h1>MOCK plný nadpis</h1>" in html
+    assert len(re.search(r'name="description" content="([^"]*)"', html)[1]) <= 155

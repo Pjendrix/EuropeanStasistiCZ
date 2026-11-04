@@ -17,7 +17,7 @@ import hashlib
 import json
 import re
 import sys
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 
 from web_ui import page_path
@@ -203,11 +203,44 @@ def esc_(s: str) -> str:
     return escape(s, quote=False)
 
 
-def head_assets(root: str = "") -> str:
-    """Část <head> od ikony po styly (titulek a popis si stránka píše sama)."""
+SITE_JSON = Path(__file__).resolve().parent.parent / "data" / "manual" / "site.json"
+OG_DEFAULT_IMAGE = "assets/brand/og-default.png"  # scripts/build_brand.py, 1200 × 630
+
+
+def hand_og(text: str) -> str:
+    """Open Graph pro ruční stránku z jejího <title>, popisu a canonical (náhled při sdílení, revize 3. 11. 2026).
+    Obrázek je výchozí náhled s logem; stránky s vlastní kartou (p/, v/, d/…) dělá build_pages.py."""
+    base = json.loads(SITE_JSON.read_text(encoding="utf-8"))["base_url"].rstrip("/")
+    attr = lambda s: escape(unescape(s.strip()), quote=True)  # noqa: E731
+    title = re.search(r"<title>(.*?)</title>", text, re.S)
+    desc = re.search(r'<meta name="description" content="([^"]*)"', text)
+    canon = re.search(r'<link rel="canonical" href="([^"]*)"', text)
+    img = f"{base}/{OG_DEFAULT_IMAGE}"
+    lines = ['<meta property="og:type" content="website">']
+    if title:
+        lines.append(f'<meta property="og:title" content="{attr(title[1])}">')
+    if desc:
+        lines.append(f'<meta property="og:description" content="{attr(desc[1])}">')
+    lines.append('<meta property="og:locale" content="cs_CZ">')
+    if canon:
+        lines.append(f'<meta property="og:url" content="{attr(canon[1])}">')
+    lines += [
+        f'<meta property="og:image" content="{img}">',
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        '<meta property="og:image:alt" content="EP Watch CZ – jak hlasují čeští europoslanci">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:image" content="{img}">',
+    ]
+    return "\n".join(lines)
+
+
+def head_assets(root: str = "", og: str = "") -> str:
+    """Část <head> od ikony po styly (titulek a popis si stránka píše sama; og = Open Graph ruční stránky)."""
     return "\n".join(
         [
             ICON.format(root=root),
+            *([og] if og else []),
             '<meta property="og:site_name" content="EP Watch CZ">',
             f'<link rel="alternate" type="application/atom+xml" title="EP Watch CZ – novinky" href="{root}feed.xml">',
             f'<link rel="preload" href="{root}assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>',
@@ -253,6 +286,31 @@ def footer(root: str = "") -> str:
     )
 
 
+# Vyhledávače zobrazí ~60 znaků titulku a ~155 znaků popisu (revize 3. 11. 2026: medián titulku byl 111 znaků,
+# popisu 229). Zkracuje se jen <title> a meta description; H1 a Open Graph zůstávají celé.
+SUFFIX = " – EP Watch CZ"
+TITLE_MAX = 60
+DESC_MAX = 155
+
+
+def clip(text: str, limit: int) -> str:
+    """Zkrátí text po celých slovech na nejvýš limit znaků (včetně „…“)."""
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    cut = text[: limit - 1]
+    if " " in cut:
+        cut = cut.rsplit(" ", 1)[0]
+    return cut.rstrip(" ,;:–-·") + "…"
+
+
+def short_title(title: str) -> str:
+    """Dlouhý titulek stránky: zkrátit text před „– EP Watch CZ“, aby značka zůstala vidět."""
+    if not title.endswith(SUFFIX) or len(title) <= TITLE_MAX + len(SUFFIX):
+        return title
+    return clip(title[: -len(SUFFIX)], TITLE_MAX) + SUFFIX
+
+
 def page(
     title: str,
     body: str,
@@ -268,7 +326,8 @@ def page(
 ) -> str:
     """Celá stránka (pro statické stránky z build_pages.py). base = <base href> (odkazy od kořene webu),
     path = cesta stránky kvůli kotvám (s <base> by „#x“ vedlo na úvodní stránku)."""
-    desc = f'<meta name="description" content="{escape(description)}">\n' if description else ""
+    desc = f'<meta name="description" content="{escape(clip(description, DESC_MAX))}">\n' if description else ""
+    title = short_title(title)
     root_attr = f' data-root="{root}"' if root else ""
     base_tag = f'<base href="{base}">\n' if base else ""
     skip = f"{page_path(path)}#main" if base and path else "#main"
@@ -290,7 +349,7 @@ _FOOTER_RE = re.compile(r'<footer class="site-footer">.*?</footer>', re.S)
 
 
 def sync_text(text: str) -> str:
-    for rx, new in [(_HEAD_RE, head_assets()), (_HEADER_RE, header()), (_FOOTER_RE, footer())]:
+    for rx, new in [(_HEAD_RE, head_assets(og=hand_og(text))), (_HEADER_RE, header()), (_FOOTER_RE, footer())]:
         if len(rx.findall(text)) != 1:
             raise ValueError(f"stránka nemá právě jednu část odpovídající {rx.pattern[:30]}…")
         text = rx.sub(lambda _: new, text)  # noqa: B023 (sub volá funkci hned)
