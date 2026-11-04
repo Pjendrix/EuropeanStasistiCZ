@@ -55,7 +55,7 @@ def test_session_people_rule_alphabetical_with_dated_activity(tmp_path):
 
 def test_next_session_html_after_session_shows_calendar_block():
     html = hub.next_session_html(ag_view(), today="2026-10-24")
-    assert "Další zasedání" in html and "11.–12. 11. 2026" in html and "program zatím nezveřejněn" in html
+    assert "Další zasedání" in html and "11.–12. 11. 2026" in html and "program zatím nezveřejněn" in html
     assert "Celý program" not in html and "Návrh programu" not in html
     assert "Probíhá zasedání" in hub.next_session_html(ag_view(), today="2026-10-20")
     assert 'data-after-from="2026-11-11"' in hub.next_session_html(ag_view(), today="2026-10-20")

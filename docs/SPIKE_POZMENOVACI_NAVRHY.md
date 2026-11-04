@@ -1,7 +1,7 @@
 # Spike: pozměňovací návrhy (PN) českých poslanců
 
 Stav k 24. 10. 2026. Navazuje na `docs/PRUZKUM_FAZE_D.md` (14. 10. 2026). Jen průzkum, na web ani do `data/` nic nejde.
-Skripty (ve `scratch/`, výstupy mimo repo):
+Skripty (ve `docs/spike-pn/`, výstupy mimo repo):
 
 | Skript | Co dělá |
 |---|---|

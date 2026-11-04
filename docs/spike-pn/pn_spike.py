@@ -2,11 +2,11 @@
 
 Jen průzkum (zadání 24. 10. 2026, část A). Výstup do adresáře z argumentu, nic do data/.
 
-    python scratch/pn_spike.py DL_DIR HTV_DIR EP_DIR OUT_DIR
+    python docs/spike-pn/pn_spike.py DL_DIR HTV_DIR EP_DIR OUT_DIR
 
 DL_DIR  dumpy Parltracku (ep_amendments.json.zst, ep_plenary_amendments.json.zst)
 HTV_DIR export HowTheyVote (votes, amendment_authors_votes, amendment_urls .csv.gz)
-EP_DIR  výstup scratch/pn_ep_list.py (am_details.jsonl)
+EP_DIR  výstup docs/spike-pn/pn_ep_list.py (am_details.jsonl)
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).parent))
 from pn_probe import records  # noqa: E402
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]  # docs/spike-pn/ → kořen repa
 TERM_START = "2024-07-16"
 TODAY = date.today().isoformat()
 

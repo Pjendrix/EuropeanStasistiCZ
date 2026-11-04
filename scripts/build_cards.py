@@ -36,6 +36,7 @@ from tokens import card_rgb
 from compute_stats import FormatError, active_positions, load_votes, require
 from vote_parties import SHORT_LABEL, card_parties, group_label, party_rows  # noqa: F401
 from vote_kinds import KIND_LABELS, classify, is_final
+from web_ui import fmt_date, fmt_num, fmt_pct  # stejné formátování jako web (revize 3. 11. 2026)
 
 W, H = 1200, 630
 FONT_PATH = Path(__file__).resolve().parent / "fonts" / "PlusJakartaSans-VF.ttf"
@@ -65,19 +66,6 @@ RESULT_SENTENCE = {
 }
 
 NBSP = " "
-
-
-def fmt_date(iso: str) -> str:
-    y, m, d = iso[:10].split("-")
-    return f"{int(d)}. {int(m)}. {y}"
-
-
-def fmt_pct(x: float | None) -> str:
-    return "–" if x is None else f"{x * 100:.1f}".replace(".", ",") + f"{NBSP}%"
-
-
-def fmt_num(n: int) -> str:
-    return f"{n:,}".replace(",", NBSP)
 
 
 def result_sentence(kind: str, result: str | None) -> str:
