@@ -1601,8 +1601,9 @@ main.qz-page { max-width: 1080px; }
 /* otázka */
 .qz-q { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
 .qz-top { display: flex; align-items: center; gap: 12px; }
-.qz-prog { flex: 1; display: flex; gap: 3px; min-width: 0; }
-.qz-prog button { flex: 1; min-width: 0; height: 24px; padding: 8px 0; border: 0; background: none; cursor: pointer; position: relative; }
+.qz-prog { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(24px, 1fr)); gap: 0 3px; min-width: 0; }
+/* WCAG 2.2: segment aspoň 24 × 24 px; u dlouhého kvízu na mobilu se ukazatel zalomí do dvou řádků (revize 3. 11. 2026) */
+.qz-prog button { min-width: 24px; height: 24px; padding: 8px 0; border: 0; background: none; cursor: pointer; position: relative; }
 .qz-prog button::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 8px; border-radius: 4px; background: var(--track); transition: background .25s; }
 .qz-prog .a-F::before { background: var(--for); } .qz-prog .a-A::before { background: var(--against); } .qz-prog .a-B::before { background: var(--abst); }
 .qz-prog .a-S::before { background: repeating-linear-gradient(45deg, var(--track) 0 3px, var(--absent) 3px 5px); }
