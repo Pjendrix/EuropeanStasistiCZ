@@ -22,7 +22,6 @@ import json
 import re
 from urllib.parse import quote
 import sys
-from html import escape
 from pathlib import Path
 
 from build_cards import card_vote_ids, result_sentence
@@ -40,7 +39,10 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
-from web_ui import cite_button, correction_tag, page_url, vote_meaning_html
+
+# Formátování čísel a dat jen z web_ui.py (stejné výstupy jako public/lib/format.js; revize 3. 11. 2026: dřív tu byla
+# vlastní kopie, která zaokrouhlovala procenta jinak než web a karty). Ostatní skripty je berou odsud i z build_pages.
+from web_ui import cite_button, correction_tag, esc, fmt_date, fmt_num, fmt_pct, page_url, vote_meaning_html  # noqa: F401
 from embed_pages import embed_mep, embed_vote
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -49,21 +51,6 @@ RESULT_LABEL = {"ADOPTED": "přijato", "REJECTED": "zamítnuto", "LAPSED": "prop
 HTV = "https://howtheyvote.eu"
 NBSP = " "
 ROOT = "../"
-
-
-def esc(x) -> str:
-    return escape(str(x if x is not None else ""))
-
-
-def fmt_num(n) -> str:
-    return f"{int(n):,}".replace(",", NBSP)
-
-
-def fmt_pct(pair_or_value) -> str:
-    v = pair_or_value
-    if isinstance(v, list):
-        v = v[0] / v[1] if v[1] else None
-    return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
 
 
 def meps_count(n: int) -> str:
@@ -112,13 +99,6 @@ def party_rows_html(rows: list[dict], root: str) -> str:
             f'<div class="pr-dots" aria-hidden="true">{dots}</div><div class="pr-names">{names}</div></div>'
         )
     return "".join(out)
-
-
-def fmt_date(iso: str | None) -> str:
-    if not iso:
-        return ""
-    y, m, d = iso[:10].split("-")
-    return f"{int(d)}. {int(m)}. {y}"
 
 
 def display_name(mep: dict) -> str:
@@ -548,7 +528,8 @@ def vote_page(
     share_script = f'<script type="application/json" id="share-context">{json_script(share_ctx)}</script>\n'
     body = f"""{back_row(f"{ROOT}votes?m={v['date'][:7]}", "← Hlasování v měsíci")}
 <p class="muted vote-meta" style="margin-bottom:.3rem"><span>{fmt_date(v["date"])}</span>{topic_chips(cats, 4, True, str(v["id"]), ROOT, True)}{cz_geo_tag(v)}<span class="tag kind-{kind}">{esc(KIND_LABELS.get(kind, kind))}</span></p>
-<h1{' class="long"' if len(title_txt) > LONG_TITLE else ""}>{esc(title_txt)}</h1>
+<h1{h1_class(title_txt)} id="vote-title">{esc(title_txt)}</h1>
+{clamp_toggle(title_txt)}{quick_result(v, kind, total, cz_counts)}
 {f'<p class="muted vote-desc">{esc(desc_cs or v.get("description"))}{" · " + esc(v["reference"]) if v.get("reference") else ""}</p>' if (desc_cs or v.get("description")) else ""}
 <p class="cite-row">{cite_button(cite)}</p>
 {(extra or {}).get("statements") or ""}
@@ -560,7 +541,7 @@ def vote_page(
     <div class="detail">celý parlament · <a href="{esc(src)}">zdroj</a></div></div>
   {compare_card(total, cz_counts, src)}
 </div>
-{trace}<h2>Jak hlasovali Češi</h2>
+{trace}<h2 id="cesi">Jak hlasovali Češi</h2>
 <div class="cz-views" data-view="party">
   <div class="view-switch" role="group" aria-label="Způsob zobrazení"><button type="button" data-cz-view="party" aria-pressed="true">Podle stran</button><button type="button" data-cz-view="vote" aria-pressed="false">Podle hlasu</button></div>
   <div class="cz-by-party">{party_html}</div>
@@ -822,11 +803,13 @@ def register_page(data_dir: Path, base_url: str | None) -> str | None:
             + f'<td class="num date">{fmt_date(o["registered"])}</td></tr>'
         )
 
+    # Kategorie jsou sbalené (otevřená jen největší): stránka měla na mobilu ~27 000 px (revize 3. 11. 2026).
     sections = "".join(
-        f'<h2 id="k{i}">{esc(cat)} <span class="muted">({fmt_num(len(items))})</span></h2>'
+        f'<details class="reg-cat" id="k{i}"{" open" if i == 0 else ""}><summary><h2>{esc(cat)} '
+        f'<span class="muted">({fmt_num(len(items))})</span></h2></summary>'
         f'<p class="small muted">Kategorie v registru: {esc(items[0]["category"])}</p>'
         '<div class="table-wrap"><table class="stack"><thead><tr><th>Organizace (záznam v registru)</th><th>Web</th><th>Registrace</th></tr></thead>'
-        f"<tbody>{''.join(row(o) for o in items)}</tbody></table></div>"
+        f"<tbody>{''.join(row(o) for o in items)}</tbody></table></div></details>"
         for i, (cat, items) in enumerate(sorted(by_cat.items(), key=lambda x: (-len(x[1]), x[0])))
     )
     n = len(doc["organisations"])
@@ -860,6 +843,34 @@ def with_report_link(html: str, url: str) -> str:
 
 
 LONG_TITLE = 120  # od kolika znaků je H1 hlasování menší (O11)
+CLAMP_TITLE = 160  # od kolika znaků se H1 na mobilu zkrátí na 4 řádky s tlačítkem „Celý název“ (revize 3. 11. 2026)
+
+
+def h1_class(title: str) -> str:
+    cls = [c for c, on in (("long", len(title) > LONG_TITLE), ("clamp", len(title) > CLAMP_TITLE)) if on]
+    return f' class="{" ".join(cls)}"' if cls else ""
+
+
+def clamp_toggle(title: str) -> str:
+    """Tlačítko k zkrácenému nadpisu (app.js; bez JS je nadpis celý). Celý text je v H1 vždy (vyhledávače, čtečky)."""
+    if len(title) <= CLAMP_TITLE:
+        return ""
+    return '<button type="button" class="title-more" aria-controls="vote-title" aria-expanded="false" hidden>Celý název</button>\n'
+
+
+def quick_result(v: dict, kind: str, total: list[int], cz_counts: list[int]) -> str:
+    """Výsledek hned pod nadpisem (revize 3. 11. 2026): na mobilu byl u dlouhých názvů až o 2–3 obrazovky níž.
+    Jen čísla, která stránka ukazuje níže (celý EP a Češi v mandátu)."""
+    res = v.get("result") or "NONE"
+    icon = "✓" if res == "ADOPTED" else "✕" if res == "REJECTED" else "–"
+    cz = " · ".join(f"{n} {lab}" for n, lab in zip(cz_counts, ("pro", "proti", "zdrž.", "nehlas."), strict=True) if n)
+    return (
+        f'<p class="vote-quick"><span class="res-badge res-{res}"><i class="res-ic" aria-hidden="true">{icon}</i>'
+        f'<span class="res-txt">{RESULT_LABEL.get(v.get("result"), "neuveden")}</span></span>'
+        f'<span><span class="vq-k">EP:</span> {fmt_num(total[0])} pro · {fmt_num(total[1])} proti · {fmt_num(total[2])} zdrž.</span>'
+        f'<span><span class="vq-k">Češi:</span> {cz or "nikdo v mandátu"}</span>'
+        f'<a href="#cesi">jak hlasovali <span aria-hidden="true">↓</span></a></p>'
+    )
 
 
 def not_found_page() -> str:

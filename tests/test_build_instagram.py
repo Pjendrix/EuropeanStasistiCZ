@@ -87,7 +87,7 @@ def test_vote_texts_numbers_rule_sources_and_alt():
     t = bi.vote_texts(v, SHARE, [{"name": "MOCK Jedna", "role": "rapporteur"}], "2026-10-10", ["2026-10-05", "2026-10-08"])
     assert "2 pro, 1 proti, 1 nehlasoval" in t["popisek"]
     assert "Česká stopa: MOCK Jedna (zpravodaj/ka)" in t["popisek"]
-    assert "rozdělili nejvíc" in t["popisek"] and "data k 10. 10. 2026" in t["popisek"]
+    assert "rozdělili nejvíc" in t["popisek"] and "data k 10. 10. 2026" in t["popisek"]
     assert "epwatch.cz/v/5" in t["popisek"] and "https://howtheyvote.eu/votes/5" in t["zdroje"]
     assert [line.split(":")[0] for line in t["alt"].splitlines()] == ["slide-1.png", "story.png"]
     plain = bi.vote_texts(v, SHARE, [], "2026-10-10", ["2026-10-08"])

@@ -3,7 +3,7 @@
 DOCX bere z distribuce EP Open Data (stejná cesta, jakou vrací API v `is_exemplified_by`):
 https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/{ID}/{ID}_en.docx
 
-    python scratch/pn_docx.py CACHE_DIR ID [ID …]   # vypíše PN a autory
+    python docs/spike-pn/pn_docx.py CACHE_DIR ID [ID …]   # vypíše PN a autory
 """
 
 from __future__ import annotations

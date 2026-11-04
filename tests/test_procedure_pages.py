@@ -102,7 +102,7 @@ def test_page_without_source_data_says_so(tmp_path):
     meps = {1: mep(1), 2: mep(2)}
     row = pp.collect(tmp_path, [pvote(1, "2024-09-16")])[LABEL]
     _, html = pp.procedure_page(row, meps, {}, set(), None)
-    assert "zatím nemáme načtený" in html and "Plénum o ní hlasovalo: 16. 9. 2024" in html
+    assert "zatím nemáme načtený" in html and "Plénum o ní hlasovalo: 16. 9. 2024" in html
     assert "Role poslanců u této procedury zatím nemáme načtené" in html  # bez dat netvrdíme, že česká stopa není
 
 

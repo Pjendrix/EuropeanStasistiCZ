@@ -2,8 +2,8 @@
 
 Jen průzkum, výstup do adresáře z argumentu (ne do data/). Throttling: nejvýš ~90 dotazů za minutu (limit EP 500/5 min).
 
-    python scratch/pn_ep_list.py OUT_DIR - 2026     # seznam ID za rok 2026
-    python scratch/pn_ep_list.py OUT_DIR --details  # + detail každého dokumentu 10. období (titulek, datum)
+    python docs/spike-pn/pn_ep_list.py OUT_DIR - 2026     # seznam ID za rok 2026
+    python docs/spike-pn/pn_ep_list.py OUT_DIR --details  # + detail každého dokumentu 10. období (titulek, datum)
 """
 
 from __future__ import annotations

@@ -14,6 +14,18 @@ document.addEventListener("click", (ev) => {
   box.querySelectorAll("[data-cz-view]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
 });
 
+// Dlouhý název hlasování: na mobilu zkrácený na 5 řádků, tlačítko ukáže celý (build_pages.py clamp_toggle).
+document.querySelectorAll(".title-more").forEach((b) => {
+  const h = document.getElementById(b.getAttribute("aria-controls"));
+  if (!h) return;
+  b.hidden = false;
+  b.addEventListener("click", () => {
+    const open = h.classList.toggle("open");
+    b.setAttribute("aria-expanded", String(open));
+    b.textContent = open ? "Zkrátit název" : "Celý název";
+  });
+});
+
 // V panelu „Více“ zvýraznit aktuální stránku.
 document.querySelectorAll("#more-sheet a").forEach((a) => {
   const u = new URL(a.href, location.href);

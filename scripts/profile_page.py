@@ -7,6 +7,7 @@ Kontext panelu sdílení (karta poslance a karty jednotlivých čísel) je JSON 
 from __future__ import annotations
 
 import json
+import re
 
 from ep_groups import short_group
 import statements as stm
@@ -231,7 +232,7 @@ def monthly_chart(monthly: dict, mep: dict) -> str:
     details = "".join(f'<template id="md-{k}">{month_detail(k, monthly[k]["attendance"], mep)}</template>' for k in months)
     return (
         details + '<div class="chart-wrap"><div class="chart-y"><span>100 %</span><span>50 %</span><span>0 %</span></div>'
-        f'<div class="chart" role="group" aria-label="Účast na hlasování po měsících">{"".join(cols)}</div></div>'
+        f'<div class="chart chart-scroll" role="group" aria-label="Účast na hlasování po měsících">{"".join(cols)}</div></div>'
         f'<p class="chart-detail" aria-live="polite">{month_detail(last, monthly[last]["attendance"], mep)}</p>'
         + '<p class="small muted chart-why">Důvody nepřítomnosti (nemoc, mise, rodičovská) EP nezveřejňuje.</p>'
         + chart_context(
@@ -1198,8 +1199,11 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
 
     # --- vizitka -------------------------------------------------------------------------------------------------
     accent = group_color(g_obj) if g_obj else "var(--muted)"
+    # pevné mezery: na mobilu se nezalomí „v“ na konec řádku ani datum (revize 3. 11. 2026)
     kicker = f"{by_gender(mep, 'Europoslanec', 'Europoslankyně')} · " + (
-        f"v mandátu od {since}" if active else f"{by_gender(mep, 'bývalý poslanec', 'bývalá poslankyně')} · {mandate_text(mep)}"
+        f"v\u00a0mandátu od {nbsp_date(since)}"
+        if active
+        else f"{by_gender(mep, 'bývalý poslanec', 'bývalá poslankyně')} · {nbsp_date(mandate_text(mep))}"
     )
     group_name = (g_obj or {}).get("name_cs") or (g or {}).get("name_cs") or group_label
     aff = ""
@@ -1519,6 +1523,11 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         "active": active,
     }
     return body, share_context(prof, groups, parties, ctx, today)
+
+
+def nbsp_date(text: str) -> str:
+    """Datum „16. 7. 2024“ s pevnými mezerami (nezalomí se uprostřed)."""
+    return re.sub(r"(\d{1,2}\.) (\d{1,2}\.) (\d{4})", "\\1\u00a0\\2\u00a0\\3", text or "")
 
 
 def share_json(ctx: dict) -> str:

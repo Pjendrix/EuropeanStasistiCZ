@@ -709,21 +709,38 @@ export function voteMeaningHtml(kind) {
 
 // Filtry seznamů programu a procedur (radar.html, zasedani.html): skrývají položky podle data-cat / data-leg / data-cz.
 // Obsah stránky je vygenerovaný a funguje i bez JS; stav filtrů je v adrese (?c=…&zakony=1&stopa=1).
-export function listFilters() {
+// limit = kolik položek seznamu ukázat bez filtru (zbytek za tlačítkem „Zobrazit další“; radar měl na mobilu ~32 000 px).
+// S aktivním filtrem se ukáže vše, co odpovídá. Zkrácené položky mají třídu rd-cut (ne hidden: filtr je nepřepisuje).
+export function listFilters({ limit = 0 } = {}) {
   const cat = document.getElementById("rd-cat"), leg = document.getElementById("rd-leg"), cz = document.getElementById("rd-cz");
   if (!cat) return;
   const params = new URLSearchParams(location.search);
   if (params.get("c")) cat.value = params.get("c");
   leg.checked = params.get("zakony") === "1";
   cz.checked = params.get("stopa") === "1";
+  const expanded = new WeakSet();
   const apply = () => {
+    const filtered = Boolean(cat.value || leg.checked || cz.checked);
     document.querySelectorAll(".rd-list, .rd-procs").forEach((list) => {
       let shown = 0;
       list.querySelectorAll(":scope > li").forEach((li) => {
         const ok = (!cat.value || li.dataset.cat === cat.value) && (!leg.checked || li.dataset.leg === "1") && (!cz.checked || li.dataset.cz === "1");
         li.hidden = !ok;
         shown += ok;
+        li.classList.toggle("rd-cut", Boolean(limit) && ok && !filtered && !expanded.has(list) && shown > limit);
       });
+      if (limit) {
+        let more = list.nextElementSibling?.classList.contains("rd-more") ? list.nextElementSibling : null;
+        const cut = list.querySelectorAll(":scope > li.rd-cut").length;
+        if (cut && !more) {
+          more = document.createElement("button");
+          more.type = "button";
+          more.className = "rd-more";
+          more.addEventListener("click", () => { expanded.add(list); apply(); });
+          list.after(more);
+        }
+        if (more) { more.hidden = !cut; more.textContent = `Zobrazit další (${cut})`; }
+      }
       // celý den bez položek skrýt i s nadpisem (zasedani.html)
       const day = list.previousElementSibling;
       if (day?.classList.contains("zs-day")) day.hidden = !shown;
