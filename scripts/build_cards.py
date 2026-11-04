@@ -23,8 +23,11 @@ import argparse
 import datetime as dt
 import io
 import json
+import multiprocessing
+import os
 import sys
 from collections import Counter
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from build_web import vote_title
@@ -489,6 +492,30 @@ def read(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _render(job: tuple[str, object, tuple]) -> tuple[str, bytes]:
+    rel, fn, args = job
+    return rel, fn(*args)
+
+
+def _render_all(jobs: list[tuple[str, object, tuple]], out: Path) -> int:
+    """Vykreslí karty a zapíše jen změněné. Kreslení je nejpomalejší část sestavení webu (~86 s z 92 s, revize 3. 11. 2026),
+    proto běží ve více procesech (Vercel má 4 jádra); CARDS_WORKERS=1 = postupně (ladění)."""
+    workers = int(os.environ.get("CARDS_WORKERS") or os.cpu_count() or 1)
+    if workers > 1 and len(jobs) > 1 and "fork" in multiprocessing.get_all_start_methods():
+        with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("fork")) as pool:
+            results = list(pool.map(_render, jobs, chunksize=8))
+    else:
+        results = [_render(j) for j in jobs]
+    written = 0
+    for rel, png in results:
+        f = out / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        if not f.exists() or f.read_bytes() != png:
+            f.write_bytes(png)
+            written += 1
+    return written
+
+
 def build(data_dir: Path, public: Path) -> dict[str, int]:
     from overrides import apply_name_overrides
 
@@ -504,15 +531,12 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
     base_url = read(site).get("base_url") if site.exists() else None
     release = (overview.get("sources") or {}).get("votes", {}).get("release") or ""
     data_day = release if len(release) == 10 and release[4] == "-" else overview["period"]["to"]  # export HowTheyVote = „data k“
-    written = removed = 0
+    removed = 0
+    # Karty se nejdřív posbírají (soubor, funkce, argumenty) a kreslí se až na konci paralelně (_render_all).
+    jobs: list[tuple[str, object, tuple]] = []
 
-    def put(rel: str, png: bytes) -> None:
-        nonlocal written
-        f = public / "og" / rel
-        f.parent.mkdir(parents=True, exist_ok=True)
-        if not f.exists() or f.read_bytes() != png:
-            f.write_bytes(png)
-            written += 1
+    def put(rel: str, fn, *args) -> None:
+        jobs.append((rel, fn, args))
 
     ov = {m["id"]: m for m in overview["meps"]}
     for mid in sorted(ov):
@@ -530,7 +554,7 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
         if party_text:
             chips.append((party_text, (party or {}).get("chart_color")))
         photo = public / "assets" / "photos" / f"{mid}.jpg"
-        put(f"p/{mid}.png", mep_card(prof, chips, f"v mandátu od {fmt_date(mandate)}" if mandate else "", photo, data_day, base_url))
+        put(f"p/{mid}.png", mep_card, prof, chips, f"v mandátu od {fmt_date(mandate)}" if mandate else "", photo, data_day, base_url)
     duel_path = data_dir / "duel.json"
     if duel_path.exists():
         duel = read(duel_path)
@@ -549,32 +573,33 @@ def build(data_dir: Path, public: Path) -> dict[str, int]:
         photos = {mid: public / "assets" / "photos" / f"{mid}.jpg" for mid in dm}
         for key, pair in sorted(duel["pairs"].items()):
             lo, hi = (int(x) for x in key.split("-"))
-            put(f"duel/{key}.png", duel_card(dm[lo], dm[hi], chips, pair["agreement"], photos, data_day, base_url))
+            put(f"duel/{key}.png", duel_card, dm[lo], dm[hi], chips, pair["agreement"], photos, data_day, base_url)
     _, votes = load_votes(data_dir / "votes")
     wanted = card_vote_ids(votes)
     for v in votes:
         if v["id"] in wanted:
-            put(f"v/{v['id']}.png", vote_card(v, meps_by_id, groups, base_url, parties))
+            put(f"v/{v['id']}.png", vote_card, v, meps_by_id, groups, base_url, parties)
     d = public / "og" / "v"
     for f in d.glob("*.png"):
         if int(f.stem) not in wanted:
             f.unlink()
             removed += 1
-    put(GENERIC_VOTE, generic_vote_card(base_url))
+    put(GENERIC_VOTE, generic_vote_card, base_url)
     idx = data_dir / "parties" / "index.json"
     for p in read(idx)["parties"] if idx.exists() else []:
-        put(f"s/{p['id']}.png", party_card(read(data_dir / "parties" / f"{p['id']}.json"), data_day, base_url))
+        put(f"s/{p['id']}.png", party_card, read(data_dir / "parties" / f"{p['id']}.json"), data_day, base_url)
     from procedure_pages import collect, slug  # až tady: procedure_pages importuje build_pages
 
     rows = collect(data_dir, votes)
     laws = law_cards_wanted(rows, wanted)
     for label, v in sorted(laws.items()):
-        put(f"z/{slug(label)}.png", law_card(rows[label], v, meps_by_id, base_url, slug(label)))
+        put(f"z/{slug(label)}.png", law_card, rows[label], v, meps_by_id, base_url, slug(label))
     keep = {f"{slug(lb)}.png" for lb in laws}
     for f in (public / "og" / "z").glob("*.png") if (public / "og" / "z").exists() else []:
         if f.name not in keep:
             f.unlink()
             removed += 1
+    written = _render_all(jobs, public / "og")
     return {
         "meps": len(ov),
         "votes": len(wanted),

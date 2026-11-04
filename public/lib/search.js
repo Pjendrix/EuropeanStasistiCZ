@@ -7,11 +7,17 @@ import { ROOT, getJSON, loadSearch, loadTopicText, soft } from "./data.js";
 import { CZ_GROUP_LABEL, KIND_LABEL, displayName, esc, fmtDate, isActive, isFinal, matchesAll, norm, searchTerms, voteTitle } from "./format.js";
 import { mepUrl, partyUrl, photoUrl } from "./ui.js";
 
-let index = null; // načte se při prvním psaní
+let index = null; // načte se při zaměření pole nebo prvním psaní (revize 3. 11. 2026: dřív až při psaní, ~2 s na pomalém mobilu)
+let loading = null; // rozběhnuté stahování sdílí zaměření i psaní
 
 // Odkazy od kořene webu (ROOT), aby fungovaly i z podsložek v/ a z/; p/ a s/ mají <base href="../"> a ROOT prázdný.
 export async function loadSearchIndex() {
   if (index) return index;
+  loading ||= buildSearchIndex().finally(() => { loading = null; });
+  return loading;
+}
+
+async function buildSearchIndex() {
   const [ov, parties, votes, groups, topicText] = await Promise.all([getJSON("overview.json"), getJSON("parties/index.json"), loadSearch(),
     getJSON("groups.json").catch(soft([])), loadTopicText()]);
   const gLabel = (g) => { const x = g && groups.find((y) => y.ep_code === g.code || y.code === g.code); return x ? (CZ_GROUP_LABEL[x.code] || x.short_label) : g?.short_label; };
@@ -33,6 +39,8 @@ export async function loadSearchIndex() {
 // Našeptávač (combobox podle ARIA): input s role="combobox", list s role="listbox". prefix = jedinečná id voleb.
 export function combobox(q, list, prefix) {
   let items = [], sel = -1;
+  // Index se začne stahovat hned při zaměření pole, ne až po prvních dvou písmenech.
+  q.addEventListener("focus", () => { loadSearchIndex().catch(() => {}); }, { once: true });
   const close = () => { list.hidden = true; q.setAttribute("aria-expanded", "false"); q.removeAttribute("aria-activedescendant"); items = []; sel = -1; };
   const mark = () => {
     list.querySelectorAll('[role="option"]').forEach((o) => o.setAttribute("aria-selected", String(Number(o.dataset.k) === sel)));

@@ -258,7 +258,7 @@ RENDER_JS = """async ([fmt, neutral]) => {
   let script = null;
   for (let i = 0; i < 100 && !(script = document.querySelector('script[src*="share.js"]')); i++) await new Promise((r) => setTimeout(r, 100));
   if (!script) throw new Error("stránka nenačítá share.js");
-  const m = await import(script.src), fmtLib = await import(new URL("lib/format.js", script.src).href);
+  const m = await (await import(script.src)).loadSharePanel(), fmtLib = await import(new URL("lib/format.js", script.src).href);
   for (let i = 0; i < 50 && typeof window.shareContext !== "function" && !document.getElementById("share-context"); i++) await new Promise((r) => setTimeout(r, 100));
   let ctx = typeof window.shareContext === "function" ? await window.shareContext("") : null;
   if (!ctx && document.getElementById("share-context")) {
