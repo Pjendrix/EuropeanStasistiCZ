@@ -2,7 +2,7 @@
 import { listFilters, setNav } from "../lib/ui.js";
 setNav("votes");
 setNav("votes-radar");
-listFilters();
+listFilters({ limit: 10 });
 
 // Celý průběh procedury je v <template> (méně uzlů DOM, O8); vloží se při prvním rozbalení.
 document.addEventListener("toggle", (ev) => {

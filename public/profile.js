@@ -16,6 +16,9 @@ const show = (btn) => {
   if (tpl) detail.replaceChildren(tpl.content.cloneNode(true));
 };
 if (detail) cols.forEach((c) => ["click", "mouseenter", "focus"].forEach((ev) => c.addEventListener(ev, () => show(c))));
+// Na mobilu se graf posouvá do stran (sloupce aspoň 24 px kvůli dotyku); začít u posledního měsíce.
+const scroller = main.querySelector(".chart-scroll");
+if (scroller && scroller.scrollWidth > scroller.clientWidth) scroller.scrollLeft = scroller.scrollWidth;
 
 // Kde hlasoval(a) jinak než frakce: obě tabulky jsou v HTML, přepínač ukáže jednu.
 const onlyMain = document.getElementById("against-main");

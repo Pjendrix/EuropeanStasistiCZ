@@ -24,7 +24,11 @@ def test_pages_for_meps_parties_and_final_votes_only(data_dir):
 
 def test_vote_page_content(data_dir):
     html = built(data_dir)["v/1.html"]
-    assert "<h1>MOCK vote</h1>" in html and "přijato" in html
+    assert '<h1 id="vote-title">MOCK vote</h1>' in html and "přijato" in html
+    # výsledek hned pod nadpisem (revize 3. 11. 2026): celý EP a Češi, odkaz na seznam
+    quick = html.split('<p class="vote-quick">', 1)[1].split("</p>", 1)[0]
+    assert "EP:</span>" in quick and "Češi:</span>" in quick and 'href="#cesi"' in quick and 'id="cesi"' in html
+    assert "title-more" not in html  # krátký název se nezkracuje
     assert 'href="../p/1"' in html and 'data-root="../"' in html
     assert "https://howtheyvote.eu/votes/1" in html
 
@@ -576,3 +580,10 @@ def test_cz_people_html_photo_bold_name_and_gendered_role(monkeypatch):
     assert html.count('class="cz-p"') == 3 and 'src="assets/photos/thumbs/1.webp"' in html and "<b>MOCK A</b>" in html
     assert "stínová zpravodajka" in html and "<span>zpravodaj</span>" in html and "stínový/á zpravodaj/ka" in html
     assert "Česká stopa:" in html and hub.cz_people_html([]) == ""
+
+
+def test_long_vote_title_gets_toggle():
+    """Název nad 160 znaků: na mobilu zkrácený (třída clamp) s tlačítkem, celý text zůstává v H1."""
+    long = "MOCK " + "název " * 40
+    assert 'class="long clamp"' in bp.h1_class(long) and "clamp" not in bp.h1_class("MOCK krátký")
+    assert 'aria-controls="vote-title"' in bp.clamp_toggle(long) and bp.clamp_toggle("MOCK krátký") == ""

@@ -2463,12 +2463,43 @@ a.mx-aff:hover { border-color: var(--gold); transform: translateY(-1px); }
 .mx-periods li { margin: .1rem 0; }
 
 /* O8: radar po stavech, osa procedury sbalená */
+/* Revize 3. 11. 2026, WCAG 2.2 (cíle aspoň 24 px): měsíční graf profilu se na mobilu posouvá do stran,
+   jména v matici shody a odkazy v metadatech programu jsou vyšší */
+@media (max-width: 560px) {
+  .chart.chart-scroll { overflow-x: auto; overflow-y: hidden; gap: 4px; height: calc(150px + 2.2rem); padding-bottom: 2.2rem;
+    background-size: 100% calc((150px - .5rem) / 2); scrollbar-width: thin; }
+  .chart.chart-scroll .col { flex: 0 0 24px; min-width: 24px; }
+  .chart.chart-scroll .col-sparse { visibility: visible; }
+  .chart-wrap:has(.chart-scroll) { margin-bottom: 0; }
+}
+table.matrix .mx-row a { display: inline-flex; align-items: center; min-height: 24px; }
+.rd-meta > a { display: inline-flex; align-items: center; min-height: 24px; }
+/* Revize 3. 11. 2026: bez filtru prvních 10 položek seznamu, zbytek za tlačítkem (lib/ui.js listFilters) */
+.rd-list > li.rd-cut, .rd-procs > li.rd-cut { display: none; }
+.rd-more { display: inline-flex; align-items: center; min-height: 40px; margin: .75rem 0 1rem; padding: 0 1rem; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text); font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; }
+.rd-more[hidden] { display: none; }
+/* registr: kategorie jako rozbalovací bloky s nadpisem v summary */
+details.reg-cat > summary { cursor: pointer; list-style-position: outside; margin: 1.25rem 0 .5rem; }
+details.reg-cat > summary h2 { display: inline; margin: 0; }
 .rd-stage { margin: 1.25rem 0 .5rem; font-size: 1.05rem; }
 .rd-tl { margin-top: .5rem; }
 .rd-tl > summary { cursor: pointer; font-size: .875rem; color: var(--muted); }
 
 /* O11: dlouhé názvy hlasování (nad 120 znaků) menším písmem */
 main h1.long { font-size: clamp(1.35rem, 3.2vw, 2rem); line-height: 1.2; }
+
+/* Revize 3. 11. 2026: výsledek hned pod nadpisem; nadpis nad 160 znaků na mobilu na 5 řádků s tlačítkem „Celý název“
+   (bez JS je celý, tlačítko odkryje app.js) */
+.vote-quick { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .9rem; margin: .5rem 0 .6rem; font-size: .9rem; }
+.vote-quick .vq-k { color: var(--muted); font-weight: 600; }
+.vote-quick a { display: inline-flex; align-items: center; min-height: 24px; }
+.title-more { display: none; }
+@media (max-width: 760px) {
+  .js main h1.clamp:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; line-clamp: 5; overflow: hidden; }
+  .js .title-more:not([hidden]) { display: inline-flex; align-items: center; min-height: 32px; margin: -.2rem 0 .3rem; padding: 0 .7rem;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; }
+}
 
 /* V1: viditelné tlačítko Citovat */
 .cite-row { margin: .4rem 0; }
@@ -2735,6 +2766,10 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
   .mx-w span { font-size: .82rem; line-height: 1.25; }
   .mx-w small { font-size: .82rem; }
   .mx-portrait figcaption { position: static; background: none; color: var(--muted); padding: 0; margin-top: .3rem; font-size: .82rem; line-height: 1.25; text-align: left; }
+  /* popisek portrétu přes celou šířku karty na jeden řádek, ne do 3 řádků pod úzkou fotkou (revize 3. 11. 2026) */
+  .mx-hero > .mx-portrait { display: contents; }
+  .mx-hero > .mx-portrait > :first-child { grid-column: 1; grid-row: 1 / span 2; }
+  .mx-hero > .mx-portrait > figcaption { grid-column: 1 / -1; grid-row: 3; margin-top: -.6rem; }
 
   /* Seznam hlasování: bez tématu, typu a čísla dokumentu (jsou v detailu) */
   #votes .cat-inline, #votes .vt-doc { display: none; }
