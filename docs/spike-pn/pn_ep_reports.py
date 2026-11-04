@@ -4,7 +4,7 @@ Jeden dotaz na dokument: `plenary-documents/{id}` vrací v `inverse_foresees_cha
 i s titulkem, kde jsou jména autorů ("Pozměňovací návrh 001-005 - Jméno, Jméno - Zpráva …").
 Seznam dokumentů bere z data/proposals_state.json. Jen průzkum, výstup do OUT_DIR/am_by_doc.jsonl.
 
-    python scratch/pn_ep_reports.py OUT_DIR
+    python docs/spike-pn/pn_ep_reports.py OUT_DIR
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ import requests
 
 API = "https://data.europarl.europa.eu/api/v2"
 FMT = {"format": "application/ld+json"}
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]  # docs/spike-pn/ → kořen repa
 MIN_GAP = 0.65  # ~460 dotazů za 5 minut, pod limitem EP 500
 _lock = threading.Lock()
 _last = [0.0]

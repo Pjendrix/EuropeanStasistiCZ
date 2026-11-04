@@ -22,7 +22,6 @@ import json
 import re
 from urllib.parse import quote
 import sys
-from html import escape
 from pathlib import Path
 
 from build_cards import card_vote_ids, result_sentence
@@ -40,7 +39,10 @@ from vote_parties import (
 from compute_stats import FormatError, active_positions, load_votes, require
 from labels_cs import translate
 from layout import MODULES, json_script, page
-from web_ui import cite_button, correction_tag, page_url, vote_meaning_html
+
+# Formátování čísel a dat jen z web_ui.py (stejné výstupy jako public/lib/format.js; revize 3. 11. 2026: dřív tu byla
+# vlastní kopie, která zaokrouhlovala procenta jinak než web a karty). Ostatní skripty je berou odsud i z build_pages.
+from web_ui import cite_button, correction_tag, esc, fmt_date, fmt_num, fmt_pct, page_url, vote_meaning_html  # noqa: F401
 from embed_pages import embed_mep, embed_vote
 from overrides import apply_name_overrides
 from vote_kinds import KIND_LABELS, classify, is_final
@@ -49,21 +51,6 @@ RESULT_LABEL = {"ADOPTED": "přijato", "REJECTED": "zamítnuto", "LAPSED": "prop
 HTV = "https://howtheyvote.eu"
 NBSP = " "
 ROOT = "../"
-
-
-def esc(x) -> str:
-    return escape(str(x if x is not None else ""))
-
-
-def fmt_num(n) -> str:
-    return f"{int(n):,}".replace(",", NBSP)
-
-
-def fmt_pct(pair_or_value) -> str:
-    v = pair_or_value
-    if isinstance(v, list):
-        v = v[0] / v[1] if v[1] else None
-    return "–" if v is None else f"{v * 100:.1f}".replace(".", ",") + f"{NBSP}%"
 
 
 def meps_count(n: int) -> str:
@@ -112,13 +99,6 @@ def party_rows_html(rows: list[dict], root: str) -> str:
             f'<div class="pr-dots" aria-hidden="true">{dots}</div><div class="pr-names">{names}</div></div>'
         )
     return "".join(out)
-
-
-def fmt_date(iso: str | None) -> str:
-    if not iso:
-        return ""
-    y, m, d = iso[:10].split("-")
-    return f"{int(d)}. {int(m)}. {y}"
 
 
 def display_name(mep: dict) -> str:

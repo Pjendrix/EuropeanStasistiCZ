@@ -1,11 +1,11 @@
 """Spike PN: výborové PN po skončení dumpu Parltracku z oficiálních DOCX EP.
 
-Vstup: seznam ID z scratch/pn_ep_list.py (am_list.json). Výborové dokumenty mají tvar {VÝBOR}-AM-{číslo};
+Vstup: seznam ID z docs/spike-pn/pn_ep_list.py (am_list.json). Výborové dokumenty mají tvar {VÝBOR}-AM-{číslo};
 ty, které už pokrývá Parltrack (pole src), se přeskočí. Počítá podpisy Čechů v době mandátu, zvlášť „sám“ a „za frakci“.
 Jen průzkum, výstup do OUT_DIR.
 
-    python scratch/pn_committee_docx.py AM_LIST_JSON PARLTRACK_DUMP OUT_DIR
-    python scratch/pn_committee_docx.py AM_LIST_JSON - OUT_DIR   # celé období jen z DOCX
+    python docs/spike-pn/pn_committee_docx.py AM_LIST_JSON PARLTRACK_DUMP OUT_DIR
+    python docs/spike-pn/pn_committee_docx.py AM_LIST_JSON - OUT_DIR   # celé období jen z DOCX
 """
 
 from __future__ import annotations

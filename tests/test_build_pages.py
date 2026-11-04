@@ -85,7 +85,7 @@ def test_write_removes_stale_and_keeps_unchanged(tmp_path):
 
 def test_formatting():
     assert bp.fmt_pct([1, 3]) == "33,3 %" and bp.fmt_pct([0, 0]) == "–"
-    assert bp.fmt_num(6154) == "6 154" and bp.fmt_date("2024-07-16") == "16. 7. 2024"
+    assert bp.fmt_num(6154) == "6 154" and bp.fmt_date("2024-07-16") == "16. 7. 2024"
 
 
 def test_definitions_static_and_every_key_has_a_name(tmp_path):
@@ -283,7 +283,7 @@ def test_corrections_block(tmp_path):
         encoding="utf-8",
     )
     html = bp.corrections_html(data)
-    assert html.index("5. 10. 2026") < html.index("1. 10. 2026") and 'href="https://example.test/x"' in html
+    assert html.index("5. 10. 2026") < html.index("1. 10. 2026") and 'href="https://example.test/x"' in html
     assert html.count('<li data-kind="fix">') == 2 and '<time datetime="2026-10-05">' in html  # položky časové osy
     (data / "manual" / "corrections.json").write_text(json.dumps({"corrections": [{"date": "2026-10-01"}]}), encoding="utf-8")
     import pytest
@@ -459,12 +459,12 @@ def test_radar_steps_timeline_states_and_date_ranges():
     ]
     html = radar_steps(steps, "trilogue")
     assert html.count('class="rd-step done"') == 1 and html.count('aria-current="step"') == 1
-    assert '<li class="rd-step current" aria-current="step">' in html and "30. 6. – 16. 10. 2025" in html
+    assert '<li class="rd-step current" aria-current="step">' in html and "30. 6. – 16. 10. 2025" in html
     assert 'class="rd-step todo"' in html
     closed = radar_steps([{**steps[0]}, {"key": "closed", "label": "Podpis aktu", "date": "2025-12-16"}], "closed")
     assert "aria-current" not in closed and closed.count('class="rd-step done"') == 2
     over_year = radar_steps([{"key": "trilogue", "label": "MOCK", "date": "2024-12-02", "date_to": "2025-01-20"}], "trilogue")
-    assert "2. 12. 2024 – 20. 1. 2025" in over_year
+    assert "2. 12. 2024 – 20. 1. 2025" in over_year
 
 
 def test_radar_done_card_names_vote_date_when_it_differs_from_plenary_decision():
@@ -483,7 +483,7 @@ def test_radar_done_card_names_vote_date_when_it_differs_from_plenary_decision()
         "vote": {"vote_id": 189270, "vote_date": "2026-03-26", "status": "REJECTED"},
     }
     html = radar_proc_card(row, "", True)
-    assert "Plénum hlasovalo 9. 7. 2026" in html and "jak hlasovali Češi 26. 3. 2026" in html
+    assert "Plénum hlasovalo 9. 7. 2026" in html and "jak hlasovali Češi 26. 3. 2026" in html
     same = radar_proc_card({**row, "vote": {**row["vote"], "vote_date": "2026-07-09"}}, "", True)
     assert "jak hlasovali Češi" in same and "26. 3. 2026" not in same
 
