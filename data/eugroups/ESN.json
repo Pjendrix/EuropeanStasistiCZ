@@ -16,27 +16,27 @@
   171424
  ],
  "attendance_main": [
-  15767,
-  17770
+  15915,
+  17931
  ],
  "majority": [
   128007,
   133170
  ],
  "majority_main": [
-  12252,
-  12636
+  12393,
+  12782
  ],
  "splits": 113,
  "considered": 5911,
  "splits_main": 4,
- "considered_main": 565,
+ "considered_main": 571,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -87,16 +87,16 @@
      6411
     ],
     "attendance_main": [
-     624,
-     665
+     630,
+     671
     ],
     "group_loyalty": [
      4115,
      5816
     ],
     "group_loyalty_main": [
-     495,
-     623
+     500,
+     629
     ],
     "cz_agreement": [
      2992,
@@ -107,8 +107,8 @@
      4806
     ],
     "outcome_main": [
-     160,
-     488
+     163,
+     494
     ],
     "outcome_close": [
      49,
@@ -119,8 +119,8 @@
      106068
     ],
     "group_outcome_main": [
-     3541,
-     10566
+     3641,
+     10712
     ],
     "positions": {
      "FOR": 2808,
@@ -188,7 +188,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -214,7 +214,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -1046,7 +1046,7 @@
     "for": 69,
     "against": 562,
     "abstention": 30,
-    "did_not_vote": 58
+    "did_not_vote": 57
    },
    "cz": [
     3,
@@ -1232,7 +1232,7 @@
     "for": 131,
     "against": 433,
     "abstention": 15,
-    "did_not_vote": 141
+    "did_not_vote": 140
    },
    "cz": [
     3,
@@ -1243,10 +1243,7 @@
    "amendment_number": "5",
    "texts_adopted_reference": null,
    "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
+    "def"
    ],
    "vote_kind": "amendment",
    "is_final": false,
@@ -1828,7 +1825,7 @@
     "for": 499,
     "against": 49,
     "abstention": 104,
-    "did_not_vote": 67
+    "did_not_vote": 66
    },
    "cz": [
     17,
@@ -1902,7 +1899,7 @@
     "for": 200,
     "against": 420,
     "abstention": 48,
-    "did_not_vote": 51
+    "did_not_vote": 50
    },
    "cz": [
     4,
@@ -2127,7 +2124,7 @@
     "for": 499,
     "against": 49,
     "abstention": 104,
-    "did_not_vote": 67
+    "did_not_vote": 66
    },
    "cz": [
     17,

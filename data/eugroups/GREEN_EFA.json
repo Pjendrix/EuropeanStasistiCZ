@@ -16,27 +16,27 @@
   339783
  ],
  "attendance_main": [
-  31570,
-  35245
+  31861,
+  35563
  ],
  "majority": [
   284198,
   290728
  ],
  "majority_main": [
-  29217,
-  29836
+  29414,
+  30076
  ],
  "splits": 89,
  "considered": 6298,
- "splits_main": 15,
- "considered_main": 648,
+ "splits_main": 17,
+ "considered_main": 653,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -87,16 +87,16 @@
      6411
     ],
     "attendance_main": [
-     605,
-     665
+     610,
+     671
     ],
     "group_loyalty": [
      5657,
      5860
     ],
     "group_loyalty_main": [
-     575,
-     605
+     579,
+     610
     ],
     "cz_agreement": [
      1684,
@@ -107,8 +107,8 @@
      5589
     ],
     "outcome_main": [
-     514,
-     579
+     516,
+     583
     ],
     "outcome_close": [
      71,
@@ -119,8 +119,8 @@
      261260
     ],
     "group_outcome_main": [
-     23221,
-     26620
+     23267,
+     26817
     ],
     "positions": {
      "FOR": 3003,
@@ -228,7 +228,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -254,7 +254,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -524,7 +524,7 @@
    "reference": "C10-0038/2025",
    "description": "Rejet - Am 1",
    "result": "REJECTED",
-   "is_main": false,
+   "is_main": true,
    "counts": {
     "for": 68,
     "against": 537,
@@ -539,9 +539,12 @@
    ],
    "amendment_number": "1",
    "texts_adopted_reference": null,
-   "cats": [],
-   "vote_kind": "amendment",
-   "is_final": false,
+   "cats": [
+    "env",
+    "eco"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
    "inverted": false,
    "description_cs": "Zamítnutí - PN 1",
    "gc": [
@@ -781,7 +784,7 @@
    "reference": "A10-0043/2025",
    "description": "Rejet - Am 3",
    "result": "REJECTED",
-   "is_main": false,
+   "is_main": true,
    "counts": {
     "for": 180,
     "against": 367,
@@ -799,8 +802,8 @@
    "cats": [
     "agr"
    ],
-   "vote_kind": "amendment",
-   "is_final": false,
+   "vote_kind": "final",
+   "is_final": true,
    "inverted": false,
    "description_cs": "Zamítnutí - PN 3",
    "gc": [
@@ -1314,8 +1317,11 @@
     2
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [],
+   "texts_adopted_reference": "P10_TA(2025)0064",
+   "cats": [
+    "env",
+    "eco"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -2151,6 +2157,44 @@
    ]
   },
   {
+   "id": 174989,
+   "date": "2025-04-03",
+   "month": "2025-04",
+   "title": "Amending Directives (EU) 2022/2464 and (EU) 2024/1760 as regards the dates from which Member States are to apply certain corporate sustainability reporting and due diligence requirements",
+   "reference": "C10-0038/2025",
+   "description": "Rejet - Am 1",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 68,
+    "against": 537,
+    "abstention": 9,
+    "did_not_vote": 104
+   },
+   "cz": [
+    1,
+    18,
+    0,
+    2
+   ],
+   "amendment_number": "1",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "eco"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Zamítnutí - PN 1",
+   "gc": [
+    24,
+    27,
+    0,
+    2
+   ]
+  },
+  {
    "id": 175231,
    "date": "2025-05-07",
    "month": "2025-05",
@@ -2222,6 +2266,43 @@
     24,
     5,
     5
+   ]
+  },
+  {
+   "id": 176875,
+   "date": "2025-05-22",
+   "month": "2025-05",
+   "title": "Udělení rovnocennosti s požadavky EU Moldavsku a Ukrajině, pokud jde o přehlídky porostu a produkci osiva",
+   "reference": "A10-0043/2025",
+   "description": "Rejet - Am 3",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 180,
+    "against": 367,
+    "abstention": 43,
+    "did_not_vote": 129
+   },
+   "cz": [
+    9,
+    9,
+    0,
+    3
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0110",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Zamítnutí - PN 3",
+   "gc": [
+    25,
+    19,
+    1,
+    8
    ]
   },
   {
@@ -2431,8 +2512,11 @@
     2
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [],
+   "texts_adopted_reference": "P10_TA(2025)0064",
+   "cats": [
+    "env",
+    "eco"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -2607,7 +2691,7 @@
     "for": 475,
     "against": 96,
     "abstention": 70,
-    "did_not_vote": 78
+    "did_not_vote": 77
    },
    "cz": [
     17,

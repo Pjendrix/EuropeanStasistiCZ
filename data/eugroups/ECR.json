@@ -16,27 +16,27 @@
   515349
  ],
  "attendance_main": [
-  47570,
-  53436
+  47990,
+  53914
  ],
  "majority": [
   384728,
   409321
  ],
  "majority_main": [
-  37019,
-  40229
+  37387,
+  40619
  ],
  "splits": 360,
  "considered": 6382,
- "splits_main": 46,
- "considered_main": 659,
+ "splits_main": 47,
+ "considered_main": 665,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -87,16 +87,16 @@
      6411
     ],
     "attendance_main": [
-     601,
-     665
+     607,
+     671
     ],
     "group_loyalty": [
      3620,
      4459
     ],
     "group_loyalty_main": [
-     332,
-     467
+     338,
+     473
     ],
     "cz_agreement": [
      4646,
@@ -107,8 +107,8 @@
      5205
     ],
     "outcome_main": [
-     384,
-     498
+     389,
+     504
     ],
     "outcome_close": [
      58,
@@ -119,8 +119,8 @@
      273863
     ],
     "group_outcome_main": [
-     16526,
-     25364
+     16877,
+     25806
     ],
     "positions": {
      "FOR": 3114,
@@ -162,16 +162,16 @@
      6411
     ],
     "attendance_main": [
-     650,
-     665
+     656,
+     671
     ],
     "group_loyalty": [
      5167,
      6247
     ],
     "group_loyalty_main": [
-     492,
-     645
+     497,
+     651
     ],
     "cz_agreement": [
      4683,
@@ -182,8 +182,8 @@
      5696
     ],
     "outcome_main": [
-     433,
-     561
+     439,
+     567
     ],
     "outcome_close": [
      75,
@@ -194,8 +194,8 @@
      374066
     ],
     "group_outcome_main": [
-     28895,
-     35842
+     29254,
+     36232
     ],
     "positions": {
      "FOR": 3216,
@@ -237,16 +237,16 @@
      6411
     ],
     "attendance_main": [
-     605,
-     665
+     611,
+     671
     ],
     "group_loyalty": [
      4955,
      5773
     ],
     "group_loyalty_main": [
-     469,
-     600
+     474,
+     606
     ],
     "cz_agreement": [
      4343,
@@ -257,8 +257,8 @@
      5288
     ],
     "outcome_main": [
-     396,
-     528
+     402,
+     534
     ],
     "outcome_close": [
      68,
@@ -269,8 +269,8 @@
      349560
     ],
     "group_outcome_main": [
-     27081,
-     34083
+     27440,
+     34473
     ],
     "positions": {
      "FOR": 2866,
@@ -312,16 +312,16 @@
      6411
     ],
     "attendance_main": [
-     623,
-     665
+     629,
+     671
     ],
     "group_loyalty": [
      4928,
      5988
     ],
     "group_loyalty_main": [
-     466,
-     618
+     470,
+     624
     ],
     "cz_agreement": [
      4497,
@@ -332,8 +332,8 @@
      5446
     ],
     "outcome_main": [
-     417,
-     536
+     422,
+     541
     ],
     "outcome_close": [
      68,
@@ -344,8 +344,8 @@
      359067
     ],
     "group_outcome_main": [
-     27865,
-     34388
+     28162,
+     34716
     ],
     "positions": {
      "FOR": 3066,
@@ -458,7 +458,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -484,7 +484,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -1020,7 +1020,7 @@
     "for": 159,
     "against": 499,
     "abstention": 8,
-    "did_not_vote": 53
+    "did_not_vote": 52
    },
    "cz": [
     11,
@@ -3190,6 +3190,43 @@
     25,
     9,
     7
+   ]
+  },
+  {
+   "id": 176875,
+   "date": "2025-05-22",
+   "month": "2025-05",
+   "title": "Udělení rovnocennosti s požadavky EU Moldavsku a Ukrajině, pokud jde o přehlídky porostu a produkci osiva",
+   "reference": "A10-0043/2025",
+   "description": "Rejet - Am 3",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 180,
+    "against": 367,
+    "abstention": 43,
+    "did_not_vote": 129
+   },
+   "cz": [
+    9,
+    9,
+    0,
+    3
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": "P10_TA(2025)0110",
+   "cats": [
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Zamítnutí - PN 3",
+   "gc": [
+    25,
+    16,
+    29,
+    10
    ]
   },
   {

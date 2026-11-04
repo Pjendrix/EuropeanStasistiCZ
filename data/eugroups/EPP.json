@@ -13,30 +13,30 @@
  "n_countries": 27,
  "attendance": [
   1035330,
-  1196133
+  1196283
  ],
  "attendance_main": [
-  108890,
-  124058
+  109857,
+  125196
  ],
  "majority": [
   955940,
   1010245
  ],
  "majority_main": [
-  102376,
-  106599
+  103271,
+  107547
  ],
  "splits": 248,
  "considered": 6405,
  "splits_main": 40,
- "considered_main": 665,
+ "considered_main": 671,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -87,16 +87,16 @@
      6411
     ],
     "attendance_main": [
-     638,
-     665
+     643,
+     671
     ],
     "group_loyalty": [
      5453,
      6088
     ],
     "group_loyalty_main": [
-     618,
-     638
+     622,
+     643
     ],
     "cz_agreement": [
      3075,
@@ -107,8 +107,8 @@
      5795
     ],
     "outcome_main": [
-     591,
-     623
+     595,
+     627
     ],
     "outcome_close": [
      66,
@@ -119,8 +119,8 @@
      921049
     ],
     "group_outcome_main": [
-     94794,
-     100459
+     95414,
+     101116
     ],
     "positions": {
      "FOR": 2697,
@@ -162,16 +162,16 @@
      6411
     ],
     "attendance_main": [
-     638,
-     665
+     644,
+     671
     ],
     "group_loyalty": [
      5502,
      6137
     ],
     "group_loyalty_main": [
-     617,
-     638
+     622,
+     644
     ],
     "cz_agreement": [
      3055,
@@ -182,8 +182,8 @@
      5699
     ],
     "outcome_main": [
-     590,
-     620
+     595,
+     625
     ],
     "outcome_close": [
      61,
@@ -194,8 +194,8 @@
      907490
     ],
     "group_outcome_main": [
-     94413,
-     99679
+     95191,
+     100494
     ],
     "positions": {
      "FOR": 2514,
@@ -237,16 +237,16 @@
      6411
     ],
     "attendance_main": [
-     635,
-     665
+     641,
+     671
     ],
     "group_loyalty": [
      5487,
      6132
     ],
     "group_loyalty_main": [
-     616,
-     635
+     621,
+     641
     ],
     "cz_agreement": [
      3078,
@@ -257,8 +257,8 @@
      5840
     ],
     "outcome_main": [
-     592,
-     625
+     597,
+     630
     ],
     "outcome_close": [
      70,
@@ -269,8 +269,8 @@
      930764
     ],
     "group_outcome_main": [
-     94846,
-     100987
+     95624,
+     101802
     ],
     "positions": {
      "FOR": 2693,
@@ -312,16 +312,16 @@
      6411
     ],
     "attendance_main": [
-     653,
-     665
+     659,
+     671
     ],
     "group_loyalty": [
      5568,
      6170
     ],
     "group_loyalty_main": [
-     632,
-     653
+     636,
+     659
     ],
     "cz_agreement": [
      2870,
@@ -332,8 +332,8 @@
      5769
     ],
     "outcome_main": [
-     603,
-     642
+     607,
+     646
     ],
     "outcome_close": [
      60,
@@ -344,8 +344,8 @@
      914028
     ],
     "group_outcome_main": [
-     97202,
-     103353
+     97821,
+     103997
     ],
     "positions": {
      "FOR": 2505,
@@ -387,16 +387,16 @@
      6411
     ],
     "attendance_main": [
-     595,
-     665
+     601,
+     671
     ],
     "group_loyalty": [
      5122,
      5594
     ],
     "group_loyalty_main": [
-     568,
-     595
+     574,
+     601
     ],
     "cz_agreement": [
      2871,
@@ -407,8 +407,8 @@
      5477
     ],
     "outcome_main": [
-     532,
-     581
+     538,
+     587
     ],
     "outcome_close": [
      71,
@@ -419,8 +419,8 @@
      876229
     ],
     "group_outcome_main": [
-     88163,
-     93916
+     89058,
+     94864
     ],
     "positions": {
      "FOR": 2166,
@@ -578,7 +578,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -595,7 +595,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -1843,7 +1843,7 @@
     "for": 249,
     "against": 302,
     "abstention": 20,
-    "did_not_vote": 149
+    "did_not_vote": 148
    },
    "cz": [
     16,
@@ -2141,7 +2141,7 @@
     "for": 229,
     "against": 317,
     "abstention": 33,
-    "did_not_vote": 141
+    "did_not_vote": 140
    },
    "cz": [
     9,
@@ -2150,7 +2150,7 @@
     4
    ],
    "amendment_number": "16",
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0363",
    "cats": [
     "env",
     "eco"

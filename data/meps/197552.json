@@ -83,13 +83,13 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 841,
+ "mandate_days": 842,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -135,16 +135,16 @@
    6411
   ],
   "attendance_main": [
-   623,
-   665
+   629,
+   671
   ],
   "group_loyalty": [
    4928,
    5988
   ],
   "group_loyalty_main": [
-   466,
-   618
+   470,
+   624
   ],
   "cz_agreement": [
    4497,
@@ -155,8 +155,8 @@
    5446
   ],
   "outcome_main": [
-   417,
-   536
+   422,
+   541
   ],
   "outcome_close": [
    68,
@@ -167,8 +167,8 @@
    359067
   ],
   "group_outcome_main": [
-   27865,
-   34388
+   28162,
+   34716
   ],
   "positions": {
    "FOR": 3066,
@@ -568,16 +568,16 @@
     348
    ],
    "attendance_main": [
-    18,
-    18
+    19,
+    19
    ],
    "group_loyalty": [
     311,
     345
    ],
    "group_loyalty_main": [
-    14,
-    18
+    15,
+    19
    ],
    "cz_agreement": [
     262,
@@ -588,8 +588,8 @@
     307
    ],
    "outcome_main": [
-    11,
-    13
+    12,
+    14
    ],
    "outcome_close": [
     7,
@@ -600,8 +600,8 @@
     21145
    ],
    "group_outcome_main": [
-    692,
-    893
+    759,
+    960
    ],
    "positions": {
     "FOR": 173,
@@ -616,16 +616,16 @@
     393
    ],
    "attendance_main": [
-    48,
-    49
+    51,
+    52
    ],
    "group_loyalty": [
     330,
     384
    ],
    "group_loyalty_main": [
-    29,
-    48
+    30,
+    51
    ],
    "cz_agreement": [
     294,
@@ -636,8 +636,8 @@
     346
    ],
    "outcome_main": [
-    29,
-    35
+    31,
+    37
    ],
    "outcome_close": [
     5,
@@ -648,8 +648,8 @@
     22736
    ],
    "group_outcome_main": [
-    1724,
-    2143
+    1805,
+    2254
    ],
    "positions": {
     "FOR": 237,
@@ -664,16 +664,16 @@
     221
    ],
    "attendance_main": [
-    21,
-    21
+    22,
+    22
    ],
    "group_loyalty": [
     167,
     216
    ],
    "group_loyalty_main": [
-    18,
-    21
+    19,
+    22
    ],
    "cz_agreement": [
     185,
@@ -684,8 +684,8 @@
     206
    ],
    "outcome_main": [
-    18,
-    21
+    19,
+    22
    ],
    "outcome_close": [
     2,
@@ -696,8 +696,8 @@
     12643
    ],
    "group_outcome_main": [
-    1037,
-    1270
+    1108,
+    1342
    ],
    "positions": {
     "FOR": 119,
@@ -712,16 +712,16 @@
     226
    ],
    "attendance_main": [
-    30,
-    31
+    31,
+    32
    ],
    "group_loyalty": [
     179,
     221
    ],
    "group_loyalty_main": [
-    26,
-    30
+    27,
+    31
    ],
    "cz_agreement": [
     169,
@@ -732,8 +732,8 @@
     215
    ],
    "outcome_main": [
-    25,
-    28
+    26,
+    29
    ],
    "outcome_close": [
     1,
@@ -744,8 +744,8 @@
     14972
    ],
    "group_outcome_main": [
-    1764,
-    2015
+    1842,
+    2093
    ],
    "positions": {
     "FOR": 138,
@@ -2206,32 +2206,32 @@
  "votes_to": "2026-10-22",
  "benchmarks": {
   "source": {
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "definition": "Medián EP a medián frakce: prostřední hodnota přes všechny poslance EP (nebo poslance dané frakce), kteří mají v datech HowTheyVote aspoň 100 hlasování. Počítá se stejně jako u českých poslanců (účast na hlasování, účast u závěrečných hlasování, hlasování s frakcí k datu hlasování), jen u poslanců jiných států se berou všechna hlasování, ve kterých je HowTheyVote vede. Poslanec s kratším mandátem se srovnává s mediánem počítaným jen z hlasování v době jeho mandátu. Pořadí poslanců v celém EP záměrně neuvádíme.",
   "min_votes": 100,
   "ep": {
    "meps": 743,
-   "attendance": 0.8997,
-   "attendance_main": 0.9053,
+   "attendance": 0.8993,
+   "attendance_main": 0.9046,
    "group_loyalty": 0.9325
   },
   "group_code": "ECR",
   "group": {
    "meps": 85,
    "attendance": 0.9151,
-   "attendance_main": 0.9188,
+   "attendance_main": 0.9195,
    "group_loyalty": 0.9086
   },
   "window": null
  },
  "against_group": {
   "count": 1060,
-  "count_main": 152,
+  "count_main": 154,
   "party_known": 811,
   "with_party": 728,
-  "party_known_main": 132,
-  "with_party_main": 124,
+  "party_known_main": 134,
+  "with_party_main": 125,
   "recent": [
    {
     "id": 199350,
@@ -2246,7 +2246,7 @@
      "for": 301,
      "against": 199,
      "abstention": 60,
-     "did_not_vote": 160
+     "did_not_vote": 159
     },
     "cz": [
      5,
@@ -2281,7 +2281,7 @@
      "for": 516,
      "against": 21,
      "abstention": 41,
-     "did_not_vote": 142
+     "did_not_vote": 141
     },
     "cz": [
      15,
@@ -2292,10 +2292,7 @@
     "amendment_number": "§",
     "texts_adopted_reference": null,
     "cats": [
-     "def",
-     "abr",
-     "jus",
-     "fin"
+     "def"
     ],
     "vote_kind": "split_part",
     "is_final": false,
@@ -2319,7 +2316,7 @@
      "for": 180,
      "against": 393,
      "abstention": 4,
-     "did_not_vote": 143
+     "did_not_vote": 142
     },
     "cz": [
      12,
@@ -2328,7 +2325,7 @@
      3
     ],
     "amendment_number": "173",
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0361",
     "cats": [
      "soc"
     ],
@@ -2354,7 +2351,7 @@
      "for": 423,
      "against": 125,
      "abstention": 32,
-     "did_not_vote": 140
+     "did_not_vote": 139
     },
     "cz": [
      10,
@@ -2363,7 +2360,7 @@
      3
     ],
     "amendment_number": "4",
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0361",
     "cats": [
      "soc"
     ],
@@ -2389,7 +2386,7 @@
      "for": 442,
      "against": 196,
      "abstention": 9,
-     "did_not_vote": 73
+     "did_not_vote": 72
     },
     "cz": [
      2,
@@ -2422,7 +2419,7 @@
      "for": 337,
      "against": 169,
      "abstention": 133,
-     "did_not_vote": 81
+     "did_not_vote": 80
     },
     "cz": [
      10,
@@ -2431,7 +2428,7 @@
      2
     ],
     "amendment_number": "18",
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0357",
     "cats": [
      "soc"
     ],
@@ -2457,7 +2454,7 @@
      "for": 476,
      "against": 147,
      "abstention": 41,
-     "did_not_vote": 56
+     "did_not_vote": 55
     },
     "cz": [
      9,
@@ -2466,7 +2463,7 @@
      1
     ],
     "amendment_number": "7",
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0356",
     "cats": [
      "jus",
      "fin"
@@ -2493,7 +2490,7 @@
      "for": 609,
      "against": 51,
      "abstention": 14,
-     "did_not_vote": 46
+     "did_not_vote": 45
     },
     "cz": [
      14,
@@ -2502,7 +2499,7 @@
      1
     ],
     "amendment_number": null,
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0355",
     "cats": [
      "soc",
      "fin"
@@ -2529,7 +2526,7 @@
      "for": 426,
      "against": 182,
      "abstention": 60,
-     "did_not_vote": 52
+     "did_not_vote": 51
     },
     "cz": [
      7,
@@ -2564,7 +2561,7 @@
      "for": 438,
      "against": 143,
      "abstention": 89,
-     "did_not_vote": 50
+     "did_not_vote": 49
     },
     "cz": [
      7,
@@ -2601,7 +2598,7 @@
      "for": 442,
      "against": 196,
      "abstention": 9,
-     "did_not_vote": 73
+     "did_not_vote": 72
     },
     "cz": [
      2,
@@ -2634,7 +2631,7 @@
      "for": 609,
      "against": 51,
      "abstention": 14,
-     "did_not_vote": 46
+     "did_not_vote": 45
     },
     "cz": [
      14,
@@ -2643,7 +2640,7 @@
      1
     ],
     "amendment_number": null,
-    "texts_adopted_reference": null,
+    "texts_adopted_reference": "P10_TA(2026)0355",
     "cats": [
      "soc",
      "fin"
@@ -2670,7 +2667,7 @@
      "for": 199,
      "against": 407,
      "abstention": 45,
-     "did_not_vote": 69
+     "did_not_vote": 68
     },
     "cz": [
      5,
@@ -2706,7 +2703,7 @@
      "for": 605,
      "against": 56,
      "abstention": 7,
-     "did_not_vote": 51
+     "did_not_vote": 50
     },
     "cz": [
      16,
@@ -2742,7 +2739,7 @@
      "for": 601,
      "against": 57,
      "abstention": 9,
-     "did_not_vote": 52
+     "did_not_vote": 51
     },
     "cz": [
      16,
@@ -2778,7 +2775,7 @@
      "for": 608,
      "against": 55,
      "abstention": 7,
-     "did_not_vote": 49
+     "did_not_vote": 48
     },
     "cz": [
      16,
@@ -2814,7 +2811,7 @@
      "for": 470,
      "against": 180,
      "abstention": 18,
-     "did_not_vote": 51
+     "did_not_vote": 50
     },
     "cz": [
      10,
@@ -2849,7 +2846,7 @@
      "for": 462,
      "against": 121,
      "abstention": 75,
-     "did_not_vote": 61
+     "did_not_vote": 60
     },
     "cz": [
      12,
@@ -2885,7 +2882,7 @@
      "for": 499,
      "against": 49,
      "abstention": 104,
-     "did_not_vote": 67
+     "did_not_vote": 66
     },
     "cz": [
      17,
@@ -2959,7 +2956,7 @@
     "for": 298,
     "against": 307,
     "abstention": 51,
-    "did_not_vote": 64
+    "did_not_vote": 63
    },
    "cz": [
     3,
@@ -2968,7 +2965,7 @@
     1
    ],
    "amendment_number": "17",
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0357",
    "cats": [
     "soc"
    ],
@@ -2991,7 +2988,7 @@
     "for": 314,
     "against": 317,
     "abstention": 20,
-    "did_not_vote": 69
+    "did_not_vote": 68
    },
    "cz": [
     4,
@@ -3000,7 +2997,7 @@
     1
    ],
    "amendment_number": "17",
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0357",
    "cats": [
     "soc"
    ],
@@ -3839,7 +3836,10 @@
    ],
    "amendment_number": "10",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -3869,7 +3869,10 @@
    ],
    "amendment_number": "9",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -3899,7 +3902,10 @@
    ],
    "amendment_number": "7",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -3929,7 +3935,10 @@
    ],
    "amendment_number": "6",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -3959,7 +3968,10 @@
    ],
    "amendment_number": "5",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -3989,7 +4001,10 @@
    ],
    "amendment_number": "3",
    "texts_adopted_reference": null,
-   "cats": [],
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
@@ -4090,16 +4105,16 @@
     1033
    ],
    "attendance_main": [
-    92,
-    94
+    93,
+    95
    ],
    "group_loyalty": [
     804,
     1008
    ],
    "group_loyalty_main": [
-    53,
-    91
+    54,
+    92
    ],
    "cz_agreement": [
     746,
@@ -4110,8 +4125,8 @@
     905
    ],
    "outcome_main": [
-    40,
-    74
+    41,
+    75
    ],
    "outcome_close": [
     13,
@@ -4122,8 +4137,8 @@
     59558
    ],
    "group_outcome_main": [
-    3372,
-    4656
+    3443,
+    4728
    ],
    "positions": {
     "FOR": 499,
@@ -4137,8 +4152,8 @@
    "label": "Social policy, social charter and protocol",
    "label_cs": "Sociální politika, sociální charta a protokol",
    "attendance": [
-    679,
-    718
+    680,
+    719
    ],
    "attendance_main": [
     33,
@@ -4146,7 +4161,7 @@
    ],
    "group_loyalty": [
     498,
-    678
+    679
    ],
    "group_loyalty_main": [
     24,
@@ -4154,7 +4169,7 @@
    ],
    "cz_agreement": [
     488,
-    654
+    655
    ],
    "outcome": [
     354,
@@ -4179,7 +4194,7 @@
    "positions": {
     "FOR": 281,
     "AGAINST": 317,
-    "ABSTENTION": 81,
+    "ABSTENTION": 82,
     "DID_NOT_VOTE": 39
    }
   },
@@ -4188,50 +4203,50 @@
    "label": "Environmental policy",
    "label_cs": "Politika životního prostředí",
    "attendance": [
-    583,
-    613
+    619,
+    660
    ],
    "attendance_main": [
-    61,
-    68
+    70,
+    78
    ],
    "group_loyalty": [
-    531,
-    583
+    563,
+    619
    ],
    "group_loyalty_main": [
-    50,
-    61
+    57,
+    70
    ],
    "cz_agreement": [
-    493,
-    569
+    524,
+    605
    ],
    "outcome": [
-    276,
-    558
+    286,
+    590
    ],
    "outcome_main": [
-    42,
-    53
+    49,
+    60
    ],
    "outcome_close": [
     3,
     7
    ],
    "group_outcome": [
-    17362,
-    38582
+    17968,
+    40732
    ],
    "group_outcome_main": [
-    2678,
-    3546
+    3161,
+    4036
    ],
    "positions": {
-    "FOR": 383,
-    "AGAINST": 175,
-    "ABSTENTION": 25,
-    "DID_NOT_VOTE": 30
+    "FOR": 411,
+    "AGAINST": 179,
+    "ABSTENTION": 29,
+    "DID_NOT_VOTE": 41
    }
   },
   {
@@ -4239,48 +4254,48 @@
    "label": "Relations with third countries",
    "label_cs": "Vztahy se třetími zeměmi",
    "attendance": [
-    454,
-    503
+    438,
+    487
    ],
    "attendance_main": [
-    47,
-    51
+    46,
+    50
    ],
    "group_loyalty": [
-    346,
-    452
+    331,
+    436
    ],
    "group_loyalty_main": [
-    40,
-    45
+    39,
+    44
    ],
    "cz_agreement": [
-    320,
-    443
+    310,
+    428
    ],
    "outcome": [
-    258,
-    407
+    244,
+    391
    ],
    "outcome_main": [
-    37,
-    43
+    36,
+    42
    ],
    "outcome_close": [
     11,
     18
    ],
    "group_outcome": [
-    14194,
-    26750
+    13330,
+    25786
    ],
    "group_outcome_main": [
-    2366,
-    2758
+    2308,
+    2698
    ],
    "positions": {
-    "FOR": 255,
-    "AGAINST": 152,
+    "FOR": 248,
+    "AGAINST": 143,
     "ABSTENTION": 47,
     "DID_NOT_VOTE": 49
    }
@@ -4290,49 +4305,49 @@
    "label": "Common commercial policy in general",
    "label_cs": "Společná obchodní politika obecně",
    "attendance": [
-    292,
-    331
+    274,
+    313
    ],
    "attendance_main": [
-    55,
-    58
+    54,
+    57
    ],
    "group_loyalty": [
-    248,
-    291
+    232,
+    273
    ],
    "group_loyalty_main": [
-    47,
-    54
+    46,
+    53
    ],
    "cz_agreement": [
-    211,
-    281
+    195,
+    263
    ],
    "outcome": [
-    189,
-    275
+    188,
+    259
    ],
    "outcome_main": [
-    49,
-    51
+    48,
+    50
    ],
    "outcome_close": [
     4,
     9
    ],
    "group_outcome": [
-    11522,
-    18767
+    11416,
+    17709
    ],
    "group_outcome_main": [
-    3060,
-    3305
+    2992,
+    3237
    ],
    "positions": {
-    "FOR": 152,
+    "FOR": 136,
     "AGAINST": 123,
-    "ABSTENTION": 17,
+    "ABSTENTION": 15,
     "DID_NOT_VOTE": 39
    }
   },
@@ -4439,6 +4454,57 @@
    }
   },
   {
+   "code": "3.45",
+   "label": "Enterprise policy, inter-company cooperation",
+   "label_cs": "Podniková politika, spolupráce podniků",
+   "attendance": [
+    253,
+    254
+   ],
+   "attendance_main": [
+    20,
+    20
+   ],
+   "group_loyalty": [
+    244,
+    252
+   ],
+   "group_loyalty_main": [
+    19,
+    20
+   ],
+   "cz_agreement": [
+    229,
+    251
+   ],
+   "outcome": [
+    156,
+    246
+   ],
+   "outcome_main": [
+    17,
+    19
+   ],
+   "outcome_close": [
+    2,
+    3
+   ],
+   "group_outcome": [
+    11281,
+    17536
+   ],
+   "group_outcome_main": [
+    1100,
+    1215
+   ],
+   "positions": {
+    "FOR": 152,
+    "AGAINST": 94,
+    "ABSTENTION": 7,
+    "DID_NOT_VOTE": 1
+   }
+  },
+  {
    "code": "3.30",
    "label": null,
    "label_cs": null,
@@ -4488,57 +4554,6 @@
     "ABSTENTION": 11,
     "DID_NOT_VOTE": 45
    }
-  },
-  {
-   "code": "3.45",
-   "label": "Enterprise policy, inter-company cooperation",
-   "label_cs": "Podniková politika, spolupráce podniků",
-   "attendance": [
-    226,
-    227
-   ],
-   "attendance_main": [
-    17,
-    17
-   ],
-   "group_loyalty": [
-    219,
-    225
-   ],
-   "group_loyalty_main": [
-    16,
-    17
-   ],
-   "cz_agreement": [
-    204,
-    224
-   ],
-   "outcome": [
-    152,
-    221
-   ],
-   "outcome_main": [
-    14,
-    16
-   ],
-   "outcome_close": [
-    2,
-    3
-   ],
-   "group_outcome": [
-    10964,
-    15867
-   ],
-   "group_outcome_main": [
-    898,
-    1013
-   ],
-   "positions": {
-    "FOR": 128,
-    "AGAINST": 93,
-    "ABSTENTION": 5,
-    "DID_NOT_VOTE": 1
-   }
   }
  ],
  "activity": {
@@ -4552,7 +4567,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/speeches",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "presence": {
   "present": 115,
@@ -4563,7 +4578,7 @@
    "url": "https://data.europarl.europa.eu/api/v2/meetings",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "amendments": {
   "committee": {

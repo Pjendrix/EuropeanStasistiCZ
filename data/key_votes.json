@@ -318,7 +318,7 @@
   },
   "all": {
    "laws": {
-    "total": 156,
+    "total": 168,
     "items": [
      {
       "id": 199592,
@@ -343,11 +343,15 @@
     ]
    },
    "splits": {
-    "total": 515,
+    "total": 520,
     "items": [
      {
       "id": 191944,
       "reason": "Češi se rozdělili 10 : 10 (pro : proti)"
+     },
+     {
+      "id": 176875,
+      "reason": "Češi se rozdělili 9 : 9 (pro : proti)"
      },
      {
       "id": 186645,
@@ -360,15 +364,11 @@
      {
       "id": 172211,
       "reason": "Češi se rozdělili 6 : 6 (pro : proti)"
-     },
-     {
-      "id": 181617,
-      "reason": "Češi se rozdělili 6 : 6 (pro : proti)"
      }
     ]
    },
    "close": {
-    "total": 665,
+    "total": 671,
     "items": [
      {
       "id": 183884,
@@ -1158,6 +1158,28 @@
     "agr"
    ]
   },
+  "176875": {
+   "id": 176875,
+   "date": "2025-05-22",
+   "month": "2025-05",
+   "title": "Udělení rovnocennosti s požadavky EU Moldavsku a Ukrajině, pokud jde o přehlídky porostu a produkci osiva",
+   "vote_kind": "final",
+   "result": "REJECTED",
+   "counts": {
+    "for": 180,
+    "against": 367,
+    "abstention": 43
+   },
+   "cz": [
+    9,
+    9,
+    0,
+    3
+   ],
+   "cats": [
+    "agr"
+   ]
+  },
   "172211": {
    "id": 172211,
    "date": "2025-03-12",
@@ -1238,7 +1260,7 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",

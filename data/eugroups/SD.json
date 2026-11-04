@@ -16,27 +16,27 @@
   869525
  ],
  "attendance_main": [
-  78733,
-  90204
+  79421,
+  91020
  ],
  "majority": [
   710627,
   733970
  ],
  "majority_main": [
-  75591,
-  77065
+  76213,
+  77734
  ],
  "splits": 97,
  "considered": 6377,
- "splits_main": 5,
- "considered_main": 663,
+ "splits_main": 6,
+ "considered_main": 669,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -192,7 +192,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -209,7 +209,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -963,7 +963,7 @@
     "for": 136,
     "against": 508,
     "abstention": 24,
-    "did_not_vote": 52
+    "did_not_vote": 51
    },
    "cz": [
     1,
@@ -1074,7 +1074,7 @@
     "for": 78,
     "against": 360,
     "abstention": 120,
-    "did_not_vote": 162
+    "did_not_vote": 161
    },
    "cz": [
     1,
@@ -1085,10 +1085,7 @@
    "amendment_number": "10",
    "texts_adopted_reference": null,
    "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
+    "def"
    ],
    "vote_kind": "amendment",
    "is_final": false,
@@ -1123,8 +1120,11 @@
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [],
+   "texts_adopted_reference": "P10_TA(2025)0100",
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -1559,7 +1559,7 @@
     "for": 205,
     "against": 256,
     "abstention": 196,
-    "did_not_vote": 62
+    "did_not_vote": 61
    },
    "cz": [
     16,
@@ -1568,7 +1568,7 @@
     1
    ],
    "amendment_number": "40",
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0330",
    "cats": [
     "civ"
    ],
@@ -1888,7 +1888,7 @@
    "reference": "C10-0044/2025",
    "description": "Rejet - Am 1= 2=",
    "result": "REJECTED",
-   "is_main": false,
+   "is_main": true,
    "counts": {
     "for": 171,
     "against": 365,
@@ -1903,9 +1903,12 @@
    ],
    "amendment_number": "1=\n2=",
    "texts_adopted_reference": null,
-   "cats": [],
-   "vote_kind": "amendment",
-   "is_final": false,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
    "inverted": false,
    "description_cs": "Zamítnutí - PN 1= 2=",
    "gc": [
@@ -2163,8 +2166,11 @@
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [],
+   "texts_adopted_reference": "P10_TA(2025)0100",
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -2211,6 +2217,44 @@
     52,
     6,
     9
+   ]
+  },
+  {
+   "id": 176305,
+   "date": "2025-05-08",
+   "month": "2025-05",
+   "title": "The protection status of the wolf (Canis lupus)",
+   "reference": "C10-0044/2025",
+   "description": "Rejet - Am 1= 2=",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 171,
+    "against": 365,
+    "abstention": 31,
+    "did_not_vote": 152
+   },
+   "cz": [
+    0,
+    15,
+    5,
+    1
+   ],
+   "amendment_number": "1=\n2=",
+   "texts_adopted_reference": null,
+   "cats": [
+    "env",
+    "agr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Zamítnutí - PN 1= 2=",
+   "gc": [
+    60,
+    35,
+    11,
+    30
    ]
   },
   {

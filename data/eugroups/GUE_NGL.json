@@ -16,27 +16,27 @@
   292970
  ],
  "attendance_main": [
-  25706,
-  30380
+  25927,
+  30656
  ],
  "majority": [
   224633,
   233430
  ],
  "majority_main": [
-  20531,
-  21837
+  20744,
+  22050
  ],
  "splits": 249,
  "considered": 6353,
  "splits_main": 55,
- "considered_main": 638,
+ "considered_main": 644,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -132,7 +132,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -158,7 +158,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -396,7 +396,7 @@
     "for": 571,
     "against": 54,
     "abstention": 31,
-    "did_not_vote": 63
+    "did_not_vote": 62
    },
    "cz": [
     17,
@@ -1363,7 +1363,7 @@
     "for": 432,
     "against": 52,
     "abstention": 88,
-    "did_not_vote": 148
+    "did_not_vote": 147
    },
    "cz": [
     16,
@@ -1372,12 +1372,9 @@
     3
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0365",
    "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
+    "def"
    ],
    "vote_kind": "final",
    "is_final": true,
@@ -1850,7 +1847,7 @@
     "for": 500,
     "against": 43,
     "abstention": 122,
-    "did_not_vote": 54
+    "did_not_vote": 53
    },
    "cz": [
     17,
@@ -1925,7 +1922,7 @@
     "for": 216,
     "against": 325,
     "abstention": 34,
-    "did_not_vote": 145
+    "did_not_vote": 144
    },
    "cz": [
     7,
@@ -1936,10 +1933,7 @@
    "amendment_number": "§",
    "texts_adopted_reference": null,
    "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
+    "def"
    ],
    "vote_kind": "split_part",
    "is_final": false,
@@ -2231,7 +2225,7 @@
     "for": 432,
     "against": 52,
     "abstention": 88,
-    "did_not_vote": 148
+    "did_not_vote": 147
    },
    "cz": [
     16,
@@ -2240,12 +2234,9 @@
     3
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0365",
    "cats": [
-    "def",
-    "abr",
-    "jus",
-    "fin"
+    "def"
    ],
    "vote_kind": "final",
    "is_final": true,
@@ -3203,7 +3194,7 @@
     "for": 558,
     "against": 23,
     "abstention": 73,
-    "did_not_vote": 66
+    "did_not_vote": 65
    },
    "cz": [
     17,
@@ -3212,7 +3203,7 @@
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0351",
    "cats": [
     "tra"
    ],

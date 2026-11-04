@@ -16,27 +16,27 @@
   488003
  ],
  "attendance_main": [
-  44810,
-  50640
+  45198,
+  51090
  ],
  "majority": [
   404902,
   423617
  ],
  "majority_main": [
-  41573,
-  43742
+  41925,
+  44114
  ],
  "splits": 175,
  "considered": 6406,
  "splits_main": 43,
- "considered_main": 662,
+ "considered_main": 668,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-10-24"
+   "release": "2026-11-01"
   },
   "meps": {
    "name": "EP Open Data API v2",
@@ -172,7 +172,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-10-24"
+  "release": "2026-11-01"
  },
  "chairs": [
   {
@@ -189,7 +189,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-10-24"
+  "updated": "2026-11-04"
  },
  "splits_list": [
   {
@@ -949,7 +949,7 @@
     "for": 442,
     "against": 196,
     "abstention": 9,
-    "did_not_vote": 73
+    "did_not_vote": 72
    },
    "cz": [
     2,
@@ -2510,7 +2510,7 @@
     "for": 442,
     "against": 196,
     "abstention": 9,
-    "did_not_vote": 73
+    "did_not_vote": 72
    },
    "cz": [
     2,
@@ -3373,8 +3373,11 @@
     2
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [],
+   "texts_adopted_reference": "P10_TA(2024)0031",
+   "cats": [
+    "env",
+    "agr"
+   ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
@@ -3436,7 +3439,7 @@
     "for": 341,
     "against": 225,
     "abstention": 6,
-    "did_not_vote": 148
+    "did_not_vote": 147
    },
    "cz": [
     17,
@@ -3445,7 +3448,7 @@
     3
    ],
    "amendment_number": null,
-   "texts_adopted_reference": null,
+   "texts_adopted_reference": "P10_TA(2026)0360",
    "cats": [
     "env"
    ],
