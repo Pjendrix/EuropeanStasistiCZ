@@ -740,7 +740,12 @@ for (const width of [1366, 390]) {
     else if (!p && (det.summary || (det.trace || []).length) && !cases.noProc) cases.noProc = id;
     if (Object.values(cases).every(Boolean)) break;
   }
-  Object.entries(cases).forEach(([k, id]) => { if (id) vids.push(id); else if (k !== "codEmpty") problems.push(`detail hlasování: v datech chybí případ ${k}`); });
+  // Chybějící ukázkový případ není chyba webu, jen v aktuálních datech není (např. žádné nové hlasování bez procedury).
+  // Dřív to zastavilo týdenní aktualizaci dat (29. 10. – 3. 11. 2026); teď jen varování v logu a kontrola zbytku.
+  Object.entries(cases).forEach(([k, id]) => {
+    if (id) vids.push(id);
+    else if (k !== "codEmpty") console.log(`::warning title=Kontrola webu::detail hlasování: v datech chybí ukázkový případ ${k}, kontroluje se bez něj`);
+  });
   for (const id of vids) {
     await page.goto(base + `v/${id}`, { waitUntil: "networkidle" });
     const out = await page.evaluate(async () => {

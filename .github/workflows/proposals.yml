@@ -49,8 +49,18 @@ jobs:
         if: steps.htv.outputs.new == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+        # Když týdenní aktualizace naposledy selhala (otevřené issue „Selhal automatický běh: …“), znovu se nespouští:
+        # jinak se každý den opakuje stejná chyba a pálí 20–35 min (29. 10. – 3. 11. 2026). Po opravě ji spusť ručně;
+        # úspěšný běh issue zavře a denní spouštění se vrátí.
         run: |
           if [ "$(date -u +%u)" = "1" ]; then echo "Pondělí: týdenní aktualizace poběží podle plánu."; exit 0; fi
+          open=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --author "app/github-actions" \
+            --search 'in:title "Selhal automatický běh: Týdenní aktualizace dat"' --json title \
+            --jq '[.[] | select(.title == "Selhal automatický běh: Týdenní aktualizace dat")] | length')
+          if [ "${open:-0}" != "0" ]; then
+            echo "::warning::Týdenní aktualizace naposledy selhala (otevřené issue), znovu se nespouští. Po opravě ji spusť ručně."
+            exit 0
+          fi
           gh workflow run weekly.yml --ref main
 
       - name: Issue při selhání
