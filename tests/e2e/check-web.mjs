@@ -1,5 +1,5 @@
 // Kontrola webu v prohlížeči (U12): žádná chyba v konzoli (ani porušení CSP), nic nepřetéká do šířky (1366 / 390 / 320 px), axe-core
-// (WCAG 2 A/AA, 2.1 AA) bez porušení ve světlém i tmavém režimu. Spouští se v CI (.github/workflows/web-check.yml) a lokálně:
+// (WCAG 2 A/AA, 2.1 AA a 2.2 AA) bez porušení ve světlém i tmavém režimu. Spouští se v CI (.github/workflows/web-check.yml) a lokálně:
 //   NODE_PATH=/cesta/k/node_modules node tests/e2e/check-web.mjs
 // Web se obslouží z kopie public/ + data/ (jako Vercel: buildCommand kopíruje data do public/data).
 import { execFileSync } from "node:child_process";
@@ -120,7 +120,7 @@ for (const scheme of ["light", "dark"]) {
       }
       if (width === 1366) {
         await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
-        const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+        const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations
           .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
         v.forEach((x) => problems.push(`${where}: axe ${x}`));
       }
@@ -290,7 +290,7 @@ for (const scheme of ["light", "dark"]) {
       }
       if (width === 1366) {
         await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
-        const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.share-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+        const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.share-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations
           .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
         v.forEach((x) => problems.push(`${where}: axe v panelu ${x}`));
       }
@@ -406,7 +406,7 @@ for (const width of [1440, 390]) {
   const z = await page.evaluate(() => [...document.querySelectorAll("#nv-timeline [data-type]")].filter((el) => el.offsetParent).map((el) => el.dataset.type));
   if (z.some((t) => t !== "zmeny")) problems.push(`${where}: ?typ=zmeny ukazuje i ${[...new Set(z)].join(", ")}`);
   await page.evaluate(axeSource);
-  const ax = await page.evaluate(async () => (await axe.run(document.querySelector("main"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×)`));
+  const ax = await page.evaluate(async () => (await axe.run(document.querySelector("main"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×)`));
   ax.forEach((x) => problems.push(`${where}: axe ${x}`));
   // hledání v heru je jen na rozcestníku; chvíli počkat, než IntersectionObserver (app.js) zjistí, že pole je vidět
   await page.goto(base, { waitUntil: "networkidle" });
@@ -482,7 +482,7 @@ for (const width of [1366, 390]) {
     await page.waitForTimeout(150);
     if (!(await page.evaluate(() => document.querySelector("dialog.search-dlg")?.open))) { problems.push(`${where}: „/“ neotevřel dialog`); await page.close(); continue; }
     await page.evaluate(axeSource);
-    const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.search-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => x.id));
+    const v = await page.evaluate(async () => (await axe.run(document.querySelector("dialog.search-dlg"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations.map((x) => x.id));
     v.forEach((id) => problems.push(`${where}: axe v dialogu: ${id}`));
     await page.keyboard.press("Escape");
     await page.waitForTimeout(150);
@@ -942,7 +942,7 @@ for (const [w, h] of [[1366, 900], [390, 844]]) {
   const tag = `kviz ${w}`;
   const axeOn = async (label, sel = "body") => {
     await page.evaluate(axeSource);
-    const v = await page.evaluate(async (s) => (await axe.run(document.querySelector(s), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+    const v = await page.evaluate(async (s) => (await axe.run(document.querySelector(s), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations
       .map((x) => `${x.id}: ${x.nodes.length}× (${x.nodes[0]?.target})`), sel);
     v.forEach((x) => problems.push(`${tag} ${label}: axe ${x}`));
   };
@@ -1084,7 +1084,7 @@ for (const scheme of ["light", "dark"]) {
   await page.goto(base + "votes", { waitUntil: "networkidle" });
   if (!(await page.locator(".stale-note").isVisible())) problems.push(`pruh o starých datech [${scheme}]: chybí`);
   await page.evaluate(axeSource);  // ne addScriptTag: vložený skript by zablokovala CSP
-  const v = await page.evaluate(async () => (await axe.run(document.querySelector(".stale-note"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+  const v = await page.evaluate(async () => (await axe.run(document.querySelector(".stale-note"), { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations
     .map((x) => `${x.id}: ${x.nodes.length}×`));
   v.forEach((x) => problems.push(`pruh o starých datech [${scheme}]: axe ${x}`));
   await ctx.close();
@@ -1137,7 +1137,7 @@ for (const width of [1366, 390]) {
   await page.click("#qz-tab-m");
   if (width === 1366) {
     await page.evaluate(axeSource);
-    const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
+    const v = await page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations.map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`));
     v.forEach((x) => problems.push(`${where}: axe ${x}`));
   }
   await page.click("#qz-share");
@@ -1217,7 +1217,7 @@ for (const width of [1366, 390]) {
 // chybové stavy (výpadek dat) a prázdné výsledky.
 {
   const axeRun = async (page) => { await page.evaluate(axeSource);
-    return page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa"] })).violations
+    return page.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] })).violations
       .map((x) => `${x.id} (${x.nodes.length}×): ${x.nodes[0].target.join(" ")}`)); };
   for (const width of [768, 390, 360]) {
     const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
@@ -1326,6 +1326,11 @@ for (const url of ["radar", "zasedani"]) {
   await page.goto(base + url, { waitUntil: "networkidle" });
   const cat = await page.evaluate(() => [...document.querySelectorAll("#rd-cat option")].map((o) => o.value).find((v) => v && document.querySelector(`.rd-list > li[data-cat="${v}"], .rd-procs > li[data-cat="${v}"]`)));
   const visible = () => page.evaluate(() => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")].filter((li) => li.offsetParent).map((li) => li.dataset.cat || ""));
+  // radar: bez filtru jen prvních 10 položek seznamu; „Zobrazit další“ ukáže zbytek (revize 3. 11. 2026)
+  const cut = await page.evaluate(() => document.querySelectorAll("li.rd-cut").length);
+  if (url === "radar" && cut && !(await page.locator(".rd-more:visible").count())) problems.push("radar: zkrácený seznam nemá tlačítko „Zobrazit další“");
+  await page.evaluate(() => document.querySelectorAll(".rd-more").forEach((b) => b.click()));
+  if (await page.evaluate(() => document.querySelectorAll("li.rd-cut").length)) problems.push(`${url}: „Zobrazit další“ neukázalo všechny položky`);
   const before = (await visible()).length;
   await page.selectOption("#rd-cat", cat);
   const after = await visible();
