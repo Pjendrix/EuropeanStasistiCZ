@@ -7,7 +7,7 @@
    "license": "CC BY 4.0"
   }
  ],
- "updated": "2026-10-29",
+ "updated": "2026-11-06",
  "session": {
   "from": "2026-11-11",
   "to": "2026-11-12",
@@ -235,11 +235,15 @@
     "stage": null,
     "stage_cs": null,
     "procedure": null,
-    "committee": null,
+    "committee": {
+     "code": "SEDE",
+     "name": "Bezpečnost a obrana",
+     "category": "def"
+    },
     "cz": []
    }
   ],
-  "fetched": "2026-10-29"
+  "fetched": "2026-11-06"
  },
  "active": [
   {
