@@ -7,7 +7,7 @@
    "license": "CC BY 4.0"
   }
  ],
- "updated": "2026-11-06",
+ "updated": "2026-11-10",
  "session": {
   "from": "2026-11-11",
   "to": "2026-11-12",
@@ -175,7 +175,12 @@
     "legislative": true,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2025-0264",
+     "label": "2025/0264(CNS)",
+     "type": "CNS",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0264(CNS)"
+    },
     "committee": {
      "code": "DEVE",
      "name": "Rozvoj",
@@ -234,7 +239,12 @@
     "legislative": false,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2026-2025",
+     "label": "2026/2025(INI)",
+     "type": "INI",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2025(INI)"
+    },
     "committee": {
      "code": "SEDE",
      "name": "Bezpečnost a obrana",
@@ -243,7 +253,7 @@
     "cz": []
    }
   ],
-  "fetched": "2026-11-06"
+  "fetched": "2026-11-10"
  },
  "active": [
   {
@@ -298,6 +308,13 @@
      "date": "2026-10-08"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-11-04",
+     "date_to": "2026-11-06"
+    },
+    {
      "key": "plenary",
      "type": null,
      "label": "Hlasování pléna",
@@ -310,11 +327,11 @@
      "date": null
     }
    ],
-   "reached": "trilogue",
+   "reached": "report",
    "last_event": {
-    "date": "2026-10-08",
-    "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
-    "label": "výbor schválil dohodu s Radou"
+    "date": "2026-11-06",
+    "type": "TABLING_PLENARY",
+    "label": "zpráva předložena plénu"
    },
    "next_vote": "2026-11-12"
   },
@@ -376,6 +393,91 @@
      "date": "2026-09-10"
     },
     {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "TABLING_PLENARY",
+    "label": "zpráva předložena plénu"
+   },
+   "next_vote": "2026-11-12"
+  },
+  {
+   "procedure": "2025-0399",
+   "label": "2025/0399(COD)",
+   "type": "COD",
+   "title_cs": "Hlavní směry pro transevropské energetické sítě, změna nařízení (EU) 2019/942, (EU) 2019/943 a (EU) 2024/1789 a zrušení nařízení (EU) 2022/869",
+   "title_en": "Guidelines for trans-European energy infrastructure, amending Regulations (EU) 2019/942, (EU) 2019/943 and (EU) 2024/1789 and repealing Regulation (EU) 2022/869",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0399(COD)",
+   "committee": {
+    "code": "ITRE",
+    "name": "Průmysl, výzkum a energetika",
+    "category": "eco"
+   },
+   "cz": [
+    {
+     "mep_id": 256843,
+     "name": "Jana Nagyová",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 256845,
+     "name": "Ondřej Krutílek",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-09-10"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-11"
+    },
+    {
+     "key": "trilogue",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
+     "date": "2026-09-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-09-30",
+     "date_to": "2026-11-10"
+    },
+    {
      "key": "plenary",
      "type": null,
      "label": "Hlasování pléna",
@@ -390,11 +492,174 @@
    ],
    "reached": "trilogue",
    "last_event": {
-    "date": "2026-09-10",
+    "date": "2026-11-10",
+    "type": "INTERINSTITUTIONAL_NEGOTIATION",
+    "label": "jednání s Radou (trialog)"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0417",
+   "label": "2025/0417(COD)",
+   "type": "COD",
+   "title_cs": "Změna nařízení (EU) 2018/848, pokud jde o některá pravidla pro produkci, označování a certifikaci a některá pravidla pro obchod se třetími zeměmi",
+   "title_en": "Amending Regulation (EU) 2018/848 as regards certain production, labelling and certification rules and certain rules on trade with third countries",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0417(COD)",
+   "committee": {
+    "code": "AGRI",
+    "name": "Zemědělství a rozvoj venkova",
+    "category": "agr"
+   },
+   "cz": [
+    {
+     "mep_id": 197552,
+     "name": "Veronika Vrecionová",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-01-27"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-07-14"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-07-29"
+    },
+    {
+     "key": "trilogue",
+     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum potvrdilo mandát k jednání s Radou",
+     "date": "2026-09-16"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-10-20"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "trilogue",
+   "last_event": {
+    "date": "2026-11-04",
     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
     "label": "výbor schválil dohodu s Radou"
    },
-   "next_vote": "2026-11-12"
+   "next_vote": null
+  },
+  {
+   "procedure": "2026-0085",
+   "label": "2026/0085(COD)",
+   "type": "COD",
+   "title_cs": "Změna rozhodnutí (EU) 2015/1814, pokud jde o ukončení zneplatňování povolenek v rezervě tržní stability\n\n",
+   "title_en": "Amending Decision (EU) 2015/1814 as regards ceasing the invalidation of allowances in the market stability reserve",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0085(COD)",
+   "committee": {
+    "code": "ENVI",
+    "name": "Životní prostředí, klima a bezpečnost potravin",
+    "category": "env"
+   },
+   "cz": [
+    {
+     "mep_id": 197537,
+     "name": "Alexandr Vondra",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 197528,
+     "name": "Ondřej Knotek",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-04-27"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-09-10"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-09-10",
+     "date_to": "2026-09-15"
+    },
+    {
+     "key": "trilogue",
+     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
+     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
+     "date": "2026-09-15"
+    },
+    {
+     "key": "trilogue",
+     "type": "INTERINSTITUTIONAL_NEGOTIATION",
+     "label": "Jednání s Radou (trialog)",
+     "date": "2026-10-20"
+    },
+    {
+     "key": "trilogue",
+     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+     "label": "Výbor schválil dohodu s Radou",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "trilogue",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
+    "label": "výbor schválil dohodu s Radou"
+   },
+   "next_vote": null
   },
   {
    "procedure": "2025-0222",
@@ -581,78 +846,6 @@
      "label": "Jednání s Radou (trialog)",
      "date": "2026-07-02",
      "date_to": "2026-10-20"
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "trilogue",
-   "last_event": {
-    "date": "2026-10-20",
-    "type": "INTERINSTITUTIONAL_NEGOTIATION",
-    "label": "jednání s Radou (trialog)"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0417",
-   "label": "2025/0417(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení (EU) 2018/848, pokud jde o některá pravidla pro produkci, označování a certifikaci a některá pravidla pro obchod se třetími zeměmi",
-   "title_en": "Amending Regulation (EU) 2018/848 as regards certain production, labelling and certification rules and certain rules on trade with third countries",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0417(COD)",
-   "committee": {
-    "code": "AGRI",
-    "name": "Zemědělství a rozvoj venkova",
-    "category": "agr"
-   },
-   "cz": [
-    {
-     "mep_id": 197552,
-     "name": "Veronika Vrecionová",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-01-27"
-    },
-    {
-     "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
-     "label": "Hlasování ve výboru",
-     "date": "2026-07-14"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2026-07-29"
-    },
-    {
-     "key": "trilogue",
-     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
-     "label": "Plénum potvrdilo mandát k jednání s Radou",
-     "date": "2026-09-16"
-    },
-    {
-     "key": "trilogue",
-     "type": "INTERINSTITUTIONAL_NEGOTIATION",
-     "label": "Jednání s Radou (trialog)",
-     "date": "2026-10-20"
     },
     {
      "key": "plenary",
@@ -894,85 +1087,6 @@
    "reached": "trilogue",
    "last_event": {
     "date": "2026-10-14",
-    "type": "INTERINSTITUTIONAL_NEGOTIATION",
-    "label": "jednání s Radou (trialog)"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0399",
-   "label": "2025/0399(COD)",
-   "type": "COD",
-   "title_cs": "Hlavní směry pro transevropské energetické sítě, změna nařízení (EU) 2019/942, (EU) 2019/943 a (EU) 2024/1789 a zrušení nařízení (EU) 2022/869",
-   "title_en": "Guidelines for trans-European energy infrastructure, amending Regulations (EU) 2019/942, (EU) 2019/943 and (EU) 2024/1789 and repealing Regulation (EU) 2022/869",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0399(COD)",
-   "committee": {
-    "code": "ITRE",
-    "name": "Průmysl, výzkum a energetika",
-    "category": "eco"
-   },
-   "cz": [
-    {
-     "mep_id": 256843,
-     "name": "Jana Nagyová",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    },
-    {
-     "mep_id": 256845,
-     "name": "Ondřej Krutílek",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-02-12"
-    },
-    {
-     "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
-     "label": "Hlasování ve výboru",
-     "date": "2026-09-10"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2026-09-11"
-    },
-    {
-     "key": "trilogue",
-     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
-     "label": "Plénum potvrdilo mandát k jednání s Radou",
-     "date": "2026-09-16"
-    },
-    {
-     "key": "trilogue",
-     "type": "INTERINSTITUTIONAL_NEGOTIATION",
-     "label": "Jednání s Radou (trialog)",
-     "date": "2026-09-30",
-     "date_to": "2026-10-13"
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "trilogue",
-   "last_event": {
-    "date": "2026-10-13",
     "type": "INTERINSTITUTIONAL_NEGOTIATION",
     "label": "jednání s Radou (trialog)"
    },
@@ -1318,79 +1432,6 @@
      "type": "TABLING_PLENARY",
      "label": "Zpráva předložena plénu",
      "date": "2026-07-15",
-     "date_to": "2026-09-15"
-    },
-    {
-     "key": "trilogue",
-     "type": "PLENARY_REFER_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
-     "label": "Plénum vrátilo zprávu výboru k jednání s Radou",
-     "date": "2026-09-15"
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "trilogue",
-   "last_event": {
-    "date": "2026-09-15",
-    "type": "PLENARY_AMEND",
-    "label": "plénum přijalo pozměňovací návrhy"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2026-0085",
-   "label": "2026/0085(COD)",
-   "type": "COD",
-   "title_cs": "Změna rozhodnutí (EU) 2015/1814, pokud jde o ukončení zneplatňování povolenek v rezervě tržní stability\n\n",
-   "title_en": "Amending Decision (EU) 2015/1814 as regards ceasing the invalidation of allowances in the market stability reserve",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0085(COD)",
-   "committee": {
-    "code": "ENVI",
-    "name": "Životní prostředí, klima a bezpečnost potravin",
-    "category": "env"
-   },
-   "cz": [
-    {
-     "mep_id": 197537,
-     "name": "Alexandr Vondra",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    },
-    {
-     "mep_id": 197528,
-     "name": "Ondřej Knotek",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-04-27"
-    },
-    {
-     "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
-     "label": "Hlasování ve výboru",
-     "date": "2026-09-10"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2026-09-10",
      "date_to": "2026-09-15"
     },
     {
@@ -2010,6 +2051,307 @@
    "next_vote": null
   },
   {
+   "procedure": "2025-0384",
+   "label": "2025/0384(COD)",
+   "type": "COD",
+   "title_cs": "Sledování a kontrola prekurzorů drog a zrušení nařízení (ES) č. 273/2004 a (ES) č. 111/2005",
+   "title_en": "Monitoring and controlling drug precursors and repealing Regulations (EC) No 273/2004 and (EC) No 111/2005",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0384(COD)",
+   "committee": {
+    "code": "INTA",
+    "name": "Mezinárodní obchod",
+    "category": "abr"
+   },
+   "cz": [
+    {
+     "mep_id": 220840,
+     "name": "Jaroslav Bžoch",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-12"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-11-09"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-09",
+    "type": "TABLING_PLENARY",
+    "label": "zpráva předložena plénu"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0223",
+   "label": "2025/0223(COD)",
+   "type": "COD",
+   "title_cs": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "title_en": "Union Civil Protection Mechanism and Union support for health emergency preparedness and response, and repealing Decision No 1313/2013/EU (Union Civil Protection Mechanism)",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0223(COD)",
+   "committee": {
+    "code": "SANT",
+    "name": "Veřejné zdraví",
+    "category": "soc"
+   },
+   "cz": [
+    {
+     "mep_id": 124713,
+     "name": "Tomáš Zdechovský",
+     "role": "shadow_opinion",
+     "role_cs": "stínový/á zpravodaj/ka stanoviska"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2025-10-23"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-10-01"
+    },
+    {
+     "key": "report",
+     "type": "TABLING_PLENARY",
+     "label": "Zpráva předložena plénu",
+     "date": "2026-10-12",
+     "date_to": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "TABLING_PLENARY",
+    "label": "zpráva předložena plénu"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0420",
+   "label": "2025/0420(COD)",
+   "type": "COD",
+   "title_cs": "Změna nařízení (EU) 2019/631, pokud jde o výkonnostní normy pro emise CO2 pro nová lehká užitková vozidla a označování vozidel a zrušení směrnice 1999/94/ES",
+   "title_en": "Amending Regulation (EU) 2019/631 as regards CO2 emission performance standards for new light duty vehicles and vehicle labelling and repealing Directive 1999/94/EC",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0420(COD)",
+   "committee": {
+    "code": "ENVI",
+    "name": "Životní prostředí, klima a bezpečnost potravin",
+    "category": "env"
+   },
+   "cz": [
+    {
+     "mep_id": 197537,
+     "name": "Alexandr Vondra",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 256845,
+     "name": "Ondřej Krutílek",
+     "role": "shadow_opinion",
+     "role_cs": "stínový/á zpravodaj/ka stanoviska"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-09"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "COMMITTEE_ADOPTING_REPORT",
+    "label": "výbor přijal zprávu"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0422",
+   "label": "2025/0422(COD)",
+   "type": "COD",
+   "title_cs": "Změna nařízení Evropského parlamentu a Rady (ES) č. 561/2006, (EU) 2018/858, (EU) 2019/2144 a (EU) 2024/1257, pokud jde o zjednodušení technických požadavků a zkušebních postupů pro motorová vozidla, a zrušení směrnice Rady 70/157/EHS a nařízení Evropského parlamentu a Rady č. 540/2014",
+   "title_en": "Amending Regulations (EC) No 561/2006, (EU) 2018/858, (EU) 2019/2144 and (EU) 2024/1257 of the European Parliament and of the Council as regards the simplification of technical requirements and testing procedures for motor vehicles and repealing Council Directive 70/157/EEC and Regulation No 540/2014 of the European Parliament and of the Council",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0422(COD)",
+   "committee": {
+    "code": "TRAN",
+    "name": "Doprava a cestovní ruch",
+    "category": "tra"
+   },
+   "cz": [
+    {
+     "mep_id": 197537,
+     "name": "Alexandr Vondra",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 272024,
+     "name": "Antonín Staněk",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 256845,
+     "name": "Ondřej Krutílek",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-09"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "COMMITTEE_ADOPTING_REPORT",
+    "label": "výbor přijal zprávu"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0424",
+   "label": "2025/0424(COD)",
+   "type": "COD",
+   "title_cs": "Změna nařízení 92/6/EEC s cílem osvobodit některá elektrická vozidla kategorie N2 od povinnosti instalovat a používat omezovač rychlosti",
+   "title_en": "Amending Directive 92/6/EEC to exempt certain N2 electric vehicles from the requirement to install and use a speed limitation device",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0424(COD)",
+   "committee": {
+    "code": "TRAN",
+    "name": "Doprava a cestovní ruch",
+    "category": "tra"
+   },
+   "cz": [
+    {
+     "mep_id": 256845,
+     "name": "Ondřej Krutílek",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-02-09"
+    },
+    {
+     "key": "report",
+     "type": "COMMITTEE_ADOPTING_REPORT",
+     "label": "Hlasování ve výboru",
+     "date": "2026-11-04"
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "report",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "COMMITTEE_ADOPTING_REPORT",
+    "label": "výbor přijal zprávu"
+   },
+   "next_vote": null
+  },
+  {
    "procedure": "2025-0255",
    "label": "2025/0255(COD)",
    "type": "COD",
@@ -2064,21 +2406,141 @@
    "next_vote": null
   },
   {
-   "procedure": "2025-0223",
-   "label": "2025/0223(COD)",
+   "procedure": "2025-0360",
+   "label": "2025/0360(COD)",
    "type": "COD",
-   "title_cs": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
-   "title_en": "Union Civil Protection Mechanism and Union support for health emergency preparedness and response, and repealing Decision No 1313/2013/EU (Union Civil Protection Mechanism)",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0223(COD)",
+   "title_cs": "Změna nařízení (EU) 2016/679, (EU) 2018/1724, (EU) 2018/1725, (EU) 2023/2854 a směrnic 2002/58/ES, (EU) 2022/2555 a (EU) 2022/2557, pokud jde o zjednodušení digitálního legislativního rámce, a zrušení nařízení (EU) 2018/1807, (EU) 2019/1150, (EU) 2022/868 a směrnice (EU) 2019/1024 (souhrnný balíček pro digitální oblast)",
+   "title_en": "Amending Regulations (EU) 2016/679, (EU) 2018/1724, (EU) 2018/1725, (EU) 2023/2854 and Directives 2002/58/EC, (EU) 2022/2555 and (EU) 2022/2557 as regards the simplification of the digital legislative framework, and repealing Regulations (EU) 2018/1807, (EU) 2019/1150, (EU) 2022/868, and Directive (EU) 2019/1024 (Digital Omnibus)",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0360(COD)",
    "committee": {
-    "code": "SANT",
-    "name": "Veřejné zdraví",
-    "category": "soc"
+    "code": "LIBE",
+    "name": "Občanské svobody, spravedlnost a vnitřní věci",
+    "category": "jus"
    },
    "cz": [
     {
-     "mep_id": 124713,
-     "name": "Tomáš Zdechovský",
+     "mep_id": 197549,
+     "name": "Markéta Gregorová",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-01-19"
+    },
+    {
+     "key": "report",
+     "type": null,
+     "label": "Hlasování ve výboru",
+     "date": null
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "committee",
+   "last_event": {
+    "date": "2026-11-10",
+    "type": "COMMITTEE_ADOPTING_OPINION",
+    "label": "výbor přijal stanovisko"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2026-0012",
+   "label": "2026/0012(COD)",
+   "type": "COD",
+   "title_cs": "Změna směrnice (EU) 2022/2555, pokud jde o zjednodušující opatření a soulad s [návrh aktu o kybernetické bezpečnosti 2]",
+   "title_en": "Amending Directive (EU) 2022/2555 as regards simplification measures and alignment with the [Proposal for the Cybersecurity Act 2]",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0012(COD)",
+   "committee": {
+    "code": "ITRE",
+    "name": "Průmysl, výzkum a energetika",
+    "category": "eco"
+   },
+   "cz": [
+    {
+     "mep_id": 197549,
+     "name": "Markéta Gregorová",
+     "role": "rapporteur",
+     "role_cs": "zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-03-25"
+    },
+    {
+     "key": "report",
+     "type": null,
+     "label": "Hlasování ve výboru",
+     "date": null
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "committee",
+   "last_event": {
+    "date": "2026-11-10",
+    "type": "COMMITTEE_ADOPTING_OPINION",
+    "label": "výbor přijal stanovisko"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2025-0545",
+   "label": "2025/0545(COD)",
+   "type": "COD",
+   "title_cs": "Zavedení sledování rozpočtových výdajů a výkonnostního rámce a dalších horizontálních předpisů pro programy a činnost Unie",
+   "title_en": "Establishing a budget expenditure tracking and performance framework and other horizontal rules for the Union programmes and activities",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0545(COD)",
+   "committee": {
+    "code": "BUDG",
+    "name": "Rozpočty",
+    "category": "fin"
+   },
+   "cz": [
+    {
+     "mep_id": 256843,
+     "name": "Jana Nagyová",
+     "role": "shadow",
+     "role_cs": "stínový/á zpravodaj/ka"
+    },
+    {
+     "mep_id": 256853,
+     "name": "Klára Dostálová",
+     "role": "shadow_opinion",
+     "role_cs": "stínový/á zpravodaj/ka stanoviska"
+    },
+    {
+     "mep_id": 261038,
+     "name": "Tomáš Kubín",
      "role": "shadow_opinion",
      "role_cs": "stínový/á zpravodaj/ka stanoviska"
     }
@@ -2092,15 +2554,9 @@
     },
     {
      "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
+     "type": null,
      "label": "Hlasování ve výboru",
-     "date": "2026-10-01"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2026-10-12"
+     "date": null
     },
     {
      "key": "plenary",
@@ -2115,36 +2571,84 @@
      "date": null
     }
    ],
-   "reached": "report",
+   "reached": "committee",
    "last_event": {
-    "date": "2026-10-12",
-    "type": "TABLING_PLENARY",
-    "label": "zpráva předložena plénu"
+    "date": "2026-11-05",
+    "type": "COMMITTEE_TABLING_AMENDMENT",
+    "label": "pozměňovací návrhy ve výboru"
    },
    "next_vote": null
   },
   {
-   "procedure": "2025-0420",
-   "label": "2025/0420(COD)",
+   "procedure": "2025-0383",
+   "label": "2025/0383(COD)",
    "type": "COD",
-   "title_cs": "Změna nařízení (EU) 2019/631, pokud jde o výkonnostní normy pro emise CO2 pro nová lehká užitková vozidla a označování vozidel a zrušení směrnice 1999/94/ES",
-   "title_en": "Amending Regulation (EU) 2019/631 as regards CO2 emission performance standards for new light duty vehicles and vehicle labelling and repealing Directive 1999/94/EC",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0420(COD)",
+   "title_cs": "Změna nařízení (EU) č. 1095/2010, 648/2012, 600/2014, 909/2014, 2015/2365, 2019/1156, 2021/23, 2022/858, 2023/1114, 1060/2009, 2016/1011, 2017/2402, 2023/2631 a 2024/3005, pokud jde o další rozvoj integrace kapitálových trhů a dohledu nad nimi v rámci Unie",
+   "title_en": "Amending Regulations (EU) No 1095/2010, No 648/2012, No 600/2014, No 909/2014, 2015/2365, 2019/1156, 2021/23, 2022/858, 2023/1114, No 1060/2009, 2016/1011, 2017/2402, 2023/2631 and 2024/3005 as regards the further development of capital market integration and supervision within the Union",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0383(COD)",
    "committee": {
-    "code": "ENVI",
-    "name": "Životní prostředí, klima a bezpečnost potravin",
-    "category": "env"
+    "code": "ECON",
+    "name": "Hospodářské a měnové věci",
+    "category": "fin"
    },
    "cz": [
     {
-     "mep_id": 197537,
-     "name": "Alexandr Vondra",
+     "mep_id": 270261,
+     "name": "Jaroslav Knot",
      "role": "shadow",
      "role_cs": "stínový/á zpravodaj/ka"
+    }
+   ],
+   "steps": [
+    {
+     "key": "committee",
+     "type": "REFERRAL",
+     "label": "Přiděleno výboru",
+     "date": "2026-01-27"
     },
     {
-     "mep_id": 256845,
-     "name": "Ondřej Krutílek",
+     "key": "report",
+     "type": null,
+     "label": "Hlasování ve výboru",
+     "date": null
+    },
+    {
+     "key": "plenary",
+     "type": null,
+     "label": "Hlasování pléna",
+     "date": null
+    },
+    {
+     "key": "closed",
+     "type": null,
+     "label": "Podpis a vyhlášení",
+     "date": null
+    }
+   ],
+   "reached": "committee",
+   "last_event": {
+    "date": "2026-11-04",
+    "type": "COMMITTEE_ADOPTING_OPINION",
+    "label": "výbor přijal stanovisko"
+   },
+   "next_vote": null
+  },
+  {
+   "procedure": "2026-0013",
+   "label": "2026/0013(COD)",
+   "type": "COD",
+   "title_cs": "Digitální sítě, změna nařízení (EU) 2015/2120, směrnice 2002/58/ES a rozhodnutí č. 676/2002/ES a zrušují nařízení (EU) 2018/1971, směrnice (EU) 2018/1972 a rozhodnutí č. 243/2012/EU (akt o digitálních sítích)",
+   "title_en": "Digital networks, amending Regulation (EU) 2015/2120, Directive 2002/58/EC and Decision No 676/2002/EC and repealing Regulation (EU) 2018/1971, Directive (EU) 2018/1972 and Decision No 243/2012/EU (Digital Networks Act)",
+   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0013(COD)",
+   "committee": {
+    "code": "ITRE",
+    "name": "Průmysl, výzkum a energetika",
+    "category": "eco"
+   },
+   "cz": [
+    {
+     "mep_id": 197549,
+     "name": "Markéta Gregorová",
      "role": "shadow_opinion",
      "role_cs": "stínový/á zpravodaj/ka stanoviska"
     }
@@ -2154,7 +2658,7 @@
      "key": "committee",
      "type": "REFERRAL",
      "label": "Přiděleno výboru",
-     "date": "2026-02-09"
+     "date": "2026-04-27"
     },
     {
      "key": "report",
@@ -2177,73 +2681,7 @@
    ],
    "reached": "committee",
    "last_event": {
-    "date": "2026-10-22",
-    "type": "COMMITTEE_ADOPTING_OPINION",
-    "label": "výbor přijal stanovisko"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0422",
-   "label": "2025/0422(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení Evropského parlamentu a Rady (ES) č. 561/2006, (EU) 2018/858, (EU) 2019/2144 a (EU) 2024/1257, pokud jde o zjednodušení technických požadavků a zkušebních postupů pro motorová vozidla, a zrušení směrnice Rady 70/157/EHS a nařízení Evropského parlamentu a Rady č. 540/2014",
-   "title_en": "Amending Regulations (EC) No 561/2006, (EU) 2018/858, (EU) 2019/2144 and (EU) 2024/1257 of the European Parliament and of the Council as regards the simplification of technical requirements and testing procedures for motor vehicles and repealing Council Directive 70/157/EEC and Regulation No 540/2014 of the European Parliament and of the Council",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0422(COD)",
-   "committee": {
-    "code": "TRAN",
-    "name": "Doprava a cestovní ruch",
-    "category": "tra"
-   },
-   "cz": [
-    {
-     "mep_id": 197537,
-     "name": "Alexandr Vondra",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    },
-    {
-     "mep_id": 272024,
-     "name": "Antonín Staněk",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    },
-    {
-     "mep_id": 256845,
-     "name": "Ondřej Krutílek",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-02-09"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-10-22",
+    "date": "2026-11-04",
     "type": "COMMITTEE_ADOPTING_OPINION",
     "label": "výbor přijal stanovisko"
    },
@@ -2306,60 +2744,6 @@
     "date": "2026-10-21",
     "type": "COMMITTEE_TABLING_AMENDMENT",
     "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2026-0013",
-   "label": "2026/0013(COD)",
-   "type": "COD",
-   "title_cs": "Digitální sítě, změna nařízení (EU) 2015/2120, směrnice 2002/58/ES a rozhodnutí č. 676/2002/ES a zrušují nařízení (EU) 2018/1971, směrnice (EU) 2018/1972 a rozhodnutí č. 243/2012/EU (akt o digitálních sítích)",
-   "title_en": "Digital networks, amending Regulation (EU) 2015/2120, Directive 2002/58/EC and Decision No 676/2002/EC and repealing Regulation (EU) 2018/1971, Directive (EU) 2018/1972 and Decision No 243/2012/EU (Digital Networks Act)",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0013(COD)",
-   "committee": {
-    "code": "ITRE",
-    "name": "Průmysl, výzkum a energetika",
-    "category": "eco"
-   },
-   "cz": [
-    {
-     "mep_id": 197549,
-     "name": "Markéta Gregorová",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-04-27"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-10-20",
-    "type": "COMMITTEE_TABLING_REPORT",
-    "label": "návrh zprávy ve výboru"
    },
    "next_vote": null
   },
@@ -2522,126 +2906,6 @@
     "date": "2026-10-13",
     "type": "COMMITTEE_TABLING_AMENDMENT",
     "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2026-0012",
-   "label": "2026/0012(COD)",
-   "type": "COD",
-   "title_cs": "Změna směrnice (EU) 2022/2555, pokud jde o zjednodušující opatření a soulad s [návrh aktu o kybernetické bezpečnosti 2]",
-   "title_en": "Amending Directive (EU) 2022/2555 as regards simplification measures and alignment with the [Proposal for the Cybersecurity Act 2]",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0012(COD)",
-   "committee": {
-    "code": "ITRE",
-    "name": "Průmysl, výzkum a energetika",
-    "category": "eco"
-   },
-   "cz": [
-    {
-     "mep_id": 197549,
-     "name": "Markéta Gregorová",
-     "role": "rapporteur",
-     "role_cs": "zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-03-25"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-10-13",
-    "type": "COMMITTEE_TABLING_AMENDMENT",
-    "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0545",
-   "label": "2025/0545(COD)",
-   "type": "COD",
-   "title_cs": "Zavedení sledování rozpočtových výdajů a výkonnostního rámce a dalších horizontálních předpisů pro programy a činnost Unie",
-   "title_en": "Establishing a budget expenditure tracking and performance framework and other horizontal rules for the Union programmes and activities",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0545(COD)",
-   "committee": {
-    "code": "CONT",
-    "name": "Kontrola rozpočtu",
-    "category": "fin"
-   },
-   "cz": [
-    {
-     "mep_id": 256843,
-     "name": "Jana Nagyová",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    },
-    {
-     "mep_id": 256853,
-     "name": "Klára Dostálová",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    },
-    {
-     "mep_id": 261038,
-     "name": "Tomáš Kubín",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2025-10-23"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-10-05",
-    "type": "COMMITTEE_TABLING_REPORT",
-    "label": "návrh zprávy ve výboru"
    },
    "next_vote": null
   },
@@ -3162,60 +3426,6 @@
    "next_vote": null
   },
   {
-   "procedure": "2025-0383",
-   "label": "2025/0383(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení (EU) č. 1095/2010, 648/2012, 600/2014, 909/2014, 2015/2365, 2019/1156, 2021/23, 2022/858, 2023/1114, 1060/2009, 2016/1011, 2017/2402, 2023/2631 a 2024/3005, pokud jde o další rozvoj integrace kapitálových trhů a dohledu nad nimi v rámci Unie",
-   "title_en": "Amending Regulations (EU) No 1095/2010, No 648/2012, No 600/2014, No 909/2014, 2015/2365, 2019/1156, 2021/23, 2022/858, 2023/1114, No 1060/2009, 2016/1011, 2017/2402, 2023/2631 and 2024/3005 as regards the further development of capital market integration and supervision within the Union",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0383(COD)",
-   "committee": {
-    "code": "ECON",
-    "name": "Hospodářské a měnové věci",
-    "category": "fin"
-   },
-   "cz": [
-    {
-     "mep_id": 270261,
-     "name": "Jaroslav Knot",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-01-27"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-07-31",
-    "type": "COMMITTEE_TABLING_AMENDMENT",
-    "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
    "procedure": "2025-0410",
    "label": "2025/0410(COD)",
    "type": "COD",
@@ -3264,60 +3474,6 @@
    "reached": "committee",
    "last_event": {
     "date": "2026-07-28",
-    "type": "COMMITTEE_TABLING_AMENDMENT",
-    "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0360",
-   "label": "2025/0360(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení (EU) 2016/679, (EU) 2018/1724, (EU) 2018/1725, (EU) 2023/2854 a směrnic 2002/58/ES, (EU) 2022/2555 a (EU) 2022/2557, pokud jde o zjednodušení digitálního legislativního rámce, a zrušení nařízení (EU) 2018/1807, (EU) 2019/1150, (EU) 2022/868 a směrnice (EU) 2019/1024 (souhrnný balíček pro digitální oblast)",
-   "title_en": "Amending Regulations (EU) 2016/679, (EU) 2018/1724, (EU) 2018/1725, (EU) 2023/2854 and Directives 2002/58/EC, (EU) 2022/2555 and (EU) 2022/2557 as regards the simplification of the digital legislative framework, and repealing Regulations (EU) 2018/1807, (EU) 2019/1150, (EU) 2022/868, and Directive (EU) 2019/1024 (Digital Omnibus)",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0360(COD)",
-   "committee": {
-    "code": "LIBE",
-    "name": "Občanské svobody, spravedlnost a vnitřní věci",
-    "category": "jus"
-   },
-   "cz": [
-    {
-     "mep_id": 197549,
-     "name": "Markéta Gregorová",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-01-19"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-07-27",
     "type": "COMMITTEE_TABLING_AMENDMENT",
     "label": "pozměňovací návrhy ve výboru"
    },
@@ -3762,60 +3918,6 @@
    "next_vote": null
   },
   {
-   "procedure": "2025-0384",
-   "label": "2025/0384(COD)",
-   "type": "COD",
-   "title_cs": "Sledování a kontrola prekurzorů drog a zrušení nařízení (ES) č. 273/2004 a (ES) č. 111/2005",
-   "title_en": "Monitoring and controlling drug precursors and repealing Regulations (EC) No 273/2004 and (EC) No 111/2005",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0384(COD)",
-   "committee": {
-    "code": "INTA",
-    "name": "Mezinárodní obchod",
-    "category": "abr"
-   },
-   "cz": [
-    {
-     "mep_id": 220840,
-     "name": "Jaroslav Bžoch",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-02-12"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-06-23",
-    "type": "COMMITTEE_TABLING_AMENDMENT",
-    "label": "pozměňovací návrhy ve výboru"
-   },
-   "next_vote": null
-  },
-  {
    "procedure": "2025-0543",
    "label": "2025/0543(COD)",
    "type": "COD",
@@ -4022,60 +4124,6 @@
     "date": "2026-06-23",
     "type": "COMMITTEE_ADOPTING_OPINION",
     "label": "výbor přijal stanovisko"
-   },
-   "next_vote": null
-  },
-  {
-   "procedure": "2025-0424",
-   "label": "2025/0424(COD)",
-   "type": "COD",
-   "title_cs": "Změna nařízení 92/6/EEC s cílem osvobodit některá elektrická vozidla kategorie N2 od povinnosti instalovat a používat omezovač rychlosti",
-   "title_en": "Amending Directive 92/6/EEC to exempt certain N2 electric vehicles from the requirement to install and use a speed limitation device",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0424(COD)",
-   "committee": {
-    "code": "TRAN",
-    "name": "Doprava a cestovní ruch",
-    "category": "tra"
-   },
-   "cz": [
-    {
-     "mep_id": 256845,
-     "name": "Ondřej Krutílek",
-     "role": "shadow",
-     "role_cs": "stínový/á zpravodaj/ka"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2026-02-09"
-    },
-    {
-     "key": "report",
-     "type": null,
-     "label": "Hlasování ve výboru",
-     "date": null
-    },
-    {
-     "key": "plenary",
-     "type": null,
-     "label": "Hlasování pléna",
-     "date": null
-    },
-    {
-     "key": "closed",
-     "type": null,
-     "label": "Podpis a vyhlášení",
-     "date": null
-    }
-   ],
-   "reached": "committee",
-   "last_event": {
-    "date": "2026-06-11",
-    "type": "COMMITTEE_TABLING_AMENDMENT",
-    "label": "pozměňovací návrhy ve výboru"
    },
    "next_vote": null
   },
