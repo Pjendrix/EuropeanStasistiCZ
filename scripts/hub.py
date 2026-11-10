@@ -512,7 +512,7 @@ def votes_hero_html(data_dir: Path) -> str:
         for c in cats
     )
     picker = (
-        f'<nav class="topic-picker" aria-labelledby="tp-h"><div class="tp-head"><h2 id="tp-h">Vyber téma</h2>'
+        f'<nav class="topic-picker" aria-labelledby="tp-h"><div class="tp-head"><h2 id="tp-h">Vyberte téma</h2>'
         f'<a class="tp-all" href="temata">tabulka témat →</a></div><div class="tp-grid">{tiles}</div></nav>'
     )
     return f"""<section class="hero">

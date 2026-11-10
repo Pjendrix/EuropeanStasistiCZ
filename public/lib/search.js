@@ -31,7 +31,7 @@ async function buildSearchIndex() {
     votes: votes.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.id - a.id)
       .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}`), label: voteTitle(v), mark: "H", final: isFinal(v),
         sub: `${fmtDate(v.date)}${v.vote_kind ? ` · ${KIND_LABEL[v.vote_kind] || ""}` : ""}`,
-        key: norm(`${voteTitle(v)} ${v.title || ""} ${v.reference || ""} ${v.description || ""} ${v.description_cs || ""}`), topics: topicText(v) })),
+        key: norm(`${voteTitle(v)} ${v.title || ""} ${v.reference || ""} ${v.description || ""} ${v.description_cs || ""} ${v.procedure || ""}`), topics: topicText(v) })),
   };
   return index;
 }
@@ -46,10 +46,16 @@ export function combobox(q, list, prefix) {
     list.querySelectorAll('[role="option"]').forEach((o) => o.setAttribute("aria-selected", String(Number(o.dataset.k) === sel)));
     if (sel >= 0) { q.setAttribute("aria-activedescendant", `${prefix}-opt-${sel}`); document.getElementById(`${prefix}-opt-${sel}`)?.scrollIntoView({ block: "nearest" }); }
   };
+  let ready = false, pending = null; // pending = poslední rozběhnuté hledání (index se může ještě stahovat)
   const search = async () => {
     const needle = norm(q.value.trim());
     if (needle.length < 2) { close(); return; }
+    if (!ready) { // index se stahuje (pomalé připojení): dát najevo, že se něco děje
+      list.innerHTML = '<li class="hm-none" role="presentation">Hledám…</li>';
+      list.hidden = false;
+    }
     const idx = await loadSearchIndex();
+    ready = true;
     if (norm(q.value.trim()) !== needle) return; // mezitím se psalo dál
     const terms = searchTerms(q.value);
     // pořadí: shoda v názvu před shodou jen v tématu, v každé skupině závěrečná hlasování před dílčími, pak od nejnovějšího
@@ -76,13 +82,29 @@ export function combobox(q, list, prefix) {
     sel = items.length ? 0 : -1;
     mark();
   };
-  q.addEventListener("input", search);
+  const run = () => {
+    pending = search().catch(() => { // index se nestáhl (výpadek sítě): říct to, ne nechat viset „Hledám…“
+      list.innerHTML = '<li class="hm-none" role="presentation">Hledání se nepodařilo načíst. Zkontrolujte připojení a zkuste to znovu.</li>';
+      list.hidden = false;
+    });
+    return pending;
+  };
+  // Enter nebo tlačítko „Hledat“: otevře vybraný (první) výsledek. Dřív se při Enteru před načtením výsledků nebo bez
+  // výsledku odeslal záložní formulář (action=poslanci, pro prohlížeč bez JS) a uživatel skončil na stránce Poslanci
+  // s filtrem, který nic nenašel. Teď se počká na výsledky; když žádné nejsou, zůstane vidět „Nic jsme nenašli“.
+  const go = async () => {
+    if (norm(q.value.trim()).length < 2) return;
+    await (pending || run());
+    if (sel >= 0 && items[sel]) location.href = items[sel].href;
+  };
+  q.addEventListener("input", run);
   q.addEventListener("keydown", (ev) => {
     if (ev.key === "ArrowDown" && items.length) { ev.preventDefault(); sel = (sel + 1) % items.length; mark(); }
     else if (ev.key === "ArrowUp" && items.length) { ev.preventDefault(); sel = (sel - 1 + items.length) % items.length; mark(); }
-    else if (ev.key === "Enter" && sel >= 0 && !list.hidden) { ev.preventDefault(); location.href = items[sel].href; }
+    else if (ev.key === "Enter") { ev.preventDefault(); go(); }
     else if (ev.key === "Escape" && !list.hidden) { ev.stopPropagation(); q.value = ""; close(); }
   });
+  q.form?.addEventListener("submit", (ev) => { ev.preventDefault(); go(); });
   list.addEventListener("mousedown", (ev) => { const o = ev.target.closest('[role="option"]'); if (o) { ev.preventDefault(); location.href = items[Number(o.dataset.k)].href; } });
   document.addEventListener("click", (ev) => { if (!q.form?.contains(ev.target)) close(); });
   return { close };

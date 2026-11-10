@@ -172,7 +172,9 @@ export const norm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u0
 
 // Slova dotazu: delší slova bez posledních 1–2 písmen, aby „ukrajina“ našla i „ukrajinu“, „migrace“ i „migraci“.
 export function searchTerms(query) {
-  return norm(query).split(/\s+/).filter(Boolean).map((w) => (w.length > 5 ? w.slice(0, w.length > 7 ? -2 : -1) : w));
+  return norm(query).split(/\s+/).filter(Boolean)
+    // koncovky se zkracují jen slovům; čísla dokumentů a procedur (2025/0045, a10-0172/2026) se hledají celá
+    .map((w) => (w.length > 5 && !/\d/.test(w) ? w.slice(0, w.length > 7 ? -2 : -1) : w));
 }
 
 export function matchesAll(hay, terms) {
@@ -393,3 +395,8 @@ export function topCountries(countries, n = 5) {
 export const seatsCs = (n) => `${fmtNum(n)} ${n === 1 ? "poslanec" : n >= 2 && n <= 4 ? "poslanci" : "poslanců"}`;
 // „z 13 zemí“, „ze 17 zemí“ (ze před čísly, která se čtou se s/z/dv/tř/čt: 2–4, 7, 17, 70–79).
 export const fromCountriesCs = (n) => `${[2, 3, 4, 7, 17].includes(n) || (n >= 70 && n < 80) ? "ze" : "z"} ${fmtNum(n)} ${n === 1 ? "země" : "zemí"}`;
+
+// Velké první písmeno (názvy frakcí z EP začínají malým: „skupina Zelených…“; v nadpisu a titulku stránky patří velké).
+export function capFirst(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}

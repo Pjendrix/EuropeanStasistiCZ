@@ -142,10 +142,24 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
 <div class="controls"><label><input type="checkbox" id="split-main"> jen závěrečná hlasování</label></div>
 <div id="splits">{split_list(pp["splits"], False)}{split_list(pp["splits_main"], True)}</div>"""
     )
+    # Kolik poslanců má strana dnes: seznam níže obsahuje i ty, kteří ze strany odešli nebo jim skončil mandát.
+    now_count = sum(1 for m in pp["member_list"] if is_active(m, today) and any(not x.get("end") for x in m["party_periods"]))
+    ever = len(pp["member_list"])
+    now_note = (
+        ""
+        if now_count == ever
+        else '<p class="muted">'
+        + (
+            f"Dnes za stranu v Evropském parlamentu sedí {meps_count_cs(now_count)}"
+            if now_count
+            else "Dnes za stranu v Evropském parlamentu nesedí žádný poslanec"
+        )
+        + f"; za celé volební období jich bylo {ever}. Čísla níže jsou za dobu, kdy byli členy strany.</p>"
+    )
     body = f"""<div class="back-row"><p class="small"><a href="party">← Všechny strany</a></p>{share_button}</div>
 {f'<div class="logo-row">{logo_tile(pp, 48)}</div>' if pp.get("logo") else ""}
 <h1>{esc(name)} {party_badge(pp["id"], pp["short_label"], parties)}</h1>
-
+{now_note}
 <h2>Poslanci</h2>
 <div class="table-wrap"><table class="cards">
   <thead><tr><th>Poslanec</th><th>Ve straně (podle EP)</th><th class="num">Účast na hlasování</th><th class="num">Hlasuje s frakcí</th></tr></thead>
@@ -166,7 +180,6 @@ def party_body(pp: dict, groups: list[dict], parties: list[dict], today: str, sh
 {reports_html(pp.get("reports"), meps_by_id)}
 
 {splits}"""
-    now_count = sum(1 for m in pp["member_list"] if is_active(m, today) and any(not x.get("end") for x in m["party_periods"]))
     sub = (f"{pp['short_label']} · " if name != pp["short_label"] else "") + (
         f"{meps_count_cs(now_count)} v mandátu" if now_count else "nikdo v mandátu"
     )

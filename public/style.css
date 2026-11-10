@@ -188,6 +188,8 @@ h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
   display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: 0 1.3rem;
   border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .95rem; transition: transform .2s ease, box-shadow .2s ease;
 }
+/* Plné tlačítko na světlém podkladu (duel „Porovnat“, 404 „Hledat“): bez varianty mělo <button class="btn"> výchozí šedý vzhled prohlížeče */
+.btn-solid { border: 0; cursor: pointer; background: var(--text); color: var(--surface); font: inherit; font-weight: 600; font-size: .95rem; }
 .btn-light { background: #F8FAFC; color: var(--navy); }
 .btn-ghost { border: 1px solid rgba(248, 250, 252, .3); color: #F8FAFC; }
 .btn:hover { transform: translateY(-1px); box-shadow: 0 0 0 2px var(--gold); }
@@ -443,7 +445,9 @@ ul.plain li:last-child { border-bottom: none; }
 .vrow { position: relative; display: block; padding: .75rem .85rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--text); transition: background .2s ease; }
 .vrow:hover, .vrow:focus-visible { background: var(--accent-soft); }
 .vrow-head { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; margin-bottom: .5rem; }
-.vrow-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Název na dva řádky (dřív jeden s výpustkou: na mobilu z něj zbylo ~20 znaků, „Souhrnný rozpočet Evrop…“) */
+.vrow-title { min-width: 0; }
+.vrow-t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .vrow .split { height: 12px; }
 .vrow .tip { display: block; margin-top: .3rem; font-size: .75rem; color: var(--muted); }
 
@@ -1061,7 +1065,8 @@ main.home-page, main.portal-page { max-width: none; padding: 0; }
 .hm-results img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--gold); flex: none; }
 .hm-ic { width: 34px; height: 34px; flex: none; border-radius: 50%; display: grid; place-items: center; background: rgba(248, 250, 252, .1); font-size: .7rem; font-weight: 800; color: #E2E8F0; }
 .hm-rt { min-width: 0; }
-.hm-t1 { display: block; font-weight: 600; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Název výsledku na dva řádky: na mobilu se do jednoho vešlo ~25 znaků a hlasování se stejným začátkem názvu nešla rozlišit */
+.hm-t1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; font-weight: 600; line-height: 1.25; overflow: hidden; }
 .hm-rt small { display: block; color: #A5B4C8; font-size: .8rem; line-height: 1.2; }
 .hm-none { padding: 16px 14px; color: #A5B4C8; }
 .hm-quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }

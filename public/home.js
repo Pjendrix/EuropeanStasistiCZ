@@ -1,6 +1,6 @@
 // Úvodní stránka: dvě čísla, tři vstupy, česká delegace ve frakcích, rozdělená hlasování a karty poslanců.
 import { getJSON, loadCategories, param, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, HTV_SOURCE, NO_PARTY_NOTE, SHORT_MANDATE_NOTE, byGender, czCountsText, debounce, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, matchesAll, norm, pct, searchTerms, voteTitle } from "./lib/format.js";
+import { CZ_GROUP_LABEL, HTV_SOURCE, NO_PARTY_NOTE, SHORT_MANDATE_NOTE, byGender, capFirst, czCountsText, debounce, displayName, esc, fmtDate, fmtNum, fmtPct, groupColor, isActive, isFinal, matchesAll, norm, pct, searchTerms, voteTitle } from "./lib/format.js";
 import { avatar, benchFor, benchRow, catChip, csvButton, csvShare, entityCell, groupBench, infoButton, kindTag, logoTile, mepUrl, partyBadge, partyUrl, pctCell, resultHtml, setNav, showError, sortable, sourceLine } from "./lib/ui.js";
 
 setNav("meps");
@@ -164,8 +164,8 @@ function renderSession(session) {
   const keys = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
   const total = (cz) => cz.reduce((a, b) => a + b, 0) || 1;
   document.getElementById("ses-list").innerHTML = list.length ? list.map((v) => `
-    <a class="vrow" href="vote?id=${v.id}&m=${v.month}">
-      <div class="vrow-head"><span class="vrow-title">${catChip(v)}${onlyFinal ? "" : kindTag(v)}${esc(voteTitle(v))}</span>
+    <a class="vrow" href="${isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}&m=${v.month}`}">
+      <div class="vrow-head"><span class="vrow-title">${catChip(v)}${onlyFinal ? "" : kindTag(v)}<span class="vrow-t">${esc(voteTitle(v))}</span></span>
         ${resultHtml(v)}</div>
       <div class="split grow" role="img" aria-label="${v.cz[0]} pro, ${v.cz[1]} proti, ${v.cz[2]} se zdrželo, ${v.cz[3]} nehlasovalo">
         ${keys.map((k, i) => `<span class="s-${k}" style="width:${(v.cz[i] / total(v.cz)) * 100}%"></span>`).join("")}</div>
@@ -210,7 +210,7 @@ function groupedCards(list, groups, parties, bench) {
     const rows = by[c].sort((a, b) => (a.m.sort_label || a.m.name).localeCompare(b.m.sort_label || b.m.name, "cs"));
     return `<section class="group-block" aria-label="${esc(g?.name_cs || groupName(c, groups))}">
       <h3 class="group-head">${logoTile(g, 24) || `<span class="dot" style="background:${groupColor(g)}"></span>`}
-        <span>${esc(g?.name_cs || groupName(c, groups))}</span>
+        <span>${esc(capFirst(g?.name_cs || groupName(c, groups)))}</span>
         <span class="small muted">${rows.length} ${rows.length === 1 ? "poslanec" : rows.length < 5 ? "poslanci" : "poslanců"}${med != null ? ` · medián frakce v hlasování s frakcí v celém EP ${fmtPct(med)}` : ""}</span></h3>
       <div class="mep-grid">${rows.map((r) => mepCard(r, groups, parties, bench)).join("")}</div></section>`;
   }).join("");
@@ -267,7 +267,8 @@ function groupedCards(list, groups, parties, bench) {
         : `<div class="mep-grid">${list.map((r) => mepCard(r, groups, parties, bench)).join("")}</div>`) ||
         "";
       if (!list.length) cards.innerHTML = `<div class="empty-state"><p><strong>Nikoho jsme nenašli.</strong> Zkuste jen část jména nebo zkratku strany${former.checked ? "" : ", případně zahrňte i bývalé poslance"}.</p>
-        <button type="button" class="more-btn" data-clear-search>Zrušit hledání</button></div>`;
+        <button type="button" class="more-btn" data-clear-search>Zrušit hledání</button>
+        ${q.value.trim() ? `<a class="more-btn" href="votes?${new URLSearchParams({ q: q.value.trim(), f: "all" })}">Hledat „${esc(q.value.trim())}“ v hlasováních</a>` : ""}</div>`;
       // Referenční řádek „medián EP“ (V5): řazení podle čísla nesmí vypadat jako žebříček bez kontextu; neřadí se.
       const ep = bench?.ep;
       const med = (x) => (typeof x === "number" ? fmtPct(x) : "–");
@@ -294,6 +295,9 @@ function groupedCards(list, groups, parties, bench) {
     };
     // Výchozí zobrazení po frakcích, ne žebříček.
     const table = sortable(document.getElementById("meps"), columns, visible, render, { key: "name", dir: 1 });
+    // Příchod s ?q= (formulář na stránce 404 nebo hledání bez JS): seznam je až pod přehledem, proto na něj posunout,
+    // jinak uživatel vidí jen úvod stránky a neví, že se něco hledalo.
+    if (param("q")) q.scrollIntoView({ block: "center" });
     sortSelect.addEventListener("change", () => {
       if (sortSelect.value === "groups") table.set("name", 1);
       else {

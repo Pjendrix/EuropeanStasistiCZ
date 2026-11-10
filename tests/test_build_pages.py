@@ -190,6 +190,7 @@ def test_party_rows_order_dots_and_verbs():
     assert sum(r["total"] for r in rows) == len(cz)  # součet teček = počet poslanců
     assert rows[0]["groups"] == ["EPP", "nezařazení"]  # frakce k datu hlasování, obě vypsané
     html = bp.party_rows_html(rows, "../")
+    assert "<b>nezávislí</b>" in html and "<b>Ind.</b>" not in html  # zkratka z dat EP se čtenáři neukazuje
     assert html.count('class="cz-dot') == len(cz)
     assert "zdržely se" in html and "zdrželi se" not in html  # obě ženy → ženský plurál
     assert bp.position_phrase("DID_NOT_VOTE", [meps[4]]) == "nehlasoval"

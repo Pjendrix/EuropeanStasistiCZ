@@ -93,8 +93,9 @@ def party_rows_html(rows: list[dict], root: str) -> str:
             if r["members"][k]
         )
         color = f' style="background:{esc(r["color"])}"' if r["color"] else ""
+        label = "nezávislí" if r["label"] == "Ind." else r["label"]  # „Ind.“ je zkratka z dat EP, čtenáři nic neřekne
         out.append(
-            f'<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"{color}></span><b>{esc(r["label"])}</b></span>'
+            f'<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"{color}></span><b>{esc(label)}</b></span>'
             f'<span class="small muted">{esc(", ".join(r["groups"]))}</span></div>'
             f'<div class="pr-dots" aria-hidden="true">{dots}</div><div class="pr-names">{names}</div></div>'
         )
@@ -883,7 +884,7 @@ def not_found_page() -> str:
 <form class="nf-search" role="search" action="/poslanci" method="get">
   <label for="nf-q">Najít poslance, stranu nebo hlasování</label>
   <input id="nf-q" name="q" type="search" autocomplete="off" placeholder="Jméno, strana nebo téma…">
-  <button type="submit" class="btn">Hledat</button>
+  <button type="submit" class="btn btn-solid">Hledat</button>
 </form>
 <ul class="nf-links">
   <li><a href="/poslanci">Poslanci</a></li>

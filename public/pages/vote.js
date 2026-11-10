@@ -1,7 +1,7 @@
 // Skript stránky vote.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { getJSON, loadCategories, param, soft } from "../lib/data.js";
 import { KIND_LABEL, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, adoptedTextUrl, czCountsText, displayName, esc, fmtDate, fmtMonth, groupColor, groupMajorityLabel, isFinal, procedureUrl, resultSentence, resultText, siteUrl, voteTitle } from "../lib/format.js";
-import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupLink, kindTag, logoTile, mepUrl, partyLink, resultHtml, setNav, shareButton, cardItems, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
+import { askAiBox, compareCard, csvButton, czDots, czGeoTag, czPartyRows, czPartyRowsHtml, groupLink, kindTag, logoTile, mepUrl, notFound, partyLink, resultHtml, setNav, shareButton, cardItems, showError, splitBar, topicChips, topicText, voteMeaningHtml } from "../lib/ui.js";
 setNav("votes");
 const main = document.getElementById("main");
 const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
@@ -9,11 +9,14 @@ const KEYS = ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"];
 (async () => {
   try {
     // Parametry z URL jen v očekávaném tvaru (audit B1: m se jinak dostal do cesty k souboru i do HTML).
-    if (!/^\d+$/.test(param("id") || "")) throw new Error("Hlasování nenalezeno.");
+    const missing = () => notFound("Hlasování jsme nenašli.", "Adresa je neúplná, nebo takové hlasování v datech není (jmenovitá hlasování máme od 16. 7. 2024).",
+      [["votes", "Všechna hlasování"], ["hlasovani", "Přehled hlasování"]]);
+    if (!/^\d+$/.test(param("id") || "")) throw missing();
     const id = Number(param("id"));
     const [shard, mepsDoc, groups, parties] = await Promise.all([
       // Jedno hlasování (≈ 7 kB) místo celého měsíce (audit A4); soubory vznikají při sestavení webu (build_shards.py).
-      getJSON(`votes/id/${id}.json`).catch(() => { throw new Error("Hlasování nenalezeno."); }),
+      // 404 = takové hlasování není; jiná chyba (síť, timeout) zůstává s tlačítkem „Zkusit znovu“
+      getJSON(`votes/id/${id}.json`).catch((e) => { throw e.status === 404 ? missing() : e; }),
       getJSON("overview.json"), getJSON("groups.json"), getJSON("parties.json"),
     ]);
     const v = shard.vote, foundMonth = v.month;
