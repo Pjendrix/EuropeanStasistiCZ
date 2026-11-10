@@ -70,7 +70,7 @@ setNav("votes-list");
     // Hledaný text se normalizuje jednou (bez diakritiky, malá písmena), ne při každém stisku klávesy. Hledá se i v názvech
     // témat a v ručních synonymech (stejně jako našeptávač v liště, lib/search.js).
     const topicText = await loadTopicText(full ? FULL_FILE : FINAL_FILE);
-    const prep = (rows) => { for (const v of rows) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs].join(" ")) + " " + topicText(v); return rows; };
+    const prep = (rows) => { for (const v of rows) v._hay = norm([voteTitle(v), v.title, v.reference, v.description, v.description_cs, v.procedure].join(" ")) + " " + topicText(v); return rows; };
     prep(all);
     // Typ jiný než „závěrečná“ potřebuje celý seznam: stáhne se jednou, pak se jen přepíná.
     const ensureRows = async () => {

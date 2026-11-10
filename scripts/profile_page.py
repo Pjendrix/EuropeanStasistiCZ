@@ -1243,6 +1243,20 @@ def profile_body(prof: dict, groups: list[dict], parties: list[dict], today: str
         if prev_groups and len(seq) > 1
         else ""
     )
+    # Změna strany v období stejně jako změna frakce: „Strana: A (od – do) → B (od …)“ (EP Open Data, meps.json → parties)
+    pseq = sorted(mep.get("parties") or [], key=lambda x: x["start"])
+    pname = lambda x: by_gender(mep, "nezávislý", "nezávislá") if x["short_label"] == "Ind." else x["short_label"]  # noqa: E731
+    if len(pseq) > 1:
+        prev_html += (
+            '<p class="small mx-prev"><span class="muted">Strana:</span> '
+            + " → ".join(
+                f"{esc(pname(x))} ({fmt_date(x['start'])} – {fmt_date(x['end'])})"
+                if x.get("end")
+                else f"{esc(pname(x))} (od {fmt_date(x['start'])})"
+                for x in pseq
+            )
+            + "</p>"
+        )
     hero = f"""<header class="card mx-hero" style="--g:{accent}">
   <figure class="portrait mx-portrait">{portrait}{f"<figcaption>{esc(mep['photo_credit'])}</figcaption>" if mep.get("photo_credit") else ""}</figure>
   <div class="mx-id">

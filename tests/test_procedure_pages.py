@@ -92,7 +92,7 @@ def test_page_with_events_trace_and_votes(tmp_path):
     assert "<h1>MOCK český název</h1>" in html and "řádný legislativní postup" in html and "výbor ENVI" in html
     assert 'class="rd-steps"' in html and "přiděleno výboru" in html
     assert "jiný krok (MOCK_UNKNOWN)" in html  # neznámý typ se nepřekládá odhadem
-    assert 'href="../p/2"' in html and "stínový/á zpravodaj/ka" in html  # česká stopa z rolí u hlasování
+    assert 'href="../p/2"' in html and ("stínový zpravodaj" in html or "stínová zpravodajka" in html)  # česká stopa, role podle rodu
     assert 'href="../v/1"' in html and "vote?id=2" in html  # závěrečné na v/, dílčí na interaktivní detail
     assert "Pozměňovací návrhy a dílčí hlasování (1)" in html
     assert "oeil.secure.europarl.europa.eu" in html and "data.europarl.europa.eu/api/v2/procedures/2023-0447" in html
@@ -132,3 +132,9 @@ def test_next_text_from_future_steps_only():
     ]
     assert pp.next_text(steps) == "Co bude dál: Hlasování pléna, pak podpis a vyhlášení."
     assert pp.next_text(steps[:1]) is None
+
+
+def test_role_by_gender_falls_back_without_gender():
+    assert pp.role_by_gender("shadow_opinion", {"gender": "FEMALE"}) == "stínová zpravodajka stanoviska"
+    assert pp.role_by_gender("co", {"gender": "MALE"}) == "spoluzpravodaj"
+    assert pp.role_by_gender("shadow", {}) == "stínový/á zpravodaj/ka"  # rod v datech chybí: neodhadovat

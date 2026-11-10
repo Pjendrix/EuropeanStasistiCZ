@@ -172,7 +172,9 @@ export const norm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u0
 
 // Slova dotazu: delší slova bez posledních 1–2 písmen, aby „ukrajina“ našla i „ukrajinu“, „migrace“ i „migraci“.
 export function searchTerms(query) {
-  return norm(query).split(/\s+/).filter(Boolean).map((w) => (w.length > 5 ? w.slice(0, w.length > 7 ? -2 : -1) : w));
+  return norm(query).split(/\s+/).filter(Boolean)
+    // koncovky se zkracují jen slovům; čísla dokumentů a procedur (2025/0045, a10-0172/2026) se hledají celá
+    .map((w) => (w.length > 5 && !/\d/.test(w) ? w.slice(0, w.length > 7 ? -2 : -1) : w));
 }
 
 export function matchesAll(hay, terms) {

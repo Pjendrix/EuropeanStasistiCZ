@@ -31,7 +31,7 @@ async function buildSearchIndex() {
     votes: votes.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.id - a.id)
       .map((v) => ({ href: ROOT + (isFinal(v) ? `v/${v.id}` : `vote?id=${v.id}`), label: voteTitle(v), mark: "H", final: isFinal(v),
         sub: `${fmtDate(v.date)}${v.vote_kind ? ` · ${KIND_LABEL[v.vote_kind] || ""}` : ""}`,
-        key: norm(`${voteTitle(v)} ${v.title || ""} ${v.reference || ""} ${v.description || ""} ${v.description_cs || ""}`), topics: topicText(v) })),
+        key: norm(`${voteTitle(v)} ${v.title || ""} ${v.reference || ""} ${v.description || ""} ${v.description_cs || ""} ${v.procedure || ""}`), topics: topicText(v) })),
   };
   return index;
 }

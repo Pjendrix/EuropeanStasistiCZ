@@ -22,6 +22,7 @@ from compute_stats import active_positions
 from layout import json_script, page
 from radar import COMMITTEES, CZ_ROLE_CS, CZ_ROLES, EVENT_CS, OEIL_URL, ROLE_ORDER, timeline
 from vote_kinds import KIND_LABELS, is_final
+from web_ui import by_gender
 from vote_parties import POSITIONS
 
 # Druh procedury podle zkratky v čísle (2023/0447(COD) -> COD). Neznámá zkratka se nepřekládá.
@@ -170,6 +171,22 @@ def collect(data_dir: Path, votes: list[dict]) -> dict[str, dict]:
     return out
 
 
+# Role podle rodu poslance (data EP rod uvádějí): „stínová zpravodajka“, ne „stínový/á zpravodaj/ka“.
+_ROLE_GENDER = {
+    "rapporteur": ("zpravodaj", "zpravodajka"),
+    "co": ("spoluzpravodaj", "spoluzpravodajka"),
+    "shadow": ("stínový zpravodaj", "stínová zpravodajka"),
+    "opinion": ("zpravodaj stanoviska", "zpravodajka stanoviska"),
+    "shadow_opinion": ("stínový zpravodaj stanoviska", "stínová zpravodajka stanoviska"),
+}
+
+
+def role_by_gender(role: str, mep: dict | None) -> str:
+    if (mep or {}).get("gender") not in ("MALE", "FEMALE") or role not in _ROLE_GENDER:
+        return CZ_ROLE_CS[role]
+    return by_gender(mep, *_ROLE_GENDER[role])
+
+
 def cz_trace(row: dict, vote_roles: dict, meps_by_id: dict) -> list[dict]:
     """Česká role v proceduře, každý poslanec jednou s nejvyšší rolí: z účastníků procedury, jinak z rolí u hlasování."""
     best: dict[int, str] = {}
@@ -264,7 +281,7 @@ def procedure_page(
     if trace:
         lis = "".join(
             f'<li><a href="{ROOT}p/{r["mep_id"]}">{esc(display_name(meps_by_id[r["mep_id"]]))}</a> '
-            f'<span class="muted">– {esc(CZ_ROLE_CS[r["role"]])}</span></li>'
+            f'<span class="muted">– {esc(role_by_gender(r["role"], meps_by_id[r["mep_id"]]))}</span></li>'
             for r in trace
         )
         trace_html = f'<ul class="plain">{lis}</ul><p class="source">Zdroj: <a href="{esc(api)}">EP Open Data</a> (CC BY 4.0).</p>'
