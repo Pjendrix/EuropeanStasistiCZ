@@ -1,6 +1,6 @@
 // Skript stránky votes.html (dřív vložený v HTML; kvůli CSP je v samostatném souboru).
 import { CATEGORY_META, getJSON, loadCategories, loadSearch, loadTopicText, soft } from "../lib/data.js";
-import { DAY_RE, KIND_LABEL, MONTH_RE, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, debounce, displayName, esc, fmtDate, fmtMonth, highlight, isActive, isFinal, matchesAll, norm, positionFor, searchTerms, voteDesc, voteSubtitle, voteTitle } from "../lib/format.js";
+import { DAY_RE, KIND_LABEL, POSITION_LABEL, RESULT_LABEL, RESULT_NOTE, debounce, displayName, esc, fmtDate, fmtMonth, highlight, isActive, isFinal, matchesAll, norm, positionFor, searchTerms, voteDesc, voteSubtitle, voteTitle } from "../lib/format.js";
 import { catChip, csvButton, czCountsHtml, infoButton, kindTag, resultHtml, setNav, showError, splitBar } from "../lib/ui.js";
 setNav("votes");
 setNav("votes-list");
@@ -51,7 +51,9 @@ setNav("votes-list");
     topicSel.innerHTML += topicCodes.map((c) => `<option value="${esc(c)}">${esc(topicLabels[c] || c)}</option>`).join("");
     topicSel.closest("label").hidden = !topicCodes.length;
     const params = new URLSearchParams(location.search);
-    if (MONTH_RE.test(params.get("m") || "")) monthSel.value = params.get("m");
+    // Měsíc jen když v datech existuje: neznámý (?m=2030-01 ze starého nebo ručně upraveného odkazu) by nechal výběr prázdný
+    // a stránka ukázala „0 z 0 hlasování“; zůstane poslední měsíc.
+    if (index.months.some((m) => m.month === params.get("m"))) monthSel.value = params.get("m");
     if (params.get("q")) q.value = params.get("q");
     if (params.get("mep") && /^\d+$/.test(params.get("mep"))) { mepSel.value = params.get("mep"); await loadMepVotes(); }
     // ?all=1 ze starších odkazů = všechna hlasování

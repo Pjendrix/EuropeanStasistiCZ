@@ -632,6 +632,8 @@ def build_parties_web(
         summary = {
             **party,
             "members": len(members),
+            # kolik z nich je ve straně a v mandátu dnes: „Poslanců 2“ u strany, kterou oba opustili, mátlo (revize 10. 11. 2026)
+            "members_now": sum(1 for x in members if x["current"]),
             "total": st["total"],
             "cohesion": st["cohesion"],
             "cohesion_main": st["cohesion_main"],

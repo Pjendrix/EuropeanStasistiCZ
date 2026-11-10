@@ -389,8 +389,8 @@ def portal_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
       <p class="sr-only" id="pt-live" aria-live="polite"></p>
     </div>
     <form class="hm-search pt-search" role="search" action="poslanci" method="get">
-      <label for="hub-q">{_SEARCH_ICON}<span class="sr-only">Najdi poslance, stranu nebo hlasování</span>
-        <input id="hub-q" name="q" type="search" autocomplete="off" placeholder="Najdi poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list" aria-haspopup="listbox"><kbd aria-hidden="true">/</kbd><button class="hm-go" type="submit">Hledat</button></label>
+      <label for="hub-q">{_SEARCH_ICON}<span class="sr-only">Najít poslance, stranu nebo hlasování</span>
+        <input id="hub-q" name="q" type="search" autocomplete="off" placeholder="Najít poslance, stranu nebo hlasování…" role="combobox" aria-expanded="false" aria-controls="hub-results" aria-autocomplete="list" aria-haspopup="listbox"><kbd aria-hidden="true">/</kbd><button class="hm-go" type="submit">Hledat</button></label>
       <ul id="hub-results" class="hm-results" role="listbox" aria-label="Výsledky hledání" hidden></ul>
     </form>
   </div>

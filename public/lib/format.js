@@ -393,3 +393,8 @@ export function topCountries(countries, n = 5) {
 export const seatsCs = (n) => `${fmtNum(n)} ${n === 1 ? "poslanec" : n >= 2 && n <= 4 ? "poslanci" : "poslanců"}`;
 // „z 13 zemí“, „ze 17 zemí“ (ze před čísly, která se čtou se s/z/dv/tř/čt: 2–4, 7, 17, 70–79).
 export const fromCountriesCs = (n) => `${[2, 3, 4, 7, 17].includes(n) || (n >= 70 && n < 80) ? "ze" : "z"} ${fmtNum(n)} ${n === 1 ? "země" : "zemí"}`;
+
+// Velké první písmeno (názvy frakcí z EP začínají malým: „skupina Zelených…“; v nadpisu a titulku stránky patří velké).
+export function capFirst(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}

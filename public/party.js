@@ -1,7 +1,7 @@
 // Strany: seznam (party.html), evropské frakce (?v=eu, ?c=) a interakce na detailu strany (s/{id}.html).
 import { getJSON, param, soft } from "./lib/data.js";
-import { CZ_GROUP_LABEL, byGender, chairRole, chairsHeading, displayName, esc, fmtDate, fmtNum, fmtPct, fromCountriesCs, pct, seatsCs, siteUrl, topCountries } from "./lib/format.js";
-import { SHARE_BTN_HTML, collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
+import { CZ_GROUP_LABEL, byGender, capFirst, chairRole, chairsHeading, displayName, esc, fmtDate, fmtNum, fmtPct, fromCountriesCs, pct, seatsCs, siteUrl, topCountries } from "./lib/format.js";
+import { SHARE_BTN_HTML, collapseTables, countPct, czCountsHtml, emptyState, entityCell, groupBadge, infoButton, logoTile, mepUrl, notFound, noteLine, partyUrl, pctCell, photoUrl, setNav, showError, sourceLine, splitBar, voteRow } from "./lib/ui.js";
 
 setNav("parties");
 const MIN_VOTERS_EU = 10;
@@ -37,7 +37,7 @@ async function euListPage() {
       <thead><tr><th>Skupina</th><th class="num">Čeští poslanci</th><th class="num">Poslanců / zemí</th><th class="num">Účast skupiny${bench?.ep?.attendance != null ? `<div class="small muted th-note">medián EP ${fmtPct(bench.ep.attendance)}</div>` : ""}</th>
         <th class="num">Soudržnost</th><th class="num">Výrazně rozdělená hlasování</th></tr></thead>
       <tbody>${idx.groups.map((g) => `<tr>
-        <td>${entityCell(g, { name: g.name_cs || g.label, href: groupPageUrl(g.code), sub: esc(CZ_GROUP_LABEL[g.code] || g.short_label) })}</td>
+        <td>${entityCell(g, { name: capFirst(g.name_cs || g.label), href: groupPageUrl(g.code), sub: esc(CZ_GROUP_LABEL[g.code] || g.short_label) })}</td>
         <td class="num" data-label="Čeští poslanci">${g.cz_members ? fmtNum(g.cz_members) : '<span class="muted">žádný</span>'}</td>
         <td class="num" data-label="Poslanců / zemí">${g.seats ? `${fmtNum(g.seats)} / ${fmtNum(g.n_countries)}` : "–"}</td>
         <td class="num" data-label="Účast skupiny">${pctCell(g.attendance)}</td>
@@ -108,9 +108,9 @@ function groupShareContext(g, now, former, groups) {
 }
 
 async function euDetailPage(code) {
-  const [g, groups, parties] = await Promise.all([getJSON(`eugroups/${code}.json`).catch(() => { throw new Error("Skupina nenalezena. Vrať se na seznam frakcí."); }), getJSON("groups.json"), getJSON("parties.json").catch(soft([]))]);
+  const [g, groups, parties] = await Promise.all([getJSON(`eugroups/${code}.json`).catch((e) => { throw e.status === 404 ? notFound("Frakci jsme nenašli.", "Zkratka frakce v adrese neodpovídá žádné politické skupině Evropského parlamentu.", [["party?v=eu", "Evropské frakce"], ["party", "České strany"]]) : e; }), getJSON("groups.json"), getJSON("parties.json").catch(soft([]))]);
   PARTIES = parties;
-  document.title = `${g.name_cs || g.label} – EP Watch CZ`;
+  document.title = `${capFirst(g.name_cs || g.label)} – EP Watch CZ`;
   const now = g.member_list.filter((m) => m.current !== false).sort((a, b) => (a.sort_label || a.name).localeCompare(b.sort_label || b.name, "cs"));
   const former = g.member_list.filter((m) => m.current === false);
   const rows = (list) => list.length ? `<div class="table-wrap"><table class="stack">
@@ -120,7 +120,7 @@ async function euDetailPage(code) {
   main.innerHTML = `
     <div class="page-head"><p class="small"><a href="party?v=eu">← Všechny frakce</a></p><div class="head-acts">${SHARE_BTN_HTML}${viewSwitch("eu")}</div></div>
     ${g.logo ? `<div class="logo-row">${logoTile(g, 48)}</div>` : ""}
-    <h1>${esc(g.name_cs || g.label)} ${groupBadge(g.code, groups)}</h1>
+    <h1>${esc(capFirst(g.name_cs || g.label))} ${groupBadge(g.code, groups)}</h1>
     <p class="small">${g.seats ? `${seatsCs(g.seats)} ${fromCountriesCs(g.n_countries)} · ` : ""}${czCountCs(g.cz_members)}${g.web ? ` · <a class="ext" href="${esc(g.web)}" rel="noopener" title="Adresu webu uvádí Wikidata (CC0)">oficiální web</a>` : ""}</p>
 
     <h2>Čeští poslanci ve skupině</h2>
@@ -171,10 +171,11 @@ async function listPage() {
         <th class="num">Jednotnost</th><th class="num">Hlasování, kde se strana rozdělila</th></tr></thead>
       <tbody>${list.map((p) => `<tr>
         <td>${entityCell(p, { name: p.name || p.short_label, href: partyUrl(p.id), sub: esc(p.short_label) })}</td>
-        <td class="num" data-label="Poslanců">${fmtNum(p.members)}</td>
+        <td class="num" data-label="Poslanců">${p.members_now == null || p.members_now === p.members ? fmtNum(p.members)
+          : `${p.members_now ? fmtNum(p.members_now) : "nikdo"}<div class="small muted">nyní · za období ${fmtNum(p.members)}</div>`}</td>
         <td class="num" data-label="Účast na hlasování">${pctCell(p.total.attendance)}</td>
         <td class="num" data-label="Jednotnost">${pctCell(p.cohesion, "všichni poslanci strany hlasovali stejně")}</td>
-        <td class="num" data-label="Strana se rozdělila">${p.cohesion[1] ? `${fmtNum(p.splits_count)} z ${fmtNum(p.cohesion[1])}<div class="small muted">${fmtPct(p.splits_count / p.cohesion[1])}</div>` : '<span class="muted">jen 1 poslanec</span>'}</td>
+        <td class="num" data-label="Strana se rozdělila">${p.cohesion[1] ? `${fmtNum(p.splits_count)} z ${fmtNum(p.cohesion[1])}<div class="small muted">${fmtPct(p.splits_count / p.cohesion[1])}</div>` : '<span class="muted">vždy jen 1 poslanec</span>'}</td>
       </tr>`).join("")}</tbody>
     </table></div>
     <p class="source">${sourceLine(idx)}</p>`;

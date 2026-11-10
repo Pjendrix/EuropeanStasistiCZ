@@ -248,7 +248,7 @@ const CARD_MAX = 4;
           ${allRows && allShown < allRows.length ? html`<p><button type="button" class="link-btn" id="duel-pick-more">Zobrazit dalších ${fmtNum(Math.min(ALL_PAGE, allRows.length - allShown))}</button>
             <span class="small muted">(${fmtNum(allShown)} z ${fmtNum(allRows.length)}, od nejnovějších)</span></p>` : ""}
           ${allRows ? "" : html`<p><button type="button" class="link-btn" id="duel-pick-all">Zobrazit všechna hlasování, kde se rozešli (${fmtNum(P.diverged_all)})</button></p>`}
-          <p class="duel-pick-act"><button type="button" class="btn" id="duel-pick-ok">Použít a sdílet</button>
+          <p class="duel-pick-act"><button type="button" class="btn btn-solid" id="duel-pick-ok">Použít a sdílet</button>
             <button type="button" class="link-btn" id="duel-pick-reset">Vrátit výchozí výběr</button></p>
         </form>`);
         const lookup = new Map(rows.map((x) => [x.r.id, x]));

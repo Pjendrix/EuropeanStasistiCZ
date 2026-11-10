@@ -218,7 +218,7 @@ export function czPartyRowsHtml(rows) {
     const dots = KEYS4.flatMap((k) => r.members[k].map((m) => `<i class="cz-dot d-${k}" title="${esc(`${displayName(m)}: ${positionPhrase(k, [m])}`)}"></i>`)).join("");
     const names = KEYS4.filter((k) => r.members[k].length).map((k) =>
       `<span class="pr-group"><b class="pos pos-${k}">${esc(positionPhrase(k, r.members[k]))}</b> ${r.members[k].map((m) => `<a href="${mepUrl(m.id)}">${esc(displayName(m))}</a>`).join(", ")}</span>`).join(" · ");
-    return `<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"${r.color ? ` style="background:${esc(r.color)}"` : ""}></span><b>${esc(r.label)}</b></span>
+    return `<div class="party-row"><div class="pr-party"><span class="pr-label"><span class="dot"${r.color ? ` style="background:${esc(r.color)}"` : ""}></span><b>${esc(r.label === "Ind." ? "nezávislí" : r.label)}</b></span>
       <span class="small muted">${esc(r.groups.join(", "))}</span></div><div class="pr-dots" aria-hidden="true">${dots}</div><div class="pr-names">${names}</div></div>`;
   }).join("");
 }
@@ -241,7 +241,18 @@ export function setNav(page) {
 }
 
 // Chyba s tlačítkem „Zkusit znovu“: retry() načte obsah znovu bez reloadu; bez něj se stránka obnoví. Bez inline onclick (CSP).
+// „Nenalezeno“ (špatné nebo neúplné id v adrese): chyba pro showError, která místo „Zkusit znovu“ (opakování nepomůže)
+// ukáže odkazy, kudy dál. links = [[href, text], …].
+export function notFound(message, hint, links) {
+  return Object.assign(new Error(message), { hint, links });
+}
+
 export function showError(el, err, retry) {
+  if (err.links) {
+    el.classList.remove("loading");
+    el.innerHTML = `<div class="card" role="alert">${emptyState(err.message, err.hint, err.links)}</div>`;
+    return;
+  }
   el.innerHTML = `<p class="error" role="alert">${esc(err.message || err)}
     <button type="button" class="more-btn">Zkusit znovu</button></p>`;
   el.querySelector("button").addEventListener("click", () => (retry ? retry() : location.reload()));

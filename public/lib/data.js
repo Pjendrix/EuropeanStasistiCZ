@@ -14,7 +14,8 @@ export async function getJSON(path, { timeout = 20000 } = {}) {
     const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), timeout);
     const p = fetch(DATA + path, { signal: ctl.signal })
       .then((r) => {
-        if (!r.ok) throw new Error(`Nepodařilo se načíst ${path} (HTTP ${r.status})`);
+        // status na chybě: volající pozná „soubor neexistuje“ (404, špatné id v adrese) od výpadku sítě
+        if (!r.ok) throw Object.assign(new Error(`Nepodařilo se načíst ${path} (HTTP ${r.status})`), { status: r.status });
         return r.json();
       })
       .catch((e) => { throw e.name === "AbortError" ? new Error(`Načítání ${path} trvá příliš dlouho, zkuste to znovu.`) : e; })
