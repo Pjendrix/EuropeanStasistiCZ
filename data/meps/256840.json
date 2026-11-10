@@ -74,7 +74,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 844,
+ "mandate_days": 848,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4647,13 +4647,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-03",
+   "committee_to": "2026-11-05",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1456,
+   "committee_docs": 1460,
    "committee_compromise": 34,
-   "committee_pending": 11
+   "committee_pending": 12
   },
-  "updated": "2026-11-06"
+  "updated": "2026-11-10"
  },
  "own_work": {
   "source": {
@@ -4661,7 +4661,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-06",
+  "updated": "2026-11-10",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4694,10 +4694,10 @@
     "count": 1
    },
    "motion": {
-    "count": 58,
+    "count": 59,
     "voted": 1,
     "adopted": 0,
-    "no_vote": 11,
+    "no_vote": 12,
     "other": 0,
     "superseded": 46
    },
@@ -4727,7 +4727,7 @@
    "lead_opinions": 0,
    "shadow_reports": 2,
    "shadow_opinions": 1,
-   "motions_signed": 115,
+   "motions_signed": 116,
    "delegation": {
     "tiers": {
      "lead_reports": null,
@@ -4741,6 +4741,22 @@
    }
   },
   "items": [
+   {
+    "id": "B-10-2026-0497",
+    "label": null,
+    "date": "2026-11-06",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on Ukrainian children forcibly deported to Russia or living in Russian-occupied territories in Ukraine"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0497_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 33
+   },
    {
     "id": "RC-10-2026-0476",
     "label": null,
