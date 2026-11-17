@@ -74,7 +74,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4647,13 +4647,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4661,7 +4661,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4702,10 +4702,10 @@
     "superseded": 46
    },
    "joint_motion": {
-    "count": 57,
+    "count": 58,
     "voted": 47,
     "adopted": 47,
-    "no_vote": 10,
+    "no_vote": 11,
     "other": 0
    },
    "question": {
@@ -4727,7 +4727,7 @@
    "lead_opinions": 0,
    "shadow_reports": 2,
    "shadow_opinions": 1,
-   "motions_signed": 116,
+   "motions_signed": 117,
    "delegation": {
     "tiers": {
      "lead_reports": null,
@@ -4741,6 +4741,22 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0497",
+    "label": null,
+    "date": "2026-11-10",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 68
+   },
    {
     "id": "B-10-2026-0497",
     "label": null,

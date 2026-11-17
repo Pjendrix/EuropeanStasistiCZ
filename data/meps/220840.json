@@ -95,7 +95,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4592,61 +4592,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 1721,
+   "total": 1868,
    "sole": 55,
    "on_behalf": 13,
-   "dossiers": 53,
-   "docs": 125,
+   "dossiers": 56,
+   "docs": 132,
    "recent": [
     {
-     "doc": "AFET-AM-797439",
-     "date": "2026-10-25",
+     "doc": "IMCO-AM-797693",
+     "date": "2026-11-16",
      "committees": [
-      "AFET"
+      "IMCO"
      ],
-     "procedure": "2026/2059(INI)",
-     "count": 4,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797439/AFET-AM-797439_en.pdf"
+     "procedure": "2026/0113(COD)",
+     "count": 23,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797693/IMCO-AM-797693_en.pdf"
     },
     {
-     "doc": "AFET-AM-797438",
-     "date": "2026-10-25",
+     "doc": "IMCO-AM-797702",
+     "date": "2026-11-13",
      "committees": [
-      "AFET"
+      "IMCO"
      ],
-     "procedure": "2026/2059(INI)",
-     "count": 10,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797438/AFET-AM-797438_en.pdf"
+     "procedure": "2026/0114(COD)",
+     "count": 11,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797702/IMCO-AM-797702_en.pdf"
     },
     {
-     "doc": "AFET-AM-797432",
-     "date": "2026-10-25",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "AFET"
+      "CJ13"
      ],
-     "procedure": "2026/2059(INI)",
-     "count": 3,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797432/AFET-AM-797432_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796455",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 2,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796455/CJ80-AM-796455_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796454",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 16,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 19,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
     }
    ]
   },
@@ -4666,13 +4666,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4680,7 +4680,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4760,6 +4760,24 @@
    }
   },
   "items": [
+   {
+    "id": "A-10-2026-0287",
+    "label": "A10-0287/2026",
+    "date": "2026-11-10",
+    "title": {
+     "cs": null,
+     "en": "REPORT on the proposal for a regulation of the European Parliament and of the Council establishing the Justice programme for the period 2028-2034 and repealing Regulation (EU) 2021/693"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/A-10-2026-0287_EN.html",
+    "type": "report",
+    "role": "RAPPORTEUR_CO",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": null,
+    "process_type": "COD",
+    "legislative": true
+   },
    {
     "id": "B-10-2026-0486",
     "label": null,
@@ -5481,26 +5499,6 @@
     "status": "answered",
     "answer_date": "2026-01-23",
     "authors_total": 26
-   },
-   {
-    "id": "proc-2025-0255",
-    "label": "2025/0255(COD)",
-    "date": "2025-09-23",
-    "title": {
-     "cs": "Zavedení programu Spravedlnost na období 2028–2034 a zrušení nařízení (EU) 2021/693",
-     "en": "Establishing the Justice programme for the period 2028-2034 and repealing Regulation (EU) 2021/693"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0255(COD)",
-    "type": "report",
-    "role": "RAPPORTEUR_CO",
-    "group": "PFE",
-    "committee": "LIBE",
-    "status": "no_vote",
-    "vote_id": null,
-    "vote_date": null,
-    "report": null,
-    "process_type": "COD",
-    "legislative": true
    },
    {
     "id": "B-10-2025-0405",

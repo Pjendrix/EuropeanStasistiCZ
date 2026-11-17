@@ -105,7 +105,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4602,62 +4602,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 3430,
+   "total": 3543,
    "sole": 105,
    "on_behalf": 29,
    "dossiers": 105,
-   "docs": 258,
+   "docs": 263,
    "recent": [
     {
-     "doc": "CJ09-AM-797458",
-     "date": "2026-10-30",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "CONT",
-      "LIBE"
+      "CJ13"
      ],
-     "procedure": "2026/2125(INL)",
-     "count": 8,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ09-AM-797458/CJ09-AM-797458_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
     },
     {
-     "doc": "ENVI-AM-796499",
-     "date": "2026-10-21",
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
      "committees": [
-      "ENVI"
+      "CJ13"
      ],
-     "procedure": "2026/0212(COD)",
-     "count": 15,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796499/ENVI-AM-796499_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
     },
     {
-     "doc": "ENVI-AM-796497",
-     "date": "2026-10-21",
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
      "committees": [
-      "ENVI"
+      "CJ13"
      ],
-     "procedure": "2026/0212(COD)",
-     "count": 18,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796497/ENVI-AM-796497_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 19,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
     },
     {
-     "doc": "ENVI-AM-796250",
-     "date": "2026-10-21",
+     "doc": "CJ13-AM-797490",
+     "date": "2026-11-03",
      "committees": [
-      "ENVI"
+      "CJ13"
      ],
-     "procedure": "2026/0212(COD)",
-     "count": 10,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796250/ENVI-AM-796250_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 12,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797490/CJ13-AM-797490_en.pdf"
     },
     {
-     "doc": "ENVI-AM-796496",
-     "date": "2026-10-20",
+     "doc": "CJ13-AM-797489",
+     "date": "2026-11-03",
      "committees": [
-      "ENVI"
+      "CJ13"
      ],
-     "procedure": "2026/0212(COD)",
-     "count": 17,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796496/ENVI-AM-796496_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 2,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797489/CJ13-AM-797489_en.pdf"
     }
    ]
   },
@@ -4677,13 +4676,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4691,7 +4690,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4739,7 +4738,7 @@
     "other": 0
    },
    "question": {
-    "count": 73,
+    "count": 74,
     "answered": 64
    }
   },
@@ -4771,6 +4770,22 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-004536",
+    "label": "E-004536/2026",
+    "date": "2026-11-04",
+    "title": {
+     "cs": "Trvalý letní čas: příležitost pro Evropu a vyhlídky na provedení",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004536_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 9
+   },
    {
     "id": "B-10-2026-0432",
     "label": null,

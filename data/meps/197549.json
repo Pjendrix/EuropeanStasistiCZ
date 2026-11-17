@@ -95,7 +95,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4664,13 +4664,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4678,7 +4678,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4726,8 +4726,8 @@
     "other": 0
    },
    "question": {
-    "count": 45,
-    "answered": 39
+    "count": 46,
+    "answered": 40
    }
   },
   "passed": {
@@ -4758,6 +4758,22 @@
    }
   },
   "items": [
+   {
+    "id": "P-10-2026-004616",
+    "label": "P-004616/2026",
+    "date": "2026-11-10",
+    "title": {
+     "cs": "Chybějící legislativa k úplnému ukončení dovozu ruské ropy",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004616_EN.html",
+    "type": "question",
+    "subtype": "question_priority",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 30
+   },
    {
     "id": "E-10-2026-004285",
     "label": "E-004285/2026",
@@ -4822,8 +4838,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-10",
     "authors_total": 68
    },
    {

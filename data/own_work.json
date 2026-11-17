@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-10",
+ "updated": "2026-11-17",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -33,7 +33,7 @@
      "other": 0
     },
     "opinion": {
-     "count": 4
+     "count": 2
     },
     "shadow_opinion": {
      "count": 0
@@ -69,7 +69,7 @@
    },
    "roles": {
     "lead_reports": 0,
-    "lead_opinions": 4,
+    "lead_opinions": 2,
     "shadow_reports": 0,
     "shadow_opinions": 0,
     "motions_signed": 4,
@@ -101,46 +101,6 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 13
-    },
-    {
-     "id": "proc-2026-2079",
-     "label": "2026/2079(DEC)",
-     "date": "2026-10-13",
-     "title": {
-      "cs": "Udělení absolutoria za rok 2025: souhrnný rozpočet EU – Komise",
-      "en": "Discharge 2025: General budget of the EU - Commission"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2079(DEC)",
-     "type": "opinion",
-     "role": "RAPPORTEUR_OPINION",
-     "group": "NI",
-     "committee": "SANT",
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "DEC",
-     "legislative": false
-    },
-    {
-     "id": "proc-2026-2090",
-     "label": "2026/2090(DEC)",
-     "date": "2026-10-12",
-     "title": {
-      "cs": "Udělení absolutoria za rozpočtový rok 2025: souhrnný rozpočet EU – agentury",
-      "en": "Discharge 2025: General budget of the EU - Agencies"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2090(DEC)",
-     "type": "opinion",
-     "role": "RAPPORTEUR_OPINION",
-     "group": "NI",
-     "committee": "SANT",
-     "status": null,
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "DEC",
-     "legislative": false
     },
     {
      "id": "E-10-2026-003725",
@@ -3177,17 +3137,17 @@
   "124713": {
    "summary": {
     "report": {
-     "count": 6,
+     "count": 7,
      "voted": 1,
      "adopted": 1,
-     "no_vote": 5,
+     "no_vote": 6,
      "other": 0
     },
     "shadow_report": {
-     "count": 9,
+     "count": 10,
      "voted": 4,
      "adopted": 3,
-     "no_vote": 5,
+     "no_vote": 6,
      "other": 0
     },
     "opinion": {
@@ -3212,23 +3172,23 @@
      "other": 0
     },
     "question": {
-     "count": 117,
-     "answered": 102
+     "count": 119,
+     "answered": 105
     }
    },
    "passed": {
     "lead_adopted": 1,
     "lead_adopted_legislative": 0,
-    "lead_pending": 5,
+    "lead_pending": 6,
     "shadow_adopted": 3,
     "shadow_adopted_legislative": 0,
-    "shadow_pending": 5,
+    "shadow_pending": 6,
     "resolutions_adopted": 47
    },
    "roles": {
-    "lead_reports": 6,
+    "lead_reports": 7,
     "lead_opinions": 4,
-    "shadow_reports": 9,
+    "shadow_reports": 10,
     "shadow_opinions": 13,
     "motions_signed": 135,
     "delegation": {
@@ -3245,6 +3205,40 @@
    },
    "items": [
     {
+     "id": "A-10-2026-0288",
+     "label": "A10-0288/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": null,
+      "en": "REPORT on the protection of the Union’s financial interests in the post-2027 multiannual financial framework through the revision of the anti-fraud architecture"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/A-10-2026-0288_EN.html",
+     "type": "report",
+     "role": "RAPPORTEUR_CO",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": null,
+     "process_type": null,
+     "legislative": null
+    },
+    {
+     "id": "E-10-2026-004507",
+     "label": "E-004507/2026",
+     "date": "2026-11-04",
+     "title": {
+      "cs": "Zajištění měřitelných výsledků a evropské konkurenceschopnosti prostřednictvím financování EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004507_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 1
+    },
+    {
      "id": "E-10-2026-004413",
      "label": "E-004413/2026",
      "date": "2026-10-28",
@@ -3259,6 +3253,22 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 1
+    },
+    {
+     "id": "E-10-2026-004370",
+     "label": "E-004370/2026",
+     "date": "2026-10-26",
+     "title": {
+      "cs": "Postup policie a právní stát během protestů v Albánii",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004370_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 13
     },
     {
      "id": "E-10-2026-004306",
@@ -3291,6 +3301,26 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 2
+    },
+    {
+     "id": "proc-2026-2125",
+     "label": "2026/2125(INL)",
+     "date": "2026-10-08",
+     "title": {
+      "cs": "Budoucí revize nařízení o úřadu EPPO",
+      "en": "Future revision of the EPPO Regulation"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2125(INL)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PPE",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "INL",
+     "legislative": false
     },
     {
      "id": "RC-10-2026-0452",
@@ -3493,8 +3523,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 29
     },
     {
@@ -3662,8 +3692,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-11",
      "authors_total": 1
     },
     {
@@ -3710,8 +3740,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-13",
      "authors_total": 1
     },
     {
@@ -8086,7 +8116,7 @@
      "other": 0
     },
     "question": {
-     "count": 73,
+     "count": 74,
      "answered": 64
     }
    },
@@ -8118,6 +8148,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004536",
+     "label": "E-004536/2026",
+     "date": "2026-11-04",
+     "title": {
+      "cs": "Trvalý letní čas: příležitost pro Evropu a vyhlídky na provedení",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004536_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 9
+    },
     {
      "id": "B-10-2026-0432",
      "label": null,
@@ -10429,8 +10475,8 @@
      "other": 0
     },
     "question": {
-     "count": 26,
-     "answered": 24
+     "count": 27,
+     "answered": 25
     }
    },
    "passed": {
@@ -10461,6 +10507,22 @@
     }
    },
    "items": [
+    {
+     "id": "P-10-2026-004616",
+     "label": "P-004616/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": "Chybějící legislativa k úplnému ukončení dovozu ruské ropy",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004616_EN.html",
+     "type": "question",
+     "subtype": "question_priority",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 30
+    },
     {
      "id": "RC-10-2026-0482",
      "label": null,
@@ -10680,8 +10742,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 29
     },
     {
@@ -14487,8 +14549,8 @@
      "other": 0
     },
     "question": {
-     "count": 45,
-     "answered": 39
+     "count": 46,
+     "answered": 40
     }
    },
    "passed": {
@@ -14519,6 +14581,22 @@
     }
    },
    "items": [
+    {
+     "id": "P-10-2026-004616",
+     "label": "P-004616/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": "Chybějící legislativa k úplnému ukončení dovozu ruské ropy",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004616_EN.html",
+     "type": "question",
+     "subtype": "question_priority",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 30
+    },
     {
      "id": "E-10-2026-004285",
      "label": "E-004285/2026",
@@ -14583,8 +14661,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 68
     },
     {
@@ -16694,7 +16772,7 @@
      "other": 0
     },
     "opinion": {
-     "count": 15
+     "count": 16
     },
     "shadow_opinion": {
      "count": 0
@@ -16708,10 +16786,10 @@
      "superseded": 73
     },
     "joint_motion": {
-     "count": 75,
+     "count": 76,
      "voted": 56,
      "adopted": 56,
-     "no_vote": 19,
+     "no_vote": 20,
      "other": 0
     },
     "question": {
@@ -16730,10 +16808,10 @@
    },
    "roles": {
     "lead_reports": 11,
-    "lead_opinions": 15,
+    "lead_opinions": 16,
     "shadow_reports": 3,
     "shadow_opinions": 0,
-    "motions_signed": 174,
+    "motions_signed": 175,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -16747,6 +16825,22 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0497",
+     "label": null,
+     "date": "2026-11-10",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 68
+    },
     {
      "id": "E-10-2026-004328",
      "label": "E-004328/2026",
@@ -16989,6 +17083,26 @@
      "joint_motion": "RC-10-2026-0441",
      "joint_result": "ADOPTED",
      "joint_vote_id": 198216
+    },
+    {
+     "id": "proc-2026-0182",
+     "label": "2026/0182(NLE)",
+     "date": "2026-10-02",
+     "title": {
+      "cs": "Dohoda o komplexním hospodářském partnerství mezi EU a Indonésií",
+      "en": "EU–Indonesia Comprehensive Economic Partnership Agreement"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0182(NLE)",
+     "type": "opinion",
+     "role": "RAPPORTEUR_OPINION",
+     "group": "ECR",
+     "committee": "AGRI",
+     "status": null,
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "NLE",
+     "legislative": false
     },
     {
      "id": "RC-10-2026-0404",
@@ -21207,6 +21321,24 @@
    },
    "items": [
     {
+     "id": "A-10-2026-0287",
+     "label": "A10-0287/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": null,
+      "en": "REPORT on the proposal for a regulation of the European Parliament and of the Council establishing the Justice programme for the period 2028-2034 and repealing Regulation (EU) 2021/693"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/A-10-2026-0287_EN.html",
+     "type": "report",
+     "role": "RAPPORTEUR_CO",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": null,
+     "process_type": "COD",
+     "legislative": true
+    },
+    {
      "id": "B-10-2026-0486",
      "label": null,
      "date": "2026-10-19",
@@ -21929,26 +22061,6 @@
      "authors_total": 26
     },
     {
-     "id": "proc-2025-0255",
-     "label": "2025/0255(COD)",
-     "date": "2025-09-23",
-     "title": {
-      "cs": "Zavedení programu Spravedlnost na období 2028–2034 a zrušení nařízení (EU) 2021/693",
-      "en": "Establishing the Justice programme for the period 2028-2034 and repealing Regulation (EU) 2021/693"
-     },
-     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0255(COD)",
-     "type": "report",
-     "role": "RAPPORTEUR_CO",
-     "group": "PFE",
-     "committee": "LIBE",
-     "status": "no_vote",
-     "vote_id": null,
-     "vote_date": null,
-     "report": null,
-     "process_type": "COD",
-     "legislative": true
-    },
-    {
      "id": "B-10-2025-0405",
      "label": "B10-0405/2025",
      "date": "2025-09-23",
@@ -22590,10 +22702,10 @@
      "superseded": 46
     },
     "joint_motion": {
-     "count": 57,
+     "count": 58,
      "voted": 47,
      "adopted": 47,
-     "no_vote": 10,
+     "no_vote": 11,
      "other": 0
     },
     "question": {
@@ -22615,7 +22727,7 @@
     "lead_opinions": 0,
     "shadow_reports": 2,
     "shadow_opinions": 1,
-    "motions_signed": 116,
+    "motions_signed": 117,
     "delegation": {
      "tiers": {
       "lead_reports": null,
@@ -22629,6 +22741,22 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0497",
+     "label": null,
+     "date": "2026-11-10",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 68
+    },
     {
      "id": "B-10-2026-0497",
      "label": null,
@@ -25175,10 +25303,10 @@
      "other": 0
     },
     "shadow_report": {
-     "count": 11,
+     "count": 13,
      "voted": 2,
      "adopted": 2,
-     "no_vote": 9,
+     "no_vote": 11,
      "other": 0
     },
     "opinion": {
@@ -25213,13 +25341,13 @@
     "lead_pending": 1,
     "shadow_adopted": 2,
     "shadow_adopted_legislative": 2,
-    "shadow_pending": 9,
+    "shadow_pending": 11,
     "resolutions_adopted": 0
    },
    "roles": {
     "lead_reports": 1,
     "lead_opinions": 2,
-    "shadow_reports": 11,
+    "shadow_reports": 13,
     "shadow_opinions": 10,
     "motions_signed": 10,
     "delegation": {
@@ -25236,6 +25364,26 @@
    },
    "items": [
     {
+     "id": "proc-2026-0115",
+     "label": "2026/0115(COD)",
+     "date": "2026-10-16",
+     "title": {
+      "cs": "Vydávání jízdenek na železnici",
+      "en": "Rail ticketing"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0115(COD)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PFE",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
+    },
+    {
      "id": "proc-2026-0084",
      "label": "2026/0084(COD)",
      "date": "2026-09-23",
@@ -25249,6 +25397,26 @@
      "group": "PFE",
      "committee": null,
      "status": null,
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
+    },
+    {
+     "id": "proc-2026-0114",
+     "label": "2026/0114(COD)",
+     "date": "2026-09-22",
+     "title": {
+      "cs": "Ochrana cestujících v železniční přepravě pomocí jednotných přepravních dokladů",
+      "en": "Protection of rail passengers with single tickets"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0114(COD)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PFE",
+     "committee": null,
+     "status": "no_vote",
      "vote_id": null,
      "vote_date": null,
      "report": null,
@@ -26574,7 +26742,7 @@
      "other": 0
     },
     "question": {
-     "count": 33,
+     "count": 34,
      "answered": 29
     }
    },
@@ -26606,6 +26774,22 @@
     }
    },
    "items": [
+    {
+     "id": "O-10-2026-000045",
+     "label": "O-000045/2026",
+     "date": "2026-11-06",
+     "title": {
+      "cs": "Demonstrace ve Francii, Itálii a Belgii přeshraniční pohyb krajně levicových násilných aktivistů v schengenském prostoru",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000045_EN.html",
+     "type": "question",
+     "subtype": "question_oral",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 52
+    },
     {
      "id": "E-10-2026-004303",
      "label": "E-004303/2026",
@@ -27569,10 +27753,10 @@
      "other": 0
     },
     "shadow_report": {
-     "count": 12,
+     "count": 13,
      "voted": 5,
      "adopted": 5,
-     "no_vote": 7,
+     "no_vote": 8,
      "other": 0
     },
     "opinion": {
@@ -27597,8 +27781,8 @@
      "other": 0
     },
     "question": {
-     "count": 85,
-     "answered": 80
+     "count": 86,
+     "answered": 81
     }
    },
    "passed": {
@@ -27607,13 +27791,13 @@
     "lead_pending": 1,
     "shadow_adopted": 5,
     "shadow_adopted_legislative": 1,
-    "shadow_pending": 7,
+    "shadow_pending": 8,
     "resolutions_adopted": 56
    },
    "roles": {
     "lead_reports": 1,
     "lead_opinions": 0,
-    "shadow_reports": 12,
+    "shadow_reports": 13,
     "shadow_opinions": 1,
     "motions_signed": 185,
     "delegation": {
@@ -27629,6 +27813,22 @@
     }
    },
    "items": [
+    {
+     "id": "P-10-2026-004616",
+     "label": "P-004616/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": "Chybějící legislativa k úplnému ukončení dovozu ruské ropy",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004616_EN.html",
+     "type": "question",
+     "subtype": "question_priority",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 30
+    },
     {
      "id": "RC-10-2026-0482",
      "label": null,
@@ -27848,8 +28048,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 29
     },
     {
@@ -27956,6 +28156,26 @@
      "joint_motion": "RC-10-2026-0398",
      "joint_result": "ADOPTED",
      "joint_vote_id": 197236
+    },
+    {
+     "id": "proc-2026-0115",
+     "label": "2026/0115(COD)",
+     "date": "2026-09-03",
+     "title": {
+      "cs": "Vydávání jízdenek na železnici",
+      "en": "Rail ticketing"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0115(COD)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "ECR",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
     },
     {
      "id": "B-10-2026-0373",
@@ -32484,10 +32704,10 @@
      "superseded": 26
     },
     "joint_motion": {
-     "count": 33,
+     "count": 34,
      "voted": 26,
      "adopted": 26,
-     "no_vote": 7,
+     "no_vote": 8,
      "other": 0
     },
     "question": {
@@ -32509,7 +32729,7 @@
     "lead_opinions": 1,
     "shadow_reports": 1,
     "shadow_opinions": 0,
-    "motions_signed": 67,
+    "motions_signed": 68,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -32523,6 +32743,22 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0497",
+     "label": null,
+     "date": "2026-11-10",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 68
+    },
     {
      "id": "B-10-2026-0497",
      "label": null,
@@ -33862,15 +34098,15 @@
      "superseded": 50
     },
     "joint_motion": {
-     "count": 69,
+     "count": 70,
      "voted": 53,
      "adopted": 53,
-     "no_vote": 16,
+     "no_vote": 17,
      "other": 0
     },
     "question": {
-     "count": 29,
-     "answered": 26
+     "count": 31,
+     "answered": 27
     }
    },
    "passed": {
@@ -33887,7 +34123,7 @@
     "lead_opinions": 7,
     "shadow_reports": 1,
     "shadow_opinions": 4,
-    "motions_signed": 138,
+    "motions_signed": 139,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -33901,6 +34137,22 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0497",
+     "label": null,
+     "date": "2026-11-10",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 68
+    },
     {
      "id": "B-10-2026-0497",
      "label": null,
@@ -33916,6 +34168,38 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 33
+    },
+    {
+     "id": "E-10-2026-004484",
+     "label": "E-004484/2026",
+     "date": "2026-11-03",
+     "title": {
+      "cs": "Bezplatný vstup do státních muzeí, galerií, hradů a zámků v České republice a jeho dopad na soukromé instituce",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004484_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 1
+    },
+    {
+     "id": "E-10-2026-004483",
+     "label": "E-004483/2026",
+     "date": "2026-11-03",
+     "title": {
+      "cs": "Mateřské mléko podle nařízení (EU) 2024/1938",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004483_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 1
     },
     {
      "id": "RC-10-2026-0452",
@@ -34050,8 +34334,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 29
     },
     {
@@ -38460,15 +38744,15 @@
      "superseded": 8
     },
     "joint_motion": {
-     "count": 9,
+     "count": 10,
      "voted": 7,
      "adopted": 7,
-     "no_vote": 2,
+     "no_vote": 3,
      "other": 0
     },
     "question": {
-     "count": 74,
-     "answered": 64
+     "count": 75,
+     "answered": 65
     }
    },
    "passed": {
@@ -38485,7 +38769,7 @@
     "lead_opinions": 0,
     "shadow_reports": 7,
     "shadow_opinions": 6,
-    "motions_signed": 71,
+    "motions_signed": 72,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -38499,6 +38783,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0497",
+     "label": null,
+     "date": "2026-11-10",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 68
+    },
+    {
+     "id": "O-10-2026-000045",
+     "label": "O-000045/2026",
+     "date": "2026-11-06",
+     "title": {
+      "cs": "Demonstrace ve Francii, Itálii a Belgii přeshraniční pohyb krajně levicových násilných aktivistů v schengenském prostoru",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000045_EN.html",
+     "type": "question",
+     "subtype": "question_oral",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 52
+    },
     {
      "id": "B-10-2026-0501",
      "label": null,
@@ -38718,8 +39034,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-10",
      "authors_total": 29
     },
     {
@@ -41140,7 +41456,7 @@
      "other": 0
     },
     "opinion": {
-     "count": 1
+     "count": 2
     },
     "shadow_opinion": {
      "count": 7
@@ -41176,14 +41492,14 @@
    },
    "roles": {
     "lead_reports": 0,
-    "lead_opinions": 1,
+    "lead_opinions": 2,
     "shadow_reports": 12,
     "shadow_opinions": 7,
     "motions_signed": 11,
     "delegation": {
      "tiers": {
       "lead_reports": null,
-      "lead_opinions": "mid",
+      "lead_opinions": "top",
       "shadow_reports": "top",
       "shadow_opinions": "top"
      },
@@ -41193,6 +41509,26 @@
     }
    },
    "items": [
+    {
+     "id": "proc-2026-0191",
+     "label": "2026/0191(NLE)",
+     "date": "2026-11-04",
+     "title": {
+      "cs": "Dohoda o elektronickém obchodu",
+      "en": "Agreement on Electronic Commerce"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0191(NLE)",
+     "type": "opinion",
+     "role": "RAPPORTEUR_OPINION",
+     "group": "PFE",
+     "committee": "IMCO",
+     "status": null,
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "NLE",
+     "legislative": false
+    },
     {
      "id": "E-10-2026-003766",
      "label": "E-003766/2026",

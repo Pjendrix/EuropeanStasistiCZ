@@ -115,7 +115,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4612,61 +4612,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 932,
+   "total": 1045,
    "sole": 90,
    "on_behalf": 0,
    "dossiers": 40,
-   "docs": 95,
+   "docs": 100,
    "recent": [
     {
-     "doc": "ECON-AM-797359",
-     "date": "2026-10-25",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "ECON"
+      "CJ13"
      ],
-     "procedure": "2026/2121(INI)",
-     "count": 21,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ECON-AM-797359/ECON-AM-797359_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796455",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796455/CJ80-AM-796455_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796454",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 8,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 19,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796453",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797490",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796453/CJ80-AM-796453_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 12,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797490/CJ13-AM-797490_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796451",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797489",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796451/CJ80-AM-796451_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 2,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797489/CJ13-AM-797489_en.pdf"
     }
    ]
   },
@@ -4686,13 +4686,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4700,7 +4700,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4748,7 +4748,7 @@
     "other": 0
    },
    "question": {
-    "count": 33,
+    "count": 34,
     "answered": 29
    }
   },
@@ -4780,6 +4780,22 @@
    }
   },
   "items": [
+   {
+    "id": "O-10-2026-000045",
+    "label": "O-000045/2026",
+    "date": "2026-11-06",
+    "title": {
+     "cs": "Demonstrace ve Francii, Itálii a Belgii přeshraniční pohyb krajně levicových násilných aktivistů v schengenském prostoru",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000045_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 52
+   },
    {
     "id": "E-10-2026-004303",
     "label": "E-004303/2026",

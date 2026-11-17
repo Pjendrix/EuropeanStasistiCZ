@@ -86,7 +86,7 @@
   "name_note": "EP uvádí „Klara DOSTALOVA“. Podoba jména podle registru kandidátů ČSÚ pro volby do EP 2024 (kandidátka č. 14, pořadí 1, zvolena). Zdroj: https://www.volby.cz/opendata/ep2024/EP2024reg20240609_csv.zip"
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4582,61 +4582,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 1811,
+   "total": 1958,
    "sole": 352,
    "on_behalf": 0,
-   "dossiers": 36,
-   "docs": 116,
+   "dossiers": 38,
+   "docs": 123,
    "recent": [
     {
-     "doc": "CJ80-AM-796455",
-     "date": "2026-10-19",
+     "doc": "IMCO-AM-797693",
+     "date": "2026-11-16",
      "committees": [
-      "CJ80"
+      "IMCO"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 2,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796455/CJ80-AM-796455_en.pdf"
+     "procedure": "2026/0113(COD)",
+     "count": 23,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797693/IMCO-AM-797693_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796454",
-     "date": "2026-10-19",
+     "doc": "IMCO-AM-797702",
+     "date": "2026-11-13",
      "committees": [
-      "CJ80"
+      "IMCO"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 16,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
+     "procedure": "2026/0114(COD)",
+     "count": 11,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797702/IMCO-AM-797702_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796453",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 10,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796453/CJ80-AM-796453_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796451",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
-     "count": 7,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796451/CJ80-AM-796451_en.pdf"
+     "procedure": "2025/0545(COD)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796450",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
+     "procedure": "2025/0545(COD)",
      "count": 19,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796450/CJ80-AM-796450_en.pdf"
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
     }
    ]
   },
@@ -4656,13 +4656,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4670,7 +4670,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4697,7 +4697,7 @@
     "other": 0
    },
    "opinion": {
-    "count": 1
+    "count": 2
    },
    "shadow_opinion": {
     "count": 7
@@ -4733,14 +4733,14 @@
   },
   "roles": {
    "lead_reports": 0,
-   "lead_opinions": 1,
+   "lead_opinions": 2,
    "shadow_reports": 12,
    "shadow_opinions": 7,
    "motions_signed": 11,
    "delegation": {
     "tiers": {
      "lead_reports": null,
-     "lead_opinions": "mid",
+     "lead_opinions": "top",
      "shadow_reports": "top",
      "shadow_opinions": "top"
     },
@@ -4750,6 +4750,26 @@
    }
   },
   "items": [
+   {
+    "id": "proc-2026-0191",
+    "label": "2026/0191(NLE)",
+    "date": "2026-11-04",
+    "title": {
+     "cs": "Dohoda o elektronickém obchodu",
+     "en": "Agreement on Electronic Commerce"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/0191(NLE)",
+    "type": "opinion",
+    "role": "RAPPORTEUR_OPINION",
+    "group": "PFE",
+    "committee": "IMCO",
+    "status": null,
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "NLE",
+    "legislative": false
+   },
    {
     "id": "E-10-2026-003766",
     "label": "E-003766/2026",

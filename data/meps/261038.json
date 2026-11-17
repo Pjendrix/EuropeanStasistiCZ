@@ -125,7 +125,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 832,
+ "mandate_days": 839,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4578,61 +4578,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 2463,
+   "total": 2576,
    "sole": 84,
    "on_behalf": 5,
    "dossiers": 82,
-   "docs": 207,
+   "docs": 212,
    "recent": [
     {
-     "doc": "ECON-AM-797359",
-     "date": "2026-10-25",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "ECON"
+      "CJ13"
      ],
-     "procedure": "2026/2121(INI)",
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
      "count": 20,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ECON-AM-797359/ECON-AM-797359_en.pdf"
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
     },
     {
-     "doc": "CJ80-AM-796455",
-     "date": "2026-10-19",
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
      "committees": [
-      "CJ80"
+      "CJ13"
      ],
-     "procedure": "2026/0068(COD)",
+     "procedure": "2025/0545(COD)",
+     "count": 19,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797490",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
+     "count": 12,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797490/CJ13-AM-797490_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797489",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
      "count": 2,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796455/CJ80-AM-796455_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796454",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 16,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796453",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 10,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796453/CJ80-AM-796453_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796451",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 7,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796451/CJ80-AM-796451_en.pdf"
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797489/CJ13-AM-797489_en.pdf"
     }
    ]
   },
@@ -4652,13 +4652,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4666,7 +4666,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",

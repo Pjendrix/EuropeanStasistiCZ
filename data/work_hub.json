@@ -4,15 +4,15 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-10",
+ "updated": "2026-11-17",
  "complete": true,
  "totals": {
   "meps": 24,
-  "reports_lead": 40,
-  "reports_shadow": 142,
+  "reports_lead": 41,
+  "reports_shadow": 145,
   "reports_adopted": 87,
-  "opinions": 74,
-  "questions": 468,
+  "opinions": 75,
+  "questions": 475,
   "speeches": 814,
   "speeches_minutes": 1011,
   "written_statements": 16,
@@ -160,14 +160,19 @@
   {
    "month": "2026-10",
    "speeches": 45,
-   "questions": 14
+   "questions": 15
+  },
+  {
+   "month": "2026-11",
+   "speeches": 0,
+   "questions": 6
   }
  ],
  "by_process": [
   {
    "process_type": "COD",
    "reports_lead": 11,
-   "reports_shadow": 72,
+   "reports_shadow": 74,
    "adopted": 31,
    "legislative": true,
    "label": "legislativní, řádný postup"
@@ -213,6 +218,22 @@
    "label": "legislativní, konzultace"
   },
   {
+   "process_type": "?",
+   "reports_lead": 1,
+   "reports_shadow": 0,
+   "adopted": 0,
+   "legislative": false,
+   "label": "?"
+  },
+  {
+   "process_type": "INL",
+   "reports_lead": 0,
+   "reports_shadow": 1,
+   "adopted": 0,
+   "legislative": false,
+   "label": "INL"
+  },
+  {
    "process_type": "RSP",
    "reports_lead": 0,
    "reports_shadow": 1,
@@ -227,19 +248,19 @@
    "short_label": "Patrioti",
    "meps": 12,
    "reports_lead": 16,
-   "reports_shadow": 89,
-   "opinions": 48,
-   "questions": 394,
+   "reports_shadow": 91,
+   "opinions": 47,
+   "questions": 396,
    "speeches": 278
   },
   {
    "code": "PPE",
    "short_label": "EPP",
    "meps": 5,
-   "reports_lead": 11,
-   "reports_shadow": 18,
+   "reports_lead": 12,
+   "reports_shadow": 19,
    "opinions": 30,
-   "questions": 189,
+   "questions": 193,
    "speeches": 214
   },
   {
@@ -247,9 +268,9 @@
    "short_label": "ECR",
    "meps": 4,
    "reports_lead": 13,
-   "reports_shadow": 31,
-   "opinions": 33,
-   "questions": 207,
+   "reports_shadow": 32,
+   "opinions": 34,
+   "questions": 210,
    "speeches": 171
   },
   {
@@ -269,7 +290,7 @@
    "reports_lead": 3,
    "reports_shadow": 18,
    "opinions": 5,
-   "questions": 45,
+   "questions": 46,
    "speeches": 52
   },
   {

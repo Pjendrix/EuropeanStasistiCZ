@@ -154,7 +154,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4679,12 +4679,22 @@
  },
  "amendments": {
   "committee": {
-   "total": 1024,
+   "total": 1026,
    "sole": 44,
    "on_behalf": 57,
-   "dossiers": 45,
-   "docs": 63,
+   "dossiers": 46,
+   "docs": 64,
    "recent": [
+    {
+     "doc": "BUDG-AM-797623",
+     "date": "2026-11-11",
+     "committees": [
+      "BUDG"
+     ],
+     "procedure": "2025/2215(INI)",
+     "count": 2,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/BUDG-AM-797623/BUDG-AM-797623_en.pdf"
+    },
     {
      "doc": "EMPL-AM-782214",
      "date": "2026-01-27",
@@ -4724,16 +4734,6 @@
      "procedure": "2025/2239(INI)",
      "count": 60,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-781446/LIBE-AM-781446_en.pdf"
-    },
-    {
-     "doc": "AFET-AM-781218",
-     "date": "2025-12-04",
-     "committees": [
-      "AFET"
-     ],
-     "procedure": "2025/2110(INI)",
-     "count": 13,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-781218/AFET-AM-781218_en.pdf"
     }
    ]
   },
@@ -4753,13 +4753,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4767,7 +4767,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4808,15 +4808,15 @@
     "superseded": 8
    },
    "joint_motion": {
-    "count": 9,
+    "count": 10,
     "voted": 7,
     "adopted": 7,
-    "no_vote": 2,
+    "no_vote": 3,
     "other": 0
    },
    "question": {
-    "count": 74,
-    "answered": 64
+    "count": 75,
+    "answered": 65
    }
   },
   "passed": {
@@ -4833,7 +4833,7 @@
    "lead_opinions": 0,
    "shadow_reports": 7,
    "shadow_opinions": 6,
-   "motions_signed": 71,
+   "motions_signed": 72,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -4847,6 +4847,38 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0497",
+    "label": null,
+    "date": "2026-11-10",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o ukrajinských dětech násilně deportovaných do Ruska nebo žijících na Ruskem okupovaných územích Ukrajiny",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0497_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 68
+   },
+   {
+    "id": "O-10-2026-000045",
+    "label": "O-000045/2026",
+    "date": "2026-11-06",
+    "title": {
+     "cs": "Demonstrace ve Francii, Itálii a Belgii přeshraniční pohyb krajně levicových násilných aktivistů v schengenském prostoru",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/O-10-2026-000045_EN.html",
+    "type": "question",
+    "subtype": "question_oral",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 52
+   },
    {
     "id": "B-10-2026-0501",
     "label": null,
@@ -5066,8 +5098,8 @@
     "type": "question",
     "subtype": "question_priority",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-10",
     "authors_total": 29
    },
    {

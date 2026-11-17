@@ -125,7 +125,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 855,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4394,61 +4394,61 @@
  },
  "amendments": {
   "committee": {
-   "total": 731,
+   "total": 839,
    "sole": 721,
    "on_behalf": 0,
-   "dossiers": 39,
-   "docs": 96,
+   "dossiers": 40,
+   "docs": 101,
    "recent": [
     {
-     "doc": "ENVI-AM-796497",
-     "date": "2026-10-21",
+     "doc": "CJ13-AM-797542",
+     "date": "2026-11-04",
      "committees": [
-      "ENVI"
+      "CJ13"
      ],
-     "procedure": "2026/0212(COD)",
+     "procedure": "2025/0545(COD)",
+     "count": 60,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797542/CJ13-AM-797542_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797492",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
+     "count": 18,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797491",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
+     "count": 19,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797490",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
+     "count": 10,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797490/CJ13-AM-797490_en.pdf"
+    },
+    {
+     "doc": "CJ13-AM-797489",
+     "date": "2026-11-03",
+     "committees": [
+      "CJ13"
+     ],
+     "procedure": "2025/0545(COD)",
      "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796497/ENVI-AM-796497_en.pdf"
-    },
-    {
-     "doc": "ENVI-AM-796494",
-     "date": "2026-10-20",
-     "committees": [
-      "ENVI"
-     ],
-     "procedure": "2026/0212(COD)",
-     "count": 6,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796494/ENVI-AM-796494_en.pdf"
-    },
-    {
-     "doc": "ENVI-AM-796493",
-     "date": "2026-10-20",
-     "committees": [
-      "ENVI"
-     ],
-     "procedure": "2026/0212(COD)",
-     "count": 5,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796493/ENVI-AM-796493_en.pdf"
-    },
-    {
-     "doc": "ENVI-AM-796492",
-     "date": "2026-10-20",
-     "committees": [
-      "ENVI"
-     ],
-     "procedure": "2026/0212(COD)",
-     "count": 3,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796492/ENVI-AM-796492_en.pdf"
-    },
-    {
-     "doc": "ENVI-AM-796491",
-     "date": "2026-10-20",
-     "committees": [
-      "ENVI"
-     ],
-     "procedure": "2026/0212(COD)",
-     "count": 1,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ENVI-AM-796491/ENVI-AM-796491_en.pdf"
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797489/CJ13-AM-797489_en.pdf"
     }
    ]
   },
@@ -4468,13 +4468,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-05",
+   "committee_to": "2026-11-16",
    "plenary_to": "2026-11-06",
-   "committee_docs": 1460,
+   "committee_docs": 1472,
    "committee_compromise": 34,
-   "committee_pending": 12
+   "committee_pending": 11
   },
-  "updated": "2026-11-10"
+  "updated": "2026-11-17"
  },
  "own_work": {
   "source": {
@@ -4482,7 +4482,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-10",
+  "updated": "2026-11-17",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4509,7 +4509,7 @@
     "other": 0
    },
    "opinion": {
-    "count": 4
+    "count": 2
    },
    "shadow_opinion": {
     "count": 0
@@ -4545,7 +4545,7 @@
   },
   "roles": {
    "lead_reports": 0,
-   "lead_opinions": 4,
+   "lead_opinions": 2,
    "shadow_reports": 0,
    "shadow_opinions": 0,
    "motions_signed": 4,
@@ -4577,46 +4577,6 @@
     "status": "unanswered",
     "answer_date": null,
     "authors_total": 13
-   },
-   {
-    "id": "proc-2026-2079",
-    "label": "2026/2079(DEC)",
-    "date": "2026-10-13",
-    "title": {
-     "cs": "Udělení absolutoria za rok 2025: souhrnný rozpočet EU – Komise",
-     "en": "Discharge 2025: General budget of the EU - Commission"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2079(DEC)",
-    "type": "opinion",
-    "role": "RAPPORTEUR_OPINION",
-    "group": "NI",
-    "committee": "SANT",
-    "status": null,
-    "vote_id": null,
-    "vote_date": null,
-    "report": null,
-    "process_type": "DEC",
-    "legislative": false
-   },
-   {
-    "id": "proc-2026-2090",
-    "label": "2026/2090(DEC)",
-    "date": "2026-10-12",
-    "title": {
-     "cs": "Udělení absolutoria za rozpočtový rok 2025: souhrnný rozpočet EU – agentury",
-     "en": "Discharge 2025: General budget of the EU - Agencies"
-    },
-    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2090(DEC)",
-    "type": "opinion",
-    "role": "RAPPORTEUR_OPINION",
-    "group": "NI",
-    "committee": "SANT",
-    "status": null,
-    "vote_id": null,
-    "vote_date": null,
-    "report": null,
-    "process_type": "DEC",
-    "legislative": false
    },
    {
     "id": "E-10-2026-003725",
