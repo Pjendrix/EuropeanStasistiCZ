@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-17",
+ "updated": "2026-11-20",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -54,7 +54,7 @@
      "other": 0
     },
     "question": {
-     "count": 45,
+     "count": 47,
      "answered": 35
     }
    },
@@ -86,6 +86,38 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004622",
+     "label": "E-004622/2026",
+     "date": "2026-11-10",
+     "title": {
+      "cs": "Investice do zadržování a mobilizace vodních zdrojů v Evropě",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004622_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
+    {
+     "id": "E-10-2026-004323",
+     "label": "E-004323/2026",
+     "date": "2026-10-21",
+     "title": {
+      "cs": "Průzkumy veřejného mínění týkající se podpory předsedkyně Komise",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004323_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 19
+    },
     {
      "id": "E-10-2026-004197",
      "label": "E-004197/2026",
@@ -3173,7 +3205,7 @@
     },
     "question": {
      "count": 119,
-     "answered": 105
+     "answered": 106
     }
    },
    "passed": {
@@ -3708,8 +3740,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-19",
      "authors_total": 1
     },
     {
@@ -8116,7 +8148,7 @@
      "other": 0
     },
     "question": {
-     "count": 74,
+     "count": 75,
      "answered": 64
     }
    },
@@ -8163,6 +8195,22 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 9
+    },
+    {
+     "id": "E-10-2026-004323",
+     "label": "E-004323/2026",
+     "date": "2026-10-21",
+     "title": {
+      "cs": "Průzkumy veřejného mínění týkající se podpory předsedkyně Komise",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004323_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 19
     },
     {
      "id": "B-10-2026-0432",
@@ -25331,7 +25379,7 @@
      "other": 0
     },
     "question": {
-     "count": 41,
+     "count": 42,
      "answered": 39
     }
    },
@@ -25363,6 +25411,22 @@
     }
    },
    "items": [
+    {
+     "id": "P-10-2026-004685",
+     "label": "P-004685/2026",
+     "date": "2026-11-11",
+     "title": {
+      "cs": "Opatření vůči třetím zemím, které odmítají spolupracovat při zpětném přebírání svých státních příslušníků",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004685_EN.html",
+     "type": "question",
+     "subtype": "question_priority",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 20
+    },
     {
      "id": "proc-2026-0115",
      "label": "2026/0115(COD)",
@@ -38751,7 +38815,7 @@
      "other": 0
     },
     "question": {
-     "count": 75,
+     "count": 76,
      "answered": 65
     }
    },
@@ -38783,6 +38847,22 @@
     }
    },
    "items": [
+    {
+     "id": "P-10-2026-004685",
+     "label": "P-004685/2026",
+     "date": "2026-11-11",
+     "title": {
+      "cs": "Opatření vůči třetím zemím, které odmítají spolupracovat při zpětném přebírání svých státních příslušníků",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/P-10-2026-004685_EN.html",
+     "type": "question",
+     "subtype": "question_priority",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 20
+    },
     {
      "id": "RC-10-2026-0497",
      "label": null,

@@ -7,7 +7,7 @@
    "license": "CC BY 4.0"
   }
  ],
- "updated": "2026-11-17",
+ "updated": "2026-11-20",
  "session": {
   "from": "2026-11-23",
   "to": "2026-11-26",
@@ -253,7 +253,12 @@
     "legislative": false,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2026-2074",
+     "label": "2026/2074(INI)",
+     "type": "INI",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2074(INI)"
+    },
     "committee": {
      "code": "PECH",
      "name": "Rybolov",
@@ -457,7 +462,12 @@
     "legislative": true,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2025-0162",
+     "label": "2025/0162(NLE)",
+     "type": "NLE",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0162(NLE)"
+    },
     "committee": {
      "code": "AFET",
      "name": "Zahraniční věci",
@@ -477,7 +487,12 @@
     "legislative": false,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2025-0162R",
+     "label": "2025/0162R(NLE)",
+     "type": "NLE",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2025/0162R(NLE)"
+    },
     "committee": {
      "code": "AFET",
      "name": "Zahraniční věci",
@@ -497,7 +512,12 @@
     "legislative": false,
     "stage": null,
     "stage_cs": null,
-    "procedure": null,
+    "procedure": {
+     "id": "2026-2036",
+     "label": "2026/2036(INI)",
+     "type": "INI",
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2026/2036(INI)"
+    },
     "committee": {
      "code": "AFET",
      "name": "Zahraniční věci",
@@ -562,7 +582,7 @@
     "cz": []
    }
   ],
-  "fetched": "2026-11-17"
+  "fetched": "2026-11-20"
  },
  "active": [
   {
