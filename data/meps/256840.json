@@ -74,7 +74,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 858,
+ "mandate_days": 862,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4632,7 +4632,7 @@
    ]
   },
   "plenary": {
-   "cosigned": 19
+   "cosigned": 20
   },
   "source": {
    "committee": {
@@ -4648,12 +4648,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -4661,7 +4661,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4694,18 +4694,18 @@
     "count": 1
    },
    "motion": {
-    "count": 59,
+    "count": 60,
     "voted": 1,
     "adopted": 0,
-    "no_vote": 12,
+    "no_vote": 13,
     "other": 0,
     "superseded": 46
    },
    "joint_motion": {
-    "count": 58,
+    "count": 59,
     "voted": 47,
     "adopted": 47,
-    "no_vote": 11,
+    "no_vote": 12,
     "other": 0
    },
    "question": {
@@ -4727,7 +4727,7 @@
    "lead_opinions": 0,
    "shadow_reports": 2,
    "shadow_opinions": 1,
-   "motions_signed": 117,
+   "motions_signed": 119,
    "delegation": {
     "tiers": {
      "lead_reports": null,
@@ -4741,6 +4741,38 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0508",
+    "label": null,
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "B-10-2026-0508",
+    "label": null,
+    "date": "2026-11-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8
+   },
    {
     "id": "RC-10-2026-0497",
     "label": null,

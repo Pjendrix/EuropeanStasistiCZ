@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-20",
+ "updated": "2026-11-24",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -54,7 +54,7 @@
      "other": 0
     },
     "question": {
-     "count": 47,
+     "count": 48,
      "answered": 35
     }
    },
@@ -95,6 +95,22 @@
       "en": null
      },
      "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004622_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
@@ -1249,18 +1265,18 @@
      "count": 0
     },
     "motion": {
-     "count": 49,
+     "count": 50,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 14,
+     "no_vote": 15,
      "other": 0,
      "superseded": 34
     },
     "joint_motion": {
-     "count": 46,
+     "count": 47,
      "voted": 33,
      "adopted": 33,
-     "no_vote": 13,
+     "no_vote": 14,
      "other": 0
     },
     "question": {
@@ -1282,7 +1298,7 @@
     "lead_opinions": 0,
     "shadow_reports": 5,
     "shadow_opinions": 0,
-    "motions_signed": 95,
+    "motions_signed": 97,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -1296,6 +1312,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0508",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 8
+    },
     {
      "id": "E-10-2026-003979",
      "label": "E-003979/2026",
@@ -3189,22 +3237,22 @@
      "count": 13
     },
     "motion": {
-     "count": 69,
+     "count": 70,
      "voted": 2,
      "adopted": 0,
-     "no_vote": 21,
+     "no_vote": 22,
      "other": 0,
      "superseded": 46
     },
     "joint_motion": {
-     "count": 66,
+     "count": 67,
      "voted": 47,
      "adopted": 47,
-     "no_vote": 19,
+     "no_vote": 20,
      "other": 0
     },
     "question": {
-     "count": 119,
+     "count": 120,
      "answered": 106
     }
    },
@@ -3222,7 +3270,7 @@
     "lead_opinions": 4,
     "shadow_reports": 10,
     "shadow_opinions": 13,
-    "motions_signed": 135,
+    "motions_signed": 137,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -3236,6 +3284,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0508",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 8
+    },
     {
      "id": "A-10-2026-0288",
      "label": "A10-0288/2026",
@@ -3253,6 +3333,22 @@
      "signatories_total": null,
      "process_type": null,
      "legislative": null
+    },
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
     },
     {
      "id": "E-10-2026-004507",
@@ -8148,7 +8244,7 @@
      "other": 0
     },
     "question": {
-     "count": 75,
+     "count": 76,
      "answered": 64
     }
    },
@@ -8180,6 +8276,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
     {
      "id": "E-10-2026-004536",
      "label": "E-004536/2026",
@@ -14582,18 +14694,18 @@
      "count": 5
     },
     "motion": {
-     "count": 36,
+     "count": 37,
      "voted": 3,
      "adopted": 2,
-     "no_vote": 5,
+     "no_vote": 6,
      "other": 0,
      "superseded": 28
     },
     "joint_motion": {
-     "count": 16,
+     "count": 17,
      "voted": 15,
      "adopted": 15,
-     "no_vote": 1,
+     "no_vote": 2,
      "other": 0
     },
     "question": {
@@ -14615,7 +14727,7 @@
     "lead_opinions": 0,
     "shadow_reports": 18,
     "shadow_opinions": 5,
-    "motions_signed": 52,
+    "motions_signed": 54,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -14629,6 +14741,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0509",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0509_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 1
+    },
     {
      "id": "P-10-2026-004616",
      "label": "P-004616/2026",
@@ -16826,10 +16970,10 @@
      "count": 0
     },
     "motion": {
-     "count": 99,
+     "count": 100,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 26,
+     "no_vote": 27,
      "other": 0,
      "superseded": 73
     },
@@ -16859,7 +17003,7 @@
     "lead_opinions": 16,
     "shadow_reports": 3,
     "shadow_opinions": 0,
-    "motions_signed": 175,
+    "motions_signed": 176,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -16873,6 +17017,22 @@
     }
    },
    "items": [
+    {
+     "id": "B-10-2026-0541",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the illegal Türkiye–Libya Memorandum of Understanding and infringement of the United Nations Convention on the Law of the Sea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0541_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 19
+    },
     {
      "id": "RC-10-2026-0497",
      "label": null,
@@ -21337,7 +21497,7 @@
     },
     "question": {
      "count": 38,
-     "answered": 33
+     "answered": 34
     }
    },
    "passed": {
@@ -21466,8 +21626,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-20",
      "authors_total": 8
     },
     {
@@ -22742,18 +22902,18 @@
      "count": 1
     },
     "motion": {
-     "count": 59,
+     "count": 60,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 12,
+     "no_vote": 13,
      "other": 0,
      "superseded": 46
     },
     "joint_motion": {
-     "count": 58,
+     "count": 59,
      "voted": 47,
      "adopted": 47,
-     "no_vote": 11,
+     "no_vote": 12,
      "other": 0
     },
     "question": {
@@ -22775,7 +22935,7 @@
     "lead_opinions": 0,
     "shadow_reports": 2,
     "shadow_opinions": 1,
-    "motions_signed": 117,
+    "motions_signed": 119,
     "delegation": {
      "tiers": {
       "lead_reports": null,
@@ -22789,6 +22949,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0508",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 8
+    },
     {
      "id": "RC-10-2026-0497",
      "label": null,
@@ -25379,7 +25571,7 @@
      "other": 0
     },
     "question": {
-     "count": 42,
+     "count": 43,
      "answered": 39
     }
    },
@@ -25426,6 +25618,22 @@
      "status": "unanswered",
      "answer_date": null,
      "authors_total": 20
+    },
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
     },
     {
      "id": "proc-2026-0115",
@@ -26806,7 +27014,7 @@
      "other": 0
     },
     "question": {
-     "count": 34,
+     "count": 35,
      "answered": 29
     }
    },
@@ -26838,6 +27046,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
     {
      "id": "O-10-2026-000045",
      "label": "O-000045/2026",
@@ -27830,10 +28054,10 @@
      "count": 1
     },
     "motion": {
-     "count": 108,
+     "count": 109,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 33,
+     "no_vote": 34,
      "other": 0,
      "superseded": 74
     },
@@ -27863,7 +28087,7 @@
     "lead_opinions": 0,
     "shadow_reports": 13,
     "shadow_opinions": 1,
-    "motions_signed": 185,
+    "motions_signed": 186,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -27877,6 +28101,22 @@
     }
    },
    "items": [
+    {
+     "id": "B-10-2026-0541",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the illegal Türkiye–Libya Memorandum of Understanding and infringement of the United Nations Convention on the Law of the Sea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0541_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 19
+    },
     {
      "id": "P-10-2026-004616",
      "label": "P-004616/2026",
@@ -32760,18 +33000,18 @@
      "count": 0
     },
     "motion": {
-     "count": 34,
+     "count": 35,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 7,
+     "no_vote": 8,
      "other": 0,
      "superseded": 26
     },
     "joint_motion": {
-     "count": 34,
+     "count": 35,
      "voted": 26,
      "adopted": 26,
-     "no_vote": 8,
+     "no_vote": 9,
      "other": 0
     },
     "question": {
@@ -32793,7 +33033,7 @@
     "lead_opinions": 1,
     "shadow_reports": 1,
     "shadow_opinions": 0,
-    "motions_signed": 68,
+    "motions_signed": 70,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -32807,6 +33047,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0508",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 8
+    },
     {
      "id": "RC-10-2026-0497",
      "label": null,
@@ -34154,18 +34426,18 @@
      "count": 4
     },
     "motion": {
-     "count": 69,
+     "count": 70,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 18,
+     "no_vote": 19,
      "other": 0,
      "superseded": 50
     },
     "joint_motion": {
-     "count": 70,
+     "count": 71,
      "voted": 53,
      "adopted": 53,
-     "no_vote": 17,
+     "no_vote": 18,
      "other": 0
     },
     "question": {
@@ -34187,7 +34459,7 @@
     "lead_opinions": 7,
     "shadow_reports": 1,
     "shadow_opinions": 4,
-    "motions_signed": 139,
+    "motions_signed": 141,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -34201,6 +34473,38 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0508",
+     "label": null,
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0508",
+     "label": null,
+     "date": "2026-11-20",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 8
+    },
     {
      "id": "RC-10-2026-0497",
      "label": null,
@@ -41557,7 +41861,7 @@
      "other": 0
     },
     "question": {
-     "count": 27,
+     "count": 28,
      "answered": 25
     }
    },
@@ -41589,6 +41893,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
     {
      "id": "proc-2026-0191",
      "label": "2026/0191(NLE)",
@@ -44288,7 +44608,7 @@
      "other": 0
     },
     "question": {
-     "count": 32,
+     "count": 33,
      "answered": 27
     }
    },
@@ -44320,6 +44640,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004585",
+     "label": "E-004585/2026",
+     "date": "2026-11-09",
+     "title": {
+      "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 11
+    },
     {
      "id": "proc-2026-0259",
      "label": "2026/0259(COD)",

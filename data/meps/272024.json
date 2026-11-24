@@ -94,7 +94,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 413,
+ "mandate_days": 417,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -3425,7 +3425,7 @@
    ]
   },
   "plenary": {
-   "cosigned": 77
+   "cosigned": 85
   },
   "source": {
    "committee": {
@@ -3441,12 +3441,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -3454,7 +3454,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -3502,7 +3502,7 @@
     "other": 0
    },
    "question": {
-    "count": 32,
+    "count": 33,
     "answered": 27
    }
   },
@@ -3534,6 +3534,22 @@
    }
   },
   "items": [
+   {
+    "id": "E-10-2026-004585",
+    "label": "E-004585/2026",
+    "date": "2026-11-09",
+    "title": {
+     "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 11
+   },
    {
     "id": "proc-2026-0259",
     "label": "2026/0259(COD)",

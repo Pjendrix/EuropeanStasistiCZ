@@ -95,7 +95,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 858,
+ "mandate_days": 862,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4592,11 +4592,11 @@
  },
  "amendments": {
   "committee": {
-   "total": 1868,
+   "total": 1888,
    "sole": 55,
    "on_behalf": 13,
-   "dossiers": 56,
-   "docs": 132,
+   "dossiers": 57,
+   "docs": 133,
    "recent": [
     {
      "doc": "IMCO-AM-797693",
@@ -4607,6 +4607,16 @@
      "procedure": "2026/0113(COD)",
      "count": 23,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797693/IMCO-AM-797693_en.pdf"
+    },
+    {
+     "doc": "AFET-AM-797721",
+     "date": "2026-11-16",
+     "committees": [
+      "AFET"
+     ],
+     "procedure": "2026/2044(INI)",
+     "count": 20,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797721/AFET-AM-797721_en.pdf"
     },
     {
      "doc": "IMCO-AM-797702",
@@ -4637,21 +4647,11 @@
      "procedure": "2025/0545(COD)",
      "count": 20,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
-    },
-    {
-     "doc": "CJ13-AM-797491",
-     "date": "2026-11-03",
-     "committees": [
-      "CJ13"
-     ],
-     "procedure": "2025/0545(COD)",
-     "count": 19,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
     }
    ]
   },
   "plenary": {
-   "cosigned": 158
+   "cosigned": 167
   },
   "source": {
    "committee": {
@@ -4667,12 +4667,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -4680,7 +4680,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4729,7 +4729,7 @@
    },
    "question": {
     "count": 38,
-    "answered": 33
+    "answered": 34
    }
   },
   "passed": {
@@ -4858,8 +4858,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-20",
     "authors_total": 8
    },
    {

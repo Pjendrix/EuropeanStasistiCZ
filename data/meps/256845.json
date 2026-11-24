@@ -73,7 +73,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 858,
+ "mandate_days": 862,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4630,7 +4630,7 @@
    ]
   },
   "plenary": {
-   "cosigned": 15
+   "cosigned": 18
   },
   "source": {
    "committee": {
@@ -4646,12 +4646,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -4659,7 +4659,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4692,10 +4692,10 @@
     "count": 1
    },
    "motion": {
-    "count": 108,
+    "count": 109,
     "voted": 1,
     "adopted": 0,
-    "no_vote": 33,
+    "no_vote": 34,
     "other": 0,
     "superseded": 74
    },
@@ -4725,7 +4725,7 @@
    "lead_opinions": 0,
    "shadow_reports": 13,
    "shadow_opinions": 1,
-   "motions_signed": 185,
+   "motions_signed": 186,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -4739,6 +4739,22 @@
    }
   },
   "items": [
+   {
+    "id": "B-10-2026-0541",
+    "label": null,
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the illegal Türkiye–Libya Memorandum of Understanding and infringement of the United Nations Convention on the Law of the Sea"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0541_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 19
+   },
    {
     "id": "P-10-2026-004616",
     "label": "P-004616/2026",

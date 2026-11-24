@@ -94,7 +94,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 858,
+ "mandate_days": 862,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4590,12 +4590,32 @@
  },
  "amendments": {
   "committee": {
-   "total": 1362,
-   "sole": 640,
+   "total": 1366,
+   "sole": 644,
    "on_behalf": 29,
-   "dossiers": 67,
-   "docs": 120,
+   "dossiers": 68,
+   "docs": 122,
    "recent": [
+    {
+     "doc": "LIBE-AM-798444",
+     "date": "2026-11-17",
+     "committees": [
+      "LIBE"
+     ],
+     "procedure": "2026/2144(INI)",
+     "count": 1,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-798444/LIBE-AM-798444_en.pdf"
+    },
+    {
+     "doc": "LIBE-AM-798443",
+     "date": "2026-11-17",
+     "committees": [
+      "LIBE"
+     ],
+     "procedure": "2026/2144(INI)",
+     "count": 3,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-798443/LIBE-AM-798443_en.pdf"
+    },
     {
      "doc": "CJ09-AM-797458",
      "date": "2026-10-30",
@@ -4626,31 +4646,11 @@
      "procedure": "2026/0068(COD)",
      "count": 2,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796453",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 3,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796453/CJ80-AM-796453_en.pdf"
-    },
-    {
-     "doc": "CJ80-AM-796448",
-     "date": "2026-10-19",
-     "committees": [
-      "CJ80"
-     ],
-     "procedure": "2026/0068(COD)",
-     "count": 4,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796448/CJ80-AM-796448_en.pdf"
     }
    ]
   },
   "plenary": {
-   "cosigned": 50
+   "cosigned": 51
   },
   "source": {
    "committee": {
@@ -4666,12 +4666,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -4679,7 +4679,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4712,22 +4712,22 @@
     "count": 13
    },
    "motion": {
-    "count": 69,
+    "count": 70,
     "voted": 2,
     "adopted": 0,
-    "no_vote": 21,
+    "no_vote": 22,
     "other": 0,
     "superseded": 46
    },
    "joint_motion": {
-    "count": 66,
+    "count": 67,
     "voted": 47,
     "adopted": 47,
-    "no_vote": 19,
+    "no_vote": 20,
     "other": 0
    },
    "question": {
-    "count": 119,
+    "count": 120,
     "answered": 106
    }
   },
@@ -4745,7 +4745,7 @@
    "lead_opinions": 4,
    "shadow_reports": 10,
    "shadow_opinions": 13,
-   "motions_signed": 135,
+   "motions_signed": 137,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -4759,6 +4759,38 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0508",
+    "label": null,
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "B-10-2026-0508",
+    "label": null,
+    "date": "2026-11-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8
+   },
    {
     "id": "A-10-2026-0288",
     "label": "A10-0288/2026",
@@ -4776,6 +4808,22 @@
     "signatories_total": null,
     "process_type": null,
     "legislative": null
+   },
+   {
+    "id": "E-10-2026-004585",
+    "label": "E-004585/2026",
+    "date": "2026-11-09",
+    "title": {
+     "cs": "Boj proti nelegálnímu obchodu s tabákovými výrobky a předcházení ztrátám daňových příjmů v EU",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004585_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 11
    },
    {
     "id": "E-10-2026-004507",

@@ -12,13 +12,13 @@
   }
  },
  "term_start": "2024-07-16",
- "updated": "2026-11-20",
+ "updated": "2026-11-24",
  "coverage": {
   "committee_to": "2026-11-18",
-  "plenary_to": "2026-11-20",
-  "committee_docs": 1478,
+  "plenary_to": "2026-11-24",
+  "committee_docs": 1484,
   "committee_compromise": 35,
-  "committee_pending": 15
+  "committee_pending": 12
  },
  "meps": {
   "23699": {
@@ -210,17 +210,37 @@
     ]
    },
    "plenary": {
-    "cosigned": 9
+    "cosigned": 10
    }
   },
   "124713": {
    "committee": {
-    "total": 1362,
-    "sole": 640,
+    "total": 1366,
+    "sole": 644,
     "on_behalf": 29,
-    "dossiers": 67,
-    "docs": 120,
+    "dossiers": 68,
+    "docs": 122,
     "recent": [
+     {
+      "doc": "LIBE-AM-798444",
+      "date": "2026-11-17",
+      "committees": [
+       "LIBE"
+      ],
+      "procedure": "2026/2144(INI)",
+      "count": 1,
+      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-798444/LIBE-AM-798444_en.pdf"
+     },
+     {
+      "doc": "LIBE-AM-798443",
+      "date": "2026-11-17",
+      "committees": [
+       "LIBE"
+      ],
+      "procedure": "2026/2144(INI)",
+      "count": 3,
+      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-798443/LIBE-AM-798443_en.pdf"
+     },
      {
       "doc": "CJ09-AM-797458",
       "date": "2026-10-30",
@@ -251,31 +271,11 @@
       "procedure": "2026/0068(COD)",
       "count": 2,
       "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796454/CJ80-AM-796454_en.pdf"
-     },
-     {
-      "doc": "CJ80-AM-796453",
-      "date": "2026-10-19",
-      "committees": [
-       "CJ80"
-      ],
-      "procedure": "2026/0068(COD)",
-      "count": 3,
-      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796453/CJ80-AM-796453_en.pdf"
-     },
-     {
-      "doc": "CJ80-AM-796448",
-      "date": "2026-10-19",
-      "committees": [
-       "CJ80"
-      ],
-      "procedure": "2026/0068(COD)",
-      "count": 4,
-      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ80-AM-796448/CJ80-AM-796448_en.pdf"
      }
     ]
    },
    "plenary": {
-    "cosigned": 50
+    "cosigned": 51
    }
   },
   "197526": {
@@ -352,7 +352,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 158
+    "cosigned": 166
    }
   },
   "197537": {
@@ -416,7 +416,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 12
+    "cosigned": 23
    }
   },
   "197549": {
@@ -545,7 +545,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 9
+    "cosigned": 12
    }
   },
   "197556": {
@@ -614,11 +614,11 @@
   },
   "220840": {
    "committee": {
-    "total": 1868,
+    "total": 1888,
     "sole": 55,
     "on_behalf": 13,
-    "dossiers": 56,
-    "docs": 132,
+    "dossiers": 57,
+    "docs": 133,
     "recent": [
      {
       "doc": "IMCO-AM-797693",
@@ -629,6 +629,16 @@
       "procedure": "2026/0113(COD)",
       "count": 23,
       "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/IMCO-AM-797693/IMCO-AM-797693_en.pdf"
+     },
+     {
+      "doc": "AFET-AM-797721",
+      "date": "2026-11-16",
+      "committees": [
+       "AFET"
+      ],
+      "procedure": "2026/2044(INI)",
+      "count": 20,
+      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797721/AFET-AM-797721_en.pdf"
      },
      {
       "doc": "IMCO-AM-797702",
@@ -659,21 +669,11 @@
       "procedure": "2025/0545(COD)",
       "count": 20,
       "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
-     },
-     {
-      "doc": "CJ13-AM-797491",
-      "date": "2026-11-03",
-      "committees": [
-       "CJ13"
-      ],
-      "procedure": "2025/0545(COD)",
-      "count": 19,
-      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
      }
     ]
    },
    "plenary": {
-    "cosigned": 158
+    "cosigned": 167
    }
   },
   "256840": {
@@ -737,7 +737,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 19
+    "cosigned": 20
    }
   },
   "256843": {
@@ -801,7 +801,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 154
+    "cosigned": 162
    }
   },
   "256844": {
@@ -865,7 +865,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 145
+    "cosigned": 153
    }
   },
   "256845": {
@@ -929,17 +929,27 @@
     ]
    },
    "plenary": {
-    "cosigned": 15
+    "cosigned": 18
    }
   },
   "256846": {
    "committee": {
-    "total": 194,
-    "sole": 176,
+    "total": 198,
+    "sole": 180,
     "on_behalf": 0,
-    "dossiers": 13,
-    "docs": 19,
+    "dossiers": 14,
+    "docs": 20,
     "recent": [
+     {
+      "doc": "AFET-AM-797721",
+      "date": "2026-11-16",
+      "committees": [
+       "AFET"
+      ],
+      "procedure": "2026/2044(INI)",
+      "count": 4,
+      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797721/AFET-AM-797721_en.pdf"
+     },
      {
       "doc": "AFET-AM-790940",
       "date": "2026-07-10",
@@ -982,21 +992,11 @@
       "procedure": "2025/0227(COD)",
       "count": 4,
       "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ19-AM-789069/CJ19-AM-789069_en.pdf"
-     },
-     {
-      "doc": "AFET-AM-787778",
-      "date": "2026-04-23",
-      "committees": [
-       "AFET"
-      ],
-      "procedure": "2025/2251(INI)",
-      "count": 27,
-      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-787778/AFET-AM-787778_en.pdf"
      }
     ]
    },
    "plenary": {
-    "cosigned": 12
+    "cosigned": 13
    }
   },
   "256847": {
@@ -1060,7 +1060,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 15
+    "cosigned": 16
    }
   },
   "256850": {
@@ -1253,7 +1253,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 119
+    "cosigned": 130
    }
   },
   "256853": {
@@ -1317,7 +1317,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 158
+    "cosigned": 166
    }
   },
   "261038": {
@@ -1381,7 +1381,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 149
+    "cosigned": 158
    }
   },
   "270261": {
@@ -1445,7 +1445,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 58
+    "cosigned": 66
    }
   },
   "272024": {
@@ -1509,7 +1509,7 @@
     ]
    },
    "plenary": {
-    "cosigned": 77
+    "cosigned": 85
    }
   }
  }

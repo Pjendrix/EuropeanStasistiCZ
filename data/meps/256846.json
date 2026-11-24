@@ -115,7 +115,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 858,
+ "mandate_days": 862,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -4613,12 +4613,22 @@
  },
  "amendments": {
   "committee": {
-   "total": 194,
-   "sole": 176,
+   "total": 198,
+   "sole": 180,
    "on_behalf": 0,
-   "dossiers": 13,
-   "docs": 19,
+   "dossiers": 14,
+   "docs": 20,
    "recent": [
+    {
+     "doc": "AFET-AM-797721",
+     "date": "2026-11-16",
+     "committees": [
+      "AFET"
+     ],
+     "procedure": "2026/2044(INI)",
+     "count": 4,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797721/AFET-AM-797721_en.pdf"
+    },
     {
      "doc": "AFET-AM-790940",
      "date": "2026-07-10",
@@ -4661,21 +4671,11 @@
      "procedure": "2025/0227(COD)",
      "count": 4,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ19-AM-789069/CJ19-AM-789069_en.pdf"
-    },
-    {
-     "doc": "AFET-AM-787778",
-     "date": "2026-04-23",
-     "committees": [
-      "AFET"
-     ],
-     "procedure": "2025/2251(INI)",
-     "count": 27,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-787778/AFET-AM-787778_en.pdf"
     }
    ]
   },
   "plenary": {
-   "cosigned": 12
+   "cosigned": 13
   },
   "source": {
    "committee": {
@@ -4691,12 +4691,12 @@
   },
   "coverage": {
    "committee_to": "2026-11-18",
-   "plenary_to": "2026-11-20",
-   "committee_docs": 1478,
+   "plenary_to": "2026-11-24",
+   "committee_docs": 1484,
    "committee_compromise": 35,
-   "committee_pending": 15
+   "committee_pending": 12
   },
-  "updated": "2026-11-20"
+  "updated": "2026-11-24"
  },
  "own_work": {
   "source": {
@@ -4704,7 +4704,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4737,18 +4737,18 @@
     "count": 0
    },
    "motion": {
-    "count": 34,
+    "count": 35,
     "voted": 1,
     "adopted": 0,
-    "no_vote": 7,
+    "no_vote": 8,
     "other": 0,
     "superseded": 26
    },
    "joint_motion": {
-    "count": 34,
+    "count": 35,
     "voted": 26,
     "adopted": 26,
-    "no_vote": 8,
+    "no_vote": 9,
     "other": 0
    },
    "question": {
@@ -4770,7 +4770,7 @@
    "lead_opinions": 1,
    "shadow_reports": 1,
    "shadow_opinions": 0,
-   "motions_signed": 68,
+   "motions_signed": 70,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -4784,6 +4784,38 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0508",
+    "label": null,
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "JOINT MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0508_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 14
+   },
+   {
+    "id": "B-10-2026-0508",
+    "label": null,
+    "date": "2026-11-20",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on media freedom and rule of law in the Czech Republic: threats to the independence of public broadcasters"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0508_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 8
+   },
    {
     "id": "RC-10-2026-0497",
     "label": null,
