@@ -161,12 +161,20 @@ def between_html(b: dict) -> str:
     )
 
 
+TRACE_MAX = 3
+
+
 def upcoming_html(u: dict | None) -> str:
     if not u:
         return '<section class="nv-next card" aria-labelledby="nv-next-h"><h2 id="nv-next-h">Chystá se</h2><p class="muted">Program dalšího zasedání zatím není zveřejněný.</p></section>'
     from hub import cz_people_html
 
-    trace = "".join(f'<li class="nv-tr">{esc(t["title"])}{cz_people_html(t["cz"])}</li>' for t in u["trace"])
+    # Na Novinkách jen prvních TRACE_MAX bodů s českou stopou (s portréty je každý vysoký a odsunul by zasedání pod
+    # 1,5 obrazovky mobilu); celý seznam je v programu zasedání (zasedani).
+    shown, rest = u["trace"][:TRACE_MAX], len(u["trace"]) - TRACE_MAX
+    trace = "".join(f'<li class="nv-tr">{esc(t["title"])}{cz_people_html(t["cz"])}</li>' for t in shown)
+    if rest > 0:
+        trace += f'<li class="nv-tr-more small"><a href="zasedani">a {fmt_num(rest)} další v programu zasedání</a></li>'
     return (
         f'<section class="nv-next card" aria-labelledby="nv-next-h"><p class="nv-kicker">Chystá se</p>'
         f'<h2 id="nv-next-h">Další zasedání {_range(u["from"], u["to"])}</h2>'
