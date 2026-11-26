@@ -379,6 +379,8 @@ for (const width of [1440, 390]) {
     h1: document.querySelector("main h1")?.textContent.trim(),
     title: document.title,
     next: (document.querySelector("main").textContent.match(/Další zasedání/g) || []).length,
+    // mezi zasedáními, než EP zveřejní program dalšího, je místo karty „Další zasedání“ karta „Chystá se“ bez programu
+    noAgenda: /Program dalšího zasedání zatím není zveřejněný/.test(document.querySelector(".nv-next")?.textContent || ""),
     hemi: document.querySelectorAll(".hm-seat, #hm-next, #hm-hemi").length,
     votes: [...document.querySelectorAll(".nv-vote")].map((li) => /EP:/.test(li.textContent) && /Češi/.test(li.textContent)),
     anchor: document.querySelector('[id^="zasedani-"]')?.id || "",
@@ -388,7 +390,7 @@ for (const width of [1440, 390]) {
   if (st.sw > width) problems.push(`${where}: přetéká (${st.sw})`);
   if (st.h1 !== "Novinky" || !st.title.startsWith("Novinky")) problems.push(`${where}: H1/titulek ${st.h1} / ${st.title}`);
   if (st.canon && !st.canon.endsWith("/aktualne")) problems.push(`${where}: canonical ${st.canon}`);
-  if (st.next !== 1) problems.push(`${where}: „Další zasedání“ je na stránce ${st.next}×, čekám 1×`);
+  if (st.next !== (st.noAgenda ? 0 : 1)) problems.push(`${where}: „Další zasedání“ je na stránce ${st.next}×, čekám ${st.noAgenda ? 0 : 1}×`);
   if (st.hemi) problems.push(`${where}: na Novinkách zůstal půlkruh nebo karusel`);
   if (!st.votes.length || st.votes.some((ok) => !ok)) problems.push(`${where}: u hlasování chybí popisky EP:/Češi (${st.votes.length} řádků)`);
   if (!/^zasedani-\d{4}-\d{2}-\d{2}$/.test(st.anchor)) problems.push(`${where}: chybí kotva zasedání (${st.anchor})`);
