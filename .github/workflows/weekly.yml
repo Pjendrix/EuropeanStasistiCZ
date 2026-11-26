@@ -35,7 +35,10 @@ jobs:
         run: pip install --require-hashes -r requirements.txt
 
       - name: Testy
-        run: python -m pytest -q
+        # Bez testu „uložená shrnutí kvízu odpovídají otázkám“: chybějící AI shrnutí nesmí zablokovat stažení dat.
+        # Shrnutí obnovuje „Shrnutí kvízu“ (běží až po úspěšné aktualizaci), chybějící hlásí issue; dřív se to zacyklilo
+        # a data na webu zůstala 3 týdny stará (listopad 2026). V PR test dál běží (tests.yml).
+        run: python -m pytest -q --deselect tests/test_quiz_summaries.py::test_repo_summaries_still_match_quiz
 
       - name: Záloha předchozího stavu
         run: cp -r data "$RUNNER_TEMP/data-prev"
