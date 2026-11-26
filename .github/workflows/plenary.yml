@@ -3,6 +3,8 @@
 # Běží 4× denně (cron v UTC: v zimě 7:07, 13:07, 19:07, 22:37, v létě o hodinu později pražského času), ale jen
 # ve dnech zasedání a den po posledním dni (fetch_preliminary.py --due). Dřív byly crony zdvojené kvůli letnímu času
 # a polovina běhů jen skončila – každý ale stál nejméně 1 účtovanou minutu, proto jen jedna varianta.
+# Pražskou hodinu nekontrolujeme: GitHub naplánované běhy často spouští o hodiny později a kontrola hodiny
+# je pak všechny přeskočila (zasedání 11.–12. a 23.–26. 11. 2026 bez předběžných dat). O běhu rozhoduje jen --due.
 # Dny, které už má HowTheyVote, se smažou (i v týdenní aktualizaci). Do statistik nic nevstupuje.
 name: Předběžné výsledky zasedání
 
@@ -28,29 +30,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Pražský čas
-        id: clock
-        run: |
-          h=$(TZ=Europe/Prague date +%H)
-          if [ "${{ github.event_name }}" != "schedule" ] || [[ " 07 08 13 14 19 20 22 23 " == *" $h "* ]]; then echo "run=true" >> "$GITHUB_OUTPUT"
-          else echo "run=false" >> "$GITHUB_OUTPUT"; echo "V Praze je $h h, tento cron patří druhé variantě času."; fi
-
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        if: steps.clock.outputs.run == 'true'
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
-        if: steps.clock.outputs.run == 'true'
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Instalace závislostí
-        if: steps.clock.outputs.run == 'true'
         run: pip install --require-hashes -r requirements.txt
 
       - name: Den zasedání?
         id: due
-        if: steps.clock.outputs.run == 'true'
         run: python scripts/fetch_preliminary.py --due >> "$GITHUB_OUTPUT"
 
       - name: Jmenovitá hlasování (EP Open Data API)

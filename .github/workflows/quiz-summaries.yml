@@ -1,5 +1,5 @@
 # Srozumitelné shrnutí otázek kvízu, obě varianty: Čeští poslanci a Evropské frakce (Claude Haiku, scripts/quiz_summaries.py).
-# Běží po každé týdenní aktualizaci (otázky se mohou změnit s novými hlasováními) a ručně.
+# Běží po každé týdenní aktualizaci a po „Vlastní práci poslanců“ (obě přepočítají quiz.json) a ručně.
 # Volá API jen pro nové nebo změněné otázky; ostatní shrnutí jsou uložená v data/quiz_summaries.json.
 # Klíč ANTHROPIC_API_KEY je jen v GitHub Secrets; bez něj skript nic nevolá a zůstanou uložená shrnutí.
 # Bez klíče jdou shrnutí vytvořit lokálně přes Claude Code: python scripts/quiz_summaries.py --backend claude-cli
@@ -7,7 +7,7 @@ name: Shrnutí kvízu
 
 on:
   workflow_run:
-    workflows: ["Týdenní aktualizace dat"]
+    workflows: ["Týdenní aktualizace dat", "Vlastní práce poslanců"]  # obě přepočítávají quiz.json (commit_data.sh)
     types: [completed]
   workflow_dispatch: {}
 

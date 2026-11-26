@@ -130,3 +130,14 @@ def test_upcoming_only_future():
     u = news.upcoming(agenda, radar, "2026-10-24")
     assert u["items"] == 2 and [t["title"] for t in u["trace"]] == ["MOCK bod"]
     assert news.upcoming(agenda, radar, "2026-11-13") is None
+
+
+def test_upcoming_html_caps_trace():
+    import news_page
+
+    u = {"from": "2026-11-11", "to": "2026-11-12", "items": 9, "trace": [{"title": f"MOCK {i}", "cz": []} for i in range(5)]}
+    html = news_page.upcoming_html(u)
+    assert html.count('class="nv-tr"') == news_page.TRACE_MAX and "MOCK 3" not in html
+    assert "a 2 další v programu zasedání" in html and "česká stopa u 5" in html
+    u["trace"] = u["trace"][:2]
+    assert "další v programu" not in news_page.upcoming_html(u)
