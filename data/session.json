@@ -4,435 +4,369 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
- "from": "2026-10-19",
- "to": "2026-10-22",
- "votes": 257,
- "main": 24,
- "adopted_main": 23,
- "split_count": 234,
+ "from": "2026-11-12",
+ "to": "2026-11-12",
+ "votes": 94,
+ "main": 12,
+ "adopted_main": 11,
+ "split_count": 86,
  "unity": {
-  "united": 23,
-  "considered": 257,
-  "strong_split": 52
+  "united": 8,
+  "considered": 94,
+  "strong_split": 39
  },
  "unity_all": {
-  "united": 495,
-  "considered": 6411,
-  "strong_split": 2360,
-  "united_final": 151,
-  "considered_final": 671,
+  "united": 503,
+  "considered": 6505,
+  "strong_split": 2399,
+  "united_final": 155,
+  "considered_final": 683,
   "strong_threshold": 0.3
  },
  "decisive_final": 0,
- "close_count": 5,
+ "close_count": 1,
  "top_splits": [
   {
-   "id": 199038,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
-   "reference": "A10-0272/2026",
-   "description": "Après le § 32 - Am 48",
+   "id": 200492,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Ukrajinské děti násilně deportované do Ruska nebo žijící na Ruskem okupovaných územích Ukrajiny",
+   "reference": "RC-B10-0497/2026",
+   "description": "Après le § 2 - Am 1",
    "result": "REJECTED",
    "is_main": false,
    "counts": {
-    "for": 129,
-    "against": 480,
-    "abstention": 49,
-    "did_not_vote": 61
+    "for": 140,
+    "against": 385,
+    "abstention": 62,
+    "did_not_vote": 133
    },
    "cz": [
-    10,
-    10,
-    0,
-    1
-   ],
-   "amendment_number": "48",
-   "texts_adopted_reference": null,
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 32 - PN 48",
-   "split": 0.5
-  },
-  {
-   "id": 198974,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
-   "reference": "A10-0272/2026",
-   "description": "Après le § 1 - Am 24",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 124,
-    "against": 450,
-    "abstention": 83,
-    "did_not_vote": 62
-   },
-   "cz": [
-    9,
-    9,
-    1,
-    2
-   ],
-   "amendment_number": "24",
-   "texts_adopted_reference": null,
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 1 - PN 24",
-   "split": 0.5
-  },
-  {
-   "id": 199491,
-   "date": "2026-10-22",
-   "month": "2026-10",
-   "title": "Eskalace ruských útoků v EU, zejména na nákladní dopravu v Černém moři, ohrožující lidské životy, regionální stabilitu a potravinové zabezpečení",
-   "reference": "RC-B10-0476/2026",
-   "description": "Après le § 4 - Am 3",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 128,
-    "against": 425,
-    "abstention": 27,
-    "did_not_vote": 139
-   },
-   "cz": [
-    9,
-    9,
-    0,
-    3
-   ],
-   "amendment_number": "3",
-   "texts_adopted_reference": null,
-   "cats": [
-    "def"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 4 - PN 3",
-   "split": 0.5
-  },
-  {
-   "id": 199492,
-   "date": "2026-10-22",
-   "month": "2026-10",
-   "title": "Eskalace ruských útoků v EU, zejména na nákladní dopravu v Černém moři, ohrožující lidské životy, regionální stabilitu a potravinové zabezpečení",
-   "reference": "RC-B10-0476/2026",
-   "description": "Après le § 4 - Am 1",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 116,
-    "against": 441,
-    "abstention": 16,
-    "did_not_vote": 146
-   },
-   "cz": [
-    9,
-    9,
-    0,
+    8,
+    8,
+    2,
     3
    ],
    "amendment_number": "1",
    "texts_adopted_reference": null,
    "cats": [
-    "def"
+    "def",
+    "soc"
    ],
    "vote_kind": "amendment",
    "is_final": false,
    "inverted": false,
-   "description_cs": "Za odst. 4 - PN 1",
+   "description_cs": "Za odst. 2 - PN 1",
    "split": 0.5
   },
   {
-   "id": 199502,
-   "date": "2026-10-22",
-   "month": "2026-10",
-   "title": "Eskalace ruských útoků v EU, zejména na nákladní dopravu v Černém moři, ohrožující lidské životy, regionální stabilitu a potravinové zabezpečení",
-   "reference": "RC-B10-0476/2026",
-   "description": "§ 7/1",
+   "id": 200443,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropský plán boje proti rakovině",
+   "reference": "A10-0261/2026",
+   "description": "§ 28/3",
    "result": "ADOPTED",
    "is_main": false,
    "counts": {
-    "for": 384,
-    "against": 138,
-    "abstention": 48,
-    "did_not_vote": 149
+    "for": 422,
+    "against": 156,
+    "abstention": 26,
+    "did_not_vote": 116
    },
    "cz": [
-    9,
-    9,
-    0,
-    3
+    6,
+    6,
+    8,
+    1
    ],
    "amendment_number": "§",
    "texts_adopted_reference": null,
    "cats": [
-    "def"
+    "soc"
    ],
    "vote_kind": "split_part",
    "is_final": false,
    "inverted": false,
-   "description_cs": "Odst. 7, 1. část",
+   "description_cs": "Odst. 28, 3. část",
    "split": 0.5
+  },
+  {
+   "id": 200407,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropský plán boje proti rakovině",
+   "reference": "A10-0261/2026",
+   "description": "§ 20/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 439,
+    "against": 116,
+    "abstention": 53,
+    "did_not_vote": 112
+   },
+   "cz": [
+    5,
+    5,
+    10,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 20, 1. část",
+   "split": 0.5
+  },
+  {
+   "id": 200357,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Amendements de la commission compétente - vote séparé - Am 138",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 476,
+    "against": 121,
+    "abstention": 13,
+    "did_not_vote": 110
+   },
+   "cz": [
+    9,
+    10,
+    1,
+    1
+   ],
+   "amendment_number": "138",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělené hlasování - PN 138",
+   "split": 0.4737
+  },
+  {
+   "id": 200367,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Article 31, après le § 1 - Am 334",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 204,
+    "against": 389,
+    "abstention": 17,
+    "did_not_vote": 110
+   },
+   "cz": [
+    10,
+    9,
+    1,
+    1
+   ],
+   "amendment_number": "334",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 31, za odst. 1 - PN 334",
+   "split": 0.4737
   }
  ],
  "top_splits_main": [
   {
-   "id": 198774,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Souhrnný rozpočet Evropské unie na rozpočtový rok 2027 – všechny oddíly",
-   "reference": "A10-0272/2026",
+   "id": 199983,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Institucionální aspekty umělé inteligence v kontextu evropské integrace",
+   "reference": "A10-0280/2026",
    "description": "Proposition de résolution (ensemble du texte)",
    "result": "ADOPTED",
    "is_main": true,
    "counts": {
-    "for": 400,
-    "against": 189,
-    "abstention": 84,
-    "did_not_vote": 46
+    "for": 405,
+    "against": 133,
+    "abstention": 60,
+    "did_not_vote": 122
    },
    "cz": [
-    4,
-    4,
-    11,
-    2
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0352",
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)",
-   "split": 0.5
-  },
-  {
-   "id": 198386,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Hlavní směry politik zaměstnanosti členských států",
-   "reference": "A10-0260/2026",
-   "description": "Proposition de la Commission au Conseil",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 434,
-    "against": 212,
-    "abstention": 23,
-    "did_not_vote": 50
-   },
-   "cz": [
+    6,
+    9,
     5,
-    8,
-    7,
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0357",
+   "texts_adopted_reference": "P10_TA(2026)0378",
    "cats": [
-    "soc"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh Komise Radě",
-   "split": 0.3846
-  },
-  {
-   "id": 198357,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Udělení absolutoria za rok 2024: souhrnný rozpočet EU – Evropská rada a Rada",
-   "reference": "A10-0258/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 434,
-    "against": 203,
-    "abstention": 21,
-    "did_not_vote": 61
-   },
-   "cz": [
-    5,
-    15,
-    0,
-    1
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0353",
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)",
-   "split": 0.25
-  },
-  {
-   "id": 198885,
-   "date": "2026-10-20",
-   "month": "2026-10",
-   "title": "Příloha nařízení Komise v přenesené pravomoci, kterým se doplňuje nařízení Evropského parlamentu a Rady (EU) 2024/3012 stanovením metodik certifikace pro činnosti uhlíkového zemědělství",
-   "reference": "B10-0471/2026",
-   "description": "Proposition de résolution",
-   "result": "REJECTED",
-   "is_main": true,
-   "counts": {
-    "for": 199,
-    "against": 407,
-    "abstention": 45,
-    "did_not_vote": 68
-   },
-   "cz": [
-    5,
-    16,
-    0,
-    0
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": null,
-   "cats": [
-    "env",
+    "dig",
     "eco"
    ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
-   "description_cs": "Návrh usnesení",
-   "split": 0.2381
+   "description_cs": "Návrh usnesení (celý text)",
+   "split": 0.4
   },
   {
-   "id": 198409,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Uvolnění prostředků z Evropského fondu pro přizpůsobení se globalizaci na pomoc propuštěným pracovníkům na základě žádosti Finska – EGF/2026/004 FI/Etelä-Suomi and Helsinki-Uusimaa paper",
-   "reference": "A10-0273/2026",
-   "description": "Proposition de résolution (ensemble du texte)",
+   "id": 200049,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Od prototypů k schopnostem – umožnění novým aktérům v oblasti obrany rozšířit své působení",
+   "reference": "A10-0268/2026",
+   "description": "Proposition de résolution",
    "result": "ADOPTED",
    "is_main": true,
    "counts": {
-    "for": 609,
-    "against": 51,
-    "abstention": 14,
-    "did_not_vote": 45
+    "for": 411,
+    "against": 133,
+    "abstention": 41,
+    "did_not_vote": 135
    },
    "cz": [
-    14,
-    4,
-    2,
+    17,
+    3,
+    0,
     1
    ],
    "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0355",
+   "texts_adopted_reference": "P10_TA(2026)0379",
    "cats": [
-    "soc",
-    "fin"
+    "def"
    ],
    "vote_kind": "final",
    "is_final": true,
    "inverted": false,
-   "description_cs": "Návrh usnesení (celý text)",
-   "split": 0.2222
-  }
- ],
- "decisive": [
-  {
-   "id": 199339,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Hlavní směry politik zaměstnanosti členských států",
-   "reference": "A10-0260/2026",
-   "description": "Amendements de la commission compétente - votes séparés - Am 17/3",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 298,
-    "against": 307,
-    "abstention": 51,
-    "did_not_vote": 63
-   },
-   "cz": [
-    3,
-    16,
-    1,
-    1
-   ],
-   "amendment_number": "17",
-   "texts_adopted_reference": "P10_TA(2026)0357",
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 3. část",
-   "alternative_result": "ADOPTED"
+   "description_cs": "Návrh usnesení",
+   "split": 0.15
   },
   {
-   "id": 199338,
-   "date": "2026-10-21",
-   "month": "2026-10",
-   "title": "Hlavní směry politik zaměstnanosti členských států",
-   "reference": "A10-0260/2026",
-   "description": "Amendements de la commission compétente - votes séparés - Am 17/2",
-   "result": "REJECTED",
-   "is_main": false,
+   "id": 200101,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
    "counts": {
-    "for": 314,
-    "against": 317,
-    "abstention": 20,
-    "did_not_vote": 68
+    "for": 424,
+    "against": 105,
+    "abstention": 83,
+    "did_not_vote": 108
    },
    "cz": [
-    4,
-    16,
+    8,
+    1,
+    11,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0371",
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "split": 0.1111
+  },
+  {
+   "id": 199985,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Union retail investor protection rules",
+   "reference": "A9-0162/2024",
+   "description": "Accord provisoire - Am 2",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 286,
+    "against": 300,
+    "abstention": 23,
+    "did_not_vote": 111
+   },
+   "cz": [
+    18,
+    2,
     0,
     1
    ],
-   "amendment_number": "17",
-   "texts_adopted_reference": "P10_TA(2026)0357",
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
    "cats": [
-    "soc"
+    "fin"
    ],
-   "vote_kind": "amendment",
-   "is_final": false,
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
    "inverted": false,
-   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělená hlasování - PN 17, 2. část",
-   "alternative_result": "ADOPTED"
+   "description_cs": "Prozatímní dohoda - PN 2",
+   "split": 0.1
+  },
+  {
+   "id": 199991,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropská agentura pro chemické látky a změna nařízení (ES) č. 1907/2006, (EU) č. 528/2012, (EU) č. 649/2012 a (EU) 2019/1021",
+   "reference": "A10-0093/2026",
+   "description": "Accord provisoire - Am 117",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 561,
+    "against": 13,
+    "abstention": 39,
+    "did_not_vote": 107
+   },
+   "cz": [
+    18,
+    2,
+    0,
+    1
+   ],
+   "amendment_number": "117",
+   "texts_adopted_reference": "P10_TA(2026)0373",
+   "cats": [
+    "env",
+    "eco",
+    "ins"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 117",
+   "split": 0.1
   }
- ]
+ ],
+ "decisive": []
 }

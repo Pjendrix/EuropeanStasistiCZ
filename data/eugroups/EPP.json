@@ -12,47 +12,38 @@
  "seats": 185,
  "n_countries": 27,
  "attendance": [
-  1035330,
-  1196283
+  1050122,
+  1213673
  ],
  "attendance_main": [
-  109857,
-  125196
+  111747,
+  127416
  ],
  "majority": [
-  955940,
-  1010245
+  969883,
+  1024915
  ],
  "majority_main": [
-  103271,
-  107547
+  105081,
+  109428
  ],
- "splits": 248,
- "considered": 6405,
+ "splits": 249,
+ "considered": 6499,
  "splits_main": 40,
- "considered_main": 671,
+ "considered_main": 683,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "member_list": [
   {
@@ -83,49 +74,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6088,
-     6411
+     6182,
+     6505
     ],
     "attendance_main": [
-     643,
-     671
+     655,
+     683
     ],
     "group_loyalty": [
-     5453,
-     6088
+     5543,
+     6182
     ],
     "group_loyalty_main": [
-     622,
-     643
+     634,
+     655
     ],
     "cz_agreement": [
-     3075,
-     5907
+     3112,
+     5998
     ],
     "outcome": [
-     5324,
-     5795
+     5413,
+     5888
     ],
     "outcome_main": [
-     595,
-     627
+     606,
+     639
     ],
     "outcome_close": [
      66,
-     125
+     126
     ],
     "group_outcome": [
-     845694,
-     921049
+     859396,
+     935563
     ],
     "group_outcome_main": [
-     95414,
-     101116
+     97135,
+     102997
     ],
     "positions": {
-     "FOR": 2697,
-     "AGAINST": 3099,
-     "ABSTENTION": 292,
+     "FOR": 2758,
+     "AGAINST": 3131,
+     "ABSTENTION": 293,
      "DID_NOT_VOTE": 323
     }
    }
@@ -158,50 +149,50 @@
    "end": null,
    "total": {
     "attendance": [
-     6137,
-     6411
+     6229,
+     6505
     ],
     "attendance_main": [
-     644,
-     671
+     656,
+     683
     ],
     "group_loyalty": [
-     5502,
-     6137
+     5589,
+     6229
     ],
     "group_loyalty_main": [
-     622,
-     644
+     634,
+     656
     ],
     "cz_agreement": [
-     3055,
-     5960
+     3092,
+     6049
     ],
     "outcome": [
-     5308,
-     5699
+     5394,
+     5788
     ],
     "outcome_main": [
-     595,
-     625
+     606,
+     637
     ],
     "outcome_close": [
      61,
-     114
+     115
     ],
     "group_outcome": [
-     835260,
-     907490
+     848399,
+     921392
     ],
     "group_outcome_main": [
-     95191,
-     100494
+     96912,
+     102375
     ],
     "positions": {
-     "FOR": 2514,
-     "AGAINST": 3186,
-     "ABSTENTION": 437,
-     "DID_NOT_VOTE": 274
+     "FOR": 2572,
+     "AGAINST": 3217,
+     "ABSTENTION": 440,
+     "DID_NOT_VOTE": 276
     }
    }
   },
@@ -233,49 +224,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6132,
-     6411
+     6226,
+     6505
     ],
     "attendance_main": [
-     641,
-     671
+     653,
+     683
     ],
     "group_loyalty": [
-     5487,
-     6132
+     5579,
+     6226
     ],
     "group_loyalty_main": [
-     621,
-     641
+     633,
+     653
     ],
     "cz_agreement": [
-     3078,
-     5948
+     3115,
+     6039
     ],
     "outcome": [
-     5385,
-     5840
+     5476,
+     5933
     ],
     "outcome_main": [
-     597,
-     630
+     608,
+     642
     ],
     "outcome_close": [
      70,
-     127
+     128
     ],
     "group_outcome": [
-     853066,
-     930764
+     866768,
+     945278
     ],
     "group_outcome_main": [
-     95624,
-     101802
+     97345,
+     103683
     ],
     "positions": {
-     "FOR": 2693,
-     "AGAINST": 3148,
-     "ABSTENTION": 291,
+     "FOR": 2752,
+     "AGAINST": 3182,
+     "ABSTENTION": 292,
      "DID_NOT_VOTE": 279
     }
    }
@@ -308,50 +299,50 @@
    "end": null,
    "total": {
     "attendance": [
-     6170,
-     6411
+     6256,
+     6505
     ],
     "attendance_main": [
-     659,
-     671
+     671,
+     683
     ],
     "group_loyalty": [
-     5568,
-     6170
+     5647,
+     6256
     ],
     "group_loyalty_main": [
-     636,
-     659
+     648,
+     671
     ],
     "cz_agreement": [
-     2870,
-     5991
+     2904,
+     6074
     ],
     "outcome": [
-     5467,
-     5769
+     5545,
+     5852
     ],
     "outcome_main": [
-     607,
-     646
+     618,
+     658
     ],
     "outcome_close": [
      60,
-     109
+     110
     ],
     "group_outcome": [
-     841276,
-     914028
+     853549,
+     927028
     ],
     "group_outcome_main": [
-     97821,
-     103997
+     99542,
+     105878
     ],
     "positions": {
-     "FOR": 2505,
-     "AGAINST": 3265,
-     "ABSTENTION": 400,
-     "DID_NOT_VOTE": 241
+     "FOR": 2558,
+     "AGAINST": 3295,
+     "ABSTENTION": 403,
+     "DID_NOT_VOTE": 249
     }
    }
   },
@@ -383,57 +374,57 @@
    "end": null,
    "total": {
     "attendance": [
-     5594,
-     6411
+     5685,
+     6505
     ],
     "attendance_main": [
-     601,
-     671
+     613,
+     683
     ],
     "group_loyalty": [
-     5122,
-     5594
+     5197,
+     5685
     ],
     "group_loyalty_main": [
-     574,
-     601
+     586,
+     613
     ],
     "cz_agreement": [
-     2871,
-     5437
+     2918,
+     5525
     ],
     "outcome": [
-     4847,
-     5477
+     4921,
+     5561
     ],
     "outcome_main": [
-     538,
-     587
+     549,
+     599
     ],
     "outcome_close": [
      71,
-     138
+     139
     ],
     "group_outcome": [
-     798546,
-     876229
+     810932,
+     889345
     ],
     "group_outcome_main": [
-     89058,
-     94864
+     90779,
+     96745
     ],
     "positions": {
-     "FOR": 2166,
-     "AGAINST": 3312,
-     "ABSTENTION": 116,
-     "DID_NOT_VOTE": 817
+     "FOR": 2225,
+     "AGAINST": 3337,
+     "ABSTENTION": 123,
+     "DID_NOT_VOTE": 820
     }
    }
   }
  ],
  "countries": {
-  "as_of": "2026-10-22",
-  "vote_id": 199356,
+  "as_of": "2026-11-12",
+  "vote_id": 200503,
   "seats": 185,
   "n_countries": 27,
   "by_country": [
@@ -578,7 +569,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-11-01"
+  "release": "2026-11-21"
  },
  "chairs": [
   {
@@ -595,7 +586,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-11-04"
+  "updated": "2026-11-26"
  },
  "splits_list": [
   {

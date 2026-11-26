@@ -4,27 +4,18 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "close_margin": 21,
- "close_count": 158,
- "close_count_main": 4,
+ "close_count": 159,
+ "close_count_main": 5,
  "decisive_final": 0,
  "definition": "Těsná hlasování, kde rozhodly české hlasy: těsné hlasování, které by bez hlasů pro a proti českých poslanců dopadlo opačně (prostá většina, při rovnosti zamítnuto). Vynechávají se hlasování, jejichž oficiální výsledek neodpovídá prosté většině (vyžadovala jinou většinu), protože u nich nelze kontrafakt spolehlivě spočítat.",
  "kind_labels": {

@@ -4,23 +4,14 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ],
+  "group_conflicts": [],
   "group_web": {
    "name": "Wikidata (vlastnost P856, oficiální web)",
    "url": "https://www.wikidata.org",
@@ -39,28 +30,28 @@
    "logo_aspect": 8.53,
    "web": "https://www.patriotsforeurope.eu/",
    "cz_members": 9,
-   "seats": 84,
+   "seats": 85,
    "n_countries": 13,
    "attendance": [
-    475790,
-    544381
+    482371,
+    552599
    ],
    "attendance_main": [
-    49932,
-    56986
+    50760,
+    58020
    ],
    "majority": [
-    389966,
-    418087
+    394989,
+    423573
    ],
    "majority_main": [
-    37996,
-    41571
+    38599,
+    42254
    ],
-   "splits": 622,
-   "considered": 6390,
-   "splits_main": 65,
-   "considered_main": 663
+   "splits": 633,
+   "considered": 6484,
+   "splits_main": 67,
+   "considered_main": 675
   },
   {
    "code": "EPP",
@@ -76,25 +67,25 @@
    "seats": 185,
    "n_countries": 27,
    "attendance": [
-    1035330,
-    1196283
+    1050122,
+    1213673
    ],
    "attendance_main": [
-    109857,
-    125196
+    111747,
+    127416
    ],
    "majority": [
-    955940,
-    1010245
+    969883,
+    1024915
    ],
    "majority_main": [
-    103271,
-    107547
+    105081,
+    109428
    ],
-   "splits": 248,
-   "considered": 6405,
+   "splits": 249,
+   "considered": 6499,
    "splits_main": 40,
-   "considered_main": 671
+   "considered_main": 683
   },
   {
    "code": "ECR",
@@ -110,25 +101,25 @@
    "seats": 84,
    "n_countries": 18,
    "attendance": [
-    454874,
-    515349
+    461369,
+    523245
    ],
    "attendance_main": [
-    47990,
-    53914
+    48826,
+    54922
    ],
    "majority": [
-    384728,
-    409321
+    389927,
+    415314
    ],
    "majority_main": [
-    37387,
-    40619
+    37997,
+    41305
    ],
-   "splits": 360,
-   "considered": 6382,
-   "splits_main": 47,
-   "considered_main": 665
+   "splits": 371,
+   "considered": 6476,
+   "splits_main": 50,
+   "considered_main": 677
   },
   {
    "code": "ESN",
@@ -144,25 +135,25 @@
    "seats": 27,
    "n_countries": 9,
    "attendance": [
-    152307,
-    171424
+    154393,
+    173962
    ],
    "attendance_main": [
-    15915,
-    17931
+    16182,
+    18255
    ],
    "majority": [
-    128007,
-    133170
+    129578,
+    134786
    ],
    "majority_main": [
-    12393,
-    12782
+    12571,
+    12967
    ],
    "splits": 113,
-   "considered": 5911,
+   "considered": 5989,
    "splits_main": 4,
-   "considered_main": 571
+   "considered_main": 580
   },
   {
    "code": "GREEN_EFA",
@@ -178,25 +169,25 @@
    "seats": 53,
    "n_countries": 17,
    "attendance": [
-    304457,
-    339783
+    308595,
+    344765
    ],
    "attendance_main": [
-    31861,
-    35563
+    32384,
+    36199
    ],
    "majority": [
-    284198,
-    290728
+    288252,
+    294850
    ],
    "majority_main": [
-    29414,
-    30076
+    29924,
+    30591
    ],
    "splits": 89,
-   "considered": 6298,
+   "considered": 6392,
    "splits_main": 17,
-   "considered_main": 653
+   "considered_main": 665
   },
   {
    "code": "GUE_NGL",
@@ -212,25 +203,25 @@
    "seats": 45,
    "n_countries": 13,
    "attendance": [
-    248451,
-    292970
+    251946,
+    297200
    ],
    "attendance_main": [
-    25927,
-    30656
+    26372,
+    31196
    ],
    "majority": [
-    224633,
-    233430
+    227883,
+    236813
    ],
    "majority_main": [
-    20744,
-    22050
+    21120,
+    22436
    ],
-   "splits": 249,
-   "considered": 6353,
+   "splits": 253,
+   "considered": 6447,
    "splits_main": 55,
-   "considered_main": 644
+   "considered_main": 656
   },
   {
    "code": "RENEW",
@@ -246,25 +237,25 @@
    "seats": 78,
    "n_countries": 21,
    "attendance": [
-    430279,
-    488003
+    436621,
+    495335
    ],
    "attendance_main": [
-    45198,
-    51090
+    46015,
+    52026
    ],
    "majority": [
-    404902,
-    423617
+    410972,
+    429883
    ],
    "majority_main": [
-    41925,
-    44114
+    42721,
+    44920
    ],
-   "splits": 175,
-   "considered": 6406,
+   "splits": 176,
+   "considered": 6500,
    "splits_main": 43,
-   "considered_main": 668
+   "considered_main": 680
   },
   {
    "code": "SD",
@@ -280,25 +271,25 @@
    "seats": 135,
    "n_countries": 25,
    "attendance": [
-    754125,
-    869525
+    764764,
+    882215
    ],
    "attendance_main": [
-    79421,
-    91020
+    80784,
+    92640
    ],
    "majority": [
-    710627,
-    733970
+    720842,
+    744526
    ],
    "majority_main": [
-    76213,
-    77734
+    77536,
+    79070
    ],
-   "splits": 97,
-   "considered": 6377,
+   "splits": 99,
+   "considered": 6471,
    "splits_main": 6,
-   "considered_main": 669
+   "considered_main": 681
   }
  ]
 }

@@ -12,47 +12,38 @@
  "seats": 84,
  "n_countries": 18,
  "attendance": [
-  454874,
-  515349
+  461369,
+  523245
  ],
  "attendance_main": [
-  47990,
-  53914
+  48826,
+  54922
  ],
  "majority": [
-  384728,
-  409321
+  389927,
+  415314
  ],
  "majority_main": [
-  37387,
-  40619
+  37997,
+  41305
  ],
- "splits": 360,
- "considered": 6382,
- "splits_main": 47,
- "considered_main": 665,
+ "splits": 371,
+ "considered": 6476,
+ "splits_main": 50,
+ "considered_main": 677,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "member_list": [
   {
@@ -83,50 +74,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5844,
-     6411
+     5937,
+     6505
     ],
     "attendance_main": [
-     607,
-     671
+     619,
+     683
     ],
     "group_loyalty": [
-     3620,
-     4459
+     3695,
+     4552
     ],
     "group_loyalty_main": [
-     338,
-     473
+     346,
+     485
     ],
     "cz_agreement": [
-     4646,
-     5632
+     4710,
+     5723
     ],
     "outcome": [
-     2674,
-     5205
+     2725,
+     5295
     ],
     "outcome_main": [
-     389,
-     504
+     399,
+     515
     ],
     "outcome_close": [
      58,
-     123
+     124
     ],
     "group_outcome": [
-     119136,
-     273863
+     121835,
+     279633
     ],
     "group_outcome_main": [
-     16877,
-     25806
+     17373,
+     26434
     ],
     "positions": {
-     "FOR": 3114,
-     "AGAINST": 2092,
-     "ABSTENTION": 638,
-     "DID_NOT_VOTE": 567
+     "FOR": 3167,
+     "AGAINST": 2129,
+     "ABSTENTION": 641,
+     "DID_NOT_VOTE": 568
     }
    }
   },
@@ -158,49 +149,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6264,
-     6411
+     6358,
+     6505
     ],
     "attendance_main": [
-     656,
-     671
+     668,
+     683
     ],
     "group_loyalty": [
-     5167,
-     6247
+     5247,
+     6341
     ],
     "group_loyalty_main": [
-     497,
-     651
+     505,
+     663
     ],
     "cz_agreement": [
-     4683,
-     6044
+     4746,
+     6136
     ],
     "outcome": [
-     3309,
-     5696
+     3354,
+     5785
     ],
     "outcome_main": [
-     439,
-     567
+     448,
+     577
     ],
     "outcome_close": [
      75,
-     142
+     143
     ],
     "group_outcome": [
-     198343,
-     374066
+     201031,
+     379773
     ],
     "group_outcome_main": [
-     29254,
-     36232
+     29739,
+     36816
     ],
     "positions": {
-     "FOR": 3216,
-     "AGAINST": 2480,
-     "ABSTENTION": 568,
+     "FOR": 3266,
+     "AGAINST": 2519,
+     "ABSTENTION": 573,
      "DID_NOT_VOTE": 147
     }
    }
@@ -234,11 +225,11 @@
    "total": {
     "attendance": [
      5790,
-     6411
+     6505
     ],
     "attendance_main": [
      611,
-     671
+     683
     ],
     "group_loyalty": [
      4955,
@@ -276,7 +267,7 @@
      "FOR": 2866,
      "AGAINST": 2423,
      "ABSTENTION": 501,
-     "DID_NOT_VOTE": 621
+     "DID_NOT_VOTE": 715
     }
    }
   },
@@ -308,57 +299,57 @@
    "end": null,
    "total": {
     "attendance": [
-     6005,
-     6411
+     6098,
+     6505
     ],
     "attendance_main": [
-     629,
-     671
+     641,
+     683
     ],
     "group_loyalty": [
-     4928,
-     5988
+     5008,
+     6081
     ],
     "group_loyalty_main": [
-     470,
-     624
+     479,
+     636
     ],
     "cz_agreement": [
-     4497,
-     5790
+     4560,
+     5881
     ],
     "outcome": [
-     3173,
-     5446
+     3216,
+     5533
     ],
     "outcome_main": [
-     422,
-     541
+     430,
+     550
     ],
     "outcome_close": [
      68,
-     133
+     134
     ],
     "group_outcome": [
-     191554,
-     359067
+     194170,
+     364670
     ],
     "group_outcome_main": [
-     28162,
-     34716
+     28633,
+     35260
     ],
     "positions": {
-     "FOR": 3066,
-     "AGAINST": 2380,
-     "ABSTENTION": 559,
-     "DID_NOT_VOTE": 406
+     "FOR": 3114,
+     "AGAINST": 2419,
+     "ABSTENTION": 565,
+     "DID_NOT_VOTE": 407
     }
    }
   }
  ],
  "countries": {
-  "as_of": "2026-10-22",
-  "vote_id": 199356,
+  "as_of": "2026-11-12",
+  "vote_id": 200503,
   "seats": 84,
   "n_countries": 18,
   "by_country": [
@@ -458,7 +449,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-11-01"
+  "release": "2026-11-21"
  },
  "chairs": [
   {
@@ -484,7 +475,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-11-04"
+  "updated": "2026-11-26"
  },
  "splits_list": [
   {
@@ -3676,6 +3667,45 @@
    ]
   },
   {
+   "id": 200101,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Proposition de la Commission",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 424,
+    "against": 105,
+    "abstention": 83,
+    "did_not_vote": 108
+   },
+   "cz": [
+    8,
+    1,
+    11,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0371",
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise",
+   "gc": [
+    14,
+    26,
+    30,
+    14
+   ]
+  },
+  {
    "id": 171280,
    "date": "2024-12-18",
    "month": "2024-12",
@@ -3748,6 +3778,43 @@
     27,
     0,
     6
+   ]
+  },
+  {
+   "id": 199977,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Změna Rozhodnutí Rady (EU) 2021/1764 o přidružení zámořských zemí a území k Evropské unii včetně vztahů mezi Evropskou unií na jedné straně a Grónskem a Dánským královstvím na straně druhé ",
+   "reference": "A10-0275/2026",
+   "description": "Proposition de la Commission au Conseil",
+   "result": "ADOPTED",
+   "is_main": true,
+   "counts": {
+    "for": 460,
+    "against": 76,
+    "abstention": 81,
+    "did_not_vote": 103
+   },
+   "cz": [
+    10,
+    1,
+    9,
+    1
+   ],
+   "amendment_number": null,
+   "texts_adopted_reference": "P10_TA(2026)0375",
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "final",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Návrh Komise Radě",
+   "gc": [
+    12,
+    6,
+    52,
+    14
    ]
   },
   {
@@ -3897,6 +3964,43 @@
     8,
     63,
     5
+   ]
+  },
+  {
+   "id": 199985,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Union retail investor protection rules",
+   "reference": "A9-0162/2024",
+   "description": "Accord provisoire - Am 2",
+   "result": "REJECTED",
+   "is_main": true,
+   "counts": {
+    "for": 286,
+    "against": 300,
+    "abstention": 23,
+    "did_not_vote": 111
+   },
+   "cz": [
+    18,
+    2,
+    0,
+    1
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
+   "cats": [
+    "fin"
+   ],
+   "vote_kind": "provisional_agreement",
+   "is_final": true,
+   "inverted": false,
+   "description_cs": "Prozatímní dohoda - PN 2",
+   "gc": [
+    45,
+    21,
+    4,
+    14
    ]
   },
   {

@@ -5055,7 +5055,11 @@
    },
    "next_vote": null,
    "plenary_date": "2026-11-12",
-   "vote": null
+   "vote": {
+    "vote_id": 199981,
+    "vote_date": "2026-11-12",
+    "status": "ADOPTED"
+   }
   },
   {
    "procedure": "2025-0207",
@@ -5142,8 +5146,8 @@
    "next_vote": null,
    "plenary_date": "2026-11-12",
    "vote": {
-    "vote_id": 190027,
-    "vote_date": "2026-04-29",
+    "vote_id": 199991,
+    "vote_date": "2026-11-12",
     "status": "ADOPTED"
    }
   },
@@ -8582,110 +8586,6 @@
    "next_vote": null,
    "plenary_date": "2025-12-16",
    "vote": null
-  },
-  {
-   "procedure": "2024-0061",
-   "label": "2024/0061(COD)",
-   "type": "COD",
-   "title_cs": "Evropský program investic do obrany a rámec opatření k zajištění včasné dostupnosti a dodávek obranných produktů („EDIP“)",
-   "title_en": "European Defence Industry Programme and a framework of measures to ensure the timely availability and supply of defence products (‘EDIP’)",
-   "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2024/0061(COD)",
-   "committee": {
-    "code": "ITRE",
-    "name": "Průmysl, výzkum a energetika",
-    "category": "eco"
-   },
-   "cz": [
-    {
-     "mep_id": 256843,
-     "name": "Jana Nagyová",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    },
-    {
-     "mep_id": 124713,
-     "name": "Tomáš Zdechovský",
-     "role": "shadow_opinion",
-     "role_cs": "stínový/á zpravodaj/ka stanoviska"
-    }
-   ],
-   "steps": [
-    {
-     "key": "committee",
-     "type": "REFERRAL",
-     "label": "Přiděleno výboru",
-     "date": "2024-11-13"
-    },
-    {
-     "key": "report",
-     "type": "COMMITTEE_ADOPTING_REPORT",
-     "label": "Hlasování ve výboru",
-     "date": "2025-04-24"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2025-04-30"
-    },
-    {
-     "key": "trilogue",
-     "type": "PLENARY_ENDORSE_COMMITTEE_INTERINSTITUTIONAL_NEGOTIATIONS",
-     "label": "Plénum potvrdilo mandát k jednání s Radou",
-     "date": "2025-05-07"
-    },
-    {
-     "key": "trilogue",
-     "type": "INTERINSTITUTIONAL_NEGOTIATION",
-     "label": "Jednání s Radou (trialog)",
-     "date": "2025-06-30",
-     "date_to": "2025-10-16"
-    },
-    {
-     "key": "trilogue",
-     "type": "COMMITTEE_APPROVE_PROVISIONAL_AGREEMENT",
-     "label": "Výbor schválil dohodu s Radou",
-     "date": "2025-10-20"
-    },
-    {
-     "key": "report",
-     "type": "TABLING_PLENARY",
-     "label": "Zpráva předložena plénu",
-     "date": "2025-11-20",
-     "date_to": "2025-11-24"
-    },
-    {
-     "key": "plenary",
-     "type": "PLENARY_ADOPT_POSITION",
-     "label": "Hlasování pléna – 1. čtení",
-     "date": "2025-11-25"
-    },
-    {
-     "key": "closed",
-     "type": "SIGNATURE",
-     "label": "Podpis aktu",
-     "date": "2025-12-16"
-    },
-    {
-     "key": "closed",
-     "type": "PUBLICATION_OFFICIAL_JOURNAL",
-     "label": "Vyhlášení v Úředním věstníku",
-     "date": "2025-12-29"
-    }
-   ],
-   "reached": "closed",
-   "last_event": {
-    "date": "2025-12-29",
-    "type": "PUBLICATION_OFFICIAL_JOURNAL",
-    "label": "vyhlášení v Úředním věstníku"
-   },
-   "next_vote": null,
-   "plenary_date": "2025-11-25",
-   "vote": {
-    "vote_id": 181587,
-    "vote_date": "2025-11-25",
-    "status": "ADOPTED"
-   }
   }
  ],
  "without_events": 0,

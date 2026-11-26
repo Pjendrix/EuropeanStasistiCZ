@@ -12,47 +12,38 @@
  "seats": 27,
  "n_countries": 9,
  "attendance": [
-  152307,
-  171424
+  154393,
+  173962
  ],
  "attendance_main": [
-  15915,
-  17931
+  16182,
+  18255
  ],
  "majority": [
-  128007,
-  133170
+  129578,
+  134786
  ],
  "majority_main": [
-  12393,
-  12782
+  12571,
+  12967
  ],
  "splits": 113,
- "considered": 5911,
+ "considered": 5989,
  "splits_main": 4,
- "considered_main": 571,
+ "considered_main": 580,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "member_list": [
   {
@@ -83,57 +74,57 @@
    "end": null,
    "total": {
     "attendance": [
-     5825,
-     6411
+     5919,
+     6505
     ],
     "attendance_main": [
-     630,
-     671
+     642,
+     683
     ],
     "group_loyalty": [
-     4115,
-     5816
+     4185,
+     5909
     ],
     "group_loyalty_main": [
-     500,
-     629
+     509,
+     641
     ],
     "cz_agreement": [
-     2992,
-     5613
+     3039,
+     5704
     ],
     "outcome": [
-     1264,
-     4806
+     1274,
+     4881
     ],
     "outcome_main": [
-     163,
-     494
+     167,
+     503
     ],
     "outcome_close": [
-     49,
-     105
+     50,
+     106
     ],
     "group_outcome": [
-     32216,
-     106068
+     32396,
+     107497
     ],
     "group_outcome_main": [
-     3641,
-     10712
+     3713,
+     10885
     ],
     "positions": {
-     "FOR": 2808,
-     "AGAINST": 1999,
-     "ABSTENTION": 1018,
+     "FOR": 2843,
+     "AGAINST": 2039,
+     "ABSTENTION": 1037,
      "DID_NOT_VOTE": 586
     }
    }
   }
  ],
  "countries": {
-  "as_of": "2026-10-22",
-  "vote_id": 199356,
+  "as_of": "2026-11-12",
+  "vote_id": 200503,
   "seats": 27,
   "n_countries": 9,
   "by_country": [
@@ -188,7 +179,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-11-01"
+  "release": "2026-11-21"
  },
  "chairs": [
   {
@@ -214,7 +205,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-11-04"
+  "updated": "2026-11-26"
  },
  "splits_list": [
   {

@@ -14,84 +14,75 @@
  "members_now": 2,
  "total": {
   "attendance": [
-   12307,
-   12822
+   12485,
+   13010
   ],
   "attendance_main": [
-   1303,
-   1342
+   1327,
+   1366
   ],
   "group_loyalty": [
-   11070,
-   12307
+   11236,
+   12485
   ],
   "group_loyalty_main": [
-   1258,
-   1303
+   1282,
+   1327
   ],
   "cz_agreement": [
-   5925,
-   11951
+   5996,
+   12123
   ],
   "outcome": [
-   10775,
-   11468
+   10939,
+   11640
   ],
   "outcome_main": [
-   1202,
-   1271
+   1224,
+   1295
   ],
   "outcome_close": [
    121,
-   223
+   225
   ],
   "group_outcome": [
-   1676536,
-   1821518
+   1701948,
+   1848420
   ],
   "group_outcome_main": [
-   193012,
-   204491
+   196454,
+   208253
   ],
   "positions": {
-   "FOR": 5019,
-   "AGAINST": 6451,
-   "ABSTENTION": 837,
-   "DID_NOT_VOTE": 515
+   "FOR": 5130,
+   "AGAINST": 6512,
+   "ABSTENTION": 843,
+   "DID_NOT_VOTE": 525
   }
  },
  "cohesion": [
-  5177,
-  5915
+  5252,
+  5999
  ],
  "cohesion_main": [
-  600,
-  633
+  612,
+  645
  ],
- "splits_count": 197,
+ "splits_count": 202,
  "splits_count_main": 7,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -150,50 +141,50 @@
    "end": null,
    "total": {
     "attendance": [
-     6170,
-     6411
+     6256,
+     6505
     ],
     "attendance_main": [
-     659,
-     671
+     671,
+     683
     ],
     "group_loyalty": [
-     5568,
-     6170
+     5647,
+     6256
     ],
     "group_loyalty_main": [
-     636,
-     659
+     648,
+     671
     ],
     "cz_agreement": [
-     2870,
-     5991
+     2904,
+     6074
     ],
     "outcome": [
-     5467,
-     5769
+     5545,
+     5852
     ],
     "outcome_main": [
-     607,
-     646
+     618,
+     658
     ],
     "outcome_close": [
      60,
-     109
+     110
     ],
     "group_outcome": [
-     841276,
-     914028
+     853549,
+     927028
     ],
     "group_outcome_main": [
-     97821,
-     103997
+     99542,
+     105878
     ],
     "positions": {
-     "FOR": 2505,
-     "AGAINST": 3265,
-     "ABSTENTION": 400,
-     "DID_NOT_VOTE": 241
+     "FOR": 2558,
+     "AGAINST": 3295,
+     "ABSTENTION": 403,
+     "DID_NOT_VOTE": 249
     }
    }
   },
@@ -231,50 +222,50 @@
    "end": null,
    "total": {
     "attendance": [
-     6137,
-     6411
+     6229,
+     6505
     ],
     "attendance_main": [
-     644,
-     671
+     656,
+     683
     ],
     "group_loyalty": [
-     5502,
-     6137
+     5589,
+     6229
     ],
     "group_loyalty_main": [
-     622,
-     644
+     634,
+     656
     ],
     "cz_agreement": [
-     3055,
-     5960
+     3092,
+     6049
     ],
     "outcome": [
-     5308,
-     5699
+     5394,
+     5788
     ],
     "outcome_main": [
-     595,
-     625
+     606,
+     637
     ],
     "outcome_close": [
      61,
-     114
+     115
     ],
     "group_outcome": [
-     835260,
-     907490
+     848399,
+     921392
     ],
     "group_outcome_main": [
-     95191,
-     100494
+     96912,
+     102375
     ],
     "positions": {
-     "FOR": 2514,
-     "AGAINST": 3186,
-     "ABSTENTION": 437,
-     "DID_NOT_VOTE": 274
+     "FOR": 2572,
+     "AGAINST": 3217,
+     "ABSTENTION": 440,
+     "DID_NOT_VOTE": 276
     }
    }
   }
@@ -324,6 +315,233 @@
   "updated": "2026-11-24"
  },
  "splits": [
+  {
+   "id": 200498,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Ukrajinské děti násilně deportované do Ruska nebo žijící na Ruskem okupovaných územích Ukrajiny",
+   "reference": "RC-B10-0497/2026",
+   "description": "§ 19 - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 142,
+    "against": 436,
+    "abstention": 5,
+    "did_not_vote": 137
+   },
+   "cz": [
+    3,
+    15,
+    0,
+    3
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 19 - PN 2",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 200374,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Politika EU na podporu zemědělsko-potravinářského odvětví",
+   "reference": "A10-0269/2026",
+   "description": "§ 13/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 415,
+    "against": 152,
+    "abstention": 30,
+    "did_not_vote": 123
+   },
+   "cz": [
+    15,
+    3,
+    2,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr",
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 13, 2. část",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 200451,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropský plán boje proti rakovině",
+   "reference": "A10-0261/2026",
+   "description": "§ 30 - Am 7",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 186,
+    "against": 397,
+    "abstention": 18,
+    "did_not_vote": 119
+   },
+   "cz": [
+    9,
+    4,
+    7,
+    1
+   ],
+   "amendment_number": "7",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 30 - PN 7",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 200450,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropský plán boje proti rakovině",
+   "reference": "A10-0261/2026",
+   "description": "§ 29/4",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 412,
+    "against": 176,
+    "abstention": 13,
+    "did_not_vote": 119
+   },
+   "cz": [
+    4,
+    15,
+    1,
+    1
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 29, 4. část",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
+  {
+   "id": 200421,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Evropský plán boje proti rakovině",
+   "reference": "A10-0261/2026",
+   "description": "§ 24 - Am 4",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 127,
+    "against": 432,
+    "abstention": 55,
+    "did_not_vote": 106
+   },
+   "cz": [
+    6,
+    5,
+    9,
+    1
+   ],
+   "amendment_number": "4",
+   "texts_adopted_reference": null,
+   "cats": [
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 24 - PN 4",
+   "positions": [
+    {
+     "member_id": 124701,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    },
+    {
+     "member_id": 256846,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6793
+    }
+   ]
+  },
   {
    "id": 199356,
    "date": "2026-10-22",
@@ -984,231 +1202,6 @@
    "is_final": false,
    "inverted": false,
    "description_cs": "Za bodem odůvodnění G - PN 7",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 198189,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Aktuální stav vývoje obchodních a investičních vztahů mezi EU a Afrikou",
-   "reference": "B10-0435/2026",
-   "description": "Considérant G - Am 2",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 213,
-    "against": 343,
-    "abstention": 24,
-    "did_not_vote": 139
-   },
-   "cz": [
-    17,
-    1,
-    0,
-    3
-   ],
-   "amendment_number": "2",
-   "texts_adopted_reference": null,
-   "cats": [
-    "abr"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Bod odůvodnění G - PN 2",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 198184,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Aktuální stav vývoje obchodních a investičních vztahů mezi EU a Afrikou",
-   "reference": "B10-0435/2026",
-   "description": "Après le § 29 - Am 8",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 187,
-    "against": 386,
-    "abstention": 7,
-    "did_not_vote": 139
-   },
-   "cz": [
-    15,
-    3,
-    0,
-    3
-   ],
-   "amendment_number": "8",
-   "texts_adopted_reference": null,
-   "cats": [
-    "abr"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 29 - PN 8",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 198181,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Aktuální stav vývoje obchodních a investičních vztahů mezi EU a Afrikou",
-   "reference": "B10-0435/2026",
-   "description": "Après le § 15 - Am 5",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 219,
-    "against": 353,
-    "abstention": 12,
-    "did_not_vote": 135
-   },
-   "cz": [
-    16,
-    2,
-    0,
-    3
-   ],
-   "amendment_number": "5",
-   "texts_adopted_reference": null,
-   "cats": [
-    "abr"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 15 - PN 5",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 198203,
-   "date": "2026-10-08",
-   "month": "2026-10",
-   "title": "Pilotní projekt týkající se Evropské školní aliance",
-   "reference": "B10-0436/2026",
-   "description": "Après le considérant I - Am 3",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 191,
-    "against": 384,
-    "abstention": 8,
-    "did_not_vote": 136
-   },
-   "cz": [
-    14,
-    3,
-    1,
-    3
-   ],
-   "amendment_number": "3",
-   "texts_adopted_reference": null,
-   "cats": [
-    "soc"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za bodem odůvodnění I - PN 3",
-   "positions": [
-    {
-     "member_id": 124701,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    },
-    {
-     "member_id": 256846,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6793
-    }
-   ]
-  },
-  {
-   "id": 197847,
-   "date": "2026-10-07",
-   "month": "2026-10",
-   "title": "Doporučení Radě, Komisi a místopředsedkyni Komise, vysoké představitelce Unie pro zahraniční věci a bezpečnostní politiku k politickým vztahům mezi EU a Čínou",
-   "reference": "A10-0237/2026",
-   "description": "§ 1, point au/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 415,
-    "against": 218,
-    "abstention": 31,
-    "did_not_vote": 54
-   },
-   "cz": [
-    5,
-    12,
-    3,
-    1
-   ],
-   "amendment_number": "§",
-   "texts_adopted_reference": null,
-   "cats": [
-    "abr"
-   ],
-   "vote_kind": "split_part",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 1, písm. au, 2. část",
    "positions": [
     {
      "member_id": 124701,

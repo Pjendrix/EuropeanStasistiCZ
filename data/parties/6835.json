@@ -14,84 +14,75 @@
  "members_now": 2,
  "total": {
   "attendance": [
-   12220,
-   12822
+   12408,
+   13010
   ],
   "attendance_main": [
-   1284,
-   1342
+   1308,
+   1366
   ],
   "group_loyalty": [
-   10940,
-   12220
+   11122,
+   12408
   ],
   "group_loyalty_main": [
-   1243,
-   1284
+   1267,
+   1308
   ],
   "cz_agreement": [
-   6153,
-   11855
+   6227,
+   12037
   ],
   "outcome": [
-   10709,
-   11635
+   10889,
+   11821
   ],
   "outcome_main": [
-   1192,
-   1257
+   1214,
+   1281
   ],
   "outcome_close": [
    136,
-   252
+   254
   ],
   "group_outcome": [
-   1698760,
-   1851813
+   1726164,
+   1880841
   ],
   "group_outcome_main": [
-   191038,
-   202918
+   194480,
+   206680
   ],
   "positions": {
-   "FOR": 5390,
-   "AGAINST": 6247,
-   "ABSTENTION": 583,
+   "FOR": 5510,
+   "AGAINST": 6313,
+   "ABSTENTION": 585,
    "DID_NOT_VOTE": 602
   }
  },
  "cohesion": [
-  5624,
-  5817
+  5716,
+  5911
  ],
  "cohesion_main": [
-  606,
-  614
+  618,
+  626
  ],
- "splits_count": 85,
+ "splits_count": 87,
  "splits_count_main": 3,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -150,49 +141,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6088,
-     6411
+     6182,
+     6505
     ],
     "attendance_main": [
-     643,
-     671
+     655,
+     683
     ],
     "group_loyalty": [
-     5453,
-     6088
+     5543,
+     6182
     ],
     "group_loyalty_main": [
-     622,
-     643
+     634,
+     655
     ],
     "cz_agreement": [
-     3075,
-     5907
+     3112,
+     5998
     ],
     "outcome": [
-     5324,
-     5795
+     5413,
+     5888
     ],
     "outcome_main": [
-     595,
-     627
+     606,
+     639
     ],
     "outcome_close": [
      66,
-     125
+     126
     ],
     "group_outcome": [
-     845694,
-     921049
+     859396,
+     935563
     ],
     "group_outcome_main": [
-     95414,
-     101116
+     97135,
+     102997
     ],
     "positions": {
-     "FOR": 2697,
-     "AGAINST": 3099,
-     "ABSTENTION": 292,
+     "FOR": 2758,
+     "AGAINST": 3131,
+     "ABSTENTION": 293,
      "DID_NOT_VOTE": 323
     }
    }
@@ -231,49 +222,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6132,
-     6411
+     6226,
+     6505
     ],
     "attendance_main": [
-     641,
-     671
+     653,
+     683
     ],
     "group_loyalty": [
-     5487,
-     6132
+     5579,
+     6226
     ],
     "group_loyalty_main": [
-     621,
-     641
+     633,
+     653
     ],
     "cz_agreement": [
-     3078,
-     5948
+     3115,
+     6039
     ],
     "outcome": [
-     5385,
-     5840
+     5476,
+     5933
     ],
     "outcome_main": [
-     597,
-     630
+     608,
+     642
     ],
     "outcome_close": [
      70,
-     127
+     128
     ],
     "group_outcome": [
-     853066,
-     930764
+     866768,
+     945278
     ],
     "group_outcome_main": [
-     95624,
-     101802
+     97345,
+     103683
     ],
     "positions": {
-     "FOR": 2693,
-     "AGAINST": 3148,
-     "ABSTENTION": 291,
+     "FOR": 2752,
+     "AGAINST": 3182,
+     "ABSTENTION": 292,
      "DID_NOT_VOTE": 279
     }
    }
@@ -314,6 +305,98 @@
   "updated": "2026-11-24"
  },
  "splits": [
+  {
+   "id": 200502,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Ukrajinské děti násilně deportované do Ruska nebo žijící na Ruskem okupovaných územích Ukrajiny",
+   "reference": "RC-B10-0497/2026",
+   "description": "Après le § 20 - Am 3",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 103,
+    "against": 398,
+    "abstention": 86,
+    "did_not_vote": 133
+   },
+   "cz": [
+    10,
+    6,
+    3,
+    2
+   ],
+   "amendment_number": "3",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Za odst. 20 - PN 3",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
+  {
+   "id": 200498,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Ukrajinské děti násilně deportované do Ruska nebo žijící na Ruskem okupovaných územích Ukrajiny",
+   "reference": "RC-B10-0497/2026",
+   "description": "§ 19 - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 142,
+    "against": 436,
+    "abstention": 5,
+    "did_not_vote": 137
+   },
+   "cz": [
+    3,
+    15,
+    0,
+    3
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 19 - PN 2",
+   "positions": [
+    {
+     "member_id": 256840,
+     "position": "FOR",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    },
+    {
+     "member_id": 256847,
+     "position": "AGAINST",
+     "group_code": "EPP",
+     "national_party_id": 6835
+    }
+   ]
+  },
   {
    "id": 199482,
    "date": "2026-10-22",
@@ -1123,96 +1206,6 @@
     {
      "member_id": 256847,
      "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
-  },
-  {
-   "id": 191513,
-   "date": "2026-04-29",
-   "month": "2026-04",
-   "title": "Udělení absolutoria za rok 2024: souhrnný rozpočet EU – Komise",
-   "reference": "A10-0085/2026",
-   "description": "§ 160, après le point vii - Am 40",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 362,
-    "against": 269,
-    "abstention": 20,
-    "did_not_vote": 68
-   },
-   "cz": [
-    6,
-    12,
-    2,
-    1
-   ],
-   "amendment_number": "40",
-   "texts_adopted_reference": "P10_TA(2026)0125",
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 160, za písm. vii - PN 40",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "FOR",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    }
-   ]
-  },
-  {
-   "id": 190217,
-   "date": "2026-04-28",
-   "month": "2026-04",
-   "title": "Ochrana finančních zájmů Evropské unie: boj proti podvodům – výroční zpráva za rok 2024",
-   "reference": "A10-0080/2026",
-   "description": "Après le § 3 - Am 54",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 388,
-    "against": 213,
-    "abstention": 44,
-    "did_not_vote": 74
-   },
-   "cz": [
-    4,
-    16,
-    0,
-    1
-   ],
-   "amendment_number": "54",
-   "texts_adopted_reference": null,
-   "cats": [
-    "fin"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Za odst. 3 - PN 54",
-   "positions": [
-    {
-     "member_id": 256840,
-     "position": "AGAINST",
-     "group_code": "EPP",
-     "national_party_id": 6835
-    },
-    {
-     "member_id": 256847,
-     "position": "FOR",
      "group_code": "EPP",
      "national_party_id": 6835
     }
