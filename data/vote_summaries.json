@@ -4,6 +4,76 @@
  "prompt_version": 2,
  "prompt": "Jsi editor českého nezávislého webu o hlasování europoslanců. Na úvodní stránce je karta posledního hlasování\ns úředním názvem. Napiš pod něj \"shrnuti\": jednu až dvě krátké věty (nejvýš 180 znaků) srozumitelné pro laika.\n\nPravidla:\n- Když zadání obsahuje přijatý text, popiš, co text říká nebo co mění: hlavní požadavek, závěr nebo změnu. Jen podle\n  dodaného textu, nic nedomýšlej.\n- Když přijatý text v zadání není, napiš jen, čeho se text týká (např. „Usnesení Parlamentu k situaci politických vězňů\n  v Ázerbájdžánu.“), a víc nepiš.\n- Neopakuj doslova nadpis; uveď druh textu (usnesení, zákon, rozpočet…).\n- Piš neutrálně: žádné hodnocení, žádné „kontroverzní“, „důležitý“, „sporný“, žádné argumenty pro ani proti.\n- Nepiš, jak hlasování dopadlo, kdo jak hlasoval, ani žádné počty hlasů.\n- Nepoužívej čísla, která nejsou v zadání.\n- Spisovná čeština, bez zkratek, které laik nezná (EU a Komise jsou v pořádku). Nepiš výplňové věty.",
  "items": {
+  "200503": {
+   "shrnuti": "Usnesení Evropského parlamentu, které požaduje, aby Rusko okamžitě navrátilo deportované ukrajinské děti zpět na Ukrajinu, a odsuzuje jejich nucenou rusifikaci a militarizaci.",
+   "fingerprint": "ba618eabc55f657c",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0380_cs.pdf"
+  },
+  "200049": {
+   "shrnuti": "Usnesení Evropského parlamentu, které vyzývá EU a členské státy, aby pomohly malým firmám v oblasti obrany přejít od prototypů k sériové výrobě a k prvním zakázkám.",
+   "fingerprint": "c2adff96b6924328",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0379_cs.pdf"
+  },
+  "200032": {
+   "shrnuti": "Usnesení Parlamentu k plánu EU na boj s rakovinou: plán vítá, ale úspěch chce měřit podle zdravotních výsledků, žádá předvídatelné financování a revizi pravidel pro tabák.",
+   "fingerprint": "004762cff17c47c9",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0376_cs.pdf"
+  },
+  "200011": {
+   "shrnuti": "Usnesení, ve kterém Parlament žádá zachovat rozpočet na propagaci evropských potravin a zjednodušit žádosti, zejména pro malé zemědělce.",
+   "fingerprint": "2d6e1f6e27b0bd2a",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0377_cs.pdf"
+  },
+  "199991": {
+   "shrnuti": "Legislativní usnesení k nařízení, které sjednocuje úkoly Evropské agentury pro chemické látky a místo oddělených rozpočtů jí dává jeden roční příspěvek z rozpočtu EU.",
+   "fingerprint": "07b9a42b3aa64565",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0373_cs.pdf"
+  },
+  "199987": {
+   "shrnuti": "Usnesení k nařízení o sděleních klíčových informací o investičních produktech: modernizace, stručnější a srozumitelnější dokument, tištěná verze zdarma na žádost.",
+   "fingerprint": "32054b5ce4e7c430",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0372_cs.pdf"
+  },
+  "199985": {
+   "shrnuti": "Návrh zákona EU, který upravuje pravidla na ochranu drobných investorů v několika směrnicích o investičních fondech, pojištění a finančních službách.",
+   "fingerprint": "0b60b7cd8fb4d0d0",
+   "generated": "2026-11-26",
+   "source": "title",
+   "source_url": null
+  },
+  "199983": {
+   "shrnuti": "Usnesení Evropského parlamentu o řízení umělé inteligence v EU: rozhodovat má člověk a Parlament má si pro svou práci vytvořit vlastní pravidla pro umělou inteligenci.",
+   "fingerprint": "6c6ede3d31ad2428",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0378_cs.pdf"
+  },
+  "199981": {
+   "shrnuti": "Nařízení upravuje pravidla EU pro zeměpisná označení podle mezinárodní Lisabonské dohody. EU tak může žádat o zápis změn názvů a druhů zboží do mezinárodního rejstříku.",
+   "fingerprint": "0b368feca74b8412",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0374_cs.pdf"
+  },
+  "199977": {
+   "shrnuti": "Usnesení Parlamentu ke změně rozhodnutí o přidružení zámořských území k EU, včetně vztahů s Grónskem. Zdůrazňuje udržitelný rozvoj, investice a správu oceánů.",
+   "fingerprint": "d091e72c723cdc3a",
+   "generated": "2026-11-26",
+   "source": "adopted_text",
+   "source_url": "https://data.europarl.europa.eu/distribution/doc/TA-10-2026-0375_cs.pdf"
+  },
   "199592": {
    "shrnuti": "Pozměňovací návrhy odkládají některé povinnosti dovozců a výrobců ropy, plynu a uhlí podle nařízení o emisích metanu. Odklad se netýká zemí pod sankcemi EU.",
    "fingerprint": "9537835bc08be041",
