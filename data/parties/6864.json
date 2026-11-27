@@ -14,49 +14,49 @@
  "members_now": 1,
  "total": {
   "attendance": [
-   5825,
-   6411
+   5919,
+   6505
   ],
   "attendance_main": [
-   630,
-   671
+   642,
+   683
   ],
   "group_loyalty": [
-   4115,
-   5816
+   4185,
+   5909
   ],
   "group_loyalty_main": [
-   500,
-   629
+   509,
+   641
   ],
   "cz_agreement": [
-   2992,
-   5613
+   3039,
+   5704
   ],
   "outcome": [
-   1264,
-   4806
+   1274,
+   4881
   ],
   "outcome_main": [
-   163,
-   494
+   167,
+   503
   ],
   "outcome_close": [
-   49,
-   105
+   50,
+   106
   ],
   "group_outcome": [
-   32216,
-   106068
+   32396,
+   107497
   ],
   "group_outcome_main": [
-   3641,
-   10712
+   3713,
+   10885
   ],
   "positions": {
-   "FOR": 2808,
-   "AGAINST": 1999,
-   "ABSTENTION": 1018,
+   "FOR": 2843,
+   "AGAINST": 2039,
+   "ABSTENTION": 1037,
    "DID_NOT_VOTE": 586
   }
  },
@@ -75,23 +75,14 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -150,49 +141,49 @@
    "end": null,
    "total": {
     "attendance": [
-     5825,
-     6411
+     5919,
+     6505
     ],
     "attendance_main": [
-     630,
-     671
+     642,
+     683
     ],
     "group_loyalty": [
-     4115,
-     5816
+     4185,
+     5909
     ],
     "group_loyalty_main": [
-     500,
-     629
+     509,
+     641
     ],
     "cz_agreement": [
-     2992,
-     5613
+     3039,
+     5704
     ],
     "outcome": [
-     1264,
-     4806
+     1274,
+     4881
     ],
     "outcome_main": [
-     163,
-     494
+     167,
+     503
     ],
     "outcome_close": [
-     49,
-     105
+     50,
+     106
     ],
     "group_outcome": [
-     32216,
-     106068
+     32396,
+     107497
     ],
     "group_outcome_main": [
-     3641,
-     10712
+     3713,
+     10885
     ],
     "positions": {
-     "FOR": 2808,
-     "AGAINST": 1999,
-     "ABSTENTION": 1018,
+     "FOR": 2843,
+     "AGAINST": 2039,
+     "ABSTENTION": 1037,
      "DID_NOT_VOTE": 586
     }
    }

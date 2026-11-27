@@ -12,52 +12,43 @@
  "seats": 135,
  "n_countries": 25,
  "attendance": [
-  754125,
-  869525
+  764764,
+  882215
  ],
  "attendance_main": [
-  79421,
-  91020
+  80784,
+  92640
  ],
  "majority": [
-  710627,
-  733970
+  720842,
+  744526
  ],
  "majority_main": [
-  76213,
-  77734
+  77536,
+  79070
  ],
- "splits": 97,
- "considered": 6377,
+ "splits": 99,
+ "considered": 6471,
  "splits_main": 6,
- "considered_main": 669,
+ "considered_main": 681,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "member_list": [],
  "countries": {
-  "as_of": "2026-10-22",
-  "vote_id": 199356,
+  "as_of": "2026-11-12",
+  "vote_id": 200503,
   "seats": 135,
   "n_countries": 25,
   "by_country": [
@@ -192,7 +183,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-11-01"
+  "release": "2026-11-21"
  },
  "chairs": [
   {
@@ -209,7 +200,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-11-04"
+  "updated": "2026-11-26"
  },
  "splits_list": [
   {
@@ -1621,6 +1612,44 @@
    ]
   },
   {
+   "id": 200498,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Ukrajinské děti násilně deportované do Ruska nebo žijící na Ruskem okupovaných územích Ukrajiny",
+   "reference": "RC-B10-0497/2026",
+   "description": "§ 19 - Am 2",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 142,
+    "against": 436,
+    "abstention": 5,
+    "did_not_vote": 137
+   },
+   "cz": [
+    3,
+    15,
+    0,
+    3
+   ],
+   "amendment_number": "2",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "soc"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Odst. 19 - PN 2",
+   "gc": [
+    43,
+    66,
+    0,
+    26
+   ]
+  },
+  {
    "id": 183251,
    "date": "2026-01-20",
    "month": "2026-01",
@@ -2029,43 +2058,6 @@
     70,
     0,
     25
-   ]
-  },
-  {
-   "id": 188578,
-   "date": "2026-03-11",
-   "month": "2026-03",
-   "title": "Změna nařízení (EU) 2021/1232, pokud jde o prodloužení doby jeho uplatňování",
-   "reference": "A10-0040/2026",
-   "description": "Avant l'article 1; Règlement (UE) 2021/1232 - Article 3 - paragraphe 1 - point a - Am 5",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 235,
-    "against": 203,
-    "abstention": 174,
-    "did_not_vote": 106
-   },
-   "cz": [
-    16,
-    3,
-    0,
-    2
-   ],
-   "amendment_number": "5",
-   "texts_adopted_reference": "P10_TA(2026)0070",
-   "cats": [
-    "dig"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Před článkem 1; nařízení (EU) 2021/1232 - článek 3 - odstavec 1 - písm. a - PN 5",
-   "gc": [
-    12,
-    21,
-    80,
-    22
    ]
   }
  ],

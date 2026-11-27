@@ -3,42 +3,42 @@
   {
    "key": "def",
    "label": "Obrana a bezpečnost",
-   "votes": 1598,
-   "final": 129,
+   "votes": 1626,
+   "final": 132,
    "cz_united_final": [
-    39,
-    129
+    40,
+    132
    ],
    "cz_final": [
-    1724,
-    327,
-    332,
-    326
+    1766,
+    331,
+    345,
+    330
    ],
    "cz_attendance": [
-    29992,
-    33558
+    30535,
+    34146
    ],
    "final_trace": 9
   },
   {
    "key": "env",
    "label": "Klima, příroda a energie",
-   "votes": 741,
-   "final": 89,
+   "votes": 760,
+   "final": 91,
    "cz_united_final": [
     28,
-    89
+    91
    ],
    "cz_final": [
-    1194,
-    338,
-    185,
-    150
+    1220,
+    341,
+    196,
+    152
    ],
    "cz_attendance": [
-    14159,
-    15559
+    14536,
+    15958
    ],
    "final_trace": 12
   },
@@ -66,105 +66,105 @@
   {
    "key": "agr",
    "label": "Zemědělství a potraviny",
-   "votes": 321,
-   "final": 90,
+   "votes": 331,
+   "final": 91,
    "cz_united_final": [
     22,
-    90
+    91
    ],
    "cz_final": [
-    1054,
-    521,
+    1073,
+    522,
     160,
-    153
+    154
    ],
    "cz_attendance": [
-    6071,
-    6739
+    6265,
+    6949
    ],
    "final_trace": 6
   },
   {
    "key": "dig",
    "label": "Digitální svět a věda",
-   "votes": 325,
-   "final": 58,
+   "votes": 327,
+   "final": 60,
    "cz_united_final": [
-    16,
-    58
+    17,
+    60
    ],
    "cz_final": [
-    815,
-    164,
-    147,
-    92
+    841,
+    173,
+    152,
+    94
    ],
    "cz_attendance": [
-    6251,
-    6825
+    6291,
+    6867
    ],
    "final_trace": 12
   },
   {
    "key": "soc",
    "label": "Zdraví a sociální věci",
-   "votes": 1018,
-   "final": 88,
+   "votes": 1076,
+   "final": 91,
    "cz_united_final": [
-    17,
-    88
+    19,
+    91
    ],
    "cz_final": [
-    1013,
-    341,
-    298,
-    196
+    1065,
+    342,
+    304,
+    200
    ],
    "cz_attendance": [
-    18976,
-    21378
+    20113,
+    22596
    ],
    "final_trace": 8
   },
   {
    "key": "eco",
    "label": "Průmysl a vnitřní trh",
-   "votes": 591,
-   "final": 74,
+   "votes": 593,
+   "final": 76,
    "cz_united_final": [
     16,
-    74
+    76
    ],
    "cz_final": [
-    988,
-    242,
-    211,
-    113
+    1012,
+    253,
+    216,
+    115
    ],
    "cz_attendance": [
-    11572,
-    12411
+    11612,
+    12453
    ],
    "final_trace": 17
   },
   {
    "key": "abr",
    "label": "Vnější vztahy a obchod",
-   "votes": 1071,
-   "final": 114,
+   "votes": 1100,
+   "final": 117,
    "cz_united_final": [
-    21,
-    114
+    22,
+    117
    ],
    "cz_final": [
-    1579,
-    306,
-    311,
-    198
+    1626,
+    308,
+    322,
+    201
    ],
    "cz_attendance": [
-    20389,
-    22491
+    20960,
+    23100
    ],
    "final_trace": 19
   },
@@ -213,42 +213,42 @@
   {
    "key": "fin",
    "label": "Rozpočet a finance",
-   "votes": 1369,
-   "final": 150,
+   "votes": 1373,
+   "final": 153,
    "cz_united_final": [
     17,
-    150
+    153
    ],
    "cz_final": [
-    1811,
-    703,
-    438,
-    198
+    1857,
+    707,
+    448,
+    201
    ],
    "cz_attendance": [
-    26399,
-    28749
+    26479,
+    28833
    ],
    "final_trace": 24
   },
   {
    "key": "ins",
    "label": "Instituce a pravidla EU",
-   "votes": 465,
-   "final": 48,
+   "votes": 467,
+   "final": 50,
    "cz_united_final": [
-    11,
-    48
+    12,
+    50
    ],
    "cz_final": [
-    551,
-    268,
+    589,
+    270,
     107,
-    82
+    84
    ],
    "cz_attendance": [
-    9041,
-    9765
+    9081,
+    9807
    ],
    "final_trace": 6
   },
@@ -274,32 +274,23 @@
    "final_trace": 0
   }
  ],
- "votes_total": 6411,
+ "votes_total": 6505,
  "period": {
   "from": "2024-07-17",
-  "to": "2026-10-22"
+  "to": "2026-11-12"
  },
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  }
 }

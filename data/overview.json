@@ -4,34 +4,25 @@
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "period": {
   "from": "2024-07-17",
-  "to": "2026-10-22"
+  "to": "2026-11-12"
  },
- "votes_total": 6411,
+ "votes_total": 6505,
  "topics": [
   {
    "code": "6.10",
    "label": "Common foreign and security policy (CFSP)",
-   "votes": 1589,
+   "votes": 1617,
    "label_cs": "Společná zahraniční a bezpečnostní politika (SZBP)"
   },
   {
@@ -43,13 +34,13 @@
   {
    "code": "4.10",
    "label": "Social policy, social charter and protocol",
-   "votes": 719,
+   "votes": 728,
    "label_cs": "Sociální politika, sociální charta a protokol"
   },
   {
    "code": "3.70",
    "label": "Environmental policy",
-   "votes": 660,
+   "votes": 679,
    "label_cs": "Politika životního prostředí"
   },
   {
@@ -61,7 +52,7 @@
   {
    "code": "6.20",
    "label": "Common commercial policy in general",
-   "votes": 313,
+   "votes": 324,
    "label_cs": "Společná obchodní politika obecně"
   },
   {
@@ -73,7 +64,7 @@
   {
    "code": "8.40",
    "label": "Institutions of the Union",
-   "votes": 286,
+   "votes": 288,
    "label_cs": "Orgány Unie"
   },
   {
@@ -85,7 +76,7 @@
   {
    "code": "3.30",
    "label": null,
-   "votes": 248,
+   "votes": 249,
    "label_cs": null
   }
  ],
@@ -139,50 +130,50 @@
    },
    "total": {
     "attendance": [
-     5840,
-     6411
+     5925,
+     6505
     ],
     "attendance_main": [
-     606,
-     671
+     617,
+     683
     ],
     "group_loyalty": [
-     143,
-     218
+     211,
+     303
     ],
     "group_loyalty_main": [
-     11,
-     14
+     18,
+     25
     ],
     "cz_agreement": [
-     3011,
-     5634
+     3080,
+     5716
     ],
     "outcome": [
-     1604,
-     5215
+     1630,
+     5283
     ],
     "outcome_main": [
-     241,
-     500
+     248,
+     509
     ],
     "outcome_close": [
      61,
-     113
+     114
     ],
     "group_outcome": [
-     4756,
-     13508
+     6232,
+     17586
     ],
     "group_outcome_main": [
-     403,
-     687
+     763,
+     1209
     ],
     "positions": {
-     "FOR": 3566,
-     "AGAINST": 1649,
-     "ABSTENTION": 625,
-     "DID_NOT_VOTE": 571
+     "FOR": 3616,
+     "AGAINST": 1667,
+     "ABSTENTION": 642,
+     "DID_NOT_VOTE": 580
     }
    },
    "bench_key": null
@@ -287,50 +278,50 @@
    },
    "total": {
     "attendance": [
-     6170,
-     6411
+     6256,
+     6505
     ],
     "attendance_main": [
-     659,
-     671
+     671,
+     683
     ],
     "group_loyalty": [
-     5568,
-     6170
+     5647,
+     6256
     ],
     "group_loyalty_main": [
-     636,
-     659
+     648,
+     671
     ],
     "cz_agreement": [
-     2870,
-     5991
+     2904,
+     6074
     ],
     "outcome": [
-     5467,
-     5769
+     5545,
+     5852
     ],
     "outcome_main": [
-     607,
-     646
+     618,
+     658
     ],
     "outcome_close": [
      60,
-     109
+     110
     ],
     "group_outcome": [
-     841276,
-     914028
+     853549,
+     927028
     ],
     "group_outcome_main": [
-     97821,
-     103997
+     99542,
+     105878
     ],
     "positions": {
-     "FOR": 2505,
-     "AGAINST": 3265,
-     "ABSTENTION": 400,
-     "DID_NOT_VOTE": 241
+     "FOR": 2558,
+     "AGAINST": 3295,
+     "ABSTENTION": 403,
+     "DID_NOT_VOTE": 249
     }
    },
    "bench_key": null
@@ -361,50 +352,50 @@
    },
    "total": {
     "attendance": [
-     5594,
-     6411
+     5685,
+     6505
     ],
     "attendance_main": [
-     601,
-     671
+     613,
+     683
     ],
     "group_loyalty": [
-     5122,
-     5594
+     5197,
+     5685
     ],
     "group_loyalty_main": [
-     574,
-     601
+     586,
+     613
     ],
     "cz_agreement": [
-     2871,
-     5437
+     2918,
+     5525
     ],
     "outcome": [
-     4847,
-     5477
+     4921,
+     5561
     ],
     "outcome_main": [
-     538,
-     587
+     549,
+     599
     ],
     "outcome_close": [
      71,
-     138
+     139
     ],
     "group_outcome": [
-     798546,
-     876229
+     810932,
+     889345
     ],
     "group_outcome_main": [
-     89058,
-     94864
+     90779,
+     96745
     ],
     "positions": {
-     "FOR": 2166,
-     "AGAINST": 3312,
-     "ABSTENTION": 116,
-     "DID_NOT_VOTE": 817
+     "FOR": 2225,
+     "AGAINST": 3337,
+     "ABSTENTION": 123,
+     "DID_NOT_VOTE": 820
     }
    },
    "bench_key": null
@@ -506,50 +497,50 @@
    },
    "total": {
     "attendance": [
-     5659,
-     6411
+     5752,
+     6505
     ],
     "attendance_main": [
-     596,
-     671
+     608,
+     683
     ],
     "group_loyalty": [
-     4190,
-     5643
+     4259,
+     5736
     ],
     "group_loyalty_main": [
-     352,
-     596
+     360,
+     608
     ],
     "cz_agreement": [
-     4760,
-     5466
+     4844,
+     5557
     ],
     "outcome": [
-     2364,
-     4796
+     2400,
+     4871
     ],
     "outcome_main": [
-     368,
-     473
+     376,
+     483
     ],
     "outcome_close": [
      54,
-     111
+     112
     ],
     "group_outcome": [
-     132943,
-     325956
+     134855,
+     330389
     ],
     "group_outcome_main": [
-     18303,
-     30588
+     18702,
+     31157
     ],
     "positions": {
-     "FOR": 2891,
-     "AGAINST": 1906,
-     "ABSTENTION": 862,
-     "DID_NOT_VOTE": 752
+     "FOR": 2945,
+     "AGAINST": 1927,
+     "ABSTENTION": 880,
+     "DID_NOT_VOTE": 753
     }
    },
    "bench_key": null
@@ -581,11 +572,11 @@
    "total": {
     "attendance": [
      5790,
-     6411
+     6505
     ],
     "attendance_main": [
      611,
-     671
+     683
     ],
     "group_loyalty": [
      4955,
@@ -623,7 +614,7 @@
      "FOR": 2866,
      "AGAINST": 2423,
      "ABSTENTION": 501,
-     "DID_NOT_VOTE": 621
+     "DID_NOT_VOTE": 715
     }
    },
    "bench_key": null
@@ -654,50 +645,50 @@
    },
    "total": {
     "attendance": [
-     5861,
-     6411
+     5954,
+     6505
     ],
     "attendance_main": [
-     610,
-     671
+     622,
+     683
     ],
     "group_loyalty": [
-     5657,
-     5860
+     5749,
+     5953
     ],
     "group_loyalty_main": [
-     579,
-     610
+     591,
+     622
     ],
     "cz_agreement": [
-     1684,
-     5697
+     1710,
+     5786
     ],
     "outcome": [
-     4324,
-     5589
+     4402,
+     5682
     ],
     "outcome_main": [
-     516,
-     583
+     526,
+     595
     ],
     "outcome_close": [
-     71,
-     136
+     72,
+     137
     ],
     "group_outcome": [
-     199394,
-     261260
+     202882,
+     265340
     ],
     "group_outcome_main": [
-     23267,
-     26817
+     23696,
+     27332
     ],
     "positions": {
-     "FOR": 3003,
-     "AGAINST": 2587,
+     "FOR": 3059,
+     "AGAINST": 2624,
      "ABSTENTION": 271,
-     "DID_NOT_VOTE": 550
+     "DID_NOT_VOTE": 551
     }
    },
    "bench_key": null
@@ -728,50 +719,50 @@
    },
    "total": {
     "attendance": [
-     6005,
-     6411
+     6098,
+     6505
     ],
     "attendance_main": [
-     629,
-     671
+     641,
+     683
     ],
     "group_loyalty": [
-     4928,
-     5988
+     5008,
+     6081
     ],
     "group_loyalty_main": [
-     470,
-     624
+     479,
+     636
     ],
     "cz_agreement": [
-     4497,
-     5790
+     4560,
+     5881
     ],
     "outcome": [
-     3173,
-     5446
+     3216,
+     5533
     ],
     "outcome_main": [
-     422,
-     541
+     430,
+     550
     ],
     "outcome_close": [
      68,
-     133
+     134
     ],
     "group_outcome": [
-     191554,
-     359067
+     194170,
+     364670
     ],
     "group_outcome_main": [
-     28162,
-     34716
+     28633,
+     35260
     ],
     "positions": {
-     "FOR": 3066,
-     "AGAINST": 2380,
-     "ABSTENTION": 559,
-     "DID_NOT_VOTE": 406
+     "FOR": 3114,
+     "AGAINST": 2419,
+     "ABSTENTION": 565,
+     "DID_NOT_VOTE": 407
     }
    },
    "bench_key": null
@@ -802,49 +793,49 @@
    },
    "total": {
     "attendance": [
-     5825,
-     6411
+     5919,
+     6505
     ],
     "attendance_main": [
-     630,
-     671
+     642,
+     683
     ],
     "group_loyalty": [
-     4115,
-     5816
+     4185,
+     5909
     ],
     "group_loyalty_main": [
-     500,
-     629
+     509,
+     641
     ],
     "cz_agreement": [
-     2992,
-     5613
+     3039,
+     5704
     ],
     "outcome": [
-     1264,
-     4806
+     1274,
+     4881
     ],
     "outcome_main": [
-     163,
-     494
+     167,
+     503
     ],
     "outcome_close": [
-     49,
-     105
+     50,
+     106
     ],
     "group_outcome": [
-     32216,
-     106068
+     32396,
+     107497
     ],
     "group_outcome_main": [
-     3641,
-     10712
+     3713,
+     10885
     ],
     "positions": {
-     "FOR": 2808,
-     "AGAINST": 1999,
-     "ABSTENTION": 1018,
+     "FOR": 2843,
+     "AGAINST": 2039,
+     "ABSTENTION": 1037,
      "DID_NOT_VOTE": 586
     }
    },
@@ -876,50 +867,50 @@
    },
    "total": {
     "attendance": [
-     5993,
-     6411
+     6085,
+     6505
     ],
     "attendance_main": [
-     629,
-     671
+     641,
+     683
     ],
     "group_loyalty": [
-     4447,
-     5972
+     4513,
+     6064
     ],
     "group_loyalty_main": [
-     375,
-     628
+     383,
+     640
     ],
     "cz_agreement": [
-     5025,
-     5804
+     5108,
+     5894
     ],
     "outcome": [
-     2589,
-     5050
+     2625,
+     5122
     ],
     "outcome_main": [
-     395,
-     503
+     403,
+     513
     ],
     "outcome_close": [
      55,
-     111
+     112
     ],
     "group_outcome": [
-     147241,
-     342661
+     149140,
+     346927
     ],
     "group_outcome_main": [
-     19992,
-     32407
+     20391,
+     32976
     ],
     "positions": {
-     "FOR": 3031,
-     "AGAINST": 2020,
-     "ABSTENTION": 942,
-     "DID_NOT_VOTE": 418
+     "FOR": 3083,
+     "AGAINST": 2040,
+     "ABSTENTION": 962,
+     "DID_NOT_VOTE": 420
     }
    },
    "bench_key": null
@@ -950,49 +941,49 @@
    },
    "total": {
     "attendance": [
-     6088,
-     6411
+     6182,
+     6505
     ],
     "attendance_main": [
-     643,
-     671
+     655,
+     683
     ],
     "group_loyalty": [
-     5453,
-     6088
+     5543,
+     6182
     ],
     "group_loyalty_main": [
-     622,
-     643
+     634,
+     655
     ],
     "cz_agreement": [
-     3075,
-     5907
+     3112,
+     5998
     ],
     "outcome": [
-     5324,
-     5795
+     5413,
+     5888
     ],
     "outcome_main": [
-     595,
-     627
+     606,
+     639
     ],
     "outcome_close": [
      66,
-     125
+     126
     ],
     "group_outcome": [
-     845694,
-     921049
+     859396,
+     935563
     ],
     "group_outcome_main": [
-     95414,
-     101116
+     97135,
+     102997
     ],
     "positions": {
-     "FOR": 2697,
-     "AGAINST": 3099,
-     "ABSTENTION": 292,
+     "FOR": 2758,
+     "AGAINST": 3131,
+     "ABSTENTION": 293,
      "DID_NOT_VOTE": 323
     }
    },
@@ -1024,49 +1015,49 @@
    },
    "total": {
     "attendance": [
-     5564,
-     6411
+     5658,
+     6505
     ],
     "attendance_main": [
-     591,
-     671
+     603,
+     683
     ],
     "group_loyalty": [
-     4135,
-     5545
+     4205,
+     5639
     ],
     "group_loyalty_main": [
-     358,
-     590
+     366,
+     602
     ],
     "cz_agreement": [
-     4657,
-     5374
+     4742,
+     5466
     ],
     "outcome": [
-     2418,
-     4720
+     2454,
+     4796
     ],
     "outcome_main": [
-     363,
-     472
+     371,
+     482
     ],
     "outcome_close": [
      50,
-     109
+     110
     ],
     "group_outcome": [
-     138383,
-     320192
+     140295,
+     324692
     ],
     "group_outcome_main": [
-     18757,
-     30550
+     19156,
+     31119
     ],
     "positions": {
-     "FOR": 2830,
-     "AGAINST": 1891,
-     "ABSTENTION": 843,
+     "FOR": 2884,
+     "AGAINST": 1913,
+     "ABSTENTION": 861,
      "DID_NOT_VOTE": 847
     }
    },
@@ -1098,49 +1089,49 @@
    },
    "total": {
     "attendance": [
-     5488,
-     6411
+     5582,
+     6505
     ],
     "attendance_main": [
-     586,
-     671
+     598,
+     683
     ],
     "group_loyalty": [
-     4092,
-     5469
+     4162,
+     5563
     ],
     "group_loyalty_main": [
-     352,
-     586
+     360,
+     598
     ],
     "cz_agreement": [
-     4552,
-     5305
+     4636,
+     5397
     ],
     "outcome": [
-     2343,
-     4608
+     2378,
+     4683
     ],
     "outcome_main": [
-     366,
-     469
+     374,
+     479
     ],
     "outcome_close": [
      52,
-     109
+     110
     ],
     "group_outcome": [
-     134304,
-     312692
+     136210,
+     317152
     ],
     "group_outcome_main": [
-     18926,
-     30298
+     19325,
+     30867
     ],
     "positions": {
-     "FOR": 2762,
-     "AGAINST": 1847,
-     "ABSTENTION": 879,
+     "FOR": 2816,
+     "AGAINST": 1868,
+     "ABSTENTION": 898,
      "DID_NOT_VOTE": 923
     }
    },
@@ -1172,49 +1163,49 @@
    },
    "total": {
     "attendance": [
-     6264,
-     6411
+     6358,
+     6505
     ],
     "attendance_main": [
-     656,
-     671
+     668,
+     683
     ],
     "group_loyalty": [
-     5167,
-     6247
+     5247,
+     6341
     ],
     "group_loyalty_main": [
-     497,
-     651
+     505,
+     663
     ],
     "cz_agreement": [
-     4683,
-     6044
+     4746,
+     6136
     ],
     "outcome": [
-     3309,
-     5696
+     3354,
+     5785
     ],
     "outcome_main": [
-     439,
-     567
+     448,
+     577
     ],
     "outcome_close": [
      75,
-     142
+     143
     ],
     "group_outcome": [
-     198343,
-     374066
+     201031,
+     379773
     ],
     "group_outcome_main": [
-     29254,
-     36232
+     29739,
+     36816
     ],
     "positions": {
-     "FOR": 3216,
-     "AGAINST": 2480,
-     "ABSTENTION": 568,
+     "FOR": 3266,
+     "AGAINST": 2519,
+     "ABSTENTION": 573,
      "DID_NOT_VOTE": 147
     }
    },
@@ -1246,50 +1237,50 @@
    },
    "total": {
     "attendance": [
-     6137,
-     6411
+     6229,
+     6505
     ],
     "attendance_main": [
-     644,
-     671
+     656,
+     683
     ],
     "group_loyalty": [
-     5502,
-     6137
+     5589,
+     6229
     ],
     "group_loyalty_main": [
-     622,
-     644
+     634,
+     656
     ],
     "cz_agreement": [
-     3055,
-     5960
+     3092,
+     6049
     ],
     "outcome": [
-     5308,
-     5699
+     5394,
+     5788
     ],
     "outcome_main": [
-     595,
-     625
+     606,
+     637
     ],
     "outcome_close": [
      61,
-     114
+     115
     ],
     "group_outcome": [
-     835260,
-     907490
+     848399,
+     921392
     ],
     "group_outcome_main": [
-     95191,
-     100494
+     96912,
+     102375
     ],
     "positions": {
-     "FOR": 2514,
-     "AGAINST": 3186,
-     "ABSTENTION": 437,
-     "DID_NOT_VOTE": 274
+     "FOR": 2572,
+     "AGAINST": 3217,
+     "ABSTENTION": 440,
+     "DID_NOT_VOTE": 276
     }
    },
    "bench_key": null
@@ -1320,49 +1311,49 @@
    },
    "total": {
     "attendance": [
-     6132,
-     6411
+     6226,
+     6505
     ],
     "attendance_main": [
-     641,
-     671
+     653,
+     683
     ],
     "group_loyalty": [
-     5487,
-     6132
+     5579,
+     6226
     ],
     "group_loyalty_main": [
-     621,
-     641
+     633,
+     653
     ],
     "cz_agreement": [
-     3078,
-     5948
+     3115,
+     6039
     ],
     "outcome": [
-     5385,
-     5840
+     5476,
+     5933
     ],
     "outcome_main": [
-     597,
-     630
+     608,
+     642
     ],
     "outcome_close": [
      70,
-     127
+     128
     ],
     "group_outcome": [
-     853066,
-     930764
+     866768,
+     945278
     ],
     "group_outcome_main": [
-     95624,
-     101802
+     97345,
+     103683
     ],
     "positions": {
-     "FOR": 2693,
-     "AGAINST": 3148,
-     "ABSTENTION": 291,
+     "FOR": 2752,
+     "AGAINST": 3182,
+     "ABSTENTION": 292,
      "DID_NOT_VOTE": 279
     }
    },
@@ -1468,12 +1459,12 @@
    },
    "total": {
     "attendance": [
-     5881,
-     6411
+     5971,
+     6505
     ],
     "attendance_main": [
-     629,
-     671
+     641,
+     683
     ],
     "group_loyalty": [
      0,
@@ -1484,20 +1475,20 @@
      0
     ],
     "cz_agreement": [
-     2981,
-     5669
+     3029,
+     5759
     ],
     "outcome": [
-     1494,
-     5020
+     1517,
+     5099
     ],
     "outcome_main": [
-     269,
-     511
+     274,
+     519
     ],
     "outcome_close": [
      58,
-     108
+     109
     ],
     "group_outcome": [
      0,
@@ -1508,10 +1499,10 @@
      0
     ],
     "positions": {
-     "FOR": 3456,
-     "AGAINST": 1564,
-     "ABSTENTION": 861,
-     "DID_NOT_VOTE": 530
+     "FOR": 3504,
+     "AGAINST": 1595,
+     "ABSTENTION": 872,
+     "DID_NOT_VOTE": 534
     }
    },
    "bench_key": null
@@ -1542,50 +1533,50 @@
    },
    "total": {
     "attendance": [
-     5844,
-     6411
+     5937,
+     6505
     ],
     "attendance_main": [
-     607,
-     671
+     619,
+     683
     ],
     "group_loyalty": [
-     3620,
-     4459
+     3695,
+     4552
     ],
     "group_loyalty_main": [
-     338,
-     473
+     346,
+     485
     ],
     "cz_agreement": [
-     4646,
-     5632
+     4710,
+     5723
     ],
     "outcome": [
-     2674,
-     5205
+     2725,
+     5295
     ],
     "outcome_main": [
-     389,
-     504
+     399,
+     515
     ],
     "outcome_close": [
      58,
-     123
+     124
     ],
     "group_outcome": [
-     119136,
-     273863
+     121835,
+     279633
     ],
     "group_outcome_main": [
-     16877,
-     25806
+     17373,
+     26434
     ],
     "positions": {
-     "FOR": 3114,
-     "AGAINST": 2092,
-     "ABSTENTION": 638,
-     "DID_NOT_VOTE": 567
+     "FOR": 3167,
+     "AGAINST": 2129,
+     "ABSTENTION": 641,
+     "DID_NOT_VOTE": 568
     }
    },
    "bench_key": null
@@ -1616,49 +1607,49 @@
    },
    "total": {
     "attendance": [
-     5178,
-     6411
+     5272,
+     6505
     ],
     "attendance_main": [
-     540,
-     671
+     552,
+     683
     ],
     "group_loyalty": [
-     3908,
-     5161
+     3978,
+     5255
     ],
     "group_loyalty_main": [
-     330,
-     540
+     338,
+     552
     ],
     "cz_agreement": [
-     4389,
-     5011
+     4475,
+     5103
     ],
     "outcome": [
-     2202,
-     4440
+     2239,
+     4517
     ],
     "outcome_main": [
-     335,
-     429
+     343,
+     439
     ],
     "outcome_close": [
      48,
-     99
+     100
     ],
     "group_outcome": [
-     127185,
-     304090
+     129098,
+     308652
     ],
     "group_outcome_main": [
-     17270,
-     28018
+     17669,
+     28587
     ],
     "positions": {
-     "FOR": 2667,
-     "AGAINST": 1774,
-     "ABSTENTION": 737,
+     "FOR": 2721,
+     "AGAINST": 1797,
+     "ABSTENTION": 754,
      "DID_NOT_VOTE": 1233
     }
    },
@@ -1690,49 +1681,49 @@
    },
    "total": {
     "attendance": [
-     6009,
-     6385
+     6103,
+     6479
     ],
     "attendance_main": [
-     635,
-     668
+     647,
+     680
     ],
     "group_loyalty": [
-     4542,
-     5991
+     4612,
+     6085
     ],
     "group_loyalty_main": [
-     381,
-     634
+     389,
+     646
     ],
     "cz_agreement": [
-     5038,
-     5817
+     5123,
+     5909
     ],
     "outcome": [
-     2540,
-     5096
+     2576,
+     5172
     ],
     "outcome_main": [
-     392,
-     503
+     400,
+     513
     ],
     "outcome_close": [
      53,
-     110
+     111
     ],
     "group_outcome": [
-     147693,
-     346956
+     149605,
+     351456
     ],
     "group_outcome_main": [
-     19706,
-     32512
+     20105,
+     33081
     ],
     "positions": {
-     "FOR": 3073,
-     "AGAINST": 2024,
-     "ABSTENTION": 912,
+     "FOR": 3127,
+     "AGAINST": 2046,
+     "ABSTENTION": 930,
      "DID_NOT_VOTE": 376
     }
    },
@@ -1764,49 +1755,49 @@
    },
    "total": {
     "attendance": [
-     3535,
-     4317
+     3629,
+     4411
     ],
     "attendance_main": [
-     369,
-     450
+     381,
+     462
     ],
     "group_loyalty": [
-     2683,
-     3524
+     2752,
+     3618
     ],
     "group_loyalty_main": [
-     225,
-     369
+     233,
+     381
     ],
     "cz_agreement": [
-     2979,
-     3418
+     3061,
+     3510
     ],
     "outcome": [
-     1557,
-     3012
+     1591,
+     3087
     ],
     "outcome_main": [
-     235,
-     298
+     243,
+     308
     ],
     "outcome_close": [
      35,
-     63
+     64
     ],
     "group_outcome": [
-     89440,
-     205070
+     91352,
+     209503
     ],
     "group_outcome_main": [
-     11713,
-     19151
+     12112,
+     19720
     ],
     "positions": {
-     "FOR": 1775,
-     "AGAINST": 1237,
-     "ABSTENTION": 523,
+     "FOR": 1828,
+     "AGAINST": 1259,
+     "ABSTENTION": 542,
      "DID_NOT_VOTE": 782
     }
    },
@@ -1838,49 +1829,49 @@
    },
    "total": {
     "attendance": [
-     3962,
-     4112
+     4056,
+     4206
     ],
     "attendance_main": [
-     394,
-     421
+     406,
+     433
     ],
     "group_loyalty": [
-     3369,
-     3948
+     3455,
+     4042
     ],
     "group_loyalty_main": [
-     254,
-     393
+     262,
+     405
     ],
     "cz_agreement": [
-     2933,
-     3822
+     3004,
+     3914
     ],
     "outcome": [
-     1504,
-     3433
+     1535,
+     3512
     ],
     "outcome_main": [
-     201,
-     294
+     209,
+     304
     ],
     "outcome_close": [
      37,
-     75
+     76
     ],
     "group_outcome": [
-     95859,
-     232659
+     97726,
+     237454
     ],
     "group_outcome_main": [
-     11354,
-     18872
+     11753,
+     19441
     ],
     "positions": {
-     "FOR": 1966,
-     "AGAINST": 1467,
-     "ABSTENTION": 529,
+     "FOR": 2022,
+     "AGAINST": 1490,
+     "ABSTENTION": 544,
      "DID_NOT_VOTE": 150
     }
    },

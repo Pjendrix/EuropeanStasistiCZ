@@ -14,84 +14,75 @@
  "members_now": 7,
  "total": {
   "attendance": [
-   38611,
-   44851
+   39266,
+   45509
   ],
   "attendance_main": [
-   4071,
-   4694
+   4155,
+   4778
   ],
   "group_loyalty": [
-   28856,
-   38489
+   29340,
+   39144
   ],
   "group_loyalty_main": [
-   2447,
-   4068
+   2503,
+   4152
   ],
   "cz_agreement": [
-   32413,
-   37337
+   33002,
+   37978
   ],
   "outcome": [
-   16483,
-   32725
+   16733,
+   33251
   ],
   "outcome_main": [
-   2532,
-   3245
+   2588,
+   3315
   ],
   "outcome_close": [
    364,
-   740
+   747
   ],
   "group_outcome": [
-   943393,
-   2228215
+   956759,
+   2259369
   ],
   "group_outcome_main": [
-   128367,
-   210206
+   131160,
+   214189
   ],
   "positions": {
-   "FOR": 19671,
-   "AGAINST": 13061,
-   "ABSTENTION": 5879,
-   "DID_NOT_VOTE": 6240
+   "FOR": 20046,
+   "AGAINST": 13212,
+   "ABSTENTION": 6008,
+   "DID_NOT_VOTE": 6243
   }
  },
  "cohesion": [
-  6022,
-  6406
+  6108,
+  6500
  ],
  "cohesion_main": [
-  636,
-  667
+  648,
+  679
  ],
- "splits_count": 116,
+ "splits_count": 118,
  "splits_count_main": 5,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "definitions": {
   "attendance": "Účast na hlasování: v kolika jmenovitých hlasováních v době mandátu poslanec hlasoval (pro, proti nebo se zdržel). Nejde o prezenční docházku. Poslanec mohl být na jednání a nehlasovat, nebo chybět z důvodů, které data neuvádějí (nemoc, rodičovská, služební cesta).",
@@ -231,50 +222,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5659,
-     6411
+     5752,
+     6505
     ],
     "attendance_main": [
-     596,
-     671
+     608,
+     683
     ],
     "group_loyalty": [
-     4190,
-     5643
+     4259,
+     5736
     ],
     "group_loyalty_main": [
-     352,
-     596
+     360,
+     608
     ],
     "cz_agreement": [
-     4760,
-     5466
+     4844,
+     5557
     ],
     "outcome": [
-     2364,
-     4796
+     2400,
+     4871
     ],
     "outcome_main": [
-     368,
-     473
+     376,
+     483
     ],
     "outcome_close": [
      54,
-     111
+     112
     ],
     "group_outcome": [
-     132943,
-     325956
+     134855,
+     330389
     ],
     "group_outcome_main": [
-     18303,
-     30588
+     18702,
+     31157
     ],
     "positions": {
-     "FOR": 2891,
-     "AGAINST": 1906,
-     "ABSTENTION": 862,
-     "DID_NOT_VOTE": 752
+     "FOR": 2945,
+     "AGAINST": 1927,
+     "ABSTENTION": 880,
+     "DID_NOT_VOTE": 753
     }
    }
   },
@@ -312,50 +303,50 @@
    "end": null,
    "total": {
     "attendance": [
-     5993,
-     6411
+     6085,
+     6505
     ],
     "attendance_main": [
-     629,
-     671
+     641,
+     683
     ],
     "group_loyalty": [
-     4447,
-     5972
+     4513,
+     6064
     ],
     "group_loyalty_main": [
-     375,
-     628
+     383,
+     640
     ],
     "cz_agreement": [
-     5025,
-     5804
+     5108,
+     5894
     ],
     "outcome": [
-     2589,
-     5050
+     2625,
+     5122
     ],
     "outcome_main": [
-     395,
-     503
+     403,
+     513
     ],
     "outcome_close": [
      55,
-     111
+     112
     ],
     "group_outcome": [
-     147241,
-     342661
+     149140,
+     346927
     ],
     "group_outcome_main": [
-     19992,
-     32407
+     20391,
+     32976
     ],
     "positions": {
-     "FOR": 3031,
-     "AGAINST": 2020,
-     "ABSTENTION": 942,
-     "DID_NOT_VOTE": 418
+     "FOR": 3083,
+     "AGAINST": 2040,
+     "ABSTENTION": 962,
+     "DID_NOT_VOTE": 420
     }
    }
   },
@@ -393,49 +384,49 @@
    "end": null,
    "total": {
     "attendance": [
-     5564,
-     6411
+     5658,
+     6505
     ],
     "attendance_main": [
-     591,
-     671
+     603,
+     683
     ],
     "group_loyalty": [
-     4135,
-     5545
+     4205,
+     5639
     ],
     "group_loyalty_main": [
-     358,
-     590
+     366,
+     602
     ],
     "cz_agreement": [
-     4657,
-     5374
+     4742,
+     5466
     ],
     "outcome": [
-     2418,
-     4720
+     2454,
+     4796
     ],
     "outcome_main": [
-     363,
-     472
+     371,
+     482
     ],
     "outcome_close": [
      50,
-     109
+     110
     ],
     "group_outcome": [
-     138383,
-     320192
+     140295,
+     324692
     ],
     "group_outcome_main": [
-     18757,
-     30550
+     19156,
+     31119
     ],
     "positions": {
-     "FOR": 2830,
-     "AGAINST": 1891,
-     "ABSTENTION": 843,
+     "FOR": 2884,
+     "AGAINST": 1913,
+     "ABSTENTION": 861,
      "DID_NOT_VOTE": 847
     }
    }
@@ -474,49 +465,49 @@
    "end": null,
    "total": {
     "attendance": [
-     5488,
-     6411
+     5582,
+     6505
     ],
     "attendance_main": [
-     586,
-     671
+     598,
+     683
     ],
     "group_loyalty": [
-     4092,
-     5469
+     4162,
+     5563
     ],
     "group_loyalty_main": [
-     352,
-     586
+     360,
+     598
     ],
     "cz_agreement": [
-     4552,
-     5305
+     4636,
+     5397
     ],
     "outcome": [
-     2343,
-     4608
+     2378,
+     4683
     ],
     "outcome_main": [
-     366,
-     469
+     374,
+     479
     ],
     "outcome_close": [
      52,
-     109
+     110
     ],
     "group_outcome": [
-     134304,
-     312692
+     136210,
+     317152
     ],
     "group_outcome_main": [
-     18926,
-     30298
+     19325,
+     30867
     ],
     "positions": {
-     "FOR": 2762,
-     "AGAINST": 1847,
-     "ABSTENTION": 879,
+     "FOR": 2816,
+     "AGAINST": 1868,
+     "ABSTENTION": 898,
      "DID_NOT_VOTE": 923
     }
    }
@@ -555,49 +546,49 @@
    "end": null,
    "total": {
     "attendance": [
-     5178,
-     6411
+     5272,
+     6505
     ],
     "attendance_main": [
-     540,
-     671
+     552,
+     683
     ],
     "group_loyalty": [
-     3908,
-     5161
+     3978,
+     5255
     ],
     "group_loyalty_main": [
-     330,
-     540
+     338,
+     552
     ],
     "cz_agreement": [
-     4389,
-     5011
+     4475,
+     5103
     ],
     "outcome": [
-     2202,
-     4440
+     2239,
+     4517
     ],
     "outcome_main": [
-     335,
-     429
+     343,
+     439
     ],
     "outcome_close": [
      48,
-     99
+     100
     ],
     "group_outcome": [
-     127185,
-     304090
+     129098,
+     308652
     ],
     "group_outcome_main": [
-     17270,
-     28018
+     17669,
+     28587
     ],
     "positions": {
-     "FOR": 2667,
-     "AGAINST": 1774,
-     "ABSTENTION": 737,
+     "FOR": 2721,
+     "AGAINST": 1797,
+     "ABSTENTION": 754,
      "DID_NOT_VOTE": 1233
     }
    }
@@ -636,49 +627,49 @@
    "end": null,
    "total": {
     "attendance": [
-     6009,
-     6385
+     6103,
+     6479
     ],
     "attendance_main": [
-     635,
-     668
+     647,
+     680
     ],
     "group_loyalty": [
-     4542,
-     5991
+     4612,
+     6085
     ],
     "group_loyalty_main": [
-     381,
-     634
+     389,
+     646
     ],
     "cz_agreement": [
-     5038,
-     5817
+     5123,
+     5909
     ],
     "outcome": [
-     2540,
-     5096
+     2576,
+     5172
     ],
     "outcome_main": [
-     392,
-     503
+     400,
+     513
     ],
     "outcome_close": [
      53,
-     110
+     111
     ],
     "group_outcome": [
-     147693,
-     346956
+     149605,
+     351456
     ],
     "group_outcome_main": [
-     19706,
-     32512
+     20105,
+     33081
     ],
     "positions": {
-     "FOR": 3073,
-     "AGAINST": 2024,
-     "ABSTENTION": 912,
+     "FOR": 3127,
+     "AGAINST": 2046,
+     "ABSTENTION": 930,
      "DID_NOT_VOTE": 376
     }
    }
@@ -717,49 +708,49 @@
    "end": null,
    "total": {
     "attendance": [
-     3535,
-     4317
+     3629,
+     4411
     ],
     "attendance_main": [
-     369,
-     450
+     381,
+     462
     ],
     "group_loyalty": [
-     2683,
-     3524
+     2752,
+     3618
     ],
     "group_loyalty_main": [
-     225,
-     369
+     233,
+     381
     ],
     "cz_agreement": [
-     2979,
-     3418
+     3061,
+     3510
     ],
     "outcome": [
-     1557,
-     3012
+     1591,
+     3087
     ],
     "outcome_main": [
-     235,
-     298
+     243,
+     308
     ],
     "outcome_close": [
      35,
-     63
+     64
     ],
     "group_outcome": [
-     89440,
-     205070
+     91352,
+     209503
     ],
     "group_outcome_main": [
-     11713,
-     19151
+     12112,
+     19720
     ],
     "positions": {
-     "FOR": 1775,
-     "AGAINST": 1237,
-     "ABSTENTION": 523,
+     "FOR": 1828,
+     "AGAINST": 1259,
+     "ABSTENTION": 542,
      "DID_NOT_VOTE": 782
     }
    }
@@ -930,6 +921,160 @@
   "updated": "2026-11-24"
  },
  "splits": [
+  {
+   "id": 200361,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Article 5, alinéa 1, point a - Am 345",
+   "result": "REJECTED",
+   "is_main": false,
+   "counts": {
+    "for": 151,
+    "against": 451,
+    "abstention": 6,
+    "did_not_vote": 112
+   },
+   "cz": [
+    5,
+    15,
+    0,
+    1
+   ],
+   "amendment_number": "345",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Článek 5, pododstavec 1, písm. a - PN 345",
+   "positions": [
+    {
+     "member_id": 197528,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 220840,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256843,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256844,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256853,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 261038,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 270261,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    }
+   ]
+  },
+  {
+   "id": 200354,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Mechanismus civilní ochrany Unie a podpora Unie pro připravenost a reakci na mimořádné situace v oblasti zdraví a zrušení rozhodnutí č. 1313/2013/EU (mechanismus civilní ochrany Unie)",
+   "reference": "A10-0271/2026",
+   "description": "Amendements de la commission compétente - vote séparé - Am 38/1",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 546,
+    "against": 51,
+    "abstention": 12,
+    "did_not_vote": 111
+   },
+   "cz": [
+    15,
+    3,
+    1,
+    2
+   ],
+   "amendment_number": "38",
+   "texts_adopted_reference": null,
+   "cats": [
+    "def",
+    "env",
+    "abr"
+   ],
+   "vote_kind": "amendment",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Pozměňovací návrhy příslušného výboru - oddělené hlasování - PN 38, 1. část",
+   "positions": [
+    {
+     "member_id": 197528,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 220840,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256843,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256844,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 256853,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 261038,
+     "position": "FOR",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    },
+    {
+     "member_id": 270261,
+     "position": "AGAINST",
+     "group_code": "PFE",
+     "national_party_id": 6794
+    }
+   ]
+  },
   {
    "id": 199493,
    "date": "2026-10-22",
@@ -2278,154 +2423,6 @@
     {
      "member_id": 270261,
      "position": "AGAINST",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    }
-   ]
-  },
-  {
-   "id": 195194,
-   "date": "2026-07-07",
-   "month": "2026-07",
-   "title": " Finanční činnost skupiny Evropské investiční banky – výroční zpráva za rok 2025",
-   "reference": "A10-0170/2026",
-   "description": "§ 8 - Am 4",
-   "result": "REJECTED",
-   "is_main": false,
-   "counts": {
-    "for": 170,
-    "against": 450,
-    "abstention": 38,
-    "did_not_vote": 61
-   },
-   "cz": [
-    7,
-    10,
-    1,
-    3
-   ],
-   "amendment_number": "4",
-   "texts_adopted_reference": null,
-   "cats": [
-    "ins"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 8 - PN 4",
-   "positions": [
-    {
-     "member_id": 197528,
-     "position": "AGAINST",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 220840,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256843,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256844,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256853,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 261038,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 270261,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    }
-   ]
-  },
-  {
-   "id": 195007,
-   "date": "2026-07-07",
-   "month": "2026-07",
-   "title": "Změna nařízení (ES) č. 261/2004, kterým se stanoví společná pravidla náhrad a pomoci cestujícím v letecké dopravě v případě odepření nástupu na palubu, zrušení nebo významného zpoždění letů, a změna nařízení (ES) č. 2027/97 o odpovědnosti leteckého dopravce při letecké dopravě cestujících a jejich zavazadel",
-   "reference": "A10-0191/2026",
-   "description": "Projet commun",
-   "result": "ADOPTED",
-   "is_main": true,
-   "counts": {
-    "for": 646,
-    "against": 12,
-    "abstention": 3,
-    "did_not_vote": 58
-   },
-   "cz": [
-    17,
-    1,
-    0,
-    3
-   ],
-   "amendment_number": null,
-   "texts_adopted_reference": "P10_TA(2026)0238",
-   "cats": [],
-   "vote_kind": "final",
-   "is_final": true,
-   "inverted": false,
-   "description_cs": "Společný text dohodovacího výboru",
-   "positions": [
-    {
-     "member_id": 197528,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 220840,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256843,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256844,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 256853,
-     "position": "AGAINST",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 261038,
-     "position": "FOR",
-     "group_code": "PFE",
-     "national_party_id": 6794
-    },
-    {
-     "member_id": 270261,
-     "position": "FOR",
      "group_code": "PFE",
      "national_party_id": 6794
     }

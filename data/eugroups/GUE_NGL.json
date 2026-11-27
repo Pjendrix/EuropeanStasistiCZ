@@ -12,52 +12,43 @@
  "seats": 45,
  "n_countries": 13,
  "attendance": [
-  248451,
-  292970
+  251946,
+  297200
  ],
  "attendance_main": [
-  25927,
-  30656
+  26372,
+  31196
  ],
  "majority": [
-  224633,
-  233430
+  227883,
+  236813
  ],
  "majority_main": [
-  20744,
-  22050
+  21120,
+  22436
  ],
- "splits": 249,
- "considered": 6353,
+ "splits": 253,
+ "considered": 6447,
  "splits_main": 55,
- "considered_main": 644,
+ "considered_main": 656,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
    "url": "https://github.com/HowTheyVote/data",
    "license": "ODbL",
-   "release": "2026-11-01"
+   "release": "2026-11-21"
   },
   "meps": {
    "name": "EP Open Data API v2",
    "url": "https://data.europarl.europa.eu/api/v2/meps?parliamentary-term=10&country-of-representation=CZ",
    "license": "CC BY 4.0"
   },
-  "group_conflicts": [
-   {
-    "member_id": 23699,
-    "from": "2026-10-21",
-    "to": "2026-10-22",
-    "htv": "NI",
-    "ep": "PFE",
-    "votes": 228
-   }
-  ]
+  "group_conflicts": []
  },
  "member_list": [],
  "countries": {
-  "as_of": "2026-10-22",
-  "vote_id": 199356,
+  "as_of": "2026-11-12",
+  "vote_id": 200503,
   "seats": 45,
   "n_countries": 13,
   "by_country": [
@@ -132,7 +123,7 @@
   "name": "HowTheyVote.eu",
   "url": "https://github.com/HowTheyVote/data",
   "license": "ODbL",
-  "release": "2026-11-01"
+  "release": "2026-11-21"
  },
  "chairs": [
   {
@@ -158,7 +149,7 @@
   "name": "EP Open Data API v2",
   "url": "https://data.europarl.europa.eu/api/v2/meps/show-current",
   "license": "CC BY 4.0",
-  "updated": "2026-11-04"
+  "updated": "2026-11-26"
  },
  "splits_list": [
   {
@@ -1273,6 +1264,44 @@
    ]
   },
   {
+   "id": 200382,
+   "date": "2026-11-12",
+   "month": "2026-11",
+   "title": "Politika EU na podporu zemědělsko-potravinářského odvětví",
+   "reference": "A10-0269/2026",
+   "description": "Considérant G/2",
+   "result": "ADOPTED",
+   "is_main": false,
+   "counts": {
+    "for": 468,
+    "against": 115,
+    "abstention": 14,
+    "did_not_vote": 123
+   },
+   "cz": [
+    16,
+    3,
+    0,
+    2
+   ],
+   "amendment_number": "§",
+   "texts_adopted_reference": null,
+   "cats": [
+    "agr",
+    "abr"
+   ],
+   "vote_kind": "split_part",
+   "is_final": false,
+   "inverted": false,
+   "description_cs": "Bod odůvodnění G, 2. část",
+   "gc": [
+    17,
+    19,
+    0,
+    9
+   ]
+  },
+  {
    "id": 197149,
    "date": "2026-09-17",
    "month": "2026-09",
@@ -1981,45 +2010,6 @@
     13,
     7,
     15
-   ]
-  },
-  {
-   "id": 178241,
-   "date": "2025-07-10",
-   "month": "2025-07",
-   "title": "Naléhavá potřeba ochrany náboženských menšin v Sýrii po nedávném teroristickém útoku na kostel Mar Elias v Damašku",
-   "reference": "RC-B10-0335/2025",
-   "description": "§ 7 - Am 2/2",
-   "result": "ADOPTED",
-   "is_main": false,
-   "counts": {
-    "for": 256,
-    "against": 249,
-    "abstention": 135,
-    "did_not_vote": 79
-   },
-   "cz": [
-    5,
-    5,
-    8,
-    3
-   ],
-   "amendment_number": "2",
-   "texts_adopted_reference": "P10_TA(2025)0163",
-   "cats": [
-    "def",
-    "abr",
-    "jus"
-   ],
-   "vote_kind": "amendment",
-   "is_final": false,
-   "inverted": false,
-   "description_cs": "Odst. 7 - PN 2, 2. část",
-   "gc": [
-    13,
-    11,
-    11,
-    11
    ]
   }
  ],
