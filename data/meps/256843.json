@@ -115,7 +115,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 864,
+ "mandate_days": 865,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -2171,7 +2171,7 @@
    "id": 199985,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Union retail investor protection rules",
+   "title": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
    "reference": "A9-0162/2024",
    "description": "Accord provisoire - Am 2",
    "result": "REJECTED",
@@ -2186,7 +2186,7 @@
    "id": 199987,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Modernisation of the key information document",
+   "title": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
    "reference": "A9-0160/2024",
    "description": "Accord provisoire - Am 2",
    "result": "ADOPTED",
@@ -4653,12 +4653,42 @@
  },
  "amendments": {
   "committee": {
-   "total": 2824,
+   "total": 2836,
    "sole": 169,
    "on_behalf": 29,
-   "dossiers": 54,
-   "docs": 188,
+   "dossiers": 55,
+   "docs": 191,
    "recent": [
+    {
+     "doc": "ITRE-AM-798567",
+     "date": "2026-11-26",
+     "committees": [
+      "ITRE"
+     ],
+     "procedure": "2026/0013(COD)",
+     "count": 4,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ITRE-AM-798567/ITRE-AM-798567_en.pdf"
+    },
+    {
+     "doc": "ITRE-AM-798566",
+     "date": "2026-11-26",
+     "committees": [
+      "ITRE"
+     ],
+     "procedure": "2026/0013(COD)",
+     "count": 7,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ITRE-AM-798566/ITRE-AM-798566_en.pdf"
+    },
+    {
+     "doc": "ITRE-AM-798565",
+     "date": "2026-11-26",
+     "committees": [
+      "ITRE"
+     ],
+     "procedure": "2026/0013(COD)",
+     "count": 1,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/ITRE-AM-798565/ITRE-AM-798565_en.pdf"
+    },
     {
      "doc": "CJ13-AM-797542",
      "date": "2026-11-04",
@@ -4678,36 +4708,6 @@
      "procedure": "2025/0545(COD)",
      "count": 20,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797492/CJ13-AM-797492_en.pdf"
-    },
-    {
-     "doc": "CJ13-AM-797491",
-     "date": "2026-11-03",
-     "committees": [
-      "CJ13"
-     ],
-     "procedure": "2025/0545(COD)",
-     "count": 19,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797491/CJ13-AM-797491_en.pdf"
-    },
-    {
-     "doc": "CJ13-AM-797490",
-     "date": "2026-11-03",
-     "committees": [
-      "CJ13"
-     ],
-     "procedure": "2025/0545(COD)",
-     "count": 12,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797490/CJ13-AM-797490_en.pdf"
-    },
-    {
-     "doc": "CJ13-AM-797489",
-     "date": "2026-11-03",
-     "committees": [
-      "CJ13"
-     ],
-     "procedure": "2025/0545(COD)",
-     "count": 2,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/CJ13-AM-797489/CJ13-AM-797489_en.pdf"
     }
    ]
   },
@@ -4727,13 +4727,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-27"
  },
  "own_work": {
   "source": {
@@ -4741,7 +4741,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-24",
+  "updated": "2026-11-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",

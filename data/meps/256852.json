@@ -154,7 +154,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 864,
+ "mandate_days": 865,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -2210,7 +2210,7 @@
    "id": 199985,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Union retail investor protection rules",
+   "title": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
    "reference": "A9-0162/2024",
    "description": "Accord provisoire - Am 2",
    "result": "REJECTED",
@@ -2225,7 +2225,7 @@
    "id": 199987,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Modernisation of the key information document",
+   "title": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
    "reference": "A9-0160/2024",
    "description": "Accord provisoire - Am 2",
    "result": "ADOPTED",
@@ -4722,12 +4722,22 @@
  },
  "amendments": {
   "committee": {
-   "total": 1026,
+   "total": 1032,
    "sole": 44,
    "on_behalf": 57,
-   "dossiers": 46,
-   "docs": 64,
+   "dossiers": 47,
+   "docs": 65,
    "recent": [
+    {
+     "doc": "AFET-AM-797718",
+     "date": "2026-11-24",
+     "committees": [
+      "AFET"
+     ],
+     "procedure": "2026/2046(INI)",
+     "count": 6,
+     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/AFET-AM-797718/AFET-AM-797718_en.pdf"
+    },
     {
      "doc": "BUDG-AM-797623",
      "date": "2026-11-11",
@@ -4767,16 +4777,6 @@
      "procedure": "2025/2183(INI)",
      "count": 29,
      "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/EMPL-AM-781491/EMPL-AM-781491_en.pdf"
-    },
-    {
-     "doc": "LIBE-AM-781446",
-     "date": "2025-12-15",
-     "committees": [
-      "LIBE"
-     ],
-     "procedure": "2025/2239(INI)",
-     "count": 60,
-     "url": "https://data.europarl.europa.eu/distribution/reds_iCmDoc_Amd/LIBE-AM-781446/LIBE-AM-781446_en.pdf"
     }
    ]
   },
@@ -4796,13 +4796,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-27"
  },
  "own_work": {
   "source": {
@@ -4810,7 +4810,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-24",
+  "updated": "2026-11-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4851,14 +4851,14 @@
     "superseded": 9
    },
    "joint_motion": {
-    "count": 10,
+    "count": 13,
     "voted": 8,
     "adopted": 8,
-    "no_vote": 2,
+    "no_vote": 5,
     "other": 0
    },
    "question": {
-    "count": 76,
+    "count": 77,
     "answered": 65
    }
   },
@@ -4876,7 +4876,7 @@
    "lead_opinions": 0,
    "shadow_reports": 7,
    "shadow_opinions": 6,
-   "motions_signed": 72,
+   "motions_signed": 75,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -4890,6 +4890,70 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0521",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 53
+   },
+   {
+    "id": "RC-10-2026-0518",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 62
+   },
+   {
+    "id": "RC-10-2026-0515",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 75
+   },
+   {
+    "id": "E-10-2026-004806",
+    "label": "E-004806/2026",
+    "date": "2026-11-19",
+    "title": {
+     "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+    "type": "question",
+    "subtype": "question_written",
+    "role": "AUTHOR",
+    "status": "unanswered",
+    "answer_date": null,
+    "authors_total": 18
+   },
    {
     "id": "P-10-2026-004685",
     "label": "P-004685/2026",

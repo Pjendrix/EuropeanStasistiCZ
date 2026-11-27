@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-24",
+ "updated": "2026-11-27",
  "complete": true,
  "meps": [
   {
@@ -158,7 +158,7 @@
    "lead_opinions": 0,
    "shadow_reports": 5,
    "shadow_opinions": 0,
-   "motions_signed": 97,
+   "motions_signed": 103,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -228,7 +228,7 @@
    "lead_opinions": 4,
    "shadow_reports": 10,
    "shadow_opinions": 13,
-   "motions_signed": 137,
+   "motions_signed": 143,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -373,7 +373,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 3543,
+   "amendments": 3555,
    "amendments_cosigned": 166
   },
   {
@@ -411,7 +411,7 @@
    "lead_opinions": 0,
    "shadow_reports": 9,
    "shadow_opinions": 11,
-   "motions_signed": 185,
+   "motions_signed": 192,
    "delegation": {
     "tiers": {
      "lead_reports": null,
@@ -506,7 +506,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 679,
+   "amendments": 680,
    "amendments_cosigned": 6
   },
   {
@@ -544,7 +544,7 @@
    "lead_opinions": 16,
    "shadow_reports": 3,
    "shadow_opinions": 0,
-   "motions_signed": 176,
+   "motions_signed": 180,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -708,7 +708,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 1888,
+   "amendments": 1931,
    "amendments_cosigned": 167
   },
   {
@@ -771,7 +771,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 1312,
+   "amendments": 1424,
    "amendments_cosigned": 20
   },
   {
@@ -834,7 +834,7 @@
     "excused": 4,
     "days": 129
    },
-   "amendments": 2824,
+   "amendments": 2836,
    "amendments_cosigned": 162
   },
   {
@@ -935,7 +935,7 @@
    "lead_opinions": 0,
    "shadow_reports": 13,
    "shadow_opinions": 1,
-   "motions_signed": 186,
+   "motions_signed": 190,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -960,7 +960,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 1712,
+   "amendments": 1786,
    "amendments_cosigned": 18
   },
   {
@@ -1023,7 +1023,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 198,
+   "amendments": 204,
    "amendments_cosigned": 13
   },
   {
@@ -1061,7 +1061,7 @@
    "lead_opinions": 7,
    "shadow_reports": 1,
    "shadow_opinions": 4,
-   "motions_signed": 141,
+   "motions_signed": 147,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -1086,7 +1086,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 443,
+   "amendments": 448,
    "amendments_cosigned": 16
   },
   {
@@ -1240,7 +1240,7 @@
    "lead_opinions": 0,
    "shadow_reports": 7,
    "shadow_opinions": 6,
-   "motions_signed": 72,
+   "motions_signed": 75,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
@@ -1265,7 +1265,7 @@
     "excused": 0,
     "days": 129
    },
-   "amendments": 1026,
+   "amendments": 1032,
    "amendments_cosigned": 130
   },
   {
@@ -1335,7 +1335,7 @@
     "excused": 13,
     "days": 129
    },
-   "amendments": 1958,
+   "amendments": 1981,
    "amendments_cosigned": 166
   },
   {
@@ -1367,18 +1367,18 @@
    "lead_pending": 0,
    "shadow_adopted": 3,
    "shadow_adopted_legislative": 2,
-   "shadow_pending": 7,
+   "shadow_pending": 9,
    "resolutions_adopted": 0,
    "lead_reports": 2,
    "lead_opinions": 0,
-   "shadow_reports": 10,
+   "shadow_reports": 12,
    "shadow_opinions": 5,
    "motions_signed": 5,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
      "lead_opinions": null,
-     "shadow_reports": "mid",
+     "shadow_reports": "top",
      "shadow_opinions": "mid"
     },
     "of": 21,
@@ -1550,11 +1550,11 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   }
  },
  "presence_source": {

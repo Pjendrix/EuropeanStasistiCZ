@@ -4,7 +4,7 @@
   "url": "https://data.europarl.europa.eu/api/v2",
   "license": "CC BY 4.0"
  },
- "updated": "2026-11-24",
+ "updated": "2026-11-27",
  "complete": true,
  "type_labels": {
   "report": "Zprávy (zpravodaj/ka)",
@@ -54,7 +54,7 @@
      "other": 0
     },
     "question": {
-     "count": 48,
+     "count": 49,
      "answered": 35
     }
    },
@@ -86,6 +86,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
+    },
     {
      "id": "E-10-2026-004622",
      "label": "E-004622/2026",
@@ -1265,18 +1281,18 @@
      "count": 0
     },
     "motion": {
-     "count": 50,
+     "count": 53,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 15,
+     "no_vote": 18,
      "other": 0,
      "superseded": 34
     },
     "joint_motion": {
-     "count": 47,
+     "count": 50,
      "voted": 33,
      "adopted": 33,
-     "no_vote": 14,
+     "no_vote": 17,
      "other": 0
     },
     "question": {
@@ -1298,7 +1314,7 @@
     "lead_opinions": 0,
     "shadow_reports": 5,
     "shadow_opinions": 0,
-    "motions_signed": 97,
+    "motions_signed": 103,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -1312,6 +1328,54 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0521",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 53
+    },
+    {
+     "id": "RC-10-2026-0518",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 62
+    },
+    {
+     "id": "RC-10-2026-0515",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 75
+    },
     {
      "id": "RC-10-2026-0508",
      "label": null,
@@ -1327,6 +1391,54 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0532",
+     "label": "B10-0532/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0532_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
+    {
+     "id": "B-10-2026-0531",
+     "label": "B10-0531/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0531_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 25
+    },
+    {
+     "id": "B-10-2026-0529",
+     "label": "B10-0529/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0529_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 21
     },
     {
      "id": "B-10-2026-0508",
@@ -3237,23 +3349,23 @@
      "count": 13
     },
     "motion": {
-     "count": 70,
+     "count": 73,
      "voted": 2,
      "adopted": 0,
-     "no_vote": 22,
+     "no_vote": 25,
      "other": 0,
      "superseded": 46
     },
     "joint_motion": {
-     "count": 67,
+     "count": 70,
      "voted": 47,
      "adopted": 47,
-     "no_vote": 20,
+     "no_vote": 23,
      "other": 0
     },
     "question": {
      "count": 120,
-     "answered": 106
+     "answered": 109
     }
    },
    "passed": {
@@ -3270,7 +3382,7 @@
     "lead_opinions": 4,
     "shadow_reports": 10,
     "shadow_opinions": 13,
-    "motions_signed": 137,
+    "motions_signed": 143,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -3284,6 +3396,54 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0521",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 53
+    },
+    {
+     "id": "RC-10-2026-0518",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 62
+    },
+    {
+     "id": "RC-10-2026-0515",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 75
+    },
     {
      "id": "RC-10-2026-0508",
      "label": null,
@@ -3299,6 +3459,54 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0532",
+     "label": "B10-0532/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0532_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
+    {
+     "id": "B-10-2026-0531",
+     "label": "B10-0531/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0531_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 25
+    },
+    {
+     "id": "B-10-2026-0529",
+     "label": "B10-0529/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0529_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 21
     },
     {
      "id": "B-10-2026-0508",
@@ -3619,8 +3827,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-27",
      "authors_total": 8
     },
     {
@@ -3635,8 +3843,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-24",
      "authors_total": 1
     },
     {
@@ -3772,8 +3980,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-24",
      "authors_total": 1
     },
     {
@@ -8244,7 +8452,7 @@
      "other": 0
     },
     "question": {
-     "count": 76,
+     "count": 78,
      "answered": 64
     }
    },
@@ -8276,6 +8484,38 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
+    },
+    {
+     "id": "E-10-2026-004792",
+     "label": "E-004792/2026",
+     "date": "2026-11-18",
+     "title": {
+      "cs": "Financování z prostředků EU a zajištění námořního spojení mezi ostrovy Madeira a Porto Santo",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004792_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 3
+    },
     {
      "id": "E-10-2026-004585",
      "label": "E-004585/2026",
@@ -10620,22 +10860,22 @@
      "count": 11
     },
     "motion": {
-     "count": 100,
+     "count": 103,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 30,
+     "no_vote": 33,
      "other": 0,
      "superseded": 70
     },
     "joint_motion": {
-     "count": 85,
+     "count": 89,
      "voted": 65,
      "adopted": 65,
-     "no_vote": 20,
+     "no_vote": 24,
      "other": 0
     },
     "question": {
-     "count": 27,
+     "count": 28,
      "answered": 25
     }
    },
@@ -10653,7 +10893,7 @@
     "lead_opinions": 0,
     "shadow_reports": 9,
     "shadow_opinions": 11,
-    "motions_signed": 185,
+    "motions_signed": 192,
     "delegation": {
      "tiers": {
       "lead_reports": null,
@@ -10667,6 +10907,134 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0521",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 53
+    },
+    {
+     "id": "RC-10-2026-0518",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 62
+    },
+    {
+     "id": "RC-10-2026-0515",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 75
+    },
+    {
+     "id": "RC-10-2026-0533",
+     "label": null,
+     "date": "2026-11-24",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o protiprávním memorandu o porozumění mezi Tureckem a Libyí a porušení Úmluvy OSN o mořském právu",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0533_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 36
+    },
+    {
+     "id": "B-10-2026-0545",
+     "label": "B10-0545/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0545_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0544",
+     "label": "B10-0544/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION the condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0544_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0543",
+     "label": "B10-0543/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0543_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
+    },
     {
      "id": "P-10-2026-004616",
      "label": "P-004616/2026",
@@ -16970,18 +17338,18 @@
      "count": 0
     },
     "motion": {
-     "count": 100,
+     "count": 103,
      "voted": 0,
      "adopted": 0,
-     "no_vote": 27,
+     "no_vote": 30,
      "other": 0,
      "superseded": 73
     },
     "joint_motion": {
-     "count": 76,
+     "count": 77,
      "voted": 57,
      "adopted": 57,
-     "no_vote": 19,
+     "no_vote": 20,
      "other": 0
     },
     "question": {
@@ -17003,7 +17371,7 @@
     "lead_opinions": 16,
     "shadow_reports": 3,
     "shadow_opinions": 0,
-    "motions_signed": 176,
+    "motions_signed": 180,
     "delegation": {
      "tiers": {
       "lead_reports": "top",
@@ -17017,6 +17385,70 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0533",
+     "label": null,
+     "date": "2026-11-24",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o protiprávním memorandu o porozumění mezi Tureckem a Libyí a porušení Úmluvy OSN o mořském právu",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0533_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 36
+    },
+    {
+     "id": "B-10-2026-0545",
+     "label": "B10-0545/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0545_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0544",
+     "label": "B10-0544/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION the condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0544_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0543",
+     "label": "B10-0543/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0543_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
     {
      "id": "B-10-2026-0541",
      "label": null,
@@ -22918,7 +23350,7 @@
     },
     "question": {
      "count": 30,
-     "answered": 26
+     "answered": 27
     }
    },
    "passed": {
@@ -23216,8 +23648,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-27",
      "authors_total": 8
     },
     {
@@ -28057,22 +28489,22 @@
      "count": 1
     },
     "motion": {
-     "count": 109,
+     "count": 112,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 34,
+     "no_vote": 37,
      "other": 0,
      "superseded": 74
     },
     "joint_motion": {
-     "count": 77,
+     "count": 78,
      "voted": 56,
      "adopted": 56,
-     "no_vote": 21,
+     "no_vote": 22,
      "other": 0
     },
     "question": {
-     "count": 86,
+     "count": 87,
      "answered": 81
     }
    },
@@ -28090,7 +28522,7 @@
     "lead_opinions": 0,
     "shadow_reports": 13,
     "shadow_opinions": 1,
-    "motions_signed": 186,
+    "motions_signed": 190,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -28104,6 +28536,70 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0533",
+     "label": null,
+     "date": "2026-11-24",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o protiprávním memorandu o porozumění mezi Tureckem a Libyí a porušení Úmluvy OSN o mořském právu",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0533_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 36
+    },
+    {
+     "id": "B-10-2026-0545",
+     "label": "B10-0545/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0545_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0544",
+     "label": "B10-0544/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION the condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0544_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 20
+    },
+    {
+     "id": "B-10-2026-0543",
+     "label": "B10-0543/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0543_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
     {
      "id": "B-10-2026-0541",
      "label": null,
@@ -28119,6 +28615,22 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 19
+    },
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
     },
     {
      "id": "P-10-2026-004616",
@@ -34432,23 +34944,23 @@
      "count": 4
     },
     "motion": {
-     "count": 70,
+     "count": 73,
      "voted": 1,
      "adopted": 0,
-     "no_vote": 18,
+     "no_vote": 21,
      "other": 0,
      "superseded": 51
     },
     "joint_motion": {
-     "count": 71,
+     "count": 74,
      "voted": 54,
      "adopted": 54,
-     "no_vote": 17,
+     "no_vote": 20,
      "other": 0
     },
     "question": {
      "count": 31,
-     "answered": 27
+     "answered": 28
     }
    },
    "passed": {
@@ -34465,7 +34977,7 @@
     "lead_opinions": 7,
     "shadow_reports": 1,
     "shadow_opinions": 4,
-    "motions_signed": 141,
+    "motions_signed": 147,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -34479,6 +34991,54 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0521",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 53
+    },
+    {
+     "id": "RC-10-2026-0518",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 62
+    },
+    {
+     "id": "RC-10-2026-0515",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 75
+    },
     {
      "id": "RC-10-2026-0508",
      "label": null,
@@ -34494,6 +35054,54 @@
      "vote_id": null,
      "vote_date": null,
      "signatories_total": 14
+    },
+    {
+     "id": "B-10-2026-0532",
+     "label": "B10-0532/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0532_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 23
+    },
+    {
+     "id": "B-10-2026-0531",
+     "label": "B10-0531/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0531_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 25
+    },
+    {
+     "id": "B-10-2026-0529",
+     "label": "B10-0529/2026",
+     "date": "2026-11-23",
+     "title": {
+      "cs": null,
+      "en": "MOTION FOR A RESOLUTION condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0529_EN.html",
+     "type": "motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 21
     },
     {
      "id": "B-10-2026-0508",
@@ -34695,8 +35303,8 @@
      "type": "question",
      "subtype": "question_written",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-27",
      "authors_total": 8
     },
     {
@@ -39121,14 +39729,14 @@
      "superseded": 9
     },
     "joint_motion": {
-     "count": 10,
+     "count": 13,
      "voted": 8,
      "adopted": 8,
-     "no_vote": 2,
+     "no_vote": 5,
      "other": 0
     },
     "question": {
-     "count": 76,
+     "count": 77,
      "answered": 65
     }
    },
@@ -39146,7 +39754,7 @@
     "lead_opinions": 0,
     "shadow_reports": 7,
     "shadow_opinions": 6,
-    "motions_signed": 72,
+    "motions_signed": 75,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
@@ -39160,6 +39768,70 @@
     }
    },
    "items": [
+    {
+     "id": "RC-10-2026-0521",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 53
+    },
+    {
+     "id": "RC-10-2026-0518",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 62
+    },
+    {
+     "id": "RC-10-2026-0515",
+     "label": null,
+     "date": "2026-11-25",
+     "title": {
+      "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+     "type": "joint_motion",
+     "role": "AUTHOR",
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "signatories_total": 75
+    },
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
+    },
     {
      "id": "P-10-2026-004685",
      "label": "P-004685/2026",
@@ -42964,10 +43636,10 @@
      "other": 0
     },
     "shadow_report": {
-     "count": 10,
+     "count": 12,
      "voted": 3,
      "adopted": 3,
-     "no_vote": 7,
+     "no_vote": 9,
      "other": 0
     },
     "opinion": {
@@ -43002,20 +43674,20 @@
     "lead_pending": 0,
     "shadow_adopted": 3,
     "shadow_adopted_legislative": 2,
-    "shadow_pending": 7,
+    "shadow_pending": 9,
     "resolutions_adopted": 0
    },
    "roles": {
     "lead_reports": 2,
     "lead_opinions": 0,
-    "shadow_reports": 10,
+    "shadow_reports": 12,
     "shadow_opinions": 5,
     "motions_signed": 5,
     "delegation": {
      "tiers": {
       "lead_reports": "mid",
       "lead_opinions": null,
-      "shadow_reports": "mid",
+      "shadow_reports": "top",
       "shadow_opinions": "mid"
      },
      "of": 21,
@@ -43783,6 +44455,46 @@
      "status": "answered",
      "answer_date": "2025-09-05",
      "authors_total": 11
+    },
+    {
+     "id": "proc-2023-0167",
+     "label": "2023/0167(COD)",
+     "date": "2025-07-02",
+     "title": {
+      "cs": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
+      "en": "Amending Directives (EU) 2009/65/EC, 2009/138/EC, 2011/61/EU, 2014/65/EU and (EU) 2016/97 as regards the Union retail investor protection rules"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0167(COD)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PFE",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
+    },
+    {
+     "id": "proc-2023-0166",
+     "label": "2023/0166(COD)",
+     "date": "2025-07-02",
+     "title": {
+      "cs": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
+      "en": "Amending Regulation (EU) No 1286/2014 as regards the modernisation of the key information document"
+     },
+     "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0166(COD)",
+     "type": "shadow_report",
+     "role": "RAPPORTEUR_SHADOW",
+     "group": "PFE",
+     "committee": null,
+     "status": "no_vote",
+     "vote_id": null,
+     "vote_date": null,
+     "report": null,
+     "process_type": "COD",
+     "legislative": true
     },
     {
      "id": "E-10-2025-002679",
@@ -44620,8 +45332,8 @@
      "other": 0
     },
     "question": {
-     "count": 33,
-     "answered": 27
+     "count": 34,
+     "answered": 28
     }
    },
    "passed": {
@@ -44652,6 +45364,22 @@
     }
    },
    "items": [
+    {
+     "id": "E-10-2026-004806",
+     "label": "E-004806/2026",
+     "date": "2026-11-19",
+     "title": {
+      "cs": "Revize směrnice Rady 2003/86/ES o právu na sloučení rodiny",
+      "en": null
+     },
+     "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-004806_EN.html",
+     "type": "question",
+     "subtype": "question_written",
+     "role": "AUTHOR",
+     "status": "unanswered",
+     "answer_date": null,
+     "authors_total": 18
+    },
     {
      "id": "E-10-2026-004585",
      "label": "E-004585/2026",
@@ -44700,8 +45428,8 @@
      "type": "question",
      "subtype": "question_priority",
      "role": "AUTHOR",
-     "status": "unanswered",
-     "answer_date": null,
+     "status": "answered",
+     "answer_date": "2026-11-24",
      "authors_total": 1
     },
     {

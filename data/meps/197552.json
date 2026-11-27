@@ -83,7 +83,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 864,
+ "mandate_days": 865,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -2139,7 +2139,7 @@
    "id": 199985,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Union retail investor protection rules",
+   "title": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
    "reference": "A9-0162/2024",
    "description": "Accord provisoire - Am 2",
    "result": "REJECTED",
@@ -2154,7 +2154,7 @@
    "id": 199987,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Modernisation of the key information document",
+   "title": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
    "reference": "A9-0160/2024",
    "description": "Accord provisoire - Am 2",
    "result": "ADOPTED",
@@ -4705,13 +4705,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-27"
  },
  "own_work": {
   "source": {
@@ -4719,7 +4719,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-24",
+  "updated": "2026-11-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4752,18 +4752,18 @@
     "count": 0
    },
    "motion": {
-    "count": 100,
+    "count": 103,
     "voted": 0,
     "adopted": 0,
-    "no_vote": 27,
+    "no_vote": 30,
     "other": 0,
     "superseded": 73
    },
    "joint_motion": {
-    "count": 76,
+    "count": 77,
     "voted": 57,
     "adopted": 57,
-    "no_vote": 19,
+    "no_vote": 20,
     "other": 0
    },
    "question": {
@@ -4785,7 +4785,7 @@
    "lead_opinions": 16,
    "shadow_reports": 3,
    "shadow_opinions": 0,
-   "motions_signed": 176,
+   "motions_signed": 180,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -4799,6 +4799,70 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0533",
+    "label": null,
+    "date": "2026-11-24",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o protiprávním memorandu o porozumění mezi Tureckem a Libyí a porušení Úmluvy OSN o mořském právu",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0533_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 36
+   },
+   {
+    "id": "B-10-2026-0545",
+    "label": "B10-0545/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0545_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20
+   },
+   {
+    "id": "B-10-2026-0544",
+    "label": "B10-0544/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION the condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0544_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 20
+   },
+   {
+    "id": "B-10-2026-0543",
+    "label": "B10-0543/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0543_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 23
+   },
    {
     "id": "B-10-2026-0541",
     "label": null,

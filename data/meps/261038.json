@@ -125,7 +125,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 848,
+ "mandate_days": 849,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -2133,7 +2133,7 @@
    "id": 199985,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Union retail investor protection rules",
+   "title": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
    "reference": "A9-0162/2024",
    "description": "Accord provisoire - Am 2",
    "result": "REJECTED",
@@ -2148,7 +2148,7 @@
    "id": 199987,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Modernisation of the key information document",
+   "title": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
    "reference": "A9-0160/2024",
    "description": "Accord provisoire - Am 2",
    "result": "ADOPTED",
@@ -4690,13 +4690,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-27"
  },
  "own_work": {
   "source": {
@@ -4704,7 +4704,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-24",
+  "updated": "2026-11-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4724,10 +4724,10 @@
     "other": 0
    },
    "shadow_report": {
-    "count": 10,
+    "count": 12,
     "voted": 3,
     "adopted": 3,
-    "no_vote": 7,
+    "no_vote": 9,
     "other": 0
    },
    "opinion": {
@@ -4762,20 +4762,20 @@
    "lead_pending": 0,
    "shadow_adopted": 3,
    "shadow_adopted_legislative": 2,
-   "shadow_pending": 7,
+   "shadow_pending": 9,
    "resolutions_adopted": 0
   },
   "roles": {
    "lead_reports": 2,
    "lead_opinions": 0,
-   "shadow_reports": 10,
+   "shadow_reports": 12,
    "shadow_opinions": 5,
    "motions_signed": 5,
    "delegation": {
     "tiers": {
      "lead_reports": "mid",
      "lead_opinions": null,
-     "shadow_reports": "mid",
+     "shadow_reports": "top",
      "shadow_opinions": "mid"
     },
     "of": 21,
@@ -5543,6 +5543,46 @@
     "status": "answered",
     "answer_date": "2025-09-05",
     "authors_total": 11
+   },
+   {
+    "id": "proc-2023-0167",
+    "label": "2023/0167(COD)",
+    "date": "2025-07-02",
+    "title": {
+     "cs": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
+     "en": "Amending Directives (EU) 2009/65/EC, 2009/138/EC, 2011/61/EU, 2014/65/EU and (EU) 2016/97 as regards the Union retail investor protection rules"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0167(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
+   },
+   {
+    "id": "proc-2023-0166",
+    "label": "2023/0166(COD)",
+    "date": "2025-07-02",
+    "title": {
+     "cs": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
+     "en": "Amending Regulation (EU) No 1286/2014 as regards the modernisation of the key information document"
+    },
+    "url": "https://oeil.secure.europarl.europa.eu/oeil/en/procedure-file?reference=2023/0166(COD)",
+    "type": "shadow_report",
+    "role": "RAPPORTEUR_SHADOW",
+    "group": "PFE",
+    "committee": null,
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "report": null,
+    "process_type": "COD",
+    "legislative": true
    },
    {
     "id": "E-10-2025-002679",

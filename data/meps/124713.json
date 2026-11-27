@@ -94,7 +94,7 @@
   ]
  },
  "short_mandate": false,
- "mandate_days": 864,
+ "mandate_days": 865,
  "sources": {
   "votes": {
    "name": "HowTheyVote.eu",
@@ -2150,7 +2150,7 @@
    "id": 199985,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Union retail investor protection rules",
+   "title": "Změna směrnic (EU) 2009/65/ES, 2009/138/ES, 2011/61/EU, 2014/65/EU a (EU) 2016/97, pokud jde o pravidla Unie pro ochranu retailových investorů",
    "reference": "A9-0162/2024",
    "description": "Accord provisoire - Am 2",
    "result": "REJECTED",
@@ -2165,7 +2165,7 @@
    "id": 199987,
    "date": "2026-11-12",
    "month": "2026-11",
-   "title": "Modernisation of the key information document",
+   "title": "Změna směrnice (EU) č. 1286/2014, pokud jde o modernizaci sdělení klíčových informací",
    "reference": "A9-0160/2024",
    "description": "Accord provisoire - Am 2",
    "result": "ADOPTED",
@@ -4707,13 +4707,13 @@
    }
   },
   "coverage": {
-   "committee_to": "2026-11-18",
+   "committee_to": "2026-11-26",
    "plenary_to": "2026-11-24",
-   "committee_docs": 1484,
+   "committee_docs": 1500,
    "committee_compromise": 35,
-   "committee_pending": 12
+   "committee_pending": 14
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-27"
  },
  "own_work": {
   "source": {
@@ -4721,7 +4721,7 @@
    "url": "https://data.europarl.europa.eu/api/v2",
    "license": "CC BY 4.0"
   },
-  "updated": "2026-11-24",
+  "updated": "2026-11-27",
   "complete": true,
   "type_labels": {
    "report": "Zprávy (zpravodaj/ka)",
@@ -4754,23 +4754,23 @@
     "count": 13
    },
    "motion": {
-    "count": 70,
+    "count": 73,
     "voted": 2,
     "adopted": 0,
-    "no_vote": 22,
+    "no_vote": 25,
     "other": 0,
     "superseded": 46
    },
    "joint_motion": {
-    "count": 67,
+    "count": 70,
     "voted": 47,
     "adopted": 47,
-    "no_vote": 20,
+    "no_vote": 23,
     "other": 0
    },
    "question": {
     "count": 120,
-    "answered": 106
+    "answered": 109
    }
   },
   "passed": {
@@ -4787,7 +4787,7 @@
    "lead_opinions": 4,
    "shadow_reports": 10,
    "shadow_opinions": 13,
-   "motions_signed": 137,
+   "motions_signed": 143,
    "delegation": {
     "tiers": {
      "lead_reports": "top",
@@ -4801,6 +4801,54 @@
    }
   },
   "items": [
+   {
+    "id": "RC-10-2026-0521",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o odsouzení prodemokratického aktivisty a bývalého zákonodárce Au Kam-sana v Macau",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0521_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 53
+   },
+   {
+    "id": "RC-10-2026-0518",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu Paaty Burchuladzeho a politických vězňů za režimu strany Gruzínský sen",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0518_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 62
+   },
+   {
+    "id": "RC-10-2026-0515",
+    "label": null,
+    "date": "2026-11-25",
+    "title": {
+     "cs": "SPOLEČNÝ NÁVRH USNESENÍ o případu eritrejsko-švédského novináře Dawita Isaaka, svévolně zadržovaného v Eritreji",
+     "en": null
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/RC-10-2026-0515_EN.html",
+    "type": "joint_motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 75
+   },
    {
     "id": "RC-10-2026-0508",
     "label": null,
@@ -4816,6 +4864,54 @@
     "vote_id": null,
     "vote_date": null,
     "signatories_total": 14
+   },
+   {
+    "id": "B-10-2026-0532",
+    "label": "B10-0532/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION on the case of Paata Burchuladze and political prisoners under the Georgian Dream regime"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0532_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 23
+   },
+   {
+    "id": "B-10-2026-0531",
+    "label": "B10-0531/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION Case of Eritrean Swedish journalist Dawit Isaak, arbitrarily detained in Eritrea"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0531_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 25
+   },
+   {
+    "id": "B-10-2026-0529",
+    "label": "B10-0529/2026",
+    "date": "2026-11-23",
+    "title": {
+     "cs": null,
+     "en": "MOTION FOR A RESOLUTION condemnation of pro-democracy activist and former lawmaker Au Kam San in Macao"
+    },
+    "url": "https://www.europarl.europa.eu/doceo/document/B-10-2026-0529_EN.html",
+    "type": "motion",
+    "role": "AUTHOR",
+    "status": "no_vote",
+    "vote_id": null,
+    "vote_date": null,
+    "signatories_total": 21
    },
    {
     "id": "B-10-2026-0508",
@@ -5136,8 +5232,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-27",
     "authors_total": 8
    },
    {
@@ -5152,8 +5248,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-24",
     "authors_total": 1
    },
    {
@@ -5289,8 +5385,8 @@
     "type": "question",
     "subtype": "question_written",
     "role": "AUTHOR",
-    "status": "unanswered",
-    "answer_date": null,
+    "status": "answered",
+    "answer_date": "2026-11-24",
     "authors_total": 1
    },
    {
