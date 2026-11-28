@@ -325,7 +325,7 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
         if picks
         else ""
     )
-    if not view["items"]:   # termín zasedání je v kalendáři EP, návrh programu ještě ne: žádné „0 bodů“ ani prázdné filtry
+    if not view["items"]:  # termín zasedání je v kalendáři EP, návrh programu ještě ne: žádné „0 bodů“ ani prázdné filtry
         program = (
             '<p class="zs-noprog muted">Návrh programu EP pro toto zasedání zatím není zveřejněný. '
             f'Co se chystá, ukazuje <a href="{root}radar">radar</a>.</p>'

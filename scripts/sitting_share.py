@@ -76,9 +76,18 @@ def trace_items(feats: list[dict], meps_by_id: dict, vote_roles: dict) -> list[d
             if any(p["id"] == r["mep_id"] for p in people):
                 continue
             m = meps_by_id[r["mep_id"]]
-            people.append({"id": m["id"], "name": display_name(m), "role": cz_role(m["id"], r["role"]), "photoUrl": photo_url(m, thumb=True) or None})
+            people.append(
+                {"id": m["id"], "name": display_name(m), "role": cz_role(m["id"], r["role"]), "photoUrl": photo_url(m, thumb=True) or None}
+            )
         best = min(ROLE_ORDER.get(r["role"], 9) for r in roles)
-        rows.append((best, -dt.date.fromisoformat(f["vote"]["date"]).toordinal(), -f["vote"]["id"], {**_vote_head(f["vote"], f["cz"]), "people": people}))
+        rows.append(
+            (
+                best,
+                -dt.date.fromisoformat(f["vote"]["date"]).toordinal(),
+                -f["vote"]["id"],
+                {**_vote_head(f["vote"], f["cz"]), "people": people},
+            )
+        )
     rows.sort(key=lambda r: r[:3])
     return [r[3] for r in rows[:MAX_TRACE]]
 

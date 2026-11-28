@@ -204,7 +204,9 @@ def sitting_texts(data: dict, n: int) -> dict:
     lines.append("")
     for v in data["main"]:
         lines.append(f"• {v['title']}")
-        lines.append(f"  EP: {v['resultLabel']} · Češi {v['cz'][0]} pro, {v['cz'][1]} proti, {v['cz'][2]} se zdrželo, {v['cz'][3]} nehlasovalo")
+        lines.append(
+            f"  EP: {v['resultLabel']} · Češi {v['cz'][0]} pro, {v['cz'][1]} proti, {v['cz'][2]} se zdrželo, {v['cz'][3]} nehlasovalo"
+        )
     lines += [
         "",
         "Hlavní hlasování vybírá pravidlo, ne redakce: česká stopa, rozdělení Češi, rozhodující české hlasy, těsný výsledek.",
@@ -220,7 +222,10 @@ def sitting_texts(data: dict, n: int) -> dict:
         "split": "kde se Češi rozdělili: " + "; ".join(v["title"] for v in data["split"]),
         "trace": "česká stopa: " + "; ".join(f"{v['title']} ({', '.join(p['name'] for p in v['people'])})" for v in data["traceItems"]),
     }
-    alt = [f"slide-{i + 1}.png: Karta EP Watch CZ {i + 1} z {n}, zasedání {data['when']}: {label[k]}." for i, k in enumerate(data["slides"][:n])]
+    alt = [
+        f"slide-{i + 1}.png: Karta EP Watch CZ {i + 1} z {n}, zasedání {data['when']}: {label[k]}."
+        for i, k in enumerate(data["slides"][:n])
+    ]
     alt.append("story.png: První karta (přehled) ve formátu story (9 : 16).")
     sources = [
         "Hlasování: HowTheyVote.eu (ODbL), https://howtheyvote.eu",
