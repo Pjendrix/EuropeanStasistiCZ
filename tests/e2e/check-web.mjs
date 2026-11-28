@@ -1367,7 +1367,9 @@ for (const width of [1366, 390]) {
   const page = await ctx.newPage();
   await page.goto(base + "zasedani", { waitUntil: "networkidle" });
   const chip = page.locator(".zs-topic").first();
-  if (!(await chip.count())) problems.push("zasedani [témata]: chybí čipy témat");
+  const noProgram = await page.locator(".zs-noprog").count();   // návrh programu ještě není: bez témat a filtrů
+  if (noProgram) { if (await chip.count()) problems.push("zasedani: bez programu, ale s čipy témat"); }
+  else if (!(await chip.count())) problems.push("zasedani [témata]: chybí čipy témat");
   else {
     const cat = await chip.getAttribute("data-cat");
     await chip.click();
@@ -1385,6 +1387,7 @@ for (const url of ["radar", "zasedani"]) {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
   await page.goto(base + url, { waitUntil: "networkidle" });
+  if (url === "zasedani" && (await page.locator(".zs-noprog").count())) { await ctx.close(); continue; }   // program ještě nezveřejněn
   const cat = await page.evaluate(() => [...document.querySelectorAll("#rd-cat option")].map((o) => o.value).find((v) => v && document.querySelector(`.rd-list > li[data-cat="${v}"], .rd-procs > li[data-cat="${v}"]`)));
   const visible = () => page.evaluate(() => [...document.querySelectorAll(".rd-list > li, .rd-procs > li")].filter((li) => li.offsetParent).map((li) => li.dataset.cat || ""));
   // radar: bez filtru jen prvních 10 položek seznamu; „Zobrazit další“ ukáže zbytek (revize 3. 11. 2026)

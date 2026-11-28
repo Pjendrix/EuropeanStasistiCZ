@@ -186,7 +186,11 @@ def upcoming_html(u: dict | None) -> str:
     return (
         f'<section class="nv-next card" aria-labelledby="nv-next-h"><p class="nv-kicker">Chystá se</p>'
         f'<h2 id="nv-next-h">Další zasedání {_range(u["from"], u["to"])}</h2>'
-        f"<p>{fmt_num(u['items'])} bodů k hlasování v návrhu programu EP{f' · česká stopa u {fmt_num(len(u["trace"]))}' if u['trace'] else ''}.</p>"
+        + (
+            f"<p>{fmt_num(u['items'])} bodů k hlasování v návrhu programu EP{f' · česká stopa u {fmt_num(len(u["trace"]))}' if u['trace'] else ''}.</p>"
+            if u["items"]
+            else '<p class="muted">Návrh programu EP zatím není zveřejněný.</p>'  # termín z kalendáře EP je, body ještě ne
+        )
         + (f'<ul class="nv-trace small">{trace}</ul>' if trace else "")
         + '<p><a href="zasedani">Celý program po dnech</a> · <span class="small muted">Návrh programu EP, může se změnit.</span></p></section>'
     )

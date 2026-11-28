@@ -117,3 +117,11 @@ def test_results_context_is_sitting_carousel(tmp_path):
     assert ctx["kind"] == "sitting" and ctx["path"] == "zasedani" and ctx["data"]["dataDay"] == "2026-10-25"
     assert ctx["data"]["finals"] == 1 and ctx["data"]["rejected"] == 1 and [v["id"] for v in ctx["data"]["main"]] == [3]
     assert sp.results_context({"from": "2026-11-01", "to": "2026-11-02"}, votes, meps, tmp_path, None) is None
+
+
+def test_session_body_without_published_agenda():
+    """Termín zasedání z kalendáře EP bez návrhu programu: žádné „0 bodů“, filtry ani prázdný program."""
+    view = sp.session_view({"session": {"from": "2026-12-14", "to": "2026-12-17", "items": []}}, None, [], MEPS, None)
+    html = sp.session_body(view, ["fin"], {"fin": "Rozpočet a finance"})
+    assert 'class="zs-noprog muted"' in html and "program zatím nezveřejněn" in html
+    assert "0 bodů" not in html and 'id="rd-cat"' not in html and 'id="program"' not in html
