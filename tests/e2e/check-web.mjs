@@ -853,6 +853,65 @@ for (const width of [1366, 390]) {
   if (!(await page.textContent("main")).includes("Poslanců / zemí")) problems.push("frakce: v tabulce chybí sloupec Poslanců / zemí");
   await ctx.close();
 }
+// Sdílení zasedání na Novinkách (karusel sitting_share.py): tlačítko u každého bloku zasedání s vlastním kontextem,
+// všechny snímky (1–4, příspěvek i story) v obou vzhledech; nic nepřetéká, patička se zdrojem a datem, adresa s kotvou.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto(base + "aktualne", { waitUntil: "networkidle" });
+  const r = await page.evaluate(async () => {
+    const src = document.querySelector('script[src*="share.js"]').src;
+    const m = await (await import(src)).loadSharePanel(), fmt = await import(new URL("lib/format.js", src).href);
+    const out = [];
+    const btns = [...document.querySelectorAll('.nv-session:not(.nv-prelim) [data-share^="session:"]')].map((b) => b.dataset.share);
+    if (!btns.length) return ["chybí tlačítko Sdílet u zasedání"];
+    if (document.querySelector('.nv-prelim [data-share]')) out.push("předběžné zasedání má tlačítko Sdílet");
+    const all = JSON.parse(document.getElementById("share-context").textContent);
+    if (btns.some((k) => !all[k])) out.push(`tlačítko bez kontextu: ${btns.filter((k) => !all[k])}`);
+    await document.fonts.ready;
+    for (const key of btns) {
+      const sc = fmt.withShareUrl(all[key]);
+      if (sc.kind !== "sitting" || !/^https:\/\/epwatch\.cz\/aktualne#zasedani-\d{4}-\d{2}-\d{2}$/.test(sc.url)) out.push(`${key}: kontext ${sc.kind} ${sc.url}`);
+      const n = sc.data.slides.length, fm = m.shareFormats(sc.kind, sc.data);
+      if (n > 1 && fm.find((x) => x.key === "detail")?.slides.length !== n) out.push(`${key}: detail nemá ${n} obrázky`);
+      const slides = ["post", "story", ...["slide2", "slide3", "slide4"].slice(0, n - 1), ...["story2", "story3", "story4"].slice(0, n - 1)];
+      for (const theme of m.CARD_THEMES) for (const slide of slides) {
+        const blob = await m.renderCardPng(sc, slide, theme);
+        if (!blob || blob.size < 1000) out.push(`${key} ${theme} ${slide}: obrázek se nevykreslil`);
+        m.useCardTheme(theme);
+        const f = m.SHARE_FORMATS[slide], ops = m.cardOps(sc.kind, sc.data, f, slide), footY = f.h - 128;
+        const texts = ops.filter((o) => o.k === "text");
+        texts.forEach((o) => {
+          const w = m.measureText(o.s, o.size, o.weight), x0 = o.anchor === "right" ? o.x - w : o.anchor === "center" ? o.x - w / 2 : o.x;
+          if (x0 < 50 || x0 + w > 1030) out.push(`${key} ${theme} ${slide}: text „${o.s.slice(0, 30)}“ přetéká do stran`);
+        });
+        const body = ops.filter((o) => o.k !== "band" && !(o.k === "line" && o.y1 === footY) && !(o.k === "text" && o.y > footY));
+        const low = Math.max(...body.map((o) => ("y" in o ? o.y + (o.h || 0) : o.y2 || 0)));
+        if (low > footY) out.push(`${key} ${theme} ${slide}: obsah zasahuje do patičky (${Math.round(low)} > ${footY})`);
+        const foot = texts.filter((o) => o.y > footY).map((o) => o.s);
+        if (!foot.some((t) => /^Zdroj: .* k \d{1,2}\.\s\d{1,2}\.\s\d{4}/.test(t) && !t.endsWith("…"))) out.push(`${key} ${theme} ${slide}: patička bez zdroje a data: ${foot.join(" | ")}`);
+        if (!foot.some((t) => t.startsWith("epwatch.cz/aktualne#zasedani-"))) out.push(`${key} ${theme} ${slide}: chybí adresa s kotvou`);
+        const key4 = sc.data.slides[slide === "post" || slide === "story" ? 0 : Number(slide.slice(-1)) - 1];
+        if (key4 === "trace" && sc.data.traceItems.some((v) => v.people.some((p) => p.photoUrl)) && !texts.some((o) => o.s.includes("© European Union – Source: EP")))
+          out.push(`${key} ${theme} ${slide}: portrét bez © EP`);
+      }
+    }
+    m.useCardTheme("dark");
+    return out;
+  });
+  r.forEach((x) => problems.push(`sdílení zasedání (aktualne): ${x}`));
+  // panel: titulek, přepínač Detail s počtem obrázků, karusel v náhledu
+  const btn = page.locator('[data-share^="session:"]').first();
+  await btn.click();
+  await page.waitForSelector("dialog[open] .sd-preview img", { timeout: 15000 }).catch(() => problems.push("sdílení zasedání: panel neukázal náhled"));
+  if ((await page.textContent("dialog[open] #sd-h")) !== "Sdílet zasedání") problems.push("sdílení zasedání: panel nemá titulek Sdílet zasedání");
+  if (await page.$('dialog[open] [data-content="detail"]')) {
+    await page.click('dialog[open] [data-content="detail"]');
+    await page.waitForSelector("dialog[open] .sd-carousel img", { timeout: 15000 }).catch(() => problems.push("sdílení zasedání: detail neukázal karusel"));
+  }
+  await page.keyboard.press("Escape");
+  await ctx.close();
+}
 // Sdílení duelu (úkol 4): všechny formáty v obou vzhledech pro dvojici ze stejné frakce (Knotek–Nagyová) a z různých
 // (Konečná–Zdechovský); nic nepřetéká, patička se zdrojem a adresou, portrét s © EP, žádný prvek neoznačuje vítěze.
 {

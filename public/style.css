@@ -2690,6 +2690,9 @@ body.embed { margin: 0; padding: 0; background: var(--surface); }
 .nv-session::before { background: var(--gold); border-color: var(--gold); }
 .nv-session h2 { margin: 0 0 .3rem; font-size: 1.35rem; }
 .nv-session .nv-h-sm { font-size: 1.1rem; }
+.nv-shead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .75rem; margin: 0 0 .3rem; }
+.nv-shead h2 { margin: 0; }
+.nv-share { min-height: 44px; padding: 0 .95rem; font-size: .95rem; }
 .nv-anchor { color: inherit; text-decoration: none; }
 .nv-anchor:hover { text-decoration: underline; }
 .nv-nums { margin: 0 0 .6rem; }

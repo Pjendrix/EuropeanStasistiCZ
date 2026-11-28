@@ -348,6 +348,27 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
 </section>"""
 
 
+def results_context(view: dict, votes: list[dict], meps_by_id: dict, data_dir: Path, release: str | None) -> dict | None:
+    """Po zasedání stejný karusel jako na Novinkách (sitting_share.py) ze závěrečných hlasování dnů zasedání; bez nich None."""
+    import news
+    from sitting_share import sitting_context, sitting_data
+
+    days = sorted({v["date"] for v in votes if view["from"] <= v["date"] <= view["to"]})
+    if not days:
+        return None
+    block = news.session_block(days, [v for v in votes if v["date"] in days], meps_by_id, _roles(data_dir))
+    if not block["finals"]:
+        return None
+    parties = read(data_dir / "parties.json") if (data_dir / "parties.json").exists() else []
+    groups = read(data_dir / "groups.json") if (data_dir / "groups.json").exists() else []
+    return sitting_context(sitting_data(block, meps_by_id, parties, groups, _roles(data_dir)), "zasedani", release)
+
+
+def _roles(data_dir: Path) -> dict:
+    path = data_dir / "vote_roles.json"
+    return (read(path).get("votes") or {}) if path.exists() else {}
+
+
 def session_page(data_dir: Path, base_url: str | None) -> tuple[str, str] | None:
     """(zasedani.html, HTML) nebo None, když program zasedání není."""
     from categories import LABEL
@@ -367,8 +388,9 @@ def session_page(data_dir: Path, base_url: str | None) -> tuple[str, str] | None
     if view is None:
         return None
     release = ((read(data_dir / "overview.json").get("sources") or {}).get("votes") or {}).get("release") if view["has_results"] else None
+    ctx = results_context(view, votes, meps_by_id, data_dir, release) if view["has_results"] else None
     body = session_body(view, radar.get("categories", []), LABEL) + (
-        f'<script type="application/json" id="share-context">{json_script(share_context(view, release))}</script>'
+        f'<script type="application/json" id="share-context">{json_script(ctx or share_context(view, release))}</script>'
     )
     title = f"Zasedání pléna {_range(view['from'], view['to'])} – EP Watch CZ"
     desc = "Program plenárního zasedání EP: o čem se hlasuje, co se u zákonů rozhoduje, česká stopa a po zasedání výsledky."

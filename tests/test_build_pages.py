@@ -137,6 +137,15 @@ def test_news_page_structure(data_dir):
     assert 'id="zasedani-2024-10-16"' in html and 'data-type="hlasovani"' in html
     assert '<span class="who">EP:</span>' in html and '<span class="who">Češi</span>' in html
     assert 'role="img" aria-label="Čeští poslanci:' in html and 'href="o-projektu#novinky"' in html
+    # Sdílení zasedání (karusel sitting_share.py): tlačítko u bloku, kontext pod klíčem session:{od} s odkazem na kotvu
+    assert 'data-share="session:2024-10-16" aria-label="Sdílet zasedání' in html
+    import json as _json
+    import re as _re
+
+    ctxs = _json.loads(_re.search(r'id="share-context">(.*?)</script>', html, _re.S).group(1))
+    c = ctxs["session:2024-10-16"]
+    assert c["kind"] == "sitting" and c["path"] == "aktualne#zasedani-2024-10-16" and c["data"]["slides"][0] == "overview"
+    assert set(ctxs) == {k for k in _re.findall(r'data-share="(session:[0-9-]+)"', html)}
 
 
 def test_blocks_for_manual_pages(data_dir, tmp_path):

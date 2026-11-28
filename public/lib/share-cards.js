@@ -1077,6 +1077,125 @@ export function duelDivergedOps(d, f) {
   return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...ops, ...shareFooter(f.h, DUEL_FOOT(d), d.urlShort)];
 }
 
+// --- karusel zasedání (Novinky a stránka Zasedání po zasedání, scripts/sitting_share.py) -----------------------------
+// 1 přehled (počty), 2 hlavní hlasování (výsledek EP a hlasy Čechů), 3 kde se Češi rozdělili (strany k datu hlasování),
+// 4 česká stopa (zpravodajové s portrétem). Snímky bez dat build vynechá (data.slides). Všechna čísla spočítal build.
+export const SITTING_FOOT = (d) => `Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strany k datu hlasování · data k ${fmtDate(d.dataDay)}`;
+const SITTING_SUB = { main: "Hlavní hlasování · výběr pravidlem, ne redakcí", split: "Kde se čeští poslanci rozdělili", trace: "Česká stopa: zpravodajové z Česka" };
+const czLine = (v) => `EP: ${v.resultLabel} · Češi ${fmtNum(v.cz[0])} : ${fmtNum(v.cz[1])} · ${fmtNum(v.cz[2])} zdrž. · ${fmtNum(v.cz[3])} nehl.`;
+const countsText = (c) => ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].map((k, i) => (c[i] ? `${fmtNum(c[i])} ${SHARE_SHORT[k]}` : "")).filter(Boolean).join(", ");
+
+export function sittingMiniHead(d, n, total, key) {
+  return [T(72, 230, fitText(`Zasedání ${d.when}`, 44, 800, 800), 44, 800, SC.text),
+    T(72, 272, fitText(SITTING_SUB[key] || "", 26, 500, 800), 26, 500, SC.soft), T(1008, 230, `${n} / ${total}`, 30, 500, SC.muted, "right")];
+}
+
+export function sittingOverviewOps(d, f) {
+  const ops = [], story = f.h > 1500;
+  let y = 0;
+  wrapText("Jak hlasoval Evropský parlament", 60, 800, 936, 2).forEach((l, i) => ops.push(T(72, y + 62 + i * 70, l, 60, 800, SC.text)));
+  y += measureText("Jak hlasoval Evropský parlament", 60, 800) > 936 ? 150 : 84;
+  ops.push(T(72, y + 30, fitText(`Zasedání pléna · ${d.when}`, 30, 600, 936), 30, 600, SC.soft));
+  y += 70;
+  const h = story ? 250 : 214, w = 459;
+  const tiles = [
+    ["Závěrečná hlasování", fmtNum(d.finals), `přijato ${fmtNum(d.adopted)} · zamítnuto ${fmtNum(d.rejected)}`],
+    ["Češi jednotní", d.considered ? `${fmtNum(d.united)} z ${fmtNum(d.considered)}` : "–", "nikdo nehlasoval opačně (zdržení se nepočítá)"],
+    ["Češi rozděleni", fmtNum(d.splits), "menšina aspoň 30 % hlasů pro a proti"],
+    ["Česká stopa", fmtNum(d.trace), "zpravodaj nebo stínový zpravodaj z Česka"],
+  ];
+  tiles.forEach(([label, value, sub], i) => ops.push(...tileOps(72 + (i % 2) * (w + 18), y + Math.floor(i / 2) * (h + 18), w, h, label, value, sub)));
+  y += 2 * (h + 18) + 12;
+  ops.push(T(72, y + 30, fitText("Výběr hlasování pravidlem, ne redakcí. Čísla jen ze závěrečných hlasování.", 24, 500, 936), 24, 500, SC.soft));
+  y += 50;
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...centered(ops, y, f.h), ...shareFooter(f.h, SITTING_FOOT(d), d.urlShort)];
+}
+
+// Blok hlasování: název (2 řádky), řádek EP + Češi; vrací ops a výšku. Kreslí se jen celý blok, který se vejde.
+function sittingVoteHead(v, y, size = 32) {
+  const ops = [], lines = wrapText(v.title, size, 700, 936, 2);
+  lines.forEach((l, i) => ops.push(T(72, y + size + i * (size + 10), l, size, 700, SC.text)));
+  y += lines.length * (size + 10) + 6;
+  ops.push(T(72, y + 26, fitText(czLine(v), 24, 500, 936), 24, 500, SC.soft));
+  return { ops, y: y + 40 };
+}
+
+function stack(blocks, y0, bottom) {
+  const ops = [];
+  let y = y0, n = 0;
+  for (const make of blocks) {
+    const b = make(y);
+    if (n && b.y > bottom) break;   // první blok vždy (případné přetečení odhalí test), další jen celé
+    ops.push(...(n ? [LINE(72, y - 12, 1008, y - 12, SC.line, 2)] : []), ...b.ops);
+    y = b.y + 28;
+    n += 1;
+  }
+  // málo obsahu: vystředit mezi mini hlavičkou a patičkou (nejvýš o třetinu volného místa, ať blok nevisí uprostřed)
+  return shift(ops, Math.max(0, Math.round((bottom - (y - 28)) / 3)));
+}
+
+export function sittingMainOps(d, f, n, total) {
+  const blocks = (d.main || []).map((v) => (y) => {
+    const h = sittingVoteHead(v, y);
+    return { ops: [...h.ops, ...barOps(72, h.y, 936, 14, v.cz)], y: h.y + 14 };
+  });
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...sittingMiniHead(d, n, total, "main"), ...stack(blocks, 326, f.h - 160),
+    ...shareFooter(f.h, SITTING_FOOT(d), d.urlShort)];
+}
+
+// Štítky stran: barevná tečka (barva strany, bez loga), zkratka a hlasy („ANO 7 proti“); zalomení do řádků.
+function partyChipsOps(parties, y) {
+  const ops = [];
+  let x = 72, row = 0;
+  for (const p of parties) {
+    const label = fitText(p.label, 22, 800, 300), counts = countsText(p.counts);
+    const w = 40 + measureText(label, 22, 800) + 10 + measureText(counts, 22, 500) + 20;
+    if (x > 72 && x + w > 1008) { x = 72; row += 1; }
+    const cy = y + row * 54;
+    ops.push(RECT(x, cy, w, 44, 22, SC.chip, SC.chipLine, 2), CIRC(x + 22, cy + 22, 8, /^#[0-9a-f]{6}$/i.test(p.color || "") ? p.color : SC.muted),
+      T(x + 40, cy + 30, label, 22, 800, SC.text), T(x + 40 + measureText(label, 22, 800) + 10, cy + 30, counts, 22, 500, SC.soft));
+    x += w + 10;
+  }
+  return { ops, h: parties.length ? (row + 1) * 54 : 0 };
+}
+
+export function sittingSplitOps(d, f, n, total) {
+  const blocks = (d.split || []).map((v) => (y) => {
+    const h = sittingVoteHead(v, y, 30), chips = partyChipsOps(v.parties || [], h.y + 4);
+    return { ops: [...h.ops, ...chips.ops], y: h.y + 4 + chips.h };
+  });
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...sittingMiniHead(d, n, total, "split"), ...stack(blocks, 326, f.h - 160),
+    ...shareFooter(f.h, SITTING_FOOT(d), d.urlShort)];
+}
+
+export function sittingTraceOps(d, f, n, total) {
+  const neutral = d.avatar === "neutral";
+  const blocks = (d.traceItems || []).map((v) => (y) => {
+    const h = sittingVoteHead(v, y, 30), ops = [...h.ops];
+    let py = h.y + 6;
+    (v.people || []).slice(0, 3).forEach((p) => {
+      if (neutral || !p.photo) ops.push(...neutralAvatarOps(72, py, 72, 72, 36));
+      else ops.push({ k: "image", img: p.photo, x: 72, y: py, w: 72, h: 72, r: 36 });
+      ops.push(T(164, py + 32, fitText(p.name, 28, 800, 844), 28, 800, SC.text), T(164, py + 64, fitText(p.role, 24, 500, 844), 24, 500, SC.soft));
+      py += 88;
+    });
+    return { ops, y: py };
+  });
+  const credit = neutral ? [] : [T(72, f.h - 150, "Portréty © European Union – Source: EP", 20, 500, SC.muted)];
+  return [...shareHeader(`data k ${fmtDate(d.dataDay)}`), ...sittingMiniHead(d, n, total, "trace"), ...stack(blocks, 326, f.h - 186), ...credit,
+    ...shareFooter(f.h, SITTING_FOOT(d), d.urlShort)];
+}
+
+export function sittingCardOps(d, f, formatKey) {
+  const slides = d.slides && d.slides.length ? d.slides : ["overview"];
+  const i = formatKey === "post" || formatKey === "story" ? 0 : Number(formatKey.slice(-1)) - 1;
+  const key = slides[i] || "overview";
+  if (key === "main") return sittingMainOps(d, f, i + 1, slides.length);
+  if (key === "split") return sittingSplitOps(d, f, i + 1, slides.length);
+  if (key === "trace") return sittingTraceOps(d, f, i + 1, slides.length);
+  return sittingOverviewOps(d, f);
+}
+
 export function storyOps(ops, from = 1350, to = 1920) {
   const extra = to - from, mid = Math.round(extra / 2), footY = from - 140;
   const yOf = (o) => ("y" in o ? o.y : o.y1);
@@ -1089,10 +1208,12 @@ export function storyOps(ops, from = 1350, to = 1920) {
 
 // Operace kreslení karty podle druhu (a u poslance podle slidu); stejná funkce pro web i balíček pro Instagram.
 export function cardOps(kind, data, f, formatKey) {
-  if (formatKey === "story2" || formatKey === "story3") {
-    const k = formatKey === "story2" ? "slide2" : "slide3";
+  const sm = /^story([2-4])$/.exec(formatKey);
+  if (sm) {
+    const k = `slide${sm[1]}`;
     return storyOps(cardOps(kind, data, SHARE_FORMATS[k], k), SHARE_FORMATS[k].h, f.h);
   }
+  if (kind === "sitting") return sittingCardOps(data, f, formatKey);
   if (kind === "vote" && formatKey === "slide2") return voteGroupsOps(data, f);
   if (kind === "vote" && formatKey === "slide3") return voteContextOps(data, f);
   if (kind === "party") return formatKey === "slide2" ? partyMembersOps(data, f) : formatKey === "slide3" ? partyVotesOps(data, f) : partyCardOps(data, f);
@@ -1129,6 +1250,11 @@ export async function renderCardPng(ctx, formatKey, theme = "dark") {
       if (m.party?.logo) m.party = { ...m.party, logoImg: await loadImage(`${SHARE_ROOT}${m.party.logo}`).catch(() => null) };
       data[side] = m;
     }
+  }
+  // portréty zpravodajů na snímku česká stopa (karusel zasedání); bez portrétu silueta
+  if (ctx.kind === "sitting" && data.avatar !== "neutral") {
+    data.traceItems = await Promise.all((data.traceItems || []).map(async (v) => ({ ...v,
+      people: await Promise.all((v.people || []).map(async (p) => ({ ...p, photo: p.photoUrl ? await loadImage(await photoDataUrl(`${SHARE_ROOT}${p.photoUrl}`)) : null }))) })));
   }
   if (ctx.kind === "quiz-groups" && data.best?.logo) data.best = { ...data.best, logoImg: await loadImage(`${SHARE_ROOT}${data.best.logo}`) };
   if (ctx.kind === "quiz") data.top = await Promise.all((data.top || []).map(async (r) => ({ ...r, photo: r.photoUrl ? await loadImage(await photoDataUrl(r.photoUrl)) : null })));
