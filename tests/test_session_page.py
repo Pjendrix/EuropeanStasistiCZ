@@ -101,3 +101,27 @@ def test_topics_counts_by_committee_category():
     assert html.index('data-cat="env"') < html.index('data-cat="fin"')  # víc bodů dřív
     assert "Klima, příroda a energie <b>2</b>" in html and 'href="zasedani?c=fin#program"' in html
     assert "1 bodů bez tématu" in html and sp.topics_html([item("x")], {}) == ""
+
+
+def test_results_context_is_sitting_carousel(tmp_path):
+    """Po zasedání sdílí stránka stejný karusel jako Novinky (sitting_share.py); bez hlasování v termínu zůstane karta programu."""
+    view = {"from": "2026-10-19", "to": "2026-10-22"}
+    votes = [
+        {**cz_vote(3, "2026-10-21", None, result="REJECTED"), "counts": {"for": 1, "against": 2, "abstention": 0, "did_not_vote": 0}},
+        {**cz_vote(4, "2026-09-01", None), "counts": {"for": 1, "against": 0, "abstention": 0, "did_not_vote": 0}},  # mimo zasedání
+    ]
+    for v in votes:
+        v["group_counts"] = {}
+    meps = {i: {**m, "name": f"MOCK {i}"} for i, m in MEPS.items()}
+    ctx = sp.results_context(view, votes, meps, tmp_path, "2026-10-25")
+    assert ctx["kind"] == "sitting" and ctx["path"] == "zasedani" and ctx["data"]["dataDay"] == "2026-10-25"
+    assert ctx["data"]["finals"] == 1 and ctx["data"]["rejected"] == 1 and [v["id"] for v in ctx["data"]["main"]] == [3]
+    assert sp.results_context({"from": "2026-11-01", "to": "2026-11-02"}, votes, meps, tmp_path, None) is None
+
+
+def test_session_body_without_published_agenda():
+    """Termín zasedání z kalendáře EP bez návrhu programu: žádné „0 bodů“, filtry ani prázdný program."""
+    view = sp.session_view({"session": {"from": "2026-12-14", "to": "2026-12-17", "items": []}}, None, [], MEPS, None)
+    html = sp.session_body(view, ["fin"], {"fin": "Rozpočet a finance"})
+    assert 'class="zs-noprog muted"' in html and "program zatím nezveřejněn" in html
+    assert "0 bodů" not in html and 'id="rd-cat"' not in html and 'id="program"' not in html

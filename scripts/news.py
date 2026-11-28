@@ -120,6 +120,7 @@ def session_block(days: list[str], votes: list[dict], meps_by_id: dict, vote_rol
         "splits": sum(f["split"] for f in feats),
         "rapporteurs": sum(f["rapporteur"] for f in feats),
         "picks": pick_votes(feats),
+        "feats": feats,  # pro karusel ke sdílení (sitting_share.py); do HTML ani feedu se nepíše
     }
 
 

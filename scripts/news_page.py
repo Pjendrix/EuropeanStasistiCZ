@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from build_pages import esc, fmt_date, fmt_num, og_meta, page, page_url
+from build_pages import SHARE_BUTTON, esc, fmt_date, fmt_num, og_meta, page, page_url
 from compute_stats import load_votes
-from layout import MODULES
+from layout import MODULES, json_script
 from web_ui import CZ_GROUP_LABEL, result_text, vote_title
 
 TITLE = "Novinky – EP Watch CZ"
@@ -66,6 +66,14 @@ def vote_row(f: dict) -> str:
     )
 
 
+def share_button(b: dict) -> str:
+    """Tlačítko „Sdílet“ u bloku zasedání (karusel sitting_share.py); kontext je v <script id="share-context"> pod klíčem session:{od}."""
+    label = f"Sdílet zasedání {_range(b['from'], b['to'])}"
+    return SHARE_BUTTON.replace("data-share ", f'data-share="session:{b["from"]}" aria-label="{esc(label)}" ', 1).replace(
+        'class="share-btn"', 'class="share-btn nv-share"', 1
+    )
+
+
 def session_html(b: dict) -> str:
     head = f"Zasedání {_range(b['from'], b['to'])}"
     nums = (
@@ -92,11 +100,11 @@ def session_html(b: dict) -> str:
     if b["full"]:
         return (
             f'<section class="nv-block nv-session" id="{b["anchor"]}" data-type="hlasovani" aria-labelledby="{b["anchor"]}-h">'
-            f'<h2 id="{b["anchor"]}-h"><a class="nv-anchor" href="#{b["anchor"]}">{head}</a></h2>{inner}</section>'
+            f'<div class="nv-shead"><h2 id="{b["anchor"]}-h"><a class="nv-anchor" href="#{b["anchor"]}">{head}</a></h2>{share_button(b) if b["finals"] else ""}</div>{inner}</section>'
         )
     return (
         f'<section class="nv-block nv-session nv-old" id="{b["anchor"]}" data-type="hlasovani" aria-labelledby="{b["anchor"]}-h">'
-        f'<h2 id="{b["anchor"]}-h" class="nv-h-sm"><a class="nv-anchor" href="#{b["anchor"]}">{head}</a></h2><p class="nv-nums">{nums}</p>'
+        f'<div class="nv-shead"><h2 id="{b["anchor"]}-h" class="nv-h-sm"><a class="nv-anchor" href="#{b["anchor"]}">{head}</a></h2>{share_button(b) if b["finals"] else ""}</div><p class="nv-nums">{nums}</p>'
         f'<details><summary>Rozbalit zasedání</summary>{body}<p class="nv-links small">{links}</p></details></section>'
     )
 
@@ -178,7 +186,11 @@ def upcoming_html(u: dict | None) -> str:
     return (
         f'<section class="nv-next card" aria-labelledby="nv-next-h"><p class="nv-kicker">Chystá se</p>'
         f'<h2 id="nv-next-h">Další zasedání {_range(u["from"], u["to"])}</h2>'
-        f"<p>{fmt_num(u['items'])} bodů k hlasování v návrhu programu EP{f' · česká stopa u {fmt_num(len(u["trace"]))}' if u['trace'] else ''}.</p>"
+        + (
+            f"<p>{fmt_num(u['items'])} bodů k hlasování v návrhu programu EP{f' · česká stopa u {fmt_num(len(u["trace"]))}' if u['trace'] else ''}.</p>"
+            if u["items"]
+            else '<p class="muted">Návrh programu EP zatím není zveřejněný.</p>'  # termín z kalendáře EP je, body ještě ne
+        )
         + (f'<ul class="nv-trace small">{trace}</ul>' if trace else "")
         + '<p><a href="zasedani">Celý program po dnech</a> · <span class="small muted">Návrh programu EP, může se změnit.</span></p></section>'
     )
@@ -216,8 +228,27 @@ def build(data_dir: Path) -> tuple[list[dict], dict | None, str]:
     return blocks, news.upcoming(_read(data_dir / "agenda.json"), _read(data_dir / "radar.json"), today), release
 
 
+def share_contexts(blocks: list[dict], data_dir: Path, release: str) -> dict:
+    """Kontexty karuselu zasedání pro panel sdílení, klíč session:{od} (atribut data-share tlačítka)."""
+    from overrides import apply_name_overrides
+    from sitting_share import sitting_context, sitting_data
+
+    meps = (_read(data_dir / "meps.json") or {}).get("meps", [])
+    apply_name_overrides(meps, data_dir / "manual" / "overrides.json")
+    meps_by_id = {m["id"]: m for m in meps}
+    parties = _read(data_dir / "parties.json") or []
+    groups = _read(data_dir / "groups.json") or []
+    roles = (_read(data_dir / "vote_roles.json") or {}).get("votes") or {}
+    return {
+        f"session:{b['from']}": sitting_context(sitting_data(b, meps_by_id, parties, groups, roles), f"aktualne#{b['anchor']}", release)
+        for b in blocks
+        if b["type"] == "session" and b["finals"]
+    }
+
+
 def news_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
     blocks, up, release = build(data_dir)
+    contexts = share_contexts(blocks, data_dir, release)
     html_blocks = []
     for b in blocks:
         t = b["type"]
@@ -243,6 +274,8 @@ def news_page(data_dir: Path, base_url: str | None) -> tuple[str, str]:
 <p class="nv-empty muted" hidden>Pro tento typ za posledních 60 dní nic není.</p>
 <p class="small muted">Hlavní hlasování vybírá pravidlo, ne redakce: <a href="{METHOD}">jak vybíráme</a>. Starší hlasování najdete v <a href="votes">seznamu hlasování</a>.</p>
 </div>"""
+    if contexts:
+        body += f'<script type="application/json" id="share-context">{json_script(contexts)}</script>'
     meta = og_meta(TITLE, DESC, "aktualne.html", base_url, None, "EP Watch CZ – novinky z Evropského parlamentu")
     html = page(TITLE, body, root="", current="now", description=DESC, meta=meta, scripts=MODULES.format(root="", page="hub.js"))
     return "aktualne.html", html

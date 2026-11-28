@@ -325,6 +325,23 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
         if picks
         else ""
     )
+    if not view["items"]:  # termín zasedání je v kalendáři EP, návrh programu ještě ne: žádné „0 bodů“ ani prázdné filtry
+        program = (
+            '<p class="zs-noprog muted">Návrh programu EP pro toto zasedání zatím není zveřejněný. '
+            f'Co se chystá, ukazuje <a href="{root}radar">radar</a>.</p>'
+        )
+        count = " · program zatím nezveřejněn"
+    else:
+        program = f"""{topics_html(view["items"], labels, root)}
+{picks_html}
+<section id="program" aria-labelledby="zs-h-prog"><h2 id="zs-h-prog">Celý program po dnech</h2>
+{filters}
+{program_html(view["items"], root)}
+<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>
+<p class="source">Program EP{as_of}, může se změnit (<a href="https://data.europarl.europa.eu">EP Open Data</a>) · výsledky
+  <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · AI shrnutí jen z úředního názvu · <a href="{root}o-projektu#zasedani">jak to skládáme</a></p>
+</section>"""
+        count = f" · {fmt_num(len(view['items']))} bodů v programu"
     return f"""<div class="back-row"><p class="small"><a href="{root}hlasovani">← Hlasování</a></p>{SHARE_BUTTON}</div>
 <nav class="subnav" aria-label="Hlasování">
   <a href="{root}hlasovani" data-page="votes-overview">Přehled</a>
@@ -336,16 +353,29 @@ def session_body(view: dict, categories: list[str], labels: dict[str, str], root
 <h1>Zasedání pléna <span class="zs-when">{when}</span></h1>
 <p class="lead">{lead}</p>
 <p class="ns-when zs-status" data-from="{view["from"]}" data-to="{view["to"]}"><strong>{when}</strong><span class="ns-count" aria-live="polite"></span>
-  · {fmt_num(len(view["items"]))} bodů v programu</p>
-{topics_html(view["items"], labels, root)}
-{picks_html}
-<section id="program" aria-labelledby="zs-h-prog"><h2 id="zs-h-prog">Celý program po dnech</h2>
-{filters}
-{program_html(view["items"], root)}
-<p class="rd-empty muted" hidden>Filtru nic neodpovídá.</p>
-<p class="source">Program EP{as_of}, může se změnit (<a href="https://data.europarl.europa.eu">EP Open Data</a>) · výsledky
-  <a href="https://howtheyvote.eu">HowTheyVote.eu</a> · AI shrnutí jen z úředního názvu · <a href="{root}o-projektu#zasedani">jak to skládáme</a></p>
-</section>"""
+  {count}</p>
+{program}"""
+
+
+def results_context(view: dict, votes: list[dict], meps_by_id: dict, data_dir: Path, release: str | None) -> dict | None:
+    """Po zasedání stejný karusel jako na Novinkách (sitting_share.py) ze závěrečných hlasování dnů zasedání; bez nich None."""
+    import news
+    from sitting_share import sitting_context, sitting_data
+
+    days = sorted({v["date"] for v in votes if view["from"] <= v["date"] <= view["to"]})
+    if not days:
+        return None
+    block = news.session_block(days, [v for v in votes if v["date"] in days], meps_by_id, _roles(data_dir))
+    if not block["finals"]:
+        return None
+    parties = read(data_dir / "parties.json") if (data_dir / "parties.json").exists() else []
+    groups = read(data_dir / "groups.json") if (data_dir / "groups.json").exists() else []
+    return sitting_context(sitting_data(block, meps_by_id, parties, groups, _roles(data_dir)), "zasedani", release)
+
+
+def _roles(data_dir: Path) -> dict:
+    path = data_dir / "vote_roles.json"
+    return (read(path).get("votes") or {}) if path.exists() else {}
 
 
 def session_page(data_dir: Path, base_url: str | None) -> tuple[str, str] | None:
@@ -367,8 +397,9 @@ def session_page(data_dir: Path, base_url: str | None) -> tuple[str, str] | None
     if view is None:
         return None
     release = ((read(data_dir / "overview.json").get("sources") or {}).get("votes") or {}).get("release") if view["has_results"] else None
+    ctx = results_context(view, votes, meps_by_id, data_dir, release) if view["has_results"] else None
     body = session_body(view, radar.get("categories", []), LABEL) + (
-        f'<script type="application/json" id="share-context">{json_script(share_context(view, release))}</script>'
+        f'<script type="application/json" id="share-context">{json_script(ctx or share_context(view, release))}</script>'
     )
     title = f"Zasedání pléna {_range(view['from'], view['to'])} – EP Watch CZ"
     desc = "Program plenárního zasedání EP: o čem se hlasuje, co se u zákonů rozhoduje, česká stopa a po zasedání výsledky."

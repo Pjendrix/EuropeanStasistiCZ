@@ -4,7 +4,8 @@ export const SHARE_ROOT = new URL("..", import.meta.url).href; // kořen webu (m
 
 export const SHARE_FORMATS = { post: { w: 1080, h: 1350, label: "příspěvek (4 : 5)" }, story: { w: 1080, h: 1920, label: "story (9 : 16)" },
   slide2: { w: 1080, h: 1350, label: "detail 2/3" }, slide3: { w: 1080, h: 1350, label: "detail 3/3" },
-  story2: { w: 1080, h: 1920, label: "detail 2/3 (story)" }, story3: { w: 1080, h: 1920, label: "detail 3/3 (story)" } };
+  story2: { w: 1080, h: 1920, label: "detail 2/3 (story)" }, story3: { w: 1080, h: 1920, label: "detail 3/3 (story)" },
+  slide4: { w: 1080, h: 1350, label: "detail 4/4" }, story4: { w: 1080, h: 1920, label: "detail 4/4 (story)" } };
 // Barvy karty podle role (design/tokens.json → python scripts/tokens.py): tmavá = dosavadní karta, světlá = volba „Vzhled“.
 const SC_THEMES = { dark: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#94A3B8", soft: "#CBD5E1", gold: "#F59E0B", for: "#5BE49B", against: "#E5484D", abst: "#94A3B8", absent: "#475569", track: "#334155", text: "#F8FAFC", accent: "#F59E0B", bg0: "#0F172A", bg1: "#0A1226", line: "#334155", rowLine: "#1E293B", chip: "#1E293B", chipLine: "#475569", tile: "#16213A", tileLine: "#16213A", silhouette: "#475569", glyph: "#0A1226", pillOk: "#F8FAFC", pillOkText: "#0F172A", pillNo: "#334155", pillNoText: "#F8FAFC" }, light: { navy: "#0F172A", navy2: "#0A1226", white: "#F8FAFC", muted: "#64748B", soft: "#334155", gold: "#F59E0B", for: "#2AA560", against: "#9F1D2B", abst: "#64748B", absent: "#8092AB", track: "#E2E8F0", text: "#0F172A", accent: "#B45309", bg0: "#F8FAFC", bg1: "#F8FAFC", line: "#E2E8F0", rowLine: "#E2E8F0", chip: "#EEF2F7", chipLine: "#CBD5E1", tile: "#FFFFFF", tileLine: "#E2E8F0", silhouette: "#94A3B8", glyph: "#FFFFFF", pillOk: "#0F172A", pillOkText: "#FFFFFF", pillNo: "#475569", pillNoText: "#FFFFFF" } };
 // Hlavička karty (logo, datum, téma) je v obou variantách modrá jako hlavička webu.

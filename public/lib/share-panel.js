@@ -11,7 +11,7 @@ import { esc, withShareUrl } from "./format.js";
 import { CARD_THEMES, SHARE_FORMATS, SHARE_SHORT } from "./share-canvas.js";
 import { renderCardPng, voteHasContext } from "./share-cards.js";
 export { useCardTheme, measureText, balanceRows } from "./share-canvas.js";
-export { voteCardOps, mepBasicOps, metricCardOps, splitRowsFor, splitCardOps, partyCardOps, groupCardOps, lawCardOps, sessionCardOps, quizCardOps, quizGroupsCardOps, duelCardOps, cardOps } from "./share-cards.js";
+export { voteCardOps, mepBasicOps, metricCardOps, splitRowsFor, splitCardOps, partyCardOps, groupCardOps, lawCardOps, sessionCardOps, sittingCardOps, quizCardOps, quizGroupsCardOps, duelCardOps, cardOps } from "./share-cards.js";
 export { SHARE_FORMATS, CARD_THEMES, voteHasContext, renderCardPng };
 
 // Kód pro vložení do článku (V2): jen u stránky hlasování (v/) a poslance (p/); karta /embed/… nese zdroj a datum.
@@ -45,17 +45,18 @@ const SD_ICON = {
 // Detail mají poslanec, strana, frakce a závěrečné hlasování (data.detail); u hlasování bez kontextu jen 2 obrázky.
 export function shareFormats(kind, data = {}) {
   const out = [{ key: "post", content: "single", size: "post", slides: ["post"] }, { key: "story", content: "single", size: "story", slides: ["story"] }];
-  const n = kind === "vote" ? (data?.detail ? (voteHasContext(data.detail) ? 3 : 2) : 0) : ["mep", "party", "group", "duel"].includes(kind) ? 3 : 0;
+  const n = kind === "vote" ? (data?.detail ? (voteHasContext(data.detail) ? 3 : 2) : 0) : ["mep", "party", "group", "duel"].includes(kind) ? 3
+    : kind === "sitting" && (data?.slides || []).length > 1 ? data.slides.length : 0;   // karusel zasedání: 2–4 obrázky podle dat
   if (n) {
-    out.push({ key: "detail", content: "detail", size: "post", slides: ["post", "slide2", "slide3"].slice(0, n) },
-      { key: "detail-story", content: "detail", size: "story", slides: ["story", "story2", "story3"].slice(0, n) });
+    out.push({ key: "detail", content: "detail", size: "post", slides: ["post", "slide2", "slide3", "slide4"].slice(0, n) },
+      { key: "detail-story", content: "detail", size: "story", slides: ["story", "story2", "story3", "story4"].slice(0, n) });
   }
   return out;
 }
 const SD_SIZES = { post: { label: "Příspěvek", ratio: "4 : 5", icon: SD_ICON.ratio(12, 15) }, story: { label: "Story", ratio: "9 : 16", icon: SD_ICON.ratio(10, 18) } };
 const SD_CONTENT_KEY = "epw-share-content";
 
-const SD_TITLE = { metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu", "quiz-groups": "Sdílet výsledek kvízu" };
+const SD_TITLE = { sitting: "Sdílet zasedání", metric: "Sdílet číslo", split: "Sdílet pohled", quiz: "Sdílet výsledek kvízu", "quiz-groups": "Sdílet výsledek kvízu" };
 const SD_TRUST = "Karta má datum dat, zdroj a adresu stránky. Bez pořadí a hodnocení.";
 const SD_FMT_KEY = "epw-share-format";
 const SD_THEME_KEY = "ep-share-theme";

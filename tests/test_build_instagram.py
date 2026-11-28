@@ -142,3 +142,25 @@ def test_vote_card_dots_equal_meps_in_mandate():
     v = bi.pick_vote(votes, meps)
     share = bp.vote_share_data(v, meps, index["groups"], json.loads((root / "parties.json").read_text(encoding="utf-8")), None)
     assert sum(len(p["positions"]) for p in share["parties"]) == len(active_positions(v, meps))
+
+
+def test_sitting_texts_alt_for_every_slide():
+    """Karusel zasedání (sitting_share.py) v balíčku: alt text pro každý slide i story, čísla jen z dat karty."""
+    data = {
+        "when": "12. 11. 2026",
+        "finals": 3,
+        "adopted": 2,
+        "rejected": 1,
+        "united": 1,
+        "considered": 3,
+        "dataDay": "2026-11-21",
+        "slides": ["overview", "main", "trace"],
+        "main": [{"title": "MOCK zákon", "resultLabel": "přijato", "cz": [5, 1, 0, 1]}],
+        "split": [],
+        "traceItems": [{"title": "MOCK zákon", "people": [{"name": "MOCK Poslanec"}]}],
+    }
+    t = bi.sitting_texts(data, 3)
+    names = [line.split(":", 1)[0] for line in t["alt"].splitlines()]
+    assert names == ["slide-1.png", "slide-2.png", "slide-3.png", "story.png"]
+    assert "3 závěrečných hlasování (přijato 2, zamítnuto 1); Češi jednotní v 1 z 3." in t["popisek"]
+    assert "MOCK Poslanec" in t["alt"] and "HowTheyVote.eu (ODbL)" in t["zdroje"]

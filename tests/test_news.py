@@ -141,3 +141,11 @@ def test_upcoming_html_caps_trace():
     assert "a 2 další v programu zasedání" in html and "česká stopa u 5" in html
     u["trace"] = u["trace"][:2]
     assert "další v programu" not in news_page.upcoming_html(u)
+
+
+def test_upcoming_html_without_published_agenda():
+    """Termín dalšího zasedání bez návrhu programu: datum ano, „0 bodů“ ne."""
+    import news_page
+
+    html = news_page.upcoming_html({"from": "2026-12-14", "to": "2026-12-17", "items": 0, "trace": []})
+    assert "Další zasedání" in html and "Návrh programu EP zatím není zveřejněný." in html and "0 bodů" not in html

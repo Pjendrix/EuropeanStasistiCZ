@@ -28,6 +28,7 @@ import functools
 import http.server
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -189,6 +190,50 @@ def session_texts(data: dict) -> dict:
         f"Data k {fmt_date(data['dataDay'])}.",
     ]
     return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(x for x in sources if x) + "\n"}
+
+
+def sitting_texts(data: dict, n: int) -> dict:
+    """Popisek, alt texty a zdroje ke karuselu zasedání (data = kontext karty ze zasedani.html, sitting_share.py)."""
+    url = f"{SITE}/zasedani"
+    lines = [f"Jak hlasoval Evropský parlament na zasedání {data['when']}.", ""]
+    lines.append(
+        f"{data['finals']} závěrečných hlasování (přijato {data['adopted']}, zamítnuto {data['rejected']})"
+        + (f"; Češi jednotní v {data['united']} z {data['considered']}" if data["considered"] else "")
+        + "."
+    )
+    lines.append("")
+    for v in data["main"]:
+        lines.append(f"• {v['title']}")
+        lines.append(
+            f"  EP: {v['resultLabel']} · Češi {v['cz'][0]} pro, {v['cz'][1]} proti, {v['cz'][2]} se zdrželo, {v['cz'][3]} nehlasovalo"
+        )
+    lines += [
+        "",
+        "Hlavní hlasování vybírá pravidlo, ne redakce: česká stopa, rozdělení Češi, rozhodující české hlasy, těsný výsledek.",
+        "",
+        f"Všechna hlasování zasedání: {url.replace('https://', '')} (odkaz v bio)",
+        f"Zdroj: HowTheyVote.eu (ODbL), EP Open Data, data k {fmt_date(data['dataDay'])}. Strany k datu hlasování.",
+        "",
+        HASHTAGS,
+    ]
+    label = {
+        "overview": "přehled zasedání (počty hlasování, kolikrát byli Češi jednotní a rozdělení, česká stopa)",
+        "main": "hlavní hlasování: " + "; ".join(v["title"] for v in data["main"]),
+        "split": "kde se Češi rozdělili: " + "; ".join(v["title"] for v in data["split"]),
+        "trace": "česká stopa: " + "; ".join(f"{v['title']} ({', '.join(p['name'] for p in v['people'])})" for v in data["traceItems"]),
+    }
+    alt = [
+        f"slide-{i + 1}.png: Karta EP Watch CZ {i + 1} z {n}, zasedání {data['when']}: {label[k]}."
+        for i, k in enumerate(data["slides"][:n])
+    ]
+    alt.append("story.png: První karta (přehled) ve formátu story (9 : 16).")
+    sources = [
+        "Hlasování: HowTheyVote.eu (ODbL), https://howtheyvote.eu",
+        "Zpravodajové a strany: EP Open Data (CC BY 4.0), https://data.europarl.europa.eu",
+        f"Na webu: {url}",
+        f"Data k {fmt_date(data['dataDay'])}.",
+    ]
+    return {"popisek": "\n".join(lines) + "\n", "alt": "\n".join(alt) + "\n", "zdroje": "\n".join(sources) + "\n"}
 
 
 def _pct(pair) -> str | None:
@@ -373,9 +418,17 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
         shutil.copytree(public, site)
         shutil.copytree(data_dir, site / "data", dirs_exist_ok=True)
         session = (public / "zasedani.html").exists() and 'id="share-context"' in (public / "zasedani.html").read_text(encoding="utf-8")
+        # po zasedání je na stránce karusel (sitting_share.py, 2–4 obrázky), před ním jedna karta programu
+        sess_formats = ["post", "story"]
+        if session:
+            m = re.search(r'id="share-context">(.*?)</script>', (public / "zasedani.html").read_text(encoding="utf-8"), re.S)
+            sctx = json.loads(m.group(1)) if m else {}
+            if sctx.get("kind") == "sitting":
+                n = len(sctx["data"]["slides"])
+                sess_formats = ["post", *[f"slide{i}" for i in range(2, n + 1)], "story"]
         jobs = (
             ([(f"v/{vote['id']}.html", "post", False), (f"v/{vote['id']}.html", "story", False)] if vote else [])
-            + [("zasedani.html", "post", False), ("zasedani.html", "story", False)] * session
+            + [("zasedani.html", fmt, False) for fmt in sess_formats] * session
             + [(f"p/{mep['id']}.html", fmt, True) for fmt in ("post", "slide2", "slide3", "story")]
         )
         rendered = render(site, jobs)
@@ -400,8 +453,13 @@ def build(data_dir: Path, public: Path, out_root: Path, day: str, state_path: Pa
         )
         result["vote"] = vote["id"]
     if session:
-        sess = rendered[2 if vote else 0 : 4 if vote else 2]
-        if sess[0]["data"].get("picks"):
+        k = len(sess_formats)
+        sess = rendered[2 if vote else 0 : (2 if vote else 0) + k]
+        if sess[0].get("kind") == "sitting":
+            slides = [(f"slide-{i + 1}.png", r) for i, r in enumerate(sess[:-1])]
+            write_package(out / "zasedani", [*slides, ("story.png", sess[-1])], sitting_texts(sess[0]["data"], len(slides)))
+            result["session"] = sess[0]["data"]["when"]
+        elif sess[0]["data"].get("picks"):
             write_package(out / "zasedani", [("slide-1.png", sess[0]), ("story.png", sess[1])], session_texts(sess[0]["data"]))
             result["session"] = sess[0]["data"]["when"]
     mep_res = rendered[-4:]
