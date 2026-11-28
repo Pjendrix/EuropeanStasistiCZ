@@ -1080,8 +1080,9 @@ export function duelDivergedOps(d, f) {
 // --- karusel zasedání (Novinky a stránka Zasedání po zasedání, scripts/sitting_share.py) -----------------------------
 // 1 přehled (počty), 2 hlavní hlasování (výsledek EP a hlasy Čechů), 3 kde se Češi rozdělili (strany k datu hlasování),
 // 4 česká stopa (zpravodajové s portrétem). Snímky bez dat build vynechá (data.slides). Všechna čísla spočítal build.
-export const SITTING_FOOT = (d) => `Zdroj: HowTheyVote.eu (ODbL), EP Open Data · strany k datu hlasování · data k ${fmtDate(d.dataDay)}`;
-const SITTING_SUB = { main: "Hlavní hlasování · výběr pravidlem, ne redakcí", split: "Kde se čeští poslanci rozdělili", trace: "Česká stopa: zpravodajové z Česka" };
+// patička krátká (rezerva pro šířku písma na jiných strojích); „strany k datu hlasování“ je v podtitulku snímku 3
+export const SITTING_FOOT = (d) => `Zdroj: HowTheyVote.eu (ODbL), EP Open Data · data k ${fmtDate(d.dataDay)}`;
+const SITTING_SUB = { main: "Hlavní hlasování · výběr pravidlem, ne redakcí", split: "Kde se Češi rozdělili · strany k datu hlasování", trace: "Česká stopa: zpravodajové z Česka" };
 const czLine = (v) => `EP: ${v.resultLabel} · Češi ${fmtNum(v.cz[0])} : ${fmtNum(v.cz[1])} · ${fmtNum(v.cz[2])} zdrž. · ${fmtNum(v.cz[3])} nehl.`;
 const countsText = (c) => ["FOR", "AGAINST", "ABSTENTION", "DID_NOT_VOTE"].map((k, i) => (c[i] ? `${fmtNum(c[i])} ${SHARE_SHORT[k]}` : "")).filter(Boolean).join(", ");
 
